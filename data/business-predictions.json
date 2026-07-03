@@ -7141,12 +7141,2000 @@
       "opportunityCount": 0,
       "riskScore": 78,
       "predictedAt": "2026-06-29T22:43:36.592Z"
+    },
+    {
+      "id": "bp_1782947376796_55zt",
+      "context": "low_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        },
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 38 — mass churn predicted within 14 days"
+        },
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 11,
+      "criticalCount": 4,
+      "opportunityCount": 0,
+      "riskScore": 90,
+      "predictedAt": "2026-07-01T23:09:36.796Z"
+    },
+    {
+      "id": "bp_1782947376802_upwf",
+      "context": "strong_biz_pred",
+      "revenueTrends": [
+        {
+          "type": "revenue_acceleration",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong growth signals — revenue acceleration likely"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "conversion_acceleration",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Strong sales signals — conversion rates likely to improve"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_breakout_potential",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Conditions favorable for breakout campaign performance"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_growth",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong health metrics — CLV expansion likely through upsell/cross-sell"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "efficient_growth",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Acquisition efficiency strong — good CAC/LTV ratio expected"
+        }
+      ],
+      "total": 5,
+      "criticalCount": 0,
+      "opportunityCount": 5,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:09:36.802Z"
+    },
+    {
+      "id": "bp_1782947376807_akvx",
+      "context": "churn_biz",
+      "revenueTrends": [
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 45 — mass churn predicted within 14 days"
+        },
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 4,
+      "criticalCount": 3,
+      "opportunityCount": 0,
+      "riskScore": 112,
+      "predictedAt": "2026-07-01T23:09:36.807Z"
+    },
+    {
+      "id": "bp_1782947376815_m7pm",
+      "context": "rev_decline_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        },
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 5,
+      "criticalCount": 3,
+      "opportunityCount": 0,
+      "riskScore": 105,
+      "predictedAt": "2026-07-01T23:09:36.815Z"
+    },
+    {
+      "id": "bp_1782947376829_vnpb",
+      "context": "id_pred_biz",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 0,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:09:36.829Z"
+    },
+    {
+      "id": "bp_1782947376855_e6hu",
+      "context": "list_pred_biz",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 0,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:09:36.855Z"
+    },
+    {
+      "id": "bp_1782947376879_5qc1",
+      "context": "risk_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 40 — mass churn predicted within 14 days"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 4,
+      "criticalCount": 2,
+      "opportunityCount": 0,
+      "riskScore": 102,
+      "predictedAt": "2026-07-01T23:09:36.879Z"
+    },
+    {
+      "id": "bp_1782947376890_wssj",
+      "context": "opp_count_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_acceleration",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong growth signals — revenue acceleration likely"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "conversion_acceleration",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Strong sales signals — conversion rates likely to improve"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_breakout_potential",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Conditions favorable for breakout campaign performance"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_growth",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong health metrics — CLV expansion likely through upsell/cross-sell"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "efficient_growth",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Acquisition efficiency strong — good CAC/LTV ratio expected"
+        }
+      ],
+      "total": 5,
+      "criticalCount": 0,
+      "opportunityCount": 5,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:09:36.890Z"
+    },
+    {
+      "id": "bp_1782947378381_cpb9",
+      "context": "current_business",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.381Z"
+    },
+    {
+      "id": "bp_1782947378387_xrzq",
+      "context": "get_cycle_biz_direct",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.387Z"
+    },
+    {
+      "id": "bp_1782947378394_q1rs",
+      "context": "list_biz_1782947377068",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 1,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 75,
+      "predictedAt": "2026-07-01T23:09:38.394Z"
+    },
+    {
+      "id": "bp_1782947378401_1so4",
+      "context": "status_seed_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.401Z"
+    },
+    {
+      "id": "bp_1782947378409_2nnj",
+      "context": "multi_biz_ctx",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.409Z"
+    },
+    {
+      "id": "bp_1782947378460_h9sh",
+      "context": "dashboard_evo_seed_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.460Z"
+    },
+    {
+      "id": "bp_1782947378528_vl6a",
+      "context": "view_pipeline_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.528Z"
+    },
+    {
+      "id": "bp_1782947378534_z6zm",
+      "context": "current_business",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.534Z"
+    },
+    {
+      "id": "bp_1782947378541_v5v4",
+      "context": "founder_time_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.541Z"
+    },
+    {
+      "id": "bp_1782947378867_jncb",
+      "context": "multi_biz_ctx",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:09:38.867Z"
+    },
+    {
+      "id": "bp_1782947495740_j3tg",
+      "context": "low_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        },
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 38 — mass churn predicted within 14 days"
+        },
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 11,
+      "criticalCount": 4,
+      "opportunityCount": 0,
+      "riskScore": 90,
+      "predictedAt": "2026-07-01T23:11:35.740Z"
+    },
+    {
+      "id": "bp_1782947495767_oehs",
+      "context": "strong_biz_pred",
+      "revenueTrends": [
+        {
+          "type": "revenue_acceleration",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong growth signals — revenue acceleration likely"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "conversion_acceleration",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Strong sales signals — conversion rates likely to improve"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_breakout_potential",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Conditions favorable for breakout campaign performance"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_growth",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong health metrics — CLV expansion likely through upsell/cross-sell"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "efficient_growth",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Acquisition efficiency strong — good CAC/LTV ratio expected"
+        }
+      ],
+      "total": 5,
+      "criticalCount": 0,
+      "opportunityCount": 5,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:11:35.767Z"
+    },
+    {
+      "id": "bp_1782947495771_o7l1",
+      "context": "churn_biz",
+      "revenueTrends": [
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 45 — mass churn predicted within 14 days"
+        },
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 4,
+      "criticalCount": 3,
+      "opportunityCount": 0,
+      "riskScore": 112,
+      "predictedAt": "2026-07-01T23:11:35.771Z"
+    },
+    {
+      "id": "bp_1782947495780_b32a",
+      "context": "rev_decline_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        },
+        {
+          "type": "arr_shrinkage",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Poor retention will shrink ARR — churn exceeds new revenue"
+        }
+      ],
+      "churn": [
+        {
+          "type": "retention_collapse",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Retention health critical — net revenue retention at risk"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 5,
+      "criticalCount": 3,
+      "opportunityCount": 0,
+      "riskScore": 105,
+      "predictedAt": "2026-07-01T23:11:35.780Z"
+    },
+    {
+      "id": "bp_1782947495790_jrch",
+      "context": "id_pred_biz",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 0,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:11:35.790Z"
+    },
+    {
+      "id": "bp_1782947495804_xlki",
+      "context": "list_pred_biz",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 0,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:11:35.804Z"
+    },
+    {
+      "id": "bp_1782947495835_hmm2",
+      "context": "risk_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [
+        {
+          "type": "customer_churn_wave",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Customer health 40 — mass churn predicted within 14 days"
+        }
+      ],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_at_risk",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Poor customer/retention health — CLV will decline 20-40% in next quarter"
+        }
+      ],
+      "acquisitionEfficiency": [],
+      "total": 4,
+      "criticalCount": 2,
+      "opportunityCount": 0,
+      "riskScore": 102,
+      "predictedAt": "2026-07-01T23:11:35.835Z"
+    },
+    {
+      "id": "bp_1782947495843_ui1n",
+      "context": "opp_count_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_acceleration",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong growth signals — revenue acceleration likely"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "conversion_acceleration",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Strong sales signals — conversion rates likely to improve"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_breakout_potential",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Conditions favorable for breakout campaign performance"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [
+        {
+          "type": "clv_growth",
+          "likelihood": 0.7,
+          "severity": "info",
+          "description": "Strong health metrics — CLV expansion likely through upsell/cross-sell"
+        }
+      ],
+      "acquisitionEfficiency": [
+        {
+          "type": "efficient_growth",
+          "likelihood": 0.65,
+          "severity": "info",
+          "description": "Acquisition efficiency strong — good CAC/LTV ratio expected"
+        }
+      ],
+      "total": 5,
+      "criticalCount": 0,
+      "opportunityCount": 5,
+      "riskScore": 5,
+      "predictedAt": "2026-07-01T23:11:35.843Z"
+    },
+    {
+      "id": "bp_1782947498459_jh03",
+      "context": "current_business",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:38.459Z"
+    },
+    {
+      "id": "bp_1782947498525_tton",
+      "context": "get_cycle_biz_direct",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:38.525Z"
+    },
+    {
+      "id": "bp_1782947498537_jpmw",
+      "context": "list_biz_1782947495928",
+      "revenueTrends": [],
+      "churn": [],
+      "conversion": [],
+      "campaignSuccess": [],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [],
+      "total": 1,
+      "criticalCount": 0,
+      "opportunityCount": 0,
+      "riskScore": 75,
+      "predictedAt": "2026-07-01T23:11:38.537Z"
+    },
+    {
+      "id": "bp_1782947498580_9cvk",
+      "context": "status_seed_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:38.580Z"
+    },
+    {
+      "id": "bp_1782947498606_er32",
+      "context": "multi_biz_ctx",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:38.606Z"
+    },
+    {
+      "id": "bp_1782947498951_xbss",
+      "context": "dashboard_evo_seed_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:38.951Z"
+    },
+    {
+      "id": "bp_1782947499093_ymf1",
+      "context": "view_pipeline_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:39.093Z"
+    },
+    {
+      "id": "bp_1782947499141_3xle",
+      "context": "current_business",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:39.141Z"
+    },
+    {
+      "id": "bp_1782947499181_cgsf",
+      "context": "founder_time_biz",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:39.181Z"
+    },
+    {
+      "id": "bp_1782947499859_3drf",
+      "context": "multi_biz_ctx",
+      "revenueTrends": [
+        {
+          "type": "revenue_decline",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Revenue health critically low — decline expected within 30 days"
+        },
+        {
+          "type": "mrr_stagnation",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "MRR at risk of stagnating without intervention"
+        }
+      ],
+      "churn": [],
+      "conversion": [
+        {
+          "type": "pipeline_conversion_drop",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Sales health 40 — pipeline conversion to drop below 15%"
+        },
+        {
+          "type": "lead_quality_decline",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Marketing health low — lead quality and quantity will fall"
+        }
+      ],
+      "campaignSuccess": [
+        {
+          "type": "campaign_underperformance",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Marketing health too low for campaigns to succeed"
+        },
+        {
+          "type": "campaign_roi_risk",
+          "likelihood": 0.7,
+          "severity": "medium",
+          "description": "Campaign ROI at risk — optimize targeting and creative"
+        }
+      ],
+      "pricingImpact": [
+        {
+          "type": "pricing_floor_risk",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "Deal values too low — pricing below sustainability threshold"
+        }
+      ],
+      "customerLTV": [],
+      "acquisitionEfficiency": [
+        {
+          "type": "cac_creep",
+          "likelihood": 0.75,
+          "severity": "high",
+          "description": "CAC likely increasing — acquisition efficiency declining"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 1,
+      "opportunityCount": 0,
+      "riskScore": 78,
+      "predictedAt": "2026-07-01T23:11:39.859Z"
     }
   ],
   "stats": {
-    "total": 134,
-    "criticalPredictions": 147,
+    "total": 170,
+    "criticalPredictions": 189,
     "avgRisk": 68.1
   },
-  "updatedAt": "2026-06-29T22:43:36.592Z"
+  "updatedAt": "2026-07-01T23:11:39.859Z"
 }

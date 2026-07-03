@@ -3171,12 +3171,2092 @@
         "opportunityMRR": 11199
       },
       "createdAt": "2026-06-29T22:45:03.532Z"
+    },
+    {
+      "id": "rfct_1782947399161_g8q2",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.161Z"
+    },
+    {
+      "id": "rfct_1782947399170_8h4y",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.170Z"
+    },
+    {
+      "id": "rfct_1782947399179_k90p",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.179Z"
+    },
+    {
+      "id": "rfct_1782947399188_a040",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.188Z"
+    },
+    {
+      "id": "rfct_1782947399199_71r4",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.199Z"
+    },
+    {
+      "id": "rfct_1782947399216_0ewu",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:09:59.216Z"
+    },
+    {
+      "id": "rfct_1782947399283_rtel",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.283Z"
+    },
+    {
+      "id": "rfct_1782947399313_1ydk",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.313Z"
+    },
+    {
+      "id": "rfct_1782947399337_1q6o",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.337Z"
+    },
+    {
+      "id": "rfct_1782947399350_9as6",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:09:59.350Z"
+    },
+    {
+      "id": "rfct_1782947399359_bywy",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.359Z"
+    },
+    {
+      "id": "rfct_1782947399374_t13u",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.374Z"
+    },
+    {
+      "id": "rfct_1782947399384_d43y",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.384Z"
+    },
+    {
+      "id": "rfct_1782947399399_gzsy",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:09:59.399Z"
+    },
+    {
+      "id": "rfct_1782947399778_yzws",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:09:59.778Z"
+    },
+    {
+      "id": "rfct_1782947399827_im5b",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:09:59.827Z"
+    },
+    {
+      "id": "rfct_1782947406816_c9hx",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:10:06.816Z"
+    },
+    {
+      "id": "rfct_1782947406874_ctka",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:10:06.874Z"
+    },
+    {
+      "id": "rfct_1782947406917_1i1w",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:10:06.917Z"
+    },
+    {
+      "id": "rfct_1782947406965_8ost",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:10:06.965Z"
+    },
+    {
+      "id": "rfct_1782947564571_z1pl",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:44.571Z"
+    },
+    {
+      "id": "rfct_1782947564638_w89z",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:44.638Z"
+    },
+    {
+      "id": "rfct_1782947564747_88vs",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:44.747Z"
+    },
+    {
+      "id": "rfct_1782947564928_03z6",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:44.929Z"
+    },
+    {
+      "id": "rfct_1782947565046_hao7",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.046Z"
+    },
+    {
+      "id": "rfct_1782947565175_88dq",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:12:45.176Z"
+    },
+    {
+      "id": "rfct_1782947565308_x740",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.308Z"
+    },
+    {
+      "id": "rfct_1782947565402_eh0e",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.402Z"
+    },
+    {
+      "id": "rfct_1782947565520_fv3x",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.520Z"
+    },
+    {
+      "id": "rfct_1782947565607_iz7s",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:12:45.607Z"
+    },
+    {
+      "id": "rfct_1782947565719_q27d",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.719Z"
+    },
+    {
+      "id": "rfct_1782947565808_p90f",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.808Z"
+    },
+    {
+      "id": "rfct_1782947565955_epe7",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:45.955Z"
+    },
+    {
+      "id": "rfct_1782947566146_4v8q",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:12:46.146Z"
+    },
+    {
+      "id": "rfct_1782947575066_e91t",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:12:55.066Z"
+    },
+    {
+      "id": "rfct_1782947575852_0vvx",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:12:55.852Z"
+    },
+    {
+      "id": "rfct_1782947610343_270l",
+      "model": "base",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 12900,
+          "arr": 154799,
+          "mrrGrowthPct": 1191,
+          "churnImpact": -599,
+          "expansionMRR": 0,
+          "cashFlow": 251548,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 27155,
+          "arr": 325855,
+          "mrrGrowthPct": 2618,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 1588545,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 36251,
+          "arr": 435014,
+          "mrrGrowthPct": 3529,
+          "churnImpact": -3596,
+          "expansionMRR": 0,
+          "cashFlow": 4241383
+        },
+        "365d": {
+          "mrr": 40548,
+          "arr": 486581,
+          "mrrGrowthPct": 3959,
+          "churnImpact": -7293,
+          "expansionMRR": 0,
+          "cashFlow": 9620120,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 75,
+      "assumptions": {
+        "growthRate": 0.1,
+        "churnRate": 0.02,
+        "conversionRate": 0.12,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:13:30.343Z"
+    },
+    {
+      "id": "rfct_1782947610708_l10t",
+      "model": "conservative",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 7187,
+          "arr": 86244,
+          "mrrGrowthPct": 619,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 140146,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 11296,
+          "arr": 135550,
+          "mrrGrowthPct": 1031,
+          "churnImpact": -2697,
+          "expansionMRR": 0,
+          "cashFlow": 660806,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 12272,
+          "arr": 147269,
+          "mrrGrowthPct": 1128,
+          "churnImpact": -5395,
+          "expansionMRR": 0,
+          "cashFlow": 1435869
+        },
+        "365d": {
+          "mrr": 12374,
+          "arr": 148487,
+          "mrrGrowthPct": 1139,
+          "churnImpact": -10939,
+          "expansionMRR": 0,
+          "cashFlow": 2935708,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 80,
+      "assumptions": {
+        "growthRate": 0.05,
+        "churnRate": 0.03,
+        "conversionRate": 0.08,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:13:30.708Z"
+    },
+    {
+      "id": "rfct_1782947610889_56vx",
+      "model": "optimistic",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 24379,
+          "arr": 292543,
+          "mrrGrowthPct": 2340,
+          "churnImpact": -300,
+          "expansionMRR": 0,
+          "cashFlow": 475383,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 83067,
+          "arr": 996807,
+          "mrrGrowthPct": 8215,
+          "churnImpact": -899,
+          "expansionMRR": 0,
+          "cashFlow": 4859436,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 211632,
+          "arr": 2539581,
+          "mrrGrowthPct": 21084,
+          "churnImpact": -1798,
+          "expansionMRR": 0,
+          "cashFlow": 24760912
+        },
+        "365d": {
+          "mrr": 750573,
+          "arr": 9006880,
+          "mrrGrowthPct": 75032,
+          "churnImpact": -3646,
+          "expansionMRR": 0,
+          "cashFlow": 178073522,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 70,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 0,
+        "opportunityMRR": 0
+      },
+      "createdAt": "2026-07-01T23:13:30.889Z"
+    },
+    {
+      "id": "rfct_1782947611094_h351",
+      "model": "with_optimization",
+      "currentMRR": 999,
+      "currentARR": 11988,
+      "projections": {
+        "30d": {
+          "mrr": 63799,
+          "arr": 765586,
+          "mrrGrowthPct": 6286,
+          "churnImpact": -300,
+          "expansionMRR": 5945,
+          "cashFlow": 1244078,
+          "revenueOSMRR": 1099
+        },
+        "90d": {
+          "mrr": 242583,
+          "arr": 2910999,
+          "mrrGrowthPct": 24183,
+          "churnImpact": -899,
+          "expansionMRR": 17835,
+          "cashFlow": 14191122,
+          "revenueOSMRR": 1330
+        },
+        "180d": {
+          "mrr": 711413,
+          "arr": 8536953,
+          "mrrGrowthPct": 71112,
+          "churnImpact": -1798,
+          "expansionMRR": 35670,
+          "cashFlow": 83235296
+        },
+        "365d": {
+          "mrr": 3300464,
+          "arr": 39605569,
+          "mrrGrowthPct": 330277,
+          "churnImpact": -3646,
+          "expansionMRR": 72331,
+          "cashFlow": 783035112,
+          "revenueOSMRR": 3136
+        }
+      },
+      "accuracy": 65,
+      "assumptions": {
+        "growthRate": 0.18,
+        "churnRate": 0.01,
+        "conversionRate": 0.18,
+        "optLiftMRR": 2378,
+        "opportunityMRR": 11199
+      },
+      "createdAt": "2026-07-01T23:13:31.094Z"
     }
   ],
   "stats": {
-    "total": 61,
+    "total": 101,
     "avgAccuracy": 73,
     "bestModel": "conservative"
   },
-  "updatedAt": "2026-06-29T22:45:03.532Z"
+  "updatedAt": "2026-07-01T23:13:31.095Z"
 }

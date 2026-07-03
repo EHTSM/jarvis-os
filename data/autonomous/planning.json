@@ -1,7 +1,7 @@
 {
   "globalPlan": {
-    "id": "apln_1782772793700_7zts",
-    "title": "Civilization Global Plan — Cycle 60",
+    "id": "apln_1783018070713_raq8",
+    "title": "Civilization Global Plan — Cycle 120",
     "objective": "Operate at maximum civilization health across all 9 layers",
     "horizon": "1y",
     "priorities": [
@@ -25,37 +25,53 @@
     "confidence": 0.8,
     "generatedBy": "autonomous",
     "status": "active",
-    "cycle": 60,
+    "cycle": 120,
     "outcomes": [],
     "revision": 0,
-    "createdAt": "2026-06-29T22:39:53.700Z",
-    "updatedAt": "2026-06-29T22:39:53.700Z"
+    "createdAt": "2026-07-02T18:47:50.713Z",
+    "updatedAt": "2026-07-02T18:47:50.713Z"
   },
   "multiYearPlan": {
-    "id": "amyp_1782772792972_q2ap",
-    "title": "MultiYear-1782772792938",
+    "id": "amyp_1782994594268_kco8",
+    "title": "Civilization 3-Year Evolution Plan",
     "years": 3,
     "phases": [
       {
         "year": 1,
-        "focus": "Foundation"
+        "focus": "Foundation",
+        "goal": "10+ members, 100+ innovations, all threats < medium"
       },
       {
         "year": 2,
-        "focus": "Growth"
+        "focus": "Growth",
+        "goal": "50+ members, 500+ innovations, 10+ ratified treaties"
       },
       {
         "year": 3,
-        "focus": "Mastery"
+        "focus": "Mastery",
+        "goal": "100+ members, 1000+ innovations, fully autonomous"
       }
     ],
-    "milestones": [],
-    "objective": "100+ members, 1000+ innovations",
+    "milestones": [
+      {
+        "at": "cycle:50",
+        "milestone": "First innovation adopted as standard"
+      },
+      {
+        "at": "cycle:100",
+        "milestone": "First ratified treaty between 2+ members"
+      },
+      {
+        "at": "cycle:250",
+        "milestone": "Global health sustained > 80 for 10 consecutive cycles"
+      }
+    ],
+    "objective": "Achieve fully autonomous civilization with 100+ members and 1000+ innovations",
     "confidence": 0.65,
     "status": "active",
     "progress": 0,
-    "createdAt": "2026-06-29T22:39:52.972Z",
-    "updatedAt": "2026-06-29T22:39:52.972Z"
+    "createdAt": "2026-07-02T12:16:34.268Z",
+    "updatedAt": "2026-07-02T12:16:34.268Z"
   },
   "schedule": [
     {
@@ -95,39 +111,11 @@
       "domain": "health",
       "layer": "civilization",
       "confidence": 0.7,
-      "status": "executed",
-      "executedAt": "2026-06-29T22:39:52.972Z",
-      "outcome": null,
-      "scheduledAt": "2026-06-28T06:55:58.247Z"
-    },
-    {
-      "id": "asch_1782772792972_fztc",
-      "title": "Schedule-1782772792938",
-      "scheduledFor": "2026-06-29T22:39:51.972Z",
-      "type": "observe",
-      "priority": "low",
-      "domain": "health",
-      "layer": "civilization",
-      "confidence": 0.7,
-      "status": "executed",
-      "executedAt": "2026-06-29T22:39:52.972Z",
-      "outcome": null,
-      "scheduledAt": "2026-06-29T22:39:52.972Z"
-    },
-    {
-      "id": "asch_1782772794508_3q5l",
-      "title": "Health check",
-      "scheduledFor": "2026-06-29T22:44:54.508Z",
-      "type": "observe",
-      "priority": "low",
-      "domain": "health",
-      "layer": "civilization",
-      "confidence": 0.7,
       "status": "scheduled",
       "executedAt": null,
       "outcome": null,
-      "scheduledAt": "2026-06-29T22:39:54.508Z"
+      "scheduledAt": "2026-06-28T06:55:58.247Z"
     }
   ],
-  "cycles": 10
+  "cycles": 13
 }

@@ -537,5 +537,60 @@
     "cancelledAt": null,
     "razorpaySubId": null,
     "updatedAt": "2026-06-29T00:17:08.330Z"
+  },
+  "acct-downgrade-1": {
+    "accountId": "acct-downgrade-1",
+    "plan": "trial",
+    "status": "trialing",
+    "trialStart": "2026-07-02T06:52:05.210Z",
+    "trialEnd": "2026-07-09T06:52:05.210Z",
+    "activatedAt": null,
+    "cancelledAt": null,
+    "razorpaySubId": null,
+    "updatedAt": "2026-07-02T06:52:05.210Z"
+  },
+  "acct-x": {
+    "accountId": "acct-x",
+    "plan": "trial",
+    "status": "trialing",
+    "trialStart": "2026-07-02T06:52:05.211Z",
+    "trialEnd": "2026-07-09T06:52:05.211Z",
+    "activatedAt": null,
+    "cancelledAt": null,
+    "razorpaySubId": null,
+    "updatedAt": "2026-07-02T06:52:05.211Z"
+  },
+  "acct-inv-1": {
+    "accountId": "acct-inv-1",
+    "plan": "trial",
+    "status": "trialing",
+    "trialStart": "2026-07-02T06:52:05.213Z",
+    "trialEnd": "2026-07-09T06:52:05.213Z",
+    "activatedAt": null,
+    "cancelledAt": null,
+    "razorpaySubId": null,
+    "updatedAt": "2026-07-02T06:52:05.213Z"
+  },
+  "acct-inv-2": {
+    "accountId": "acct-inv-2",
+    "plan": "trial",
+    "status": "trialing",
+    "trialStart": "2026-07-02T06:52:05.213Z",
+    "trialEnd": "2026-07-09T06:52:05.213Z",
+    "activatedAt": null,
+    "cancelledAt": null,
+    "razorpaySubId": null,
+    "updatedAt": "2026-07-02T06:52:05.213Z"
+  },
+  "acct-inv-3": {
+    "accountId": "acct-inv-3",
+    "plan": "trial",
+    "status": "trialing",
+    "trialStart": "2026-07-02T06:52:05.214Z",
+    "trialEnd": "2026-07-09T06:52:05.214Z",
+    "activatedAt": null,
+    "cancelledAt": null,
+    "razorpaySubId": null,
+    "updatedAt": "2026-07-02T06:52:05.214Z"
   }
 }

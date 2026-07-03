@@ -21,7 +21,7 @@ const path = require("path");
 const LOG_DIR  = path.join(__dirname, "../../data/logs");
 const LOG_FILE = path.join(LOG_DIR, "audit.ndjson");
 const MAX_BYTES  = 20 * 1024 * 1024;  // 20 MB
-const RETAIN_MS  = 7 * 24 * 3600_000;  // 7 days
+const RETAIN_MS  = 30 * 24 * 3600_000; // 30 days (matches file header — was incorrectly 7)
 
 let _stream    = null;
 let _streamErr = false;

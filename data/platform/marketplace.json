@@ -63,7 +63,71 @@
       "purchases": 0,
       "status": "active",
       "listedAt": "2026-06-28T06:10:37.032Z"
+    },
+    {
+      "id": "mkt_1782948589689_rxl4",
+      "orgId": "org_1782947671914_k582",
+      "sellerId": "owner-1782947667590",
+      "price": 0,
+      "description": "A complete AI agency",
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "rating": 0,
+      "reviews": 0,
+      "purchases": 1,
+      "status": "active",
+      "listedAt": "2026-07-01T23:29:49.689Z"
+    },
+    {
+      "id": "mkt_1782948589702_wo0b",
+      "blueprintId": "bp_1782947671848_v9ao",
+      "sellerId": "owner-1782947667590",
+      "price": 99,
+      "description": "Premium blueprint",
+      "tags": [],
+      "category": "agency",
+      "visibility": "public",
+      "rating": 0,
+      "reviews": 0,
+      "purchases": 0,
+      "status": "active",
+      "listedAt": "2026-07-01T23:29:49.702Z"
+    },
+    {
+      "id": "mkt_1782948591904_7axl",
+      "orgId": "org_1782947412255_qics",
+      "sellerId": "owner-1782947410400",
+      "price": 0,
+      "description": "A complete AI agency",
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "rating": 0,
+      "reviews": 0,
+      "purchases": 1,
+      "status": "active",
+      "listedAt": "2026-07-01T23:29:51.904Z"
+    },
+    {
+      "id": "mkt_1782948591906_m2rh",
+      "blueprintId": "bp_1782947412177_emli",
+      "sellerId": "owner-1782947410400",
+      "price": 99,
+      "description": "Premium blueprint",
+      "tags": [],
+      "category": "agency",
+      "visibility": "public",
+      "rating": 0,
+      "reviews": 0,
+      "purchases": 0,
+      "status": "active",
+      "listedAt": "2026-07-01T23:29:51.906Z"
     }
   ],
-  "total": 4
+  "total": 8
 }

@@ -1,0 +1,85 @@
+{
+  "themeId": "theme-enterprise-2026-07-01T23-11-42-938Z",
+  "themeName": "Enterprise",
+  "description": "Professional B2B SaaS — neutral, trustworthy, high-information density",
+  "theme": {
+    "name": "Enterprise",
+    "description": "Professional B2B SaaS — neutral, trustworthy, high-information density",
+    "colors": {
+      "primary": "#1D4ED8",
+      "primaryHover": "#1E40AF",
+      "secondary": "#059669",
+      "surface": "#FFFFFF",
+      "background": "#F3F4F6",
+      "card": "#FFFFFF",
+      "text": "#1F2937",
+      "textMuted": "#4B5563",
+      "border": "#D1D5DB",
+      "error": "#DC2626",
+      "success": "#059669",
+      "warning": "#D97706",
+      "info": "#0284C7"
+    },
+    "typography": {
+      "heading": "IBM Plex Sans, Inter, system-ui, sans-serif",
+      "body": "IBM Plex Sans, Inter, system-ui, sans-serif",
+      "mono": "IBM Plex Mono, monospace"
+    },
+    "radius": {
+      "sm": "2px",
+      "md": "4px",
+      "lg": "6px",
+      "xl": "8px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 3px rgb(0 0 0 / 0.1)",
+      "md": "0 2px 6px rgb(0 0 0 / 0.08)",
+      "lg": "0 4px 12px rgb(0 0 0 / 0.08)",
+      "xl": "0 8px 24px rgb(0 0 0 / 0.08)"
+    }
+  },
+  "cssVars": ":root {\n  --color-primary: #1D4ED8;\n  --color-primary-hover: #1E40AF;\n  --color-secondary: #059669;\n  --color-surface: #FFFFFF;\n  --color-background: #F3F4F6;\n  --color-card: #FFFFFF;\n  --color-text: #1F2937;\n  --color-text-muted: #4B5563;\n  --color-border: #D1D5DB;\n  --color-error: #DC2626;\n  --color-success: #059669;\n  --color-warning: #D97706;\n  --color-info: #0284C7;\n  --font-heading: IBM Plex Sans, Inter, system-ui, sans-serif;\n  --font-body: IBM Plex Sans, Inter, system-ui, sans-serif;\n  --font-mono: IBM Plex Mono, monospace;\n  --radius-sm: 2px;\n  --radius-md: 4px;\n  --radius-lg: 6px;\n  --radius-xl: 8px;\n  --radius-full: 9999px;\n  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.1);\n  --shadow-md: 0 2px 6px rgb(0 0 0 / 0.08);\n  --shadow-lg: 0 4px 12px rgb(0 0 0 / 0.08);\n  --shadow-xl: 0 8px 24px rgb(0 0 0 / 0.08);\n}",
+  "tailwindConfig": {
+    "theme": {
+      "extend": {
+        "colors": {
+          "primary": {
+            "DEFAULT": "#1D4ED8",
+            "hover": "#1E40AF"
+          },
+          "secondary": "#059669",
+          "surface": "#FFFFFF",
+          "card": "#FFFFFF",
+          "muted": "#4B5563",
+          "border": "#D1D5DB"
+        },
+        "fontFamily": {
+          "heading": [
+            "IBM Plex Sans, Inter, system-ui, sans-serif"
+          ],
+          "body": [
+            "IBM Plex Sans, Inter, system-ui, sans-serif"
+          ],
+          "mono": [
+            "IBM Plex Mono, monospace"
+          ]
+        },
+        "borderRadius": {
+          "sm": "2px",
+          "md": "4px",
+          "lg": "6px",
+          "xl": "8px",
+          "full": "9999px"
+        },
+        "boxShadow": {
+          "sm": "0 1px 3px rgb(0 0 0 / 0.1)",
+          "md": "0 2px 6px rgb(0 0 0 / 0.08)",
+          "lg": "0 4px 12px rgb(0 0 0 / 0.08)",
+          "xl": "0 8px 24px rgb(0 0 0 / 0.08)"
+        }
+      }
+    }
+  },
+  "generatedAt": "2026-07-01T23:11:42.938Z"
+}

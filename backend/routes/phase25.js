@@ -64,7 +64,7 @@ const sra = require("../services/secretRotationAutomation.cjs");
 const eo  = require("../services/enterpriseObservability.cjs");
 const lcs = require("../services/largeContextCodeSearch.cjs");
 
-router.use(requireAuth);
+router.use("/p25", requireAuth);
 
 // ── 25A Deployment Autopilot ──────────────────────────────────────────────────
 

@@ -1879,19 +1879,2261 @@
       "status": "standardized",
       "publishedAt": "2026-06-29T22:46:01.596Z",
       "standardizedAt": "2026-06-29T22:46:01.615Z"
+    },
+    {
+      "id": "pub_1782778408626_dd7i",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778408151_ln5s",
+      "hypothesisId": "hyp_1782778408149_k3yc",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:28.626Z",
+      "standardizedAt": "2026-06-30T00:13:28.657Z"
+    },
+    {
+      "id": "pub_1782778408629_ez0b",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778408151_ln5s",
+      "hypothesisId": "hyp_1782778408149_k3yc",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment ln5s",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778408151_ln5s. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:28.629Z",
+      "standardizedAt": "2026-06-30T00:13:28.663Z"
+    },
+    {
+      "id": "pub_1782778408629_392v",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778408151_ln5s",
+      "hypothesisId": "hyp_1782778408149_k3yc",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778408151_ln5s.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:28.629Z",
+      "standardizedAt": "2026-06-30T00:13:28.669Z"
+    },
+    {
+      "id": "pub_1782778408651_0w1e",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778408151_ln5s",
+      "hypothesisId": "hyp_1782778408149_k3yc",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:28.651Z",
+      "standardizedAt": "2026-06-30T00:13:28.675Z"
+    },
+    {
+      "id": "pub_1782778413459_unhg",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778413009_x7ld",
+      "hypothesisId": "hyp_1782778413006_lpyv",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:33.459Z",
+      "standardizedAt": "2026-06-30T00:13:33.490Z"
+    },
+    {
+      "id": "pub_1782778413462_j4hw",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778413009_x7ld",
+      "hypothesisId": "hyp_1782778413006_lpyv",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment x7ld",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778413009_x7ld. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:33.462Z",
+      "standardizedAt": "2026-06-30T00:13:33.496Z"
+    },
+    {
+      "id": "pub_1782778413462_vh6x",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778413009_x7ld",
+      "hypothesisId": "hyp_1782778413006_lpyv",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778413009_x7ld.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:33.462Z",
+      "standardizedAt": "2026-06-30T00:13:33.503Z"
+    },
+    {
+      "id": "pub_1782778413482_xd7n",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778413009_x7ld",
+      "hypothesisId": "hyp_1782778413006_lpyv",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:33.482Z",
+      "standardizedAt": "2026-06-30T00:13:33.510Z"
+    },
+    {
+      "id": "pub_1782778418265_ob3f",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778417824_c7ir",
+      "hypothesisId": "hyp_1782778417823_56ff",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:38.265Z",
+      "standardizedAt": "2026-06-30T00:13:38.299Z"
+    },
+    {
+      "id": "pub_1782778418268_t1mf",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778417824_c7ir",
+      "hypothesisId": "hyp_1782778417823_56ff",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment c7ir",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778417824_c7ir. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:38.268Z",
+      "standardizedAt": "2026-06-30T00:13:38.306Z"
+    },
+    {
+      "id": "pub_1782778418268_knck",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778417824_c7ir",
+      "hypothesisId": "hyp_1782778417823_56ff",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778417824_c7ir.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:38.268Z",
+      "standardizedAt": "2026-06-30T00:13:38.312Z"
+    },
+    {
+      "id": "pub_1782778418293_evrw",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778417824_c7ir",
+      "hypothesisId": "hyp_1782778417823_56ff",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:38.293Z",
+      "standardizedAt": "2026-06-30T00:13:38.319Z"
+    },
+    {
+      "id": "pub_1782778423952_kpd6",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778423423_f1yo",
+      "hypothesisId": "hyp_1782778423422_146y",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:43.952Z",
+      "standardizedAt": "2026-06-30T00:13:43.983Z"
+    },
+    {
+      "id": "pub_1782778423956_knao",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778423423_f1yo",
+      "hypothesisId": "hyp_1782778423422_146y",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment f1yo",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778423423_f1yo. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:43.956Z",
+      "standardizedAt": "2026-06-30T00:13:43.991Z"
+    },
+    {
+      "id": "pub_1782778423956_33rg",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778423423_f1yo",
+      "hypothesisId": "hyp_1782778423422_146y",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778423423_f1yo.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:43.956Z",
+      "standardizedAt": "2026-06-30T00:13:43.999Z"
+    },
+    {
+      "id": "pub_1782778423977_idzi",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778423423_f1yo",
+      "hypothesisId": "hyp_1782778423422_146y",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:43.977Z",
+      "standardizedAt": "2026-06-30T00:13:44.006Z"
+    },
+    {
+      "id": "pub_1782778429286_325b",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778428853_wxr7",
+      "hypothesisId": "hyp_1782778428851_c6dg",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:49.286Z",
+      "standardizedAt": "2026-06-30T00:13:49.293Z"
+    },
+    {
+      "id": "pub_1782778434688_5e05",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778434152_p729",
+      "hypothesisId": "hyp_1782778434150_xxpn",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment p729",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778434152_p729. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:13:54.688Z",
+      "standardizedAt": "2026-06-30T00:13:54.694Z"
+    },
+    {
+      "id": "pub_1782778450605_4o8k",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778450138_t7by",
+      "hypothesisId": "hyp_1782778450137_t68o",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:10.605Z",
+      "standardizedAt": "2026-06-30T00:14:10.641Z"
+    },
+    {
+      "id": "pub_1782778450609_swuv",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778450138_t7by",
+      "hypothesisId": "hyp_1782778450137_t68o",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment t7by",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778450138_t7by. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:10.609Z",
+      "standardizedAt": "2026-06-30T00:14:10.658Z"
+    },
+    {
+      "id": "pub_1782778450609_xfd0",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778450138_t7by",
+      "hypothesisId": "hyp_1782778450137_t68o",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778450138_t7by.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:10.609Z",
+      "standardizedAt": "2026-06-30T00:14:10.665Z"
+    },
+    {
+      "id": "pub_1782778450634_c5ny",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778450138_t7by",
+      "hypothesisId": "hyp_1782778450137_t68o",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:10.634Z",
+      "standardizedAt": "2026-06-30T00:14:10.671Z"
+    },
+    {
+      "id": "pub_1782778455843_wzzl",
+      "type": "technical_paper",
+      "experimentId": "sci_1782778455330_xfo0",
+      "hypothesisId": "hyp_1782778455328_7rzi",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:15.843Z",
+      "standardizedAt": "2026-06-30T00:14:15.879Z"
+    },
+    {
+      "id": "pub_1782778455847_7ekk",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782778455330_xfo0",
+      "hypothesisId": "hyp_1782778455328_7rzi",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment xfo0",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782778455330_xfo0. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:15.847Z",
+      "standardizedAt": "2026-06-30T00:14:15.885Z"
+    },
+    {
+      "id": "pub_1782778455847_q58x",
+      "type": "architecture_report",
+      "experimentId": "sci_1782778455330_xfo0",
+      "hypothesisId": "hyp_1782778455328_7rzi",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782778455330_xfo0.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:15.847Z",
+      "standardizedAt": "2026-06-30T00:14:15.893Z"
+    },
+    {
+      "id": "pub_1782778455871_m3v9",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782778455330_xfo0",
+      "hypothesisId": "hyp_1782778455328_7rzi",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-06-30T00:14:15.871Z",
+      "standardizedAt": "2026-06-30T00:14:15.900Z"
+    },
+    {
+      "id": "pub_1782947903861_96y4",
+      "type": "technical_paper",
+      "experimentId": "sci_1782947894625_84je",
+      "hypothesisId": "hyp_1782947894610_cs3w",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 13."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:23.861Z",
+      "standardizedAt": "2026-07-01T23:18:24.043Z"
+    },
+    {
+      "id": "pub_1782947903915_t2co",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782947894625_84je",
+      "hypothesisId": "hyp_1782947894610_cs3w",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment 84je",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782947894625_84je. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:23.916Z",
+      "standardizedAt": "2026-07-01T23:18:25.137Z"
+    },
+    {
+      "id": "pub_1782947903916_pp5z",
+      "type": "architecture_report",
+      "experimentId": "sci_1782947894625_84je",
+      "hypothesisId": "hyp_1782947894610_cs3w",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782947894625_84je.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:23.916Z",
+      "standardizedAt": "2026-07-01T23:18:25.176Z"
+    },
+    {
+      "id": "pub_1782947904037_670c",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782947894625_84je",
+      "hypothesisId": "hyp_1782947894610_cs3w",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:24.037Z",
+      "standardizedAt": "2026-07-01T23:18:25.206Z"
+    },
+    {
+      "id": "pub_1782947933596_efp9",
+      "type": "technical_paper",
+      "experimentId": "sci_1782947927868_neu3",
+      "hypothesisId": "hyp_1782947927809_2iv7",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 13."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:53.596Z",
+      "standardizedAt": "2026-07-01T23:18:53.800Z"
+    },
+    {
+      "id": "pub_1782947933642_7sfi",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782947927868_neu3",
+      "hypothesisId": "hyp_1782947927809_2iv7",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment neu3",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782947927868_neu3. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:53.642Z",
+      "standardizedAt": "2026-07-01T23:18:54.055Z"
+    },
+    {
+      "id": "pub_1782947933642_dlwv",
+      "type": "architecture_report",
+      "experimentId": "sci_1782947927868_neu3",
+      "hypothesisId": "hyp_1782947927809_2iv7",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782947927868_neu3.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:53.642Z",
+      "standardizedAt": "2026-07-01T23:18:54.085Z"
+    },
+    {
+      "id": "pub_1782947933737_41rj",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782947927868_neu3",
+      "hypothesisId": "hyp_1782947927809_2iv7",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:18:53.737Z",
+      "standardizedAt": "2026-07-01T23:18:54.152Z"
+    },
+    {
+      "id": "pub_1782948065091_y345",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948059402_tos9",
+      "hypothesisId": "hyp_1782948059277_uozh",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 13."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:21:05.091Z",
+      "standardizedAt": "2026-07-01T23:21:05.124Z"
+    },
+    {
+      "id": "pub_1782948128753_y8o3",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948120217_5qoc",
+      "hypothesisId": "hyp_1782948120160_0p2s",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:22:08.753Z",
+      "standardizedAt": "2026-07-01T23:22:09.798Z"
+    },
+    {
+      "id": "pub_1782948128853_58iv",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948120217_5qoc",
+      "hypothesisId": "hyp_1782948120160_0p2s",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment 5qoc",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948120217_5qoc. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:22:08.853Z",
+      "standardizedAt": "2026-07-01T23:22:09.827Z"
+    },
+    {
+      "id": "pub_1782948128853_qnt0",
+      "type": "architecture_report",
+      "experimentId": "sci_1782948120217_5qoc",
+      "hypothesisId": "hyp_1782948120160_0p2s",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782948120217_5qoc.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:22:08.853Z",
+      "standardizedAt": "2026-07-01T23:22:09.948Z"
+    },
+    {
+      "id": "pub_1782948129584_6lkc",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782948120217_5qoc",
+      "hypothesisId": "hyp_1782948120160_0p2s",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:22:09.584Z",
+      "standardizedAt": "2026-07-01T23:22:10.582Z"
+    },
+    {
+      "id": "pub_1782948186969_u3ck",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948173161_vcjr",
+      "hypothesisId": "hyp_1782948172934_3s60",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment vcjr",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948173161_vcjr. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:23:06.969Z",
+      "standardizedAt": "2026-07-01T23:23:08.230Z"
+    },
+    {
+      "id": "pub_1782948296281_xih3",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948293895_9m9m",
+      "hypothesisId": "hyp_1782948293874_rv9l",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:24:56.281Z",
+      "standardizedAt": "2026-07-01T23:24:56.416Z"
+    },
+    {
+      "id": "pub_1782948296294_iaqu",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948293895_9m9m",
+      "hypothesisId": "hyp_1782948293874_rv9l",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment 9m9m",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948293895_9m9m. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:24:56.294Z",
+      "standardizedAt": "2026-07-01T23:24:56.571Z"
+    },
+    {
+      "id": "pub_1782948296294_pacu",
+      "type": "architecture_report",
+      "experimentId": "sci_1782948293895_9m9m",
+      "hypothesisId": "hyp_1782948293874_rv9l",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782948293895_9m9m.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:24:56.294Z",
+      "standardizedAt": "2026-07-01T23:24:56.626Z"
+    },
+    {
+      "id": "pub_1782948296399_1g7k",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782948293895_9m9m",
+      "hypothesisId": "hyp_1782948293874_rv9l",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:24:56.400Z",
+      "standardizedAt": "2026-07-01T23:24:56.665Z"
+    },
+    {
+      "id": "pub_1782948364475_o20j",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948355245_399c",
+      "hypothesisId": "hyp_1782948355224_4e4e",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 13."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:26:04.475Z",
+      "standardizedAt": "2026-07-01T23:26:04.678Z"
+    },
+    {
+      "id": "pub_1782948364513_08bn",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948355245_399c",
+      "hypothesisId": "hyp_1782948355224_4e4e",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment 399c",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948355245_399c. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:26:04.513Z",
+      "standardizedAt": "2026-07-01T23:26:04.746Z"
+    },
+    {
+      "id": "pub_1782948364513_vgw7",
+      "type": "architecture_report",
+      "experimentId": "sci_1782948355245_399c",
+      "hypothesisId": "hyp_1782948355224_4e4e",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782948355245_399c.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:26:04.513Z",
+      "standardizedAt": "2026-07-01T23:26:04.830Z"
+    },
+    {
+      "id": "pub_1782948364648_v6hv",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782948355245_399c",
+      "hypothesisId": "hyp_1782948355224_4e4e",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:26:04.648Z",
+      "standardizedAt": "2026-07-01T23:26:05.207Z"
+    },
+    {
+      "id": "pub_1782948434829_zg4u",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948430256_cvar",
+      "hypothesisId": "hyp_1782948430217_dxln",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment cvar",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948430256_cvar. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:27:14.829Z",
+      "standardizedAt": "2026-07-01T23:27:15.555Z"
+    },
+    {
+      "id": "pub_1782948577089_bv5q",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948575150_en3t",
+      "hypothesisId": "hyp_1782948575143_ccda",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:37.089Z",
+      "standardizedAt": "2026-07-01T23:29:37.159Z"
+    },
+    {
+      "id": "pub_1782948577096_3iog",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948575150_en3t",
+      "hypothesisId": "hyp_1782948575143_ccda",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment en3t",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948575150_en3t. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:37.096Z",
+      "standardizedAt": "2026-07-01T23:29:37.205Z"
+    },
+    {
+      "id": "pub_1782948577096_3wlp",
+      "type": "architecture_report",
+      "experimentId": "sci_1782948575150_en3t",
+      "hypothesisId": "hyp_1782948575143_ccda",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782948575150_en3t.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:37.096Z",
+      "standardizedAt": "2026-07-01T23:29:37.259Z"
+    },
+    {
+      "id": "pub_1782948577151_vzjc",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782948575150_en3t",
+      "hypothesisId": "hyp_1782948575143_ccda",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:37.151Z",
+      "standardizedAt": "2026-07-01T23:29:37.311Z"
+    },
+    {
+      "id": "pub_1782948587465_bxja",
+      "type": "technical_paper",
+      "experimentId": "sci_1782948586382_4rdj",
+      "hypothesisId": "hyp_1782948586369_69ln",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Engineering Discovery: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "This paper presents findings from a controlled experiment testing the hypothesis: \"Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\". Analysis of 2 evidence points yielded outcome: requires_follow_up (confidence: 60%). ",
+        "sections": [
+          {
+            "heading": "1. Introduction",
+            "body": "Platform telemetry revealed a researchable pattern in the engineering domain. The hypothesis was generated from source: benchmarks."
+          },
+          {
+            "heading": "2. Hypothesis",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.\n\nMeasurable: architecture score ≥90 after intervention\nFalsifiable: If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          {
+            "heading": "3. Methodology",
+            "body": "Experiment type: before-after analysis. Evidence collected from 2 platform sources. Execution mode: automated via Autonomous Execution Engine."
+          },
+          {
+            "heading": "4. Results",
+            "body": "Outcome: requires_follow_up with 60% confidence."
+          },
+          {
+            "heading": "5. Conclusions",
+            "body": "The hypothesis requires further investigation. Follow-up experiment recommended."
+          },
+          {
+            "heading": "6. Platform Impact",
+            "body": "Current engineering baseline: {\"architecture\":70,\"code_quality\":75,\"maintainability\":70,\"reliability\":75,\"security\":80,\"scalability\":65,\"performance\":70,\"overall\":73}. Open patterns: 14."
+          }
+        ],
+        "references": [
+          "Research Knowledge Engine findings index",
+          "Engineering Benchmark Engine baselines",
+          "Self-Improvement Engine pattern catalogue"
+        ],
+        "wordCount": 450
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:47.465Z",
+      "standardizedAt": "2026-07-01T23:29:47.616Z"
+    },
+    {
+      "id": "pub_1782948587475_7mha",
+      "type": "benchmark_report",
+      "experimentId": "sci_1782948586382_4rdj",
+      "hypothesisId": "hyp_1782948586369_69ln",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Benchmark Report: engineering Experiment 4rdj",
+        "abstract": "Benchmarks collected during scientific experiment sci_1782948586382_4rdj. Outcome: requires_follow_up.",
+        "sections": [
+          {
+            "heading": "Benchmark Baseline",
+            "body": "{\n  \"architecture\": 70,\n  \"code_quality\": 75,\n  \"maintainability\": 70,\n  \"reliability\": 75,\n  \"security\": 80,\n  \"scalability\": 65,\n  \"performance\": 70,\n  \"overall\": 73\n}"
+          },
+          {
+            "heading": "Post-Experiment Snapshot",
+            "body": "{}"
+          },
+          {
+            "heading": "Delta Analysis",
+            "body": "Confidence: 60%. Evidence items: 2."
+          },
+          {
+            "heading": "Recommendations",
+            "body": "Collect additional benchmark data before proceeding."
+          }
+        ],
+        "wordCount": 250
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:47.475Z",
+      "standardizedAt": "2026-07-01T23:29:47.629Z"
+    },
+    {
+      "id": "pub_1782948587475_zrb0",
+      "type": "architecture_report",
+      "experimentId": "sci_1782948586382_4rdj",
+      "hypothesisId": "hyp_1782948586369_69ln",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Architecture Report: engineering Impact Analysis",
+        "abstract": "Analysis of architectural implications from experiment sci_1782948586382_4rdj.",
+        "sections": [
+          {
+            "heading": "Architecture Scope",
+            "body": "Domain: engineering. Services affected: discoveryPlannerEngine, hypothesisEngine, experimentOrchestratorEngine, publicationEngine, innovationEngine, scientificDiscoveryDashboard."
+          },
+          {
+            "heading": "Reuse Impact",
+            "body": "No new organizations, runtimes, schedulers, or event buses introduced. Pure orchestration layer over existing infrastructure."
+          },
+          {
+            "heading": "Evolution Proposal",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Risk Assessment",
+            "body": "Experiment confidence: 60%. Risk: low (adapter-only changes, no core modifications)."
+          }
+        ],
+        "wordCount": 300
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:47.475Z",
+      "standardizedAt": "2026-07-01T23:29:47.652Z"
+    },
+    {
+      "id": "pub_1782948587592_orkx",
+      "type": "evolution_proposal",
+      "experimentId": "sci_1782948586382_4rdj",
+      "hypothesisId": "hyp_1782948586369_69ln",
+      "domain": "engineering",
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "content": {
+        "title": "Evolution Proposal: Improving architecture from 70 to 90+ will increase platform",
+        "abstract": "Validated discovery drives evolution proposal for the engineering domain. Confidence: 60%.",
+        "sections": [
+          {
+            "heading": "Proposed Evolution",
+            "body": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%."
+          },
+          {
+            "heading": "Evidence Base",
+            "body": "2 evidence points. Outcome: requires_follow_up."
+          },
+          {
+            "heading": "Implementation Path",
+            "body": "1. Apply to engineering layer.\n2. Re-run benchmark to validate.\n3. Promote to engineering rules if validated."
+          },
+          {
+            "heading": "OSE Analysis",
+            "body": "{}"
+          },
+          {
+            "heading": "Success Criteria",
+            "body": "architecture score ≥90 after intervention"
+          }
+        ],
+        "wordCount": 280
+      },
+      "status": "standardized",
+      "publishedAt": "2026-07-01T23:29:47.592Z",
+      "standardizedAt": "2026-07-01T23:29:47.668Z"
     }
   ],
   "queue": [],
   "stats": {
-    "total": 48,
-    "published": 48,
-    "standardized": 48,
+    "total": 105,
+    "published": 105,
+    "standardized": 105,
     "byType": {
-      "technical_paper": 12,
-      "benchmark_report": 14,
-      "architecture_report": 11,
-      "evolution_proposal": 11
+      "technical_paper": 27,
+      "benchmark_report": 30,
+      "architecture_report": 24,
+      "evolution_proposal": 24
     }
   },
-  "updatedAt": "2026-06-29T22:46:01.616Z"
+  "updatedAt": "2026-07-01T23:29:47.699Z"
 }

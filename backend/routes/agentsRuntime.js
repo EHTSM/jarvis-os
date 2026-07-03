@@ -26,7 +26,7 @@ function _bus() {
 function _ok(res, data)     { res.json({ ok: true,  ...data  }); }
 function _err(res, e, code) { res.status(code || 500).json({ ok: false, error: e?.message || String(e) }); }
 
-router.use(requireAuth);
+router.use("/agents", requireAuth);
 
 // Auto-start supervisor on first status probe (idempotent — safe)
 function _ensureStarted() {

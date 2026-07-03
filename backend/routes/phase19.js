@@ -45,7 +45,7 @@ const mac = require("../services/multiAgentCoordinator.cjs");
 const shr = require("../services/selfHealingRuntime.cjs");
 const cle = require("../services/continuousLearningEngine.cjs");
 
-router.use(requireAuth);
+router.use("/p19", requireAuth);
 
 // ── 19A Tool Execution Layer ──────────────────────────────────────────────
 

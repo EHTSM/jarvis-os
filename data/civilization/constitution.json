@@ -100,6 +100,24 @@
       "rationale": "AI entities need representation",
       "status": "proposed",
       "proposedAt": "2026-06-29T22:39:57.723Z"
+    },
+    {
+      "id": "camend_1782947363519_p382",
+      "articleId": "cart_1782601786594_n5sg",
+      "proposerId": "cmem_1782947363496_0523",
+      "change": "Add clause for AI rights",
+      "rationale": "AI entities need representation",
+      "status": "proposed",
+      "proposedAt": "2026-07-01T23:09:23.519Z"
+    },
+    {
+      "id": "camend_1782947457949_rjfd",
+      "articleId": "cart_1782601786594_n5sg",
+      "proposerId": "cmem_1782947457869_9hmp",
+      "change": "Add clause for AI rights",
+      "rationale": "AI entities need representation",
+      "status": "proposed",
+      "proposedAt": "2026-07-01T23:10:57.949Z"
     }
   ],
   "precedents": [
@@ -174,6 +192,42 @@
       "caseRef": "carb_1782772797759_oe3k",
       "domainId": "civ_arbitration",
       "recordedAt": "2026-06-29T22:39:57.759Z"
+    },
+    {
+      "id": "cprec_1782947363520_kngo",
+      "title": "Precedent-1782947363478",
+      "ruling": "Members must share knowledge freely",
+      "context": "Knowledge dispute resolution",
+      "caseRef": "CASE-001",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-07-01T23:09:23.520Z"
+    },
+    {
+      "id": "cprec_1782947363684_mxoc",
+      "title": "Precedent-1782947363478",
+      "ruling": "Parties share resources equally",
+      "context": "",
+      "caseRef": "carb_1782947363684_3362",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-07-01T23:09:23.684Z"
+    },
+    {
+      "id": "cprec_1782947457950_i6en",
+      "title": "Precedent-1782947457757",
+      "ruling": "Members must share knowledge freely",
+      "context": "Knowledge dispute resolution",
+      "caseRef": "CASE-001",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-07-01T23:10:57.950Z"
+    },
+    {
+      "id": "cprec_1782947458512_ciuo",
+      "title": "Precedent-1782947457757",
+      "ruling": "Parties share resources equally",
+      "context": "",
+      "caseRef": "carb_1782947458510_phhl",
+      "domainId": "civ_arbitration",
+      "recordedAt": "2026-07-01T23:10:58.512Z"
     }
   ]
 }

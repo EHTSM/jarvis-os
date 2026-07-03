@@ -263,7 +263,194 @@
       "authorId": "platform",
       "status": "released",
       "createdAt": "2026-06-28T06:55:58.640Z"
+    },
+    {
+      "id": "ver_1782948588926_mg4g",
+      "orgId": "org_1782947671914_k582",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "authorId": "owner-1782947667590",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:48.926Z"
+    },
+    {
+      "id": "ver_1782948589595_rw7v",
+      "orgId": "org_1782948589589_k38o",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "authorId": "import-owner-1782947667590",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:49.595Z"
+    },
+    {
+      "id": "ver_1782948589687_1t2q",
+      "orgId": "org_1782948589672_9mp5",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:49.687Z"
+    },
+    {
+      "id": "ver_1782948589783_rasc",
+      "orgId": "org_1782947671914_k582",
+      "version": "1.1.1",
+      "changelog": "Added ecosystem tier",
+      "snapshot": {
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "ecosystem"
+        ]
+      },
+      "authorId": "owner-1782947667590",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:49.783Z"
+    },
+    {
+      "id": "ver_1782948591331_7moo",
+      "orgId": "org_1782947671914_k582",
+      "version": "1.1.2",
+      "changelog": "Removed ecosystem",
+      "snapshot": {
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:51.331Z"
+    },
+    {
+      "id": "ver_1782948591760_w4q2",
+      "orgId": "org_1782947412255_qics",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "authorId": "owner-1782947410400",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:51.760Z"
+    },
+    {
+      "id": "ver_1782948591872_pc7c",
+      "orgId": "org_1782948591856_9ou3",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "authorId": "import-owner-1782947410400",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:51.872Z"
+    },
+    {
+      "id": "ver_1782948591895_bfwe",
+      "orgId": "org_1782948591875_ikxd",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:51.895Z"
+    },
+    {
+      "id": "ver_1782948592057_bnjb",
+      "orgId": "org_1782947412255_qics",
+      "version": "1.1.1",
+      "changelog": "Added ecosystem tier",
+      "snapshot": {
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "ecosystem"
+        ]
+      },
+      "authorId": "owner-1782947410400",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:52.057Z"
+    },
+    {
+      "id": "ver_1782948592705_gfno",
+      "orgId": "org_1782947412255_qics",
+      "version": "1.1.2",
+      "changelog": "Removed ecosystem",
+      "snapshot": {
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:52.705Z"
+    },
+    {
+      "id": "ver_1782948594905_1aa7",
+      "orgId": "org_1782948592032_plxk",
+      "version": "1.0.0",
+      "changelog": "Initial version",
+      "snapshot": {},
+      "authorId": "platform",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:54.905Z"
+    },
+    {
+      "id": "ver_1782948594909_0cp5",
+      "orgId": "org_1782948592002_jo9n",
+      "version": "1.0.0",
+      "changelog": "Initial version",
+      "snapshot": {},
+      "authorId": "platform",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:54.909Z"
+    },
+    {
+      "id": "ver_1782948594913_zjx5",
+      "orgId": "org_1782948591966_h0g2",
+      "version": "1.0.0",
+      "changelog": "Initial version",
+      "snapshot": {},
+      "authorId": "platform",
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:54.913Z"
+    },
+    {
+      "id": "ver_1782948599073_gtz9",
+      "orgId": "org_1782948599065_01e4",
+      "version": "1.1.2",
+      "changelog": "Removed ecosystem",
+      "snapshot": {},
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:59.073Z"
+    },
+    {
+      "id": "ver_1782948599075_rbpc",
+      "orgId": "org_1782948599065_01e4",
+      "version": "1.1.1",
+      "changelog": "Added ecosystem tier",
+      "snapshot": {},
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:59.075Z"
+    },
+    {
+      "id": "ver_1782948599076_u6y1",
+      "orgId": "org_1782948599065_01e4",
+      "version": "1.1.0",
+      "changelog": "Added new capabilities",
+      "snapshot": {},
+      "status": "released",
+      "createdAt": "2026-07-01T23:29:59.076Z"
     }
   ],
-  "total": 24
+  "total": 40
 }

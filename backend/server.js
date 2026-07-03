@@ -99,11 +99,14 @@ app.disable("x-powered-by");
 // X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy,
 // Content-Security-Policy, Strict-Transport-Security.
 app.use((req, res, next) => {
-    res.setHeader("X-Content-Type-Options",    "nosniff");
-    res.setHeader("X-Frame-Options",           "DENY");
-    res.setHeader("X-XSS-Protection",          "1; mode=block");
-    res.setHeader("Referrer-Policy",           "strict-origin-when-cross-origin");
-    res.setHeader("Permissions-Policy",        "camera=(), microphone=(), geolocation=()");
+    res.setHeader("X-Content-Type-Options",             "nosniff");
+    res.setHeader("X-Frame-Options",                    "DENY");
+    res.setHeader("X-XSS-Protection",                   "1; mode=block");
+    res.setHeader("X-Permitted-Cross-Domain-Policies",  "none");
+    res.setHeader("Referrer-Policy",                    "strict-origin-when-cross-origin");
+    res.setHeader("Permissions-Policy",                 "camera=(), microphone=(), geolocation=()");
+    res.setHeader("Cross-Origin-Opener-Policy",         "same-origin");
+    res.setHeader("Cross-Origin-Resource-Policy",       "same-origin");
     // CSP — allows same-origin scripts + Firebase Auth domains required for
     // Google Sign-In popup and Phone OTP reCAPTCHA.
     // Domains sourced from: index.html (GTM, GA4, Clarity), Firebase SDK (apis.google.com,
@@ -163,18 +166,34 @@ app.use(require("./middleware/compress"));
 // ── Structured request logging ────────────────────────────────────
 app.use(require("./middleware/requestLogger"));
 
-// ── Mount all routes ───────────────────────────────────────────────
+// ── Serve frontend static assets — BEFORE the API route barrel ─────
+// Several route modules in `routes/` apply requireAuth via a bare
+// `router.use(requireAuth)` (no path prefix). Because every module in
+// routes/index.js is mounted at "/", such a bare call intercepts ALL
+// unmatched requests — including "/" and hashed JS/CSS bundles — before
+// they'd ever reach the SPA fallback below. Serving static files first
+// means real asset requests resolve here and never reach those routers.
+const frontendBuild = path.join(__dirname, "../frontend/build");
+const hasFrontendBuild = require("fs").existsSync(frontendBuild);
+if (hasFrontendBuild) {
+    app.use(express.static(frontendBuild));
+    logger.info("Serving frontend build from /frontend/build");
+}
+
+// ── Mount all API routes ────────────────────────────────────────────
 app.use(routes);
 
-// ── Serve frontend build in production ────────────────────────────
-const frontendBuild = path.join(__dirname, "../frontend/build");
-try {
-    if (require("fs").existsSync(frontendBuild)) {
-        app.use(express.static(frontendBuild));
-        app.get("*", (req, res) => res.sendFile(path.join(frontendBuild, "index.html")));
-        logger.info("Serving frontend build from /frontend/build");
-    }
-} catch { /* no build yet — that's ok in dev */ }
+// ── SPA fallback — any non-API path that reached here falls back to
+// index.html so React Router / hash routes resolve client-side. Must
+// run AFTER the API route barrel so unmatched API paths still 404/401
+// correctly instead of silently returning the SPA shell.
+if (hasFrontendBuild) {
+    // Express 5 / path-to-regexp v6 rejects a bare "*" — wildcard segments
+    // must be named (e.g. "/*splat"). This previously never executed because
+    // `routes` always intercepted requests first; now it's reachable, so the
+    // path string must be valid under the current router.
+    app.get("/*splat", (req, res) => res.sendFile(path.join(frontendBuild, "index.html")));
+}
 
 // ── Global error handler ───────────────────────────────────────────
 app.use((err, req, res, _next) => {

@@ -19040,158 +19040,17 @@
       "createdAt": "2026-06-29T22:39:49.548Z"
     },
     {
-      "id": "arpt_1782772793495_u347",
-      "title": "Report-1782772792938",
+      "id": "arpt_1782778804138_s4c5",
+      "title": "Autonomous Cycle 60 Report",
       "type": "cycle",
-      "cycle": 59,
-      "summary": "All systems nominal",
-      "data": {
-        "health": 85
-      },
-      "confidence": 0.9,
-      "createdAt": "2026-06-29T22:39:53.495Z"
-    },
-    {
-      "id": "arpt_1782772793912_rds6",
-      "title": "Autonomous Cycle 61 Report",
-      "type": "cycle",
-      "cycle": 61,
-      "summary": "Cycle 61: health=93 | obs: 0/0 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "cycle": 60,
+      "summary": "Cycle 60: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
         "obs": {
           "health": 93,
           "agents": {
-            "total": 0,
-            "running": 0
-          }
-        },
-        "opportunities": 2,
-        "threats": 0,
-        "decisions": 2,
-        "lessons": 2,
-        "evolutions": 0
-      },
-      "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:53.912Z"
-    },
-    {
-      "id": "arpt_1782772794028_9ckp",
-      "title": "Autonomous Cycle 62 Report",
-      "type": "cycle",
-      "cycle": 62,
-      "summary": "Cycle 62: health=93 | obs: 0/0 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
-      "data": {
-        "obs": {
-          "health": 93,
-          "agents": {
-            "total": 0,
-            "running": 0
-          }
-        },
-        "opportunities": 2,
-        "threats": 0,
-        "decisions": 2,
-        "lessons": 2,
-        "evolutions": 0
-      },
-      "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:54.028Z"
-    },
-    {
-      "id": "arpt_1782772794141_i4w3",
-      "title": "Autonomous Cycle 63 Report",
-      "type": "cycle",
-      "cycle": 63,
-      "summary": "Cycle 63: health=93 | obs: 0/0 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
-      "data": {
-        "obs": {
-          "health": 93,
-          "agents": {
-            "total": 0,
-            "running": 0
-          }
-        },
-        "opportunities": 2,
-        "threats": 0,
-        "decisions": 2,
-        "lessons": 2,
-        "evolutions": 0
-      },
-      "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:54.141Z"
-    },
-    {
-      "id": "arpt_1782772794598_y3ay",
-      "title": "Tick Report — Cycle 63",
-      "type": "tick",
-      "cycle": 63,
-      "summary": "Health=92 threats=9 opps=18",
-      "data": {
-        "health": {
-          "score": 92,
-          "layers": {
-            "civilization": {
-              "score": 87,
-              "alerts": 0
-            },
-            "ecosystem": {
-              "score": 91
-            },
-            "enterprise": {
-              "score": 87
-            },
-            "executive": {
-              "score": 100
-            },
-            "runtime": {
-              "total": 29,
-              "running": 28,
-              "score": 97
-            }
-          },
-          "openThreats": 9,
-          "openOpportunities": 18,
-          "cycle": 63
-        }
-      },
-      "confidence": 0.9,
-      "createdAt": "2026-06-29T22:39:54.598Z"
-    },
-    {
-      "id": "arpt_1782772794984_42ff",
-      "title": "Autonomous Cycle 64 Report",
-      "type": "cycle",
-      "cycle": 64,
-      "summary": "Cycle 64: health=93 | obs: 29/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
-      "data": {
-        "obs": {
-          "health": 93,
-          "agents": {
-            "total": 30,
-            "running": 29
-          }
-        },
-        "opportunities": 2,
-        "threats": 0,
-        "decisions": 2,
-        "lessons": 2,
-        "evolutions": 0
-      },
-      "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:54.984Z"
-    },
-    {
-      "id": "arpt_1782772795012_krlx",
-      "title": "Autonomous Cycle 65 Report",
-      "type": "cycle",
-      "cycle": 65,
-      "summary": "Cycle 65: health=93 | obs: 30/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
-      "data": {
-        "obs": {
-          "health": 93,
-          "agents": {
-            "total": 30,
-            "running": 30
+            "total": 70,
+            "running": 70
           }
         },
         "opportunities": 2,
@@ -19201,20 +19060,135 @@
         "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:55.012Z"
+      "createdAt": "2026-06-30T00:20:04.138Z"
     },
     {
-      "id": "arpt_1782772795129_oj9f",
+      "id": "arpt_1782845992268_r5cp",
+      "title": "Autonomous Cycle 61 Report",
+      "type": "cycle",
+      "cycle": 61,
+      "summary": "Cycle 61: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-30T18:59:52.268Z"
+    },
+    {
+      "id": "arpt_1782847442939_auj2",
+      "title": "Autonomous Cycle 62 Report",
+      "type": "cycle",
+      "cycle": 62,
+      "summary": "Cycle 62: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-30T19:24:02.939Z"
+    },
+    {
+      "id": "arpt_1782848571859_5pnj",
+      "title": "Autonomous Cycle 63 Report",
+      "type": "cycle",
+      "cycle": 63,
+      "summary": "Cycle 63: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-30T19:42:51.859Z"
+    },
+    {
+      "id": "arpt_1782849341344_02sp",
+      "title": "Autonomous Cycle 64 Report",
+      "type": "cycle",
+      "cycle": 64,
+      "summary": "Cycle 64: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-30T19:55:41.344Z"
+    },
+    {
+      "id": "arpt_1782849979727_8gzy",
+      "title": "Autonomous Cycle 65 Report",
+      "type": "cycle",
+      "cycle": 65,
+      "summary": "Cycle 65: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-06-30T20:06:19.727Z"
+    },
+    {
+      "id": "arpt_1782850529979_xgx0",
       "title": "Autonomous Cycle 66 Report",
       "type": "cycle",
       "cycle": 66,
-      "summary": "Cycle 66: health=93 | obs: 30/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "summary": "Cycle 66: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
         "obs": {
           "health": 93,
           "agents": {
-            "total": 30,
-            "running": 30
+            "total": 70,
+            "running": 70
           }
         },
         "opportunities": 2,
@@ -19224,20 +19198,20 @@
         "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:55.129Z"
+      "createdAt": "2026-06-30T20:15:29.979Z"
     },
     {
-      "id": "arpt_1782772795244_v1wd",
+      "id": "arpt_1782851649006_w9gc",
       "title": "Autonomous Cycle 67 Report",
       "type": "cycle",
       "cycle": 67,
-      "summary": "Cycle 67: health=93 | obs: 30/30 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "summary": "Cycle 67: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
         "obs": {
           "health": 93,
           "agents": {
-            "total": 30,
-            "running": 30
+            "total": 70,
+            "running": 70
           }
         },
         "opportunities": 2,
@@ -19247,866 +19221,1342 @@
         "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-29T22:39:55.244Z"
+      "createdAt": "2026-06-30T20:34:09.006Z"
     },
     {
-      "id": "arpt_1782778305620_f5hf",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782852319671_ud8a",
+      "title": "Autonomous Cycle 68 Report",
+      "type": "cycle",
+      "cycle": 68,
+      "summary": "Cycle 68: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:45.620Z"
+      "createdAt": "2026-06-30T20:45:19.671Z"
     },
     {
-      "id": "arpt_1782778305719_bn6w",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782853308475_du9h",
+      "title": "Autonomous Cycle 69 Report",
+      "type": "cycle",
+      "cycle": 69,
+      "summary": "Cycle 69: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:45.719Z"
+      "createdAt": "2026-06-30T21:01:48.475Z"
     },
     {
-      "id": "arpt_1782778305805_xpc4",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782903476930_u6a6",
+      "title": "Autonomous Cycle 70 Report",
+      "type": "cycle",
+      "cycle": 70,
+      "summary": "Cycle 70: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:45.805Z"
+      "createdAt": "2026-07-01T10:57:56.930Z"
     },
     {
-      "id": "arpt_1782778305926_gf6t",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782945760390_qwxs",
+      "title": "Autonomous Cycle 71 Report",
+      "type": "cycle",
+      "cycle": 71,
+      "summary": "Cycle 71: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:45.926Z"
+      "createdAt": "2026-07-01T22:42:40.390Z"
     },
     {
-      "id": "arpt_1782778306016_uek4",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782946597997_45fd",
+      "title": "Autonomous Cycle 72 Report",
+      "type": "cycle",
+      "cycle": 72,
+      "summary": "Cycle 72: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.016Z"
+      "createdAt": "2026-07-01T22:56:37.997Z"
     },
     {
-      "id": "arpt_1782778306136_zl7n",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782947352457_r6b6",
+      "title": "Autonomous Cycle 73 Report",
+      "type": "cycle",
+      "cycle": 73,
+      "summary": "Cycle 73: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.136Z"
+      "createdAt": "2026-07-01T23:09:12.457Z"
     },
     {
-      "id": "arpt_1782778306235_n18l",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782957719207_dijj",
+      "title": "Autonomous Cycle 74 Report",
+      "type": "cycle",
+      "cycle": 74,
+      "summary": "Cycle 74: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.235Z"
+      "createdAt": "2026-07-02T02:01:59.207Z"
     },
     {
-      "id": "arpt_1782778306322_tvpo",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782958950550_x3ll",
+      "title": "Autonomous Cycle 75 Report",
+      "type": "cycle",
+      "cycle": 75,
+      "summary": "Cycle 75: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.322Z"
+      "createdAt": "2026-07-02T02:22:30.550Z"
     },
     {
-      "id": "arpt_1782778306442_u8sh",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782959834817_sv01",
+      "title": "Autonomous Cycle 76 Report",
+      "type": "cycle",
+      "cycle": 76,
+      "summary": "Cycle 76: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.442Z"
+      "createdAt": "2026-07-02T02:37:14.817Z"
     },
     {
-      "id": "arpt_1782778306534_l58d",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782960609967_69yh",
+      "title": "Autonomous Cycle 77 Report",
+      "type": "cycle",
+      "cycle": 77,
+      "summary": "Cycle 77: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.534Z"
+      "createdAt": "2026-07-02T02:50:09.967Z"
     },
     {
-      "id": "arpt_1782778306627_yr91",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782961700649_dzs7",
+      "title": "Autonomous Cycle 78 Report",
+      "type": "cycle",
+      "cycle": 78,
+      "summary": "Cycle 78: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.627Z"
+      "createdAt": "2026-07-02T03:08:20.649Z"
     },
     {
-      "id": "arpt_1782778306723_wnba",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782973262253_eodp",
+      "title": "Autonomous Cycle 79 Report",
+      "type": "cycle",
+      "cycle": 79,
+      "summary": "Cycle 79: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.723Z"
+      "createdAt": "2026-07-02T06:21:02.253Z"
     },
     {
-      "id": "arpt_1782778306810_5or7",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782974932450_qbko",
+      "title": "Autonomous Cycle 80 Report",
+      "type": "cycle",
+      "cycle": 80,
+      "summary": "Cycle 80: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.810Z"
+      "createdAt": "2026-07-02T06:48:52.450Z"
     },
     {
-      "id": "arpt_1782778306914_skjw",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782975805946_2fpy",
+      "title": "Autonomous Cycle 81 Report",
+      "type": "cycle",
+      "cycle": 81,
+      "summary": "Cycle 81: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:46.914Z"
+      "createdAt": "2026-07-02T07:03:25.946Z"
     },
     {
-      "id": "arpt_1782778307023_mmss",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782977969086_tum8",
+      "title": "Autonomous Cycle 82 Report",
+      "type": "cycle",
+      "cycle": 82,
+      "summary": "Cycle 82: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:47.023Z"
+      "createdAt": "2026-07-02T07:39:29.086Z"
     },
     {
-      "id": "arpt_1782778312394_3pe7",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782979406037_nx4r",
+      "title": "Autonomous Cycle 83 Report",
+      "type": "cycle",
+      "cycle": 83,
+      "summary": "Cycle 83: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:52.394Z"
+      "createdAt": "2026-07-02T08:03:26.037Z"
     },
     {
-      "id": "arpt_1782778313139_nx59",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782980300387_cp00",
+      "title": "Autonomous Cycle 84 Report",
+      "type": "cycle",
+      "cycle": 84,
+      "summary": "Cycle 84: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:53.139Z"
+      "createdAt": "2026-07-02T08:18:20.387Z"
     },
     {
-      "id": "arpt_1782778313219_dtav",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782981161629_48bh",
+      "title": "Autonomous Cycle 85 Report",
+      "type": "cycle",
+      "cycle": 85,
+      "summary": "Cycle 85: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:53.219Z"
+      "createdAt": "2026-07-02T08:32:41.629Z"
     },
     {
-      "id": "arpt_1782778314876_jnto",
-      "title": "Production Bible built — 118 workflows",
-      "type": "production_bible_build",
-      "cycle": 67,
-      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "id": "arpt_1782982020908_3xq8",
+      "title": "Autonomous Cycle 86 Report",
+      "type": "cycle",
+      "cycle": 86,
+      "summary": "Cycle 86: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "total": 118,
-        "automated": 78,
-        "semiAuto": 38,
-        "manual": 2
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:54.877Z"
+      "createdAt": "2026-07-02T08:47:00.908Z"
     },
     {
-      "id": "arpt_1782778317442_d6ji",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782983353215_7xj6",
+      "title": "Autonomous Cycle 87 Report",
+      "type": "cycle",
+      "cycle": 87,
+      "summary": "Cycle 87: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.442Z"
+      "createdAt": "2026-07-02T09:09:13.215Z"
     },
     {
-      "id": "arpt_1782778317538_a3z9",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782985070225_suei",
+      "title": "Autonomous Cycle 88 Report",
+      "type": "cycle",
+      "cycle": 88,
+      "summary": "Cycle 88: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.538Z"
+      "createdAt": "2026-07-02T09:37:50.225Z"
     },
     {
-      "id": "arpt_1782778317620_19el",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782985848075_ywo9",
+      "title": "Autonomous Cycle 89 Report",
+      "type": "cycle",
+      "cycle": 89,
+      "summary": "Cycle 89: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.620Z"
+      "createdAt": "2026-07-02T09:50:48.075Z"
     },
     {
-      "id": "arpt_1782778317705_fvcu",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782986610156_meof",
+      "title": "Autonomous Cycle 90 Report",
+      "type": "cycle",
+      "cycle": 90,
+      "summary": "Cycle 90: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.705Z"
+      "createdAt": "2026-07-02T10:03:30.156Z"
     },
     {
-      "id": "arpt_1782778317789_vdds",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782987390175_5hwv",
+      "title": "Autonomous Cycle 91 Report",
+      "type": "cycle",
+      "cycle": 91,
+      "summary": "Cycle 91: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.789Z"
+      "createdAt": "2026-07-02T10:16:30.175Z"
     },
     {
-      "id": "arpt_1782778317875_gyoz",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782988162802_i2qr",
+      "title": "Autonomous Cycle 92 Report",
+      "type": "cycle",
+      "cycle": 92,
+      "summary": "Cycle 92: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.875Z"
+      "createdAt": "2026-07-02T10:29:22.802Z"
     },
     {
-      "id": "arpt_1782778317969_vt1b",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782989015664_e5lt",
+      "title": "Autonomous Cycle 93 Report",
+      "type": "cycle",
+      "cycle": 93,
+      "summary": "Cycle 93: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:57.969Z"
+      "createdAt": "2026-07-02T10:43:35.664Z"
     },
     {
-      "id": "arpt_1782778318049_zt3r",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782989858361_l2u6",
+      "title": "Autonomous Cycle 94 Report",
+      "type": "cycle",
+      "cycle": 94,
+      "summary": "Cycle 94: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.049Z"
+      "createdAt": "2026-07-02T10:57:38.361Z"
     },
     {
-      "id": "arpt_1782778318137_mhxf",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782990691910_y5gn",
+      "title": "Autonomous Cycle 95 Report",
+      "type": "cycle",
+      "cycle": 95,
+      "summary": "Cycle 95: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.137Z"
+      "createdAt": "2026-07-02T11:11:31.910Z"
     },
     {
-      "id": "arpt_1782778318218_m7bk",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782991478912_dwrl",
+      "title": "Autonomous Cycle 96 Report",
+      "type": "cycle",
+      "cycle": 96,
+      "summary": "Cycle 96: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.218Z"
+      "createdAt": "2026-07-02T11:24:38.912Z"
     },
     {
-      "id": "arpt_1782778318303_72t1",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782992291319_dqem",
+      "title": "Autonomous Cycle 97 Report",
+      "type": "cycle",
+      "cycle": 97,
+      "summary": "Cycle 97: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.303Z"
+      "createdAt": "2026-07-02T11:38:11.319Z"
     },
     {
-      "id": "arpt_1782778318387_oogv",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782993095784_cwjc",
+      "title": "Autonomous Cycle 98 Report",
+      "type": "cycle",
+      "cycle": 98,
+      "summary": "Cycle 98: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.387Z"
+      "createdAt": "2026-07-02T11:51:35.784Z"
     },
     {
-      "id": "arpt_1782778318477_4aqi",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782993939991_rq73",
+      "title": "Autonomous Cycle 99 Report",
+      "type": "cycle",
+      "cycle": 99,
+      "summary": "Cycle 99: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.477Z"
+      "createdAt": "2026-07-02T12:05:39.991Z"
     },
     {
-      "id": "arpt_1782778318561_eo7i",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782994763495_ok6l",
+      "title": "Autonomous Cycle 100 Report",
+      "type": "cycle",
+      "cycle": 100,
+      "summary": "Cycle 100: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.561Z"
+      "createdAt": "2026-07-02T12:19:23.495Z"
     },
     {
-      "id": "arpt_1782778318643_ad6m",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782995608611_uqi2",
+      "title": "Autonomous Cycle 101 Report",
+      "type": "cycle",
+      "cycle": 101,
+      "summary": "Cycle 101: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:11:58.643Z"
+      "createdAt": "2026-07-02T12:33:28.611Z"
     },
     {
-      "id": "arpt_1782778323366_r517",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782996488655_xqew",
+      "title": "Autonomous Cycle 102 Report",
+      "type": "cycle",
+      "cycle": 102,
+      "summary": "Cycle 102: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:12:03.366Z"
+      "createdAt": "2026-07-02T12:48:08.655Z"
     },
     {
-      "id": "arpt_1782778324084_6az9",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782997436233_aec6",
+      "title": "Autonomous Cycle 103 Report",
+      "type": "cycle",
+      "cycle": 103,
+      "summary": "Cycle 103: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:12:04.084Z"
+      "createdAt": "2026-07-02T13:03:56.233Z"
     },
     {
-      "id": "arpt_1782778324159_0jfc",
-      "title": "Weekly Self-Review — Overall 79/100",
-      "type": "weekly_self_review",
-      "cycle": 67,
-      "summary": "Resolve 33 debt points — focus: intelligence_layer_healthy, 50_unactioned_lessons; Continue POST-Ω program — next sprint: architecture consolidation",
+      "id": "arpt_1782999214533_dhn2",
+      "title": "Autonomous Cycle 104 Report",
+      "type": "cycle",
+      "cycle": 104,
+      "summary": "Cycle 104: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
       "data": {
-        "overall": 79,
-        "scores": {
-          "architecture": 100,
-          "autonomy": 75,
-          "technicalDebt": 67,
-          "reliability": 80,
-          "performance": 85,
-          "founderTimeSaved": 20,
-          "customerImpact": 97,
-          "consolidation": 80,
-          "security": 60
-        }
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:12:04.159Z"
+      "createdAt": "2026-07-02T13:33:34.533Z"
     },
     {
-      "id": "arpt_1782778324812_1924",
-      "title": "Production Bible built — 118 workflows",
-      "type": "production_bible_build",
-      "cycle": 67,
-      "summary": "78 full-auto, 38 semi-auto, 2 manual",
+      "id": "arpt_1783000138493_1vw5",
+      "title": "Autonomous Cycle 105 Report",
+      "type": "cycle",
+      "cycle": 105,
+      "summary": "Cycle 105: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
       "data": {
-        "total": 118,
-        "automated": 78,
-        "semiAuto": 38,
-        "manual": 2
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
       },
       "confidence": 0.8,
-      "createdAt": "2026-06-30T00:12:04.812Z"
+      "createdAt": "2026-07-02T13:48:58.493Z"
+    },
+    {
+      "id": "arpt_1783001010288_ftb3",
+      "title": "Autonomous Cycle 106 Report",
+      "type": "cycle",
+      "cycle": 106,
+      "summary": "Cycle 106: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T14:03:30.288Z"
+    },
+    {
+      "id": "arpt_1783001889078_x2xb",
+      "title": "Autonomous Cycle 107 Report",
+      "type": "cycle",
+      "cycle": 107,
+      "summary": "Cycle 107: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T14:18:09.078Z"
+    },
+    {
+      "id": "arpt_1783002767412_2rn5",
+      "title": "Autonomous Cycle 108 Report",
+      "type": "cycle",
+      "cycle": 108,
+      "summary": "Cycle 108: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T14:32:47.412Z"
+    },
+    {
+      "id": "arpt_1783003614224_g7v2",
+      "title": "Autonomous Cycle 109 Report",
+      "type": "cycle",
+      "cycle": 109,
+      "summary": "Cycle 109: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T14:46:54.224Z"
+    },
+    {
+      "id": "arpt_1783004519902_2xvb",
+      "title": "Autonomous Cycle 110 Report",
+      "type": "cycle",
+      "cycle": 110,
+      "summary": "Cycle 110: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T15:01:59.902Z"
+    },
+    {
+      "id": "arpt_1783005367565_y7xi",
+      "title": "Autonomous Cycle 111 Report",
+      "type": "cycle",
+      "cycle": 111,
+      "summary": "Cycle 111: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T15:16:07.565Z"
+    },
+    {
+      "id": "arpt_1783006291489_3sdq",
+      "title": "Autonomous Cycle 112 Report",
+      "type": "cycle",
+      "cycle": 112,
+      "summary": "Cycle 112: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T15:31:31.489Z"
+    },
+    {
+      "id": "arpt_1783007162564_gfs7",
+      "title": "Autonomous Cycle 113 Report",
+      "type": "cycle",
+      "cycle": 113,
+      "summary": "Cycle 113: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T15:46:02.564Z"
+    },
+    {
+      "id": "arpt_1783008069359_5r5k",
+      "title": "Autonomous Cycle 114 Report",
+      "type": "cycle",
+      "cycle": 114,
+      "summary": "Cycle 114: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T16:01:09.359Z"
+    },
+    {
+      "id": "arpt_1783008970984_ijs0",
+      "title": "Autonomous Cycle 115 Report",
+      "type": "cycle",
+      "cycle": 115,
+      "summary": "Cycle 115: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T16:16:10.984Z"
+    },
+    {
+      "id": "arpt_1783009930080_ojfz",
+      "title": "Autonomous Cycle 116 Report",
+      "type": "cycle",
+      "cycle": 116,
+      "summary": "Cycle 116: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T16:32:10.080Z"
+    },
+    {
+      "id": "arpt_1783010841216_cbjo",
+      "title": "Autonomous Cycle 117 Report",
+      "type": "cycle",
+      "cycle": 117,
+      "summary": "Cycle 117: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T16:47:21.216Z"
+    },
+    {
+      "id": "arpt_1783016404473_ydz9",
+      "title": "Autonomous Cycle 118 Report",
+      "type": "cycle",
+      "cycle": 118,
+      "summary": "Cycle 118: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T18:20:04.473Z"
+    },
+    {
+      "id": "arpt_1783017343996_k3p1",
+      "title": "Autonomous Cycle 119 Report",
+      "type": "cycle",
+      "cycle": 119,
+      "summary": "Cycle 119: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T18:35:43.996Z"
+    },
+    {
+      "id": "arpt_1783018272449_7y6e",
+      "title": "Autonomous Cycle 120 Report",
+      "type": "cycle",
+      "cycle": 120,
+      "summary": "Cycle 120: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T18:51:12.449Z"
+    },
+    {
+      "id": "arpt_1783019200526_zaav",
+      "title": "Autonomous Cycle 121 Report",
+      "type": "cycle",
+      "cycle": 121,
+      "summary": "Cycle 121: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T19:06:40.526Z"
+    },
+    {
+      "id": "arpt_1783020142539_xtlc",
+      "title": "Autonomous Cycle 122 Report",
+      "type": "cycle",
+      "cycle": 122,
+      "summary": "Cycle 122: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T19:22:22.539Z"
+    },
+    {
+      "id": "arpt_1783021090005_pslk",
+      "title": "Autonomous Cycle 123 Report",
+      "type": "cycle",
+      "cycle": 123,
+      "summary": "Cycle 123: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T19:38:10.005Z"
+    },
+    {
+      "id": "arpt_1783023296242_2wnp",
+      "title": "Autonomous Cycle 124 Report",
+      "type": "cycle",
+      "cycle": 124,
+      "summary": "Cycle 124: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 0 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 0
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T20:14:56.242Z"
+    },
+    {
+      "id": "arpt_1783025983464_tipz",
+      "title": "Autonomous Cycle 125 Report",
+      "type": "cycle",
+      "cycle": 125,
+      "summary": "Cycle 125: health=93 | obs: 70/70 agents | detect: 2 opps, 0 threats | plan: 2 decisions | execute: 2 actions | learn: 2 lessons | evolve: 1 proposals",
+      "data": {
+        "obs": {
+          "health": 93,
+          "agents": {
+            "total": 70,
+            "running": 70
+          }
+        },
+        "opportunities": 2,
+        "threats": 0,
+        "decisions": 2,
+        "lessons": 2,
+        "evolutions": 1
+      },
+      "confidence": 0.8,
+      "createdAt": "2026-07-02T20:59:43.464Z"
     }
   ],
-  "totalReports": 889
+  "totalReports": 908
 }

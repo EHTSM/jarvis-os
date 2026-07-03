@@ -55,7 +55,7 @@ const shl = require("../services/securityHardeningLayer.cjs");
 const dv  = require("../services/deploymentValidator.cjs");
 const oal = require("../services/operationsAlertingLayer.cjs");
 
-router.use(requireAuth);
+router.use("/p22", requireAuth);
 
 // ── 22A Secret Management Layer ────────────────────────────────────────────
 

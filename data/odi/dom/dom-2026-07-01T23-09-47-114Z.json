@@ -1,0 +1,76 @@
+{
+  "url": "about:blank",
+  "title": "",
+  "nodeCount": 1,
+  "nodes": [
+    {
+      "nodeId": "n0",
+      "parentId": null,
+      "tag": "body",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": null,
+      "depth": 0,
+      "bbox": {
+        "x": 8,
+        "y": 8,
+        "w": 1264,
+        "h": 884
+      },
+      "font": {
+        "family": "Times",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "8px",
+        "marginRight": "8px",
+        "marginBottom": "8px",
+        "marginLeft": "8px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": []
+    }
+  ],
+  "edges": [],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "scrollY": 0,
+  "pageId": "page-33",
+  "timestamp": "2026-07-01T23:09:47.114Z",
+  "capturedAt": 1782947387114
+}

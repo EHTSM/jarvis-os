@@ -52,7 +52,7 @@ const mie = require("../services/memoryIntelligenceEngine.cjs");
 const ile = require("../services/improvementLoopEngine.cjs");
 const oae = require("../services/ooplixAutonomyEngine.cjs");
 
-router.use(requireAuth);
+router.use("/p20", requireAuth);
 
 // ── 20A Agent Factory Automation ──────────────────────────────────────────
 

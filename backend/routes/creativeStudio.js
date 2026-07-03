@@ -31,7 +31,7 @@ function _ai() {
   try { return require("../services/aiService"); } catch { return null; }
 }
 
-router.use(requireAuth);
+router.use("/creative", requireAuth);
 
 function _account(req) { return req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }

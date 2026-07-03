@@ -22,7 +22,7 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const mgr = require("../services/pluginManagerService.cjs");
 
-router.use(requireAuth);
+router.use("/plugins", requireAuth);
 router.use(attachWorkspace);
 
 function _wsId(req) {

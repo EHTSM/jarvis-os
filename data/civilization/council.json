@@ -71,6 +71,42 @@
       "mandate": "permanent",
       "status": "active",
       "joinedAt": "2026-06-29T22:39:57.722Z"
+    },
+    {
+      "id": "ccm_1782947363511_afk8",
+      "memberId": "cmem_1782947363496_0523",
+      "role": "representative",
+      "votingWeight": 1,
+      "mandate": "permanent",
+      "status": "active",
+      "joinedAt": "2026-07-01T23:09:23.511Z"
+    },
+    {
+      "id": "ccm_1782947363512_cmf0",
+      "memberId": "cmem_1782947363506_juk5",
+      "role": "delegate",
+      "votingWeight": 1,
+      "mandate": "permanent",
+      "status": "active",
+      "joinedAt": "2026-07-01T23:09:23.512Z"
+    },
+    {
+      "id": "ccm_1782947457919_76ut",
+      "memberId": "cmem_1782947457869_9hmp",
+      "role": "representative",
+      "votingWeight": 1,
+      "mandate": "permanent",
+      "status": "active",
+      "joinedAt": "2026-07-01T23:10:57.919Z"
+    },
+    {
+      "id": "ccm_1782947457921_dwgw",
+      "memberId": "cmem_1782947457900_uugc",
+      "role": "delegate",
+      "votingWeight": 1,
+      "mandate": "permanent",
+      "status": "active",
+      "joinedAt": "2026-07-01T23:10:57.921Z"
     }
   ],
   "proposals": [
@@ -359,6 +395,150 @@
         }
       ],
       "createdAt": "2026-06-29T22:39:57.722Z",
+      "resolvedAt": null,
+      "outcome": null
+    },
+    {
+      "id": "cprop_1782947363513_klua",
+      "title": "Proposal-1782947363478",
+      "description": "Expand knowledge sharing",
+      "proposerId": "cmem_1782947363496_0523",
+      "type": "policy",
+      "data": {},
+      "status": "open",
+      "requiredVotes": 1,
+      "deadline": "2026-07-08T23:09:23.513Z",
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [],
+      "createdAt": "2026-07-01T23:09:23.513Z",
+      "resolvedAt": null,
+      "outcome": null
+    },
+    {
+      "id": "cprop_1782947363513_dr3g",
+      "title": "VoteTest-1782947363478",
+      "description": "",
+      "proposerId": "cmem_1782947363496_0523",
+      "type": "resource",
+      "data": {},
+      "status": "passed",
+      "requiredVotes": 1,
+      "deadline": "2026-07-08T23:09:23.513Z",
+      "votesFor": 1,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [
+        {
+          "id": "cvote_1782947363514_l3ri",
+          "voterId": "cmem_1782947363496_0523",
+          "vote": "for",
+          "weight": 1,
+          "rationale": "",
+          "at": "2026-07-01T23:09:23.514Z"
+        }
+      ],
+      "createdAt": "2026-07-01T23:09:23.513Z",
+      "resolvedAt": "2026-07-01T23:09:23.514Z",
+      "outcome": "approved"
+    },
+    {
+      "id": "cprop_1782947363515_f8lg",
+      "title": "DupVote-1782947363478",
+      "description": "",
+      "proposerId": "cmem_1782947363506_juk5",
+      "type": "policy",
+      "data": {},
+      "status": "open",
+      "requiredVotes": 2,
+      "deadline": "2026-07-08T23:09:23.515Z",
+      "votesFor": 1,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [
+        {
+          "id": "cvote_1782947363517_tx3p",
+          "voterId": "cmem_1782947363496_0523",
+          "vote": "for",
+          "weight": 1,
+          "rationale": "",
+          "at": "2026-07-01T23:09:23.517Z"
+        }
+      ],
+      "createdAt": "2026-07-01T23:09:23.515Z",
+      "resolvedAt": null,
+      "outcome": null
+    },
+    {
+      "id": "cprop_1782947457922_76qm",
+      "title": "Proposal-1782947457757",
+      "description": "Expand knowledge sharing",
+      "proposerId": "cmem_1782947457869_9hmp",
+      "type": "policy",
+      "data": {},
+      "status": "open",
+      "requiredVotes": 1,
+      "deadline": "2026-07-08T23:10:57.922Z",
+      "votesFor": 0,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [],
+      "createdAt": "2026-07-01T23:10:57.923Z",
+      "resolvedAt": null,
+      "outcome": null
+    },
+    {
+      "id": "cprop_1782947457927_k3ak",
+      "title": "VoteTest-1782947457757",
+      "description": "",
+      "proposerId": "cmem_1782947457869_9hmp",
+      "type": "resource",
+      "data": {},
+      "status": "passed",
+      "requiredVotes": 1,
+      "deadline": "2026-07-08T23:10:57.927Z",
+      "votesFor": 1,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [
+        {
+          "id": "cvote_1782947457941_s1hp",
+          "voterId": "cmem_1782947457869_9hmp",
+          "vote": "for",
+          "weight": 1,
+          "rationale": "",
+          "at": "2026-07-01T23:10:57.941Z"
+        }
+      ],
+      "createdAt": "2026-07-01T23:10:57.929Z",
+      "resolvedAt": "2026-07-01T23:10:57.941Z",
+      "outcome": "approved"
+    },
+    {
+      "id": "cprop_1782947457942_fam6",
+      "title": "DupVote-1782947457757",
+      "description": "",
+      "proposerId": "cmem_1782947457900_uugc",
+      "type": "policy",
+      "data": {},
+      "status": "open",
+      "requiredVotes": 2,
+      "deadline": "2026-07-08T23:10:57.942Z",
+      "votesFor": 1,
+      "votesAgainst": 0,
+      "abstentions": 0,
+      "votes": [
+        {
+          "id": "cvote_1782947457946_pp0v",
+          "voterId": "cmem_1782947457869_9hmp",
+          "vote": "for",
+          "weight": 1,
+          "rationale": "",
+          "at": "2026-07-01T23:10:57.946Z"
+        }
+      ],
+      "createdAt": "2026-07-01T23:10:57.942Z",
       "resolvedAt": null,
       "outcome": null
     }

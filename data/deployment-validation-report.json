@@ -1,13 +1,13 @@
 {
-  "ts": "2026-06-29T22:44:51.299Z",
-  "score": 52,
-  "grade": "NEEDS_WORK",
+  "ts": "2026-07-01T23:12:46.376Z",
+  "score": 40,
+  "grade": "BLOCKED",
   "categories": {
     "environment": {
       "score": 38
     },
     "build_artifacts": {
-      "score": 100
+      "score": 43
     },
     "process_management": {
       "score": 60
@@ -71,27 +71,27 @@
     },
     "build_artifacts": {
       "category": "build_artifacts",
-      "score": 100,
+      "score": 43,
       "checks": [
         {
           "name": "frontend_index",
-          "status": "pass",
-          "detail": "frontend/build/index.html present"
+          "status": "fail",
+          "detail": "Frontend not built — run: cd frontend && npm run build"
         },
         {
           "name": "asset_manifest",
-          "status": "pass",
-          "detail": "asset-manifest.json present"
+          "status": "warn",
+          "detail": "asset-manifest.json missing"
         },
         {
           "name": "js_bundle",
-          "status": "pass",
-          "detail": "162 JS bundle(s) found"
+          "status": "fail",
+          "detail": "No JS bundles in frontend/build/static/js"
         },
         {
           "name": "css_bundle",
-          "status": "pass",
-          "detail": "150 CSS bundle(s) found"
+          "status": "warn",
+          "detail": "No CSS bundles"
         },
         {
           "name": "package_json",
@@ -132,12 +132,12 @@
         {
           "name": "process_stable",
           "status": "warn",
-          "detail": "Uptime 6s — may be in restart loop"
+          "detail": "Uptime 29s — may be in restart loop"
         },
         {
           "name": "memory_usage",
           "status": "pass",
-          "detail": "RSS 232MB — within limits"
+          "detail": "RSS 79MB — within limits"
         }
       ]
     },
@@ -212,6 +212,18 @@
       "name": "OPERATOR_PASSWORD_HASH",
       "status": "fail",
       "detail": "Missing — operator login disabled"
+    },
+    {
+      "category": "build_artifacts",
+      "name": "frontend_index",
+      "status": "fail",
+      "detail": "Frontend not built — run: cd frontend && npm run build"
+    },
+    {
+      "category": "build_artifacts",
+      "name": "js_bundle",
+      "status": "fail",
+      "detail": "No JS bundles in frontend/build/static/js"
     }
   ],
   "warnings": [
@@ -234,6 +246,18 @@
       "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
     },
     {
+      "category": "build_artifacts",
+      "name": "asset_manifest",
+      "status": "warn",
+      "detail": "asset-manifest.json missing"
+    },
+    {
+      "category": "build_artifacts",
+      "name": "css_bundle",
+      "status": "warn",
+      "detail": "No CSS bundles"
+    },
+    {
       "category": "process_management",
       "name": "pm2_running",
       "status": "warn",
@@ -243,7 +267,7 @@
       "category": "process_management",
       "name": "process_stable",
       "status": "warn",
-      "detail": "Uptime 6s — may be in restart loop"
+      "detail": "Uptime 29s — may be in restart loop"
     },
     {
       "category": "nginx",
@@ -271,5 +295,5 @@
     }
   ],
   "totalChecks": 28,
-  "passing": 17
+  "passing": 13
 }

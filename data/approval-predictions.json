@@ -430,13 +430,121 @@
       "ts": "2026-06-28T20:18:46.218Z",
       "actualOutcome": "approved",
       "wasCorrect": true
+    },
+    {
+      "id": "ap_1782778380315_q7n",
+      "workflowId": "wf_doc_update",
+      "ok": true,
+      "predictedOutcome": "approved",
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "confidence": 0.43,
+      "shouldAutoApprove": false,
+      "autoApproveThreshold": 0.88,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "features": {
+        "risk": "low",
+        "domain": "documentation",
+        "workflowId": "wf_doc_update",
+        "riskTolerance": 1,
+        "automationPref": 0.8,
+        "trustScore": 67,
+        "domainApprovalRate": 0.7,
+        "highRiskRate": 0.2708333333333333,
+        "correctionFreq": 0.25196850393700787,
+        "avgSpeedMs": 7009,
+        "policyRisk": "medium",
+        "policyThreshold": null,
+        "historicApproveRate": 0.3434343434343434,
+        "hasContext": false
+      },
+      "routed": "founder_required",
+      "resolvedAt": "2026-06-30T00:13:00.318Z",
+      "ts": "2026-06-30T00:13:00.315Z",
+      "actualOutcome": "approved",
+      "wasCorrect": true
+    },
+    {
+      "id": "ap_1782947864930_9su",
+      "workflowId": "wf_doc_update",
+      "ok": true,
+      "predictedOutcome": "approved",
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "confidence": 0.43,
+      "shouldAutoApprove": false,
+      "autoApproveThreshold": 0.88,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "features": {
+        "risk": "low",
+        "domain": "documentation",
+        "workflowId": "wf_doc_update",
+        "riskTolerance": 1,
+        "automationPref": 0.8,
+        "trustScore": 67,
+        "domainApprovalRate": 0.7,
+        "highRiskRate": 0.2692307692307692,
+        "correctionFreq": 0.2536231884057971,
+        "avgSpeedMs": 7004,
+        "policyRisk": "medium",
+        "policyThreshold": null,
+        "historicApproveRate": 0.34360189573459715,
+        "hasContext": false
+      },
+      "routed": "founder_required",
+      "resolvedAt": "2026-07-01T23:17:44.941Z",
+      "ts": "2026-07-01T23:17:44.930Z",
+      "actualOutcome": "approved",
+      "wasCorrect": true
+    },
+    {
+      "id": "ap_1782948138822_0xm",
+      "workflowId": "wf_doc_update",
+      "ok": true,
+      "predictedOutcome": "approved",
+      "approveProbability": 0.83,
+      "rejectProbability": 0.17,
+      "confidence": 0.43,
+      "shouldAutoApprove": false,
+      "autoApproveThreshold": 0.88,
+      "reasoning": [
+        "Founder shows moderate-high risk tolerance.",
+        "Prediction model has been corrected frequently — confidence adjusted down."
+      ],
+      "features": {
+        "risk": "low",
+        "domain": "documentation",
+        "workflowId": "wf_doc_update",
+        "riskTolerance": 1,
+        "automationPref": 0.8,
+        "trustScore": 67,
+        "domainApprovalRate": 0.7,
+        "highRiskRate": 0.26785714285714285,
+        "correctionFreq": 0.2550335570469799,
+        "avgSpeedMs": 7813,
+        "policyRisk": "medium",
+        "policyThreshold": null,
+        "historicApproveRate": 0.34375,
+        "hasContext": false
+      },
+      "routed": "founder_required",
+      "resolvedAt": "2026-07-01T23:22:18.888Z",
+      "ts": "2026-07-01T23:22:18.822Z",
+      "actualOutcome": "approved",
+      "wasCorrect": true
     }
   ],
   "stats": {
-    "total": 12,
-    "correct": 12,
+    "total": 15,
+    "correct": 15,
     "autoApproved": 0,
-    "manualRequired": 12
+    "manualRequired": 15
   },
-  "updatedAt": "2026-06-28T20:18:46.219Z"
+  "updatedAt": "2026-07-01T23:22:18.888Z"
 }

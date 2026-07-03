@@ -1,2254 +1,6 @@
 {
   "analyses": [
     {
-      "id": "vr_1782686194941_qq7i",
-      "pageUrl": "https://example.com/get-bm-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.941Z"
-    },
-    {
-      "id": "vr_1782686194943_bws1",
-      "pageUrl": "https://example.com/evolution-main",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.943Z"
-    },
-    {
-      "id": "vr_1782686194944_osyw",
-      "pageUrl": "https://example.com/get-cycle-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.944Z"
-    },
-    {
-      "id": "vr_1782686194944_wath",
-      "pageUrl": "https://example.com/list-cycles-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.944Z"
-    },
-    {
-      "id": "vr_1782686194944_y1nt",
-      "pageUrl": "https://example.com/debt-test",
-      "cognitiveLoad": 35,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [
-        {
-          "type": "element_density",
-          "severity": "medium",
-          "count": 100
-        }
-      ],
-      "reasoningScore": 51,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.944Z"
-    },
-    {
-      "id": "vr_1782686194945_oi9x",
-      "pageUrl": "https://example.com/trend-evolution-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.945Z"
-    },
-    {
-      "id": "vr_1782686194945_nnka",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.945Z"
-    },
-    {
-      "id": "vr_1782686194991_6ys1",
-      "pageUrl": "https://example.com/pipeline-test",
-      "cognitiveLoad": 25,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 56,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.991Z"
-    },
-    {
-      "id": "vr_1782686194992_gezl",
-      "pageUrl": "https://example.com/chain-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.992Z"
-    },
-    {
-      "id": "vr_1782686194992_m760",
-      "pageUrl": "https://example.com/full-evolution-1782686194992",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.992Z"
-    },
-    {
-      "id": "vr_1782686194993_8pih",
-      "pageUrl": "https://example.com/time-save-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.993Z"
-    },
-    {
-      "id": "vr_1782686194994_sfyt",
-      "pageUrl": "https://example.com/page-view-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:34.994Z"
-    },
-    {
-      "id": "vr_1782686195002_g2tk",
-      "pageUrl": "https://example.com/trend-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:35.002Z"
-    },
-    {
-      "id": "vr_1782686195003_sxbm",
-      "pageUrl": "https://example.com/compare-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:35.003Z"
-    },
-    {
-      "id": "vr_1782686195004_gwel",
-      "pageUrl": "https://example.com/trend-evolution-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:35.004Z"
-    },
-    {
-      "id": "vr_1782686195005_q7yh",
-      "pageUrl": "https://example.com/chain-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:35.005Z"
-    },
-    {
-      "id": "vr_1782686198882_keum",
-      "pageUrl": "https://example.com/list-cycles-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:38.882Z"
-    },
-    {
-      "id": "vr_1782686198974_itqf",
-      "pageUrl": "https://example.com/evolution-main",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:38.974Z"
-    },
-    {
-      "id": "vr_1782686199066_1dqy",
-      "pageUrl": "https://example.com/get-cycle-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:39.066Z"
-    },
-    {
-      "id": "vr_1782686199075_lsb3",
-      "pageUrl": "https://example.com/full-evolution-1782686194992",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:39.075Z"
-    },
-    {
-      "id": "vr_1782686199082_cxi1",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:39.082Z"
-    },
-    {
-      "id": "vr_1782686199086_ljzf",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:39.086Z"
-    },
-    {
-      "id": "vr_1782686199142_9l9w",
-      "pageUrl": "https://example.com/time-save-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:39.142Z"
-    },
-    {
-      "id": "vr_1782686201699_i1uz",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:36:41.699Z"
-    },
-    {
-      "id": "vr_1782686242574_r1sm",
-      "pageUrl": "https://example.com/home",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 80,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 75,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.574Z"
-    },
-    {
-      "id": "vr_1782686242768_b0h0",
-      "pageUrl": "https://example.com/about",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.768Z"
-    },
-    {
-      "id": "vr_1782686242768_7i85",
-      "pageUrl": "https://example.com/heavy",
-      "cognitiveLoad": 50,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [
-        {
-          "type": "element_overload",
-          "severity": "high",
-          "count": 200
-        }
-      ],
-      "reasoningScore": 46,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.768Z"
-    },
-    {
-      "id": "vr_1782686242769_0h1y",
-      "pageUrl": "https://example.com/list-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.769Z"
-    },
-    {
-      "id": "vr_1782686242769_z7qc",
-      "pageUrl": "https://example.com/get-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.769Z"
-    },
-    {
-      "id": "vr_1782686242769_220k",
-      "pageUrl": "https://example.com/score-check",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 80,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 75,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.769Z"
-    },
-    {
-      "id": "vr_1782686242770_eyfa",
-      "pageUrl": "https://example.com/dashboard",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "button",
-          "weight": 0.9,
-          "reason": "primary_cta_or_heading"
-        },
-        {
-          "element": "button",
-          "weight": 0.9,
-          "reason": "primary_cta_or_heading"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "2 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.770Z"
-    },
-    {
-      "id": "vr_1782686242771_nlv1",
-      "pageUrl": "https://example.com/history-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.771Z"
-    },
-    {
-      "id": "vr_1782686242771_x5fb",
-      "pageUrl": "https://example.com/improvements-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.771Z"
-    },
-    {
-      "id": "vr_1782686242772_63vx",
-      "pageUrl": "https://example.com/filter-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.772Z"
-    },
-    {
-      "id": "vr_1782686242772_9vv8",
-      "pageUrl": "https://example.com/id-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.772Z"
-    },
-    {
-      "id": "vr_1782686242772_8jwh",
-      "pageUrl": "https://example.com/trend-test",
-      "cognitiveLoad": 15,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 60,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.772Z"
-    },
-    {
-      "id": "vr_1782686242772_7s3s",
-      "pageUrl": "https://example.com/stats-pages-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.772Z"
-    },
-    {
-      "id": "vr_1782686242773_m4qm",
-      "pageUrl": "https://example.com/compare-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.773Z"
-    },
-    {
-      "id": "vr_1782686242773_ql82",
-      "pageUrl": "https://example.com/baseline-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.773Z"
-    },
-    {
-      "id": "vr_1782686242776_l0oj",
-      "pageUrl": "https://example.com/get-bm-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.776Z"
-    },
-    {
-      "id": "vr_1782686242776_wus8",
-      "pageUrl": "https://example.com/bench-stats-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.776Z"
-    },
-    {
-      "id": "vr_1782686242780_398m",
-      "pageUrl": "https://example.com/evolution-main",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.780Z"
-    },
-    {
-      "id": "vr_1782686242780_jkjn",
-      "pageUrl": "https://example.com/get-cycle-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.780Z"
-    },
-    {
-      "id": "vr_1782686242781_dnmk",
-      "pageUrl": "https://example.com/list-cycles-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.781Z"
-    },
-    {
-      "id": "vr_1782686242781_pbw7",
-      "pageUrl": "https://example.com/evo-status-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.781Z"
-    },
-    {
-      "id": "vr_1782686242781_lpxl",
-      "pageUrl": "https://example.com/debt-test",
-      "cognitiveLoad": 35,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [
-        {
-          "type": "element_density",
-          "severity": "medium",
-          "count": 100
-        }
-      ],
-      "reasoningScore": 51,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.781Z"
-    },
-    {
-      "id": "vr_1782686242782_9or5",
-      "pageUrl": "https://example.com/trend-evolution-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.782Z"
-    },
-    {
-      "id": "vr_1782686242783_z3g3",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.783Z"
-    },
-    {
-      "id": "vr_1782686242869_i3e7",
-      "pageUrl": "https://example.com/dashboard-seed-page",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.869Z"
-    },
-    {
-      "id": "vr_1782686242869_v4vh",
-      "pageUrl": "https://example.com/dashboard-scores-seed",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.869Z"
-    },
-    {
-      "id": "vr_1782686242870_xi3e",
-      "pageUrl": "https://example.com/dashboard-evo-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.870Z"
-    },
-    {
-      "id": "vr_1782686242870_f5c8",
-      "pageUrl": "https://example.com/pipeline-test",
-      "cognitiveLoad": 25,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 56,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.870Z"
-    },
-    {
-      "id": "vr_1782686242870_cc28",
-      "pageUrl": "https://example.com/chain-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.870Z"
-    },
-    {
-      "id": "vr_1782686242871_3ug9",
-      "pageUrl": "https://example.com/full-evolution-1782686242870",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.871Z"
-    },
-    {
-      "id": "vr_1782686242873_iopa",
-      "pageUrl": "https://example.com/time-save-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.873Z"
-    },
-    {
-      "id": "vr_1782686242874_gapy",
-      "pageUrl": "https://example.com/page-view-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.874Z"
-    },
-    {
-      "id": "vr_1782686242884_3a78",
-      "pageUrl": "https://example.com/trend-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.884Z"
-    },
-    {
-      "id": "vr_1782686242885_5fkk",
-      "pageUrl": "https://example.com/compare-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.885Z"
-    },
-    {
-      "id": "vr_1782686242887_0vf8",
-      "pageUrl": "https://example.com/trend-evolution-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.887Z"
-    },
-    {
-      "id": "vr_1782686242892_hojg",
-      "pageUrl": "https://example.com/chain-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:22.892Z"
-    },
-    {
-      "id": "vr_1782686246866_ipgy",
-      "pageUrl": "https://example.com/evolution-main",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:26.866Z"
-    },
-    {
-      "id": "vr_1782686246941_fyau",
-      "pageUrl": "https://example.com/list-cycles-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:26.941Z"
-    },
-    {
-      "id": "vr_1782686247035_rjb3",
-      "pageUrl": "https://example.com/dashboard-evo-seed",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.035Z"
-    },
-    {
-      "id": "vr_1782686247051_vx6c",
-      "pageUrl": "https://example.com/get-cycle-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.051Z"
-    },
-    {
-      "id": "vr_1782686247103_grm2",
-      "pageUrl": "https://example.com/evo-status-seed",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.103Z"
-    },
-    {
-      "id": "vr_1782686247278_cr90",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.278Z"
-    },
-    {
-      "id": "vr_1782686247284_2e0c",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.284Z"
-    },
-    {
-      "id": "vr_1782686247292_d8bb",
-      "pageUrl": "https://example.com/time-save-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.292Z"
-    },
-    {
-      "id": "vr_1782686247386_nfli",
-      "pageUrl": "https://example.com/full-evolution-1782686242870",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:27.386Z"
-    },
-    {
-      "id": "vr_1782686250001_mcrj",
-      "pageUrl": "https://example.com/multi-cycle",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:37:30.001Z"
-    },
-    {
-      "id": "vr_1782686539739_o1nz",
-      "pageUrl": "https://example.com/home",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 80,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 75,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:19.739Z"
-    },
-    {
-      "id": "vr_1782686540026_gzu3",
-      "pageUrl": "https://example.com/about",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.026Z"
-    },
-    {
-      "id": "vr_1782686540026_sr3a",
-      "pageUrl": "https://example.com/heavy",
-      "cognitiveLoad": 50,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [
-        {
-          "type": "element_overload",
-          "severity": "high",
-          "count": 200
-        }
-      ],
-      "reasoningScore": 46,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.026Z"
-    },
-    {
-      "id": "vr_1782686540027_03xb",
-      "pageUrl": "https://example.com/list-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.027Z"
-    },
-    {
-      "id": "vr_1782686540028_1tou",
-      "pageUrl": "https://example.com/get-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.028Z"
-    },
-    {
-      "id": "vr_1782686540034_3tss",
-      "pageUrl": "https://example.com/score-check",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 80,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 75,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.034Z"
-    },
-    {
-      "id": "vr_1782686540035_mejy",
-      "pageUrl": "https://example.com/dashboard",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "button",
-          "weight": 0.9,
-          "reason": "primary_cta_or_heading"
-        },
-        {
-          "element": "button",
-          "weight": 0.9,
-          "reason": "primary_cta_or_heading"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "2 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.035Z"
-    },
-    {
-      "id": "vr_1782686540038_4r1i",
-      "pageUrl": "https://example.com/history-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.038Z"
-    },
-    {
-      "id": "vr_1782686540038_gj3r",
-      "pageUrl": "https://example.com/improvements-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.038Z"
-    },
-    {
-      "id": "vr_1782686540039_ojp8",
-      "pageUrl": "https://example.com/filter-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.039Z"
-    },
-    {
-      "id": "vr_1782686540039_gmgd",
-      "pageUrl": "https://example.com/id-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.039Z"
-    },
-    {
-      "id": "vr_1782686540039_3bza",
-      "pageUrl": "https://example.com/trend-test",
-      "cognitiveLoad": 15,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 60,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.039Z"
-    },
-    {
-      "id": "vr_1782686540040_dsfz",
-      "pageUrl": "https://example.com/stats-pages-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.040Z"
-    },
-    {
-      "id": "vr_1782686540040_5073",
-      "pageUrl": "https://example.com/compare-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.040Z"
-    },
-    {
-      "id": "vr_1782686540040_6vkn",
-      "pageUrl": "https://example.com/baseline-test",
-      "cognitiveLoad": 5,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 63,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.040Z"
-    },
-    {
-      "id": "vr_1782686540066_cnsm",
-      "pageUrl": "https://example.com/get-bm-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.066Z"
-    },
-    {
-      "id": "vr_1782686540068_pm9z",
-      "pageUrl": "https://example.com/bench-stats-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.068Z"
-    },
-    {
-      "id": "vr_1782686540087_lvaa",
-      "pageUrl": "https://example.com/evolution-main",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.087Z"
-    },
-    {
-      "id": "vr_1782686540088_41bd",
-      "pageUrl": "https://example.com/get-cycle-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.088Z"
-    },
-    {
-      "id": "vr_1782686540088_wvy6",
-      "pageUrl": "https://example.com/list-cycles-test",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.088Z"
-    },
-    {
-      "id": "vr_1782686540089_uvc6",
-      "pageUrl": "https://example.com/evo-status-seed",
-      "cognitiveLoad": 0,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [],
-      "reasoningScore": 65,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.089Z"
-    },
-    {
-      "id": "vr_1782686540089_ahnd",
-      "pageUrl": "https://example.com/debt-test",
-      "cognitiveLoad": 35,
-      "hierarchyScore": 50,
-      "readingFlow": {
-        "pattern": "unknown",
-        "confidence": 0
-      },
-      "attentionHotspots": [
-        {
-          "element": "above_fold_hero",
-          "weight": 0.8,
-          "reason": "default_primary_attention"
-        }
-      ],
-      "confusionSignals": [
-        {
-          "type": "element_density",
-          "severity": "medium",
-          "count": 100
-        }
-      ],
-      "reasoningScore": 51,
-      "insights": [
-        "Dominant reading pattern: unknown (confidence=0)",
-        "1 attention hotspots identified"
-      ],
-      "analyzedAt": "2026-06-28T22:42:20.089Z"
-    },
-    {
       "id": "vr_1782686540092_v1dq",
       "pageUrl": "https://example.com/trend-evolution-test",
       "cognitiveLoad": 5,
@@ -7307,12 +5059,2254 @@
         "1 attention hotspots identified"
       ],
       "analyzedAt": "2026-06-29T22:43:47.127Z"
+    },
+    {
+      "id": "vr_1782947376584_rwp9",
+      "pageUrl": "https://example.com/home",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 80,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 75,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:36.584Z"
+    },
+    {
+      "id": "vr_1782947377432_dzvh",
+      "pageUrl": "https://example.com/about",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.432Z"
+    },
+    {
+      "id": "vr_1782947377434_qj0y",
+      "pageUrl": "https://example.com/heavy",
+      "cognitiveLoad": 50,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [
+        {
+          "type": "element_overload",
+          "severity": "high",
+          "count": 200
+        }
+      ],
+      "reasoningScore": 46,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.434Z"
+    },
+    {
+      "id": "vr_1782947377438_p9a9",
+      "pageUrl": "https://example.com/list-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.438Z"
+    },
+    {
+      "id": "vr_1782947377440_0ums",
+      "pageUrl": "https://example.com/get-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.440Z"
+    },
+    {
+      "id": "vr_1782947377455_2f84",
+      "pageUrl": "https://example.com/score-check",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 80,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 75,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.455Z"
+    },
+    {
+      "id": "vr_1782947377459_rk0j",
+      "pageUrl": "https://example.com/dashboard",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "button",
+          "weight": 0.9,
+          "reason": "primary_cta_or_heading"
+        },
+        {
+          "element": "button",
+          "weight": 0.9,
+          "reason": "primary_cta_or_heading"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "2 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.459Z"
+    },
+    {
+      "id": "vr_1782947377465_fnqf",
+      "pageUrl": "https://example.com/history-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.465Z"
+    },
+    {
+      "id": "vr_1782947377469_9eb9",
+      "pageUrl": "https://example.com/improvements-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.469Z"
+    },
+    {
+      "id": "vr_1782947377474_kn4u",
+      "pageUrl": "https://example.com/filter-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.474Z"
+    },
+    {
+      "id": "vr_1782947377479_nwou",
+      "pageUrl": "https://example.com/id-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.479Z"
+    },
+    {
+      "id": "vr_1782947377482_g6sx",
+      "pageUrl": "https://example.com/trend-test",
+      "cognitiveLoad": 15,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 60,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.482Z"
+    },
+    {
+      "id": "vr_1782947377486_c1a8",
+      "pageUrl": "https://example.com/stats-pages-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.486Z"
+    },
+    {
+      "id": "vr_1782947377490_ablx",
+      "pageUrl": "https://example.com/compare-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.490Z"
+    },
+    {
+      "id": "vr_1782947377497_g500",
+      "pageUrl": "https://example.com/baseline-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.497Z"
+    },
+    {
+      "id": "vr_1782947377749_mmwm",
+      "pageUrl": "https://example.com/get-bm-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.749Z"
+    },
+    {
+      "id": "vr_1782947377768_t8rl",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.769Z"
+    },
+    {
+      "id": "vr_1782947377807_5pqa",
+      "pageUrl": "https://example.com/evolution-main",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.807Z"
+    },
+    {
+      "id": "vr_1782947377814_oj83",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.814Z"
+    },
+    {
+      "id": "vr_1782947377822_mdrq",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.822Z"
+    },
+    {
+      "id": "vr_1782947377826_whgh",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.826Z"
+    },
+    {
+      "id": "vr_1782947377829_icjq",
+      "pageUrl": "https://example.com/debt-test",
+      "cognitiveLoad": 35,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [
+        {
+          "type": "element_density",
+          "severity": "medium",
+          "count": 100
+        }
+      ],
+      "reasoningScore": 51,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.829Z"
+    },
+    {
+      "id": "vr_1782947377850_071j",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.850Z"
+    },
+    {
+      "id": "vr_1782947377868_a0y9",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:37.868Z"
+    },
+    {
+      "id": "vr_1782947378157_27lu",
+      "pageUrl": "https://example.com/dashboard-seed-page",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.157Z"
+    },
+    {
+      "id": "vr_1782947378162_ztj1",
+      "pageUrl": "https://example.com/dashboard-scores-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.162Z"
+    },
+    {
+      "id": "vr_1782947378167_4hnn",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.167Z"
+    },
+    {
+      "id": "vr_1782947378172_ccqa",
+      "pageUrl": "https://example.com/pipeline-test",
+      "cognitiveLoad": 25,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 56,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.172Z"
+    },
+    {
+      "id": "vr_1782947378176_9m3s",
+      "pageUrl": "https://example.com/chain-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.176Z"
+    },
+    {
+      "id": "vr_1782947378187_0m3l",
+      "pageUrl": "https://example.com/full-evolution-1782947378181",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.187Z"
+    },
+    {
+      "id": "vr_1782947378264_q2hj",
+      "pageUrl": "https://example.com/time-save-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.264Z"
+    },
+    {
+      "id": "vr_1782947378295_gh02",
+      "pageUrl": "https://example.com/page-view-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.295Z"
+    },
+    {
+      "id": "vr_1782947378490_g9jq",
+      "pageUrl": "https://example.com/trend-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.490Z"
+    },
+    {
+      "id": "vr_1782947378500_9amv",
+      "pageUrl": "https://example.com/compare-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.500Z"
+    },
+    {
+      "id": "vr_1782947378560_p5m1",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.560Z"
+    },
+    {
+      "id": "vr_1782947378714_x06c",
+      "pageUrl": "https://example.com/chain-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:38.714Z"
+    },
+    {
+      "id": "vr_1782947389581_suou",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:49.581Z"
+    },
+    {
+      "id": "vr_1782947389745_0zum",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:49.745Z"
+    },
+    {
+      "id": "vr_1782947389946_w9nu",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:49.946Z"
+    },
+    {
+      "id": "vr_1782947390066_f6z2",
+      "pageUrl": "https://example.com/evolution-main",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:50.067Z"
+    },
+    {
+      "id": "vr_1782947390176_g7sw",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:50.176Z"
+    },
+    {
+      "id": "vr_1782947390367_vnue",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:50.367Z"
+    },
+    {
+      "id": "vr_1782947390792_1il8",
+      "pageUrl": "https://example.com/full-evolution-1782947378181",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:50.792Z"
+    },
+    {
+      "id": "vr_1782947390901_99sd",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:50.901Z"
+    },
+    {
+      "id": "vr_1782947391174_c4lc",
+      "pageUrl": "https://example.com/time-save-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:51.174Z"
+    },
+    {
+      "id": "vr_1782947392098_k89e",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:09:52.098Z"
+    },
+    {
+      "id": "vr_1782947500236_6aky",
+      "pageUrl": "https://example.com/home",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 80,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 75,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:40.236Z"
+    },
+    {
+      "id": "vr_1782947503103_ywbe",
+      "pageUrl": "https://example.com/about",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.103Z"
+    },
+    {
+      "id": "vr_1782947503125_suek",
+      "pageUrl": "https://example.com/heavy",
+      "cognitiveLoad": 50,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [
+        {
+          "type": "element_overload",
+          "severity": "high",
+          "count": 200
+        }
+      ],
+      "reasoningScore": 46,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.126Z"
+    },
+    {
+      "id": "vr_1782947503189_rz91",
+      "pageUrl": "https://example.com/list-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.189Z"
+    },
+    {
+      "id": "vr_1782947503194_xzq4",
+      "pageUrl": "https://example.com/get-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.194Z"
+    },
+    {
+      "id": "vr_1782947503221_flch",
+      "pageUrl": "https://example.com/score-check",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 80,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 75,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.221Z"
+    },
+    {
+      "id": "vr_1782947503231_vvpz",
+      "pageUrl": "https://example.com/dashboard",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "button",
+          "weight": 0.9,
+          "reason": "primary_cta_or_heading"
+        },
+        {
+          "element": "button",
+          "weight": 0.9,
+          "reason": "primary_cta_or_heading"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "2 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.231Z"
+    },
+    {
+      "id": "vr_1782947503255_15tu",
+      "pageUrl": "https://example.com/history-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.255Z"
+    },
+    {
+      "id": "vr_1782947503267_0pfm",
+      "pageUrl": "https://example.com/improvements-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.267Z"
+    },
+    {
+      "id": "vr_1782947503271_jdlb",
+      "pageUrl": "https://example.com/filter-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.271Z"
+    },
+    {
+      "id": "vr_1782947503274_x07h",
+      "pageUrl": "https://example.com/id-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.274Z"
+    },
+    {
+      "id": "vr_1782947503277_8eli",
+      "pageUrl": "https://example.com/trend-test",
+      "cognitiveLoad": 15,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 60,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.277Z"
+    },
+    {
+      "id": "vr_1782947503281_wvfo",
+      "pageUrl": "https://example.com/stats-pages-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.281Z"
+    },
+    {
+      "id": "vr_1782947503353_93c5",
+      "pageUrl": "https://example.com/compare-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.354Z"
+    },
+    {
+      "id": "vr_1782947503393_0x5q",
+      "pageUrl": "https://example.com/baseline-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.393Z"
+    },
+    {
+      "id": "vr_1782947503450_h8za",
+      "pageUrl": "https://example.com/get-bm-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.450Z"
+    },
+    {
+      "id": "vr_1782947503538_jmvu",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.538Z"
+    },
+    {
+      "id": "vr_1782947503724_gn7d",
+      "pageUrl": "https://example.com/evolution-main",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.724Z"
+    },
+    {
+      "id": "vr_1782947503738_5n0t",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.738Z"
+    },
+    {
+      "id": "vr_1782947503794_6asd",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.794Z"
+    },
+    {
+      "id": "vr_1782947503802_zcvy",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.802Z"
+    },
+    {
+      "id": "vr_1782947503809_vary",
+      "pageUrl": "https://example.com/debt-test",
+      "cognitiveLoad": 35,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [
+        {
+          "type": "element_density",
+          "severity": "medium",
+          "count": 100
+        }
+      ],
+      "reasoningScore": 51,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.809Z"
+    },
+    {
+      "id": "vr_1782947503822_3ee3",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.822Z"
+    },
+    {
+      "id": "vr_1782947503862_czhy",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:43.862Z"
+    },
+    {
+      "id": "vr_1782947504707_az3j",
+      "pageUrl": "https://example.com/dashboard-seed-page",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.707Z"
+    },
+    {
+      "id": "vr_1782947504720_c3w0",
+      "pageUrl": "https://example.com/dashboard-scores-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.721Z"
+    },
+    {
+      "id": "vr_1782947504734_0iwq",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.734Z"
+    },
+    {
+      "id": "vr_1782947504737_5p9e",
+      "pageUrl": "https://example.com/pipeline-test",
+      "cognitiveLoad": 25,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 56,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.737Z"
+    },
+    {
+      "id": "vr_1782947504745_juhd",
+      "pageUrl": "https://example.com/chain-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.745Z"
+    },
+    {
+      "id": "vr_1782947504766_bmr5",
+      "pageUrl": "https://example.com/full-evolution-1782947504749",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.766Z"
+    },
+    {
+      "id": "vr_1782947504860_dv02",
+      "pageUrl": "https://example.com/time-save-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:44.860Z"
+    },
+    {
+      "id": "vr_1782947505016_ibao",
+      "pageUrl": "https://example.com/page-view-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:45.016Z"
+    },
+    {
+      "id": "vr_1782947505748_ukjf",
+      "pageUrl": "https://example.com/trend-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:45.748Z"
+    },
+    {
+      "id": "vr_1782947505758_nog5",
+      "pageUrl": "https://example.com/compare-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:45.758Z"
+    },
+    {
+      "id": "vr_1782947505954_0kd2",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:45.954Z"
+    },
+    {
+      "id": "vr_1782947506300_egf2",
+      "pageUrl": "https://example.com/chain-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:11:46.300Z"
+    },
+    {
+      "id": "vr_1782947525842_380b",
+      "pageUrl": "https://example.com/time-save-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:05.842Z"
+    },
+    {
+      "id": "vr_1782947526576_8eng",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:06.576Z"
+    },
+    {
+      "id": "vr_1782947526676_20ty",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 0,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 65,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:06.676Z"
+    },
+    {
+      "id": "vr_1782947526873_ywwm",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:06.873Z"
+    },
+    {
+      "id": "vr_1782947527009_c9af",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:07.009Z"
+    },
+    {
+      "id": "vr_1782947527337_sbqx",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:07.337Z"
+    },
+    {
+      "id": "vr_1782947527697_4uyv",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:07.698Z"
+    },
+    {
+      "id": "vr_1782947528038_slk2",
+      "pageUrl": "https://example.com/evolution-main",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:08.038Z"
+    },
+    {
+      "id": "vr_1782947528249_ujx8",
+      "pageUrl": "https://example.com/full-evolution-1782947504749",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:08.249Z"
+    },
+    {
+      "id": "vr_1782947530385_uz71",
+      "pageUrl": "https://example.com/multi-cycle",
+      "cognitiveLoad": 5,
+      "hierarchyScore": 50,
+      "readingFlow": {
+        "pattern": "unknown",
+        "confidence": 0
+      },
+      "attentionHotspots": [
+        {
+          "element": "above_fold_hero",
+          "weight": 0.8,
+          "reason": "default_primary_attention"
+        }
+      ],
+      "confusionSignals": [],
+      "reasoningScore": 63,
+      "insights": [
+        "Dominant reading pattern: unknown (confidence=0)",
+        "1 attention hotspots identified"
+      ],
+      "analyzedAt": "2026-07-01T23:12:10.385Z"
     }
   ],
   "stats": {
-    "total": 314,
+    "total": 406,
     "avgCognLoad": 4.5,
     "avgHierarchy": 50
   },
-  "updatedAt": "2026-06-29T22:43:47.127Z"
+  "updatedAt": "2026-07-01T23:12:10.385Z"
 }

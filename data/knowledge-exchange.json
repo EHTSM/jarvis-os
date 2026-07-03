@@ -1807,21 +1807,1779 @@
       ],
       "context": {},
       "exchangedAt": "2026-06-29T22:44:53.161Z"
+    },
+    {
+      "id": "kex_1782947395200_k186",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 411,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.200Z"
+    },
+    {
+      "id": "kex_1782947395218_6bdb",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 350,
+          "payload": {
+            "recs": 421
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 4,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.218Z"
+    },
+    {
+      "id": "kex_1782947395250_ioce",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 419,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.250Z"
+    },
+    {
+      "id": "kex_1782947395254_e9ea",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 14,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.254Z"
+    },
+    {
+      "id": "kex_1782947395303_w2ru",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 411,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.303Z"
+    },
+    {
+      "id": "kex_1782947395311_tw20",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 350,
+          "payload": {
+            "recs": 421
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 4,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.311Z"
+    },
+    {
+      "id": "kex_1782947395313_ontf",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.313Z"
+    },
+    {
+      "id": "kex_1782947395331_phae",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 419,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.331Z"
+    },
+    {
+      "id": "kex_1782947395334_1wif",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 14,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.334Z"
+    },
+    {
+      "id": "kex_1782947395338_pt5m",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 465,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 221,
+              "product_template": 46,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 4,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.338Z"
+    },
+    {
+      "id": "kex_1782947395363_btax",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 96,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.363Z"
+    },
+    {
+      "id": "kex_1782947395413_3m1k",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 411,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.413Z"
+    },
+    {
+      "id": "kex_1782947395419_fuid",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 350,
+          "payload": {
+            "recs": 421
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 4,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.419Z"
+    },
+    {
+      "id": "kex_1782947395423_4wgc",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.423Z"
+    },
+    {
+      "id": "kex_1782947395450_mzxz",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 419,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.450Z"
+    },
+    {
+      "id": "kex_1782947395456_2ade",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 14,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.456Z"
+    },
+    {
+      "id": "kex_1782947395466_gzc9",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 465,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 221,
+              "product_template": 46,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 4,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.466Z"
+    },
+    {
+      "id": "kex_1782947395468_9ba8",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 96,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:55.468Z"
+    },
+    {
+      "id": "kex_1782947396520_kwn2",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 411,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.520Z"
+    },
+    {
+      "id": "kex_1782947396533_prax",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 350,
+          "payload": {
+            "recs": 421
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 4,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.533Z"
+    },
+    {
+      "id": "kex_1782947396535_en9g",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.535Z"
+    },
+    {
+      "id": "kex_1782947396589_plxg",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 419,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.589Z"
+    },
+    {
+      "id": "kex_1782947396594_yw27",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 14,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.594Z"
+    },
+    {
+      "id": "kex_1782947396601_00b1",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 465,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 221,
+              "product_template": 46,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 4,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.601Z"
+    },
+    {
+      "id": "kex_1782947396607_jpys",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 96,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.607Z"
+    },
+    {
+      "id": "kex_1782947396714_ol3t",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 411,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.714Z"
+    },
+    {
+      "id": "kex_1782947396724_vkam",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 350,
+          "payload": {
+            "recs": 421
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 4,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.724Z"
+    },
+    {
+      "id": "kex_1782947396728_uxyl",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.728Z"
+    },
+    {
+      "id": "kex_1782947396761_dpd9",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 419,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.761Z"
+    },
+    {
+      "id": "kex_1782947396770_4jmn",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 14,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.770Z"
+    },
+    {
+      "id": "kex_1782947396786_kidl",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 465,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 221,
+              "product_template": 46,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 4,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.786Z"
+    },
+    {
+      "id": "kex_1782947396789_6vqa",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 96,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:09:56.789Z"
+    },
+    {
+      "id": "kex_1782947552558_4tos",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 23,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.558Z"
+    },
+    {
+      "id": "kex_1782947552582_myoi",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 423,
+          "payload": {
+            "recs": 484
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 5,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.582Z"
+    },
+    {
+      "id": "kex_1782947552588_38zb",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 7,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.588Z"
+    },
+    {
+      "id": "kex_1782947552603_snsl",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 41,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.603Z"
+    },
+    {
+      "id": "kex_1782947552612_nyfl",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 23,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.612Z"
+    },
+    {
+      "id": "kex_1782947552625_ubns",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 423,
+          "payload": {
+            "recs": 484
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 5,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.625Z"
+    },
+    {
+      "id": "kex_1782947552634_cqvy",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.634Z"
+    },
+    {
+      "id": "kex_1782947552661_wwvg",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 7,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.661Z"
+    },
+    {
+      "id": "kex_1782947552668_ayd3",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 41,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.668Z"
+    },
+    {
+      "id": "kex_1782947552677_yvhc",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 477,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 225,
+              "product_template": 53,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 5,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.677Z"
+    },
+    {
+      "id": "kex_1782947552691_1a9d",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 128,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.691Z"
+    },
+    {
+      "id": "kex_1782947552708_vw73",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 23,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.708Z"
+    },
+    {
+      "id": "kex_1782947552721_dcyd",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 423,
+          "payload": {
+            "recs": 484
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 5,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.721Z"
+    },
+    {
+      "id": "kex_1782947552737_zkvx",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.737Z"
+    },
+    {
+      "id": "kex_1782947552745_8942",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 7,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.745Z"
+    },
+    {
+      "id": "kex_1782947552751_kgaj",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 41,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.751Z"
+    },
+    {
+      "id": "kex_1782947552766_mi82",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 477,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 225,
+              "product_template": 53,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 5,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.766Z"
+    },
+    {
+      "id": "kex_1782947552780_ved6",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 128,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:32.780Z"
+    },
+    {
+      "id": "kex_1782947555851_gqqh",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 24,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.851Z"
+    },
+    {
+      "id": "kex_1782947555881_6caa",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 423,
+          "payload": {
+            "recs": 484
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 5,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.881Z"
+    },
+    {
+      "id": "kex_1782947555895_2puw",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.895Z"
+    },
+    {
+      "id": "kex_1782947555903_l1vi",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 8,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.903Z"
+    },
+    {
+      "id": "kex_1782947555914_dwxb",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 41,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.914Z"
+    },
+    {
+      "id": "kex_1782947555960_p7uo",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 477,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 225,
+              "product_template": 53,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 5,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:35.960Z"
+    },
+    {
+      "id": "kex_1782947556002_oq81",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 128,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.002Z"
+    },
+    {
+      "id": "kex_1782947556270_wbeb",
+      "channelId": "eng_to_biz",
+      "channelDesc": "Engineering patterns → Business intelligence",
+      "from": "engineering",
+      "to": "business",
+      "itemsExchanged": 2,
+      "minutesSaved": 30,
+      "items": [
+        {
+          "ref": "engineering_analyses",
+          "count": 24,
+          "payload": {}
+        },
+        {
+          "ref": "engineering_rules",
+          "count": 10,
+          "payload": {
+            "total": 10,
+            "autoApply": 8,
+            "reusable": 10,
+            "classes": [
+              "deterministic_filesystem_error",
+              "security_validation_failure",
+              "git_state_error",
+              "unknown_capability_dispatch",
+              "transient_network_error"
+            ],
+            "actions": {
+              "fail_fast": 3,
+              "require_operator_action": 1,
+              "retry_with_backoff": 1,
+              "see_lesson": 5
+            },
+            "memorySavedMs": 0
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.270Z"
+    },
+    {
+      "id": "kex_1782947556358_vb4d",
+      "channelId": "res_to_mkt",
+      "channelDesc": "Research findings → Marketplace knowledge packs",
+      "from": "research",
+      "to": "marketplace",
+      "itemsExchanged": 2,
+      "minutesSaved": 40,
+      "items": [
+        {
+          "ref": "research_findings",
+          "count": 423,
+          "payload": {
+            "recs": 484
+          }
+        },
+        {
+          "ref": "marketplace_knowledge_packs",
+          "count": 5,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.358Z"
+    },
+    {
+      "id": "kex_1782947556373_q56o",
+      "channelId": "cust_to_prod",
+      "channelDesc": "Customer signals → Platform improvements",
+      "from": "customer",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "customer_journeys",
+          "count": 28,
+          "payload": {
+            "stages": {
+              "lead": 0,
+              "qualification": 23,
+              "demo": 0,
+              "proposal": 0,
+              "closing": 0,
+              "onboarding": 1,
+              "activation": 0,
+              "adoption": 4,
+              "expansion": 0,
+              "renewal": 0,
+              "advocacy": 0,
+              "retention": 0,
+              "recovery": 0
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.373Z"
+    },
+    {
+      "id": "kex_1782947556398_qyln",
+      "channelId": "biz_to_eng",
+      "channelDesc": "Business decisions → Engineering priorities",
+      "from": "business",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 15,
+      "items": [
+        {
+          "ref": "business_analyses",
+          "count": 8,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.398Z"
+    },
+    {
+      "id": "kex_1782947556408_wn4y",
+      "channelId": "eng_to_res",
+      "channelDesc": "Engineering learnings → Research radar",
+      "from": "engineering",
+      "to": "research",
+      "itemsExchanged": 2,
+      "minutesSaved": 50,
+      "items": [
+        {
+          "ref": "engineering_playbooks",
+          "count": 41,
+          "payload": {}
+        },
+        {
+          "ref": "research_radar",
+          "count": 18,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.408Z"
+    },
+    {
+      "id": "kex_1782947556415_6qmq",
+      "channelId": "mkt_to_all",
+      "channelDesc": "Marketplace trends → Platform strategy",
+      "from": "marketplace",
+      "to": "platform",
+      "itemsExchanged": 1,
+      "minutesSaved": 10,
+      "items": [
+        {
+          "ref": "marketplace_catalog",
+          "count": 477,
+          "payload": {
+            "byType": {
+              "agent": 5,
+              "workflow": 33,
+              "blueprint": 225,
+              "product_template": 53,
+              "company_template": 9,
+              "plugin": 0,
+              "sdk_package": 5,
+              "automation_pack": 58,
+              "design_system": 0,
+              "ui_component": 0,
+              "knowledge_pack": 5,
+              "prompt_pack": 1,
+              "deployment_recipe": 83
+            }
+          }
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.415Z"
+    },
+    {
+      "id": "kex_1782947556441_n2wf",
+      "channelId": "des_to_eng",
+      "channelDesc": "Design quality → Engineering standards",
+      "from": "design",
+      "to": "engineering",
+      "itemsExchanged": 1,
+      "minutesSaved": 12,
+      "items": [
+        {
+          "ref": "knowledge_quality_scores",
+          "count": 128,
+          "payload": {}
+        }
+      ],
+      "context": {},
+      "exchangedAt": "2026-07-01T23:12:36.441Z"
     }
   ],
   "stats": {
-    "total": 64,
+    "total": 128,
     "byChannel": {
-      "eng_to_biz": 10,
-      "res_to_mkt": 10,
-      "cust_to_prod": 8,
-      "biz_to_eng": 10,
-      "eng_to_res": 10,
-      "mkt_to_all": 8,
-      "des_to_eng": 8
+      "eng_to_biz": 20,
+      "res_to_mkt": 20,
+      "cust_to_prod": 16,
+      "biz_to_eng": 20,
+      "eng_to_res": 20,
+      "mkt_to_all": 16,
+      "des_to_eng": 16
     },
-    "itemsExchanged": 104,
-    "minutesSaved": 1756
+    "itemsExchanged": 198,
+    "minutesSaved": 3362
   },
-  "updatedAt": "2026-06-29T22:44:53.161Z"
+  "updatedAt": "2026-07-01T23:12:36.455Z"
 }

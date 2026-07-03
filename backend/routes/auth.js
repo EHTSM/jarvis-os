@@ -126,8 +126,48 @@ function _handleForgotPassword(req, res) {
   if (!email || typeof email !== "string" || !email.includes("@")) {
     return res.status(400).json({ error: "Valid email required" });
   }
-  auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
-  res.json({ success: true, message: "If an account exists, a reset link will be sent." });
+  // Delegate to betaReadiness which generates a real token and sends the email
+  try {
+    const beta = require("../services/betaReadiness.cjs");
+    const result = beta.sendPasswordReset(email.toLowerCase().trim());
+    auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
+    return res.json({ success: true, message: result.message });
+  } catch {
+    auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
+    return res.json({ success: true, message: "If an account exists, a reset link will be sent." });
+  }
+}
+
+function _handleResetPassword(req, res) {
+  const { token, password } = req.body || {};
+  if (!token || typeof token !== "string") {
+    return res.status(400).json({ error: "token is required" });
+  }
+  if (!password || typeof password !== "string") {
+    return res.status(400).json({ error: "password is required" });
+  }
+  try {
+    const beta = require("../services/betaReadiness.cjs");
+    const result = beta.resetPassword(token, password);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    auditLog.recordAuth({ action: "password_reset", operator: token.slice(0, 8) + "...", method: "token" });
+    return res.json({ success: true, message: result.message });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+}
+
+function _handleVerifyEmail(req, res) {
+  const token = (req.query.token || req.body?.token || "");
+  if (!token) return res.status(400).json({ error: "token is required" });
+  try {
+    const beta = require("../services/betaReadiness.cjs");
+    const result = beta.verifyEmail(token);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    return res.json({ success: true, message: "Email verified.", accountId: result.accountId });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
 }
 
 function _firebaseAdmin() {
@@ -200,11 +240,16 @@ const _loginRL        = rateLimiter(10, 5 * 60_000);
 const _forgotRL       = rateLimiter(5,  15 * 60_000);
 const _firebaseRL     = rateLimiter(20, 5 * 60_000);
 
+const _resetRL = rateLimiter(5, 15 * 60_000);
+
 router.post("/auth/login",              _loginRL,    _handleLogin);
 router.post("/auth/logout",                          _handleLogout);
 router.get("/auth/me",                  requireAuth, _handleMe);
 router.post("/auth/refresh",            requireAuth, _handleRefresh);
 router.post("/auth/forgot-password",    _forgotRL,   _handleForgotPassword);
+router.post("/auth/reset-password",     _resetRL,    _handleResetPassword);  // Mission 6: real reset
+router.get("/auth/verify-email",                     _handleVerifyEmail);    // Mission 6: email verify
+router.post("/auth/verify-email",                    _handleVerifyEmail);    // Mission 6: email verify (POST form)
 router.post("/auth/firebase-session",   _firebaseRL, _handleFirebaseSession);
 
 // /api/* aliases — same handlers, respond before ops.js requireAuth gate
@@ -213,6 +258,8 @@ router.post("/api/auth/logout",                      _handleLogout);
 router.get("/api/auth/me",              requireAuth, _handleMe);
 router.post("/api/auth/refresh",        requireAuth, _handleRefresh);
 router.post("/api/auth/forgot-password",_forgotRL,   _handleForgotPassword);
+router.post("/api/auth/reset-password", _resetRL,    _handleResetPassword);
+router.get("/api/auth/verify-email",                 _handleVerifyEmail);
 router.post("/api/auth/firebase-session",_firebaseRL, _handleFirebaseSession);
 
 module.exports = router;

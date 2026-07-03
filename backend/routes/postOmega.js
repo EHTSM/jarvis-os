@@ -25,7 +25,7 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const _sre = () => require("../services/selfReviewEngine.cjs");
 const _ca  = () => require("../services/consolidationAudit.cjs");
 
-router.use(requireAuth);
+router.use("/pomena", requireAuth);
 
 // ── Status ────────────────────────────────────────────────────────────────────
 router.get("/pomena/status", (req, res) => {

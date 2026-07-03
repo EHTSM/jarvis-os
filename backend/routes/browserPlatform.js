@@ -99,7 +99,7 @@ function _getRunner()   { return require("../../agents/browser/browserRunner.cjs
 function _getEngine()   { return require("../../agents/browser/actionEngine.cjs"); }
 function _getStore()    { return require("../../agents/browser/browserWorkflowStore.cjs"); }
 
-router.use(requireAuth);
+router.use("/browser-platform", requireAuth);
 
 function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
 

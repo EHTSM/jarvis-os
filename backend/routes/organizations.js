@@ -58,7 +58,7 @@ function _ok(res, data)            { res.json({ ok: true, ...data }); }
 function _err(res, e, fallback)    { res.status(e.status || fallback || 500).json({ ok: false, error: e.message }); }
 
 // All org routes require auth
-router.use(requireAuth);
+router.use("/orgs", requireAuth);
 
 // ── RBAC metadata (no org needed) ────────────────────────────────────────────
 router.get("/orgs/roles", (req, res) => {

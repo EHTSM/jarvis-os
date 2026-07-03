@@ -1,10 +1,10 @@
 {
-  "version": "3.0.22",
-  "previous": "3.0.21",
-  "strategy": "patch",
-  "bumpedAt": "2026-06-05T09:28:18.893Z",
-  "bumpedBy": "engineering-autopilot",
-  "notes": "",
+  "version": "1.0.0-rc1",
+  "previous": "1.0.0-rc1",
+  "frozenAt": "2026-07-02T21:04:45.590Z",
+  "frozenBy": "rc1-freeze",
+  "releaseStage": "release-candidate",
+  "buildId": "rc1-build-1783026285590",
   "history": [
     {
       "from": "3.0.2",
@@ -105,6 +105,330 @@
       "from": "3.0.21",
       "to": "3.0.22",
       "at": "2026-06-05T09:28:18.893Z"
+    },
+    {
+      "from": "3.0.22",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:39.223Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:39.228Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:39.846Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:40.052Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:40.258Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:39:40.445Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:44.934Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:44.946Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:46.780Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:46.970Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:47.188Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T07:44:47.378Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:02.641Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:02.650Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:03.574Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:03.759Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:03.922Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T09:14:04.079Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:09.491Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:09.494Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:09.928Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:10.114Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:10.276Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:05:10.440Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:26.741Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:26.744Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:27.132Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:27.344Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:27.545Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:58:27.756Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:33.244Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:33.247Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:33.747Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:33.899Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:34.070Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T20:59:34.226Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:26.970Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:26.973Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:27.452Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:27.627Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:27.808Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:00:27.973Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:37.306Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:37.308Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:37.634Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:37.779Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:37.937Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:02:38.085Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:44.824Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:44.827Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:45.154Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:45.298Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:45.446Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-02T21:04:45.590Z",
+      "strategy": "rc-freeze"
     }
   ]
 }

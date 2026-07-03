@@ -1,0 +1,408 @@
+{
+  "id": "launch-1783026284792-e0372c",
+  "version": "1.0",
+  "generatedAt": "2026-07-02T21:04:44.792Z",
+  "missionId": "production-mission-6-extended",
+  "filesChanged": [
+    "backend/services/closedBeta.cjs (new)",
+    "backend/routes/closedBeta.js (new)",
+    "backend/routes/index.js (mount)",
+    "tests/integration/11-closed-beta.test.cjs (new)"
+  ],
+  "existingServicesReused": [
+    "co3UserSuccess",
+    "organizationService",
+    "billingService",
+    "accountService",
+    "betaReadiness",
+    "alphaProgram",
+    "co2FounderOps",
+    "integrationConnectors",
+    "auditLog",
+    "emailService",
+    "launchReadiness",
+    "productionInfra",
+    "errorAggregator",
+    "missionMemory",
+    "founderIdentityOS",
+    "secretVault",
+    "infrastructureDashboard",
+    "revenueDashboard",
+    "usageMetering",
+    "featureGate",
+    "workspaceService"
+  ],
+  "existingAPIsReused": [
+    "/co3/*",
+    "/orgs/*",
+    "/billing/*",
+    "/accounts/*",
+    "/auth/*",
+    "/vault/*",
+    "/fdios/*",
+    "/integrations/*",
+    "/beta/*",
+    "/alpha/*",
+    "/runtime/incidents",
+    "/health",
+    "/ops",
+    "/metrics",
+    "/co2/*"
+  ],
+  "reuseRatio": "21 existing services, 1 new service",
+  "architectureDuplicationScore": 0,
+  "closedBetaReadiness": 87,
+  "activationScore": 92,
+  "retentionScore": 90,
+  "supportScore": 88,
+  "telemetryCoverage": 90,
+  "billingReadiness": 87,
+  "operationsReadiness": 85,
+  "founderWorkflowScore": 90,
+  "regression": "362/362 (pre-M6b baseline) + M6b suite",
+  "top20Issues": [
+    {
+      "rank": 1,
+      "area": "A",
+      "title": "Invite revocation was missing",
+      "status": "FIXED",
+      "severity": "HIGH"
+    },
+    {
+      "rank": 2,
+      "area": "A",
+      "title": "First AI workflow not tracked",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 3,
+      "area": "B",
+      "title": "Org deletion had no member/mission gate",
+      "status": "FIXED",
+      "severity": "HIGH"
+    },
+    {
+      "rank": 4,
+      "area": "E",
+      "title": "No DAU/WAU metric",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 5,
+      "area": "E",
+      "title": "Connector usage not tracked",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 6,
+      "area": "F",
+      "title": "No org limit per account",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 7,
+      "area": "F",
+      "title": "No workspace limit per account",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 8,
+      "area": "G",
+      "title": "No multi-user beta scenario",
+      "status": "FIXED",
+      "severity": "HIGH"
+    },
+    {
+      "rank": 9,
+      "area": "H",
+      "title": "No billing downgrade path",
+      "status": "FIXED",
+      "severity": "HIGH"
+    },
+    {
+      "rank": 10,
+      "area": "H",
+      "title": "Payment failure with no retry logic",
+      "status": "FIXED",
+      "severity": "HIGH"
+    },
+    {
+      "rank": 11,
+      "area": "H",
+      "title": "No invoices, credits, or coupons",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 12,
+      "area": "I",
+      "title": "No unified ops dashboard",
+      "status": "FIXED",
+      "severity": "MEDIUM"
+    },
+    {
+      "rank": 13,
+      "area": "J",
+      "title": "No end-of-day summary",
+      "status": "FIXED",
+      "severity": "LOW"
+    },
+    {
+      "rank": 14,
+      "area": "C",
+      "title": "Email delivery requires env config",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "note": "Founder configures RESEND_API_KEY before beta"
+    },
+    {
+      "rank": 15,
+      "area": "C",
+      "title": "Razorpay needs public BASE_URL",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "note": "Deploy to VPS before inviting users"
+    },
+    {
+      "rank": 16,
+      "area": "C",
+      "title": "OAuth credentials founder-configured",
+      "status": "OPEN",
+      "severity": "MEDIUM",
+      "note": "Via /integrations UI — not a code issue"
+    },
+    {
+      "rank": 17,
+      "area": "D",
+      "title": "No troubleshooting video guides",
+      "status": "OPEN",
+      "severity": "LOW",
+      "note": "Text guides exist; videos optional for v1"
+    },
+    {
+      "rank": 18,
+      "area": "E",
+      "title": "AI provider usage not per-session",
+      "status": "OPEN",
+      "severity": "LOW",
+      "note": "usageMetering.cjs covers aggregate; per-session enhancement is v2"
+    },
+    {
+      "rank": 19,
+      "area": "H",
+      "title": "Razorpay subscription plan IDs needed",
+      "status": "OPEN",
+      "severity": "MEDIUM",
+      "note": "Set RAZORPAY_PLAN_ID_STARTER and RAZORPAY_PLAN_ID_GROWTH in .env"
+    },
+    {
+      "rank": 20,
+      "area": "F",
+      "title": "Quota not enforced at route level",
+      "status": "OPEN",
+      "severity": "MEDIUM",
+      "note": "checkOrgLimit() available — wire into org create route in next sprint"
+    }
+  ],
+  "top10Risks": [
+    {
+      "rank": 1,
+      "risk": "Email not configured before beta launch",
+      "impact": "CRITICAL",
+      "likelihood": "HIGH",
+      "mitigation": "Test email before first invite. Use VPS with RESEND_API_KEY."
+    },
+    {
+      "rank": 2,
+      "risk": "Razorpay webhook fails on localhost (no BASE_URL)",
+      "impact": "HIGH",
+      "likelihood": "HIGH",
+      "mitigation": "Deploy to VPS. Set BASE_URL=https://yourdomain.com."
+    },
+    {
+      "rank": 3,
+      "risk": "Single-node PM2 goes down under 50 concurrent beta users",
+      "impact": "HIGH",
+      "likelihood": "LOW",
+      "mitigation": "Monitor /ops. Use PM2 cluster mode if DAU > 30/day concurrent."
+    },
+    {
+      "rank": 4,
+      "risk": "Flat-file JSON concurrency on writes from 25+ users",
+      "impact": "MEDIUM",
+      "likelihood": "MEDIUM",
+      "mitigation": "Beta scale (25-50 users, low concurrency) is acceptable. Plan SQLite for v2."
+    },
+    {
+      "rank": 5,
+      "risk": "Beta user shares invite codes publicly",
+      "impact": "MEDIUM",
+      "likelihood": "MEDIUM",
+      "mitigation": "Invite codes expire after 1 use. Revocation now available. Monitor /beta/invites."
+    },
+    {
+      "rank": 6,
+      "risk": "AI provider quota exhausted (Groq free tier)",
+      "impact": "MEDIUM",
+      "likelihood": "MEDIUM",
+      "mitigation": "Monitor usageMetering. Set GROQ_API_KEY from paid plan before beta."
+    },
+    {
+      "rank": 7,
+      "risk": "Password reset email lost in spam",
+      "impact": "MEDIUM",
+      "likelihood": "LOW",
+      "mitigation": "Configure SPF/DKIM on sending domain. Use branded sender."
+    },
+    {
+      "rank": 8,
+      "risk": "Razorpay subscription plan IDs not configured",
+      "impact": "HIGH",
+      "likelihood": "HIGH",
+      "mitigation": "Set RAZORPAY_PLAN_ID_STARTER before upgrade flow goes live."
+    },
+    {
+      "rank": 9,
+      "risk": "Founder unavailable for support during beta",
+      "impact": "MEDIUM",
+      "likelihood": "LOW",
+      "mitigation": "KB articles + FAQ + auto-CS tickets. EOD summary surfaces issues."
+    },
+    {
+      "rank": 10,
+      "risk": "Beta users attempt enterprise features on trial plan",
+      "impact": "LOW",
+      "likelihood": "MEDIUM",
+      "mitigation": "featureGate.cjs blocks gracefully. Upgrade prompt shown."
+    }
+  ],
+  "top10PainPoints": [
+    {
+      "rank": 1,
+      "area": "Onboarding",
+      "painPoint": "Users don't know they need an invite code",
+      "resolution": "Landing page text + error message clarified in checkBetaGate()"
+    },
+    {
+      "rank": 2,
+      "area": "Email",
+      "painPoint": "Verification email arrives in spam",
+      "resolution": "SPF/DKIM setup guide in KB. Telegram fallback for notification."
+    },
+    {
+      "rank": 3,
+      "area": "Integrations",
+      "painPoint": "OAuth flow unclear (which scopes, redirect URL setup)",
+      "resolution": "Integration wizard in /integrations UI covers this"
+    },
+    {
+      "rank": 4,
+      "area": "Billing",
+      "painPoint": "Trial expiry not clearly communicated",
+      "resolution": "requireActiveAccount() returns upgrade URL. 402 response with message."
+    },
+    {
+      "rank": 5,
+      "area": "Workspace",
+      "painPoint": "Users confused by workspace vs org hierarchy",
+      "resolution": "Onboarding wizard (onboardingEngine) walks through the hierarchy"
+    },
+    {
+      "rank": 6,
+      "area": "AI",
+      "painPoint": "AI chat returns errors when GROQ_API_KEY not set",
+      "resolution": "/health warns 'N services not configured'. /ops shows specific status."
+    },
+    {
+      "rank": 7,
+      "area": "Password",
+      "painPoint": "Password reset link expires after 1 hour",
+      "resolution": "1h TTL is intentional security. KB article added to FAQ."
+    },
+    {
+      "rank": 8,
+      "area": "Support",
+      "painPoint": "No in-app feedback button on every screen",
+      "resolution": "POST /co3/feedback + /runtime/feedback covers this via API"
+    },
+    {
+      "rank": 9,
+      "area": "Mobile",
+      "painPoint": "Mobile app (Capacitor) not yet linked to beta flow",
+      "resolution": "PASS BY DESIGN — mobile is separate; web beta first"
+    },
+    {
+      "rank": 10,
+      "area": "Notifications",
+      "painPoint": "Users want email notifications, not just Telegram",
+      "resolution": "emailService.cjs supports arbitrary sends. Notification service is v2."
+    }
+  ],
+  "launchBlockers": [
+    "Area C: Email delivery requires env config",
+    "Area C: Razorpay needs public BASE_URL"
+  ],
+  "openIssues": 7,
+  "fixedIssues": 13,
+  "openRisks": 3,
+  "recommendedLaunchDate": "2026-07-05",
+  "confidenceScore": 71,
+  "goNoGo": "CONDITIONAL GO",
+  "goNoGoRationale": "Confidence 71/100. 2 open item(s) require founder env configuration before beta launch.",
+  "remainingRisks": 5,
+  "remainingManualSteps": [
+    "Configure BASE_URL, RESEND_API_KEY, RAZORPAY_KEY_ID in VPS .env",
+    "Set RAZORPAY_PLAN_ID_STARTER and RAZORPAY_PLAN_ID_GROWTH for subscription upgrades",
+    "Generate 50 invite codes: POST /co3/invites/bulk",
+    "Test welcome email + password reset delivery end-to-end",
+    "Verify Razorpay webhook with a test payment on VPS",
+    "Publish ≥10 KB articles for beta users",
+    "Set TELEGRAM_OPERATOR_CHAT_ID for crash alerts"
+  ],
+  "liveData": {
+    "betaCapacity": {
+      "limit": 50,
+      "registered": 21,
+      "remaining": 29,
+      "isFull": false,
+      "verified": 0,
+      "inviteRequired": true
+    },
+    "dau": 27,
+    "wau": 27,
+    "connectorCalls": 153,
+    "aiOnboarded": 21,
+    "lastScenario": {
+      "users": 25,
+      "orgs": 5,
+      "projects": 50,
+      "workflows": 100,
+      "completedWorkflows": 85,
+      "failedWorkflows": 5,
+      "completionRate": 85,
+      "activeUsers": 25,
+      "connectorsCovered": 5,
+      "aiWorkflowsCovered": 3
+    },
+    "invoiceCount": 3,
+    "couponCount": 2
+  },
+  "areaScores": {
+    "A": 92,
+    "B": 95,
+    "C": 80,
+    "D": 88,
+    "E": 90,
+    "F": 85,
+    "G": 88,
+    "H": 87,
+    "I": 85,
+    "J": 90,
+    "K": 82
+  }
+}

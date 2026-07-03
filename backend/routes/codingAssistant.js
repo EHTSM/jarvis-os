@@ -156,7 +156,7 @@ function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedF
 }
 
 // ── All routes require auth ───────────────────────────────────────────────────
-router.use(requireAuth);
+router.use("/coding", requireAuth);
 
 // ── POST /coding/ask — free-form question with full repo context ──────────────
 router.post("/coding/ask", async (req, res) => {

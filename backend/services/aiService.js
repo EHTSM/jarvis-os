@@ -2,7 +2,7 @@
 /**
  * AI Service — multi-provider router with health-based failover.
  *
- * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama"]
+ * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama","deepseek","together","fireworks","cohere","nvidia","lmstudio"]
  * Each provider is attempted once per call; failures are logged and the next
  * provider is tried. The last failure reason per provider is retained for
  * the /ai/status endpoint.
@@ -16,6 +16,14 @@
  *   - routeByCapability(task, opts) — capability-based intelligent routing
  *   - chat(messages, opts)          — OpenAI-format convenience wrapper
  *   - getProviderStatus()           — snapshot health for all 6 providers
+ *
+ * Production Mission 3 — Phase A additions (all OpenAI-compatible REST):
+ *   - DeepSeek   (api.deepseek.com/v1)        DEEPSEEK_API_KEY
+ *   - Together AI (api.together.xyz/v1)        TOGETHER_API_KEY
+ *   - Fireworks AI (api.fireworks.ai/v1)       FIREWORKS_API_KEY
+ *   - Cohere     (api.cohere.ai/v1)            COHERE_API_KEY
+ *   - NVIDIA NIM (integrate.api.nvidia.com/v1) NVIDIA_API_KEY
+ *   - LM Studio  (localhost:1234 by default)   LM_STUDIO_URL
  */
 
 const axios  = require("axios");
@@ -27,11 +35,23 @@ const OPENAI_URL      = "https://api.openai.com/v1/chat/completions";
 const OPENROUTER_URL  = "https://openrouter.ai/api/v1/chat/completions";
 const ANTHROPIC_URL   = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VER   = "2023-06-01";
+const DEEPSEEK_URL    = "https://api.deepseek.com/v1/chat/completions";
+const TOGETHER_URL    = "https://api.together.xyz/v1/chat/completions";
+const FIREWORKS_URL   = "https://api.fireworks.ai/inference/v1/chat/completions";
+const COHERE_URL      = "https://api.cohere.ai/v1/chat";
+const NVIDIA_URL      = "https://integrate.api.nvidia.com/v1/chat/completions";
 
-function _ollamaUrl()    { return (process.env.OLLAMA_URL   || "http://localhost:11434") + "/api/chat"; }
-function _ollamaModel()  { return process.env.OLLAMA_MODEL  || "llama3.2"; }
+function _ollamaUrl()    { return (process.env.OLLAMA_URL    || "http://localhost:11434") + "/api/chat"; }
+function _lmStudioUrl()  { return (process.env.LM_STUDIO_URL || "http://localhost:1234")  + "/v1/chat/completions"; }
+function _ollamaModel()  { return process.env.OLLAMA_MODEL   || "llama3.2"; }
+function _lmStudioModel(){ return process.env.LM_STUDIO_MODEL || "local-model"; }
 function _claudeModel()  { return process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6"; }
-function _geminiModel()  { return process.env.GEMINI_MODEL  || "gemini-2.0-flash"; }
+function _geminiModel()  { return process.env.GEMINI_MODEL   || "gemini-2.0-flash"; }
+function _deepseekModel(){ return process.env.DEEPSEEK_MODEL  || "deepseek-chat"; }
+function _togetherModel(){ return process.env.TOGETHER_MODEL  || "meta-llama/Llama-3-70b-chat-hf"; }
+function _fireworksModel(){ return process.env.FIREWORKS_MODEL || "accounts/fireworks/models/llama-v3-70b-instruct"; }
+function _cohereModel()  { return process.env.COHERE_MODEL    || "command-r-plus"; }
+function _nvidiaModel()  { return process.env.NVIDIA_MODEL    || "meta/llama-3.1-70b-instruct"; }
 function _geminiUrl()    {
     const model  = _geminiModel();
     const apiKey = process.env.GEMINI_API_KEY || "";
@@ -46,8 +66,8 @@ const _state = {
     callCount:        {},     // { [provider]: int } — per-provider call counter (F4)
     failCount:        0,
 };
-// Initialise per-provider call counters for all 6 providers
-["groq", "openrouter", "openai", "claude", "gemini", "ollama"].forEach(p => { _state.callCount[p] = 0; });
+// Initialise per-provider call counters for all providers
+["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"].forEach(p => { _state.callCount[p] = 0; });
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 let _cachedPrompt = null;
@@ -72,7 +92,7 @@ function _getSystemPrompt() {
 // Respects LLM_PROVIDER env var as the primary; others follow in fixed order.
 function _providerOrder() {
     const preferred = (process.env.LLM_PROVIDER || "").toLowerCase().trim();
-    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama"];
+    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
     if (!preferred || !defaults.includes(preferred)) return defaults;
     return [preferred, ...defaults.filter(p => p !== preferred)];
 }
@@ -85,6 +105,12 @@ const TIMEOUTS = {
     ollama:     parseInt(process.env.OLLAMA_TIMEOUT     || "30000", 10),
     claude:     parseInt(process.env.ANTHROPIC_TIMEOUT  || "30000", 10),
     gemini:     parseInt(process.env.GEMINI_TIMEOUT     || "25000", 10),
+    deepseek:   parseInt(process.env.DEEPSEEK_TIMEOUT   || "25000", 10),
+    together:   parseInt(process.env.TOGETHER_TIMEOUT   || "25000", 10),
+    fireworks:  parseInt(process.env.FIREWORKS_TIMEOUT  || "25000", 10),
+    cohere:     parseInt(process.env.COHERE_TIMEOUT     || "25000", 10),
+    nvidia:     parseInt(process.env.NVIDIA_TIMEOUT     || "30000", 10),
+    lmstudio:   parseInt(process.env.LM_STUDIO_TIMEOUT  || "30000", 10),
 };
 
 // ── Retry helper (network-class errors only, 1 retry) ────────────────────────
@@ -223,6 +249,100 @@ async function _gemini(messages, model, opts = {}) {
     return text;
 }
 
+// ── DeepSeek adapter (OpenAI-compatible) ─────────────────────────────────────
+async function _deepseek(messages, model) {
+    const key = process.env.DEEPSEEK_API_KEY;
+    if (!key) throw new Error("DEEPSEEK_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            DEEPSEEK_URL,
+            { model: model || _deepseekModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.deepseek }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── Together AI adapter (OpenAI-compatible) ───────────────────────────────────
+async function _together(messages, model) {
+    const key = process.env.TOGETHER_API_KEY;
+    if (!key) throw new Error("TOGETHER_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            TOGETHER_URL,
+            { model: model || _togetherModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.together }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── Fireworks AI adapter (OpenAI-compatible) ──────────────────────────────────
+async function _fireworks(messages, model) {
+    const key = process.env.FIREWORKS_API_KEY;
+    if (!key) throw new Error("FIREWORKS_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            FIREWORKS_URL,
+            { model: model || _fireworksModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.fireworks }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── Cohere adapter ─────────────────────────────────────────────────────────────
+// Cohere Chat v1 accepts OpenAI-style message arrays.
+async function _cohere(messages, model) {
+    const key = process.env.COHERE_API_KEY;
+    if (!key) throw new Error("COHERE_API_KEY not set");
+    return _withRetry(async () => {
+        // Map OpenAI roles to Cohere roles (system → SYSTEM, user → USER, assistant → CHATBOT)
+        const cohereMessages = messages.map(m => ({
+            role:    m.role === "assistant" ? "CHATBOT" : m.role.toUpperCase(),
+            message: m.content,
+        }));
+        const lastUser = [...cohereMessages].reverse().find(m => m.role === "USER");
+        const chatHistory = cohereMessages.filter(m => m !== lastUser);
+
+        const res = await axios.post(
+            COHERE_URL,
+            { model: model || _cohereModel(), message: lastUser?.message || "", chat_history: chatHistory, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", Accept: "application/json" }, timeout: TIMEOUTS.cohere }
+        );
+        const text = res.data?.text || res.data?.message?.content?.[0]?.text;
+        if (!text) throw new Error("Empty Cohere response");
+        return text;
+    });
+}
+
+// ── NVIDIA NIM adapter (OpenAI-compatible) ────────────────────────────────────
+async function _nvidia(messages, model) {
+    const key = process.env.NVIDIA_API_KEY;
+    if (!key) throw new Error("NVIDIA_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            NVIDIA_URL,
+            { model: model || _nvidiaModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.nvidia }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── LM Studio adapter (OpenAI-compatible, local) ─────────────────────────────
+async function _lmstudio(messages, model) {
+    const url = _lmStudioUrl();
+    const res = await axios.post(
+        url,
+        { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: 1024 },
+        { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.lmstudio }
+    );
+    const content = res.data?.choices?.[0]?.message?.content;
+    if (!content) throw new Error("Empty LM Studio response");
+    return content;
+}
+
 // ── Health check ──────────────────────────────────────────────────────────────
 async function _healthCheck(provider) {
     try {
@@ -276,6 +396,36 @@ async function _healthCheck(provider) {
                 );
                 return { ok: true };
             }
+            case "deepseek":
+                if (!process.env.DEEPSEEK_API_KEY) return { ok: false, reason: "DEEPSEEK_API_KEY not set" };
+                await axios.get("https://api.deepseek.com/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "together":
+                if (!process.env.TOGETHER_API_KEY) return { ok: false, reason: "TOGETHER_API_KEY not set" };
+                await axios.get("https://api.together.xyz/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.TOGETHER_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "fireworks":
+                if (!process.env.FIREWORKS_API_KEY) return { ok: false, reason: "FIREWORKS_API_KEY not set" };
+                await axios.get("https://api.fireworks.ai/inference/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.FIREWORKS_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "cohere":
+                if (!process.env.COHERE_API_KEY) return { ok: false, reason: "COHERE_API_KEY not set" };
+                await axios.get("https://api.cohere.ai/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.COHERE_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "nvidia":
+                if (!process.env.NVIDIA_API_KEY) return { ok: false, reason: "NVIDIA_API_KEY not set" };
+                await axios.get("https://integrate.api.nvidia.com/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.NVIDIA_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "lmstudio": {
+                const lmBase = process.env.LM_STUDIO_URL || "http://localhost:1234";
+                await axios.get(`${lmBase}/v1/models`, { timeout: 3000 });
+                return { ok: true };
+            }
             default:
                 return { ok: false, reason: "unknown provider" };
         }
@@ -314,6 +464,12 @@ async function callAI(prompt, opts = {}) {
                 case "ollama":     reply = await _ollama(messages, model);            break;
                 case "claude":     reply = await _claude(messages, model, opts);      break;
                 case "gemini":     reply = await _gemini(messages, model, opts);      break;
+                case "deepseek":   reply = await _deepseek(messages, model);          break;
+                case "together":   reply = await _together(messages, model);          break;
+                case "fireworks":  reply = await _fireworks(messages, model);         break;
+                case "cohere":     reply = await _cohere(messages, model);            break;
+                case "nvidia":     reply = await _nvidia(messages, model);            break;
+                case "lmstudio":   reply = await _lmstudio(messages, model);         break;
                 default:
                     logger.warn(`AI: unknown provider "${provider}", skipping`);
                     continue;
@@ -360,6 +516,12 @@ async function getAIStatus() {
         ollama:     true,   // local — no key required
         claude:     !!process.env.ANTHROPIC_API_KEY,
         gemini:     !!process.env.GEMINI_API_KEY,
+        deepseek:   !!process.env.DEEPSEEK_API_KEY,
+        together:   !!process.env.TOGETHER_API_KEY,
+        fireworks:  !!process.env.FIREWORKS_API_KEY,
+        cohere:     !!process.env.COHERE_API_KEY,
+        nvidia:     !!process.env.NVIDIA_API_KEY,
+        lmstudio:   true,   // local — no key required
     };
 
     // Run health probes in parallel, with 6s cap so /ai/status stays fast
@@ -399,12 +561,12 @@ async function getAIStatus() {
  */
 function routeByCapability(task, opts = {}) {
     const ROUTING = {
-        reasoning: ["claude", "openai", "groq", "openrouter"],
-        coding:    ["openai", "groq",   "claude", "openrouter"],
-        fast:      ["groq",  "gemini",  "openrouter", "claude"],
-        cheap:     ["ollama","groq",    "gemini", "openrouter"],
-        creative:  ["claude","openrouter","gemini","openai"],
-        analysis:  ["claude","gemini",  "openai","openrouter"],
+        reasoning: ["claude", "openai",    "deepseek",  "nvidia",    "groq",      "openrouter"],
+        coding:    ["openai", "deepseek",  "fireworks", "groq",      "claude",    "openrouter"],
+        fast:      ["groq",  "gemini",     "deepseek",  "together",  "openrouter","claude"],
+        cheap:     ["ollama","lmstudio",   "groq",      "together",  "gemini",    "openrouter"],
+        creative:  ["claude","openrouter", "gemini",    "openai",    "cohere",    "fireworks"],
+        analysis:  ["claude","gemini",     "nvidia",    "openai",    "cohere",    "openrouter"],
     };
 
     // Determine whether a provider has its required key configured
@@ -488,6 +650,12 @@ async function chat(messages, opts = {}) {
                 case "ollama":     text = await _ollama(allMessages, model);           break;
                 case "claude":     text = await _claude(allMessages, model, adapterOpts); break;
                 case "gemini":     text = await _gemini(allMessages, model, adapterOpts); break;
+                case "deepseek":   text = await _deepseek(allMessages, model);         break;
+                case "together":   text = await _together(allMessages, model);         break;
+                case "fireworks":  text = await _fireworks(allMessages, model);        break;
+                case "cohere":     text = await _cohere(allMessages, model);           break;
+                case "nvidia":     text = await _nvidia(allMessages, model);           break;
+                case "lmstudio":   text = await _lmstudio(allMessages, model);        break;
                 default:
                     continue;
             }
@@ -519,6 +687,12 @@ function _defaultModel(provider) {
         case "ollama":     return _ollamaModel();
         case "claude":     return _claudeModel();
         case "gemini":     return _geminiModel();
+        case "deepseek":   return _deepseekModel();
+        case "together":   return _togetherModel();
+        case "fireworks":  return _fireworksModel();
+        case "cohere":     return _cohereModel();
+        case "nvidia":     return _nvidiaModel();
+        case "lmstudio":   return _lmStudioModel();
         default:           return "unknown";
     }
 }
@@ -531,7 +705,7 @@ function _defaultModel(provider) {
  * @returns {{ [provider]: { available: boolean, hasKey: boolean, lastFailure: string|null, callCount: number } }}
  */
 function getProviderStatus() {
-    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini"];
+    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
     const result = {};
 
     for (const p of ALL) {
@@ -543,6 +717,12 @@ function getProviderStatus() {
                 case "ollama":     return true;
                 case "claude":     return !!process.env.ANTHROPIC_API_KEY;
                 case "gemini":     return !!process.env.GEMINI_API_KEY;
+                case "deepseek":   return !!process.env.DEEPSEEK_API_KEY;
+                case "together":   return !!process.env.TOGETHER_API_KEY;
+                case "fireworks":  return !!process.env.FIREWORKS_API_KEY;
+                case "cohere":     return !!process.env.COHERE_API_KEY;
+                case "nvidia":     return !!process.env.NVIDIA_API_KEY;
+                case "lmstudio":   return true;   // local, no key needed
                 default:           return false;
             }
         })();

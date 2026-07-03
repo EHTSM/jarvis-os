@@ -1,7 +1,7 @@
 {
   "optimizations": [
     {
-      "id": "ropt_1782773098039_xgop",
+      "id": "ropt_1782947576310_wnke",
       "dimension": "conversion_rate",
       "title": "Improve Trial → Paid Conversion",
       "current": {
@@ -22,10 +22,10 @@
       ],
       "priority": "medium",
       "confidence": 82,
-      "optimizedAt": "2026-06-29T22:44:58.039Z"
+      "optimizedAt": "2026-07-01T23:12:56.310Z"
     },
     {
-      "id": "ropt_1782773098089_j50l",
+      "id": "ropt_1782947576627_9798",
       "dimension": "renewal_rate",
       "title": "Increase Renewal Rate",
       "current": {
@@ -45,10 +45,10 @@
       ],
       "priority": "medium",
       "confidence": 90,
-      "optimizedAt": "2026-06-29T22:44:58.089Z"
+      "optimizedAt": "2026-07-01T23:12:56.627Z"
     },
     {
-      "id": "ropt_1782773098138_a4hp",
+      "id": "ropt_1782947576930_702t",
       "dimension": "expansion_mrr",
       "title": "Drive Expansion Revenue",
       "current": {
@@ -67,10 +67,10 @@
       ],
       "priority": "medium",
       "confidence": 75,
-      "optimizedAt": "2026-06-29T22:44:58.138Z"
+      "optimizedAt": "2026-07-01T23:12:56.930Z"
     },
     {
-      "id": "ropt_1782773098138_6eji",
+      "id": "ropt_1782947576931_zpow",
       "dimension": "deal_velocity",
       "title": "Accelerate Deal Velocity",
       "current": {
@@ -89,7 +89,7 @@
       ],
       "priority": "medium",
       "confidence": 70,
-      "optimizedAt": "2026-06-29T22:44:58.138Z"
+      "optimizedAt": "2026-07-01T23:12:56.931Z"
     }
   ],
   "activePlaybooks": [],
@@ -105,5 +105,5 @@
     },
     "totalMRRImpact": 2378
   },
-  "updatedAt": "2026-06-29T22:44:58.138Z"
+  "updatedAt": "2026-07-01T23:12:56.931Z"
 }

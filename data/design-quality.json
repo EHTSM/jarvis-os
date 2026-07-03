@@ -7595,6 +7595,2238 @@
       ],
       "reasoningScore": 63,
       "scoredAt": "2026-06-29T22:43:47.128Z"
+    },
+    {
+      "id": "dq_1782947378301_uhw9",
+      "pageUrl": "https://example.com/dashboard",
+      "dimensions": {
+        "aesthetics": 94,
+        "usability": 92,
+        "accessibility": 100,
+        "consistency": 89,
+        "responsiveness": 100,
+        "maintainability": 80,
+        "performance": 100
+      },
+      "overall": 93,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 80,
+          "recommendation": "Improve maintainability: score 80/100 is below target threshold",
+          "priority": "low"
+        },
+        {
+          "dimension": "consistency",
+          "currentScore": 89,
+          "recommendation": "Improve consistency: score 89/100 is below target threshold",
+          "priority": "low"
+        },
+        {
+          "dimension": "usability",
+          "currentScore": 92,
+          "recommendation": "Improve usability: score 92/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.301Z"
+    },
+    {
+      "id": "dq_1782947378307_915e",
+      "pageUrl": "https://example.com/history-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.307Z"
+    },
+    {
+      "id": "dq_1782947378311_qek3",
+      "pageUrl": "https://example.com/improvements-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.311Z"
+    },
+    {
+      "id": "dq_1782947378315_04vj",
+      "pageUrl": "https://example.com/filter-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.315Z"
+    },
+    {
+      "id": "dq_1782947378321_50wm",
+      "pageUrl": "https://example.com/id-test",
+      "dimensions": {
+        "aesthetics": 87,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.321Z"
+    },
+    {
+      "id": "dq_1782947378326_e03q",
+      "pageUrl": "https://example.com/trend-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 85
+      },
+      "overall": 74,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 60,
+      "scoredAt": "2026-07-01T23:09:38.326Z"
+    },
+    {
+      "id": "dq_1782947378331_gzhr",
+      "pageUrl": "https://example.com/stats-pages-seed",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.331Z"
+    },
+    {
+      "id": "dq_1782947378338_rn34",
+      "pageUrl": "https://example.com/compare-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.338Z"
+    },
+    {
+      "id": "dq_1782947378343_b637",
+      "pageUrl": "https://example.com/baseline-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.343Z"
+    },
+    {
+      "id": "dq_1782947378347_haeo",
+      "pageUrl": "https://example.com/get-bm-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.347Z"
+    },
+    {
+      "id": "dq_1782947378351_mp6w",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.351Z"
+    },
+    {
+      "id": "dq_1782947378397_7s9s",
+      "pageUrl": "https://example.com/debt-test",
+      "dimensions": {
+        "aesthetics": 80,
+        "usability": 84,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 75
+      },
+      "overall": 73,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 51,
+      "scoredAt": "2026-07-01T23:09:38.397Z"
+    },
+    {
+      "id": "dq_1782947378401_vomm",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.401Z"
+    },
+    {
+      "id": "dq_1782947378415_86kh",
+      "pageUrl": "https://example.com/dashboard-seed-page",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.415Z"
+    },
+    {
+      "id": "dq_1782947378420_eexc",
+      "pageUrl": "https://example.com/dashboard-scores-seed",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.420Z"
+    },
+    {
+      "id": "dq_1782947378439_9kif",
+      "pageUrl": "https://example.com/pipeline-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 75
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 56,
+      "scoredAt": "2026-07-01T23:09:38.439Z"
+    },
+    {
+      "id": "dq_1782947378446_zoky",
+      "pageUrl": "https://example.com/chain-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.446Z"
+    },
+    {
+      "id": "dq_1782947378478_b4wu",
+      "pageUrl": "https://example.com/page-view-test",
+      "dimensions": {
+        "aesthetics": 87,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.478Z"
+    },
+    {
+      "id": "dq_1782947378752_63os",
+      "pageUrl": "https://example.com/trend-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.752Z"
+    },
+    {
+      "id": "dq_1782947378764_9obu",
+      "pageUrl": "https://example.com/compare-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.764Z"
+    },
+    {
+      "id": "dq_1782947378782_66lb",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:09:38.782Z"
+    },
+    {
+      "id": "dq_1782947378794_b2tl",
+      "pageUrl": "https://example.com/chain-test",
+      "dimensions": {
+        "aesthetics": 87,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:38.794Z"
+    },
+    {
+      "id": "dq_1782947389599_iweo",
+      "pageUrl": "https://example.com/multi-cycle",
+      "dimensions": {
+        "aesthetics": 87,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:49.599Z"
+    },
+    {
+      "id": "dq_1782947389951_ysbo",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:49.951Z"
+    },
+    {
+      "id": "dq_1782947390075_55i2",
+      "pageUrl": "https://example.com/evolution-main",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:50.075Z"
+    },
+    {
+      "id": "dq_1782947390197_k5y2",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:50.197Z"
+    },
+    {
+      "id": "dq_1782947390373_v62c",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:50.373Z"
+    },
+    {
+      "id": "dq_1782947390795_ltto",
+      "pageUrl": "https://example.com/full-evolution-1782947378181",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:50.795Z"
+    },
+    {
+      "id": "dq_1782947390904_o06z",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:50.904Z"
+    },
+    {
+      "id": "dq_1782947391178_vpnv",
+      "pageUrl": "https://example.com/time-save-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:51.178Z"
+    },
+    {
+      "id": "dq_1782947392102_ljee",
+      "pageUrl": "https://example.com/multi-cycle",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:09:52.102Z"
+    },
+    {
+      "id": "dq_1782947505042_bt6r",
+      "pageUrl": "https://example.com/dashboard",
+      "dimensions": {
+        "aesthetics": 96,
+        "usability": 90,
+        "accessibility": 100,
+        "consistency": 89,
+        "responsiveness": 100,
+        "maintainability": 80,
+        "performance": 100
+      },
+      "overall": 93,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 80,
+          "recommendation": "Improve maintainability: score 80/100 is below target threshold",
+          "priority": "low"
+        },
+        {
+          "dimension": "consistency",
+          "currentScore": 89,
+          "recommendation": "Improve consistency: score 89/100 is below target threshold",
+          "priority": "low"
+        },
+        {
+          "dimension": "usability",
+          "currentScore": 90,
+          "recommendation": "Improve usability: score 90/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.042Z"
+    },
+    {
+      "id": "dq_1782947505105_zhm4",
+      "pageUrl": "https://example.com/history-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.105Z"
+    },
+    {
+      "id": "dq_1782947505112_7poe",
+      "pageUrl": "https://example.com/improvements-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.112Z"
+    },
+    {
+      "id": "dq_1782947505116_6tr0",
+      "pageUrl": "https://example.com/filter-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.116Z"
+    },
+    {
+      "id": "dq_1782947505123_djeb",
+      "pageUrl": "https://example.com/id-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.123Z"
+    },
+    {
+      "id": "dq_1782947505133_fe7q",
+      "pageUrl": "https://example.com/trend-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 84,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 85
+      },
+      "overall": 74,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 60,
+      "scoredAt": "2026-07-01T23:11:45.133Z"
+    },
+    {
+      "id": "dq_1782947505161_fov5",
+      "pageUrl": "https://example.com/stats-pages-seed",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.161Z"
+    },
+    {
+      "id": "dq_1782947505167_0bex",
+      "pageUrl": "https://example.com/compare-test",
+      "dimensions": {
+        "aesthetics": 87,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.167Z"
+    },
+    {
+      "id": "dq_1782947505185_0t53",
+      "pageUrl": "https://example.com/baseline-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 89,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.185Z"
+    },
+    {
+      "id": "dq_1782947505250_y25x",
+      "pageUrl": "https://example.com/get-bm-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.250Z"
+    },
+    {
+      "id": "dq_1782947505281_spfy",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.281Z"
+    },
+    {
+      "id": "dq_1782947505483_s8qa",
+      "pageUrl": "https://example.com/debt-test",
+      "dimensions": {
+        "aesthetics": 79,
+        "usability": 84,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 75
+      },
+      "overall": 73,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 51,
+      "scoredAt": "2026-07-01T23:11:45.483Z"
+    },
+    {
+      "id": "dq_1782947505489_im7q",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.489Z"
+    },
+    {
+      "id": "dq_1782947505526_n7kb",
+      "pageUrl": "https://example.com/dashboard-seed-page",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:45.526Z"
+    },
+    {
+      "id": "dq_1782947505531_kcgy",
+      "pageUrl": "https://example.com/dashboard-scores-seed",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.531Z"
+    },
+    {
+      "id": "dq_1782947505566_f9hx",
+      "pageUrl": "https://example.com/pipeline-test",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 75
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 56,
+      "scoredAt": "2026-07-01T23:11:45.566Z"
+    },
+    {
+      "id": "dq_1782947505662_r656",
+      "pageUrl": "https://example.com/chain-test",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.662Z"
+    },
+    {
+      "id": "dq_1782947505727_lawh",
+      "pageUrl": "https://example.com/page-view-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:45.727Z"
+    },
+    {
+      "id": "dq_1782947506386_fiwn",
+      "pageUrl": "https://example.com/trend-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:46.386Z"
+    },
+    {
+      "id": "dq_1782947506393_127u",
+      "pageUrl": "https://example.com/compare-test",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:46.393Z"
+    },
+    {
+      "id": "dq_1782947506412_k4mg",
+      "pageUrl": "https://example.com/trend-evolution-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 65,
+      "scoredAt": "2026-07-01T23:11:46.412Z"
+    },
+    {
+      "id": "dq_1782947506426_v4kt",
+      "pageUrl": "https://example.com/chain-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 91,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:11:46.426Z"
+    },
+    {
+      "id": "dq_1782947525895_ewll",
+      "pageUrl": "https://example.com/time-save-test",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:05.895Z"
+    },
+    {
+      "id": "dq_1782947526597_z0ua",
+      "pageUrl": "https://example.com/multi-cycle",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:06.597Z"
+    },
+    {
+      "id": "dq_1782947526899_7sur",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "dimensions": {
+        "aesthetics": 82,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 75,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:06.899Z"
+    },
+    {
+      "id": "dq_1782947527016_k28r",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "dimensions": {
+        "aesthetics": 83,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:07.016Z"
+    },
+    {
+      "id": "dq_1782947527344_gcf7",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "dimensions": {
+        "aesthetics": 84,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:07.344Z"
+    },
+    {
+      "id": "dq_1782947527706_rffb",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 90,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:07.706Z"
+    },
+    {
+      "id": "dq_1782947528066_uue2",
+      "pageUrl": "https://example.com/evolution-main",
+      "dimensions": {
+        "aesthetics": 86,
+        "usability": 87,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:08.066Z"
+    },
+    {
+      "id": "dq_1782947528263_g5b0",
+      "pageUrl": "https://example.com/full-evolution-1782947504749",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 92,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 77,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:08.263Z"
+    },
+    {
+      "id": "dq_1782947530394_xac3",
+      "pageUrl": "https://example.com/multi-cycle",
+      "dimensions": {
+        "aesthetics": 85,
+        "usability": 88,
+        "accessibility": 70,
+        "consistency": 60,
+        "responsiveness": 60,
+        "maintainability": 70,
+        "performance": 100
+      },
+      "overall": 76,
+      "improvements": [
+        {
+          "dimension": "consistency",
+          "currentScore": 60,
+          "recommendation": "Improve consistency: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "responsiveness",
+          "currentScore": 60,
+          "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+          "priority": "medium"
+        },
+        {
+          "dimension": "accessibility",
+          "currentScore": 70,
+          "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+          "priority": "low"
+        }
+      ],
+      "reasoningScore": 63,
+      "scoredAt": "2026-07-01T23:12:10.394Z"
     }
   ],
   "history": {
@@ -7696,6 +9928,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.416Z"
+      },
+      {
+        "id": "dq_1782947378301_uhw9",
+        "overall": 93,
+        "dimensions": {
+          "aesthetics": 94,
+          "usability": 92,
+          "accessibility": 100,
+          "consistency": 89,
+          "responsiveness": 100,
+          "maintainability": 80,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.301Z"
+      },
+      {
+        "id": "dq_1782947505042_bt6r",
+        "overall": 93,
+        "dimensions": {
+          "aesthetics": 96,
+          "usability": 90,
+          "accessibility": 100,
+          "consistency": 89,
+          "responsiveness": 100,
+          "maintainability": 80,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.042Z"
       }
     ],
     "https://example.com/history-test": [
@@ -7796,6 +10056,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.417Z"
+      },
+      {
+        "id": "dq_1782947378307_915e",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.307Z"
+      },
+      {
+        "id": "dq_1782947505105_zhm4",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.105Z"
       }
     ],
     "https://example.com/improvements-test": [
@@ -7896,6 +10184,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.418Z"
+      },
+      {
+        "id": "dq_1782947378311_qek3",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.311Z"
+      },
+      {
+        "id": "dq_1782947505112_7poe",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.112Z"
       }
     ],
     "https://example.com/filter-test": [
@@ -7996,6 +10312,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.420Z"
+      },
+      {
+        "id": "dq_1782947378315_04vj",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.315Z"
+      },
+      {
+        "id": "dq_1782947505116_6tr0",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.116Z"
       }
     ],
     "https://example.com/id-test": [
@@ -8096,6 +10440,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.421Z"
+      },
+      {
+        "id": "dq_1782947378321_50wm",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.321Z"
+      },
+      {
+        "id": "dq_1782947505123_djeb",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.123Z"
       }
     ],
     "https://example.com/trend-test": [
@@ -8294,6 +10666,62 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.565Z"
+      },
+      {
+        "id": "dq_1782947378326_e03q",
+        "overall": 74,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 85
+        },
+        "ts": "2026-07-01T23:09:38.326Z"
+      },
+      {
+        "id": "dq_1782947378752_63os",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.752Z"
+      },
+      {
+        "id": "dq_1782947505133_fe7q",
+        "overall": 74,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 84,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 85
+        },
+        "ts": "2026-07-01T23:11:45.133Z"
+      },
+      {
+        "id": "dq_1782947506386_fiwn",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:46.386Z"
       }
     ],
     "https://example.com/compare-test": [
@@ -8492,6 +10920,62 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.566Z"
+      },
+      {
+        "id": "dq_1782947378338_rn34",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.338Z"
+      },
+      {
+        "id": "dq_1782947378764_9obu",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.764Z"
+      },
+      {
+        "id": "dq_1782947505167_0bex",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.167Z"
+      },
+      {
+        "id": "dq_1782947506393_127u",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:46.393Z"
       }
     ],
     "https://example.com/baseline-test": [
@@ -8592,6 +11076,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.425Z"
+      },
+      {
+        "id": "dq_1782947378343_b637",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.343Z"
+      },
+      {
+        "id": "dq_1782947505185_0t53",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.185Z"
       }
     ],
     "https://example.com/get-bm-test": [
@@ -8692,6 +11204,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.426Z"
+      },
+      {
+        "id": "dq_1782947378347_haeo",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.347Z"
+      },
+      {
+        "id": "dq_1782947505250_y25x",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.250Z"
       }
     ],
     "https://example.com/debt-test": [
@@ -8792,6 +11332,34 @@
           "performance": 75
         },
         "ts": "2026-06-29T22:43:37.445Z"
+      },
+      {
+        "id": "dq_1782947378397_7s9s",
+        "overall": 73,
+        "dimensions": {
+          "aesthetics": 80,
+          "usability": 84,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 75
+        },
+        "ts": "2026-07-01T23:09:38.397Z"
+      },
+      {
+        "id": "dq_1782947505483_s8qa",
+        "overall": 73,
+        "dimensions": {
+          "aesthetics": 79,
+          "usability": 84,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 75
+        },
+        "ts": "2026-07-01T23:11:45.483Z"
       }
     ],
     "https://example.com/trend-evolution-test": [
@@ -8990,6 +11558,62 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.571Z"
+      },
+      {
+        "id": "dq_1782947378401_vomm",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.401Z"
+      },
+      {
+        "id": "dq_1782947378782_66lb",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.782Z"
+      },
+      {
+        "id": "dq_1782947505489_im7q",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.489Z"
+      },
+      {
+        "id": "dq_1782947506412_k4mg",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:46.412Z"
       }
     ],
     "https://example.com/pipeline-test": [
@@ -9090,6 +11714,34 @@
           "performance": 75
         },
         "ts": "2026-06-29T22:43:37.507Z"
+      },
+      {
+        "id": "dq_1782947378439_9kif",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 75
+        },
+        "ts": "2026-07-01T23:09:38.439Z"
+      },
+      {
+        "id": "dq_1782947505566_f9hx",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 75
+        },
+        "ts": "2026-07-01T23:11:45.566Z"
       }
     ],
     "https://example.com/chain-test": [
@@ -9288,6 +11940,62 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.573Z"
+      },
+      {
+        "id": "dq_1782947378446_zoky",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.446Z"
+      },
+      {
+        "id": "dq_1782947378794_b2tl",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.794Z"
+      },
+      {
+        "id": "dq_1782947505662_r656",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.663Z"
+      },
+      {
+        "id": "dq_1782947506426_v4kt",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:46.426Z"
       }
     ],
     "https://example.com/page-view-test": [
@@ -9388,6 +12096,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.515Z"
+      },
+      {
+        "id": "dq_1782947378478_b4wu",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.478Z"
+      },
+      {
+        "id": "dq_1782947505727_lawh",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.727Z"
       }
     ],
     "https://example.com/list-cycles-test": [
@@ -9488,6 +12224,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:44.060Z"
+      },
+      {
+        "id": "dq_1782947390904_o06z",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:50.904Z"
+      },
+      {
+        "id": "dq_1782947527706_rffb",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:07.707Z"
       }
     ],
     "https://example.com/evolution-main": [
@@ -9588,6 +12352,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:43.005Z"
+      },
+      {
+        "id": "dq_1782947390075_55i2",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:50.075Z"
+      },
+      {
+        "id": "dq_1782947528066_uue2",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:08.066Z"
       }
     ],
     "https://example.com/get-cycle-test": [
@@ -9688,6 +12480,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:43.910Z"
+      },
+      {
+        "id": "dq_1782947389951_ysbo",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:49.951Z"
+      },
+      {
+        "id": "dq_1782947527344_gcf7",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:07.344Z"
       }
     ],
     "https://example.com/full-evolution-1782686194992": [
@@ -9902,6 +12722,62 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:47.128Z"
+      },
+      {
+        "id": "dq_1782947389599_iweo",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:49.599Z"
+      },
+      {
+        "id": "dq_1782947392102_ljee",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:52.102Z"
+      },
+      {
+        "id": "dq_1782947526597_z0ua",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:06.597Z"
+      },
+      {
+        "id": "dq_1782947530394_xac3",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:10.394Z"
       }
     ],
     "https://example.com/time-save-test": [
@@ -10002,6 +12878,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:43.136Z"
+      },
+      {
+        "id": "dq_1782947391178_vpnv",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:51.178Z"
+      },
+      {
+        "id": "dq_1782947525895_ewll",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:05.895Z"
       }
     ],
     "https://example.com/stats-pages-seed": [
@@ -10088,6 +12992,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.423Z"
+      },
+      {
+        "id": "dq_1782947378331_gzhr",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.331Z"
+      },
+      {
+        "id": "dq_1782947505161_fov5",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.161Z"
       }
     ],
     "https://example.com/bench-stats-seed": [
@@ -10174,6 +13106,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.429Z"
+      },
+      {
+        "id": "dq_1782947378351_mp6w",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.351Z"
+      },
+      {
+        "id": "dq_1782947505281_spfy",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.281Z"
       }
     ],
     "https://example.com/dashboard-seed-page": [
@@ -10260,6 +13220,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.503Z"
+      },
+      {
+        "id": "dq_1782947378415_86kh",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.415Z"
+      },
+      {
+        "id": "dq_1782947505526_n7kb",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.526Z"
       }
     ],
     "https://example.com/dashboard-scores-seed": [
@@ -10346,6 +13334,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:37.504Z"
+      },
+      {
+        "id": "dq_1782947378420_eexc",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:38.420Z"
+      },
+      {
+        "id": "dq_1782947505531_kcgy",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:11:45.531Z"
       }
     ],
     "https://example.com/dashboard-evo-seed": [
@@ -10432,6 +13448,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:44.765Z"
+      },
+      {
+        "id": "dq_1782947390197_k5y2",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:50.197Z"
+      },
+      {
+        "id": "dq_1782947527016_k28r",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:07.016Z"
       }
     ],
     "https://example.com/evo-status-seed": [
@@ -10518,6 +13562,34 @@
           "performance": 100
         },
         "ts": "2026-06-29T22:43:43.194Z"
+      },
+      {
+        "id": "dq_1782947390373_v62c",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:50.373Z"
+      },
+      {
+        "id": "dq_1782947526899_7sur",
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:06.899Z"
       }
     ],
     "https://example.com/full-evolution-1782686242870": [
@@ -10615,11 +13687,43 @@
         },
         "ts": "2026-06-29T22:43:45.036Z"
       }
+    ],
+    "https://example.com/full-evolution-1782947378181": [
+      {
+        "id": "dq_1782947390795_ltto",
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:09:50.795Z"
+      }
+    ],
+    "https://example.com/full-evolution-1782947504749": [
+      {
+        "id": "dq_1782947528263_g5b0",
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        },
+        "ts": "2026-07-01T23:12:08.263Z"
+      }
     ]
   },
   "stats": {
-    "total": 211,
+    "total": 273,
     "avgOverall": 76
   },
-  "updatedAt": "2026-06-29T22:43:47.129Z"
+  "updatedAt": "2026-07-01T23:12:10.394Z"
 }

@@ -2699,12 +2699,2712 @@
       "opportunityCount": 3,
       "riskScore": 55,
       "createdAt": "2026-06-29T22:44:40.420Z"
+    },
+    {
+      "id": "ep_1782947381753_0c9j",
+      "context": "current_evolution",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:41.753Z"
+    },
+    {
+      "id": "ep_1782947381811_fcb8",
+      "context": "low_autonomy_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:41.811Z"
+    },
+    {
+      "id": "ep_1782947381888_xku1",
+      "context": "pattern_check_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:41.888Z"
+    },
+    {
+      "id": "ep_1782947381921_cjxb",
+      "context": "maturity_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:41.921Z"
+    },
+    {
+      "id": "ep_1782947381965_thkk",
+      "context": "opp_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:41.966Z"
+    },
+    {
+      "id": "ep_1782947382012_ghdw",
+      "context": "id_pred_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:42.012Z"
+    },
+    {
+      "id": "ep_1782947382062_d5t5",
+      "context": "list_pred_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:09:42.062Z"
+    },
+    {
+      "id": "ep_1782947387571_f12x",
+      "context": "view_pipeline_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:47.571Z"
+    },
+    {
+      "id": "ep_1782947388379_yitv",
+      "context": "current_evolution",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.379Z"
+    },
+    {
+      "id": "ep_1782947388420_tdau",
+      "context": "get_cycle_evo_direct",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.420Z"
+    },
+    {
+      "id": "ep_1782947388491_bn9p",
+      "context": "list_evo_1782947382322",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.491Z"
+    },
+    {
+      "id": "ep_1782947388568_gap3",
+      "context": "status_seed_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.568Z"
+    },
+    {
+      "id": "ep_1782947388711_oo3h",
+      "context": "multi_evo_ctx",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.711Z"
+    },
+    {
+      "id": "ep_1782947388840_0y24",
+      "context": "debt_cycle_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.840Z"
+    },
+    {
+      "id": "ep_1782947388957_6wpr",
+      "context": "current_evolution",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:48.957Z"
+    },
+    {
+      "id": "ep_1782947389022_d1fa",
+      "context": "founder_time_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:49.022Z"
+    },
+    {
+      "id": "ep_1782947389074_hgnx",
+      "context": "dashboard_seed_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:49.074Z"
+    },
+    {
+      "id": "ep_1782947389708_90yq",
+      "context": "multi_evo_ctx",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:09:49.708Z"
+    },
+    {
+      "id": "ep_1782947518497_ikpi",
+      "context": "current_evolution",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:58.497Z"
+    },
+    {
+      "id": "ep_1782947518644_vqsq",
+      "context": "low_autonomy_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:11:58.644Z"
+    },
+    {
+      "id": "ep_1782947518762_x1v4",
+      "context": "pattern_check_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:58.762Z"
+    },
+    {
+      "id": "ep_1782947518895_fkr2",
+      "context": "maturity_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:58.895Z"
+    },
+    {
+      "id": "ep_1782947518982_y6tg",
+      "context": "opp_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:58.982Z"
+    },
+    {
+      "id": "ep_1782947519099_th1c",
+      "context": "id_pred_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:59.099Z"
+    },
+    {
+      "id": "ep_1782947519237_fqyx",
+      "context": "list_pred_evo",
+      "futureBottlenecks": [],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 6,
+      "criticalCount": 0,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 30,
+      "createdAt": "2026-07-01T23:11:59.237Z"
+    },
+    {
+      "id": "ep_1782947525492_jgcj",
+      "context": "view_pipeline_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:05.492Z"
+    },
+    {
+      "id": "ep_1782947527165_jv0j",
+      "context": "current_evolution",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:07.165Z"
+    },
+    {
+      "id": "ep_1782947527272_9vjp",
+      "context": "get_cycle_evo_direct",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:07.272Z"
+    },
+    {
+      "id": "ep_1782947527499_bkks",
+      "context": "list_evo_1782947520312",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:07.499Z"
+    },
+    {
+      "id": "ep_1782947527642_vui5",
+      "context": "status_seed_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:07.642Z"
+    },
+    {
+      "id": "ep_1782947527830_u0ny",
+      "context": "multi_evo_ctx",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:07.830Z"
+    },
+    {
+      "id": "ep_1782947528049_al71",
+      "context": "debt_cycle_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:08.049Z"
+    },
+    {
+      "id": "ep_1782947528193_p2o1",
+      "context": "current_evolution",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:08.193Z"
+    },
+    {
+      "id": "ep_1782947528310_7vku",
+      "context": "founder_time_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:08.310Z"
+    },
+    {
+      "id": "ep_1782947528417_rlru",
+      "context": "dashboard_seed_evo",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:08.417Z"
+    },
+    {
+      "id": "ep_1782947529445_s3vr",
+      "context": "multi_evo_ctx",
+      "futureBottlenecks": [
+        {
+          "area": "autonomy",
+          "severity": "critical",
+          "prediction": "Platform will stall on autonomous decisions requiring founder approval",
+          "probability": 0.88,
+          "timeframe": "next 2 weeks",
+          "mitigation": "Increase threshold in founderTwin + enable more POST-Ω autonomous execution paths"
+        }
+      ],
+      "capabilityGaps": [
+        {
+          "area": "prediction_accuracy",
+          "severity": "high",
+          "prediction": "Platform cannot predict its own failures — blind spots will multiply",
+          "probability": 0.8,
+          "mitigation": "Enable prediction feedback loop: record outcome per prediction"
+        },
+        {
+          "area": "autonomous_execution",
+          "severity": "high",
+          "prediction": "Autonomous execution capability is critically underdeveloped",
+          "probability": 0.85,
+          "mitigation": "Route more Class A workflows through P3 autonomousExecution engine"
+        }
+      ],
+      "technicalDebtGrowth": [
+        {
+          "area": "technical_debt",
+          "severity": "high",
+          "prediction": "Debt will grow to ~43 points if unaddressed",
+          "currentDebt": 33,
+          "projectedDebt": 43,
+          "probability": 0.78,
+          "timeframe": "30 days",
+          "mitigation": "Address top 3 recommendations from selfReviewEngine each week"
+        }
+      ],
+      "optimizationOpportunities": [
+        {
+          "area": "pattern_promotion",
+          "severity": "info",
+          "prediction": "Top pattern can be promoted for immediate improvement",
+          "confidence": 95,
+          "pattern": "Self-healing system only knows one strategy (escalate) and always fails",
+          "action": "promote_fix",
+          "estimatedGain": 1425
+        },
+        {
+          "area": "repository_health",
+          "severity": "info",
+          "prediction": "Repository health improvements will yield 10-20% velocity gain",
+          "estimatedGain": 15,
+          "probability": 0.65,
+          "action": "Run ACP-10 engineeringMemory analysis on low-health files"
+        }
+      ],
+      "platformMaturity": [
+        {
+          "area": "platform_maturity",
+          "severity": "info",
+          "prediction": "Platform projected to reach maturity score 89 in next 5 cycles",
+          "currentScore": 79,
+          "projectedScore": 89,
+          "cyclesAnalyzed": 0,
+          "confidence": 0.7
+        }
+      ],
+      "total": 7,
+      "criticalCount": 1,
+      "highCount": 3,
+      "opportunityCount": 3,
+      "riskScore": 55,
+      "createdAt": "2026-07-01T23:12:09.445Z"
     }
   ],
   "stats": {
-    "total": 36,
-    "criticalPredictions": 24,
+    "total": 72,
+    "criticalPredictions": 48,
     "avgRisk": 46.7
   },
-  "updatedAt": "2026-06-29T22:44:40.420Z"
+  "updatedAt": "2026-07-01T23:12:09.446Z"
 }

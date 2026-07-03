@@ -72,7 +72,7 @@ const provMgr    = require("../services/providerManager.cjs");
 const billing    = require("../services/billingService");
 const analytics  = require("../services/costAnalytics.cjs");
 
-router.use(requireAuth);
+router.use("/ai-ecosystem", requireAuth);
 
 function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {

@@ -35,7 +35,7 @@ function _kg()  { return require("../services/knowledgeGraph.cjs"); }
 function _ok(res, data)         { res.json({ ok: true, ...data }); }
 function _err(res, e, fallback) { res.status(e.status || fallback || 500).json({ ok: false, error: e.message }); }
 
-router.use(requireAuth);
+router.use("/graph", requireAuth);
 
 // ── Schema + stats ────────────────────────────────────────────────────────────
 router.get("/graph/schema", (req, res) => {

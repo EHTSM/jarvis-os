@@ -1,7 +1,7 @@
 {
   "healthRecords": [
     {
-      "id": "ih_1782773167211_57tt",
+      "id": "ih_1782947657953_6s19",
       "resourceId": "inf_1782754030936_du98",
       "resourceType": "vps",
       "resourceName": "ooplix-prod-vps",
@@ -18,10 +18,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_si1q",
+      "id": "ih_1782947657953_dhrt",
       "resourceId": "inf_1782754030940_kmm7",
       "resourceType": "nginx",
       "resourceName": "ooplix-nginx",
@@ -38,10 +38,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_byde",
+      "id": "ih_1782947657953_gzog",
       "resourceId": "inf_1782754030940_46wh",
       "resourceType": "pm2",
       "resourceName": "ooplix-pm2",
@@ -58,10 +58,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_0f0g",
+      "id": "ih_1782947657953_abok",
       "resourceId": "inf_1782754030940_wcxp",
       "resourceType": "ssl",
       "resourceName": "ooplix-ssl",
@@ -78,10 +78,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_1jrl",
+      "id": "ih_1782947657953_cxtw",
       "resourceId": "inf_1782754030940_3a0z",
       "resourceType": "domain",
       "resourceName": "ooplix.com",
@@ -98,10 +98,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_1lmc",
+      "id": "ih_1782947657953_flku",
       "resourceId": "inf_1782754030940_d95n",
       "resourceType": "cloudflare",
       "resourceName": "ooplix-cdn",
@@ -118,10 +118,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_hz16",
+      "id": "ih_1782947657953_dtx2",
       "resourceId": "inf_1782754030940_bjay",
       "resourceType": "database",
       "resourceName": "ooplix-mongodb",
@@ -138,10 +138,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_80tf",
+      "id": "ih_1782947657953_m2fn",
       "resourceId": "inf_1782754030940_5cwx",
       "resourceType": "storage",
       "resourceName": "ooplix-storage",
@@ -158,10 +158,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_inhx",
+      "id": "ih_1782947657953_s0zm",
       "resourceId": "inf_1782754030940_ydp4",
       "resourceType": "vps",
       "resourceName": "ooplix-staging-vps",
@@ -178,10 +178,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_07x2",
+      "id": "ih_1782947657953_98e1",
       "resourceId": "inf_1782754030941_q7i9",
       "resourceType": "firebase",
       "resourceName": "ooplix-firebase",
@@ -198,10 +198,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_j7i2",
+      "id": "ih_1782947657953_n7l1",
       "resourceId": "inf_1782754030941_ezzs",
       "resourceType": "dns",
       "resourceName": "ooplix-dns",
@@ -218,10 +218,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_8x0i",
+      "id": "ih_1782947657953_3l81",
       "resourceId": "inf_1782754030941_pd4j",
       "resourceType": "cdn",
       "resourceName": "ooplix-cf-cdn",
@@ -238,10 +238,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_x019",
+      "id": "ih_1782947657953_3vbf",
       "resourceId": "inf_1782754205920_ahv9",
       "resourceType": "vps",
       "resourceName": "test-vps",
@@ -258,10 +258,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_86rs",
+      "id": "ih_1782947657953_zqyv",
       "resourceId": "inf_1782754205923_70q7",
       "resourceType": "vps",
       "resourceName": "test-vps",
@@ -278,10 +278,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_2j3x",
+      "id": "ih_1782947657953_ocuq",
       "resourceId": "inf_1782754205923_uey0",
       "resourceType": "docker",
       "resourceName": "test-docker",
@@ -298,10 +298,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_oq4d",
+      "id": "ih_1782947657953_rz93",
       "resourceId": "inf_1782754205923_hdc7",
       "resourceType": "kubernetes",
       "resourceName": "test-kubernetes",
@@ -318,10 +318,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_toym",
+      "id": "ih_1782947657953_oso4",
       "resourceId": "inf_1782754205924_ocpr",
       "resourceType": "cloudflare",
       "resourceName": "test-cloudflare",
@@ -338,10 +338,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_wfwh",
+      "id": "ih_1782947657953_kqft",
       "resourceId": "inf_1782754205924_fzo8",
       "resourceType": "aws",
       "resourceName": "test-aws",
@@ -358,10 +358,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_z5dv",
+      "id": "ih_1782947657953_brf0",
       "resourceId": "inf_1782754205924_5vda",
       "resourceType": "azure",
       "resourceName": "test-azure",
@@ -378,10 +378,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_yn8j",
+      "id": "ih_1782947657953_vnro",
       "resourceId": "inf_1782754205924_k4uu",
       "resourceType": "gcp",
       "resourceName": "test-gcp",
@@ -398,10 +398,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_4kqf",
+      "id": "ih_1782947657953_h8a4",
       "resourceId": "inf_1782754205924_t2sv",
       "resourceType": "firebase",
       "resourceName": "test-firebase",
@@ -418,10 +418,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_0wg4",
+      "id": "ih_1782947657953_kfhg",
       "resourceId": "inf_1782754205924_rmze",
       "resourceType": "supabase",
       "resourceName": "test-supabase",
@@ -438,10 +438,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_ujdi",
+      "id": "ih_1782947657953_0smq",
       "resourceId": "inf_1782754205925_82j7",
       "resourceType": "nginx",
       "resourceName": "test-nginx",
@@ -458,10 +458,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_l304",
+      "id": "ih_1782947657953_yk7h",
       "resourceId": "inf_1782754205925_3qbh",
       "resourceType": "pm2",
       "resourceName": "test-pm2",
@@ -478,10 +478,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_y6po",
+      "id": "ih_1782947657953_ju1c",
       "resourceId": "inf_1782754205925_yent",
       "resourceType": "domain",
       "resourceName": "test-domain",
@@ -498,10 +498,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_8oe8",
+      "id": "ih_1782947657953_dvtx",
       "resourceId": "inf_1782754205925_5a1j",
       "resourceType": "dns",
       "resourceName": "test-dns",
@@ -518,10 +518,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_8ud9",
+      "id": "ih_1782947657953_sv8k",
       "resourceId": "inf_1782754205926_gpgd",
       "resourceType": "ssl",
       "resourceName": "test-ssl",
@@ -538,10 +538,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_55pb",
+      "id": "ih_1782947657953_sqx2",
       "resourceId": "inf_1782754205926_fji7",
       "resourceType": "cdn",
       "resourceName": "test-cdn",
@@ -558,10 +558,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_ewmt",
+      "id": "ih_1782947657953_0zc2",
       "resourceId": "inf_1782754205926_5p0i",
       "resourceType": "storage",
       "resourceName": "test-storage",
@@ -578,10 +578,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_k21v",
+      "id": "ih_1782947657953_l2y7",
       "resourceId": "inf_1782754205926_2r34",
       "resourceType": "database",
       "resourceName": "test-database",
@@ -598,10 +598,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_qbi4",
+      "id": "ih_1782947657953_chb7",
       "resourceId": "inf_1782754205927_wsis",
       "resourceType": "nginx",
       "resourceName": "nginx-1-updated",
@@ -618,10 +618,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_pbjl",
+      "id": "ih_1782947657953_2lbx",
       "resourceId": "inf_1782754205927_va7y",
       "resourceType": "pm2",
       "resourceName": "pm2-test",
@@ -638,10 +638,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_q8kr",
+      "id": "ih_1782947657953_n8mm",
       "resourceId": "inf_1782754205928_eb0f",
       "resourceType": "docker",
       "resourceName": "docker-test",
@@ -658,10 +658,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_4psb",
+      "id": "ih_1782947657953_abo0",
       "resourceId": "inf_1782754207408_r98y",
       "resourceType": "vps",
       "resourceName": "vps-degraded-test",
@@ -678,10 +678,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_c4zx",
+      "id": "ih_1782947657953_wye0",
       "resourceId": "inf_1782754207815_wg20",
       "resourceType": "vps",
       "resourceName": "health-vps",
@@ -698,10 +698,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_knat",
+      "id": "ih_1782947657953_4lzf",
       "resourceId": "inf_1782754208274_urxb",
       "resourceType": "vps",
       "resourceName": "e2e-all-types-vps",
@@ -718,10 +718,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_dhzx",
+      "id": "ih_1782947657953_ekhl",
       "resourceId": "inf_1782754208274_xdsh",
       "resourceType": "docker",
       "resourceName": "e2e-all-types-docker",
@@ -738,10 +738,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_p2ug",
+      "id": "ih_1782947657953_ld2i",
       "resourceId": "inf_1782754208275_23ax",
       "resourceType": "kubernetes",
       "resourceName": "e2e-all-types-kubernetes",
@@ -758,10 +758,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_vkt6",
+      "id": "ih_1782947657953_0mzk",
       "resourceId": "inf_1782754208275_8ufy",
       "resourceType": "cloudflare",
       "resourceName": "e2e-all-types-cloudflare",
@@ -778,10 +778,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_hgl7",
+      "id": "ih_1782947657953_imq3",
       "resourceId": "inf_1782754208277_gkej",
       "resourceType": "aws",
       "resourceName": "e2e-all-types-aws",
@@ -798,10 +798,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_jgge",
+      "id": "ih_1782947657953_1ju4",
       "resourceId": "inf_1782754208277_tqmt",
       "resourceType": "azure",
       "resourceName": "e2e-all-types-azure",
@@ -818,10 +818,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_zkjq",
+      "id": "ih_1782947657953_dcu7",
       "resourceId": "inf_1782754208277_bilt",
       "resourceType": "gcp",
       "resourceName": "e2e-all-types-gcp",
@@ -838,10 +838,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_af8j",
+      "id": "ih_1782947657953_lcw7",
       "resourceId": "inf_1782754208279_ap66",
       "resourceType": "firebase",
       "resourceName": "e2e-all-types-firebase",
@@ -858,10 +858,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_mtlr",
+      "id": "ih_1782947657953_6tgd",
       "resourceId": "inf_1782754208280_r9xx",
       "resourceType": "supabase",
       "resourceName": "e2e-all-types-supabase",
@@ -878,10 +878,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_ykh9",
+      "id": "ih_1782947657953_v2sf",
       "resourceId": "inf_1782754208280_etu5",
       "resourceType": "nginx",
       "resourceName": "e2e-all-types-nginx",
@@ -898,10 +898,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_0i9p",
+      "id": "ih_1782947657953_jk6n",
       "resourceId": "inf_1782754208280_bfwa",
       "resourceType": "pm2",
       "resourceName": "e2e-all-types-pm2",
@@ -918,10 +918,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_q88t",
+      "id": "ih_1782947657953_kj0y",
       "resourceId": "inf_1782754208281_ebjy",
       "resourceType": "domain",
       "resourceName": "e2e-all-types-domain",
@@ -938,10 +938,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_72jc",
+      "id": "ih_1782947657953_5r5q",
       "resourceId": "inf_1782754208281_uo2q",
       "resourceType": "dns",
       "resourceName": "e2e-all-types-dns",
@@ -958,10 +958,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_mcvf",
+      "id": "ih_1782947657953_4jwq",
       "resourceId": "inf_1782754208281_7rrj",
       "resourceType": "ssl",
       "resourceName": "e2e-all-types-ssl",
@@ -978,10 +978,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_uzqv",
+      "id": "ih_1782947657953_z50g",
       "resourceId": "inf_1782754208281_cmpx",
       "resourceType": "cdn",
       "resourceName": "e2e-all-types-cdn",
@@ -998,10 +998,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_zm1e",
+      "id": "ih_1782947657953_52rf",
       "resourceId": "inf_1782754208282_9215",
       "resourceType": "storage",
       "resourceName": "e2e-all-types-storage",
@@ -1018,10 +1018,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_m6hm",
+      "id": "ih_1782947657953_28kx",
       "resourceId": "inf_1782754208282_xolm",
       "resourceType": "database",
       "resourceName": "e2e-all-types-database",
@@ -1038,10 +1038,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_h0ha",
+      "id": "ih_1782947657953_dpyu",
       "resourceId": "inf_1782754208329_93oa",
       "resourceType": "vps",
       "resourceName": "rec-test-vps",
@@ -1058,10 +1058,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_akdr",
+      "id": "ih_1782947657953_r32k",
       "resourceId": "inf_1782754208330_5jys",
       "resourceType": "vps",
       "resourceName": "rec-restart-vps",
@@ -1078,10 +1078,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_mmuf",
+      "id": "ih_1782947657953_atdc",
       "resourceId": "inf_1782754208341_njph",
       "resourceType": "nginx",
       "resourceName": "rec-nginx",
@@ -1098,10 +1098,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_ue17",
+      "id": "ih_1782947657953_471c",
       "resourceId": "inf_1782754208342_6eno",
       "resourceType": "pm2",
       "resourceName": "pm2-rec",
@@ -1118,10 +1118,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_250s",
+      "id": "ih_1782947657953_lq35",
       "resourceId": "inf_1782754208347_w1zm",
       "resourceType": "database",
       "resourceName": "db-isolate",
@@ -1138,10 +1138,10 @@
       },
       "avgScore": 91,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_uaw3",
+      "id": "ih_1782947657953_hpii",
       "resourceId": "inf_1782754208382_wow2",
       "resourceType": "cloudflare",
       "resourceName": "cf-rec",
@@ -1158,10 +1158,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_xdwx",
+      "id": "ih_1782947657953_hogj",
       "resourceId": "inf_1782754208383_2els",
       "resourceType": "firebase",
       "resourceName": "fb-rec",
@@ -1178,10 +1178,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_13g7",
+      "id": "ih_1782947657953_8k2a",
       "resourceId": "inf_1782754208384_p6ic",
       "resourceType": "vps",
       "resourceName": "e2e-vps-full",
@@ -1198,10 +1198,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_z6eg",
+      "id": "ih_1782947657953_t9wf",
       "resourceId": "inf_1782754208567_f4h3",
       "resourceType": "nginx",
       "resourceName": "e2e-nginx-degraded",
@@ -1218,10 +1218,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_f8x8",
+      "id": "ih_1782947657953_38d3",
       "resourceId": "inf_1782754208576_ygrx",
       "resourceType": "kubernetes",
       "resourceName": "e2e-k8s",
@@ -1238,10 +1238,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_hssm",
+      "id": "ih_1782947657953_048n",
       "resourceId": "inf_1782754208577_wrrm",
       "resourceType": "aws",
       "resourceName": "e2e-aws",
@@ -1258,10 +1258,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.953Z"
     },
     {
-      "id": "ih_1782773167211_6hls",
+      "id": "ih_1782947657954_gkat",
       "resourceId": "inf_1782754208813_ze5n",
       "resourceType": "docker",
       "resourceName": "docker-all-actions",
@@ -1278,10 +1278,10 @@
       },
       "avgScore": 91,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_26dm",
+      "id": "ih_1782947657954_p37q",
       "resourceId": "inf_1782773163963_lcd0",
       "resourceType": "vps",
       "resourceName": "test-vps",
@@ -1298,10 +1298,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ol8o",
+      "id": "ih_1782947657954_1krn",
       "resourceId": "inf_1782773163964_jav0",
       "resourceType": "vps",
       "resourceName": "test-vps",
@@ -1318,10 +1318,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_vdzr",
+      "id": "ih_1782947657954_2vxd",
       "resourceId": "inf_1782773163965_w134",
       "resourceType": "docker",
       "resourceName": "test-docker",
@@ -1338,10 +1338,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_vs9t",
+      "id": "ih_1782947657954_5neg",
       "resourceId": "inf_1782773163965_grx6",
       "resourceType": "kubernetes",
       "resourceName": "test-kubernetes",
@@ -1358,10 +1358,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_jq5q",
+      "id": "ih_1782947657954_umuu",
       "resourceId": "inf_1782773163965_cmdy",
       "resourceType": "cloudflare",
       "resourceName": "test-cloudflare",
@@ -1378,10 +1378,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_kajs",
+      "id": "ih_1782947657954_5p0v",
       "resourceId": "inf_1782773163965_8duw",
       "resourceType": "aws",
       "resourceName": "test-aws",
@@ -1398,10 +1398,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_tlis",
+      "id": "ih_1782947657954_l26t",
       "resourceId": "inf_1782773163966_8x1k",
       "resourceType": "azure",
       "resourceName": "test-azure",
@@ -1418,10 +1418,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ew8u",
+      "id": "ih_1782947657954_vvzc",
       "resourceId": "inf_1782773163966_h9to",
       "resourceType": "gcp",
       "resourceName": "test-gcp",
@@ -1438,10 +1438,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_2uvi",
+      "id": "ih_1782947657954_2ra4",
       "resourceId": "inf_1782773163966_1se7",
       "resourceType": "firebase",
       "resourceName": "test-firebase",
@@ -1458,10 +1458,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_xxcq",
+      "id": "ih_1782947657954_z9cd",
       "resourceId": "inf_1782773163967_lx54",
       "resourceType": "supabase",
       "resourceName": "test-supabase",
@@ -1478,10 +1478,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_fuhc",
+      "id": "ih_1782947657954_v4sa",
       "resourceId": "inf_1782773163967_ww05",
       "resourceType": "nginx",
       "resourceName": "test-nginx",
@@ -1498,10 +1498,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_pq0l",
+      "id": "ih_1782947657954_irb0",
       "resourceId": "inf_1782773163967_2c13",
       "resourceType": "pm2",
       "resourceName": "test-pm2",
@@ -1518,10 +1518,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ectz",
+      "id": "ih_1782947657954_tfdd",
       "resourceId": "inf_1782773163967_tbg5",
       "resourceType": "domain",
       "resourceName": "test-domain",
@@ -1538,10 +1538,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_0l5r",
+      "id": "ih_1782947657954_3oy1",
       "resourceId": "inf_1782773163968_0ehf",
       "resourceType": "dns",
       "resourceName": "test-dns",
@@ -1558,10 +1558,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_el0c",
+      "id": "ih_1782947657954_6fsw",
       "resourceId": "inf_1782773163968_b4tt",
       "resourceType": "ssl",
       "resourceName": "test-ssl",
@@ -1578,10 +1578,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_7d32",
+      "id": "ih_1782947657954_e3xj",
       "resourceId": "inf_1782773163968_910z",
       "resourceType": "cdn",
       "resourceName": "test-cdn",
@@ -1598,10 +1598,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_tgat",
+      "id": "ih_1782947657954_exgh",
       "resourceId": "inf_1782773163968_c1jw",
       "resourceType": "storage",
       "resourceName": "test-storage",
@@ -1618,10 +1618,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_u0sh",
+      "id": "ih_1782947657954_kb35",
       "resourceId": "inf_1782773163968_u0o7",
       "resourceType": "database",
       "resourceName": "test-database",
@@ -1638,10 +1638,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_onzq",
+      "id": "ih_1782947657954_dp4p",
       "resourceId": "inf_1782773163969_r35b",
       "resourceType": "nginx",
       "resourceName": "nginx-1-updated",
@@ -1658,10 +1658,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_fjze",
+      "id": "ih_1782947657954_dqqz",
       "resourceId": "inf_1782773163969_zc5k",
       "resourceType": "pm2",
       "resourceName": "pm2-test",
@@ -1678,10 +1678,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_7rpk",
+      "id": "ih_1782947657954_lx0e",
       "resourceId": "inf_1782773163970_jkwj",
       "resourceType": "docker",
       "resourceName": "docker-test",
@@ -1698,10 +1698,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_p8fm",
+      "id": "ih_1782947657954_dkzt",
       "resourceId": "inf_1782773165461_3wcd",
       "resourceType": "vps",
       "resourceName": "vps-degraded-test",
@@ -1718,10 +1718,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_88pl",
+      "id": "ih_1782947657954_rnrb",
       "resourceId": "inf_1782773165967_7b8l",
       "resourceType": "vps",
       "resourceName": "health-vps",
@@ -1738,10 +1738,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_mcod",
+      "id": "ih_1782947657954_t401",
       "resourceId": "inf_1782773166591_h9hy",
       "resourceType": "vps",
       "resourceName": "e2e-all-types-vps",
@@ -1758,10 +1758,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_g9nq",
+      "id": "ih_1782947657954_g9jz",
       "resourceId": "inf_1782773166591_b2pk",
       "resourceType": "docker",
       "resourceName": "e2e-all-types-docker",
@@ -1778,10 +1778,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_zzaf",
+      "id": "ih_1782947657954_vx1g",
       "resourceId": "inf_1782773166592_updb",
       "resourceType": "kubernetes",
       "resourceName": "e2e-all-types-kubernetes",
@@ -1798,10 +1798,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_0utj",
+      "id": "ih_1782947657954_5ud7",
       "resourceId": "inf_1782773166592_r8z3",
       "resourceType": "cloudflare",
       "resourceName": "e2e-all-types-cloudflare",
@@ -1818,10 +1818,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_0c2q",
+      "id": "ih_1782947657954_4iyz",
       "resourceId": "inf_1782773166592_ezo8",
       "resourceType": "aws",
       "resourceName": "e2e-all-types-aws",
@@ -1838,10 +1838,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_5ptu",
+      "id": "ih_1782947657954_0woh",
       "resourceId": "inf_1782773166592_y1iq",
       "resourceType": "azure",
       "resourceName": "e2e-all-types-azure",
@@ -1858,10 +1858,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_a7tv",
+      "id": "ih_1782947657954_lreg",
       "resourceId": "inf_1782773166593_g0jb",
       "resourceType": "gcp",
       "resourceName": "e2e-all-types-gcp",
@@ -1878,10 +1878,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_iibu",
+      "id": "ih_1782947657954_8jrr",
       "resourceId": "inf_1782773166593_s0v4",
       "resourceType": "firebase",
       "resourceName": "e2e-all-types-firebase",
@@ -1898,10 +1898,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_n1go",
+      "id": "ih_1782947657954_17fi",
       "resourceId": "inf_1782773166593_tdus",
       "resourceType": "supabase",
       "resourceName": "e2e-all-types-supabase",
@@ -1918,10 +1918,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_zqtp",
+      "id": "ih_1782947657954_5qnp",
       "resourceId": "inf_1782773166594_gqzz",
       "resourceType": "nginx",
       "resourceName": "e2e-all-types-nginx",
@@ -1938,10 +1938,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_j3o0",
+      "id": "ih_1782947657954_y2ct",
       "resourceId": "inf_1782773166594_soib",
       "resourceType": "pm2",
       "resourceName": "e2e-all-types-pm2",
@@ -1958,10 +1958,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ejz4",
+      "id": "ih_1782947657954_g0kk",
       "resourceId": "inf_1782773166594_uh84",
       "resourceType": "domain",
       "resourceName": "e2e-all-types-domain",
@@ -1978,10 +1978,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_kl3e",
+      "id": "ih_1782947657954_t9pa",
       "resourceId": "inf_1782773166594_0xx7",
       "resourceType": "dns",
       "resourceName": "e2e-all-types-dns",
@@ -1998,10 +1998,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_v6c1",
+      "id": "ih_1782947657954_f0wn",
       "resourceId": "inf_1782773166595_cn2b",
       "resourceType": "ssl",
       "resourceName": "e2e-all-types-ssl",
@@ -2018,10 +2018,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_frfh",
+      "id": "ih_1782947657954_gx0h",
       "resourceId": "inf_1782773166595_s092",
       "resourceType": "cdn",
       "resourceName": "e2e-all-types-cdn",
@@ -2038,10 +2038,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_4z7d",
+      "id": "ih_1782947657954_otv9",
       "resourceId": "inf_1782773166595_wwhu",
       "resourceType": "storage",
       "resourceName": "e2e-all-types-storage",
@@ -2058,10 +2058,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ct4x",
+      "id": "ih_1782947657954_w1u1",
       "resourceId": "inf_1782773166595_sdr4",
       "resourceType": "database",
       "resourceName": "e2e-all-types-database",
@@ -2078,10 +2078,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_szo6",
+      "id": "ih_1782947657954_cgge",
       "resourceId": "inf_1782773166660_9sze",
       "resourceType": "vps",
       "resourceName": "rec-test-vps",
@@ -2098,10 +2098,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_yxre",
+      "id": "ih_1782947657954_sop1",
       "resourceId": "inf_1782773166661_fouf",
       "resourceType": "vps",
       "resourceName": "rec-restart-vps",
@@ -2118,10 +2118,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_swx1",
+      "id": "ih_1782947657954_5a57",
       "resourceId": "inf_1782773166663_m8gj",
       "resourceType": "nginx",
       "resourceName": "rec-nginx",
@@ -2138,10 +2138,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_j6uo",
+      "id": "ih_1782947657954_m8o3",
       "resourceId": "inf_1782773166665_4sc4",
       "resourceType": "pm2",
       "resourceName": "pm2-rec",
@@ -2158,10 +2158,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_l7gl",
+      "id": "ih_1782947657954_50z1",
       "resourceId": "inf_1782773166667_2ryr",
       "resourceType": "database",
       "resourceName": "db-isolate",
@@ -2178,10 +2178,10 @@
       },
       "avgScore": 91,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_v60c",
+      "id": "ih_1782947657954_tdsn",
       "resourceId": "inf_1782773166704_rku0",
       "resourceType": "cloudflare",
       "resourceName": "cf-rec",
@@ -2198,10 +2198,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_40ns",
+      "id": "ih_1782947657954_k21e",
       "resourceId": "inf_1782773166706_1b0v",
       "resourceType": "firebase",
       "resourceName": "fb-rec",
@@ -2218,10 +2218,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_bvb9",
+      "id": "ih_1782947657954_y4hh",
       "resourceId": "inf_1782773166707_vl7b",
       "resourceType": "vps",
       "resourceName": "e2e-vps-full",
@@ -2238,10 +2238,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_ut5a",
+      "id": "ih_1782947657954_j28n",
       "resourceId": "inf_1782773166952_lzet",
       "resourceType": "nginx",
       "resourceName": "e2e-nginx-degraded",
@@ -2258,10 +2258,10 @@
       },
       "avgScore": 44,
       "level": "warning",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_yfzo",
+      "id": "ih_1782947657954_ygjw",
       "resourceId": "inf_1782773166960_xeza",
       "resourceType": "kubernetes",
       "resourceName": "e2e-k8s",
@@ -2278,10 +2278,10 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
     },
     {
-      "id": "ih_1782773167211_0b42",
+      "id": "ih_1782947657954_5wfz",
       "resourceId": "inf_1782773166961_2nkv",
       "resourceType": "aws",
       "resourceName": "e2e-aws",
@@ -2298,7 +2298,3127 @@
       },
       "avgScore": 95,
       "level": "healthy",
-      "scannedAt": "2026-06-29T22:46:07.211Z"
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_hajn",
+      "resourceId": "inf_1782773167275_aegu",
+      "resourceType": "docker",
+      "resourceName": "docker-all-actions",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_wd61",
+      "resourceId": "inf_1782778463311_5rcf",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "staging",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_0jwm",
+      "resourceId": "inf_1782778463313_jzyk",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_gx6t",
+      "resourceId": "inf_1782778463314_ke6z",
+      "resourceType": "docker",
+      "resourceName": "test-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_zw79",
+      "resourceId": "inf_1782778463314_efey",
+      "resourceType": "kubernetes",
+      "resourceName": "test-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_3ohe",
+      "resourceId": "inf_1782778463315_m4a8",
+      "resourceType": "cloudflare",
+      "resourceName": "test-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_r2l3",
+      "resourceId": "inf_1782778463316_37qx",
+      "resourceType": "aws",
+      "resourceName": "test-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_9alf",
+      "resourceId": "inf_1782778463316_y6jz",
+      "resourceType": "azure",
+      "resourceName": "test-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_10x5",
+      "resourceId": "inf_1782778463316_gn9i",
+      "resourceType": "gcp",
+      "resourceName": "test-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_pexv",
+      "resourceId": "inf_1782778463317_kcy4",
+      "resourceType": "firebase",
+      "resourceName": "test-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_sc9v",
+      "resourceId": "inf_1782778463317_utce",
+      "resourceType": "supabase",
+      "resourceName": "test-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_e0ss",
+      "resourceId": "inf_1782778463318_ye3s",
+      "resourceType": "nginx",
+      "resourceName": "test-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_c0yf",
+      "resourceId": "inf_1782778463318_fxnk",
+      "resourceType": "pm2",
+      "resourceName": "test-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_0roo",
+      "resourceId": "inf_1782778463318_xp0r",
+      "resourceType": "domain",
+      "resourceName": "test-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_3gkh",
+      "resourceId": "inf_1782778463319_tofj",
+      "resourceType": "dns",
+      "resourceName": "test-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_gyhp",
+      "resourceId": "inf_1782778463319_jlii",
+      "resourceType": "ssl",
+      "resourceName": "test-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_cbv1",
+      "resourceId": "inf_1782778463319_y6ty",
+      "resourceType": "cdn",
+      "resourceName": "test-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_ihmm",
+      "resourceId": "inf_1782778463320_p8sz",
+      "resourceType": "storage",
+      "resourceName": "test-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_y9iz",
+      "resourceId": "inf_1782778463320_ca3g",
+      "resourceType": "database",
+      "resourceName": "test-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_hs67",
+      "resourceId": "inf_1782778463320_qsxk",
+      "resourceType": "nginx",
+      "resourceName": "nginx-1-updated",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_j2gt",
+      "resourceId": "inf_1782778463321_p4c4",
+      "resourceType": "pm2",
+      "resourceName": "pm2-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_k9bs",
+      "resourceId": "inf_1782778463322_5lt2",
+      "resourceType": "docker",
+      "resourceName": "docker-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_02o3",
+      "resourceId": "inf_1782778465480_xuz0",
+      "resourceType": "vps",
+      "resourceName": "vps-degraded-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_fza8",
+      "resourceId": "inf_1782778466188_j8mf",
+      "resourceType": "vps",
+      "resourceName": "health-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_e10n",
+      "resourceId": "inf_1782778467015_qwky",
+      "resourceType": "vps",
+      "resourceName": "e2e-all-types-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_ki1j",
+      "resourceId": "inf_1782778467015_5v3u",
+      "resourceType": "docker",
+      "resourceName": "e2e-all-types-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_tf4t",
+      "resourceId": "inf_1782778467016_gia2",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-all-types-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_mdqk",
+      "resourceId": "inf_1782778467016_a09b",
+      "resourceType": "cloudflare",
+      "resourceName": "e2e-all-types-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_vq9u",
+      "resourceId": "inf_1782778467017_1tao",
+      "resourceType": "aws",
+      "resourceName": "e2e-all-types-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_6hwg",
+      "resourceId": "inf_1782778467017_lhsa",
+      "resourceType": "azure",
+      "resourceName": "e2e-all-types-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_t7jh",
+      "resourceId": "inf_1782778467018_4bij",
+      "resourceType": "gcp",
+      "resourceName": "e2e-all-types-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_wrmv",
+      "resourceId": "inf_1782778467018_gfs6",
+      "resourceType": "firebase",
+      "resourceName": "e2e-all-types-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_ckh5",
+      "resourceId": "inf_1782778467019_nvo6",
+      "resourceType": "supabase",
+      "resourceName": "e2e-all-types-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657954_tcsq",
+      "resourceId": "inf_1782778467019_zevd",
+      "resourceType": "nginx",
+      "resourceName": "e2e-all-types-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.954Z"
+    },
+    {
+      "id": "ih_1782947657955_cn9q",
+      "resourceId": "inf_1782778467019_4wap",
+      "resourceType": "pm2",
+      "resourceName": "e2e-all-types-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_1nvr",
+      "resourceId": "inf_1782778467020_snv8",
+      "resourceType": "domain",
+      "resourceName": "e2e-all-types-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_vlhu",
+      "resourceId": "inf_1782778467020_z4ay",
+      "resourceType": "dns",
+      "resourceName": "e2e-all-types-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_0w4a",
+      "resourceId": "inf_1782778467021_f9sq",
+      "resourceType": "ssl",
+      "resourceName": "e2e-all-types-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_dck9",
+      "resourceId": "inf_1782778467022_e75b",
+      "resourceType": "cdn",
+      "resourceName": "e2e-all-types-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_ou4j",
+      "resourceId": "inf_1782778467022_sf1r",
+      "resourceType": "storage",
+      "resourceName": "e2e-all-types-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_ucfs",
+      "resourceId": "inf_1782778467023_qxq2",
+      "resourceType": "database",
+      "resourceName": "e2e-all-types-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_lwg7",
+      "resourceId": "inf_1782778467112_jrdy",
+      "resourceType": "vps",
+      "resourceName": "rec-test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_g8af",
+      "resourceId": "inf_1782778467113_9vw5",
+      "resourceType": "vps",
+      "resourceName": "rec-restart-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_vmj2",
+      "resourceId": "inf_1782778467116_6fvr",
+      "resourceType": "nginx",
+      "resourceName": "rec-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_idif",
+      "resourceId": "inf_1782778467119_wr3z",
+      "resourceType": "pm2",
+      "resourceName": "pm2-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_9kkh",
+      "resourceId": "inf_1782778467121_qvpj",
+      "resourceType": "database",
+      "resourceName": "db-isolate",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_7wza",
+      "resourceId": "inf_1782778467190_ijsr",
+      "resourceType": "cloudflare",
+      "resourceName": "cf-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_qhg1",
+      "resourceId": "inf_1782778467193_lx3h",
+      "resourceType": "firebase",
+      "resourceName": "fb-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_zcb8",
+      "resourceId": "inf_1782778467196_te7t",
+      "resourceType": "vps",
+      "resourceName": "e2e-vps-full",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_90p8",
+      "resourceId": "inf_1782778467556_bd30",
+      "resourceType": "nginx",
+      "resourceName": "e2e-nginx-degraded",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_akqa",
+      "resourceId": "inf_1782778467570_ax0p",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-k8s",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_estm",
+      "resourceId": "inf_1782778467571_veqc",
+      "resourceType": "aws",
+      "resourceName": "e2e-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_pjcn",
+      "resourceId": "inf_1782778468042_8vn2",
+      "resourceType": "docker",
+      "resourceName": "docker-all-actions",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_p4e8",
+      "resourceId": "inf_1782947403581_2sel",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "staging",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_3in5",
+      "resourceId": "inf_1782947403588_huno",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_8nlk",
+      "resourceId": "inf_1782947403590_f48q",
+      "resourceType": "docker",
+      "resourceName": "test-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_fovs",
+      "resourceId": "inf_1782947403594_lq0n",
+      "resourceType": "kubernetes",
+      "resourceName": "test-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_7kgm",
+      "resourceId": "inf_1782947403597_1lem",
+      "resourceType": "cloudflare",
+      "resourceName": "test-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_tgcc",
+      "resourceId": "inf_1782947403599_bjqu",
+      "resourceType": "aws",
+      "resourceName": "test-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_930e",
+      "resourceId": "inf_1782947403600_on6c",
+      "resourceType": "azure",
+      "resourceName": "test-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_o7o2",
+      "resourceId": "inf_1782947403605_6w1f",
+      "resourceType": "gcp",
+      "resourceName": "test-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_a8u8",
+      "resourceId": "inf_1782947403609_ttze",
+      "resourceType": "firebase",
+      "resourceName": "test-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_xuzi",
+      "resourceId": "inf_1782947403613_baoj",
+      "resourceType": "supabase",
+      "resourceName": "test-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_7q1c",
+      "resourceId": "inf_1782947403614_8raj",
+      "resourceType": "nginx",
+      "resourceName": "test-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_gnjw",
+      "resourceId": "inf_1782947403615_68p1",
+      "resourceType": "pm2",
+      "resourceName": "test-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_9v8e",
+      "resourceId": "inf_1782947403616_v0gj",
+      "resourceType": "domain",
+      "resourceName": "test-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_bran",
+      "resourceId": "inf_1782947403617_o7vi",
+      "resourceType": "dns",
+      "resourceName": "test-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_rsof",
+      "resourceId": "inf_1782947403618_14ba",
+      "resourceType": "ssl",
+      "resourceName": "test-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_d62i",
+      "resourceId": "inf_1782947403620_erd9",
+      "resourceType": "cdn",
+      "resourceName": "test-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_xp9q",
+      "resourceId": "inf_1782947403624_cnh7",
+      "resourceType": "storage",
+      "resourceName": "test-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_dru7",
+      "resourceId": "inf_1782947403626_ai4v",
+      "resourceType": "database",
+      "resourceName": "test-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657955_bk93",
+      "resourceId": "inf_1782947403627_gzjb",
+      "resourceType": "nginx",
+      "resourceName": "nginx-1-updated",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.955Z"
+    },
+    {
+      "id": "ih_1782947657956_g7w3",
+      "resourceId": "inf_1782947403629_haxd",
+      "resourceType": "pm2",
+      "resourceName": "pm2-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_e13a",
+      "resourceId": "inf_1782947403634_0xoc",
+      "resourceType": "docker",
+      "resourceName": "docker-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_sdac",
+      "resourceId": "inf_1782947407538_6yzg",
+      "resourceType": "vps",
+      "resourceName": "vps-degraded-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_26m5",
+      "resourceId": "inf_1782947408582_v5d6",
+      "resourceType": "vps",
+      "resourceName": "health-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_7pmn",
+      "resourceId": "inf_1782947409614_c8uc",
+      "resourceType": "vps",
+      "resourceName": "e2e-all-types-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_oheq",
+      "resourceId": "inf_1782947409616_6kg9",
+      "resourceType": "docker",
+      "resourceName": "e2e-all-types-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_e5nl",
+      "resourceId": "inf_1782947409618_s1hf",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-all-types-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_nnu7",
+      "resourceId": "inf_1782947409619_231n",
+      "resourceType": "cloudflare",
+      "resourceName": "e2e-all-types-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_v19e",
+      "resourceId": "inf_1782947409630_5qe4",
+      "resourceType": "aws",
+      "resourceName": "e2e-all-types-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_ikd6",
+      "resourceId": "inf_1782947409634_wj8g",
+      "resourceType": "azure",
+      "resourceName": "e2e-all-types-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_77um",
+      "resourceId": "inf_1782947409638_fqyf",
+      "resourceType": "gcp",
+      "resourceName": "e2e-all-types-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_5d9x",
+      "resourceId": "inf_1782947409642_a2jt",
+      "resourceType": "firebase",
+      "resourceName": "e2e-all-types-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_5euo",
+      "resourceId": "inf_1782947409651_qu28",
+      "resourceType": "supabase",
+      "resourceName": "e2e-all-types-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_v9a6",
+      "resourceId": "inf_1782947409657_1m2y",
+      "resourceType": "nginx",
+      "resourceName": "e2e-all-types-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_y4fk",
+      "resourceId": "inf_1782947409661_ysga",
+      "resourceType": "pm2",
+      "resourceName": "e2e-all-types-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_7qmp",
+      "resourceId": "inf_1782947409663_tk5w",
+      "resourceType": "domain",
+      "resourceName": "e2e-all-types-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_1uq5",
+      "resourceId": "inf_1782947409667_3bsj",
+      "resourceType": "dns",
+      "resourceName": "e2e-all-types-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_a6hc",
+      "resourceId": "inf_1782947409671_kbdh",
+      "resourceType": "ssl",
+      "resourceName": "e2e-all-types-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_webx",
+      "resourceId": "inf_1782947409676_x3pi",
+      "resourceType": "cdn",
+      "resourceName": "e2e-all-types-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_d0fk",
+      "resourceId": "inf_1782947409688_86lv",
+      "resourceType": "storage",
+      "resourceName": "e2e-all-types-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_e4ow",
+      "resourceId": "inf_1782947409693_dlt2",
+      "resourceType": "database",
+      "resourceName": "e2e-all-types-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_yszp",
+      "resourceId": "inf_1782947409797_6hmt",
+      "resourceType": "vps",
+      "resourceName": "rec-test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_2qwn",
+      "resourceId": "inf_1782947409801_18kz",
+      "resourceType": "vps",
+      "resourceName": "rec-restart-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_wo16",
+      "resourceId": "inf_1782947409818_tci7",
+      "resourceType": "nginx",
+      "resourceName": "rec-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_b5k1",
+      "resourceId": "inf_1782947409834_g2ea",
+      "resourceType": "pm2",
+      "resourceName": "pm2-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_tldb",
+      "resourceId": "inf_1782947409854_3ggm",
+      "resourceType": "database",
+      "resourceName": "db-isolate",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_ldq6",
+      "resourceId": "inf_1782947410272_sqv4",
+      "resourceType": "cloudflare",
+      "resourceName": "cf-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_zrr7",
+      "resourceId": "inf_1782947410281_sxpl",
+      "resourceType": "firebase",
+      "resourceName": "fb-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_mjrj",
+      "resourceId": "inf_1782947410290_rmhb",
+      "resourceType": "vps",
+      "resourceName": "e2e-vps-full",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_8n1b",
+      "resourceId": "inf_1782947410855_duw5",
+      "resourceType": "nginx",
+      "resourceName": "e2e-nginx-degraded",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_ipcz",
+      "resourceId": "inf_1782947410918_78e5",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-k8s",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_iiks",
+      "resourceId": "inf_1782947410925_vyo4",
+      "resourceType": "aws",
+      "resourceName": "e2e-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_l29d",
+      "resourceId": "inf_1782947411644_72i5",
+      "resourceType": "docker",
+      "resourceName": "docker-all-actions",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_1se9",
+      "resourceId": "inf_1782947613318_78i8",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "staging",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_xo5y",
+      "resourceId": "inf_1782947613388_gvip",
+      "resourceType": "vps",
+      "resourceName": "test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_tn60",
+      "resourceId": "inf_1782947613436_4gq1",
+      "resourceType": "docker",
+      "resourceName": "test-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_0gga",
+      "resourceId": "inf_1782947613484_f43n",
+      "resourceType": "kubernetes",
+      "resourceName": "test-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_hht2",
+      "resourceId": "inf_1782947613524_295n",
+      "resourceType": "cloudflare",
+      "resourceName": "test-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_a5pr",
+      "resourceId": "inf_1782947613573_gkn5",
+      "resourceType": "aws",
+      "resourceName": "test-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_8zu5",
+      "resourceId": "inf_1782947613588_7r51",
+      "resourceType": "azure",
+      "resourceName": "test-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_adkl",
+      "resourceId": "inf_1782947613612_brq6",
+      "resourceType": "gcp",
+      "resourceName": "test-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_awk2",
+      "resourceId": "inf_1782947613644_3xn2",
+      "resourceType": "firebase",
+      "resourceName": "test-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_92ip",
+      "resourceId": "inf_1782947613668_mtqb",
+      "resourceType": "supabase",
+      "resourceName": "test-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_it0k",
+      "resourceId": "inf_1782947613708_lawn",
+      "resourceType": "nginx",
+      "resourceName": "test-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_ypf2",
+      "resourceId": "inf_1782947613766_nuc2",
+      "resourceType": "pm2",
+      "resourceName": "test-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_ed9j",
+      "resourceId": "inf_1782947613805_b7a3",
+      "resourceType": "domain",
+      "resourceName": "test-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_88sh",
+      "resourceId": "inf_1782947613846_80n8",
+      "resourceType": "dns",
+      "resourceName": "test-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_3esx",
+      "resourceId": "inf_1782947613884_xvop",
+      "resourceType": "ssl",
+      "resourceName": "test-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_nkrq",
+      "resourceId": "inf_1782947613932_5dcp",
+      "resourceType": "cdn",
+      "resourceName": "test-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_vlct",
+      "resourceId": "inf_1782947614766_ohti",
+      "resourceType": "storage",
+      "resourceName": "test-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_8ijf",
+      "resourceId": "inf_1782947614770_ehbf",
+      "resourceType": "database",
+      "resourceName": "test-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_gfpo",
+      "resourceId": "inf_1782947614777_rpfl",
+      "resourceType": "nginx",
+      "resourceName": "nginx-1-updated",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_b1wr",
+      "resourceId": "inf_1782947614781_kc9r",
+      "resourceType": "pm2",
+      "resourceName": "pm2-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_68yv",
+      "resourceId": "inf_1782947614790_b9so",
+      "resourceType": "docker",
+      "resourceName": "docker-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_in2x",
+      "resourceId": "inf_1782947634931_lpdd",
+      "resourceType": "vps",
+      "resourceName": "vps-degraded-test",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_105v",
+      "resourceId": "inf_1782947644513_q0kb",
+      "resourceType": "vps",
+      "resourceName": "health-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_n2rh",
+      "resourceId": "inf_1782947651546_jrsy",
+      "resourceType": "vps",
+      "resourceName": "e2e-all-types-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_jlks",
+      "resourceId": "inf_1782947651550_i2af",
+      "resourceType": "docker",
+      "resourceName": "e2e-all-types-docker",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_tqga",
+      "resourceId": "inf_1782947651559_ljtf",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-all-types-kubernetes",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_3a3c",
+      "resourceId": "inf_1782947651566_x8zk",
+      "resourceType": "cloudflare",
+      "resourceName": "e2e-all-types-cloudflare",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657956_6rfi",
+      "resourceId": "inf_1782947651573_jisx",
+      "resourceType": "aws",
+      "resourceName": "e2e-all-types-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.956Z"
+    },
+    {
+      "id": "ih_1782947657957_efhm",
+      "resourceId": "inf_1782947651575_3dwg",
+      "resourceType": "azure",
+      "resourceName": "e2e-all-types-azure",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_9ika",
+      "resourceId": "inf_1782947651581_fdlf",
+      "resourceType": "gcp",
+      "resourceName": "e2e-all-types-gcp",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_jm8q",
+      "resourceId": "inf_1782947651582_2dgl",
+      "resourceType": "firebase",
+      "resourceName": "e2e-all-types-firebase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_o5zu",
+      "resourceId": "inf_1782947651592_ds8w",
+      "resourceType": "supabase",
+      "resourceName": "e2e-all-types-supabase",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_qqmp",
+      "resourceId": "inf_1782947651607_vq2w",
+      "resourceType": "nginx",
+      "resourceName": "e2e-all-types-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_1qxj",
+      "resourceId": "inf_1782947651614_djzh",
+      "resourceType": "pm2",
+      "resourceName": "e2e-all-types-pm2",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_4tii",
+      "resourceId": "inf_1782947651645_vg33",
+      "resourceType": "domain",
+      "resourceName": "e2e-all-types-domain",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_weu4",
+      "resourceId": "inf_1782947651662_k5p6",
+      "resourceType": "dns",
+      "resourceName": "e2e-all-types-dns",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_brzd",
+      "resourceId": "inf_1782947651693_a3ky",
+      "resourceType": "ssl",
+      "resourceName": "e2e-all-types-ssl",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_1hdo",
+      "resourceId": "inf_1782947651719_x4az",
+      "resourceType": "cdn",
+      "resourceName": "e2e-all-types-cdn",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_0iej",
+      "resourceId": "inf_1782947651742_4mru",
+      "resourceType": "storage",
+      "resourceName": "e2e-all-types-storage",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_uy5v",
+      "resourceId": "inf_1782947651774_o174",
+      "resourceType": "database",
+      "resourceName": "e2e-all-types-database",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_tbz9",
+      "resourceId": "inf_1782947652098_rdkn",
+      "resourceType": "vps",
+      "resourceName": "rec-test-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_9zfq",
+      "resourceId": "inf_1782947652101_fdov",
+      "resourceType": "vps",
+      "resourceName": "rec-restart-vps",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_wa0f",
+      "resourceId": "inf_1782947652126_t4m8",
+      "resourceType": "nginx",
+      "resourceName": "rec-nginx",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_od2r",
+      "resourceId": "inf_1782947652242_yv18",
+      "resourceType": "pm2",
+      "resourceName": "pm2-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_108k",
+      "resourceId": "inf_1782947652255_ljrx",
+      "resourceType": "database",
+      "resourceName": "db-isolate",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 80,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 80
+      },
+      "avgScore": 91,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_sgre",
+      "resourceId": "inf_1782947653323_hqvd",
+      "resourceType": "cloudflare",
+      "resourceName": "cf-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_ig4v",
+      "resourceId": "inf_1782947653342_4iht",
+      "resourceType": "firebase",
+      "resourceName": "fb-rec",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_vw5h",
+      "resourceId": "inf_1782947653359_ds35",
+      "resourceType": "vps",
+      "resourceName": "e2e-vps-full",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_ox17",
+      "resourceId": "inf_1782947655567_0k8z",
+      "resourceType": "nginx",
+      "resourceName": "e2e-nginx-degraded",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 30,
+        "memory": 30,
+        "disk": 30,
+        "network": 45,
+        "ssl": 30,
+        "dns": 95,
+        "deployment": 45
+      },
+      "avgScore": 44,
+      "level": "warning",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_cfwt",
+      "resourceId": "inf_1782947655671_vm41",
+      "resourceType": "kubernetes",
+      "resourceName": "e2e-k8s",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
+    },
+    {
+      "id": "ih_1782947657957_ql7x",
+      "resourceId": "inf_1782947655681_cjiy",
+      "resourceType": "aws",
+      "resourceName": "e2e-aws",
+      "environment": "production",
+      "region": "us-east-1",
+      "dimensionScores": {
+        "cpu": 95,
+        "memory": 95,
+        "disk": 95,
+        "network": 95,
+        "ssl": 95,
+        "dns": 95,
+        "deployment": 92
+      },
+      "avgScore": 95,
+      "level": "healthy",
+      "scannedAt": "2026-07-01T23:14:17.957Z"
     }
   ],
   "alerts": [
@@ -2805,24 +5925,780 @@
       "resolved": true,
       "createdAt": "2026-06-29T22:46:06.672Z",
       "resolvedAt": "2026-06-29T22:46:06.960Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_4z7a",
+      "resourceId": "inf_1782778463311_5rcf",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.133Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_yyl9",
+      "resourceId": "inf_1782778463313_jzyk",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.135Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_hgm2",
+      "resourceId": "inf_1782778463314_ke6z",
+      "resourceName": "test-docker",
+      "severity": "warning",
+      "message": "docker 'test-docker' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.137Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_04zg",
+      "resourceId": "inf_1782778463314_efey",
+      "resourceName": "test-kubernetes",
+      "severity": "warning",
+      "message": "kubernetes 'test-kubernetes' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.140Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_y4w3",
+      "resourceId": "inf_1782778463315_m4a8",
+      "resourceName": "test-cloudflare",
+      "severity": "warning",
+      "message": "cloudflare 'test-cloudflare' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.143Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_clfa",
+      "resourceId": "inf_1782778463316_37qx",
+      "resourceName": "test-aws",
+      "severity": "warning",
+      "message": "aws 'test-aws' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.146Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_ny32",
+      "resourceId": "inf_1782778463316_y6jz",
+      "resourceName": "test-azure",
+      "severity": "warning",
+      "message": "azure 'test-azure' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.149Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_b67u",
+      "resourceId": "inf_1782778463316_gn9i",
+      "resourceName": "test-gcp",
+      "severity": "warning",
+      "message": "gcp 'test-gcp' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.152Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_ywyd",
+      "resourceId": "inf_1782778463317_kcy4",
+      "resourceName": "test-firebase",
+      "severity": "warning",
+      "message": "firebase 'test-firebase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.155Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_8ke6",
+      "resourceId": "inf_1782778463317_utce",
+      "resourceName": "test-supabase",
+      "severity": "warning",
+      "message": "supabase 'test-supabase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.158Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_vdll",
+      "resourceId": "inf_1782778463318_ye3s",
+      "resourceName": "test-nginx",
+      "severity": "warning",
+      "message": "nginx 'test-nginx' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.161Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_02zj",
+      "resourceId": "inf_1782778463318_fxnk",
+      "resourceName": "test-pm2",
+      "severity": "warning",
+      "message": "pm2 'test-pm2' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.165Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_e1vs",
+      "resourceId": "inf_1782778463318_xp0r",
+      "resourceName": "test-domain",
+      "severity": "warning",
+      "message": "domain 'test-domain' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.169Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_31il",
+      "resourceId": "inf_1782778463319_tofj",
+      "resourceName": "test-dns",
+      "severity": "warning",
+      "message": "dns 'test-dns' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.171Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_m96b",
+      "resourceId": "inf_1782778463319_jlii",
+      "resourceName": "test-ssl",
+      "severity": "warning",
+      "message": "ssl 'test-ssl' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.174Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_so7i",
+      "resourceId": "inf_1782778463319_y6ty",
+      "resourceName": "test-cdn",
+      "severity": "warning",
+      "message": "cdn 'test-cdn' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.178Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_gd8g",
+      "resourceId": "inf_1782778463320_p8sz",
+      "resourceName": "test-storage",
+      "severity": "warning",
+      "message": "storage 'test-storage' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.181Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_dvg7",
+      "resourceId": "inf_1782778463320_ca3g",
+      "resourceName": "test-database",
+      "severity": "warning",
+      "message": "database 'test-database' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.184Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_sfko",
+      "resourceId": "inf_1782778463320_qsxk",
+      "resourceName": "nginx-1-updated",
+      "severity": "warning",
+      "message": "nginx 'nginx-1-updated' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.172Z",
+      "resolvedAt": "2026-06-30T00:14:27.187Z"
+    },
+    {
+      "id": "alert_ih_1782778466172_b8d9",
+      "resourceId": "inf_1782778463322_5lt2",
+      "resourceName": "docker-test",
+      "severity": "warning",
+      "message": "docker 'docker-test' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:26.173Z",
+      "resolvedAt": "2026-06-30T00:14:27.190Z"
+    },
+    {
+      "id": "alert_ih_1782778467129_vv00",
+      "resourceId": "inf_1782778467112_jrdy",
+      "resourceName": "rec-test-vps",
+      "severity": "warning",
+      "message": "vps 'rec-test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-06-30T00:14:27.129Z",
+      "resolvedAt": "2026-06-30T00:14:27.570Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_9kg1",
+      "resourceId": "inf_1782947403581_2sel",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:09.912Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_zj8f",
+      "resourceId": "inf_1782947403588_huno",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:09.927Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_z7p8",
+      "resourceId": "inf_1782947403590_f48q",
+      "resourceName": "test-docker",
+      "severity": "warning",
+      "message": "docker 'test-docker' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:09.953Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_olf4",
+      "resourceId": "inf_1782947403594_lq0n",
+      "resourceName": "test-kubernetes",
+      "severity": "warning",
+      "message": "kubernetes 'test-kubernetes' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:09.972Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_bagi",
+      "resourceId": "inf_1782947403597_1lem",
+      "resourceName": "test-cloudflare",
+      "severity": "warning",
+      "message": "cloudflare 'test-cloudflare' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:09.990Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_fu51",
+      "resourceId": "inf_1782947403599_bjqu",
+      "resourceName": "test-aws",
+      "severity": "warning",
+      "message": "aws 'test-aws' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.009Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_odvw",
+      "resourceId": "inf_1782947403600_on6c",
+      "resourceName": "test-azure",
+      "severity": "warning",
+      "message": "azure 'test-azure' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.029Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_si24",
+      "resourceId": "inf_1782947403605_6w1f",
+      "resourceName": "test-gcp",
+      "severity": "warning",
+      "message": "gcp 'test-gcp' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.054Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_5o2g",
+      "resourceId": "inf_1782947403609_ttze",
+      "resourceName": "test-firebase",
+      "severity": "warning",
+      "message": "firebase 'test-firebase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.083Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_t4ds",
+      "resourceId": "inf_1782947403613_baoj",
+      "resourceName": "test-supabase",
+      "severity": "warning",
+      "message": "supabase 'test-supabase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.095Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_6l06",
+      "resourceId": "inf_1782947403614_8raj",
+      "resourceName": "test-nginx",
+      "severity": "warning",
+      "message": "nginx 'test-nginx' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.111Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_jygz",
+      "resourceId": "inf_1782947403615_68p1",
+      "resourceName": "test-pm2",
+      "severity": "warning",
+      "message": "pm2 'test-pm2' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.133Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_58rd",
+      "resourceId": "inf_1782947403616_v0gj",
+      "resourceName": "test-domain",
+      "severity": "warning",
+      "message": "domain 'test-domain' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.167Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_216n",
+      "resourceId": "inf_1782947403617_o7vi",
+      "resourceName": "test-dns",
+      "severity": "warning",
+      "message": "dns 'test-dns' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.182Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_obak",
+      "resourceId": "inf_1782947403618_14ba",
+      "resourceName": "test-ssl",
+      "severity": "warning",
+      "message": "ssl 'test-ssl' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.194Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_4g3t",
+      "resourceId": "inf_1782947403620_erd9",
+      "resourceName": "test-cdn",
+      "severity": "warning",
+      "message": "cdn 'test-cdn' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.219Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_pipl",
+      "resourceId": "inf_1782947403624_cnh7",
+      "resourceName": "test-storage",
+      "severity": "warning",
+      "message": "storage 'test-storage' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.231Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_nvrn",
+      "resourceId": "inf_1782947403626_ai4v",
+      "resourceName": "test-database",
+      "severity": "warning",
+      "message": "database 'test-database' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.238Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_9xmc",
+      "resourceId": "inf_1782947403627_gzjb",
+      "resourceName": "nginx-1-updated",
+      "severity": "warning",
+      "message": "nginx 'nginx-1-updated' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.252Z"
+    },
+    {
+      "id": "alert_ih_1782947408501_jg21",
+      "resourceId": "inf_1782947403634_0xoc",
+      "resourceName": "docker-test",
+      "severity": "warning",
+      "message": "docker 'docker-test' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:08.501Z",
+      "resolvedAt": "2026-07-01T23:10:10.267Z"
+    },
+    {
+      "id": "alert_ih_1782947409895_wuxt",
+      "resourceId": "inf_1782947409797_6hmt",
+      "resourceName": "rec-test-vps",
+      "severity": "warning",
+      "message": "vps 'rec-test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:10:09.895Z",
+      "resolvedAt": "2026-07-01T23:10:10.908Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_4cfi",
+      "resourceId": "inf_1782947613318_78i8",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.448Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_eyp1",
+      "resourceId": "inf_1782947613388_gvip",
+      "resourceName": "test-vps",
+      "severity": "warning",
+      "message": "vps 'test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.472Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_qt2b",
+      "resourceId": "inf_1782947613436_4gq1",
+      "resourceName": "test-docker",
+      "severity": "warning",
+      "message": "docker 'test-docker' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.502Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_ob99",
+      "resourceId": "inf_1782947613484_f43n",
+      "resourceName": "test-kubernetes",
+      "severity": "warning",
+      "message": "kubernetes 'test-kubernetes' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.666Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_opzu",
+      "resourceId": "inf_1782947613524_295n",
+      "resourceName": "test-cloudflare",
+      "severity": "warning",
+      "message": "cloudflare 'test-cloudflare' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.701Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_uvzg",
+      "resourceId": "inf_1782947613573_gkn5",
+      "resourceName": "test-aws",
+      "severity": "warning",
+      "message": "aws 'test-aws' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.757Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_2x9c",
+      "resourceId": "inf_1782947613588_7r51",
+      "resourceName": "test-azure",
+      "severity": "warning",
+      "message": "azure 'test-azure' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.811Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_kpid",
+      "resourceId": "inf_1782947613612_brq6",
+      "resourceName": "test-gcp",
+      "severity": "warning",
+      "message": "gcp 'test-gcp' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.869Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_ah5f",
+      "resourceId": "inf_1782947613644_3xn2",
+      "resourceName": "test-firebase",
+      "severity": "warning",
+      "message": "firebase 'test-firebase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.963Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_mgfw",
+      "resourceId": "inf_1782947613668_mtqb",
+      "resourceName": "test-supabase",
+      "severity": "warning",
+      "message": "supabase 'test-supabase' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:12.976Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_06cb",
+      "resourceId": "inf_1782947613708_lawn",
+      "resourceName": "test-nginx",
+      "severity": "warning",
+      "message": "nginx 'test-nginx' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.003Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_x0na",
+      "resourceId": "inf_1782947613766_nuc2",
+      "resourceName": "test-pm2",
+      "severity": "warning",
+      "message": "pm2 'test-pm2' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.053Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_1xcc",
+      "resourceId": "inf_1782947613805_b7a3",
+      "resourceName": "test-domain",
+      "severity": "warning",
+      "message": "domain 'test-domain' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.089Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_mvmh",
+      "resourceId": "inf_1782947613846_80n8",
+      "resourceName": "test-dns",
+      "severity": "warning",
+      "message": "dns 'test-dns' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.127Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_2n05",
+      "resourceId": "inf_1782947613884_xvop",
+      "resourceName": "test-ssl",
+      "severity": "warning",
+      "message": "ssl 'test-ssl' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.174Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_nouc",
+      "resourceId": "inf_1782947613932_5dcp",
+      "resourceName": "test-cdn",
+      "severity": "warning",
+      "message": "cdn 'test-cdn' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.252Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_c12w",
+      "resourceId": "inf_1782947614766_ohti",
+      "resourceName": "test-storage",
+      "severity": "warning",
+      "message": "storage 'test-storage' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.282Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_54qt",
+      "resourceId": "inf_1782947614770_ehbf",
+      "resourceName": "test-database",
+      "severity": "warning",
+      "message": "database 'test-database' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.302Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_v045",
+      "resourceId": "inf_1782947614777_rpfl",
+      "resourceName": "nginx-1-updated",
+      "severity": "warning",
+      "message": "nginx 'nginx-1-updated' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.311Z"
+    },
+    {
+      "id": "alert_ih_1782947642553_lc5x",
+      "resourceId": "inf_1782947614790_b9so",
+      "resourceName": "docker-test",
+      "severity": "warning",
+      "message": "docker 'docker-test' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:02.553Z",
+      "resolvedAt": "2026-07-01T23:14:13.321Z"
+    },
+    {
+      "id": "alert_ih_1782947652365_abt0",
+      "resourceId": "inf_1782947652098_rdkn",
+      "resourceName": "rec-test-vps",
+      "severity": "warning",
+      "message": "vps 'rec-test-vps' in degraded state (score: 79/100)",
+      "dimension": "deployment",
+      "score": 79,
+      "resolved": true,
+      "createdAt": "2026-07-01T23:14:12.365Z",
+      "resolvedAt": "2026-07-01T23:14:15.667Z"
     }
   ],
   "stats": {
-    "lastScan": "2026-06-29T22:46:07.211Z",
-    "scanned": 115,
+    "lastScan": "2026-07-01T23:14:17.958Z",
+    "scanned": 271,
     "avgHealthScore": 92,
     "alertCount": 0,
     "byDimension": {
-      "cpu": 92,
-      "memory": 92,
-      "disk": 92,
+      "cpu": 91,
+      "memory": 91,
+      "disk": 91,
       "network": 92,
-      "ssl": 92,
+      "ssl": 91,
       "dns": 95,
       "deployment": 89
     },
     "deployHealth": 75,
-    "deviceLayerScanned": 62
+    "deviceLayerScanned": 155
   },
-  "updatedAt": "2026-06-29T22:46:07.211Z"
+  "updatedAt": "2026-07-01T23:14:17.958Z"
 }

@@ -18,7 +18,7 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/governanceService.cjs");
 
-router.use(requireAuth);
+router.use("/governance", requireAuth);
 router.use(attachWorkspace);
 
 function _wsId(req) {

@@ -20,7 +20,7 @@ const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddlew
 const svc = require("../services/securityLayer.cjs");
 const wsSvc = require("../services/workspaceService.cjs");
 
-router.use(requireAuth);
+router.use("/security", requireAuth);
 router.use(attachWorkspace);
 
 // Helper: resolve workspaceId from req (active or query param)

@@ -725,6 +725,1095 @@
       },
       "startedAt": "2026-06-29T22:46:08.176Z",
       "updatedAt": "2026-06-29T22:46:08.176Z"
+    },
+    {
+      "id": "collab_1782778469283_e4dd",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_business",
+      "toOrgName": "Business Organization V3",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test mission"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.283Z",
+      "updatedAt": "2026-06-30T00:14:29.283Z"
+    },
+    {
+      "id": "collab_1782778469284_8qc6",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-06-30T00:14:29.284Z",
+      "updatedAt": "2026-06-30T00:14:29.284Z"
+    },
+    {
+      "id": "collab_1782778469284_glxy",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.284Z",
+      "updatedAt": "2026-06-30T00:14:29.284Z"
+    },
+    {
+      "id": "collab_1782778469284_v5ps",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.284Z",
+      "updatedAt": "2026-06-30T00:14:29.284Z"
+    },
+    {
+      "id": "collab_1782778469285_5c5x",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-06-30T00:14:29.285Z",
+      "updatedAt": "2026-06-30T00:14:29.285Z"
+    },
+    {
+      "id": "collab_1782778469285_vha3",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.285Z",
+      "updatedAt": "2026-06-30T00:14:29.285Z"
+    },
+    {
+      "id": "collab_1782778469285_ocsq",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.285Z",
+      "updatedAt": "2026-06-30T00:14:29.285Z"
+    },
+    {
+      "id": "collab_1782778469286_k2fx",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.286Z",
+      "updatedAt": "2026-06-30T00:14:29.286Z"
+    },
+    {
+      "id": "collab_1782778469286_l144",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.286Z",
+      "updatedAt": "2026-06-30T00:14:29.286Z"
+    },
+    {
+      "id": "collab_1782778469287_te7o",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "analyze codebase patterns"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.287Z",
+      "updatedAt": "2026-06-30T00:14:29.287Z"
+    },
+    {
+      "id": "collab_1782778469287_ojet",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-06-30T00:14:29.287Z",
+      "updatedAt": "2026-06-30T00:14:29.287Z"
+    },
+    {
+      "id": "collab_1782778469287_dic2",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "infrastructure_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.287Z",
+      "updatedAt": "2026-06-30T00:14:29.287Z"
+    },
+    {
+      "id": "collab_1782778469288_vd32",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.288Z",
+      "updatedAt": "2026-06-30T00:14:29.288Z"
+    },
+    {
+      "id": "collab_1782778469288_b6mz",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.288Z",
+      "updatedAt": "2026-06-30T00:14:29.288Z"
+    },
+    {
+      "id": "collab_1782778469289_juef",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-06-30T00:14:29.289Z",
+      "updatedAt": "2026-06-30T00:14:29.289Z"
+    },
+    {
+      "id": "collab_1782778469289_y0k9",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.289Z",
+      "updatedAt": "2026-06-30T00:14:29.289Z"
+    },
+    {
+      "id": "collab_1782778469289_zv4m",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.289Z",
+      "updatedAt": "2026-06-30T00:14:29.289Z"
+    },
+    {
+      "id": "collab_1782778469290_ub8u",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-06-30T00:14:29.290Z",
+      "updatedAt": "2026-06-30T00:14:29.290Z"
+    },
+    {
+      "id": "collab_1782778469298_oiwz",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-06-30T00:14:29.298Z",
+      "updatedAt": "2026-06-30T00:14:29.298Z"
+    },
+    {
+      "id": "collab_1782947410106_d4at",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_business",
+      "toOrgName": "Business Organization V3",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test mission"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.106Z",
+      "updatedAt": "2026-07-01T23:10:10.106Z"
+    },
+    {
+      "id": "collab_1782947410108_y23x",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:10:10.108Z",
+      "updatedAt": "2026-07-01T23:10:10.108Z"
+    },
+    {
+      "id": "collab_1782947410109_hyms",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.109Z",
+      "updatedAt": "2026-07-01T23:10:10.109Z"
+    },
+    {
+      "id": "collab_1782947410110_2nyl",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.110Z",
+      "updatedAt": "2026-07-01T23:10:10.110Z"
+    },
+    {
+      "id": "collab_1782947410113_k055",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:10:10.113Z",
+      "updatedAt": "2026-07-01T23:10:10.113Z"
+    },
+    {
+      "id": "collab_1782947410116_i81f",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.117Z",
+      "updatedAt": "2026-07-01T23:10:10.117Z"
+    },
+    {
+      "id": "collab_1782947410118_cwru",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.118Z",
+      "updatedAt": "2026-07-01T23:10:10.118Z"
+    },
+    {
+      "id": "collab_1782947410119_501z",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.119Z",
+      "updatedAt": "2026-07-01T23:10:10.119Z"
+    },
+    {
+      "id": "collab_1782947410124_1f4f",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.124Z",
+      "updatedAt": "2026-07-01T23:10:10.124Z"
+    },
+    {
+      "id": "collab_1782947410131_qs4u",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "analyze codebase patterns"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.131Z",
+      "updatedAt": "2026-07-01T23:10:10.131Z"
+    },
+    {
+      "id": "collab_1782947410134_p55q",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:10:10.134Z",
+      "updatedAt": "2026-07-01T23:10:10.134Z"
+    },
+    {
+      "id": "collab_1782947410143_fu1i",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "infrastructure_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.143Z",
+      "updatedAt": "2026-07-01T23:10:10.143Z"
+    },
+    {
+      "id": "collab_1782947410151_wup5",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.151Z",
+      "updatedAt": "2026-07-01T23:10:10.151Z"
+    },
+    {
+      "id": "collab_1782947410153_xl8e",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.153Z",
+      "updatedAt": "2026-07-01T23:10:10.153Z"
+    },
+    {
+      "id": "collab_1782947410154_bqpb",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:10:10.154Z",
+      "updatedAt": "2026-07-01T23:10:10.154Z"
+    },
+    {
+      "id": "collab_1782947410156_hlbp",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.156Z",
+      "updatedAt": "2026-07-01T23:10:10.156Z"
+    },
+    {
+      "id": "collab_1782947410159_31dh",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.159Z",
+      "updatedAt": "2026-07-01T23:10:10.159Z"
+    },
+    {
+      "id": "collab_1782947410167_vx8d",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-07-01T23:10:10.167Z",
+      "updatedAt": "2026-07-01T23:10:10.167Z"
+    },
+    {
+      "id": "collab_1782947410219_b4ci",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:10:10.219Z",
+      "updatedAt": "2026-07-01T23:10:10.219Z"
+    },
+    {
+      "id": "collab_1782947663567_u6xx",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_business",
+      "toOrgName": "Business Organization V3",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test mission"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:23.567Z",
+      "updatedAt": "2026-07-01T23:14:23.588Z"
+    },
+    {
+      "id": "collab_1782947663606_sv2y",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:14:23.606Z",
+      "updatedAt": "2026-07-01T23:14:23.606Z"
+    },
+    {
+      "id": "collab_1782947664187_wb2q",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:24.187Z",
+      "updatedAt": "2026-07-01T23:14:24.187Z"
+    },
+    {
+      "id": "collab_1782947664229_1yla",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.229Z",
+      "updatedAt": "2026-07-01T23:14:24.229Z"
+    },
+    {
+      "id": "collab_1782947664260_c1ft",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:14:24.260Z",
+      "updatedAt": "2026-07-01T23:14:24.261Z"
+    },
+    {
+      "id": "collab_1782947664293_123q",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.293Z",
+      "updatedAt": "2026-07-01T23:14:24.294Z"
+    },
+    {
+      "id": "collab_1782947664345_riq7",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.345Z",
+      "updatedAt": "2026-07-01T23:14:24.345Z"
+    },
+    {
+      "id": "collab_1782947664403_7zgs",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_executive",
+      "toOrgName": "Executive Organization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "test",
+        "capability": "code"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:24.403Z",
+      "updatedAt": "2026-07-01T23:14:24.403Z"
+    },
+    {
+      "id": "collab_1782947664445_ongi",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.445Z",
+      "updatedAt": "2026-07-01T23:14:24.445Z"
+    },
+    {
+      "id": "collab_1782947664469_swml",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_knowledge",
+      "toOrgName": "Knowledge Organization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "analyze codebase patterns"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:24.469Z",
+      "updatedAt": "2026-07-01T23:14:24.469Z"
+    },
+    {
+      "id": "collab_1782947664478_vmv4",
+      "fromOrgId": "org_knowledge",
+      "fromOrgName": "Knowledge Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "knowledge_exchange",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:14:24.478Z",
+      "updatedAt": "2026-07-01T23:14:24.478Z"
+    },
+    {
+      "id": "collab_1782947664480_pfha",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_research",
+      "toOrgName": "Research Institute",
+      "type": "infrastructure_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.480Z",
+      "updatedAt": "2026-07-01T23:14:24.480Z"
+    },
+    {
+      "id": "collab_1782947664483_s0sz",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "mission_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "mission_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:24.483Z",
+      "updatedAt": "2026-07-01T23:14:24.483Z"
+    },
+    {
+      "id": "collab_1782947664485_w7kq",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "workforce_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "workforce_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.485Z",
+      "updatedAt": "2026-07-01T23:14:24.485Z"
+    },
+    {
+      "id": "collab_1782947664488_v46v",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "knowledge_exchange",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "knowledge_exchange"
+      },
+      "startedAt": "2026-07-01T23:14:24.488Z",
+      "updatedAt": "2026-07-01T23:14:24.488Z"
+    },
+    {
+      "id": "collab_1782947664492_g64z",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "infrastructure_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "infrastructure_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.492Z",
+      "updatedAt": "2026-07-01T23:14:24.492Z"
+    },
+    {
+      "id": "collab_1782947664494_bnmi",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "research_sharing",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:24.494Z",
+      "updatedAt": "2026-07-01T23:14:24.494Z"
+    },
+    {
+      "id": "collab_1782947664495_som4",
+      "fromOrgId": "org_autonomous",
+      "fromOrgName": "Autonomous Civilization",
+      "toOrgId": "org_civilization",
+      "toOrgName": "AI Civilization",
+      "type": "capability_delegation",
+      "payload": {
+        "goal": "civilizational advancement",
+        "capability": "diplomacy"
+      },
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "capability_delegation"
+      },
+      "startedAt": "2026-07-01T23:14:24.495Z",
+      "updatedAt": "2026-07-01T23:14:24.495Z"
+    },
+    {
+      "id": "collab_1782947665763_x4uf",
+      "fromOrgId": "org_engineering",
+      "fromOrgName": "Engineering Organization",
+      "toOrgId": "org_evolution",
+      "toOrgName": "Evolution Organization",
+      "type": "research_sharing",
+      "payload": {},
+      "status": "completed",
+      "outcome": {
+        "ok": true,
+        "mode": "simulated",
+        "type": "research_sharing"
+      },
+      "startedAt": "2026-07-01T23:14:25.763Z",
+      "updatedAt": "2026-07-01T23:14:25.763Z"
     }
   ]
 }

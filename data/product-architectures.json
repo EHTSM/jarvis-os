@@ -7991,11 +7991,1787 @@
       "status": "designed",
       "createdAt": "2026-06-29T22:44:51.176Z",
       "updatedAt": "2026-06-29T22:44:51.176Z"
+    },
+    {
+      "id": "pa_1782947393932_b9ol",
+      "planId": "pp_1782947388005_tsck",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "design"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "designSystemAI",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "continuousDesignObserver",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "uxOptimizer",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "brandIntelligence",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 76,
+      "duplicationScore": 24,
+      "usedServices": 26,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947393934_sn04",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:09:54.849Z",
+      "updatedAt": "2026-07-01T23:09:54.849Z"
+    },
+    {
+      "id": "pa_1782947397043_9dda",
+      "planId": "pp_1782947396070_ivoo",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "design",
+        "orchestration"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "designSystemAI",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "continuousDesignObserver",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "uxOptimizer",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "brandIntelligence",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "missionOrchestrator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "workforceManager",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "autonomousExecutionEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "approvalEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 88,
+      "duplicationScore": 12,
+      "usedServices": 30,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947397044_xbcs",
+        "templateId": "crm"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:09:58.001Z",
+      "updatedAt": "2026-07-01T23:09:58.001Z"
+    },
+    {
+      "id": "pa_1782947399046_tiqd",
+      "planId": "pp_1782947398013_lgpy",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 65,
+      "duplicationScore": 35,
+      "usedServices": 22,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947399048_1336",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "medium",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:10:00.015Z",
+      "updatedAt": "2026-07-01T23:10:00.015Z"
+    },
+    {
+      "id": "pa_1782947401542_nl7g",
+      "planId": "pp_1782947400439_0lzp",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "orchestration"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "missionOrchestrator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "workforceManager",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "autonomousExecutionEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "approvalEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 76,
+      "duplicationScore": 24,
+      "usedServices": 26,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947401542_fy4t",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:10:02.549Z",
+      "updatedAt": "2026-07-01T23:10:02.549Z"
+    },
+    {
+      "id": "pa_1782947538774_efiq",
+      "planId": "pp_1782947530046_q783",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "design"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "designSystemAI",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "continuousDesignObserver",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "uxOptimizer",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "brandIntelligence",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 76,
+      "duplicationScore": 24,
+      "usedServices": 26,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947538776_wg4s",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:12:20.968Z",
+      "updatedAt": "2026-07-01T23:12:20.968Z"
+    },
+    {
+      "id": "pa_1782947549031_c90p",
+      "planId": "pp_1782947546196_lbvm",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "design",
+        "orchestration"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "designSystemAI",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "continuousDesignObserver",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "uxOptimizer",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "design",
+          "service": "brandIntelligence",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "missionOrchestrator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "workforceManager",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "autonomousExecutionEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "approvalEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 88,
+      "duplicationScore": 12,
+      "usedServices": 30,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947549032_k6vd",
+        "templateId": "crm"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:12:31.915Z",
+      "updatedAt": "2026-07-01T23:12:31.915Z"
+    },
+    {
+      "id": "pa_1782947555014_gjvp",
+      "planId": "pp_1782947551949_y3p3",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 65,
+      "duplicationScore": 35,
+      "usedServices": 22,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947555018_gyjc",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "medium",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:12:38.310Z",
+      "updatedAt": "2026-07-01T23:12:38.310Z"
+    },
+    {
+      "id": "pa_1782947561724_mmww",
+      "planId": "pp_1782947559310_7vik",
+      "selectedLayers": [
+        "foundation",
+        "data",
+        "intelligence",
+        "engineering",
+        "deployment",
+        "workspace",
+        "orchestration"
+      ],
+      "componentMap": [
+        {
+          "layer": "foundation",
+          "service": "authMiddleware",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "billingService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "accountsRouter",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "foundation",
+          "service": "jwtService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "fileStorage (JSON)",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "metricsService",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "data",
+          "service": "agentRunsStore",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "engineeringReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "knowledgeReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "evolutionReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "intelligence",
+          "service": "visualReasoningEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "autonomousEngineeringPipeline",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfImprovementEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "engineeringMemoryEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "engineering",
+          "service": "selfReviewEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "deploymentValidator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionBibleEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "founderAutomationEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "deployment",
+          "service": "productionInfra",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "workspaceMesh",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "computerController",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "workspace",
+          "service": "companyWorkspaceBuilder",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "missionOrchestrator",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "workforceManager",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "autonomousExecutionEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "orchestration",
+          "service": "approvalEngine",
+          "reused": true,
+          "new": false
+        },
+        {
+          "layer": "product_factory",
+          "service": "productPlannerEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productArchitectureEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productAssemblyEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productValidationEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productReleaseEngine",
+          "reused": false,
+          "new": true
+        },
+        {
+          "layer": "product_factory",
+          "service": "productFactoryDashboard",
+          "reused": false,
+          "new": true
+        }
+      ],
+      "reuseRatio": 76,
+      "duplicationScore": 24,
+      "usedServices": 26,
+      "totalServices": 34,
+      "newServicesCreated": 6,
+      "blueprint": {
+        "id": "bp_1782947561728_hjhg",
+        "templateId": "saas"
+      },
+      "reasoning": {},
+      "reviewScore": 79,
+      "complexity": "high",
+      "status": "designed",
+      "createdAt": "2026-07-01T23:12:43.758Z",
+      "updatedAt": "2026-07-01T23:12:43.758Z"
     }
   ],
   "stats": {
-    "total": 36,
+    "total": 44,
     "avgReuseRatio": 76
   },
-  "updatedAt": "2026-06-29T22:44:51.177Z"
+  "updatedAt": "2026-07-01T23:12:43.821Z"
 }

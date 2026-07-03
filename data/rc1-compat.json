@@ -1,0 +1,116 @@
+{
+  "id": "compat-1783026285597",
+  "version": "1.0.0-rc1",
+  "previousVersion": "3.0.22",
+  "generatedAt": "2026-07-02T21:04:45.597Z",
+  "upgradeVerdict": "SAFE",
+  "upgradeNotes": [
+    "All data files are additive — no deletions or schema changes",
+    "New JSON state files (m6-*, m6b-*) are created on first write — no manual migration needed",
+    "Old auth tokens in data/m6-auth-tokens.json will still be read — no invalidation",
+    "billing.json remains the same — m6b-billing-ext.json is a new additive file",
+    "vault-index.json and vault secrets untouched — Vault data is intact",
+    "All existing routes preserved — new routes added under /beta/*, /cbeta/*"
+  ],
+  "breakingChanges": [
+    {
+      "area": "version",
+      "change": "version.json: 3.0.22 → 1.0.0-rc1",
+      "impact": "package.json and data/version.json both updated",
+      "action": "No user action required — automatic"
+    },
+    {
+      "area": "auth",
+      "change": "Registration now requires invite code + email verification",
+      "impact": "New users must have valid invite code; email must be verified before login",
+      "action": "Generate invite codes: POST /co3/invites/bulk"
+    },
+    {
+      "area": "auth",
+      "change": "Password reset now uses real 1h token (was stub)",
+      "impact": "Old stub reset links are invalid",
+      "action": "Users must use new /auth/reset-password flow"
+    },
+    {
+      "area": "billing",
+      "change": "Beta cap set to 50 users (BETA_MAX_USERS=50)",
+      "impact": "Registration blocked when 50 accounts exist",
+      "action": "Monitor /beta/status — extend cap in betaReadiness.cjs when ready"
+    }
+  ],
+  "nonBreakingAdditions": [
+    "POST /cbeta/* — 38 new routes for Closed Beta Ops",
+    "POST /beta/* — 20 new routes for Beta Readiness",
+    "POST /alpha/* — 17 new routes for Alpha Program",
+    "GET /beta/telemetry/retention — day-1/7/30 retention cohorts",
+    "POST /auth/reset-password — real password reset",
+    "GET /auth/verify-email — email verification",
+    "revokeInviteCode() in co3UserSuccess store",
+    "DAU/WAU/MAU metrics in closedBeta service",
+    "Coupon/invoice/credit system in m6b-billing-ext.json",
+    "Launch readiness report with top-20 issues, top-10 risks"
+  ],
+  "dataPreservation": {
+    "projects": "INTACT",
+    "vault": "INTACT",
+    "settings": "INTACT",
+    "connectors": "INTACT",
+    "billing": "INTACT",
+    "users": "INTACT — new email verification state added",
+    "invites": "INTACT — new revoked status added to existing invite records"
+  },
+  "buildValidation": {
+    "checks": [
+      {
+        "name": "frontend_build",
+        "status": "pass",
+        "detail": "frontend/build/index.html present"
+      },
+      {
+        "name": "js_bundle",
+        "status": "pass",
+        "detail": "163 JS bundle(s)"
+      },
+      {
+        "name": "css_bundle",
+        "status": "pass",
+        "detail": "151 CSS bundle(s)"
+      },
+      {
+        "name": "version_sync",
+        "status": "pass",
+        "detail": "package.json version 1.0.0-rc1 matches version.json"
+      },
+      {
+        "name": "dependencies",
+        "status": "pass",
+        "detail": "node_modules present"
+      },
+      {
+        "name": "data_dir",
+        "status": "pass",
+        "detail": "data/ writable"
+      }
+    ],
+    "score": 100,
+    "passed": 6,
+    "total": 6,
+    "valid": true
+  },
+  "freshInstallSteps": [
+    "git clone <repo>",
+    "cp .env.example .env && nano .env  # fill in required vars",
+    "npm install",
+    "node scripts/generate-password-hash.cjs <password>  # sets OPERATOR_PASSWORD_HASH + JWT_SECRET",
+    "npm run build:frontend",
+    "pm2 start ecosystem.config.cjs --env production",
+    "pm2 startup && pm2 save",
+    "POST /co3/invites/bulk  # generate first beta invite codes"
+  ],
+  "upgradeSteps": [
+    "bash deploy/update.sh  # pulls code + backup + rebuild + pm2 reload",
+    "No manual migration steps required",
+    "All new state files initialize on first API call",
+    "Verify health: curl http://localhost:5050/health"
+  ]
+}

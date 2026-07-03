@@ -1,0 +1,52 @@
+{
+  "name": "Ooplix",
+  "version": "1.0.0-rc1",
+  "releaseStage": "release-candidate",
+  "releaseDate": "2026-07-02T21:04:45.735Z",
+  "buildId": "build-1783026285735",
+  "platform": {
+    "mac": {
+      "target": "dmg",
+      "archs": [
+        "arm64",
+        "x64"
+      ]
+    },
+    "windows": {
+      "target": "nsis",
+      "archs": [
+        "x64"
+      ]
+    },
+    "linux": {
+      "target": "AppImage",
+      "archs": [
+        "x64"
+      ]
+    }
+  },
+  "appId": "com.ooplix.jarvis",
+  "productName": "Ooplix",
+  "publisher": "Ooplix",
+  "autoUpdate": {
+    "provider": "github",
+    "owner": "EHTSM",
+    "repo": "jarvis-os"
+  },
+  "generatedAt": "2026-07-02T21:04:45.735Z",
+  "artifacts": [
+    {
+      "file": "JARVIS-3.0.0-arm64.dmg",
+      "sha256": "3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1"
+    },
+    {
+      "file": "JARVIS-3.0.0.dmg",
+      "sha256": "1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41"
+    }
+  ],
+  "latestMacYaml": "version: 1.0.0-rc1\nfiles:\n  - url: JARVIS-3.0.0-arm64.dmg\n    sha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\n    size: 130811233\n  - url: JARVIS-3.0.0.dmg\n    sha512: 1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41\n    size: 136318694\npath: JARVIS-3.0.0-arm64.dmg\nsha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\nsize: 130811233\nreleaseDate: 2026-07-02T21:04:45.734Z",
+  "backendVersion": "1.0.0-rc1",
+  "nodeMinVersion": "18.0.0",
+  "electronVersion": "41.4.0",
+  "note": null
+}

@@ -9,7 +9,7 @@ const router          = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const g               = require("../services/growthOS.cjs");
 
-router.use(requireAuth);
+router.use("/growth", requireAuth);
 
 function _ok(res, data)   { res.json({ ok: true, ...data }); }
 function _err(res, e, code = 500) { res.status(code).json({ error: e.message || e }); }

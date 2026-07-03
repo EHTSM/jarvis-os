@@ -1668,12 +1668,898 @@
       "riskScore": 85,
       "qualityOverall": 59,
       "predictedAt": "2026-06-29T22:42:22.601Z"
+    },
+    {
+      "id": "ep_1782947376974_6hsr",
+      "context": "low_quality_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        },
+        {
+          "type": "critical_bug_risk",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Bug reasoning score below 50 — high-severity defects likely in production within 14 days"
+        }
+      ],
+      "regressions": [
+        {
+          "type": "reliability_regression",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Reliability score below 60 — increased MTTR and repeat-failure risk"
+        }
+      ],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [
+        {
+          "type": "performance_degradation",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Performance score below 60 — latency spikes expected under load"
+        },
+        {
+          "type": "throughput_bottleneck",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Performance reasoning identifies throughput bottleneck"
+        }
+      ],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        },
+        {
+          "type": "outdated_dependencies",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Dependency health below threshold — update required before next release"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 3,
+      "riskScore": 88,
+      "qualityOverall": 40,
+      "predictedAt": "2026-07-01T23:09:36.974Z"
+    },
+    {
+      "id": "ep_1782947376980_ggko",
+      "context": "high_quality_repo",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 90,
+      "predictedAt": "2026-07-01T23:09:36.980Z"
+    },
+    {
+      "id": "ep_1782947376985_x9tn",
+      "context": "sec_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        },
+        {
+          "type": "outdated_dependencies",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Dependency health below threshold — update required before next release"
+        }
+      ],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 100,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:09:36.985Z"
+    },
+    {
+      "id": "ep_1782947377038_10rb",
+      "context": "id_pred_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 65,
+      "predictedAt": "2026-07-01T23:09:37.038Z"
+    },
+    {
+      "id": "ep_1782947377085_6ftj",
+      "context": "list_pred_ctx",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:09:37.085Z"
+    },
+    {
+      "id": "ep_1782947377091_e7sd",
+      "context": "risk_calc_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        }
+      ],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 131,
+      "qualityOverall": 45,
+      "predictedAt": "2026-07-01T23:09:37.091Z"
+    },
+    {
+      "id": "ep_1782947377095_ln40",
+      "context": "crit_count_test",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        },
+        {
+          "type": "critical_bug_risk",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Bug reasoning score below 50 — high-severity defects likely in production within 14 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        }
+      ],
+      "total": 4,
+      "criticalCount": 3,
+      "riskScore": 117,
+      "qualityOverall": 40,
+      "predictedAt": "2026-07-01T23:09:37.095Z"
+    },
+    {
+      "id": "ep_1782947452748_0spf",
+      "context": "current_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:52.748Z"
+    },
+    {
+      "id": "ep_1782947452811_agvj",
+      "context": "iso_1782947401600_ryt",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 70,
+      "predictedAt": "2026-07-01T23:10:52.811Z"
+    },
+    {
+      "id": "ep_1782947452872_4bdl",
+      "context": "status_seed_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:52.872Z"
+    },
+    {
+      "id": "ep_1782947452942_j5k6",
+      "context": "multi_cycle_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:52.942Z"
+    },
+    {
+      "id": "ep_1782947453304_8nsh",
+      "context": "dashboard_evo_seed",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:53.304Z"
+    },
+    {
+      "id": "ep_1782947453415_64fw",
+      "context": "view_pipeline_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 86,
+      "predictedAt": "2026-07-01T23:10:53.415Z"
+    },
+    {
+      "id": "ep_1782947453480_l47m",
+      "context": "current_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:53.480Z"
+    },
+    {
+      "id": "ep_1782947453529_tdkx",
+      "context": "founder_time_test",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:10:53.529Z"
+    },
+    {
+      "id": "ep_1782947500268_ryri",
+      "context": "low_quality_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        },
+        {
+          "type": "critical_bug_risk",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Bug reasoning score below 50 — high-severity defects likely in production within 14 days"
+        }
+      ],
+      "regressions": [
+        {
+          "type": "reliability_regression",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Reliability score below 60 — increased MTTR and repeat-failure risk"
+        }
+      ],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [
+        {
+          "type": "performance_degradation",
+          "likelihood": 0.8,
+          "severity": "high",
+          "description": "Performance score below 60 — latency spikes expected under load"
+        },
+        {
+          "type": "throughput_bottleneck",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Performance reasoning identifies throughput bottleneck"
+        }
+      ],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        },
+        {
+          "type": "outdated_dependencies",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Dependency health below threshold — update required before next release"
+        }
+      ],
+      "total": 8,
+      "criticalCount": 3,
+      "riskScore": 88,
+      "qualityOverall": 40,
+      "predictedAt": "2026-07-01T23:11:40.268Z"
+    },
+    {
+      "id": "ep_1782947500280_b07d",
+      "context": "high_quality_repo",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 90,
+      "predictedAt": "2026-07-01T23:11:40.280Z"
+    },
+    {
+      "id": "ep_1782947500327_e23c",
+      "context": "sec_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        },
+        {
+          "type": "outdated_dependencies",
+          "likelihood": 0.75,
+          "severity": "medium",
+          "description": "Dependency health below threshold — update required before next release"
+        }
+      ],
+      "total": 3,
+      "criticalCount": 2,
+      "riskScore": 100,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:11:40.327Z"
+    },
+    {
+      "id": "ep_1782947500342_xcgg",
+      "context": "id_pred_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 65,
+      "predictedAt": "2026-07-01T23:11:40.345Z"
+    },
+    {
+      "id": "ep_1782947500491_vocp",
+      "context": "list_pred_ctx",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:11:40.491Z"
+    },
+    {
+      "id": "ep_1782947500528_yiwn",
+      "context": "risk_calc_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        }
+      ],
+      "total": 2,
+      "criticalCount": 2,
+      "riskScore": 131,
+      "qualityOverall": 45,
+      "predictedAt": "2026-07-01T23:11:40.528Z"
+    },
+    {
+      "id": "ep_1782947500550_3zzg",
+      "context": "crit_count_test",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        },
+        {
+          "type": "critical_bug_risk",
+          "likelihood": 0.8,
+          "severity": "critical",
+          "description": "Bug reasoning score below 50 — high-severity defects likely in production within 14 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [
+        {
+          "type": "security_exposure",
+          "likelihood": 0.9,
+          "severity": "critical",
+          "description": "Security score below 70 — active vulnerability exposure predicted"
+        },
+        {
+          "type": "dependency_vulnerability",
+          "likelihood": 0.85,
+          "severity": "critical",
+          "description": "Security reasoning identifies likely CVE in dependency chain"
+        }
+      ],
+      "total": 4,
+      "criticalCount": 3,
+      "riskScore": 117,
+      "qualityOverall": 40,
+      "predictedAt": "2026-07-01T23:11:40.550Z"
+    },
+    {
+      "id": "ep_1782947688461_9q9h",
+      "context": "current_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.461Z"
+    },
+    {
+      "id": "ep_1782947688465_70e4",
+      "context": "iso_1782947534668_4jt",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 70,
+      "predictedAt": "2026-07-01T23:14:48.465Z"
+    },
+    {
+      "id": "ep_1782947688478_32jw",
+      "context": "status_seed_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.478Z"
+    },
+    {
+      "id": "ep_1782947688501_x8j3",
+      "context": "multi_cycle_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.501Z"
+    },
+    {
+      "id": "ep_1782947688589_bsmg",
+      "context": "dashboard_evo_seed",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.589Z"
+    },
+    {
+      "id": "ep_1782947688611_cf16",
+      "context": "view_pipeline_test",
+      "bugs": [],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 0,
+      "criticalCount": 0,
+      "riskScore": 5,
+      "qualityOverall": 87,
+      "predictedAt": "2026-07-01T23:14:48.611Z"
+    },
+    {
+      "id": "ep_1782947688628_0i2c",
+      "context": "current_repo",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.628Z"
+    },
+    {
+      "id": "ep_1782947688635_etuq",
+      "context": "founder_time_test",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:14:48.635Z"
+    },
+    {
+      "id": "ep_1782947735237_0bq2",
+      "context": "iso_1782947401600_ryt",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:15:35.237Z"
+    },
+    {
+      "id": "ep_1782947735296_zmkh",
+      "context": "multi_cycle_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:15:35.296Z"
+    },
+    {
+      "id": "ep_1782947811373_2dm7",
+      "context": "iso_1782947401600_ryt",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:16:51.375Z"
+    },
+    {
+      "id": "ep_1782947842947_2s8j",
+      "context": "iso_1782947534668_4jt",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:17:22.947Z"
+    },
+    {
+      "id": "ep_1782947843681_31zm",
+      "context": "multi_cycle_ctx",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 59,
+      "predictedAt": "2026-07-01T23:17:23.681Z"
+    },
+    {
+      "id": "ep_1782947940764_qkzk",
+      "context": "iso_1782947534668_4jt",
+      "bugs": [
+        {
+          "type": "bug_accumulation",
+          "likelihood": 0.85,
+          "severity": "high",
+          "description": "Low code quality score predicts defect density increase of >30% in next 30 days"
+        }
+      ],
+      "regressions": [],
+      "deploymentFailures": [],
+      "runtimeFailures": [],
+      "performanceDegradation": [],
+      "securityRisks": [],
+      "total": 1,
+      "criticalCount": 0,
+      "riskScore": 85,
+      "qualityOverall": 60,
+      "predictedAt": "2026-07-01T23:19:00.764Z"
     }
   ],
   "stats": {
-    "total": 67,
-    "criticalPredictions": 40,
-    "avgRisk": 69.8
+    "total": 103,
+    "criticalPredictions": 60,
+    "avgRisk": 69.7
   },
-  "updatedAt": "2026-06-29T22:42:22.601Z"
+  "updatedAt": "2026-07-01T23:19:00.764Z"
 }

@@ -1,0 +1,499 @@
+{
+  "nodes": [
+    {
+      "nodeId": "n0",
+      "parentId": null,
+      "tag": "body",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": null,
+      "depth": 0,
+      "bbox": {
+        "x": 256,
+        "y": 135,
+        "w": 768,
+        "h": 96
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgb(238, 238, 238)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "135px",
+        "marginRight": "256px",
+        "marginBottom": "135px",
+        "marginLeft": "256px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [
+        "n1"
+      ],
+      "componentType": "unknown"
+    },
+    {
+      "nodeId": "n1",
+      "parentId": "n0",
+      "tag": "div",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": null,
+      "depth": 1,
+      "bbox": {
+        "x": 256,
+        "y": 135,
+        "w": 768,
+        "h": 96
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 0.8,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "0px",
+        "marginRight": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [
+        "n2",
+        "n3",
+        "n4"
+      ],
+      "componentType": "container"
+    },
+    {
+      "nodeId": "n2",
+      "parentId": "n1",
+      "tag": "h1",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": "Example Domain",
+      "depth": 2,
+      "bbox": {
+        "x": 256,
+        "y": 135,
+        "w": 768,
+        "h": 28
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "24px",
+        "weight": "700",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "16.08px",
+        "marginRight": "0px",
+        "marginBottom": "16.08px",
+        "marginLeft": "0px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [],
+      "componentType": "heading"
+    },
+    {
+      "nodeId": "n3",
+      "parentId": "n1",
+      "tag": "p",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": "This domain is for use in documentation examples without needing permission. Avoid use in operations.",
+      "depth": 2,
+      "bbox": {
+        "x": 256,
+        "y": 179,
+        "w": 768,
+        "h": 18
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "16px",
+        "marginRight": "0px",
+        "marginBottom": "16px",
+        "marginLeft": "0px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [],
+      "componentType": "text"
+    },
+    {
+      "nodeId": "n4",
+      "parentId": "n1",
+      "tag": "p",
+      "id": null,
+      "classes": [],
+      "attrs": {},
+      "text": null,
+      "depth": 2,
+      "bbox": {
+        "x": 256,
+        "y": 213,
+        "w": 768,
+        "h": 18
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(0, 0, 0)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "16px",
+        "marginRight": "0px",
+        "marginBottom": "16px",
+        "marginLeft": "0px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "block",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [
+        "n5"
+      ],
+      "componentType": "text"
+    },
+    {
+      "nodeId": "n5",
+      "parentId": "n4",
+      "tag": "a",
+      "id": null,
+      "classes": [],
+      "attrs": {
+        "href": "https://iana.org/domains/example"
+      },
+      "text": "Learn more",
+      "depth": 3,
+      "bbox": {
+        "x": 256,
+        "y": 213,
+        "w": 82,
+        "h": 18
+      },
+      "font": {
+        "family": "system-ui, sans-serif",
+        "size": "16px",
+        "weight": "400",
+        "lineHeight": "normal",
+        "letterSpacing": "normal"
+      },
+      "color": {
+        "fg": "rgb(51, 68, 136)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      "visibility": {
+        "display": "inline",
+        "visibility": "visible",
+        "opacity": 1,
+        "isVisible": true
+      },
+      "position": {
+        "type": "static",
+        "zIndex": null,
+        "top": "auto",
+        "left": "auto",
+        "right": "auto",
+        "bottom": "auto"
+      },
+      "spacing": {
+        "marginTop": "0px",
+        "marginRight": "0px",
+        "marginBottom": "0px",
+        "marginLeft": "0px",
+        "paddingTop": "0px",
+        "paddingRight": "0px",
+        "paddingBottom": "0px",
+        "paddingLeft": "0px",
+        "borderWidth": "0px",
+        "borderRadius": "0px"
+      },
+      "layout": {
+        "flexDir": null,
+        "display": "inline",
+        "gridCols": null,
+        "overflow": null
+      },
+      "childIds": [],
+      "componentType": "link"
+    }
+  ],
+  "edges": [
+    {
+      "from": "n0",
+      "to": "n1",
+      "rel": "child"
+    },
+    {
+      "from": "n1",
+      "to": "n2",
+      "rel": "child"
+    },
+    {
+      "from": "n1",
+      "to": "n3",
+      "rel": "child"
+    },
+    {
+      "from": "n1",
+      "to": "n4",
+      "rel": "child"
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "rel": "child"
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "rel": "duplicate"
+    }
+  ],
+  "hierarchy": [
+    {
+      "nodeId": "n0",
+      "tag": "body",
+      "type": "unknown",
+      "classes": [],
+      "children": [
+        {
+          "nodeId": "n1",
+          "tag": "div",
+          "type": "container",
+          "classes": [],
+          "children": [
+            {
+              "nodeId": "n2",
+              "tag": "h1",
+              "type": "heading",
+              "classes": []
+            },
+            {
+              "nodeId": "n3",
+              "tag": "p",
+              "type": "text",
+              "classes": []
+            },
+            {
+              "nodeId": "n4",
+              "tag": "p",
+              "type": "text",
+              "classes": [],
+              "children": [
+                {
+                  "nodeId": "n5",
+                  "tag": "a",
+                  "type": "link",
+                  "classes": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "duplicates": [
+    {
+      "signature": "p||",
+      "count": 2,
+      "nodeIds": [
+        "n3",
+        "n4"
+      ]
+    }
+  ],
+  "orphans": [],
+  "unused": [],
+  "depthAnalysis": {
+    "maxDepth": 3,
+    "meanDepth": 2,
+    "deepNodes": [],
+    "distribution": {
+      "0": 1,
+      "1": 1,
+      "2": 3,
+      "3": 1
+    }
+  },
+  "stats": {
+    "totalComponents": 6,
+    "visibleComponents": 6,
+    "duplicateGroups": 1,
+    "duplicateInstances": 2,
+    "orphanCount": 0,
+    "unusedCount": 0,
+    "maxNestingDepth": 3,
+    "componentTypes": {
+      "unknown": 1,
+      "container": 1,
+      "heading": 1,
+      "text": 2,
+      "link": 1
+    }
+  },
+  "url": "https://example.com/evo-status-seed",
+  "title": "Example Domain",
+  "timestamp": "2026-07-01T23:12:04.718Z",
+  "domFilename": "dom-2026-07-01T23-12-04-692Z.json"
+}

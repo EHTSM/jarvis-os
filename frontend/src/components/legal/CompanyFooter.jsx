@@ -21,6 +21,7 @@ export default function CompanyFooter({ onNavigate }) {
           <button className="co-footer-link" onClick={() => onNavigate?.("privacy")}>Privacy Policy</button>
           <button className="co-footer-link" onClick={() => onNavigate?.("terms")}>Terms of Service</button>
           <button className="co-footer-link" onClick={() => onNavigate?.("refund")}>Refund Policy</button>
+          <button className="co-footer-link" onClick={() => onNavigate?.("cookies")}>Cookie Policy</button>
           <button className="co-footer-link" onClick={() => onNavigate?.("contact")}>Contact</button>
           <button className="co-footer-link" onClick={() => onNavigate?.("trust")}>Trust & Compliance</button>
         </nav>

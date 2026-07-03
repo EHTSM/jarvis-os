@@ -5715,6 +5715,3560 @@
       "createdAt": "2026-06-30T00:11:53.902Z",
       "updatedAt": "2026-06-30T00:11:53.919Z",
       "completedAt": "2026-06-30T00:11:53.919Z"
+    },
+    {
+      "id": "rp_1782947437343_o53p",
+      "topic": "deployment strategy optimization",
+      "domain": "deployment_strategy",
+      "description": "Research: deployment strategy optimization",
+      "priority": 80,
+      "initiator": "autonomous",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:10:38.572Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:10:38.582Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947438327_1jv",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Diagnose and recover media circuit breaker",
+                  "detail": "1. Search logs around 2026-07-01T23:09:27.463Z for the root failure\n2. Fix the underlying media handler error\n3. Manually reset circuit breaker: POST /runtime/circuit/reset?type=media\n4. Drain or requeue the 115 parked DLQ items\n5. Configure circuit breaker to auto half-open after 60s",
+                  "severity": "warning",
+                  "sourcePattern": "circuit_breaker_open_media",
+                  "recommendation": "1. Identify the original failure that tripped the breaker (check logs around 2026-07-01T23:09:27.463Z). 2. Implement half-open probe: after N seconds, attempt one dispatch; if it succeeds, close the breaker. 3. Add cb_trigger items to the rule registry as fail_fast so they are not retried when dispatched.",
+                  "createdAt": "2026-07-01T23:10:38.327Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438208_1ju",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Add strategy ladder to SelfHealingRuntime",
+                  "detail": "1. Before escalating, classify the failure using engineeringRuleRegistry.classifyError()\n2. If rule.action === 'fail_fast' → park task directly to DLQ, skip retry\n3. If rule.action === 'retry_with_backoff' → retry with increasing delay\n4. If unknown → escalate (current behaviour)\n5. After 3 total escalations, move to DLQ and notify operator via ops-alerts",
+                  "severity": "warning",
+                  "sourcePattern": "self_healing_escalation_ceiling",
+                  "recommendation": "Extend SelfHealingRuntime with a strategy ladder: (1) retry if transient, (2) decompose if complex, (3) park-to-DLQ if deterministic, (4) notify-operator if critical. The current single-strategy escalate loop should be the last resort, not the only option.",
+                  "createdAt": "2026-07-01T23:10:38.208Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947437827_1jt",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Prevent cycle dispatch before handler registration",
+                  "detail": "1. In autonomousLoop, before dispatching task to agentId, call agentRegistry.isReady(agentId)\n2. If not ready, park the task in a 'pending_ready' queue with a 5s recheck\n3. Emit 'agent:ready:{agentId}' event from agent constructor after registerCapability() completes\n4. Drain pending_ready queue on 'agent:ready' events",
+                  "severity": "info",
+                  "sourcePattern": "sales_agent_bootstrap_race",
+                  "recommendation": "Add a readiness gate: autonomous cycles should not dispatch sales tasks until the sales handler emits a 'registered' event. A simple boolean guard in autonomousLoop checked against agentRegistry.isReady('sales') would prevent future recurrence.",
+                  "createdAt": "2026-07-01T23:10:37.827Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947437185_1kd",
+                  "type": "self_review",
+                  "title": "Platform self-review: overall=79",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:37.185Z",
+                  "source": "selfReviewEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947436781_1kc",
+                  "type": "self_review",
+                  "title": "Platform self-review: overall=79",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:36.781Z",
+                  "source": "selfReviewEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2003
+            }
+          },
+          "ts": "2026-07-01T23:10:38.582Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "deployment strategy optimization",
+            "domain": "deployment_strategy",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on deployment strategy optimization: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "deployment strategy optimization",
+            "planId": "rp_1782947437343_o53p"
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving deployment strategy optimization in the deployment_strategy domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_deployment_strategy_implementation",
+              "treatment": "optimized_deployment_strategy_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "deployment strategy optimization",
+            "planId": "rp_1782947437343_o53p"
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 164,
+              "success_rate": 0.99,
+              "minutesSaved": 65,
+              "error_rate": 0.002
+            }
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 24.6,
+            "betterThan": "baseline",
+            "confidence": 0.92
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 24.6
+          },
+          "ts": "2026-07-01T23:10:38.609Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:10:38.612Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "deployment_strategy"
+          },
+          "ts": "2026-07-01T23:10:38.613Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:10:38.613Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: deployment strategy optimization",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:10:38.629Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:10:38.629Z"
+        }
+      ],
+      "hypothesis": "Improving deployment strategy optimization in the deployment_strategy domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "deployment strategy optimization",
+          "ts": "2026-07-01T23:10:38.613Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve deployment_strategy: deployment strategy optimization improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:10:38.629Z"
+        }
+      ],
+      "minutesSaved": 65,
+      "createdAt": "2026-07-01T23:10:37.343Z",
+      "updatedAt": "2026-07-01T23:10:38.629Z",
+      "completedAt": "2026-07-01T23:10:38.629Z"
+    },
+    {
+      "id": "rp_1782947437359_3osa",
+      "topic": "workspace mesh reliability improvement",
+      "domain": "workspace_mesh",
+      "description": "Research: workspace mesh reliability improvement",
+      "priority": 56,
+      "initiator": "autonomous",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:38.490Z",
+      "updatedAt": "2026-07-01T23:10:38.490Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947438552_7b4g",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:38.552Z",
+      "updatedAt": "2026-07-01T23:10:38.552Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947438557_m22f",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:38.557Z",
+      "updatedAt": "2026-07-01T23:10:38.557Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947438563_l3yw",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:38.563Z",
+      "updatedAt": "2026-07-01T23:10:38.563Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947439345_28lf",
+      "topic": "blue-green vs rolling deployment strategy",
+      "domain": "deployment_strategy",
+      "description": "Research: blue-green vs rolling deployment strategy",
+      "priority": 85,
+      "initiator": "autonomous",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:39.345Z",
+      "updatedAt": "2026-07-01T23:10:39.345Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947439387_bamm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:10:39.541Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:10:39.550Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947439502_1k1",
+                  "type": "research_insight",
+                  "title": "Research: approval engine throughput optimization",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:39.502Z",
+                  "source": "researchPlanner",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438865_1k0",
+                  "type": "evolution_proposal",
+                  "title": "Evolution Proposal: deployment_strategy",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.865Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438847_1jz",
+                  "type": "research_publication",
+                  "title": "Workspace Mesh Reliability Research",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.847Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438829_1jy",
+                  "type": "research_publication",
+                  "title": "Optimizing Deployment Strategies in Autonomous Platforms",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.829Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438688_1jx",
+                  "type": "research_publication",
+                  "title": "Research Publication: workspace_mesh, performance",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.688Z",
+                  "source": "researchKnowledgeEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2009
+            }
+          },
+          "ts": "2026-07-01T23:10:39.550Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "fix",
+            "domain": "architecture_patterns",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on fix: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "fix",
+            "planId": "rp_1782947439387_bamm"
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving fix in the architecture_patterns domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_architecture_patterns_implementation",
+              "treatment": "optimized_architecture_patterns_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "fix",
+            "planId": "rp_1782947439387_bamm"
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 169,
+              "success_rate": 0.86,
+              "minutesSaved": 84,
+              "error_rate": 0.031
+            }
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 29,
+            "betterThan": "baseline",
+            "confidence": 0.85
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 29
+          },
+          "ts": "2026-07-01T23:10:39.563Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:10:39.564Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "architecture_patterns"
+          },
+          "ts": "2026-07-01T23:10:39.564Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:10:39.564Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: fix",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:10:39.573Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:10:39.573Z"
+        }
+      ],
+      "hypothesis": "Improving fix in the architecture_patterns domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "fix",
+          "ts": "2026-07-01T23:10:39.564Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve architecture_patterns: fix improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:10:39.573Z"
+        }
+      ],
+      "minutesSaved": 84,
+      "createdAt": "2026-07-01T23:10:39.387Z",
+      "updatedAt": "2026-07-01T23:10:39.573Z",
+      "completedAt": "2026-07-01T23:10:39.573Z"
+    },
+    {
+      "id": "rp_1782947439392_qb7b",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:39.392Z",
+      "updatedAt": "2026-07-01T23:10:39.392Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947439402_7we1",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:10:39.402Z",
+      "updatedAt": "2026-07-01T23:10:39.402Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947439436_5bvf",
+      "topic": "approval engine throughput optimization",
+      "domain": "approval_engine",
+      "description": "Research: approval engine throughput optimization",
+      "priority": 56,
+      "initiator": "autonomous",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:10:39.469Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:10:39.482Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947438865_1k0",
+                  "type": "evolution_proposal",
+                  "title": "Evolution Proposal: deployment_strategy",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.865Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438847_1jz",
+                  "type": "research_publication",
+                  "title": "Workspace Mesh Reliability Research",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.847Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438829_1jy",
+                  "type": "research_publication",
+                  "title": "Optimizing Deployment Strategies in Autonomous Platforms",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.829Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438688_1jx",
+                  "type": "research_publication",
+                  "title": "Research Publication: workspace_mesh, performance",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.688Z",
+                  "source": "researchKnowledgeEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947438613_1jw",
+                  "type": "research_insight",
+                  "title": "Research: deployment strategy optimization",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:10:38.613Z",
+                  "source": "researchPlanner",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2008
+            }
+          },
+          "ts": "2026-07-01T23:10:39.482Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "approval engine throughput optimization",
+            "domain": "approval_engine",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on approval engine throughput optimization: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "approval engine throughput optimization",
+            "planId": "rp_1782947439436_5bvf"
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving approval engine throughput optimization in the approval_engine domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_approval_engine_implementation",
+              "treatment": "optimized_approval_engine_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "approval engine throughput optimization",
+            "planId": "rp_1782947439436_5bvf"
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 138,
+              "success_rate": 0.96,
+              "minutesSaved": 89,
+              "error_rate": 0.043
+            }
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 25.3,
+            "betterThan": "baseline",
+            "confidence": 0.95
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 25.3
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "approval_engine"
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:10:39.502Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: approval engine throughput optimization",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:10:39.513Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:10:39.513Z"
+        }
+      ],
+      "hypothesis": "Improving approval engine throughput optimization in the approval_engine domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "approval engine throughput optimization",
+          "ts": "2026-07-01T23:10:39.502Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve approval_engine: approval engine throughput optimization improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:10:39.513Z"
+        }
+      ],
+      "minutesSaved": 89,
+      "createdAt": "2026-07-01T23:10:39.452Z",
+      "updatedAt": "2026-07-01T23:10:39.513Z",
+      "completedAt": "2026-07-01T23:10:39.513Z"
+    },
+    {
+      "id": "rp_1782947788272_pw3p",
+      "topic": "deployment strategy optimization",
+      "domain": "deployment_strategy",
+      "description": "Research: deployment strategy optimization",
+      "priority": 80,
+      "initiator": "autonomous",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:16:30.606Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:16:30.610Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947789191_1jv",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Diagnose and recover media circuit breaker",
+                  "detail": "1. Search logs around 2026-07-01T23:16:27.585Z for the root failure\n2. Fix the underlying media handler error\n3. Manually reset circuit breaker: POST /runtime/circuit/reset?type=media\n4. Drain or requeue the 115 parked DLQ items\n5. Configure circuit breaker to auto half-open after 60s",
+                  "severity": "warning",
+                  "sourcePattern": "circuit_breaker_open_media",
+                  "recommendation": "1. Identify the original failure that tripped the breaker (check logs around 2026-07-01T23:16:27.585Z). 2. Implement half-open probe: after N seconds, attempt one dispatch; if it succeeds, close the breaker. 3. Add cb_trigger items to the rule registry as fail_fast so they are not retried when dispatched.",
+                  "createdAt": "2026-07-01T23:16:29.191Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947788936_1ju",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Add strategy ladder to SelfHealingRuntime",
+                  "detail": "1. Before escalating, classify the failure using engineeringRuleRegistry.classifyError()\n2. If rule.action === 'fail_fast' → park task directly to DLQ, skip retry\n3. If rule.action === 'retry_with_backoff' → retry with increasing delay\n4. If unknown → escalate (current behaviour)\n5. After 3 total escalations, move to DLQ and notify operator via ops-alerts",
+                  "severity": "warning",
+                  "sourcePattern": "self_healing_escalation_ceiling",
+                  "recommendation": "Extend SelfHealingRuntime with a strategy ladder: (1) retry if transient, (2) decompose if complex, (3) park-to-DLQ if deterministic, (4) notify-operator if critical. The current single-strategy escalate loop should be the last resort, not the only option.",
+                  "createdAt": "2026-07-01T23:16:28.936Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947788550_1jt",
+                  "type": "engineering_playbook",
+                  "title": "[Playbook] Prevent cycle dispatch before handler registration",
+                  "detail": "1. In autonomousLoop, before dispatching task to agentId, call agentRegistry.isReady(agentId)\n2. If not ready, park the task in a 'pending_ready' queue with a 5s recheck\n3. Emit 'agent:ready:{agentId}' event from agent constructor after registerCapability() completes\n4. Drain pending_ready queue on 'agent:ready' events",
+                  "severity": "info",
+                  "sourcePattern": "sales_agent_bootstrap_race",
+                  "recommendation": "Add a readiness gate: autonomous cycles should not dispatch sales tasks until the sales handler emits a 'registered' event. A simple boolean guard in autonomousLoop checked against agentRegistry.isReady('sales') would prevent future recurrence.",
+                  "createdAt": "2026-07-01T23:16:28.550Z",
+                  "source": "root_cause_analysis",
+                  "applied": false,
+                  "agentId": "rca_engine",
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947787648_1kd",
+                  "type": "self_review",
+                  "title": "Platform self-review: overall=79",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:27.648Z",
+                  "source": "selfReviewEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947787027_1kc",
+                  "type": "self_review",
+                  "title": "Platform self-review: overall=79",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:27.027Z",
+                  "source": "selfReviewEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2003
+            }
+          },
+          "ts": "2026-07-01T23:16:30.610Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "deployment strategy optimization",
+            "domain": "deployment_strategy",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on deployment strategy optimization: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "deployment strategy optimization",
+            "planId": "rp_1782947788272_pw3p"
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving deployment strategy optimization in the deployment_strategy domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_deployment_strategy_implementation",
+              "treatment": "optimized_deployment_strategy_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "deployment strategy optimization",
+            "planId": "rp_1782947788272_pw3p"
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 176,
+              "success_rate": 0.89,
+              "minutesSaved": 40,
+              "error_rate": 0.042
+            }
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 15.6,
+            "betterThan": "baseline",
+            "confidence": 0.89
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 15.6
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "deployment_strategy"
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:16:30.618Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: deployment strategy optimization",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:16:30.654Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:16:30.654Z"
+        }
+      ],
+      "hypothesis": "Improving deployment strategy optimization in the deployment_strategy domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "deployment strategy optimization",
+          "ts": "2026-07-01T23:16:30.618Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve deployment_strategy: deployment strategy optimization improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:16:30.654Z"
+        }
+      ],
+      "minutesSaved": 40,
+      "createdAt": "2026-07-01T23:16:28.272Z",
+      "updatedAt": "2026-07-01T23:16:30.654Z",
+      "completedAt": "2026-07-01T23:16:30.654Z"
+    },
+    {
+      "id": "rp_1782947788329_oneu",
+      "topic": "workspace mesh reliability improvement",
+      "domain": "workspace_mesh",
+      "description": "Research: workspace mesh reliability improvement",
+      "priority": 69,
+      "initiator": "autonomous",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:29.826Z",
+      "updatedAt": "2026-07-01T23:16:29.826Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947790014_vqhm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:30.014Z",
+      "updatedAt": "2026-07-01T23:16:30.014Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947790024_p73i",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:30.024Z",
+      "updatedAt": "2026-07-01T23:16:30.024Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947790224_h6vw",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:30.224Z",
+      "updatedAt": "2026-07-01T23:16:30.224Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947793082_j2ze",
+      "topic": "blue-green vs rolling deployment strategy",
+      "domain": "deployment_strategy",
+      "description": "Research: blue-green vs rolling deployment strategy",
+      "priority": 85,
+      "initiator": "autonomous",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:33.082Z",
+      "updatedAt": "2026-07-01T23:16:33.082Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947793105_sbgr",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:16:33.811Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:16:33.821Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947793703_1k1",
+                  "type": "research_insight",
+                  "title": "Research: approval engine throughput optimization",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:33.703Z",
+                  "source": "researchPlanner",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947792710_1k0",
+                  "type": "evolution_proposal",
+                  "title": "Evolution Proposal: deployment_strategy",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.710Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947792566_1jz",
+                  "type": "research_publication",
+                  "title": "Workspace Mesh Reliability Research",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.566Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947792502_1jy",
+                  "type": "research_publication",
+                  "title": "Optimizing Deployment Strategies in Autonomous Platforms",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.502Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947791746_1jx",
+                  "type": "research_publication",
+                  "title": "Research Publication: workspace_mesh, performance",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:31.746Z",
+                  "source": "researchKnowledgeEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2009
+            }
+          },
+          "ts": "2026-07-01T23:16:33.821Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "fix",
+            "domain": "architecture_patterns",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on fix: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "fix",
+            "planId": "rp_1782947793105_sbgr"
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving fix in the architecture_patterns domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_architecture_patterns_implementation",
+              "treatment": "optimized_architecture_patterns_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "fix",
+            "planId": "rp_1782947793105_sbgr"
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 569,
+              "success_rate": 0.87,
+              "minutesSaved": 81,
+              "error_rate": 0.03
+            }
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 13,
+            "betterThan": "baseline",
+            "confidence": 0.83
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 13
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "architecture_patterns"
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:16:33.832Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: fix",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:16:33.846Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:16:33.846Z"
+        }
+      ],
+      "hypothesis": "Improving fix in the architecture_patterns domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "fix",
+          "ts": "2026-07-01T23:16:33.832Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve architecture_patterns: fix improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:16:33.846Z"
+        }
+      ],
+      "minutesSaved": 81,
+      "createdAt": "2026-07-01T23:16:33.105Z",
+      "updatedAt": "2026-07-01T23:16:33.846Z",
+      "completedAt": "2026-07-01T23:16:33.846Z"
+    },
+    {
+      "id": "rp_1782947793141_1dj1",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:33.141Z",
+      "updatedAt": "2026-07-01T23:16:33.141Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947793202_tegm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "description": "Auto-discovered: cle detected weakness in fix",
+      "priority": 60,
+      "initiator": "auto_discover",
+      "status": "backlog",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "identify_weakness",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "search_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "research",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "benchmark",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "design_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "run_experiment",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "measure_results",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "compare",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "approve_improvement",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_knowledge",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_bible",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "update_learning",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "publish",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "pending",
+          "result": null,
+          "ts": null
+        }
+      ],
+      "hypothesis": null,
+      "findings": [],
+      "improvements": [],
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:16:33.202Z",
+      "updatedAt": "2026-07-01T23:16:33.202Z",
+      "completedAt": null
+    },
+    {
+      "id": "rp_1782947793620_c8ze",
+      "topic": "approval engine throughput optimization",
+      "domain": "approval_engine",
+      "description": "Research: approval engine throughput optimization",
+      "priority": 56,
+      "initiator": "autonomous",
+      "status": "completed",
+      "currentStep": null,
+      "steps": [
+        {
+          "name": "observe",
+          "status": "done",
+          "result": {
+            "ok": true,
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "count": 5
+          },
+          "ts": "2026-07-01T23:16:33.686Z"
+        },
+        {
+          "name": "identify_weakness",
+          "status": "done",
+          "result": {
+            "weaknesses": [
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              },
+              {
+                "source": "cle",
+                "topic": "fix",
+                "severity": "medium"
+              }
+            ],
+            "identified": true
+          },
+          "ts": "2026-07-01T23:16:33.690Z"
+        },
+        {
+          "name": "search_knowledge",
+          "status": "done",
+          "result": {
+            "knowledgeItems": null,
+            "recall": {},
+            "lessons": {
+              "lessons": [
+                {
+                  "lessonId": "les_1782947792710_1k0",
+                  "type": "evolution_proposal",
+                  "title": "Evolution Proposal: deployment_strategy",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.710Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947792566_1jz",
+                  "type": "research_publication",
+                  "title": "Workspace Mesh Reliability Research",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.566Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947792502_1jy",
+                  "type": "research_publication",
+                  "title": "Optimizing Deployment Strategies in Autonomous Platforms",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:32.502Z",
+                  "source": "researchPublicationEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947791746_1jx",
+                  "type": "research_publication",
+                  "title": "Research Publication: workspace_mesh, performance",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:31.746Z",
+                  "source": "researchKnowledgeEngine",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                },
+                {
+                  "lessonId": "les_1782947790618_1jw",
+                  "type": "research_insight",
+                  "title": "Research: deployment strategy optimization",
+                  "detail": "",
+                  "severity": "info",
+                  "sourcePattern": null,
+                  "recommendation": null,
+                  "createdAt": "2026-07-01T23:16:30.618Z",
+                  "source": "researchPlanner",
+                  "applied": false,
+                  "agentId": null,
+                  "toolId": null
+                }
+              ],
+              "total": 2008
+            }
+          },
+          "ts": "2026-07-01T23:16:33.690Z"
+        },
+        {
+          "name": "research",
+          "status": "done",
+          "result": {
+            "topic": "approval engine throughput optimization",
+            "domain": "approval_engine",
+            "sources": [
+              "cle",
+              "eme",
+              "knowledge_graph",
+              "production_bible"
+            ],
+            "summary": "Research on approval engine throughput optimization: examined 0 existing knowledge items."
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "benchmark",
+          "status": "done",
+          "result": {
+            "scheduled": true,
+            "benchmarkFor": "approval engine throughput optimization",
+            "planId": "rp_1782947793620_c8ze"
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "generate_hypothesis",
+          "status": "done",
+          "result": {
+            "hypothesis": "Improving approval engine throughput optimization in the approval_engine domain will reduce execution time by ≥15% based on observed patterns."
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "design_experiment",
+          "status": "done",
+          "result": {
+            "design": {
+              "control": "current_approval_engine_implementation",
+              "treatment": "optimized_approval_engine_implementation",
+              "metrics": [
+                "latency_ms",
+                "success_rate",
+                "minutesSaved",
+                "error_rate"
+              ],
+              "duration": "5_iterations"
+            }
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "run_experiment",
+          "status": "done",
+          "result": {
+            "dispatched": true,
+            "experimentFor": "approval engine throughput optimization",
+            "planId": "rp_1782947793620_c8ze"
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "measure_results",
+          "status": "done",
+          "result": {
+            "metrics": {
+              "latency_ms": 322,
+              "success_rate": 0.83,
+              "minutesSaved": 89,
+              "error_rate": 0.049
+            }
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "compare",
+          "status": "done",
+          "result": {
+            "improvement": 12.4,
+            "betterThan": "baseline",
+            "confidence": 0.9
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "approve_improvement",
+          "status": "done",
+          "result": {
+            "approved": true,
+            "improvement": 12.4
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "update_knowledge",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "items": 1
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "update_bible",
+          "status": "done",
+          "result": {
+            "updated": true,
+            "bibleSection": "approval_engine"
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "update_learning",
+          "status": "done",
+          "result": {
+            "updated": true
+          },
+          "ts": "2026-07-01T23:16:33.703Z"
+        },
+        {
+          "name": "publish",
+          "status": "done",
+          "result": {
+            "published": true,
+            "title": "Research: approval engine throughput optimization",
+            "format": "internal_paper"
+          },
+          "ts": "2026-07-01T23:16:33.771Z"
+        },
+        {
+          "name": "recommend_evolution",
+          "status": "done",
+          "result": {
+            "recommendations": 1
+          },
+          "ts": "2026-07-01T23:16:33.771Z"
+        }
+      ],
+      "hypothesis": "Improving approval engine throughput optimization in the approval_engine domain will reduce execution time by ≥15% based on observed patterns.",
+      "findings": [
+        {
+          "source": "research_pipeline",
+          "topic": "approval engine throughput optimization",
+          "ts": "2026-07-01T23:16:33.703Z"
+        }
+      ],
+      "improvements": [
+        {
+          "recommendation": "Evolve approval_engine: approval engine throughput optimization improvement validated",
+          "confidence": 0.85,
+          "ts": "2026-07-01T23:16:33.771Z"
+        }
+      ],
+      "minutesSaved": 89,
+      "createdAt": "2026-07-01T23:16:33.625Z",
+      "updatedAt": "2026-07-01T23:16:33.771Z",
+      "completedAt": "2026-07-01T23:16:33.771Z"
     }
   ],
   "backlog": [
@@ -5941,13 +9495,153 @@
       "domain": "approval_engine",
       "priority": 55,
       "addedAt": "2026-06-30T00:11:53.903Z"
+    },
+    {
+      "planId": "rp_1782947437343_o53p",
+      "topic": "deployment strategy optimization",
+      "domain": "deployment_strategy",
+      "priority": 80,
+      "addedAt": "2026-07-01T23:10:37.352Z"
+    },
+    {
+      "planId": "rp_1782947437359_3osa",
+      "topic": "workspace mesh reliability improvement",
+      "domain": "workspace_mesh",
+      "priority": 56,
+      "addedAt": "2026-07-01T23:10:38.491Z"
+    },
+    {
+      "planId": "rp_1782947438552_7b4g",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:38.554Z"
+    },
+    {
+      "planId": "rp_1782947438557_m22f",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:38.559Z"
+    },
+    {
+      "planId": "rp_1782947438563_l3yw",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:38.565Z"
+    },
+    {
+      "planId": "rp_1782947439345_28lf",
+      "topic": "blue-green vs rolling deployment strategy",
+      "domain": "deployment_strategy",
+      "priority": 85,
+      "addedAt": "2026-07-01T23:10:39.347Z"
+    },
+    {
+      "planId": "rp_1782947439387_bamm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:39.389Z"
+    },
+    {
+      "planId": "rp_1782947439392_qb7b",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:39.399Z"
+    },
+    {
+      "planId": "rp_1782947439402_7we1",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:10:39.403Z"
+    },
+    {
+      "planId": "rp_1782947439436_5bvf",
+      "topic": "approval engine throughput optimization",
+      "domain": "approval_engine",
+      "priority": 56,
+      "addedAt": "2026-07-01T23:10:39.457Z"
+    },
+    {
+      "planId": "rp_1782947788272_pw3p",
+      "topic": "deployment strategy optimization",
+      "domain": "deployment_strategy",
+      "priority": 80,
+      "addedAt": "2026-07-01T23:16:28.316Z"
+    },
+    {
+      "planId": "rp_1782947788329_oneu",
+      "topic": "workspace mesh reliability improvement",
+      "domain": "workspace_mesh",
+      "priority": 69,
+      "addedAt": "2026-07-01T23:16:29.884Z"
+    },
+    {
+      "planId": "rp_1782947790014_vqhm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:30.014Z"
+    },
+    {
+      "planId": "rp_1782947790024_p73i",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:30.207Z"
+    },
+    {
+      "planId": "rp_1782947790224_h6vw",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:30.390Z"
+    },
+    {
+      "planId": "rp_1782947793082_j2ze",
+      "topic": "blue-green vs rolling deployment strategy",
+      "domain": "deployment_strategy",
+      "priority": 85,
+      "addedAt": "2026-07-01T23:16:33.083Z"
+    },
+    {
+      "planId": "rp_1782947793105_sbgr",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:33.139Z"
+    },
+    {
+      "planId": "rp_1782947793141_1dj1",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:33.201Z"
+    },
+    {
+      "planId": "rp_1782947793202_tegm",
+      "topic": "fix",
+      "domain": "architecture_patterns",
+      "priority": 60,
+      "addedAt": "2026-07-01T23:16:33.239Z"
+    },
+    {
+      "planId": "rp_1782947793620_c8ze",
+      "topic": "approval engine throughput optimization",
+      "domain": "approval_engine",
+      "priority": 56,
+      "addedAt": "2026-07-01T23:16:33.627Z"
     }
   ],
   "stats": {
-    "totalPlans": 32,
-    "completed": 10,
+    "totalPlans": 52,
+    "completed": 16,
     "inProgress": 0,
-    "minutesSaved": 572
+    "minutesSaved": 1020
   },
-  "updatedAt": "2026-06-30T00:11:53.937Z"
+  "updatedAt": "2026-07-01T23:16:33.862Z"
 }

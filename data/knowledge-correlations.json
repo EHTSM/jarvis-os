@@ -1,20 +1,20 @@
 {
   "correlations": [
     {
-      "id": "kcor_1782773093050_d7il",
+      "id": "kcor_1782947555226_hu9i",
       "type": "failure_pattern",
       "sourceA": "continuous_learning",
       "sourceB": "engineering_rule_registry",
       "label": "Failure lessons reinforce engineering rules",
-      "strength": 73,
+      "strength": 60,
       "evidence": {
-        "cleFailures": 2,
+        "cleFailures": 1,
         "errRules": 10
       },
-      "discoveredAt": "2026-06-29T22:44:53.050Z"
+      "discoveredAt": "2026-07-01T23:12:35.226Z"
     },
     {
-      "id": "kcor_1782773093065_mwrx",
+      "id": "kcor_1782947555385_kwf6",
       "type": "failure_pattern",
       "sourceA": "self_improvement",
       "sourceB": "knowledge_reasoning",
@@ -22,12 +22,12 @@
       "strength": 88,
       "evidence": {
         "patterns": 14,
-        "kreItems": 180
+        "kreItems": 325
       },
-      "discoveredAt": "2026-06-29T22:44:53.065Z"
+      "discoveredAt": "2026-07-01T23:12:35.385Z"
     },
     {
-      "id": "kcor_1782773093067_spfi",
+      "id": "kcor_1782947555396_0k2t",
       "type": "workflow_overlap",
       "sourceA": "production_bible",
       "sourceB": "marketplace_catalog",
@@ -37,23 +37,23 @@
         "bibleWorkflows": 118,
         "marketplaceAutomationPacks": 58
       },
-      "discoveredAt": "2026-06-29T22:44:53.067Z"
+      "discoveredAt": "2026-07-01T23:12:35.396Z"
     },
     {
-      "id": "kcor_1782773093068_e2y3",
+      "id": "kcor_1782947555418_atld",
       "type": "workflow_overlap",
       "sourceA": "research_knowledge",
       "sourceB": "marketplace_catalog",
       "label": "Research recommendations surfaced as marketplace blueprints",
-      "strength": 70,
+      "strength": 73,
       "evidence": {
-        "rkeRecs": 358,
-        "blueprints": 204
+        "rkeRecs": 484,
+        "blueprints": 225
       },
-      "discoveredAt": "2026-06-29T22:44:53.068Z"
+      "discoveredAt": "2026-07-01T23:12:35.418Z"
     },
     {
-      "id": "kcor_1782773093070_3og5",
+      "id": "kcor_1782947555437_usav",
       "type": "learning_signal",
       "sourceA": "continuous_learning",
       "sourceB": "engineering_reasoning",
@@ -61,25 +61,24 @@
       "strength": 100,
       "evidence": {
         "lessons": 2003,
-        "reasoningItems": 336
+        "reasoningItems": 24
       },
-      "discoveredAt": "2026-06-29T22:44:53.070Z"
+      "discoveredAt": "2026-07-01T23:12:35.437Z"
     },
     {
-      "id": "kcor_1782773093078_6srs",
+      "id": "kcor_1782947555439_lvwg",
       "type": "learning_signal",
       "sourceA": "continuous_learning",
       "sourceB": "business_reasoning",
       "label": "Business decisions generate founder_action lessons in CLE",
-      "strength": 100,
+      "strength": 65,
       "evidence": {
-        "founderActionLessons": 521,
-        "obiItems": 330
+        "obiItems": 8
       },
-      "discoveredAt": "2026-06-29T22:44:53.078Z"
+      "discoveredAt": "2026-07-01T23:12:35.439Z"
     },
     {
-      "id": "kcor_1782773093078_o26v",
+      "id": "kcor_1782947555439_iet7",
       "type": "domain_bridge",
       "sourceA": "engineering_reasoning",
       "sourceB": "business_reasoning",
@@ -89,33 +88,33 @@
         "engineeringSources": 13,
         "businessSources": 2
       },
-      "discoveredAt": "2026-06-29T22:44:53.078Z"
+      "discoveredAt": "2026-07-01T23:12:35.439Z"
     },
     {
-      "id": "kcor_1782773093078_od31",
+      "id": "kcor_1782947555449_mgrv",
       "type": "domain_bridge",
       "sourceA": "research_knowledge",
       "sourceB": "marketplace_catalog",
       "label": "Research findings drive knowledge pack creation in marketplace",
       "strength": 70,
       "evidence": {
-        "findings": 211,
+        "findings": 423,
         "radarEntries": 18
       },
-      "discoveredAt": "2026-06-29T22:44:53.078Z"
+      "discoveredAt": "2026-07-01T23:12:35.449Z"
     },
     {
-      "id": "kcor_1782773093090_oe9s",
+      "id": "kcor_1782947555700_3pwf",
       "type": "quality_trend",
       "sourceA": "knowledge_quality",
       "sourceB": "self_improvement",
       "label": "Knowledge quality scores correlate with self-improvement repair rates",
       "strength": 50,
       "evidence": {
-        "kqeItems": 64,
+        "kqeItems": 128,
         "repairSuccess": 100
       },
-      "discoveredAt": "2026-06-29T22:44:53.090Z"
+      "discoveredAt": "2026-07-01T23:12:35.700Z"
     }
   ],
   "stats": {
@@ -128,7 +127,7 @@
       "quality_trend": 1,
       "evolution_link": 0
     },
-    "avgStrength": 75
+    "avgStrength": 70
   },
-  "updatedAt": "2026-06-29T22:44:53.090Z"
+  "updatedAt": "2026-07-01T23:12:35.700Z"
 }

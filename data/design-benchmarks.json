@@ -11488,6 +11488,3444 @@
       "dimensionsMeeting": "4/7",
       "readyForProduction": false,
       "ts": "2026-06-29T22:43:47.130Z"
+    },
+    {
+      "id": "dbm_1782947378367_qpma",
+      "pageUrl": "https://example.com/evolution-main",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 83,
+          "previous": 85,
+          "delta": -2
+        },
+        "usability": {
+          "current": 92,
+          "previous": 91,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.367Z"
+    },
+    {
+      "id": "dbm_1782947378374_irlo",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 87,
+          "previous": 86,
+          "delta": 1
+        },
+        "usability": {
+          "current": 89,
+          "previous": 89,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.374Z"
+    },
+    {
+      "id": "dbm_1782947378384_fi6d",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 82,
+          "previous": 83,
+          "delta": -1
+        },
+        "usability": {
+          "current": 89,
+          "previous": 88,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.384Z"
+    },
+    {
+      "id": "dbm_1782947378392_v68j",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 87,
+          "previous": 85,
+          "delta": 2
+        },
+        "usability": {
+          "current": 92,
+          "previous": 91,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -1,
+      "ts": "2026-07-01T23:09:38.392Z"
+    },
+    {
+      "id": "dbm_1782947378411_uovo",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 86,
+          "previous": 87,
+          "delta": -1
+        },
+        "usability": {
+          "current": 90,
+          "previous": 89,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.411Z"
+    },
+    {
+      "id": "dbm_1782947378433_ji5u",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 82,
+          "previous": 85,
+          "delta": -3
+        },
+        "usability": {
+          "current": 91,
+          "previous": 87,
+          "delta": 4
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.433Z"
+    },
+    {
+      "id": "dbm_1782947378459_t8e6",
+      "pageUrl": "https://example.com/full-evolution-1782947378181",
+      "type": "version_compare",
+      "current": {
+        "overall": 70,
+        "dimensions": {}
+      },
+      "previous": {
+        "overall": null,
+        "dimensions": null
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "usability": {
+          "current": 70,
+          "previous": 80,
+          "delta": -10
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 90,
+          "delta": -20
+        },
+        "consistency": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "responsiveness": {
+          "current": 70,
+          "previous": 85,
+          "delta": -15
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        }
+      },
+      "overallDelta": null,
+      "isImprovement": null,
+      "vsBaseline": -8,
+      "ts": "2026-07-01T23:09:38.459Z"
+    },
+    {
+      "id": "dbm_1782947378470_xp29",
+      "pageUrl": "https://example.com/time-save-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 86,
+          "previous": 83,
+          "delta": 3
+        },
+        "usability": {
+          "current": 90,
+          "previous": 91,
+          "delta": -1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.470Z"
+    },
+    {
+      "id": "dbm_1782947378509_6ef9",
+      "pageUrl": "https://example.com/baseline-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 84,
+          "baseline": 75,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 88,
+          "baseline": 80,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:38.509Z"
+    },
+    {
+      "id": "dbm_1782947378517_gtdy",
+      "pageUrl": "https://example.com/get-bm-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 82,
+          "previous": 86,
+          "delta": -4
+        },
+        "usability": {
+          "current": 88,
+          "previous": 89,
+          "delta": -1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -3,
+      "ts": "2026-07-01T23:09:38.517Z"
+    },
+    {
+      "id": "dbm_1782947378528_bid3",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 84,
+          "previous": 83,
+          "delta": 1
+        },
+        "usability": {
+          "current": 89,
+          "previous": 88,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.528Z"
+    },
+    {
+      "id": "dbm_1782947378810_nsby",
+      "pageUrl": "https://example.com/compare-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 84,
+          "previous": 83,
+          "delta": 1
+        },
+        "usability": {
+          "current": 91,
+          "previous": 91,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:09:38.810Z"
+    },
+    {
+      "id": "dbm_1782947378827_qraz",
+      "pageUrl": "https://example.com/chain-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 87,
+          "previous": 85,
+          "delta": 2
+        },
+        "usability": {
+          "current": 90,
+          "previous": 90,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": -1,
+      "ts": "2026-07-01T23:09:38.827Z"
+    },
+    {
+      "id": "dbm_1782947378832_9eqy",
+      "pageUrl": "https://example.com/chain-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 87,
+          "baseline": 75,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:38.832Z"
+    },
+    {
+      "id": "dbm_1782947389618_c6f5",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 87,
+          "baseline": 75,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:49.618Z"
+    },
+    {
+      "id": "dbm_1782947389781_784y",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "version_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 87,
+          "previous": 86,
+          "delta": 1
+        },
+        "usability": {
+          "current": 90,
+          "previous": 90,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": -1,
+      "ts": "2026-07-01T23:09:49.781Z"
+    },
+    {
+      "id": "dbm_1782947389957_kd4y",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 83,
+          "baseline": 75,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 88,
+          "baseline": 80,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:49.957Z"
+    },
+    {
+      "id": "dbm_1782947390083_pyx8",
+      "pageUrl": "https://example.com/evolution-main",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 84,
+          "baseline": 75,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 89,
+          "baseline": 80,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:50.083Z"
+    },
+    {
+      "id": "dbm_1782947390207_8w3o",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 86,
+          "baseline": 75,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 92,
+          "baseline": 80,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:50.207Z"
+    },
+    {
+      "id": "dbm_1782947390383_9cer",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 83,
+          "baseline": 75,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 92,
+          "baseline": 80,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:50.383Z"
+    },
+    {
+      "id": "dbm_1782947390802_3mi0",
+      "pageUrl": "https://example.com/full-evolution-1782947378181",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 86,
+          "baseline": 75,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 88,
+          "baseline": 80,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:50.802Z"
+    },
+    {
+      "id": "dbm_1782947390918_1zsp",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 82,
+          "baseline": 75,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 89,
+          "baseline": 80,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:50.918Z"
+    },
+    {
+      "id": "dbm_1782947391183_igjx",
+      "pageUrl": "https://example.com/time-save-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 84,
+          "baseline": 75,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:51.183Z"
+    },
+    {
+      "id": "dbm_1782947392107_y0dj",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 86,
+          "baseline": 75,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 91,
+          "baseline": 80,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:09:52.107Z"
+    },
+    {
+      "id": "dbm_1782947505336_e6nz",
+      "pageUrl": "https://example.com/evolution-main",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 84,
+          "previous": 83,
+          "delta": 1
+        },
+        "usability": {
+          "current": 89,
+          "previous": 92,
+          "delta": -3
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:45.336Z"
+    },
+    {
+      "id": "dbm_1782947505376_un6d",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 83,
+          "previous": 87,
+          "delta": -4
+        },
+        "usability": {
+          "current": 88,
+          "previous": 89,
+          "delta": -1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -3,
+      "ts": "2026-07-01T23:11:45.376Z"
+    },
+    {
+      "id": "dbm_1782947505443_e618",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 82,
+          "previous": 82,
+          "delta": 0
+        },
+        "usability": {
+          "current": 89,
+          "previous": 89,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:45.443Z"
+    },
+    {
+      "id": "dbm_1782947505476_0kx7",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 83,
+          "previous": 87,
+          "delta": -4
+        },
+        "usability": {
+          "current": 92,
+          "previous": 92,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:45.476Z"
+    },
+    {
+      "id": "dbm_1782947505504_d7tv",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "version_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 86,
+          "previous": 87,
+          "delta": -1
+        },
+        "usability": {
+          "current": 91,
+          "previous": 90,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -1,
+      "ts": "2026-07-01T23:11:45.504Z"
+    },
+    {
+      "id": "dbm_1782947505557_zexs",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 86,
+          "previous": 82,
+          "delta": 4
+        },
+        "usability": {
+          "current": 92,
+          "previous": 91,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": -1,
+      "ts": "2026-07-01T23:11:45.557Z"
+    },
+    {
+      "id": "dbm_1782947505708_v947",
+      "pageUrl": "https://example.com/full-evolution-1782947504749",
+      "type": "version_compare",
+      "current": {
+        "overall": 70,
+        "dimensions": {}
+      },
+      "previous": {
+        "overall": null,
+        "dimensions": null
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "usability": {
+          "current": 70,
+          "previous": 80,
+          "delta": -10
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 90,
+          "delta": -20
+        },
+        "consistency": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "responsiveness": {
+          "current": 70,
+          "previous": 85,
+          "delta": -15
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        }
+      },
+      "overallDelta": null,
+      "isImprovement": null,
+      "vsBaseline": -8,
+      "ts": "2026-07-01T23:11:45.708Z"
+    },
+    {
+      "id": "dbm_1782947505723_9hgc",
+      "pageUrl": "https://example.com/time-save-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 84,
+          "previous": 86,
+          "delta": -2
+        },
+        "usability": {
+          "current": 90,
+          "previous": 90,
+          "delta": 0
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:45.723Z"
+    },
+    {
+      "id": "dbm_1782947505798_vk24",
+      "pageUrl": "https://example.com/baseline-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 82,
+          "baseline": 75,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 89,
+          "baseline": 80,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:11:45.798Z"
+    },
+    {
+      "id": "dbm_1782947505833_1cbh",
+      "pageUrl": "https://example.com/get-bm-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 83,
+          "previous": 82,
+          "delta": 1
+        },
+        "usability": {
+          "current": 87,
+          "previous": 88,
+          "delta": -1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -3,
+      "ts": "2026-07-01T23:11:45.833Z"
+    },
+    {
+      "id": "dbm_1782947505850_llhz",
+      "pageUrl": "https://example.com/bench-stats-seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 89,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 83,
+          "previous": 84,
+          "delta": -1
+        },
+        "usability": {
+          "current": 90,
+          "previous": 89,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:45.850Z"
+    },
+    {
+      "id": "dbm_1782947506442_0mfd",
+      "pageUrl": "https://example.com/compare-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 87,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 86,
+          "previous": 87,
+          "delta": -1
+        },
+        "usability": {
+          "current": 87,
+          "previous": 91,
+          "delta": -4
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:46.442Z"
+    },
+    {
+      "id": "dbm_1782947506455_bxqp",
+      "pageUrl": "https://example.com/chain-test",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 82,
+          "previous": 83,
+          "delta": -1
+        },
+        "usability": {
+          "current": 91,
+          "previous": 90,
+          "delta": 1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:11:46.455Z"
+    },
+    {
+      "id": "dbm_1782947506474_74k0",
+      "pageUrl": "https://example.com/chain-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 82,
+          "baseline": 75,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 91,
+          "baseline": 80,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:11:46.474Z"
+    },
+    {
+      "id": "dbm_1782947525945_dnlf",
+      "pageUrl": "https://example.com/time-save-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 82,
+          "baseline": 75,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 92,
+          "baseline": 80,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:05.945Z"
+    },
+    {
+      "id": "dbm_1782947526620_1pw8",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 85,
+          "baseline": 75,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:06.620Z"
+    },
+    {
+      "id": "dbm_1782947526713_da0c",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "version_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "previous": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 91,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "deltas": {
+        "aesthetics": {
+          "current": 85,
+          "previous": 86,
+          "delta": -1
+        },
+        "usability": {
+          "current": 90,
+          "previous": 91,
+          "delta": -1
+        },
+        "accessibility": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "consistency": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "responsiveness": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "performance": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        }
+      },
+      "overallDelta": -1,
+      "isImprovement": false,
+      "vsBaseline": -2,
+      "ts": "2026-07-01T23:12:06.713Z"
+    },
+    {
+      "id": "dbm_1782947526910_opfj",
+      "pageUrl": "https://example.com/evo-status-seed",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 75,
+        "dimensions": {
+          "aesthetics": 82,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 82,
+          "baseline": 75,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 87,
+          "baseline": 80,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:06.910Z"
+    },
+    {
+      "id": "dbm_1782947527034_2fwv",
+      "pageUrl": "https://example.com/dashboard-evo-seed",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 83,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 83,
+          "baseline": 75,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:07.034Z"
+    },
+    {
+      "id": "dbm_1782947527355_2go5",
+      "pageUrl": "https://example.com/get-cycle-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 84,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 84,
+          "baseline": 75,
+          "gap": 9,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:07.355Z"
+    },
+    {
+      "id": "dbm_1782947527727_uany",
+      "pageUrl": "https://example.com/list-cycles-test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 90,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 85,
+          "baseline": 75,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 90,
+          "baseline": 80,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:07.727Z"
+    },
+    {
+      "id": "dbm_1782947528103_kelw",
+      "pageUrl": "https://example.com/evolution-main",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 86,
+          "usability": 87,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 86,
+          "baseline": 75,
+          "gap": 11,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 87,
+          "baseline": 80,
+          "gap": 7,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:08.103Z"
+    },
+    {
+      "id": "dbm_1782947528298_9mtk",
+      "pageUrl": "https://example.com/full-evolution-1782947504749",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 77,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 92,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 85,
+          "baseline": 75,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 92,
+          "baseline": 80,
+          "gap": 12,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:08.299Z"
+    },
+    {
+      "id": "dbm_1782947530412_cn89",
+      "pageUrl": "https://example.com/multi-cycle",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 76,
+        "dimensions": {
+          "aesthetics": 85,
+          "usability": 88,
+          "accessibility": 70,
+          "consistency": 60,
+          "responsiveness": 60,
+          "maintainability": 70,
+          "performance": 100
+        }
+      },
+      "baseline": {
+        "aesthetics": 75,
+        "usability": 80,
+        "accessibility": 90,
+        "consistency": 75,
+        "responsiveness": 85,
+        "maintainability": 70,
+        "performance": 75,
+        "overall": 78
+      },
+      "gaps": {
+        "aesthetics": {
+          "current": 85,
+          "baseline": 75,
+          "gap": 10,
+          "meetsBaseline": true
+        },
+        "usability": {
+          "current": 88,
+          "baseline": 80,
+          "gap": 8,
+          "meetsBaseline": true
+        },
+        "accessibility": {
+          "current": 70,
+          "baseline": 90,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "consistency": {
+          "current": 60,
+          "baseline": 75,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "responsiveness": {
+          "current": 60,
+          "baseline": 85,
+          "gap": -25,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 70,
+          "baseline": 70,
+          "gap": 0,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 100,
+          "baseline": 75,
+          "gap": 25,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "readyForProduction": false,
+      "ts": "2026-07-01T23:12:10.412Z"
     }
   ],
   "baseline": {
@@ -11990,13 +15428,153 @@
       "applied": true,
       "success": true,
       "ts": "2026-06-29T22:43:37.411Z"
+    },
+    {
+      "patchId": "p001",
+      "pageUrl": "https://example.com",
+      "beforeScore": 70,
+      "afterScore": 80,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:37.512Z"
+    },
+    {
+      "patchId": "p002",
+      "pageUrl": "https://example.com",
+      "beforeScore": 80,
+      "afterScore": 70,
+      "improvement": -10,
+      "applied": true,
+      "success": false,
+      "ts": "2026-07-01T23:09:37.722Z"
+    },
+    {
+      "patchId": "success-0",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.268Z"
+    },
+    {
+      "patchId": "success-1",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.274Z"
+    },
+    {
+      "patchId": "success-2",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.281Z"
+    },
+    {
+      "patchId": "success-3",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.286Z"
+    },
+    {
+      "patchId": "success-4",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.291Z"
+    },
+    {
+      "patchId": "p001",
+      "pageUrl": "https://example.com",
+      "beforeScore": 70,
+      "afterScore": 80,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:43.406Z"
+    },
+    {
+      "patchId": "p002",
+      "pageUrl": "https://example.com",
+      "beforeScore": 80,
+      "afterScore": 70,
+      "improvement": -10,
+      "applied": true,
+      "success": false,
+      "ts": "2026-07-01T23:11:43.415Z"
+    },
+    {
+      "patchId": "success-0",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:44.873Z"
+    },
+    {
+      "patchId": "success-1",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:44.883Z"
+    },
+    {
+      "patchId": "success-2",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:44.891Z"
+    },
+    {
+      "patchId": "success-3",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:44.939Z"
+    },
+    {
+      "patchId": "success-4",
+      "pageUrl": "https://example.com",
+      "beforeScore": 60,
+      "afterScore": 70,
+      "improvement": 10,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:44.988Z"
     }
   ],
   "stats": {
-    "total": 163,
-    "improvementsDetected": 14,
-    "regressionsDetected": 51,
+    "total": 211,
+    "improvementsDetected": 19,
+    "regressionsDetected": 70,
     "patchSuccessRate": 85.7
   },
-  "updatedAt": "2026-06-29T22:43:47.130Z"
+  "updatedAt": "2026-07-01T23:12:10.412Z"
 }

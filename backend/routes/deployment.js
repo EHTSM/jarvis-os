@@ -26,7 +26,7 @@ let _lastBenchReport = null;
 function _ok(res, data)     { res.json({ ok: true, ...data }); }
 function _err(res, e, code) { res.status(code || 500).json({ ok: false, error: e?.message || String(e) }); }
 
-router.use(requireAuth);
+router.use("/deployment", requireAuth);
 
 // ── Specific routes BEFORE /:id ──────────────────────────────────────────────
 

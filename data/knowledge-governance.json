@@ -1,379 +1,379 @@
 {
   "records": [
     {
-      "id": "kgov_1782773093162_rrfh",
+      "id": "kgov_1782947556469_30b4",
       "sourceId": "knowledge_graph",
       "sourceName": "Knowledge Graph",
       "domain": "engineering",
       "ownership": "knowledgeGraph",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "knowledge_graph"
       ],
       "provenance": "federated from knowledgeGraph",
       "itemCount": 7,
-      "governedAt": "2026-06-29T22:44:53.162Z"
+      "governedAt": "2026-07-01T23:12:36.469Z"
     },
     {
-      "id": "kgov_1782773093162_xmtl",
+      "id": "kgov_1782947556475_y9as",
       "sourceId": "knowledge_reasoning",
       "sourceName": "Knowledge Reasoning Engine",
       "domain": "engineering",
       "ownership": "knowledgeReasoningEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "knowledge_reasoning"
       ],
       "provenance": "federated from knowledgeReasoningEngine",
-      "itemCount": 180,
-      "governedAt": "2026-06-29T22:44:53.162Z"
+      "itemCount": 325,
+      "governedAt": "2026-07-01T23:12:36.476Z"
     },
     {
-      "id": "kgov_1782773093162_bap0",
+      "id": "kgov_1782947556482_9d7z",
       "sourceId": "knowledge_quality",
       "sourceName": "Knowledge Quality Engine",
       "domain": "engineering",
       "ownership": "knowledgeQualityEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "knowledge_quality"
       ],
       "provenance": "federated from knowledgeQualityEngine",
-      "itemCount": 64,
-      "governedAt": "2026-06-29T22:44:53.162Z"
+      "itemCount": 128,
+      "governedAt": "2026-07-01T23:12:36.482Z"
     },
     {
-      "id": "kgov_1782773093162_g5v1",
+      "id": "kgov_1782947556483_v9i1",
       "sourceId": "knowledge_benchmark",
       "sourceName": "Knowledge Benchmark Engine",
       "domain": "engineering",
       "ownership": "knowledgeBenchmarkEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "knowledge_benchmark"
       ],
       "provenance": "federated from knowledgeBenchmarkEngine",
-      "itemCount": 38,
-      "governedAt": "2026-06-29T22:44:53.162Z"
+      "itemCount": 76,
+      "governedAt": "2026-07-01T23:12:36.483Z"
     },
     {
-      "id": "kgov_1782773093162_6sia",
+      "id": "kgov_1782947556552_crzm",
       "sourceId": "knowledge_prediction",
       "sourceName": "Knowledge Prediction Engine",
       "domain": "engineering",
       "ownership": "knowledgePredictionEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "knowledge_prediction"
       ],
       "provenance": "federated from knowledgePredictionEngine",
-      "itemCount": 36,
-      "governedAt": "2026-06-29T22:44:53.162Z"
+      "itemCount": 72,
+      "governedAt": "2026-07-01T23:12:36.552Z"
     },
     {
-      "id": "kgov_1782773093163_8l3t",
+      "id": "kgov_1782947556554_tq41",
       "sourceId": "knowledge_evolution",
       "sourceName": "Knowledge Evolution Engine",
       "domain": "engineering",
       "ownership": "knowledgeEvolutionEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "knowledge_evolution"
       ],
       "provenance": "federated from knowledgeEvolutionEngine",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.554Z"
     },
     {
-      "id": "kgov_1782773093163_rohw",
+      "id": "kgov_1782947556554_5y5z",
       "sourceId": "knowledge_intelligence",
       "sourceName": "Knowledge Intelligence Dash",
       "domain": "engineering",
       "ownership": "knowledgeIntelligenceDashboard",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "knowledge_intelligence"
       ],
       "provenance": "federated from knowledgeIntelligenceDashboard",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.554Z"
     },
     {
-      "id": "kgov_1782773093163_jmkn",
+      "id": "kgov_1782947556556_dbhy",
       "sourceId": "research_knowledge",
       "sourceName": "Research Knowledge Engine",
       "domain": "research",
       "ownership": "researchKnowledgeEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "research_knowledge"
       ],
       "provenance": "federated from researchKnowledgeEngine",
-      "itemCount": 569,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "itemCount": 907,
+      "governedAt": "2026-07-01T23:12:36.556Z"
     },
     {
-      "id": "kgov_1782773093163_q3yr",
+      "id": "kgov_1782947556556_o6b5",
       "sourceId": "autonomous_knowledge_org",
       "sourceName": "Autonomous Knowledge Org",
       "domain": "knowledge",
       "ownership": "autonomousKnowledgeOrg",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "autonomous_knowledge_org"
       ],
       "provenance": "federated from autonomousKnowledgeOrg",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.556Z"
     },
     {
-      "id": "kgov_1782773093163_ofjd",
+      "id": "kgov_1782947556558_7k30",
       "sourceId": "continuous_learning",
       "sourceName": "Continuous Learning Engine",
       "domain": "engineering",
       "ownership": "continuousLearningEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "continuous_learning"
       ],
       "provenance": "federated from continuousLearningEngine",
       "itemCount": 2003,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.558Z"
     },
     {
-      "id": "kgov_1782773093163_r5qc",
+      "id": "kgov_1782947556559_8be3",
       "sourceId": "engineering_memory",
       "sourceName": "Engineering Memory Engine",
       "domain": "engineering",
       "ownership": "engineeringMemoryEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "engineering_memory"
       ],
       "provenance": "federated from engineeringMemoryEngine",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.559Z"
     },
     {
-      "id": "kgov_1782773093163_xrhf",
+      "id": "kgov_1782947556560_0eme",
       "sourceId": "mission_memory",
       "sourceName": "Mission Memory",
       "domain": "mission",
       "ownership": "missionMemory",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "mission_memory"
       ],
       "provenance": "federated from missionMemory",
       "itemCount": 87,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.560Z"
     },
     {
-      "id": "kgov_1782773093163_sdh4",
+      "id": "kgov_1782947556561_lrfc",
       "sourceId": "production_bible",
       "sourceName": "Production Bible Engine",
       "domain": "operations",
       "ownership": "productionBibleEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "production_bible"
       ],
       "provenance": "federated from productionBibleEngine",
       "itemCount": 118,
-      "governedAt": "2026-06-29T22:44:53.163Z"
+      "governedAt": "2026-07-01T23:12:36.561Z"
     },
     {
-      "id": "kgov_1782773093164_xa8q",
+      "id": "kgov_1782947556562_2oos",
       "sourceId": "founder_work_registry",
       "sourceName": "Founder Work Registry",
       "domain": "operations",
       "ownership": "founderWorkRegistry",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "founder_work_registry"
       ],
       "provenance": "federated from founderWorkRegistry",
       "itemCount": 56,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.562Z"
     },
     {
-      "id": "kgov_1782773093164_uw9t",
+      "id": "kgov_1782947556563_wcbj",
       "sourceId": "engineering_rule_registry",
       "sourceName": "Engineering Rule Registry",
       "domain": "engineering",
       "ownership": "engineeringRuleRegistry",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "engineering_rule_registry"
       ],
       "provenance": "federated from engineeringRuleRegistry",
       "itemCount": 10,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.563Z"
     },
     {
-      "id": "kgov_1782773093164_8zcy",
+      "id": "kgov_1782947556564_vetl",
       "sourceId": "self_improvement",
       "sourceName": "Self Improvement Engine",
       "domain": "engineering",
       "ownership": "selfImprovementEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "self_improvement"
       ],
       "provenance": "federated from selfImprovementEngine",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.564Z"
     },
     {
-      "id": "kgov_1782773093164_tz57",
+      "id": "kgov_1782947556566_sc79",
       "sourceId": "self_review",
       "sourceName": "Self Review Engine",
       "domain": "engineering",
       "ownership": "selfReviewEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "self_review"
       ],
       "provenance": "federated from selfReviewEngine",
       "itemCount": 1,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.566Z"
     },
     {
-      "id": "kgov_1782773093164_vsow",
+      "id": "kgov_1782947556566_8civ",
       "sourceId": "marketplace_catalog",
       "sourceName": "Marketplace Catalog Engine",
       "domain": "marketplace",
       "ownership": "marketplaceCatalogEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 40,
       "lineage": [
         "marketplace_catalog"
       ],
       "provenance": "federated from marketplaceCatalogEngine",
-      "itemCount": 447,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "itemCount": 477,
+      "governedAt": "2026-07-01T23:12:36.566Z"
     },
     {
-      "id": "kgov_1782773093164_0bk7",
+      "id": "kgov_1782947556569_5vn4",
       "sourceId": "product_planner",
       "sourceName": "Product Planner Engine",
       "domain": "product",
       "ownership": "productPlannerEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "product_planner"
       ],
       "provenance": "federated from productPlannerEngine",
-      "itemCount": 46,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "itemCount": 54,
+      "governedAt": "2026-07-01T23:12:36.569Z"
     },
     {
-      "id": "kgov_1782773093164_l1dt",
+      "id": "kgov_1782947556570_kmq1",
       "sourceId": "customer_journey",
       "sourceName": "Customer Journey Engine",
       "domain": "customer",
       "ownership": "customerJourneyEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "customer_journey"
       ],
       "provenance": "federated from customerJourneyEngine",
       "itemCount": 28,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.570Z"
     },
     {
-      "id": "kgov_1782773093164_0nrh",
+      "id": "kgov_1782947556570_ugov",
       "sourceId": "company_blueprint",
       "sourceName": "Company Blueprint Engine",
       "domain": "business",
       "ownership": "companyBlueprintEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "company_blueprint"
       ],
       "provenance": "federated from companyBlueprintEngine",
       "itemCount": 200,
-      "governedAt": "2026-06-29T22:44:53.164Z"
+      "governedAt": "2026-07-01T23:12:36.570Z"
     },
     {
-      "id": "kgov_1782773093165_vvl1",
+      "id": "kgov_1782947556574_dl4r",
       "sourceId": "workforce_manager",
       "sourceName": "Workforce Manager",
       "domain": "workforce",
       "ownership": "workforceManager",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 90,
       "lineage": [
         "workforce_manager"
       ],
       "provenance": "federated from workforceManager",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.165Z"
+      "governedAt": "2026-07-01T23:12:36.574Z"
     },
     {
-      "id": "kgov_1782773093165_u73w",
+      "id": "kgov_1782947556574_m566",
       "sourceId": "engineering_reasoning",
       "sourceName": "Engineering Reasoning Engine",
       "domain": "engineering",
       "ownership": "engineeringReasoningEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "engineering_reasoning"
       ],
       "provenance": "federated from engineeringReasoningEngine",
-      "itemCount": 336,
-      "governedAt": "2026-06-29T22:44:53.165Z"
+      "itemCount": 24,
+      "governedAt": "2026-07-01T23:12:36.574Z"
     },
     {
-      "id": "kgov_1782773093165_isgc",
+      "id": "kgov_1782947556582_c8cs",
       "sourceId": "business_reasoning",
       "sourceName": "Business Reasoning Engine",
       "domain": "business",
       "ownership": "businessReasoningEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "business_reasoning"
       ],
       "provenance": "federated from businessReasoningEngine",
-      "itemCount": 330,
-      "governedAt": "2026-06-29T22:44:53.165Z"
+      "itemCount": 8,
+      "governedAt": "2026-07-01T23:12:36.582Z"
     },
     {
-      "id": "kgov_1782773093165_1glp",
+      "id": "kgov_1782947556584_vnxq",
       "sourceId": "digital_twin",
       "sourceName": "Digital Twin Engine",
       "domain": "founder",
       "ownership": "digitalTwinEngine",
-      "confidence": 76,
+      "confidence": 79,
       "freshness": 100,
       "lineage": [
         "digital_twin"
       ],
       "provenance": "federated from digitalTwinEngine",
       "itemCount": 0,
-      "governedAt": "2026-06-29T22:44:53.165Z"
+      "governedAt": "2026-07-01T23:12:36.584Z"
     }
   ],
   "policies": [
@@ -392,11 +392,27 @@
       "action": "flag_for_review",
       "description": "Flag knowledge items that haven't been updated in 90+ days",
       "createdAt": "2026-06-29T22:44:52.878Z"
+    },
+    {
+      "id": "kgov_1782947395161_k8at",
+      "name": "stale_threshold",
+      "condition": "freshness < 40",
+      "action": "flag_for_review",
+      "description": "Flag knowledge items that haven't been updated in 90+ days",
+      "createdAt": "2026-07-01T23:09:55.161Z"
+    },
+    {
+      "id": "kgov_1782947552556_l0mr",
+      "name": "stale_threshold",
+      "condition": "freshness < 40",
+      "action": "flag_for_review",
+      "description": "Flag knowledge items that haven't been updated in 90+ days",
+      "createdAt": "2026-07-01T23:12:32.556Z"
     }
   ],
   "stats": {
     "total": 25,
-    "avgConfidence": 76,
+    "avgConfidence": 79,
     "avgFreshness": 68,
     "byOwner": {
       "knowledgeGraph": 1,
@@ -428,5 +444,5 @@
     "staleItems": 13,
     "lowConfidence": 0
   },
-  "updatedAt": "2026-06-29T22:44:53.165Z"
+  "updatedAt": "2026-07-01T23:12:36.584Z"
 }

@@ -16642,6 +16642,5595 @@
       "dimensionsMeeting": "4/7",
       "productionReady": false,
       "ts": "2026-06-30T00:12:35.530Z"
+    },
+    {
+      "id": "ebm_1782778357780_md5g",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:37.780Z"
+    },
+    {
+      "id": "ebm_1782778359811_or8f",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:39.811Z"
+    },
+    {
+      "id": "ebm_1782778361758_apzo",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:41.758Z"
+    },
+    {
+      "id": "ebm_1782778363695_726p",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:43.695Z"
+    },
+    {
+      "id": "ebm_1782778365537_zkoe",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:45.537Z"
+    },
+    {
+      "id": "ebm_1782778367555_efnv",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:47.555Z"
+    },
+    {
+      "id": "ebm_1782778369503_pt0d",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:49.503Z"
+    },
+    {
+      "id": "ebm_1782778369555_s5pd",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:49.555Z"
+    },
+    {
+      "id": "ebm_1782778369591_7yas",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:49.591Z"
+    },
+    {
+      "id": "ebm_1782778369628_fuz5",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:49.628Z"
+    },
+    {
+      "id": "ebm_1782778369689_jlgc",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:49.689Z"
+    },
+    {
+      "id": "ebm_1782778371491_nmfp",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:51.491Z"
+    },
+    {
+      "id": "ebm_1782778371516_53v7",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:51.516Z"
+    },
+    {
+      "id": "ebm_1782778373310_61w7",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:53.310Z"
+    },
+    {
+      "id": "ebm_1782778375857_3sj5",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:55.857Z"
+    },
+    {
+      "id": "ebm_1782778378973_tvsu",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:12:58.973Z"
+    },
+    {
+      "id": "ebm_1782778381949_a092",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:01.949Z"
+    },
+    {
+      "id": "ebm_1782778385464_cm8v",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:05.464Z"
+    },
+    {
+      "id": "ebm_1782778389036_a6fl",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:09.036Z"
+    },
+    {
+      "id": "ebm_1782778393118_hmbm",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:13.118Z"
+    },
+    {
+      "id": "ebm_1782778397010_gshw",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:17.010Z"
+    },
+    {
+      "id": "ebm_1782778401481_7nvz",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:21.481Z"
+    },
+    {
+      "id": "ebm_1782778405791_60gq",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:25.791Z"
+    },
+    {
+      "id": "ebm_1782778410580_zj8d",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:30.580Z"
+    },
+    {
+      "id": "ebm_1782778415698_dwqs",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:35.698Z"
+    },
+    {
+      "id": "ebm_1782778421043_e0w5",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:41.043Z"
+    },
+    {
+      "id": "ebm_1782778426618_290w",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:46.618Z"
+    },
+    {
+      "id": "ebm_1782778431991_kqvv",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:51.991Z"
+    },
+    {
+      "id": "ebm_1782778437383_o3wq",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:13:57.383Z"
+    },
+    {
+      "id": "ebm_1782778442738_ic0n",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:14:02.738Z"
+    },
+    {
+      "id": "ebm_1782778447906_ys7z",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:14:07.906Z"
+    },
+    {
+      "id": "ebm_1782778453150_odmq",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:14:13.150Z"
+    },
+    {
+      "id": "ebm_1782778455921_nrak",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:14:15.921Z"
+    },
+    {
+      "id": "ebm_1782778458459_q0cl",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-06-30T00:14:18.459Z"
+    },
+    {
+      "id": "ebm_1782947402093_j4ci",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:02.093Z"
+    },
+    {
+      "id": "ebm_1782947410544_dap4",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:10.544Z"
+    },
+    {
+      "id": "ebm_1782947419844_gras",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:19.845Z"
+    },
+    {
+      "id": "ebm_1782947428498_ff9m",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:28.498Z"
+    },
+    {
+      "id": "ebm_1782947434362_rhfn",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:34.362Z"
+    },
+    {
+      "id": "ebm_1782947439460_arqj",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:39.460Z"
+    },
+    {
+      "id": "ebm_1782947442618_tdjr",
+      "context": "current_repo",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:42.618Z"
+    },
+    {
+      "id": "ebm_1782947442634_w4kh",
+      "context": "iso_1782947401600_ryt",
+      "type": "version_compare",
+      "current": {
+        "overall": 70,
+        "dimensions": {}
+      },
+      "previous": {
+        "overall": null,
+        "dimensions": null
+      },
+      "deltas": {
+        "architecture": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "maintainability": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 70,
+          "previous": 75,
+          "delta": -5
+        },
+        "security": {
+          "current": 70,
+          "previous": 80,
+          "delta": -10
+        },
+        "scalability": {
+          "current": 70,
+          "previous": 65,
+          "delta": 5
+        },
+        "performance": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        }
+      },
+      "overallDelta": null,
+      "isImprovement": null,
+      "vsBaseline": -3,
+      "ts": "2026-07-01T23:10:42.634Z"
+    },
+    {
+      "id": "ebm_1782947442661_b1lu",
+      "context": "status_seed_ctx",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:42.661Z"
+    },
+    {
+      "id": "ebm_1782947442693_8jgf",
+      "context": "multi_cycle_ctx",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:42.693Z"
+    },
+    {
+      "id": "ebm_1782947442741_mumf",
+      "context": "dashboard_evo_seed",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:42.741Z"
+    },
+    {
+      "id": "ebm_1782947445041_wmer",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:45.041Z"
+    },
+    {
+      "id": "ebm_1782947452157_kd84",
+      "context": "current_repo",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:52.158Z"
+    },
+    {
+      "id": "ebm_1782947452192_87y4",
+      "context": "founder_time_test",
+      "type": "version_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 0,
+          "previous": 0,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14,
+      "ts": "2026-07-01T23:10:52.192Z"
+    },
+    {
+      "id": "ebm_1782947452408_lire",
+      "context": "baseline_test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 70,
+          "baseline": 75,
+          "gap": -5,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 72,
+          "baseline": 70,
+          "gap": 2,
+          "meetsBaseline": true
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 100,
+          "baseline": 65,
+          "gap": 35,
+          "meetsBaseline": true
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "6/7",
+      "productionReady": true,
+      "ts": "2026-07-01T23:10:52.408Z"
+    },
+    {
+      "id": "ebm_1782947452565_6zdh",
+      "context": "get_bm_ctx",
+      "type": "version_compare",
+      "current": {
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 73,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 77,
+          "previous": 73,
+          "delta": 4
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 1,
+      "isImprovement": true,
+      "vsBaseline": 14,
+      "ts": "2026-07-01T23:10:52.565Z"
+    },
+    {
+      "id": "ebm_1782947452602_823y",
+      "context": "stats_bm_ctx",
+      "type": "version_compare",
+      "current": {
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        }
+      },
+      "previous": {
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        }
+      },
+      "deltas": {
+        "architecture": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "code_quality": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "maintainability": {
+          "current": 72,
+          "previous": 75,
+          "delta": -3
+        },
+        "reliability": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        },
+        "security": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "scalability": {
+          "current": 100,
+          "previous": 100,
+          "delta": 0
+        },
+        "performance": {
+          "current": 80,
+          "previous": 80,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": 13,
+      "ts": "2026-07-01T23:10:52.602Z"
+    },
+    {
+      "id": "ebm_1782947457678_g1ly",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:10:57.678Z"
+    },
+    {
+      "id": "ebm_1782947474875_awe5",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:14.875Z"
+    },
+    {
+      "id": "ebm_1782947497165_anoe",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 40,
+          "baseline": 75,
+          "gap": -35,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:37.165Z"
+    },
+    {
+      "id": "ebm_1782948085002_flkf",
+      "context": "engineering_benchmark_suite",
+      "type": "suite_run",
+      "result": {
+        "ok": true,
+        "completedAt": "2026-07-01T23:21:24.989Z",
+        "totalSuiteMs": 587533,
+        "scenarioCount": 10,
+        "successCount": 0,
+        "failCount": 10,
+        "successRate": 0,
+        "avgAutonomyPct": 100,
+        "avgMs": 40302,
+        "avgConfidence": 18,
+        "buildPassRate": 30,
+        "testPassRate": 30,
+        "rollbackRate": 30,
+        "recoveryRate": 30,
+        "productionReadinessScore": 29,
+        "topFailureCauses": [
+          {
+            "cause": "patch target not found",
+            "count": 7
+          },
+          {
+            "cause": "unknown",
+            "count": 3
+          }
+        ],
+        "topSuccessPatterns": [],
+        "v1Gaps": [
+          {
+            "scenario": "fix-login-performance",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "remove-console-warn",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "add-crm-name-validation",
+            "gap": "unknown"
+          },
+          {
+            "scenario": "add-classify-logging",
+            "gap": "unknown"
+          },
+          {
+            "scenario": "add-dlq-size-guard",
+            "gap": "unknown"
+          },
+          {
+            "scenario": "add-rca-null-guard",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "add-confidence-floor",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "add-healing-metric",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "add-scenario-idempotency",
+            "gap": "patch target not found — already applied or file changed"
+          },
+          {
+            "scenario": "add-drain-docblock",
+            "gap": "patch target not found — already applied or file changed"
+          }
+        ],
+        "scenarios": [
+          {
+            "id": "fix-login-performance",
+            "goal": "Fix login performance",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 2188,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 19,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "remove-console-warn",
+            "goal": "Remove console.warn from production auth route",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 4178,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 19,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "add-crm-name-validation",
+            "goal": "Add name validation to CRM lead API",
+            "success": false,
+            "failReason": null,
+            "totalMs": 346912,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": true,
+            "testOk": true,
+            "patchOk": true,
+            "rollback": true,
+            "recoveryActions": 1,
+            "confidence": 19,
+            "filesChanged": [
+              "backend/routes/crm.js"
+            ],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "build_run",
+                "ok": true,
+                "note": "skipped — backend-only change"
+              },
+              {
+                "name": "test_run",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "git_commit",
+                "ok": false,
+                "note": "Command failed: git add backend/routes/crm.js\nfatal: Unable to create '/Users/ehtsm/jarvis-os/.git/index.lock': File exists.\n\nAnother git process seems to be running in this repository, e.g.\nan editor opened by 'git commit'. Please make sure all processes\nare terminated then try again. If it still fails, a git process\nmay have crashed in this repository earlier:\nremove the file manually to continue.\n"
+              }
+            ],
+            "stageCount": 7,
+            "stagesSucceeded": 6
+          },
+          {
+            "id": "add-classify-logging",
+            "goal": "Add logging to classifyError critical path",
+            "success": false,
+            "failReason": null,
+            "totalMs": 38282,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": true,
+            "testOk": true,
+            "patchOk": true,
+            "rollback": true,
+            "recoveryActions": 1,
+            "confidence": 19,
+            "filesChanged": [
+              "backend/services/engineeringRuleRegistry.cjs"
+            ],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "build_run",
+                "ok": true,
+                "note": "skipped — backend-only change"
+              },
+              {
+                "name": "test_run",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "git_commit",
+                "ok": false,
+                "note": "Command failed: git add backend/services/engineeringRuleRegistry.cjs\nfatal: Unable to create '/Users/ehtsm/jarvis-os/.git/index.lock': File exists.\n\nAnother git process seems to be running in this repository, e.g.\nan editor opened by 'git commit'. Please make sure all processes\nare terminated then try again. If it still fails, a git process\nmay have crashed in this repository earlier:\nremove the file manually to continue.\n"
+              }
+            ],
+            "stageCount": 7,
+            "stagesSucceeded": 6
+          },
+          {
+            "id": "add-dlq-size-guard",
+            "goal": "Add early-exit guard for empty DLQ in drain engine",
+            "success": false,
+            "failReason": null,
+            "totalMs": 11256,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": true,
+            "testOk": true,
+            "patchOk": true,
+            "rollback": true,
+            "recoveryActions": 1,
+            "confidence": 18,
+            "filesChanged": [
+              "backend/services/dlqDrainEngine.cjs"
+            ],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "build_run",
+                "ok": true,
+                "note": "skipped — backend-only change"
+              },
+              {
+                "name": "test_run",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "git_commit",
+                "ok": false,
+                "note": "Command failed: git add backend/services/dlqDrainEngine.cjs\nfatal: Unable to create '/Users/ehtsm/jarvis-os/.git/index.lock': File exists.\n\nAnother git process seems to be running in this repository, e.g.\nan editor opened by 'git commit'. Please make sure all processes\nare terminated then try again. If it still fails, a git process\nmay have crashed in this repository earlier:\nremove the file manually to continue.\n"
+              }
+            ],
+            "stageCount": 7,
+            "stagesSucceeded": 6
+          },
+          {
+            "id": "add-rca-null-guard",
+            "goal": "Add null guard on RCA analysis lookup",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 58,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 18,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "add-confidence-floor",
+            "goal": "Clamp confidence score floor to 1% minimum",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 4,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 18,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "add-healing-metric",
+            "goal": "Add heal success count to SelfHealingRuntime status",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 80,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 18,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "add-scenario-idempotency",
+            "goal": "Fix scenario runner stageSeq accumulation across runs",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 18,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 18,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          },
+          {
+            "id": "add-drain-docblock",
+            "goal": "Document DLQ drain dryRun default in module docblock",
+            "success": false,
+            "failReason": "patch target not found — already applied or file changed",
+            "totalMs": 48,
+            "humanGates": 0,
+            "autonomyPct": 100,
+            "buildOk": false,
+            "testOk": false,
+            "patchOk": false,
+            "rollback": false,
+            "recoveryActions": 0,
+            "confidence": 18,
+            "filesChanged": [],
+            "rulesConsulted": 5,
+            "rcaConsulted": 2,
+            "stages": [
+              {
+                "name": "git_status",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "file_read",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "confidence_assess",
+                "ok": true,
+                "note": null
+              },
+              {
+                "name": "patch_apply",
+                "ok": false,
+                "note": "patch target not found (may already be applied)"
+              }
+            ],
+            "stageCount": 4,
+            "stagesSucceeded": 3
+          }
+        ]
+      },
+      "scenario": "all",
+      "ts": "2026-07-01T23:21:25.002Z"
+    },
+    {
+      "id": "ebm_1782948148063_qvxi",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:22:28.063Z"
+    },
+    {
+      "id": "ebm_1782948203407_ya4j",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:23:23.407Z"
+    },
+    {
+      "id": "ebm_1782948279683_e2od",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:24:39.683Z"
+    },
+    {
+      "id": "ebm_1782948313532_wtkx",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:25:13.532Z"
+    },
+    {
+      "id": "ebm_1782948315348_94h0",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:25:15.348Z"
+    },
+    {
+      "id": "ebm_1782948380800_bg0g",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:26:20.800Z"
+    },
+    {
+      "id": "ebm_1782948381341_y8py",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:26:21.342Z"
+    },
+    {
+      "id": "ebm_1782948439141_wh1f",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:27:19.141Z"
+    },
+    {
+      "id": "ebm_1782948448301_e75x",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:27:28.301Z"
+    },
+    {
+      "id": "ebm_1782948491525_03si",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:28:11.525Z"
+    },
+    {
+      "id": "ebm_1782948555572_5iz4",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:29:15.596Z"
+    },
+    {
+      "id": "ebm_1782948582738_tsy8",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:29:42.738Z"
+    },
+    {
+      "id": "ebm_1782948587768_16gl",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:29:47.775Z"
+    },
+    {
+      "id": "ebm_1782948599145_s6gb",
+      "context": "current_repo",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        }
+      },
+      "baseline": {
+        "architecture": 70,
+        "code_quality": 75,
+        "maintainability": 70,
+        "reliability": 75,
+        "security": 80,
+        "scalability": 65,
+        "performance": 70,
+        "overall": 73
+      },
+      "gaps": {
+        "architecture": {
+          "current": 100,
+          "baseline": 70,
+          "gap": 30,
+          "meetsBaseline": true
+        },
+        "code_quality": {
+          "current": 45,
+          "baseline": 75,
+          "gap": -30,
+          "meetsBaseline": false
+        },
+        "maintainability": {
+          "current": 0,
+          "baseline": 70,
+          "gap": -70,
+          "meetsBaseline": false
+        },
+        "reliability": {
+          "current": 80,
+          "baseline": 75,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "security": {
+          "current": 100,
+          "baseline": 80,
+          "gap": 20,
+          "meetsBaseline": true
+        },
+        "scalability": {
+          "current": 0,
+          "baseline": 65,
+          "gap": -65,
+          "meetsBaseline": false
+        },
+        "performance": {
+          "current": 80,
+          "baseline": 70,
+          "gap": 10,
+          "meetsBaseline": true
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "4/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:29:59.145Z"
     }
   ],
   "baseline": {
@@ -16794,13 +22383,83 @@
       "applied": true,
       "success": true,
       "ts": "2026-06-29T22:42:19.942Z"
+    },
+    {
+      "fixId": "fix001",
+      "context": "test_repo",
+      "beforeScore": 65,
+      "afterScore": 78,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:36.790Z"
+    },
+    {
+      "fixId": "fix002",
+      "context": "test_repo",
+      "beforeScore": 78,
+      "afterScore": 65,
+      "improvement": -13,
+      "applied": true,
+      "success": false,
+      "ts": "2026-07-01T23:09:36.806Z"
+    },
+    {
+      "fixId": "success_0",
+      "context": "improvement_test",
+      "beforeScore": 60,
+      "afterScore": 72,
+      "improvement": 12,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:10:37.069Z"
+    },
+    {
+      "fixId": "success_1",
+      "context": "improvement_test",
+      "beforeScore": 60,
+      "afterScore": 72,
+      "improvement": 12,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:10:37.084Z"
+    },
+    {
+      "fixId": "success_2",
+      "context": "improvement_test",
+      "beforeScore": 60,
+      "afterScore": 72,
+      "improvement": 12,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:10:37.103Z"
+    },
+    {
+      "fixId": "success_3",
+      "context": "improvement_test",
+      "beforeScore": 60,
+      "afterScore": 72,
+      "improvement": 12,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:10:37.112Z"
+    },
+    {
+      "fixId": "success_4",
+      "context": "improvement_test",
+      "beforeScore": 60,
+      "afterScore": 72,
+      "improvement": 12,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:10:37.121Z"
     }
   ],
   "stats": {
-    "total": 195,
-    "improvementsDetected": 0,
-    "regressionsDetected": 12,
-    "fixSuccessRate": 85.7
+    "total": 264,
+    "improvementsDetected": 1,
+    "regressionsDetected": 19,
+    "fixSuccessRate": 85
   },
-  "updatedAt": "2026-06-30T00:12:35.530Z"
+  "updatedAt": "2026-07-01T23:29:59.145Z"
 }

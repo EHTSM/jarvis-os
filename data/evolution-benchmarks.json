@@ -1150,6 +1150,1442 @@
       },
       "productionReady": true,
       "createdAt": "2026-06-29T22:44:40.391Z"
+    },
+    {
+      "id": "ebm_1782947381635_ol7g",
+      "type": "cycle_compare",
+      "context": "current_evolution",
+      "evolutionCycles": 0,
+      "pendingPatterns": 13,
+      "assessment": "no_cycles",
+      "recommendation": "Run selfImprovementEngine.runEvolutionCycle() to begin tracking",
+      "createdAt": "2026-07-01T23:09:41.635Z"
+    },
+    {
+      "id": "ebm_1782947381656_qsfw",
+      "type": "research_compare",
+      "context": "current_evolution",
+      "researchPlans": 10,
+      "active": 0,
+      "completed": 3,
+      "coverage": 30,
+      "recommendation": "sparse",
+      "createdAt": "2026-07-01T23:09:41.656Z"
+    },
+    {
+      "id": "ebm_1782947386861_gjay",
+      "type": "cycle_compare",
+      "context": "current_evolution",
+      "evolutionCycles": 0,
+      "pendingPatterns": 13,
+      "assessment": "no_cycles",
+      "recommendation": "Run selfImprovementEngine.runEvolutionCycle() to begin tracking",
+      "createdAt": "2026-07-01T23:09:46.861Z"
+    },
+    {
+      "id": "ebm_1782947387291_ssbm",
+      "type": "baseline_compare",
+      "context": "bl_evo_test",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.303Z"
+    },
+    {
+      "id": "ebm_1782947387306_5tp6",
+      "type": "version_compare",
+      "context": "get_bm_evo",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:09:47.306Z"
+    },
+    {
+      "id": "ebm_1782947387309_l3zh",
+      "type": "baseline_compare",
+      "context": "current_evolution",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.311Z"
+    },
+    {
+      "id": "ebm_1782947387313_4n8p",
+      "type": "baseline_compare",
+      "context": "get_cycle_evo_direct",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.314Z"
+    },
+    {
+      "id": "ebm_1782947387315_y4ya",
+      "type": "baseline_compare",
+      "context": "list_evo_1782947382322",
+      "insufficient": true,
+      "meetsOverall": false,
+      "productionReady": false,
+      "gaps": {},
+      "createdAt": "2026-07-01T23:09:47.315Z"
+    },
+    {
+      "id": "ebm_1782947387319_mr3h",
+      "type": "baseline_compare",
+      "context": "status_seed_evo",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.322Z"
+    },
+    {
+      "id": "ebm_1782947387362_vxx1",
+      "type": "baseline_compare",
+      "context": "multi_evo_ctx",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.363Z"
+    },
+    {
+      "id": "ebm_1782947387369_mpoe",
+      "type": "baseline_compare",
+      "context": "debt_cycle_evo",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.371Z"
+    },
+    {
+      "id": "ebm_1782947387577_ujzs",
+      "type": "baseline_compare",
+      "context": "current_evolution",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.578Z"
+    },
+    {
+      "id": "ebm_1782947387581_5kto",
+      "type": "baseline_compare",
+      "context": "founder_time_evo",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.582Z"
+    },
+    {
+      "id": "ebm_1782947387589_kfyg",
+      "type": "research_compare",
+      "context": "current_evolution",
+      "researchPlans": 10,
+      "active": 0,
+      "completed": 3,
+      "coverage": 30,
+      "recommendation": "sparse",
+      "createdAt": "2026-07-01T23:09:47.589Z"
+    },
+    {
+      "id": "ebm_1782947387591_hegw",
+      "type": "baseline_compare",
+      "context": "dashboard_seed_evo",
+      "overall": 85,
+      "baselineOverall": 50,
+      "vsBaseline": 35,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 39,
+          "baseline": 55,
+          "gap": 16,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 86,
+          "baseline": 55,
+          "gap": -31,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:47.592Z"
+    },
+    {
+      "id": "ebm_1782947387707_vu7z",
+      "type": "version_compare",
+      "context": "bm_evo_test",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:09:47.707Z"
+    },
+    {
+      "id": "ebm_1782947388074_0u4i",
+      "type": "version_compare",
+      "context": "chain_evo_bm",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:09:48.074Z"
+    },
+    {
+      "id": "ebm_1782947388860_yu54",
+      "type": "baseline_compare",
+      "context": "chain_evo_bm",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:48.863Z"
+    },
+    {
+      "id": "ebm_1782947389589_7pg6",
+      "type": "baseline_compare",
+      "context": "multi_evo_ctx",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:09:49.592Z"
+    },
+    {
+      "id": "ebm_1782947518277_36rf",
+      "type": "cycle_compare",
+      "context": "current_evolution",
+      "evolutionCycles": 0,
+      "pendingPatterns": 14,
+      "assessment": "no_cycles",
+      "recommendation": "Run selfImprovementEngine.runEvolutionCycle() to begin tracking",
+      "createdAt": "2026-07-01T23:11:58.277Z"
+    },
+    {
+      "id": "ebm_1782947518344_23mv",
+      "type": "research_compare",
+      "context": "current_evolution",
+      "researchPlans": 10,
+      "active": 0,
+      "completed": 3,
+      "coverage": 30,
+      "recommendation": "sparse",
+      "createdAt": "2026-07-01T23:11:58.344Z"
+    },
+    {
+      "id": "ebm_1782947524095_c1tg",
+      "type": "cycle_compare",
+      "context": "current_evolution",
+      "evolutionCycles": 0,
+      "pendingPatterns": 14,
+      "assessment": "no_cycles",
+      "recommendation": "Run selfImprovementEngine.runEvolutionCycle() to begin tracking",
+      "createdAt": "2026-07-01T23:12:04.095Z"
+    },
+    {
+      "id": "ebm_1782947524759_7f2p",
+      "type": "baseline_compare",
+      "context": "bl_evo_test",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 40,
+          "baseline": 55,
+          "gap": 15,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 90,
+          "baseline": 55,
+          "gap": -35,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:04.763Z"
+    },
+    {
+      "id": "ebm_1782947524782_rtd0",
+      "type": "version_compare",
+      "context": "get_bm_evo",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:12:04.782Z"
+    },
+    {
+      "id": "ebm_1782947524817_h5di",
+      "type": "baseline_compare",
+      "context": "current_evolution",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 40,
+          "baseline": 55,
+          "gap": 15,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 90,
+          "baseline": 55,
+          "gap": -35,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:04.820Z"
+    },
+    {
+      "id": "ebm_1782947524834_uu5v",
+      "type": "baseline_compare",
+      "context": "get_cycle_evo_direct",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:04.836Z"
+    },
+    {
+      "id": "ebm_1782947524883_a2vt",
+      "type": "baseline_compare",
+      "context": "list_evo_1782947520312",
+      "insufficient": true,
+      "meetsOverall": false,
+      "productionReady": false,
+      "gaps": {},
+      "createdAt": "2026-07-01T23:12:04.883Z"
+    },
+    {
+      "id": "ebm_1782947524886_p330",
+      "type": "baseline_compare",
+      "context": "status_seed_evo",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:04.887Z"
+    },
+    {
+      "id": "ebm_1782947525081_jtk0",
+      "type": "baseline_compare",
+      "context": "multi_evo_ctx",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:05.086Z"
+    },
+    {
+      "id": "ebm_1782947525089_1m6k",
+      "type": "baseline_compare",
+      "context": "debt_cycle_evo",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:05.094Z"
+    },
+    {
+      "id": "ebm_1782947525502_ctc6",
+      "type": "baseline_compare",
+      "context": "current_evolution",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 40,
+          "baseline": 55,
+          "gap": 15,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 90,
+          "baseline": 55,
+          "gap": -35,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:05.506Z"
+    },
+    {
+      "id": "ebm_1782947525524_m1kf",
+      "type": "baseline_compare",
+      "context": "founder_time_evo",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:05.527Z"
+    },
+    {
+      "id": "ebm_1782947525571_5274",
+      "type": "research_compare",
+      "context": "current_evolution",
+      "researchPlans": 10,
+      "active": 0,
+      "completed": 3,
+      "coverage": 30,
+      "recommendation": "sparse",
+      "createdAt": "2026-07-01T23:12:05.571Z"
+    },
+    {
+      "id": "ebm_1782947525588_nket",
+      "type": "baseline_compare",
+      "context": "dashboard_seed_evo",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 38,
+          "baseline": 55,
+          "gap": 17,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 91,
+          "baseline": 55,
+          "gap": -36,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:05.602Z"
+    },
+    {
+      "id": "ebm_1782947525789_z9j3",
+      "type": "version_compare",
+      "context": "bm_evo_test",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:12:05.789Z"
+    },
+    {
+      "id": "ebm_1782947526518_if1p",
+      "type": "version_compare",
+      "context": "chain_evo_bm",
+      "first": 85,
+      "latest": 86,
+      "delta": 1,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "productionReady": true,
+      "trend": "stable",
+      "createdAt": "2026-07-01T23:12:06.518Z"
+    },
+    {
+      "id": "ebm_1782947528066_ftw6",
+      "type": "baseline_compare",
+      "context": "chain_evo_bm",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 40,
+          "baseline": 55,
+          "gap": 15,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 90,
+          "baseline": 55,
+          "gap": -35,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:08.078Z"
+    },
+    {
+      "id": "ebm_1782947529311_m4uv",
+      "type": "baseline_compare",
+      "context": "multi_evo_ctx",
+      "overall": 86,
+      "baselineOverall": 50,
+      "vsBaseline": 36,
+      "meetsOverall": true,
+      "dimsMet": 6,
+      "dimsTotal": 7,
+      "gaps": {
+        "adaptability": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "improvement_velocity": {
+          "actual": 100,
+          "baseline": 45,
+          "gap": -55,
+          "meets": true
+        },
+        "architectural_stability": {
+          "actual": 90,
+          "baseline": 60,
+          "gap": -30,
+          "meets": true
+        },
+        "execution_quality": {
+          "actual": 40,
+          "baseline": 55,
+          "gap": 15,
+          "meets": false
+        },
+        "learning_effectiveness": {
+          "actual": 100,
+          "baseline": 50,
+          "gap": -50,
+          "meets": true
+        },
+        "optimization_efficiency": {
+          "actual": 90,
+          "baseline": 55,
+          "gap": -35,
+          "meets": true
+        },
+        "autonomy_maturity": {
+          "actual": 38,
+          "baseline": 35,
+          "gap": -3,
+          "meets": true
+        }
+      },
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:09.312Z"
     }
   ],
   "improvementResults": [
@@ -1292,11 +2728,151 @@
       "applied": true,
       "success": true,
       "recordedAt": "2026-06-29T22:44:39.886Z"
+    },
+    {
+      "improvId": "evo_imp001",
+      "context": "evo_test",
+      "beforeScore": 50,
+      "afterScore": 70,
+      "improvement": 20,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:41.658Z"
+    },
+    {
+      "improvId": "evo_imp002",
+      "context": "evo_test",
+      "beforeScore": 70,
+      "afterScore": 50,
+      "improvement": -20,
+      "applied": true,
+      "success": false,
+      "recordedAt": "2026-07-01T23:09:41.659Z"
+    },
+    {
+      "improvId": "rate_evo_0",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:44.094Z"
+    },
+    {
+      "improvId": "rate_evo_1",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:44.094Z"
+    },
+    {
+      "improvId": "rate_evo_2",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:44.095Z"
+    },
+    {
+      "improvId": "rate_evo_3",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:44.097Z"
+    },
+    {
+      "improvId": "rate_evo_4",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:09:44.098Z"
+    },
+    {
+      "improvId": "evo_imp001",
+      "context": "evo_test",
+      "beforeScore": 50,
+      "afterScore": 70,
+      "improvement": 20,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:11:58.349Z"
+    },
+    {
+      "improvId": "evo_imp002",
+      "context": "evo_test",
+      "beforeScore": 70,
+      "afterScore": 50,
+      "improvement": -20,
+      "applied": true,
+      "success": false,
+      "recordedAt": "2026-07-01T23:11:58.350Z"
+    },
+    {
+      "improvId": "rate_evo_0",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:12:02.787Z"
+    },
+    {
+      "improvId": "rate_evo_1",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:12:02.842Z"
+    },
+    {
+      "improvId": "rate_evo_2",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:12:02.874Z"
+    },
+    {
+      "improvId": "rate_evo_3",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:12:02.875Z"
+    },
+    {
+      "improvId": "rate_evo_4",
+      "context": "rate_evo",
+      "beforeScore": 50,
+      "afterScore": 65,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "recordedAt": "2026-07-01T23:12:02.882Z"
     }
   ],
   "stats": {
-    "total": 38,
+    "total": 76,
     "regressionsDetected": 0
   },
-  "updatedAt": "2026-06-29T22:44:40.391Z"
+  "updatedAt": "2026-07-01T23:12:09.314Z"
 }

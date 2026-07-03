@@ -8,7 +8,7 @@ const router      = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const j           = require("../services/founderJournal.cjs");
 
-router.use(requireAuth);
+router.use("/fop", requireAuth);
 
 function _today() { return new Date().toISOString().slice(0, 10); }
 

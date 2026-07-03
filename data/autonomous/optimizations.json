@@ -591,94 +591,664 @@
       "recordedAt": "2026-06-29T22:39:39.556Z"
     },
     {
-      "id": "abopt_1782772792972_i1ge",
-      "domain": "ecosystem",
-      "layer": "ecosystem",
-      "action": "Reduce redundant capability calls by 30%",
-      "amountSaved": 150,
-      "rationale": "Profiling revealed 30% duplicate capability checks",
-      "confidence": 0.75,
-      "recordedAt": "2026-06-29T22:39:52.972Z"
+      "id": "abopt_1782778789206_sgfl",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 60: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-30T00:19:49.206Z"
     },
     {
-      "id": "abopt_1782772793911_yn1f",
+      "id": "abopt_1782845982139_tq3b",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 61: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:53.911Z"
+      "recordedAt": "2026-06-30T18:59:42.139Z"
     },
     {
-      "id": "abopt_1782772794028_h56q",
+      "id": "abopt_1782847432669_gamx",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 62: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:54.028Z"
+      "recordedAt": "2026-06-30T19:23:52.669Z"
     },
     {
-      "id": "abopt_1782772794141_j9tk",
+      "id": "abopt_1782848561171_125k",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 63: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:54.141Z"
+      "recordedAt": "2026-06-30T19:42:41.171Z"
     },
     {
-      "id": "abopt_1782772794509_6oj7",
-      "domain": "autonomous",
-      "layer": "autonomous",
-      "action": "Reduce retry cost from 2 failed decisions",
-      "amountSaved": 10,
-      "rationale": "Fewer retries = lower compute cost",
-      "confidence": 0.6,
-      "recordedAt": "2026-06-29T22:39:54.509Z"
-    },
-    {
-      "id": "abopt_1782772794984_n2eg",
+      "id": "abopt_1782849330527_qihb",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 64: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:54.984Z"
+      "recordedAt": "2026-06-30T19:55:30.527Z"
     },
     {
-      "id": "abopt_1782772795011_e6sf",
+      "id": "abopt_1782849964039_mgkh",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 65: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:55.011Z"
+      "recordedAt": "2026-06-30T20:06:04.039Z"
     },
     {
-      "id": "abopt_1782772795129_8sw1",
+      "id": "abopt_1782850519187_bt32",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 66: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:55.129Z"
+      "recordedAt": "2026-06-30T20:15:19.187Z"
     },
     {
-      "id": "abopt_1782772795244_ag8k",
+      "id": "abopt_1782851637976_ms4t",
       "domain": "global",
       "layer": "autonomous",
       "action": "Cycle 67: 2 optimizations executed",
       "amountSaved": 20,
       "rationale": "Autonomous cycle resource efficiency",
       "confidence": 0.7,
-      "recordedAt": "2026-06-29T22:39:55.244Z"
+      "recordedAt": "2026-06-30T20:33:57.976Z"
+    },
+    {
+      "id": "abopt_1782852308499_bwpd",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 68: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-30T20:45:08.499Z"
+    },
+    {
+      "id": "abopt_1782853296768_3pv0",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 69: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-06-30T21:01:36.768Z"
+    },
+    {
+      "id": "abopt_1782900806509_ik6r",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 70: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-01T10:13:26.509Z"
+    },
+    {
+      "id": "abopt_1782945748148_g91v",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 71: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-01T22:42:28.148Z"
+    },
+    {
+      "id": "abopt_1782946586111_9b0r",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 72: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-01T22:56:26.111Z"
+    },
+    {
+      "id": "abopt_1782947337970_brnv",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 73: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-01T23:08:57.970Z"
+    },
+    {
+      "id": "abopt_1782957701953_slsr",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 74: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T02:01:41.953Z"
+    },
+    {
+      "id": "abopt_1782958898513_71ai",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 75: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T02:21:38.513Z"
+    },
+    {
+      "id": "abopt_1782959820432_xwo9",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 76: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T02:37:00.432Z"
+    },
+    {
+      "id": "abopt_1782960595475_mnuv",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 77: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T02:49:55.475Z"
+    },
+    {
+      "id": "abopt_1782961685616_nmeu",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 78: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T03:08:05.616Z"
+    },
+    {
+      "id": "abopt_1782973243327_3y3r",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 79: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T06:20:43.327Z"
+    },
+    {
+      "id": "abopt_1782974908970_dl79",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 80: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T06:48:28.970Z"
+    },
+    {
+      "id": "abopt_1782975791185_ht6o",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 81: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T07:03:11.185Z"
+    },
+    {
+      "id": "abopt_1782977952463_f52d",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 82: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T07:39:12.463Z"
+    },
+    {
+      "id": "abopt_1782979388179_up2g",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 83: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T08:03:08.179Z"
+    },
+    {
+      "id": "abopt_1782980280707_ax9j",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 84: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T08:18:00.707Z"
+    },
+    {
+      "id": "abopt_1782981137288_4o96",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 85: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T08:32:17.288Z"
+    },
+    {
+      "id": "abopt_1782982004129_djyn",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 86: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T08:46:44.129Z"
+    },
+    {
+      "id": "abopt_1782983337076_4lif",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 87: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T09:08:57.076Z"
+    },
+    {
+      "id": "abopt_1782985054276_s302",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 88: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T09:37:34.276Z"
+    },
+    {
+      "id": "abopt_1782985832844_c51r",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 89: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T09:50:32.844Z"
+    },
+    {
+      "id": "abopt_1782986586118_tnlx",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 90: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T10:03:06.118Z"
+    },
+    {
+      "id": "abopt_1782987374684_33ra",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 91: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T10:16:14.684Z"
+    },
+    {
+      "id": "abopt_1782988147445_d3tv",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 92: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T10:29:07.445Z"
+    },
+    {
+      "id": "abopt_1782988997816_ae6a",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 93: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T10:43:17.816Z"
+    },
+    {
+      "id": "abopt_1782989841762_j6wi",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 94: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T10:57:21.762Z"
+    },
+    {
+      "id": "abopt_1782990666647_emtz",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 95: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T11:11:06.647Z"
+    },
+    {
+      "id": "abopt_1782991462619_9j9r",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 96: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T11:24:22.619Z"
+    },
+    {
+      "id": "abopt_1782992274653_n1f6",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 97: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T11:37:54.653Z"
+    },
+    {
+      "id": "abopt_1782993076703_s1w8",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 98: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T11:51:16.703Z"
+    },
+    {
+      "id": "abopt_1782993922502_qk5i",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 99: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T12:05:22.502Z"
+    },
+    {
+      "id": "abopt_1782994737761_rt4j",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 100: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T12:18:57.761Z"
+    },
+    {
+      "id": "abopt_1782995591746_1uf9",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 101: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T12:33:11.746Z"
+    },
+    {
+      "id": "abopt_1782996465381_g8xb",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 102: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T12:47:45.381Z"
+    },
+    {
+      "id": "abopt_1782997418099_shq5",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 103: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T13:03:38.099Z"
+    },
+    {
+      "id": "abopt_1782999197342_8bku",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 104: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T13:33:17.342Z"
+    },
+    {
+      "id": "abopt_1783000108546_0jal",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 105: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T13:48:28.546Z"
+    },
+    {
+      "id": "abopt_1783000992607_6l6g",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 106: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T14:03:12.607Z"
+    },
+    {
+      "id": "abopt_1783001871335_evaq",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 107: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T14:17:51.335Z"
+    },
+    {
+      "id": "abopt_1783002749130_man4",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 108: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T14:32:29.130Z"
+    },
+    {
+      "id": "abopt_1783003595984_4r7t",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 109: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T14:46:35.984Z"
+    },
+    {
+      "id": "abopt_1783004492265_09cz",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 110: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T15:01:32.265Z"
+    },
+    {
+      "id": "abopt_1783005348967_mp3e",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 111: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T15:15:48.967Z"
+    },
+    {
+      "id": "abopt_1783006272662_re56",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 112: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T15:31:12.662Z"
+    },
+    {
+      "id": "abopt_1783007143811_qakf",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 113: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T15:45:43.811Z"
+    },
+    {
+      "id": "abopt_1783008050271_yube",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 114: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T16:00:50.271Z"
+    },
+    {
+      "id": "abopt_1783008938312_svkl",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 115: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T16:15:38.312Z"
+    },
+    {
+      "id": "abopt_1783009910095_ygum",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 116: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T16:31:50.095Z"
+    },
+    {
+      "id": "abopt_1783010821775_kir6",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 117: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T16:47:01.775Z"
+    },
+    {
+      "id": "abopt_1783016384749_y7ka",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 118: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T18:19:44.749Z"
+    },
+    {
+      "id": "abopt_1783017324355_im8d",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 119: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T18:35:24.355Z"
+    },
+    {
+      "id": "abopt_1783018241949_948c",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 120: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T18:50:41.949Z"
+    },
+    {
+      "id": "abopt_1783019180247_esmc",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 121: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T19:06:20.247Z"
+    },
+    {
+      "id": "abopt_1783020122414_20wy",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 122: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T19:22:02.414Z"
+    },
+    {
+      "id": "abopt_1783021069704_kl5q",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 123: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T19:37:49.704Z"
+    },
+    {
+      "id": "abopt_1783023268658_deg7",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 124: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T20:14:28.658Z"
+    },
+    {
+      "id": "abopt_1783025954892_zgyf",
+      "domain": "global",
+      "layer": "autonomous",
+      "action": "Cycle 125: 2 optimizations executed",
+      "amountSaved": 20,
+      "rationale": "Autonomous cycle resource efficiency",
+      "confidence": 0.7,
+      "recordedAt": "2026-07-02T20:59:14.892Z"
     }
   ],
   "resources": [
@@ -691,16 +1261,6 @@
       "rationale": "Civilization pool had excess compute",
       "confidence": 0.8,
       "recordedAt": "2026-06-28T05:35:59.077Z"
-    },
-    {
-      "id": "aropt_1782772792972_w3ti",
-      "resourceType": "compute",
-      "action": "Rebalance compute across civilization pools",
-      "amountOptimized": 200,
-      "domain": "economy",
-      "rationale": "Civilization pool had excess compute",
-      "confidence": 0.8,
-      "recordedAt": "2026-06-29T22:39:52.972Z"
     }
   ],
   "capabilities": [
@@ -763,46 +1323,6 @@
       "confidence": 0.65,
       "impact": "low",
       "recordedAt": "2026-06-28T06:55:58.248Z"
-    },
-    {
-      "id": "acevo_1782772792973_wb8j",
-      "capability": "autonomous_planning",
-      "action": "upgraded_to_v2",
-      "domain": "autonomous",
-      "rationale": "V2 has 20% better coverage",
-      "confidence": 0.8,
-      "impact": "medium",
-      "recordedAt": "2026-06-29T22:39:52.973Z"
-    },
-    {
-      "id": "acevo_1782772793912_phrq",
-      "capability": "Exp-1782772792938",
-      "action": "graduated_from_experiment",
-      "domain": "autonomous",
-      "rationale": "Experiment succeeded: 12% improvement confirmed",
-      "confidence": 0.65,
-      "impact": "medium",
-      "recordedAt": "2026-06-29T22:39:53.912Z"
-    },
-    {
-      "id": "acevo_1782772794509_d6pn",
-      "capability": "AutoExp-1782772792938",
-      "action": "tick_review",
-      "domain": "autonomous",
-      "rationale": "Experiment aexp_1782772793759_c2kk outcome: observed",
-      "confidence": 0.65,
-      "impact": "low",
-      "recordedAt": "2026-06-29T22:39:54.509Z"
-    },
-    {
-      "id": "acevo_1782772794509_mdyz",
-      "capability": "Exp-1782772792938",
-      "action": "tick_review",
-      "domain": "autonomous",
-      "rationale": "Experiment aexp_1782772792958_zvna outcome: success",
-      "confidence": 0.65,
-      "impact": "low",
-      "recordedAt": "2026-06-29T22:39:54.509Z"
     }
   ]
 }

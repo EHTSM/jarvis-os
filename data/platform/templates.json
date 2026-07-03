@@ -507,7 +507,207 @@
       "installs": 1,
       "status": "active",
       "publishedAt": "2026-06-29T22:46:08.568Z"
+    },
+    {
+      "id": "tmpl_1782947412239_jt0d",
+      "name": "Template-1782947410400",
+      "description": "Reusable agency template",
+      "blueprintId": "bp_1782947412177_emli",
+      "authorId": "owner-1782947410400",
+      "price": 0,
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782947412177_emli",
+        "name": "BlueprintA-1782947410400",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782947410400",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 0,
+        "createdAt": "2026-07-01T23:10:12.177Z",
+        "updatedAt": "2026-07-01T23:10:12.231Z"
+      },
+      "rating": 5,
+      "reviews": 1,
+      "installs": 1,
+      "status": "active",
+      "publishedAt": "2026-07-01T23:10:12.239Z"
+    },
+    {
+      "id": "tmpl_1782947671902_jrco",
+      "name": "Template-1782947667590",
+      "description": "Reusable agency template",
+      "blueprintId": "bp_1782947671848_v9ao",
+      "authorId": "owner-1782947667590",
+      "price": 0,
+      "tags": [
+        "test"
+      ],
+      "category": "agency",
+      "visibility": "public",
+      "blueprint": {
+        "id": "bp_1782947671848_v9ao",
+        "name": "BlueprintA-1782947667590",
+        "description": "Updated blueprint",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ],
+        "agents": [
+          {
+            "role": "engineering",
+            "label": "engineering agent",
+            "enabled": true
+          },
+          {
+            "role": "business",
+            "label": "business agent",
+            "enabled": true
+          },
+          {
+            "role": "knowledge",
+            "label": "knowledge agent",
+            "enabled": true
+          },
+          {
+            "role": "evolution",
+            "label": "evolution agent",
+            "enabled": true
+          },
+          {
+            "role": "executive",
+            "label": "executive agent",
+            "enabled": true
+          }
+        ],
+        "workflows": [
+          {
+            "id": "wf_main",
+            "name": "Main workflow",
+            "steps": [
+              "plan",
+              "execute",
+              "measure",
+              "learn"
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "id": "pol_default",
+            "rule": "All decisions must be explainable",
+            "enforcement": "required"
+          }
+        ],
+        "memorySpec": {
+          "layers": [
+            "mission",
+            "knowledge",
+            "learning"
+          ],
+          "ttl": "infinite"
+        },
+        "governanceSpec": {
+          "requireApproval": false,
+          "auditAll": true,
+          "explainAll": true
+        },
+        "authorId": "owner-1782947667590",
+        "tags": [
+          "v2",
+          "agency"
+        ],
+        "version": "1.0.0",
+        "status": "published",
+        "deployCount": 0,
+        "createdAt": "2026-07-01T23:14:31.848Z",
+        "updatedAt": "2026-07-01T23:14:31.890Z"
+      },
+      "rating": 5,
+      "reviews": 1,
+      "installs": 1,
+      "status": "active",
+      "publishedAt": "2026-07-01T23:14:31.902Z"
     }
   ],
-  "total": 5
+  "total": 7
 }

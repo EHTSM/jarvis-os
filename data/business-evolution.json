@@ -6176,12 +6176,1578 @@
       "riskScore": 78,
       "minutesSaved": 55,
       "completedAt": "2026-06-29T22:43:36.594Z"
+    },
+    {
+      "id": "be_1782947376893_nrpd",
+      "context": "current_business",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:36.893Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.209Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.377Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.551Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "simCount": 6,
+          "avgGain": 8.8
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.604Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.605Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.609Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:09:38.610Z"
+    },
+    {
+      "id": "be_1782947376995_07nr",
+      "context": "get_cycle_biz_direct",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:36.995Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.216Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.383Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.555Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.611Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.611Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "simCount": 6,
+          "avgGain": 6.3
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.612Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:09:38.613Z"
+    },
+    {
+      "id": "be_1782947377068_hiov",
+      "context": "list_biz_1782947377068",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:37.068Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.223Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.390Z",
+          "productionReady": false,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.558Z",
+          "total": 1,
+          "critical": 0,
+          "riskScore": 75
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "simCount": 6,
+          "avgGain": 8.5
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.615Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 75,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:09:38.616Z"
+    },
+    {
+      "id": "be_1782947377144_qs8c",
+      "context": "status_seed_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:37.144Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.230Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.396Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.561Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "simCount": 6,
+          "avgGain": 4.8
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.618Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:09:38.619Z"
+    },
+    {
+      "id": "be_1782947377241_ayee",
+      "context": "multi_biz_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:37.241Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.247Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.405Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.566Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "simCount": 6,
+          "avgGain": 7
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.633Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:09:38.634Z"
+    },
+    {
+      "id": "be_1782947377723_5j1o",
+      "context": "dashboard_evo_seed_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:37.724Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.260Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.455Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.571Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "simCount": 6,
+          "avgGain": 8.5
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.640Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:09:38.643Z"
+    },
+    {
+      "id": "be_1782947377954_547l",
+      "context": "current_business",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:37.954Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.281Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.530Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.590Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "simCount": 6,
+          "avgGain": 5.8
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.662Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:09:38.663Z"
+    },
+    {
+      "id": "be_1782947378073_k5vz",
+      "context": "founder_time_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:38.073Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.289Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.537Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.593Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "simCount": 6,
+          "avgGain": 9
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.665Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:09:38.666Z"
+    },
+    {
+      "id": "be_1782947378670_r0hq",
+      "context": "multi_biz_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:09:38.670Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:09:38.859Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:09:38.863Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:09:38.870Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "simCount": 6,
+          "avgGain": 10
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:09:38.876Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:09:38.877Z"
+    },
+    {
+      "id": "be_1782947495848_ufox",
+      "context": "current_business",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:35.849Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:37.886Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.444Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.193Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.295Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.295Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.296Z",
+          "simCount": 6,
+          "avgGain": 8.2
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.296Z",
+          "valid": 4,
+          "rejected": 2
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.296Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.296Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.296Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.297Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 4,
+      "riskScore": 78,
+      "minutesSaved": 50,
+      "completedAt": "2026-07-01T23:11:39.298Z"
+    },
+    {
+      "id": "be_1782947495880_3um3",
+      "context": "get_cycle_biz_direct",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:35.880Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:37.993Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.465Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.209Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "simCount": 6,
+          "avgGain": 7.5
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.311Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:11:39.312Z"
+    },
+    {
+      "id": "be_1782947495928_rsff",
+      "context": "list_biz_1782947495928",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:35.929Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.119Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.529Z",
+          "productionReady": false,
+          "meetsOverall": true
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.212Z",
+          "total": 1,
+          "critical": 0,
+          "riskScore": 75
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "simCount": 6,
+          "avgGain": 7.8
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.381Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 75,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:11:39.423Z"
+    },
+    {
+      "id": "be_1782947495962_bn2c",
+      "context": "status_seed_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:35.963Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.159Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.539Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.216Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "simCount": 6,
+          "avgGain": 7.3
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.431Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:11:39.433Z"
+    },
+    {
+      "id": "be_1782947496444_tx38",
+      "context": "multi_biz_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:36.445Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.235Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.600Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.227Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "simCount": 6,
+          "avgGain": 7.2
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.434Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:11:39.436Z"
+    },
+    {
+      "id": "be_1782947496987_u4rn",
+      "context": "dashboard_evo_seed_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:36.987Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.261Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:38.854Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.231Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "simCount": 6,
+          "avgGain": 8.3
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.438Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.440Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:11:39.448Z"
+    },
+    {
+      "id": "be_1782947497499_wvx3",
+      "context": "current_business",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:37.499Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.354Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:39.095Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.273Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "simCount": 6,
+          "avgGain": 8.5
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.467Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:11:39.469Z"
+    },
+    {
+      "id": "be_1782947497622_rv8y",
+      "context": "founder_time_biz",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:37.622Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:38.364Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:39.176Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.287Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "simCount": 6,
+          "avgGain": 7.2
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "valid": 6,
+          "rejected": 0
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.474Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 6,
+      "riskScore": 78,
+      "minutesSaved": 60,
+      "completedAt": "2026-07-01T23:11:39.479Z"
+    },
+    {
+      "id": "be_1782947499484_vu3x",
+      "context": "multi_biz_ctx",
+      "steps": [
+        {
+          "name": "observe",
+          "completedAt": "2026-07-01T23:11:39.485Z",
+          "kpiCount": 19,
+          "openDeals": 0,
+          "openRecs": 8
+        },
+        {
+          "name": "analyze",
+          "completedAt": "2026-07-01T23:11:39.803Z",
+          "overallScore": 51.3,
+          "dimensions": 7
+        },
+        {
+          "name": "benchmark",
+          "completedAt": "2026-07-01T23:11:39.843Z",
+          "productionReady": false,
+          "meetsOverall": false
+        },
+        {
+          "name": "predict",
+          "completedAt": "2026-07-01T23:11:39.867Z",
+          "total": 8,
+          "critical": 1,
+          "riskScore": 78
+        },
+        {
+          "name": "reason",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "overall": 49.3,
+          "improvements": 3
+        },
+        {
+          "name": "generate_improvements",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "count": 6
+        },
+        {
+          "name": "simulate",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "simCount": 6,
+          "avgGain": 9.3
+        },
+        {
+          "name": "validate",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "valid": 5,
+          "rejected": 1
+        },
+        {
+          "name": "execute",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "skipped": true,
+          "applied": 0
+        },
+        {
+          "name": "measure",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "scoreBefore": 49.3,
+          "scoreAfter": 49.3,
+          "delta": 0
+        },
+        {
+          "name": "learn",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "lessonsIntegrated": 8,
+          "delta": 0
+        },
+        {
+          "name": "publish",
+          "completedAt": "2026-07-01T23:11:39.881Z",
+          "published": true
+        }
+      ],
+      "stepsCompleted": 12,
+      "overallBefore": 49.3,
+      "overallAfter": 49.3,
+      "delta": 0,
+      "improvements": 5,
+      "riskScore": 78,
+      "minutesSaved": 55,
+      "completedAt": "2026-07-01T23:11:39.888Z"
     }
   ],
   "stats": {
-    "totalCycles": 71,
-    "minutesSaved": 3930,
-    "improvementsApplied": 360
+    "totalCycles": 89,
+    "minutesSaved": 4955,
+    "improvementsApplied": 457
   },
-  "updatedAt": "2026-06-29T22:43:36.594Z"
+  "updatedAt": "2026-07-01T23:11:39.888Z"
 }

@@ -1,0 +1,115 @@
+{
+  "id": "m5-report-1783026176215",
+  "version": "1.0",
+  "generatedAt": "2026-07-02T21:02:56.215Z",
+  "missionId": "production-mission-5",
+  "scores": {
+    "alphaReadiness": 45,
+    "onboardingScore": 57,
+    "founderExperience": 0,
+    "uxScore": 0,
+    "supportReadiness": 75,
+    "workflowValidation": 0,
+    "composite": 34
+  },
+  "regression": {
+    "result": "not yet run",
+    "raw": null
+  },
+  "remainingBugs": 0,
+  "remainingManualSteps": 4,
+  "founderMinutesSaved": 900,
+  "phases": {
+    "A": {
+      "name": "Founder Experience Audit",
+      "score": 0,
+      "summary": {
+        "measured": 0,
+        "total": 8,
+        "passing": 0,
+        "score": 0,
+        "totalTargetMinutes": 43,
+        "totalActualMinutes": null
+      }
+    },
+    "B": {
+      "name": "Alpha Dataset",
+      "seeded": true,
+      "counts": {
+        "orgs": 6,
+        "projects": 10,
+        "missions": 8,
+        "leads": 8
+      }
+    },
+    "C": {
+      "name": "Guided Onboarding",
+      "score": 57,
+      "summary": {
+        "passes": 4,
+        "fails": 0,
+        "requiredFails": 0,
+        "total": 7,
+        "score": 57,
+        "status": "IN_PROGRESS"
+      }
+    },
+    "D": {
+      "name": "Daily Workflow Validation",
+      "score": 0,
+      "summary": {
+        "passed": 0,
+        "failed": 0,
+        "pending": 10,
+        "total": 10,
+        "score": 0,
+        "readyForAlpha": false
+      }
+    },
+    "E": {
+      "name": "User Experience",
+      "score": 0,
+      "summary": {
+        "totalChecks": 24,
+        "totalPass": 0,
+        "totalFail": 0,
+        "totalUntested": 24,
+        "score": 0,
+        "grade": "D"
+      }
+    },
+    "F": {
+      "name": "Support Readiness",
+      "score": 75,
+      "summary": {
+        "passes": 7,
+        "partial": 1,
+        "fails": 0,
+        "untested": 2,
+        "total": 10,
+        "score": 75,
+        "grade": "B"
+      }
+    }
+  },
+  "blockers": [],
+  "warnings": [
+    "8 experience checkpoints not yet measured",
+    "24 UX checks untested",
+    "2 support checks untested",
+    "10 workflows not yet validated"
+  ],
+  "manualSteps": [
+    "Measure all experience timing checkpoints (install through backup)",
+    "Complete UX audit for all untested checks",
+    "Configure TELEGRAM_TOKEN for alpha user support notifications",
+    "Execute and record all daily workflow validation runs"
+  ],
+  "goNoGo": "NO GO",
+  "goNoGoRationale": "0 blocker(s) must be resolved before alpha launch.",
+  "co2AlphaReadiness": {
+    "score": 45,
+    "readiness": "NOT YET",
+    "reportId": "alpha-1782022903827-6ggu"
+  }
+}

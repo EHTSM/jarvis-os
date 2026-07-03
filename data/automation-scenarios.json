@@ -33,8 +33,8 @@
       "minutesSaved": 15,
       "description": "Turn on office devices at start of day",
       "builtin": true,
-      "execCount": 1,
-      "lastRunAt": "2026-06-30T00:12:27.196Z"
+      "execCount": 3,
+      "lastRunAt": "2026-07-01T23:13:00.692Z"
     },
     {
       "id": "scenario_security_sweep",
@@ -224,6 +224,44 @@
       "execCount": 0,
       "lastRunAt": null,
       "createdAt": "2026-06-30T00:12:27.077Z"
+    },
+    {
+      "id": "scn_1782947400335_4ctq",
+      "name": "Test Manual Scenario",
+      "trigger": "manual",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {}
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "",
+      "builtin": false,
+      "execCount": 0,
+      "lastRunAt": null,
+      "createdAt": "2026-07-01T23:10:00.335Z"
+    },
+    {
+      "id": "scn_1782947579517_xu78",
+      "name": "Test Manual Scenario",
+      "trigger": "manual",
+      "steps": [
+        {
+          "order": 1,
+          "adapterType": "iot",
+          "command": "query",
+          "payload": {}
+        }
+      ],
+      "minutesSaved": 20,
+      "description": "",
+      "builtin": false,
+      "execCount": 0,
+      "lastRunAt": null,
+      "createdAt": "2026-07-01T23:12:59.517Z"
     }
   ],
   "executions": [
@@ -268,20 +306,48 @@
         "skipExecute": true
       },
       "executedAt": "2026-06-30T00:12:27.196Z"
+    },
+    {
+      "id": "scn_1782947400722_c00p",
+      "scenarioId": "scenario_office_morning",
+      "scenarioName": "Smart Office Morning Startup",
+      "steps": 3,
+      "succeeded": 3,
+      "failed": 0,
+      "status": "success",
+      "minutesSaved": 15,
+      "context": {
+        "skipExecute": true
+      },
+      "executedAt": "2026-07-01T23:10:00.722Z"
+    },
+    {
+      "id": "scn_1782947580692_1p1q",
+      "scenarioId": "scenario_office_morning",
+      "scenarioName": "Smart Office Morning Startup",
+      "steps": 3,
+      "succeeded": 3,
+      "failed": 0,
+      "status": "success",
+      "minutesSaved": 15,
+      "context": {
+        "skipExecute": true
+      },
+      "executedAt": "2026-07-01T23:13:00.692Z"
     }
   ],
   "stats": {
-    "total": 8,
+    "total": 10,
     "builtins": 5,
-    "executions": 3,
+    "executions": 5,
     "byTrigger": {
-      "manual": 3,
+      "manual": 5,
       "event": 1,
       "schedule": 3,
       "threshold": 0,
       "ai_decision": 1
     },
-    "minutesSaved": 75
+    "minutesSaved": 105
   },
-  "updatedAt": "2026-06-30T00:12:27.196Z"
+  "updatedAt": "2026-07-01T23:13:00.692Z"
 }

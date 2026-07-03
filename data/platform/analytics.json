@@ -2060,10 +2060,46 @@
       "at": "2026-06-29T07:59:11.363Z"
     },
     {
-      "id": "evt_1782773168217_7gqb",
+      "id": "evt_1782846093158_h2ij",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "packageId": "pkg_1782846093157_nzti"
+      },
+      "at": "2026-06-30T19:01:33.158Z"
+    },
+    {
+      "id": "evt_1782846093158_q804",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "packageId": "pkg_1782846093158_fzb6"
+      },
+      "at": "2026-06-30T19:01:33.158Z"
+    },
+    {
+      "id": "evt_1782945795984_bk68",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "packageId": "pkg_1782945795984_zvvn"
+      },
+      "at": "2026-07-01T22:43:15.984Z"
+    },
+    {
+      "id": "evt_1782945795985_85vx",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "packageId": "pkg_1782945795985_51uw"
+      },
+      "at": "2026-07-01T22:43:15.985Z"
+    },
+    {
+      "id": "evt_1782947410458_0423",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168210_r84k",
+        "orgId": "org_1782947410417_oz5i",
         "type": "agency",
         "capabilities": [
           "engineering",
@@ -2071,13 +2107,13 @@
           "knowledge"
         ]
       },
-      "at": "2026-06-29T22:46:08.217Z"
+      "at": "2026-07-01T23:10:10.458Z"
     },
     {
-      "id": "evt_1782773168219_qxtj",
+      "id": "evt_1782947410468_ggrr",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168219_1p9s",
+        "orgId": "org_1782947410466_kw3o",
         "type": "agency",
         "capabilities": [
           "engineering",
@@ -2088,13 +2124,13 @@
           "odi"
         ]
       },
-      "at": "2026-06-29T22:46:08.219Z"
+      "at": "2026-07-01T23:10:10.468Z"
     },
     {
-      "id": "evt_1782773168220_7ftw",
+      "id": "evt_1782947410476_0aah",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168219_k7w5",
+        "orgId": "org_1782947410469_y7ya",
         "type": "startup",
         "capabilities": [
           "engineering",
@@ -2104,13 +2140,13 @@
           "executive"
         ]
       },
-      "at": "2026-06-29T22:46:08.220Z"
+      "at": "2026-07-01T23:10:10.476Z"
     },
     {
-      "id": "evt_1782773168221_rwyo",
+      "id": "evt_1782947410494_t36m",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168220_sm67",
+        "orgId": "org_1782947410477_ak9y",
         "type": "enterprise",
         "capabilities": [
           "engineering",
@@ -2122,100 +2158,100 @@
           "ecosystem"
         ]
       },
-      "at": "2026-06-29T22:46:08.221Z"
+      "at": "2026-07-01T23:10:10.494Z"
     },
     {
-      "id": "evt_1782773168222_z7jq",
+      "id": "evt_1782947410498_dia7",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168221_xxfe",
+        "orgId": "org_1782947410495_3me7",
         "type": "department",
         "capabilities": [
           "business",
           "knowledge"
         ]
       },
-      "at": "2026-06-29T22:46:08.222Z"
+      "at": "2026-07-01T23:10:10.498Z"
     },
     {
-      "id": "evt_1782773168223_ir8g",
+      "id": "evt_1782947410502_bjn5",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168222_nw7b",
+        "orgId": "org_1782947410499_b6nq",
         "type": "team",
         "capabilities": [
           "engineering",
           "knowledge"
         ]
       },
-      "at": "2026-06-29T22:46:08.223Z"
+      "at": "2026-07-01T23:10:10.502Z"
     },
     {
-      "id": "evt_1782773168223_isyz",
+      "id": "evt_1782947410507_1zvk",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168223_hv45",
+        "orgId": "org_1782947410503_oj1a",
         "type": "solo",
         "capabilities": [
           "engineering"
         ]
       },
-      "at": "2026-06-29T22:46:08.223Z"
+      "at": "2026-07-01T23:10:10.507Z"
     },
     {
-      "id": "evt_1782773168224_4kov",
+      "id": "evt_1782947410511_9705",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168224_9010",
+        "orgId": "org_1782947410508_2f46",
         "type": "marketplace",
         "capabilities": [
           "ecosystem",
           "business"
         ]
       },
-      "at": "2026-06-29T22:46:08.224Z"
+      "at": "2026-07-01T23:10:10.511Z"
     },
     {
-      "id": "evt_1782773168225_bf3x",
+      "id": "evt_1782947410515_ru6r",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168224_n2la",
+        "orgId": "org_1782947410512_r62m",
         "type": "research",
         "capabilities": [
           "knowledge",
           "evolution"
         ]
       },
-      "at": "2026-06-29T22:46:08.225Z"
+      "at": "2026-07-01T23:10:10.515Z"
     },
     {
-      "id": "evt_1782773168226_ss8n",
+      "id": "evt_1782947410527_7xs8",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168225_3xkx",
+        "orgId": "org_1782947410515_zj4o",
         "type": "service",
         "capabilities": [
           "business",
           "engineering"
         ]
       },
-      "at": "2026-06-29T22:46:08.226Z"
+      "at": "2026-07-01T23:10:10.527Z"
     },
     {
-      "id": "evt_1782773168227_ykwo",
+      "id": "evt_1782947410533_e5xu",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168226_d4bz",
+        "orgId": "org_1782947410528_8s11",
         "type": "custom",
         "capabilities": []
       },
-      "at": "2026-06-29T22:46:08.227Z"
+      "at": "2026-07-01T23:10:10.533Z"
     },
     {
-      "id": "evt_1782773168228_dnax",
+      "id": "evt_1782947410541_0p89",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168227_mf7s",
+        "orgId": "org_1782947410534_1yx2",
         "type": "enterprise",
         "capabilities": [
           "engineering",
@@ -2227,13 +2263,13 @@
           "ecosystem"
         ]
       },
-      "at": "2026-06-29T22:46:08.228Z"
+      "at": "2026-07-01T23:10:10.541Z"
     },
     {
-      "id": "evt_1782773168567_6tzz",
+      "id": "evt_1782947412222_233k",
       "type": "blueprint:created",
       "data": {
-        "id": "bp_1782773168558_mljx",
+        "id": "bp_1782947412177_emli",
         "type": "agency",
         "capabilities": [
           "engineering",
@@ -2243,47 +2279,47 @@
           "executive"
         ]
       },
-      "at": "2026-06-29T22:46:08.567Z"
+      "at": "2026-07-01T23:10:12.222Z"
     },
     {
-      "id": "evt_1782773168567_tyaq",
+      "id": "evt_1782947412227_y11e",
       "type": "blueprint:created",
       "data": {
-        "id": "bp_1782773168567_ipwr",
+        "id": "bp_1782947412223_efzm",
         "type": "team",
         "capabilities": [
           "engineering",
           "knowledge"
         ]
       },
-      "at": "2026-06-29T22:46:08.567Z"
+      "at": "2026-07-01T23:10:12.227Z"
     },
     {
-      "id": "evt_1782773168570_92pb",
+      "id": "evt_1782947412247_qxao",
       "type": "template:published",
       "data": {
-        "id": "tmpl_1782773168568_t0rk",
-        "name": "Template-1782773168206",
+        "id": "tmpl_1782947412239_jt0d",
+        "name": "Template-1782947410400",
         "category": "agency",
         "price": 0
       },
-      "at": "2026-06-29T22:46:08.570Z"
+      "at": "2026-07-01T23:10:12.247Z"
     },
     {
-      "id": "evt_1782773168571_amtd",
+      "id": "evt_1782947412253_k1xb",
       "type": "template:installed",
       "data": {
-        "templateId": "tmpl_1782773168568_t0rk",
-        "tenantId": "buyer-1782773168206",
+        "templateId": "tmpl_1782947412239_jt0d",
+        "tenantId": "buyer-1782947410400",
         "orgName": "My Agency"
       },
-      "at": "2026-06-29T22:46:08.571Z"
+      "at": "2026-07-01T23:10:12.253Z"
     },
     {
-      "id": "evt_1782773168572_pia7",
+      "id": "evt_1782947412263_i4yk",
       "type": "org:registered",
       "data": {
-        "orgId": "org_1782773168571_w17a",
+        "orgId": "org_1782947412255_qics",
         "type": "agency",
         "capabilities": [
           "engineering",
@@ -2293,7 +2329,851 @@
           "executive"
         ]
       },
-      "at": "2026-06-29T22:46:08.572Z"
+      "at": "2026-07-01T23:10:12.263Z"
+    },
+    {
+      "id": "evt_1782948591718_n4p5",
+      "type": "org:deployed",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "blueprintId": "bp_1782947412177_emli",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.718Z"
+    },
+    {
+      "id": "evt_1782948591752_iyrr",
+      "type": "org:deployed",
+      "data": {
+        "orgId": "org_1782947410417_oz5i",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.752Z"
+    },
+    {
+      "id": "evt_1782948591781_tnd3",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591772_6vux",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.781Z"
+    },
+    {
+      "id": "evt_1782948591790_2khq",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591784_fulq",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.790Z"
+    },
+    {
+      "id": "evt_1782948591791_k2ul",
+      "type": "org:cloned",
+      "data": {
+        "sourceOrgId": "org_1782947412255_qics",
+        "newOrgId": "org_1782948591784_fulq"
+      },
+      "at": "2026-07-01T23:29:51.791Z"
+    },
+    {
+      "id": "evt_1782948591793_tdwm",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591792_odfn",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.793Z"
+    },
+    {
+      "id": "evt_1782948591810_6src",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591795_3b7q",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.810Z"
+    },
+    {
+      "id": "evt_1782948591818_imux",
+      "type": "org:cloned",
+      "data": {
+        "newOrgId": "org_1782948591795_3b7q"
+      },
+      "at": "2026-07-01T23:29:51.818Z"
+    },
+    {
+      "id": "evt_1782948591829_px6x",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591822_5ebm",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.829Z"
+    },
+    {
+      "id": "evt_1782948591839_adx0",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591831_284a",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.839Z"
+    },
+    {
+      "id": "evt_1782948591842_sv36",
+      "type": "org:forked",
+      "data": {
+        "sourceOrgId": "org_1782947412255_qics",
+        "newOrgId": "org_1782948591831_284a"
+      },
+      "at": "2026-07-01T23:29:51.842Z"
+    },
+    {
+      "id": "evt_1782948591849_ipz1",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "packageId": "pkg_1782948591847_yxjp"
+      },
+      "at": "2026-07-01T23:29:51.849Z"
+    },
+    {
+      "id": "evt_1782948591855_ergy",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "packageId": "pkg_1782948591850_sjlr"
+      },
+      "at": "2026-07-01T23:29:51.855Z"
+    },
+    {
+      "id": "evt_1782948591862_0ly3",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591856_9ou3",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.862Z"
+    },
+    {
+      "id": "evt_1782948591868_iboa",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591863_2v0d",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.870Z"
+    },
+    {
+      "id": "evt_1782948591872_i43m",
+      "type": "org:imported",
+      "data": {
+        "orgId": "org_1782948591856_9ou3",
+        "sourcePackageId": "pkg_1782948591847_yxjp"
+      },
+      "at": "2026-07-01T23:29:51.872Z"
+    },
+    {
+      "id": "evt_1782948591886_nhaf",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591875_ikxd",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.886Z"
+    },
+    {
+      "id": "evt_1782948591893_tdkw",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591891_i8mx",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.893Z"
+    },
+    {
+      "id": "evt_1782948591897_ryow",
+      "type": "org:imported",
+      "data": {
+        "orgId": "org_1782948591875_ikxd",
+        "sourcePackageId": "pkg_1782948591847_yxjp"
+      },
+      "at": "2026-07-01T23:29:51.897Z"
+    },
+    {
+      "id": "evt_1782948591906_j877",
+      "type": "marketplace:listed",
+      "data": {
+        "listingId": "mkt_1782948591904_7axl",
+        "category": "agency",
+        "price": 0
+      },
+      "at": "2026-07-01T23:29:51.906Z"
+    },
+    {
+      "id": "evt_1782948591908_jcgv",
+      "type": "marketplace:listed",
+      "data": {
+        "listingId": "mkt_1782948591906_m2rh",
+        "category": "agency",
+        "price": 99
+      },
+      "at": "2026-07-01T23:29:51.908Z"
+    },
+    {
+      "id": "evt_1782948591911_o7p4",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948591909_xr5l",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.911Z"
+    },
+    {
+      "id": "evt_1782948591922_012o",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591912_xu75",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.922Z"
+    },
+    {
+      "id": "evt_1782948591926_sbu4",
+      "type": "org:cloned",
+      "data": {
+        "sourceOrgId": "org_1782947412255_qics",
+        "newOrgId": "org_1782948591912_xu75"
+      },
+      "at": "2026-07-01T23:29:51.926Z"
+    },
+    {
+      "id": "evt_1782948591929_ro8c",
+      "type": "marketplace:purchased",
+      "data": {
+        "listingId": "mkt_1782948591904_7axl",
+        "buyerId": "buyer-1782947410400",
+        "price": 0
+      },
+      "at": "2026-07-01T23:29:51.929Z"
+    },
+    {
+      "id": "evt_1782948591940_xty3",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "level": "bronze",
+        "score": 95
+      },
+      "at": "2026-07-01T23:29:51.940Z"
+    },
+    {
+      "id": "evt_1782948591951_s7qu",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591941_hp1z",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.951Z"
+    },
+    {
+      "id": "evt_1782948591962_utif",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948591941_hp1z",
+        "level": "bronze",
+        "score": 80
+      },
+      "at": "2026-07-01T23:29:51.962Z"
+    },
+    {
+      "id": "evt_1782948591977_lz5h",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948591966_h0g2",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:51.977Z"
+    },
+    {
+      "id": "evt_1782948591992_04v1",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948591966_h0g2",
+        "level": "silver",
+        "score": 80
+      },
+      "at": "2026-07-01T23:29:51.992Z"
+    },
+    {
+      "id": "evt_1782948592012_40th",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948592002_jo9n",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.012Z"
+    },
+    {
+      "id": "evt_1782948592029_mpgl",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948592002_jo9n",
+        "level": "gold",
+        "score": 80
+      },
+      "at": "2026-07-01T23:29:52.029Z"
+    },
+    {
+      "id": "evt_1782948592046_f65k",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948592032_plxk",
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.046Z"
+    },
+    {
+      "id": "evt_1782948592054_exsg",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948592032_plxk",
+        "level": "platinum",
+        "score": 80
+      },
+      "at": "2026-07-01T23:29:52.054Z"
+    },
+    {
+      "id": "evt_1782948592702_u3th",
+      "type": "org:upgraded",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "from": "1.1.0",
+        "to": "1.1.1",
+        "addCapabilities": [
+          "ecosystem"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.702Z"
+    },
+    {
+      "id": "evt_1782948592706_u99m",
+      "type": "org:upgraded",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "from": "1.1.1",
+        "to": "1.1.2",
+        "addCapabilities": []
+      },
+      "at": "2026-07-01T23:29:52.706Z"
+    },
+    {
+      "id": "evt_1782948592709_9fci",
+      "type": "org:migrated",
+      "data": {
+        "orgId": "org_1782948591784_fulq",
+        "from": "clone-tenant-1782947410400",
+        "to": "migrated-tenant-1782947410400"
+      },
+      "at": "2026-07-01T23:29:52.709Z"
+    },
+    {
+      "id": "evt_1782948592710_70o4",
+      "type": "org:simulated",
+      "data": {
+        "type": "custom",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.710Z"
+    },
+    {
+      "id": "evt_1782948592717_e1r0",
+      "type": "org:simulated",
+      "data": {
+        "type": "custom",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "odi"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.717Z"
+    },
+    {
+      "id": "evt_1782948592729_dufs",
+      "type": "org:simulated",
+      "data": {
+        "type": "startup",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.729Z"
+    },
+    {
+      "id": "evt_1782948592734_cid6",
+      "type": "org:simulated",
+      "data": {
+        "type": "enterprise",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive",
+          "enterprise",
+          "ecosystem"
+        ]
+      },
+      "at": "2026-07-01T23:29:52.734Z"
+    },
+    {
+      "id": "evt_1782948594837_m5st",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782948592032_plxk",
+        "packageId": "pkg_1782948594836_rxgp"
+      },
+      "at": "2026-07-01T23:29:54.837Z"
+    },
+    {
+      "id": "evt_1782948594874_bwqn",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782948592002_jo9n",
+        "packageId": "pkg_1782948594837_6y7s"
+      },
+      "at": "2026-07-01T23:29:54.875Z"
+    },
+    {
+      "id": "evt_1782948597568_gyks",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948592032_plxk",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-01T23:29:57.568Z"
+    },
+    {
+      "id": "evt_1782948597792_nzpt",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948592002_jo9n",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-01T23:29:57.792Z"
+    },
+    {
+      "id": "evt_1782948598064_vyvi",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782948591966_h0g2",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-01T23:29:58.064Z"
+    },
+    {
+      "id": "evt_1782948599060_46z0",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948599059_bdoi",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.060Z"
+    },
+    {
+      "id": "evt_1782948599063_o9qb",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948599060_zldy",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.063Z"
+    },
+    {
+      "id": "evt_1782948599064_jlte",
+      "type": "org:cloned",
+      "data": {
+        "sourceOrgId": "org_1782947412255_qics",
+        "newOrgId": "org_1782948599060_zldy"
+      },
+      "at": "2026-07-01T23:29:59.064Z"
+    },
+    {
+      "id": "evt_1782948599065_zlq8",
+      "type": "org:exported",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "packageId": "pkg_1782948599065_5c3q"
+      },
+      "at": "2026-07-01T23:29:59.065Z"
+    },
+    {
+      "id": "evt_1782948599067_drtp",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948599065_01e4",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.067Z"
+    },
+    {
+      "id": "evt_1782948599070_4pht",
+      "type": "blueprint:created",
+      "data": {
+        "id": "bp_1782948599067_b1hp",
+        "type": "agency",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.070Z"
+    },
+    {
+      "id": "evt_1782948599077_az6n",
+      "type": "org:imported",
+      "data": {
+        "orgId": "org_1782948599065_01e4",
+        "sourcePackageId": "pkg_1782948599065_5c3q"
+      },
+      "at": "2026-07-01T23:29:59.077Z"
+    },
+    {
+      "id": "evt_1782948599082_364w",
+      "type": "org:deployed",
+      "data": {
+        "orgId": "org_1782948599065_01e4",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.082Z"
+    },
+    {
+      "id": "evt_1782948599083_sson",
+      "type": "org:simulated",
+      "data": {
+        "type": "custom",
+        "capabilities": [
+          "engineering",
+          "business",
+          "knowledge",
+          "evolution",
+          "executive"
+        ]
+      },
+      "at": "2026-07-01T23:29:59.083Z"
+    },
+    {
+      "id": "evt_1782948600265_9v1w",
+      "type": "org:registered",
+      "data": {
+        "orgId": "org_1782948600262_bt3t",
+        "type": "solo",
+        "capabilities": [
+          "engineering"
+        ]
+      },
+      "at": "2026-07-01T23:30:00.265Z"
+    },
+    {
+      "id": "evt_1782948600301_vyla",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782947412255_qics",
+        "level": "silver",
+        "score": 90
+      },
+      "at": "2026-07-01T23:30:00.301Z"
+    },
+    {
+      "id": "evt_1782979671357_bmxg",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:07:51.357Z"
+    },
+    {
+      "id": "evt_1782979671409_zbm0",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:07:51.409Z"
+    },
+    {
+      "id": "evt_1782979671463_omyy",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037683_5f9a",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:07:51.463Z"
+    },
+    {
+      "id": "evt_1782980515097_7efm",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:21:55.097Z"
+    },
+    {
+      "id": "evt_1782980515148_o4ha",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:21:55.148Z"
+    },
+    {
+      "id": "evt_1782980515199_y5ac",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037683_5f9a",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:21:55.199Z"
+    },
+    {
+      "id": "evt_1782981324157_axs6",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:35:24.157Z"
+    },
+    {
+      "id": "evt_1782981324221_jrob",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:35:24.221Z"
+    },
+    {
+      "id": "evt_1782981324275_sl5x",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037683_5f9a",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:35:24.275Z"
+    },
+    {
+      "id": "evt_1782982698596_unav",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037729_dgem",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:58:18.596Z"
+    },
+    {
+      "id": "evt_1782982698689_2e2j",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037686_425l",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:58:18.689Z"
+    },
+    {
+      "id": "evt_1782982698740_q7rn",
+      "type": "org:certified",
+      "data": {
+        "orgId": "org_1782627037683_5f9a",
+        "level": "bronze",
+        "score": 91
+      },
+      "at": "2026-07-02T08:58:18.740Z"
     }
   ],
   "kpis": {}

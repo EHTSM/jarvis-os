@@ -1413,13 +1413,317 @@
       "productionReady": true,
       "createdAt": "2026-06-29T22:44:51.326Z",
       "updatedAt": "2026-06-29T22:44:51.326Z"
+    },
+    {
+      "id": "pv_1782947394932_ra2p",
+      "planId": "pp_1782947388005_tsck",
+      "overallScore": 87,
+      "status": "passed",
+      "dimensions": {
+        "build": {
+          "score": 88,
+          "passed": true,
+          "issues": [],
+          "source": "mock"
+        },
+        "tests": {
+          "score": 85,
+          "passed": true,
+          "coverage": 82,
+          "source": "mock"
+        },
+        "security": {
+          "score": 90,
+          "passed": true,
+          "vulnerabilities": 0,
+          "source": "mock"
+        },
+        "performance": {
+          "score": 80,
+          "passed": true,
+          "p95ms": 420,
+          "source": "mock"
+        },
+        "accessibility": {
+          "score": 85,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "mock"
+        },
+        "bible_compliance": {
+          "score": 92,
+          "passed": true,
+          "workflows": 57,
+          "compliant": 55,
+          "source": "mock"
+        }
+      },
+      "failures": [],
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:10:03.088Z",
+      "updatedAt": "2026-07-01T23:10:03.088Z"
+    },
+    {
+      "id": "pv_1782947400073_cptw",
+      "planId": "pp_1782947388005_tsck",
+      "overallScore": 73,
+      "status": "failed",
+      "dimensions": {
+        "build": {
+          "score": 52,
+          "passed": false,
+          "issues": [],
+          "source": "deploymentValidator"
+        },
+        "tests": {
+          "score": 100,
+          "passed": true,
+          "coverage": 100,
+          "source": "selfImprovementEngine"
+        },
+        "security": {
+          "score": 60,
+          "passed": true,
+          "vulnerabilities": 2,
+          "source": "selfReviewEngine"
+        },
+        "performance": {
+          "score": 78,
+          "passed": true,
+          "p95ms": 500,
+          "source": "fallback"
+        },
+        "accessibility": {
+          "score": 82,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "engineeringQualityEngine"
+        },
+        "bible_compliance": {
+          "score": 94,
+          "passed": true,
+          "workflows": 118,
+          "compliant": 111,
+          "source": "productionBibleEngine"
+        }
+      },
+      "failures": [
+        "build"
+      ],
+      "productionReady": false,
+      "createdAt": "2026-07-01T23:10:03.173Z",
+      "updatedAt": "2026-07-01T23:10:03.173Z"
+    },
+    {
+      "id": "pv_1782947403228_102o",
+      "planId": "pp_1782947396070_ivoo",
+      "overallScore": 87,
+      "status": "passed",
+      "dimensions": {
+        "build": {
+          "score": 88,
+          "passed": true,
+          "issues": [],
+          "source": "mock"
+        },
+        "tests": {
+          "score": 85,
+          "passed": true,
+          "coverage": 82,
+          "source": "mock"
+        },
+        "security": {
+          "score": 90,
+          "passed": true,
+          "vulnerabilities": 0,
+          "source": "mock"
+        },
+        "performance": {
+          "score": 80,
+          "passed": true,
+          "p95ms": 420,
+          "source": "mock"
+        },
+        "accessibility": {
+          "score": 85,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "mock"
+        },
+        "bible_compliance": {
+          "score": 92,
+          "passed": true,
+          "workflows": 57,
+          "compliant": 55,
+          "source": "mock"
+        }
+      },
+      "failures": [],
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:10:03.247Z",
+      "updatedAt": "2026-07-01T23:10:03.247Z"
+    },
+    {
+      "id": "pv_1782947541079_1dfc",
+      "planId": "pp_1782947530046_q783",
+      "overallScore": 87,
+      "status": "passed",
+      "dimensions": {
+        "build": {
+          "score": 88,
+          "passed": true,
+          "issues": [],
+          "source": "mock"
+        },
+        "tests": {
+          "score": 85,
+          "passed": true,
+          "coverage": 82,
+          "source": "mock"
+        },
+        "security": {
+          "score": 90,
+          "passed": true,
+          "vulnerabilities": 0,
+          "source": "mock"
+        },
+        "performance": {
+          "score": 80,
+          "passed": true,
+          "p95ms": 420,
+          "source": "mock"
+        },
+        "accessibility": {
+          "score": 85,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "mock"
+        },
+        "bible_compliance": {
+          "score": 92,
+          "passed": true,
+          "workflows": 57,
+          "compliant": 55,
+          "source": "mock"
+        }
+      },
+      "failures": [],
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:46.001Z",
+      "updatedAt": "2026-07-01T23:12:46.001Z"
+    },
+    {
+      "id": "pv_1782947558369_fmam",
+      "planId": "pp_1782947530046_q783",
+      "overallScore": 73,
+      "status": "failed",
+      "dimensions": {
+        "build": {
+          "score": 52,
+          "passed": false,
+          "issues": [],
+          "source": "deploymentValidator"
+        },
+        "tests": {
+          "score": 100,
+          "passed": true,
+          "coverage": 100,
+          "source": "selfImprovementEngine"
+        },
+        "security": {
+          "score": 60,
+          "passed": true,
+          "vulnerabilities": 2,
+          "source": "selfReviewEngine"
+        },
+        "performance": {
+          "score": 78,
+          "passed": true,
+          "p95ms": 500,
+          "source": "fallback"
+        },
+        "accessibility": {
+          "score": 82,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "engineeringQualityEngine"
+        },
+        "bible_compliance": {
+          "score": 94,
+          "passed": true,
+          "workflows": 118,
+          "compliant": 111,
+          "source": "productionBibleEngine"
+        }
+      },
+      "failures": [
+        "build"
+      ],
+      "productionReady": false,
+      "createdAt": "2026-07-01T23:12:46.501Z",
+      "updatedAt": "2026-07-01T23:12:46.501Z"
+    },
+    {
+      "id": "pv_1782947566782_50gh",
+      "planId": "pp_1782947546196_lbvm",
+      "overallScore": 87,
+      "status": "passed",
+      "dimensions": {
+        "build": {
+          "score": 88,
+          "passed": true,
+          "issues": [],
+          "source": "mock"
+        },
+        "tests": {
+          "score": 85,
+          "passed": true,
+          "coverage": 82,
+          "source": "mock"
+        },
+        "security": {
+          "score": 90,
+          "passed": true,
+          "vulnerabilities": 0,
+          "source": "mock"
+        },
+        "performance": {
+          "score": 80,
+          "passed": true,
+          "p95ms": 420,
+          "source": "mock"
+        },
+        "accessibility": {
+          "score": 85,
+          "passed": true,
+          "wcagLevel": "AA",
+          "violations": 0,
+          "source": "mock"
+        },
+        "bible_compliance": {
+          "score": 92,
+          "passed": true,
+          "workflows": 57,
+          "compliant": 55,
+          "source": "mock"
+        }
+      },
+      "failures": [],
+      "productionReady": true,
+      "createdAt": "2026-07-01T23:12:46.799Z",
+      "updatedAt": "2026-07-01T23:12:46.799Z"
     }
   ],
   "stats": {
-    "total": 28,
-    "passed": 21,
-    "failed": 7,
-    "avgScore": 446
+    "total": 34,
+    "passed": 25,
+    "failed": 9,
+    "avgScore": 382
   },
-  "updatedAt": "2026-06-29T22:44:51.326Z"
+  "updatedAt": "2026-07-01T23:12:46.799Z"
 }

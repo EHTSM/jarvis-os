@@ -15,11 +15,11 @@
       "templateId": "ai_product",
       "status": "published",
       "version": "1.0.0",
-      "downloads": 4,
+      "downloads": 8,
       "rating": 0,
       "createdAt": "2026-06-29T08:26:06.198Z",
       "discoveredAt": "2026-06-29T08:26:06.201Z",
-      "lastDownloadedAt": "2026-06-29T22:44:51.639Z"
+      "lastDownloadedAt": "2026-07-01T23:12:19.557Z"
     },
     {
       "id": "mca_1782721566201_scyl",
@@ -9054,28 +9054,628 @@
       "metadata": {},
       "createdAt": "2026-06-29T22:44:51.538Z",
       "discoveredAt": "2026-06-29T22:44:51.538Z"
+    },
+    {
+      "id": "mca_1782947390277_yu74",
+      "type": "blueprint",
+      "name": "TestSaaS",
+      "desc": "SaaS platform",
+      "sourceId": "bp_1782778406309_azmc",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "saas",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.277Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_vm0x",
+      "type": "blueprint",
+      "name": "HealthCo",
+      "desc": "HealthCo — Healthcare Startup",
+      "sourceId": "bp_1782778407188_fh4c",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "healthcare",
+        "healthcare",
+        "blueprint"
+      ],
+      "templateId": "healthcare",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_nadd",
+      "type": "blueprint",
+      "name": "AICo",
+      "desc": "AICo — AI-Powered Product",
+      "sourceId": "bp_1782778407589_ls1c",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "ai_product",
+        "ai_product",
+        "blueprint"
+      ],
+      "templateId": "ai_product",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_spmf",
+      "type": "blueprint",
+      "name": "SaaSCo Alpha",
+      "desc": "Create a SaaS company",
+      "sourceId": "bp_1782778409602_je2w",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "saas",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_2qyk",
+      "type": "blueprint",
+      "name": "MarketplaceCo",
+      "desc": "Build a marketplace",
+      "sourceId": "bp_1782778410853_9764",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "marketplace",
+        "marketplace",
+        "blueprint"
+      ],
+      "templateId": "marketplace",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_amxc",
+      "type": "blueprint",
+      "name": "HealthVenture",
+      "desc": "HIPAA-compliant patient management system",
+      "sourceId": "bp_1782778412121_ycct",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "healthcare",
+        "healthcare",
+        "blueprint"
+      ],
+      "templateId": "healthcare",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_os02",
+      "type": "blueprint",
+      "name": "AIAgency",
+      "desc": "Create an AI agency",
+      "sourceId": "bp_1782778413280_vx8d",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "agency",
+        "agency",
+        "blueprint"
+      ],
+      "templateId": "agency",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_pq7e",
+      "type": "blueprint",
+      "name": "ShopNow",
+      "desc": "Online ecommerce store",
+      "sourceId": "bp_1782778414614_q0uj",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "ecommerce",
+        "ecommerce",
+        "blueprint"
+      ],
+      "templateId": "ecommerce",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_6fog",
+      "type": "blueprint",
+      "name": "ERPCo",
+      "desc": "Something generic",
+      "sourceId": "bp_1782778415872_iq9m",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "erp",
+        "erp",
+        "blueprint"
+      ],
+      "templateId": "erp",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_pbh9",
+      "type": "blueprint",
+      "name": "HRTool",
+      "desc": "Internal tool for HR",
+      "sourceId": "bp_1782778417150_5jpk",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "internal_tool",
+        "internal_tool",
+        "blueprint"
+      ],
+      "templateId": "internal_tool",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_vdbq",
+      "type": "blueprint",
+      "name": "BillFlow",
+      "desc": "SaaS billing platform",
+      "sourceId": "bp_1782778418268_xi7q",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "saas",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_be7l",
+      "type": "blueprint",
+      "name": "LearnCo",
+      "desc": "Build a learning management system",
+      "sourceId": "bp_1782778419668_1whb",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "education",
+        "education",
+        "blueprint"
+      ],
+      "templateId": "education",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_ay3z",
+      "type": "blueprint",
+      "name": "FreelanceHub",
+      "desc": "Marketplace for freelancers",
+      "sourceId": "bp_1782778421030_vnbi",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "agency",
+        "agency",
+        "blueprint"
+      ],
+      "templateId": "agency",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_5wvo",
+      "type": "blueprint",
+      "name": "MfgERP",
+      "desc": "ERP system for manufacturing",
+      "sourceId": "bp_1782778422458_bxq1",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "erp",
+        "erp",
+        "blueprint"
+      ],
+      "templateId": "erp",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_ezyc",
+      "type": "blueprint",
+      "name": "AnalyticsCo",
+      "desc": "SaaS analytics tool",
+      "sourceId": "bp_1782778423671_7mdw",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "saas",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_kawh",
+      "type": "blueprint",
+      "name": "EduPlatform",
+      "desc": "EdTech learning platform",
+      "sourceId": "bp_1782778424975_gta4",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "education",
+        "education",
+        "blueprint"
+      ],
+      "templateId": "education",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390281_c3kb",
+      "type": "blueprint",
+      "name": "DevAI",
+      "desc": "AI product for developers",
+      "sourceId": "bp_1782778426220_zya2",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "ai_product",
+        "ai_product",
+        "blueprint"
+      ],
+      "templateId": "ai_product",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:50.281Z",
+      "discoveredAt": "2026-07-01T23:09:50.281Z"
+    },
+    {
+      "id": "mca_1782947390676_1r3g",
+      "type": "knowledge_pack",
+      "name": "Test Knowledge Pack v1",
+      "desc": "A test knowledge pack for marketplace certification",
+      "sourceId": "src_1782947390676_5w17",
+      "source": "test_suite",
+      "tags": [
+        "test",
+        "knowledge",
+        "ai"
+      ],
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "metadata": {},
+      "createdAt": "2026-07-01T23:09:50.677Z",
+      "discoveredAt": "2026-07-01T23:09:50.677Z"
+    },
+    {
+      "id": "mca_1782947537641_vwja",
+      "type": "blueprint",
+      "name": "product_pp_1782947388005_tsck",
+      "desc": "Build a SaaS customer feedback portal with AI analysis",
+      "sourceId": "bp_1782947393934_sn04",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "product",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:17.641Z",
+      "discoveredAt": "2026-07-01T23:12:17.652Z"
+    },
+    {
+      "id": "mca_1782947537652_1zvx",
+      "type": "blueprint",
+      "name": "product_pp_1782947396070_ivoo",
+      "desc": "Build an autonomous sales CRM with AI lead scoring",
+      "sourceId": "bp_1782947397044_xbcs",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "crm",
+        "product",
+        "blueprint"
+      ],
+      "templateId": "crm",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:17.652Z",
+      "discoveredAt": "2026-07-01T23:12:17.652Z"
+    },
+    {
+      "id": "mca_1782947537652_tiid",
+      "type": "blueprint",
+      "name": "product_pp_1782947398013_lgpy",
+      "desc": "Analytics dashboard for startup metrics",
+      "sourceId": "bp_1782947399048_1336",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "product",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:17.652Z",
+      "discoveredAt": "2026-07-01T23:12:17.652Z"
+    },
+    {
+      "id": "mca_1782947537652_bhjo",
+      "type": "blueprint",
+      "name": "product_pp_1782947400439_0lzp",
+      "desc": "Real-time team collaboration workspace",
+      "sourceId": "bp_1782947401542_fy4t",
+      "source": "companyBlueprintEngine",
+      "tags": [
+        "saas",
+        "product",
+        "blueprint"
+      ],
+      "templateId": "saas",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:17.652Z",
+      "discoveredAt": "2026-07-01T23:12:17.652Z"
+    },
+    {
+      "id": "mca_1782947537681_c4xo",
+      "type": "product_template",
+      "name": "Build a SaaS customer feedback portal with AI analysis",
+      "desc": "Build a SaaS customer feedback portal with AI analysis",
+      "sourceId": "pp_1782947530046_q783",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:10.046Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947537681_0hyc",
+      "type": "product_template",
+      "name": "Real-time team collaboration workspace",
+      "desc": "Real-time team collaboration workspace",
+      "sourceId": "pp_1782947400439_0lzp",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:10:00.439Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947537681_tclk",
+      "type": "product_template",
+      "name": "Analytics dashboard for startup metrics",
+      "desc": "Analytics dashboard for startup metrics",
+      "sourceId": "pp_1782947398013_lgpy",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "medium"
+      ],
+      "complexity": "medium",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:58.013Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947537681_9mdt",
+      "type": "product_template",
+      "name": "Build an autonomous sales CRM with AI lead scoring",
+      "desc": "Build an autonomous sales CRM with AI lead scoring",
+      "sourceId": "pp_1782947396070_ivoo",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:56.070Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947537681_48zx",
+      "type": "product_template",
+      "name": "AI-powered product recommendation engine with ML predictions",
+      "desc": "AI-powered product recommendation engine with ML predictions",
+      "sourceId": "pp_1782947392814_w8sy",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:52.814Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947537681_s79p",
+      "type": "product_template",
+      "name": "Build a SaaS customer feedback portal with AI analysis",
+      "desc": "Build a SaaS customer feedback portal with AI analysis",
+      "sourceId": "pp_1782947388005_tsck",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:09:48.005Z",
+      "discoveredAt": "2026-07-01T23:12:17.681Z"
+    },
+    {
+      "id": "mca_1782947538335_ylms",
+      "type": "knowledge_pack",
+      "name": "Test Knowledge Pack v1",
+      "desc": "A test knowledge pack for marketplace certification",
+      "sourceId": "src_1782947538335_lqx2",
+      "source": "test_suite",
+      "tags": [
+        "test",
+        "knowledge",
+        "ai"
+      ],
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "metadata": {},
+      "createdAt": "2026-07-01T23:12:18.335Z",
+      "discoveredAt": "2026-07-01T23:12:18.335Z"
+    },
+    {
+      "id": "mca_1782947540294_sh21",
+      "type": "product_template",
+      "name": "AI-powered product recommendation engine with ML predictions",
+      "desc": "AI-powered product recommendation engine with ML predictions",
+      "sourceId": "pp_1782947537008_f5h4",
+      "source": "productPlannerEngine",
+      "tags": [
+        "product",
+        "template",
+        "high"
+      ],
+      "complexity": "high",
+      "status": "published",
+      "version": "1.0.0",
+      "downloads": 0,
+      "rating": 0,
+      "createdAt": "2026-07-01T23:12:17.008Z",
+      "discoveredAt": "2026-07-01T23:12:20.294Z"
     }
   ],
   "stats": {
-    "total": 447,
+    "total": 477,
     "byType": {
       "agent": 5,
       "workflow": 33,
-      "blueprint": 204,
-      "product_template": 46,
+      "blueprint": 225,
+      "product_template": 53,
       "company_template": 9,
       "plugin": 0,
       "sdk_package": 5,
       "automation_pack": 58,
       "design_system": 0,
       "ui_component": 0,
-      "knowledge_pack": 3,
+      "knowledge_pack": 5,
       "prompt_pack": 1,
       "deployment_recipe": 83
     },
-    "published": 447,
+    "published": 477,
     "discovered": 0
   },
-  "lastDiscovery": "2026-06-29T22:44:51.762Z",
-  "updatedAt": "2026-06-29T22:44:51.762Z"
+  "lastDiscovery": "2026-07-01T23:12:20.881Z",
+  "updatedAt": "2026-07-01T23:12:20.882Z"
 }

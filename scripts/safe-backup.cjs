@@ -44,6 +44,34 @@ async function runBackup() {
         console.log('[+] JSON Queue snapshot: OK');
     }
 
+
+    // 2b. M6/M6b state files — Critical for beta operations (added RC-1)
+    const M6_STATE_FILES = [
+        "m6-auth-tokens.json",
+        "m6-beta-state.json",
+        "co3-user-success.json",
+        "m6b-closed-beta.json",
+        "m6b-billing-ext.json",
+        "billing.json",
+        "local-accounts.json",
+        "version.json",
+        "capability-registry.json",
+    ];
+    for (const f of M6_STATE_FILES) {
+        const fPath = path.join(DATA_DIR, f);
+        if (fs.existsSync(fPath)) {
+            fs.copyFileSync(fPath, path.join(SNAP_DIR, f));
+            console.log(`[+] ${f}: OK`);
+        }
+    }
+
+    // 2c. Vault index (secrets encrypted — safe to backup)
+    const vaultIndex = path.join(DATA_DIR, "vault-index.json");
+    if (fs.existsSync(vaultIndex)) {
+        fs.copyFileSync(vaultIndex, path.join(SNAP_DIR, "vault-index.json"));
+        console.log("[+] vault-index.json: OK");
+    }
+
     // 3. Safe SQLite Backup (Using VACUUM INTO)
     const dbPath = path.join(DATA_DIR, 'jarvis.db');
     if (fs.existsSync(dbPath)) {

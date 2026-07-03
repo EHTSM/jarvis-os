@@ -7,7 +7,7 @@
  */
 
 const router      = require("express").Router();
-const requireAuth = require("../middleware/requireAuth");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _aee = () => _try(() => require("../services/autonomousExecutionEngine.cjs"));
@@ -17,7 +17,7 @@ const _ev  = () => _try(() => require("../services/executionEvidence.cjs"));
 const _rec = () => _try(() => require("../services/executionRecovery.cjs"));
 const _met = () => _try(() => require("../services/executionMetrics.cjs"));
 
-router.use(requireAuth);
+router.use("/execution", requireAuth);
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 router.get("/execution/dashboard", (req, res) => {

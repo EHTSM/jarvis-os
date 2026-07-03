@@ -37,7 +37,7 @@ function _svc() { return require("../services/hybridWorkforceService.cjs"); }
 function _ok(res, data)         { res.json({ ok: true, ...data }); }
 function _err(res, e, fallback) { res.status(e.status || fallback || 500).json({ ok: false, error: e.message }); }
 
-router.use(requireAuth);
+router.use("/workforce", requireAuth);
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 router.get("/workforce/constants", (req, res) => {

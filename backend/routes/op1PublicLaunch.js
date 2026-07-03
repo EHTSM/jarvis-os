@@ -7,7 +7,7 @@ const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const svc = require("../services/op1PublicLaunch.cjs");
 
-router.use(requireAuth);
+router.use("/op1", requireAuth);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

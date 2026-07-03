@@ -8,14 +8,14 @@
  */
 
 const router         = require("express").Router();
-const requireAuth    = require("../middleware/requireAuth");
+const { requireAuth } = require("../middleware/authMiddleware");
 
 const _try = fn => { try { return fn(); } catch (e) { return null; } };
 const _fwr = () => _try(() => require("../services/founderWorkRegistry.cjs"));
 const _fae = () => _try(() => require("../services/founderAutomationEngine.cjs"));
 const _pbe = () => _try(() => require("../services/productionBibleEngine.cjs"));
 
-router.use(requireAuth);
+router.use(["/founder", "/bible"], requireAuth);
 
 // ── Founder Work Registry ─────────────────────────────────────────────────────
 

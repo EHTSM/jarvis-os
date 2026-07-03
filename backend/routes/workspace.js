@@ -14,7 +14,7 @@ const { attachWorkspace } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/workspaceService.cjs");
 
 // All workspace routes require auth
-router.use(requireAuth);
+router.use("/workspace", requireAuth);
 router.use(attachWorkspace);
 
 // GET /workspace — list workspaces the caller is a member of

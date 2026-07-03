@@ -1052,10 +1052,712 @@
       "context": {},
       "efficiency": 86,
       "allocatedAt": "2026-06-29T22:45:02.623Z"
+    },
+    {
+      "id": "cal_1782947400152_tonb",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 86,
+      "allocatedAt": "2026-07-01T23:10:00.152Z"
+    },
+    {
+      "id": "cal_1782947400363_ys1b",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 94,
+      "allocatedAt": "2026-07-01T23:10:00.363Z"
+    },
+    {
+      "id": "cal_1782947400564_hrhp",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 91,
+      "allocatedAt": "2026-07-01T23:10:00.564Z"
+    },
+    {
+      "id": "cal_1782947400726_rdft",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 93,
+      "allocatedAt": "2026-07-01T23:10:00.726Z"
+    },
+    {
+      "id": "cal_1782947400930_zjlz",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 89,
+      "allocatedAt": "2026-07-01T23:10:00.930Z"
+    },
+    {
+      "id": "cal_1782947401111_984q",
+      "totalBudget": 200000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 70000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 20000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 60000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 40000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 10000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 90,
+      "allocatedAt": "2026-07-01T23:10:01.111Z"
+    },
+    {
+      "id": "cal_1782947401316_6zpv",
+      "totalBudget": 50000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 17500,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 5000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 15000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 10000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 2500,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 91,
+      "allocatedAt": "2026-07-01T23:10:01.316Z"
+    },
+    {
+      "id": "cal_1782947404200_iikg",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 86,
+      "allocatedAt": "2026-07-01T23:10:04.200Z"
+    },
+    {
+      "id": "cal_1782947405809_khxp",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 89,
+      "allocatedAt": "2026-07-01T23:10:05.809Z"
+    },
+    {
+      "id": "cal_1782947572239_vb3u",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 94,
+      "allocatedAt": "2026-07-01T23:12:52.239Z"
+    },
+    {
+      "id": "cal_1782947573007_j41p",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 92,
+      "allocatedAt": "2026-07-01T23:12:53.007Z"
+    },
+    {
+      "id": "cal_1782947573755_x1wm",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 89,
+      "allocatedAt": "2026-07-01T23:12:53.755Z"
+    },
+    {
+      "id": "cal_1782947574573_9phg",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 91,
+      "allocatedAt": "2026-07-01T23:12:54.573Z"
+    },
+    {
+      "id": "cal_1782947575303_o5hs",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 86,
+      "allocatedAt": "2026-07-01T23:12:55.303Z"
+    },
+    {
+      "id": "cal_1782947576049_67gd",
+      "totalBudget": 200000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 70000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 20000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 60000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 40000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 10000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 95,
+      "allocatedAt": "2026-07-01T23:12:56.049Z"
+    },
+    {
+      "id": "cal_1782947576863_85q3",
+      "totalBudget": 50000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 17500,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 5000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 15000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 10000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 2500,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 94,
+      "allocatedAt": "2026-07-01T23:12:56.863Z"
+    },
+    {
+      "id": "cal_1782947595606_c0ul",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 88,
+      "allocatedAt": "2026-07-01T23:13:15.606Z"
+    },
+    {
+      "id": "cal_1782947604186_j5zw",
+      "totalBudget": 100000,
+      "breakdown": {
+        "engineering": {
+          "ratio": 0.35,
+          "amount": 35000,
+          "signals": []
+        },
+        "infrastructure": {
+          "ratio": 0.1,
+          "amount": 10000,
+          "signals": []
+        },
+        "marketing": {
+          "ratio": 0.3,
+          "amount": 30000,
+          "signals": [
+            "churn_retention_push",
+            "opportunity_pipeline:134385.6"
+          ]
+        },
+        "product": {
+          "ratio": 0.2,
+          "amount": 20000,
+          "signals": [
+            "churn_risk:23"
+          ]
+        },
+        "research": {
+          "ratio": 0.05,
+          "amount": 5000,
+          "signals": []
+        }
+      },
+      "context": {},
+      "efficiency": 93,
+      "allocatedAt": "2026-07-01T23:13:24.191Z"
     }
   ],
   "current": {
-    "id": "cal_1782773102623_rsnv",
+    "id": "cal_1782947604186_j5zw",
     "totalBudget": 100000,
     "breakdown": {
       "engineering": {
@@ -1090,19 +1792,19 @@
       }
     },
     "context": {},
-    "efficiency": 86,
-    "allocatedAt": "2026-06-29T22:45:02.623Z"
+    "efficiency": 93,
+    "allocatedAt": "2026-07-01T23:13:24.191Z"
   },
   "stats": {
-    "total": 27,
-    "totalBudgetAllocated": 2850000,
+    "total": 45,
+    "totalBudgetAllocated": 4750000,
     "byCategory": {
-      "engineering": 997500,
-      "infrastructure": 285000,
-      "marketing": 855000,
-      "product": 570000,
-      "research": 142500
+      "engineering": 1662500,
+      "infrastructure": 475000,
+      "marketing": 1425000,
+      "product": 950000,
+      "research": 237500
     }
   },
-  "updatedAt": "2026-06-29T22:45:02.623Z"
+  "updatedAt": "2026-07-01T23:13:24.192Z"
 }

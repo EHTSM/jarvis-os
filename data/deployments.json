@@ -2947,6 +2947,1294 @@
       ],
       "status": "success",
       "startedAt": "2026-06-29T22:40:06.547Z"
+    },
+    "pipe-67": {
+      "pipeId": "pipe-67",
+      "version": "goal-1782947368663",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947368663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:28.665Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947368663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:28.665Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947368663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:28.665Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:28.665Z"
+    },
+    "pipe-68": {
+      "pipeId": "pipe-68",
+      "version": "goal-1782947369435",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947369435",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:29.438Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947369435",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:29.438Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947369435",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:29.438Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:29.438Z"
+    },
+    "pipe-69": {
+      "pipeId": "pipe-69",
+      "version": "goal-1782947370233",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947370233",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.237Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947370233",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.237Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947370233",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.238Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:30.238Z"
+    },
+    "pipe-70": {
+      "pipeId": "pipe-70",
+      "version": "goal-1782947370475",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947370475",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.476Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947370475",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.476Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947370475",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:30.476Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:30.476Z"
+    },
+    "pipe-71": {
+      "pipeId": "pipe-71",
+      "version": "goal-1782947371398",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947371398",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.402Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947371398",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.402Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947371398",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.402Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:31.402Z"
+    },
+    "pipe-72": {
+      "pipeId": "pipe-72",
+      "version": "goal-1782947371528",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947371528",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.529Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947371528",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.529Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947371528",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:31.529Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:31.529Z"
+    },
+    "pipe-73": {
+      "pipeId": "pipe-73",
+      "version": "goal-1782947372544",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947372544",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:32.545Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947372544",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:32.545Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947372544",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:32.545Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:32.545Z"
+    },
+    "pipe-74": {
+      "pipeId": "pipe-74",
+      "version": "goal-1782947373663",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947373663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:33.673Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947373663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:33.673Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947373663",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:33.673Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:33.673Z"
+    },
+    "pipe-75": {
+      "pipeId": "pipe-75",
+      "version": "goal-1782947375097",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947375097",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.103Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947375097",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.103Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947375097",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.103Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:35.103Z"
+    },
+    "pipe-76": {
+      "pipeId": "pipe-76",
+      "version": "goal-1782947375381",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947375381",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.383Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947375381",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.383Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947375381",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:35.383Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:35.383Z"
+    },
+    "pipe-77": {
+      "pipeId": "pipe-77",
+      "version": "goal-1782947378059",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947378059",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.061Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947378059",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.061Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947378059",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.061Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:38.061Z"
+    },
+    "pipe-78": {
+      "pipeId": "pipe-78",
+      "version": "goal-1782947378734",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947378734",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.735Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947378734",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.735Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947378734",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:38.735Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:38.735Z"
+    },
+    "pipe-79": {
+      "pipeId": "pipe-79",
+      "version": "goal-1782947379030",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947379030",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:39.032Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947379030",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:39.032Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947379030",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:09:39.032Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:09:39.032Z"
+    },
+    "pipe-80": {
+      "pipeId": "pipe-80",
+      "version": "goal-1782947466208",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947466208",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:06.216Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947466208",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:06.216Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947466208",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:06.216Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:06.216Z"
+    },
+    "pipe-81": {
+      "pipeId": "pipe-81",
+      "version": "goal-1782947469634",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947469634",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:09.645Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947469634",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:09.645Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947469634",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:09.645Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:09.645Z"
+    },
+    "pipe-82": {
+      "pipeId": "pipe-82",
+      "version": "goal-1782947472694",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947472694",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:12.708Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947472694",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:12.708Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947472694",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:12.708Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:12.708Z"
+    },
+    "pipe-83": {
+      "pipeId": "pipe-83",
+      "version": "goal-1782947475357",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947475357",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:15.358Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947475357",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:15.358Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947475357",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:15.358Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:15.358Z"
+    },
+    "pipe-84": {
+      "pipeId": "pipe-84",
+      "version": "goal-1782947476347",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947476347",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:16.356Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947476347",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:16.356Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947476347",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:16.356Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:16.356Z"
+    },
+    "pipe-85": {
+      "pipeId": "pipe-85",
+      "version": "goal-1782947477340",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947477340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:17.348Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947477340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:17.348Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947477340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:17.348Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:17.348Z"
+    },
+    "pipe-86": {
+      "pipeId": "pipe-86",
+      "version": "goal-1782947479000",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947479000",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:19.002Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947479000",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:19.002Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947479000",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:19.002Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:19.002Z"
+    },
+    "pipe-87": {
+      "pipeId": "pipe-87",
+      "version": "goal-1782947480313",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947480313",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:20.327Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947480313",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:20.327Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947480313",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:20.327Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:20.327Z"
+    },
+    "pipe-88": {
+      "pipeId": "pipe-88",
+      "version": "goal-1782947488969",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947488969",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:28.971Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947488969",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:28.971Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947488969",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:28.971Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:28.971Z"
+    },
+    "pipe-89": {
+      "pipeId": "pipe-89",
+      "version": "goal-1782947492720",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947492720",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:32.722Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947492720",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:32.722Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947492720",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:32.722Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:32.722Z"
+    },
+    "pipe-90": {
+      "pipeId": "pipe-90",
+      "version": "goal-1782947502183",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947502183",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.191Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947502183",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.191Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947502183",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.191Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:42.191Z"
+    },
+    "pipe-91": {
+      "pipeId": "pipe-91",
+      "version": "goal-1782947502340",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947502340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.341Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947502340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.341Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947502340",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:42.341Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:42.341Z"
+    },
+    "pipe-92": {
+      "pipeId": "pipe-92",
+      "version": "goal-1782947504532",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782947504532",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:44.537Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782947504532",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:44.537Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782947504532",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:11:44.537Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:11:44.537Z"
+    },
+    "pipe-93": {
+      "pipeId": "pipe-93",
+      "version": "goal-1782948145361",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782948145361",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:22:25.757Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782948145361",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:22:25.757Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782948145361",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:22:25.757Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:22:25.766Z"
+    },
+    "pipe-94": {
+      "pipeId": "pipe-94",
+      "version": "goal-1782948287051",
+      "environments": [
+        "dev",
+        "staging",
+        "production"
+      ],
+      "results": [
+        {
+          "environment": "dev",
+          "version": "goal-1782948287051",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:24:47.205Z"
+        },
+        {
+          "environment": "staging",
+          "version": "goal-1782948287051",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:24:47.205Z"
+        },
+        {
+          "environment": "production",
+          "version": "goal-1782948287051",
+          "status": "deployed",
+          "probe": {
+            "ok": true,
+            "status": 200,
+            "latencyMs": 0
+          },
+          "deployedAt": "2026-07-01T23:24:47.205Z"
+        }
+      ],
+      "status": "success",
+      "startedAt": "2026-07-01T23:24:47.450Z"
     }
   },
   "canaries": {
@@ -3513,7 +4801,203 @@
       "version": "goal-1782772806547",
       "status": "success",
       "ts": "2026-06-29T22:40:06.547Z"
+    },
+    {
+      "deployId": "pipe-67",
+      "event": "pipeline_run",
+      "version": "goal-1782947368663",
+      "status": "success",
+      "ts": "2026-07-01T23:09:28.668Z"
+    },
+    {
+      "deployId": "pipe-68",
+      "event": "pipeline_run",
+      "version": "goal-1782947369435",
+      "status": "success",
+      "ts": "2026-07-01T23:09:29.438Z"
+    },
+    {
+      "deployId": "pipe-69",
+      "event": "pipeline_run",
+      "version": "goal-1782947370233",
+      "status": "success",
+      "ts": "2026-07-01T23:09:30.238Z"
+    },
+    {
+      "deployId": "pipe-70",
+      "event": "pipeline_run",
+      "version": "goal-1782947370475",
+      "status": "success",
+      "ts": "2026-07-01T23:09:30.476Z"
+    },
+    {
+      "deployId": "pipe-71",
+      "event": "pipeline_run",
+      "version": "goal-1782947371398",
+      "status": "success",
+      "ts": "2026-07-01T23:09:31.402Z"
+    },
+    {
+      "deployId": "pipe-72",
+      "event": "pipeline_run",
+      "version": "goal-1782947371528",
+      "status": "success",
+      "ts": "2026-07-01T23:09:31.529Z"
+    },
+    {
+      "deployId": "pipe-73",
+      "event": "pipeline_run",
+      "version": "goal-1782947372544",
+      "status": "success",
+      "ts": "2026-07-01T23:09:32.545Z"
+    },
+    {
+      "deployId": "pipe-74",
+      "event": "pipeline_run",
+      "version": "goal-1782947373663",
+      "status": "success",
+      "ts": "2026-07-01T23:09:33.673Z"
+    },
+    {
+      "deployId": "pipe-75",
+      "event": "pipeline_run",
+      "version": "goal-1782947375097",
+      "status": "success",
+      "ts": "2026-07-01T23:09:35.103Z"
+    },
+    {
+      "deployId": "pipe-76",
+      "event": "pipeline_run",
+      "version": "goal-1782947375381",
+      "status": "success",
+      "ts": "2026-07-01T23:09:35.383Z"
+    },
+    {
+      "deployId": "pipe-77",
+      "event": "pipeline_run",
+      "version": "goal-1782947378059",
+      "status": "success",
+      "ts": "2026-07-01T23:09:38.061Z"
+    },
+    {
+      "deployId": "pipe-78",
+      "event": "pipeline_run",
+      "version": "goal-1782947378734",
+      "status": "success",
+      "ts": "2026-07-01T23:09:38.735Z"
+    },
+    {
+      "deployId": "pipe-79",
+      "event": "pipeline_run",
+      "version": "goal-1782947379030",
+      "status": "success",
+      "ts": "2026-07-01T23:09:39.032Z"
+    },
+    {
+      "deployId": "pipe-80",
+      "event": "pipeline_run",
+      "version": "goal-1782947466208",
+      "status": "success",
+      "ts": "2026-07-01T23:11:06.216Z"
+    },
+    {
+      "deployId": "pipe-81",
+      "event": "pipeline_run",
+      "version": "goal-1782947469634",
+      "status": "success",
+      "ts": "2026-07-01T23:11:09.645Z"
+    },
+    {
+      "deployId": "pipe-82",
+      "event": "pipeline_run",
+      "version": "goal-1782947472694",
+      "status": "success",
+      "ts": "2026-07-01T23:11:12.708Z"
+    },
+    {
+      "deployId": "pipe-83",
+      "event": "pipeline_run",
+      "version": "goal-1782947475357",
+      "status": "success",
+      "ts": "2026-07-01T23:11:15.358Z"
+    },
+    {
+      "deployId": "pipe-84",
+      "event": "pipeline_run",
+      "version": "goal-1782947476347",
+      "status": "success",
+      "ts": "2026-07-01T23:11:16.356Z"
+    },
+    {
+      "deployId": "pipe-85",
+      "event": "pipeline_run",
+      "version": "goal-1782947477340",
+      "status": "success",
+      "ts": "2026-07-01T23:11:17.348Z"
+    },
+    {
+      "deployId": "pipe-86",
+      "event": "pipeline_run",
+      "version": "goal-1782947479000",
+      "status": "success",
+      "ts": "2026-07-01T23:11:19.002Z"
+    },
+    {
+      "deployId": "pipe-87",
+      "event": "pipeline_run",
+      "version": "goal-1782947480313",
+      "status": "success",
+      "ts": "2026-07-01T23:11:20.327Z"
+    },
+    {
+      "deployId": "pipe-88",
+      "event": "pipeline_run",
+      "version": "goal-1782947488969",
+      "status": "success",
+      "ts": "2026-07-01T23:11:28.971Z"
+    },
+    {
+      "deployId": "pipe-89",
+      "event": "pipeline_run",
+      "version": "goal-1782947492720",
+      "status": "success",
+      "ts": "2026-07-01T23:11:32.722Z"
+    },
+    {
+      "deployId": "pipe-90",
+      "event": "pipeline_run",
+      "version": "goal-1782947502183",
+      "status": "success",
+      "ts": "2026-07-01T23:11:42.191Z"
+    },
+    {
+      "deployId": "pipe-91",
+      "event": "pipeline_run",
+      "version": "goal-1782947502340",
+      "status": "success",
+      "ts": "2026-07-01T23:11:42.341Z"
+    },
+    {
+      "deployId": "pipe-92",
+      "event": "pipeline_run",
+      "version": "goal-1782947504532",
+      "status": "success",
+      "ts": "2026-07-01T23:11:44.537Z"
+    },
+    {
+      "deployId": "pipe-93",
+      "event": "pipeline_run",
+      "version": "goal-1782948145361",
+      "status": "success",
+      "ts": "2026-07-01T23:22:25.766Z"
+    },
+    {
+      "deployId": "pipe-94",
+      "event": "pipeline_run",
+      "version": "goal-1782948287051",
+      "status": "success",
+      "ts": "2026-07-01T23:24:47.458Z"
     }
   ],
-  "seq": 66
+  "seq": 94
 }

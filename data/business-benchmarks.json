@@ -8275,6 +8275,2222 @@
       "dimensionsMeeting": "1/7",
       "productionReady": false,
       "ts": "2026-06-29T22:43:36.590Z"
+    },
+    {
+      "id": "bbm_1782947378213_2vdc",
+      "context": "current_business",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.213Z"
+    },
+    {
+      "id": "bbm_1782947378221_97wu",
+      "context": "get_cycle_biz_direct",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.221Z"
+    },
+    {
+      "id": "bbm_1782947378228_h4vp",
+      "context": "list_biz_1782947377068",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 64,
+        "dimensions": {}
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 64,
+          "baseline": 70,
+          "gap": -6,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "sales_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "marketing_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "retention_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        },
+        "operational_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "3/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.228Z"
+    },
+    {
+      "id": "bbm_1782947378236_bt5i",
+      "context": "status_seed_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.236Z"
+    },
+    {
+      "id": "bbm_1782947378254_73b4",
+      "context": "multi_biz_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.254Z"
+    },
+    {
+      "id": "bbm_1782947378265_lvzs",
+      "context": "dashboard_evo_seed_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.265Z"
+    },
+    {
+      "id": "bbm_1782947378285_yuyu",
+      "context": "current_business",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.285Z"
+    },
+    {
+      "id": "bbm_1782947378292_0b1x",
+      "context": "founder_time_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.292Z"
+    },
+    {
+      "id": "bbm_1782947378356_knir",
+      "context": "baseline_biz_test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.356Z"
+    },
+    {
+      "id": "bbm_1782947378360_ryeu",
+      "context": "quarter_biz_test",
+      "type": "quarter_compare",
+      "quarter": "Q3-2026",
+      "recentAvg": 49.3,
+      "priorAvg": null,
+      "delta": null,
+      "trend": "insufficient_data",
+      "ts": "2026-07-01T23:09:38.360Z"
+    },
+    {
+      "id": "bbm_1782947378369_gath",
+      "context": "get_bm_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:09:38.369Z"
+    },
+    {
+      "id": "bbm_1782947378375_oqv1",
+      "context": "stats_bm_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:09:38.375Z"
+    },
+    {
+      "id": "bbm_1782947378602_wh90",
+      "context": "bm_biz_test",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:09:38.602Z"
+    },
+    {
+      "id": "bbm_1782947378654_gpk0",
+      "context": "chain_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:09:38.654Z"
+    },
+    {
+      "id": "bbm_1782947378806_mutp",
+      "context": "chain_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.806Z"
+    },
+    {
+      "id": "bbm_1782947378861_wimn",
+      "context": "multi_biz_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:09:38.861Z"
+    },
+    {
+      "id": "bbm_1782947497988_i6wv",
+      "context": "current_business",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:37.988Z"
+    },
+    {
+      "id": "bbm_1782947498084_v2x5",
+      "context": "get_cycle_biz_direct",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.084Z"
+    },
+    {
+      "id": "bbm_1782947498152_wsg6",
+      "context": "list_biz_1782947495928",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 64,
+        "dimensions": {}
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 64,
+          "baseline": 70,
+          "gap": -6,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "sales_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "marketing_health": {
+          "current": 64,
+          "baseline": 60,
+          "gap": 4,
+          "meetsBaseline": true
+        },
+        "retention_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        },
+        "operational_health": {
+          "current": 64,
+          "baseline": 65,
+          "gap": -1,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": true,
+      "dimensionsMeeting": "3/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.152Z"
+    },
+    {
+      "id": "bbm_1782947498173_w8jf",
+      "context": "status_seed_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.173Z"
+    },
+    {
+      "id": "bbm_1782947498239_a7cy",
+      "context": "multi_biz_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.239Z"
+    },
+    {
+      "id": "bbm_1782947498264_8mx0",
+      "context": "dashboard_evo_seed_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.264Z"
+    },
+    {
+      "id": "bbm_1782947498360_nf58",
+      "context": "current_business",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.360Z"
+    },
+    {
+      "id": "bbm_1782947498367_ixei",
+      "context": "founder_time_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.367Z"
+    },
+    {
+      "id": "bbm_1782947498411_i2id",
+      "context": "baseline_biz_test",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:38.411Z"
+    },
+    {
+      "id": "bbm_1782947498429_g61h",
+      "context": "quarter_biz_test",
+      "type": "quarter_compare",
+      "quarter": "Q3-2026",
+      "recentAvg": 49.3,
+      "priorAvg": null,
+      "delta": null,
+      "trend": "insufficient_data",
+      "ts": "2026-07-01T23:11:38.429Z"
+    },
+    {
+      "id": "bbm_1782947498434_yy55",
+      "context": "get_bm_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:11:38.434Z"
+    },
+    {
+      "id": "bbm_1782947498441_x3bn",
+      "context": "stats_bm_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:11:38.441Z"
+    },
+    {
+      "id": "bbm_1782947499294_zmxb",
+      "context": "bm_biz_test",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:11:39.294Z"
+    },
+    {
+      "id": "bbm_1782947499464_4p91",
+      "context": "chain_biz",
+      "type": "version_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "previous": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "deltas": {
+        "revenue_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "customer_health": {
+          "current": 60,
+          "previous": 60,
+          "delta": 0
+        },
+        "growth_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "sales_health": {
+          "current": 40,
+          "previous": 40,
+          "delta": 0
+        },
+        "marketing_health": {
+          "current": 45,
+          "previous": 45,
+          "delta": 0
+        },
+        "retention_health": {
+          "current": 70,
+          "previous": 70,
+          "delta": 0
+        },
+        "operational_health": {
+          "current": 50,
+          "previous": 50,
+          "delta": 0
+        }
+      },
+      "overallDelta": 0,
+      "isImprovement": false,
+      "vsBaseline": -14.7,
+      "ts": "2026-07-01T23:11:39.464Z"
+    },
+    {
+      "id": "bbm_1782947499601_rzc0",
+      "context": "chain_biz",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:39.601Z"
+    },
+    {
+      "id": "bbm_1782947499810_mnik",
+      "context": "multi_biz_ctx",
+      "type": "baseline_compare",
+      "current": {
+        "overall": 49.3,
+        "dimensions": {
+          "revenue_health": 45,
+          "customer_health": 60,
+          "growth_health": 40,
+          "sales_health": 40,
+          "marketing_health": 45,
+          "retention_health": 70,
+          "operational_health": 50
+        }
+      },
+      "baseline": {
+        "revenue_health": 65,
+        "customer_health": 70,
+        "growth_health": 60,
+        "sales_health": 60,
+        "marketing_health": 60,
+        "retention_health": 65,
+        "operational_health": 65,
+        "overall": 64
+      },
+      "gaps": {
+        "revenue_health": {
+          "current": 45,
+          "baseline": 65,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "customer_health": {
+          "current": 60,
+          "baseline": 70,
+          "gap": -10,
+          "meetsBaseline": false
+        },
+        "growth_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "sales_health": {
+          "current": 40,
+          "baseline": 60,
+          "gap": -20,
+          "meetsBaseline": false
+        },
+        "marketing_health": {
+          "current": 45,
+          "baseline": 60,
+          "gap": -15,
+          "meetsBaseline": false
+        },
+        "retention_health": {
+          "current": 70,
+          "baseline": 65,
+          "gap": 5,
+          "meetsBaseline": true
+        },
+        "operational_health": {
+          "current": 50,
+          "baseline": 65,
+          "gap": -15,
+          "meetsBaseline": false
+        }
+      },
+      "meetsOverall": false,
+      "dimensionsMeeting": "1/7",
+      "productionReady": false,
+      "ts": "2026-07-01T23:11:39.810Z"
     }
   ],
   "baseline": {
@@ -8777,13 +10993,153 @@
       "applied": true,
       "success": true,
       "ts": "2026-06-29T22:43:36.356Z"
+    },
+    {
+      "improvId": "imp001",
+      "context": "test_biz",
+      "beforeScore": 60,
+      "afterScore": 75,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:36.654Z"
+    },
+    {
+      "improvId": "imp002",
+      "context": "test_biz",
+      "beforeScore": 75,
+      "afterScore": 60,
+      "improvement": -15,
+      "applied": true,
+      "success": false,
+      "ts": "2026-07-01T23:09:36.657Z"
+    },
+    {
+      "improvId": "rate_0",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.009Z"
+    },
+    {
+      "improvId": "rate_1",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.015Z"
+    },
+    {
+      "improvId": "rate_2",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.020Z"
+    },
+    {
+      "improvId": "rate_3",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.023Z"
+    },
+    {
+      "improvId": "rate_4",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:09:38.026Z"
+    },
+    {
+      "improvId": "imp001",
+      "context": "test_biz",
+      "beforeScore": 60,
+      "afterScore": 75,
+      "improvement": 15,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:34.595Z"
+    },
+    {
+      "improvId": "imp002",
+      "context": "test_biz",
+      "beforeScore": 75,
+      "afterScore": 60,
+      "improvement": -15,
+      "applied": true,
+      "success": false,
+      "ts": "2026-07-01T23:11:34.630Z"
+    },
+    {
+      "improvId": "rate_0",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:37.528Z"
+    },
+    {
+      "improvId": "rate_1",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:37.537Z"
+    },
+    {
+      "improvId": "rate_2",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:37.542Z"
+    },
+    {
+      "improvId": "rate_3",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:37.553Z"
+    },
+    {
+      "improvId": "rate_4",
+      "context": "rate_biz",
+      "beforeScore": 55,
+      "afterScore": 68,
+      "improvement": 13,
+      "applied": true,
+      "success": true,
+      "ts": "2026-07-01T23:11:37.558Z"
     }
   ],
   "stats": {
-    "total": 120,
+    "total": 152,
     "improvementsDetected": 0,
-    "regressionsDetected": 26,
+    "regressionsDetected": 34,
     "fixSuccessRate": 85
   },
-  "updatedAt": "2026-06-29T22:43:36.590Z"
+  "updatedAt": "2026-07-01T23:11:39.837Z"
 }

@@ -17,7 +17,7 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/marketplaceService.cjs");
 
-router.use(requireAuth);
+router.use("/marketplace", requireAuth);
 router.use(attachWorkspace);
 
 function _wsId(req) {

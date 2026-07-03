@@ -41,7 +41,7 @@ const aee   = require("../services/agentExecutionEngine.cjs");
 const mpl   = require("../services/memoryPersistenceLayer.cjs");
 const atl   = require("../services/autonomousTaskLoop.cjs");
 
-router.use(requireAuth);
+router.use("/p18", requireAuth);
 
 // ── 18A — Runtime Action Engine ──────────────────────────────────────────
 

@@ -19,6 +19,26 @@
       "context": {},
       "minutesSaved": 45,
       "recordedAt": "2026-06-29T22:44:51.639Z"
+    },
+    {
+      "id": "eco_1782947391226_vchb",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "eventType": "download",
+      "context": {},
+      "minutesSaved": 45,
+      "recordedAt": "2026-07-01T23:09:51.226Z"
+    },
+    {
+      "id": "eco_1782947539548_xh79",
+      "assetId": "mca_1782721566198_1a3s",
+      "assetName": "AICo",
+      "assetType": "blueprint",
+      "eventType": "download",
+      "context": {},
+      "minutesSaved": 45,
+      "recordedAt": "2026-07-01T23:12:19.549Z"
     }
   ],
   "ratings": {
@@ -44,6 +64,28 @@
         "rating": 5,
         "comment": "production-ready!",
         "ratedAt": "2026-06-29T22:44:51.746Z"
+      },
+      {
+        "rating": 4,
+        "comment": "Great blueprint!",
+        "userId": "user_test",
+        "ratedAt": "2026-07-01T23:09:51.241Z"
+      },
+      {
+        "rating": 5,
+        "comment": "production-ready!",
+        "ratedAt": "2026-07-01T23:09:51.873Z"
+      },
+      {
+        "rating": 4,
+        "comment": "Great blueprint!",
+        "userId": "user_test",
+        "ratedAt": "2026-07-01T23:12:19.595Z"
+      },
+      {
+        "rating": 5,
+        "comment": "production-ready!",
+        "ratedAt": "2026-07-01T23:12:20.572Z"
       }
     ]
   },
@@ -52,7 +94,7 @@
       "id": "mca_1782721566198_1a3s",
       "name": "AICo",
       "type": "blueprint",
-      "downloads": 4,
+      "downloads": 8,
       "rating": 0
     },
     {
@@ -120,23 +162,23 @@
     }
   ],
   "summary": {
-    "totalUsageEvents": 2,
-    "totalDownloads": 4,
-    "totalRatings": 4,
+    "totalUsageEvents": 4,
+    "totalDownloads": 8,
+    "totalRatings": 8,
     "avgRating": 4.5,
-    "totalROIMinutes": 180,
+    "totalROIMinutes": 360,
     "adoptionRate": 0,
-    "successRate": 37,
-    "totalAssets": 447,
-    "publishedAssets": 447,
+    "successRate": 0,
+    "totalAssets": 477,
+    "publishedAssets": 477,
     "adoptedAssets": 1,
-    "totalROIHours": 3,
+    "totalROIHours": 6,
     "topDownloads": [
       {
         "id": "mca_1782721566198_1a3s",
         "name": "AICo",
         "type": "blueprint",
-        "downloads": 4,
+        "downloads": 8,
         "rating": 0
       },
       {
@@ -205,10 +247,10 @@
     ],
     "revenueIntelligence": {
       "source": "OBI X",
-      "analyses": 330
+      "analyses": 7
     },
-    "usageEvents": 2,
-    "snapshotAt": "2026-06-29T22:44:51.798Z"
+    "usageEvents": 4,
+    "snapshotAt": "2026-07-01T23:12:21.185Z"
   },
-  "updatedAt": "2026-06-29T22:44:51.798Z"
+  "updatedAt": "2026-07-01T23:12:21.185Z"
 }

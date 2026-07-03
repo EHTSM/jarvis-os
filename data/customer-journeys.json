@@ -25,7 +25,7 @@
         "retention",
         "recovery"
       ],
-      "daysInCRM": 62,
+      "daysInCRM": 64,
       "healthScore": 0,
       "healthGrade": null,
       "churnRisk": "critical",
@@ -34,7 +34,7 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_hddn",
@@ -61,7 +61,7 @@
         "retention",
         "recovery"
       ],
-      "daysInCRM": 62,
+      "daysInCRM": 64,
       "healthScore": 0,
       "healthGrade": null,
       "churnRisk": "critical",
@@ -70,7 +70,7 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_salj",
@@ -97,7 +97,7 @@
         "retention",
         "recovery"
       ],
-      "daysInCRM": 62,
+      "daysInCRM": 64,
       "healthScore": 0,
       "healthGrade": null,
       "churnRisk": "critical",
@@ -106,13 +106,85 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_uk4z",
       "customerId": "919000000001",
       "name": "Test",
       "phone": "919000000001",
+      "status": "onboarded",
+      "stage": "adoption",
+      "stageIndex": 7,
+      "nextStage": "expansion",
+      "completedStages": [
+        "lead",
+        "qualification",
+        "demo",
+        "proposal",
+        "closing",
+        "onboarding",
+        "activation"
+      ],
+      "remainingStages": [
+        "expansion",
+        "renewal",
+        "advocacy",
+        "retention",
+        "recovery"
+      ],
+      "daysInCRM": 55,
+      "healthScore": 0,
+      "healthGrade": null,
+      "churnRisk": "critical",
+      "churnSignals": [],
+      "plan": "paid",
+      "renewalDate": null,
+      "activePlaybook": null,
+      "revenue": 0,
+      "updatedAt": "2026-07-01T23:12:16.619Z"
+    },
+    {
+      "id": "cj_1782692227853_ig65",
+      "customerId": "919999000001",
+      "name": "Release Test",
+      "phone": "919999000001",
+      "status": "onboarded",
+      "stage": "adoption",
+      "stageIndex": 7,
+      "nextStage": "expansion",
+      "completedStages": [
+        "lead",
+        "qualification",
+        "demo",
+        "proposal",
+        "closing",
+        "onboarding",
+        "activation"
+      ],
+      "remainingStages": [
+        "expansion",
+        "renewal",
+        "advocacy",
+        "retention",
+        "recovery"
+      ],
+      "daysInCRM": 54,
+      "healthScore": 0,
+      "healthGrade": null,
+      "churnRisk": "critical",
+      "churnSignals": [],
+      "plan": "paid",
+      "renewalDate": null,
+      "activePlaybook": null,
+      "revenue": 0,
+      "updatedAt": "2026-07-01T23:12:16.619Z"
+    },
+    {
+      "id": "cj_1782692227853_5qsx",
+      "customerId": "911234567890",
+      "name": "Validation Test",
+      "phone": "911234567890",
       "status": "onboarded",
       "stage": "adoption",
       "stageIndex": 7,
@@ -142,79 +214,7 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
-    },
-    {
-      "id": "cj_1782692227853_ig65",
-      "customerId": "919999000001",
-      "name": "Release Test",
-      "phone": "919999000001",
-      "status": "onboarded",
-      "stage": "adoption",
-      "stageIndex": 7,
-      "nextStage": "expansion",
-      "completedStages": [
-        "lead",
-        "qualification",
-        "demo",
-        "proposal",
-        "closing",
-        "onboarding",
-        "activation"
-      ],
-      "remainingStages": [
-        "expansion",
-        "renewal",
-        "advocacy",
-        "retention",
-        "recovery"
-      ],
-      "daysInCRM": 52,
-      "healthScore": 0,
-      "healthGrade": null,
-      "churnRisk": "critical",
-      "churnSignals": [],
-      "plan": "paid",
-      "renewalDate": null,
-      "activePlaybook": null,
-      "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
-    },
-    {
-      "id": "cj_1782692227853_5qsx",
-      "customerId": "911234567890",
-      "name": "Validation Test",
-      "phone": "911234567890",
-      "status": "onboarded",
-      "stage": "adoption",
-      "stageIndex": 7,
-      "nextStage": "expansion",
-      "completedStages": [
-        "lead",
-        "qualification",
-        "demo",
-        "proposal",
-        "closing",
-        "onboarding",
-        "activation"
-      ],
-      "remainingStages": [
-        "expansion",
-        "renewal",
-        "advocacy",
-        "retention",
-        "recovery"
-      ],
-      "daysInCRM": 51,
-      "healthScore": 0,
-      "healthGrade": null,
-      "churnRisk": "critical",
-      "churnSignals": [],
-      "plan": "paid",
-      "renewalDate": null,
-      "activePlaybook": null,
-      "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_4qir",
@@ -241,7 +241,7 @@
         "retention",
         "recovery"
       ],
-      "daysInCRM": 45,
+      "daysInCRM": 47,
       "healthScore": 0,
       "healthGrade": null,
       "churnRisk": "critical",
@@ -250,7 +250,7 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_a9l8",
@@ -277,7 +277,7 @@
         "retention",
         "recovery"
       ],
-      "daysInCRM": 26,
+      "daysInCRM": 28,
       "healthScore": 0,
       "healthGrade": null,
       "churnRisk": "critical",
@@ -286,7 +286,7 @@
       "renewalDate": null,
       "activePlaybook": null,
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_reek",
@@ -336,7 +336,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_qb7l",
@@ -386,7 +386,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_51xr",
@@ -436,7 +436,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_7v07",
@@ -486,7 +486,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_5q43",
@@ -536,7 +536,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_8qjj",
@@ -586,7 +586,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_l4mz",
@@ -636,7 +636,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_fusg",
@@ -686,7 +686,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_v4j0",
@@ -736,7 +736,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_sjv0",
@@ -786,7 +786,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_2pf2",
@@ -836,7 +836,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_ot9a",
@@ -886,7 +886,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_8o6p",
@@ -936,7 +936,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_9580",
@@ -986,7 +986,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_im94",
@@ -1036,7 +1036,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_6w59",
@@ -1086,7 +1086,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_5s51",
@@ -1136,7 +1136,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_gxji",
@@ -1186,7 +1186,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_2rfn",
@@ -1236,7 +1236,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     },
     {
       "id": "cj_1782692227853_gp86",
@@ -1286,7 +1286,7 @@
         ]
       },
       "revenue": 0,
-      "updatedAt": "2026-06-29T22:44:44.065Z"
+      "updatedAt": "2026-07-01T23:12:16.619Z"
     }
   ],
   "stats": {
@@ -1308,5 +1308,5 @@
     },
     "avgDaysInStage": 0
   },
-  "updatedAt": "2026-06-29T22:44:44.065Z"
+  "updatedAt": "2026-07-01T23:12:16.627Z"
 }

@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0-rc1",
+  "generatedAt": "2026-07-02T21:04:45.734Z",
+  "algorithm": "sha256",
+  "artifacts": {
+    "JARVIS-3.0.0-arm64.dmg": {
+      "sha256": "3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1",
+      "sizeBytes": 130811233,
+      "path": "dist/JARVIS-3.0.0-arm64.dmg"
+    },
+    "JARVIS-3.0.0-arm64.dmg.blockmap": {
+      "sha256": "7c13dd0473b4ace33dd2a0fe16d7269cc0a4805ba77c5ebd39a589580fbe1d7d",
+      "sizeBytes": 136650,
+      "path": "dist/JARVIS-3.0.0-arm64.dmg.blockmap"
+    },
+    "JARVIS-3.0.0.dmg": {
+      "sha256": "1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41",
+      "sizeBytes": 136318694,
+      "path": "dist/JARVIS-3.0.0.dmg"
+    },
+    "JARVIS-3.0.0.dmg.blockmap": {
+      "sha256": "87bd40a3756fcff281849c558dabb0587043650aa4618c89097acdfaf62a36cd",
+      "sizeBytes": 142839,
+      "path": "dist/JARVIS-3.0.0.dmg.blockmap"
+    }
+  },
+  "artifactCount": 4,
+  "missing": []
+}

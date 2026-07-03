@@ -13,11 +13,14 @@ const operatorAudit   = require("../middleware/operatorAudit");
 //   /test   used by smoke tests and CI
 //   /api/status used by external status pages
 router.get("/health",     (req, res) => {
-    const svcWarnings = [];
-    if (!process.env.GROQ_API_KEY)                                 svcWarnings.push("AI disabled — GROQ_API_KEY missing");
-    if (!process.env.TELEGRAM_TOKEN)                               svcWarnings.push("Telegram disabled — TELEGRAM_TOKEN missing");
-    if (!process.env.WA_TOKEN && !process.env.WHATSAPP_TOKEN)      svcWarnings.push("WhatsApp disabled — WA_TOKEN missing");
-    if (!(process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) || !(process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)) svcWarnings.push("Payments disabled — RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET missing");
+    const services = {
+        ai:       !!process.env.GROQ_API_KEY,
+        telegram: !!process.env.TELEGRAM_TOKEN,
+        whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
+        payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
+    };
+    // Count disabled services without leaking env key names to unauthenticated callers
+    const disabledCount = Object.values(services).filter(v => !v).length;
 
     let base = { status: "ok", uptime_seconds: Math.round(process.uptime()), timestamp: new Date().toISOString() };
     try {
@@ -27,23 +30,21 @@ router.get("/health",     (req, res) => {
 
     res.json({
         ...base,
-        status: svcWarnings.length >= 2 ? "degraded" : "ok",
-        services: {
-            ai:       !!process.env.GROQ_API_KEY,
-            telegram: !!process.env.TELEGRAM_TOKEN,
-            whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
-            payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
-        },
-        warnings: svcWarnings
+        status: disabledCount >= 2 ? "degraded" : "ok",
+        services,
+        // warnings omit env key names — use /ops (auth-gated) for detailed diagnostics
+        warnings: disabledCount > 0 ? [`${disabledCount} optional service(s) not configured`] : [],
     });
 });
 
 router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
 router.get("/api/status", (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
 
-// Gate: all remaining ops routes require a valid operator session.
-// operatorAudit records every authenticated request for the audit trail.
-router.use(requireAuth, operatorAudit);
+// Gate: ops-specific routes require a valid operator session.
+// Path-scoped to avoid intercepting SPA/unmatched paths that pass through this router.
+// Note: /dashboard/revenue is the only dashboard sub-path here; /dashboard alone would
+// prefix-match any React Router client route named /dashboard, so we scope to /dashboard/revenue.
+router.use(["/stats", "/dashboard/revenue", "/metrics", "/ops", "/runtime/reboot", "/workflow"], requireAuth, operatorAudit);
 
 router.get("/stats", (req, res) => {
     const s = crm.getStats();

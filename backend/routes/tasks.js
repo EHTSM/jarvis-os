@@ -18,7 +18,7 @@ const router    = express.Router();
 const path      = require("path");
 const { requireAuth } = require("../middleware/authMiddleware");
 
-router.use(requireAuth);
+router.use(["/queue", "/runtime", "/scheduler", "/tasks"], requireAuth);
 
 // ── Module loaders ────────────────────────────────────────────────
 const ROOT_AGENTS  = path.join(__dirname, "../../agents/");

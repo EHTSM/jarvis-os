@@ -58,7 +58,7 @@ const ap   = require("../services/autonomousPlanning.cjs");
 const ai   = require("../services/aiService.js");
 const il   = require("../services/improvementLoop.cjs");
 
-router.use(requireAuth);
+router.use("/p27", requireAuth);
 
 // ── F1 Executive Reasoning ────────────────────────────────────────────────────
 

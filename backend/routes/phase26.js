@@ -63,7 +63,7 @@ const re  = require("../services/reasoningEngine.cjs");
 const br  = require("../services/backgroundRuntime.cjs");
 const sdk = require("../services/pluginSDK.cjs");
 
-router.use(requireAuth);
+router.use("/p26", requireAuth);
 
 // ── D1 Multi-Agent Task Graph ─────────────────────────────────────────────────
 

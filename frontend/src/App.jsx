@@ -29,6 +29,7 @@ const CompanyPage        = lazy(() => import("./components/legal/CompanyPage.jsx
 const PrivacyPolicy      = lazy(() => import("./components/legal/PrivacyPolicy.jsx"));
 const TermsOfService     = lazy(() => import("./components/legal/TermsOfService.jsx"));
 const RefundPolicy       = lazy(() => import("./components/legal/RefundPolicy.jsx"));
+const CookiePolicy       = lazy(() => import("./components/legal/CookiePolicy.jsx"));
 const ContactPage        = lazy(() => import("./components/legal/ContactPage.jsx"));
 const TrustCompliance    = lazy(() => import("./components/legal/TrustCompliance.jsx"));
 const CommandPalette     = lazy(() => import("./components/CommandPalette.jsx"));
@@ -806,6 +807,7 @@ function AppInner() {
       privacy: <PrivacyPolicy onBack={closeLegal} />,
       terms:   <TermsOfService onBack={closeLegal} />,
       refund:  <RefundPolicy  onBack={closeLegal} />,
+      cookies: <CookiePolicy  onBack={closeLegal} />,
       contact: <ContactPage   onBack={closeLegal} />,
       trust:   <TrustCompliance onBack={closeLegal} />,
       pricing: <PricingPage onBack={closeLegal} onStart={() => { closeLegal(); handleStart(); }} onUpgrade={() => { closeLegal(); setUpgradeOpen(true); }} />,

@@ -1,7 +1,7 @@
 {
   "optimizations": [
     {
-      "id": "opt_1782773167207_7gc9",
+      "id": "opt_1782947657908_flbq",
       "type": "scaling",
       "title": "Enable auto-scaling policies for variable workloads",
       "rationale": "Scalability benchmark at 65/100. Auto-scaling eliminates manual capacity management.",
@@ -15,7 +15,7 @@
       "effort": "medium",
       "risk": "low",
       "status": "pending",
-      "discoveredAt": "2026-06-29T22:46:07.207Z",
+      "discoveredAt": "2026-07-01T23:14:17.908Z",
       "appliedAt": null
     }
   ],
@@ -32,5 +32,5 @@
     },
     "estimatedMonthlySavings": 0
   },
-  "updatedAt": "2026-06-29T22:46:07.207Z"
+  "updatedAt": "2026-07-01T23:14:17.908Z"
 }

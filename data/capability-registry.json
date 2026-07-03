@@ -571,7 +571,205 @@
       "outputSchema": null,
       "category": "testing",
       "registeredAt": "2026-06-21T20:58:34.554Z"
+    },
+    {
+      "id": "cap_test_1782947448042",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-01T23:10:48.189Z"
+    },
+    {
+      "id": "cap_test_1782947877906",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-01T23:17:57.969Z"
+    },
+    {
+      "id": "cap_test_1782949192672",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-01T23:39:52.700Z"
+    },
+    {
+      "id": "cap_test_1782958717694",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T02:18:37.713Z"
+    },
+    {
+      "id": "cap_test_1782959504988",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T02:31:45.005Z"
+    },
+    {
+      "id": "cap_test_1782960465887",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T02:47:45.941Z"
+    },
+    {
+      "id": "cap_test_1782960842341",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T02:54:02.356Z"
+    },
+    {
+      "id": "cap_test_1782961191057",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T02:59:51.080Z"
+    },
+    {
+      "id": "cap_test_1782961739324",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T03:08:59.338Z"
+    },
+    {
+      "id": "cap_test_1782975203309",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T06:53:23.315Z"
+    },
+    {
+      "id": "cap_test_1782975366329",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T06:56:06.334Z"
+    },
+    {
+      "id": "cap_test_1782978299445",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T07:44:59.456Z"
+    },
+    {
+      "id": "cap_test_1782983506678",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T09:11:46.685Z"
+    },
+    {
+      "id": "cap_test_1783025632699",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T20:53:52.718Z"
+    },
+    {
+      "id": "cap_test_1783025767823",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T20:56:07.833Z"
+    },
+    {
+      "id": "cap_test_1783025889417",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T20:58:09.423Z"
+    },
+    {
+      "id": "cap_test_1783026039776",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T21:00:39.782Z"
+    },
+    {
+      "id": "cap_test_1783026171697",
+      "name": "test_capability",
+      "description": "A test capability for integration tests",
+      "providedBy": "test_agent",
+      "providerType": "agent",
+      "inputSchema": null,
+      "outputSchema": null,
+      "category": "testing",
+      "registeredAt": "2026-07-02T21:02:51.703Z"
     }
   ],
-  "updatedAt": "2026-06-29T22:46:08.565Z"
+  "updatedAt": "2026-07-02T21:02:56.045Z"
 }

@@ -99,14 +99,13 @@ async function searchCode(query, opts = {}) {
     }
   }
 
-  // Fallback: grep
-  const { execSync } = require("child_process");
+  // Fallback: grep — use spawnSync with array args to prevent shell injection
+  const { spawnSync } = require("child_process");
   try {
-    const out = execSync(
-      `grep -rn "${query.replace(/"/g, '\\"')}" "${ROOT}/backend" "${ROOT}/src" 2>/dev/null | head -30`,
-      { timeout: 10000, stdio: ["ignore","pipe","pipe"] }
-    ).toString().trim();
-    const lines = out.split("\n").filter(Boolean).map(l => {
+    const searchDirs = [path.join(ROOT, "backend"), path.join(ROOT, "src")].filter(d => fs.existsSync(d));
+    const result = spawnSync("grep", ["-rn", "--", query, ...searchDirs],
+      { timeout: 10000, stdio: ["ignore","pipe","pipe"], encoding: "utf8" });
+    const lines = (result.stdout || "").trim().split("\n").filter(Boolean).slice(0, 30).map(l => {
       const [file, line, ...rest] = l.split(":");
       return { file, line: parseInt(line), match: rest.join(":").trim() };
     });
@@ -118,9 +117,19 @@ async function searchCode(query, opts = {}) {
 
 // ── createFile ───────────────────────────────────────────────────────────────
 
+function _guardPath(abs) {
+  const resolved = path.resolve(abs);
+  if (!resolved.startsWith(path.resolve(ROOT) + path.sep) && resolved !== path.resolve(ROOT)) {
+    throw new Error(`Path traversal rejected: path must be inside project root`);
+  }
+  return resolved;
+}
+
 function createFile(filePath, content = "", opts = {}) {
   if (!filePath) return { ok: false, error: "filePath required" };
-  const abs = path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath);
+  let abs;
+  try { abs = _guardPath(path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath)); }
+  catch (e) { return { ok: false, error: e.message }; }
   const dir = path.dirname(abs);
 
   if (fs.existsSync(abs) && !opts.overwrite) {
@@ -144,7 +153,9 @@ function createFile(filePath, content = "", opts = {}) {
 
 async function modifyFile(filePath, instruction, opts = {}) {
   if (!filePath || !instruction) return { ok: false, error: "filePath and instruction required" };
-  const abs = path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath);
+  let abs;
+  try { abs = _guardPath(path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath)); }
+  catch (e) { return { ok: false, error: e.message }; }
   if (!fs.existsSync(abs)) return { ok: false, error: `File not found: ${abs}` };
 
   // Try VS Code Extension AI refactor first
@@ -188,21 +199,16 @@ async function modifyFile(filePath, instruction, opts = {}) {
 // ── formatFile ───────────────────────────────────────────────────────────────
 
 function formatFile(filePath) {
-  const abs = path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath);
-  // Try prettier
-  const { execSync } = require("child_process");
-  const r1 = (() => {
-    try { execSync(`npx prettier --write "${abs}" --ignore-unknown`, { cwd: ROOT, timeout: 15000, stdio: "ignore" }); return { ok: true }; }
-    catch { return null; }
-  })();
-  if (r1?.ok) return { ok: true, path: abs, formatter: "prettier" };
+  let abs;
+  try { abs = _guardPath(path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath)); }
+  catch (e) { return { ok: false, error: e.message }; }
+  // Use spawnSync with array args to prevent shell injection from path
+  const { spawnSync } = require("child_process");
+  const r1 = spawnSync("npx", ["prettier", "--write", "--ignore-unknown", abs], { cwd: ROOT, timeout: 15000, stdio: "ignore" });
+  if (r1.status === 0) return { ok: true, path: abs, formatter: "prettier" };
 
-  // Try eslint --fix
-  const r2 = (() => {
-    try { execSync(`npx eslint --fix "${abs}"`, { cwd: ROOT, timeout: 15000, stdio: "ignore" }); return { ok: true }; }
-    catch { return null; }
-  })();
-  if (r2?.ok) return { ok: true, path: abs, formatter: "eslint" };
+  const r2 = spawnSync("npx", ["eslint", "--fix", abs], { cwd: ROOT, timeout: 15000, stdio: "ignore" });
+  if (r2.status === 0) return { ok: true, path: abs, formatter: "eslint" };
 
   return { ok: false, path: abs, error: "No formatter available (prettier/eslint)" };
 }
@@ -210,14 +216,20 @@ function formatFile(filePath) {
 // ── getDiagnostics ────────────────────────────────────────────────────────────
 
 function getDiagnostics(filePath) {
-  const abs = filePath ? (path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath)) : ROOT;
-  const { execSync } = require("child_process");
+  let abs;
+  try {
+    abs = filePath
+      ? _guardPath(path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath))
+      : ROOT;
+  } catch (e) { return { ok: false, error: e.message }; }
+  const { spawnSync } = require("child_process");
   const issues = [];
 
-  // eslint
+  // eslint — use array args to prevent shell injection
   try {
-    const out = execSync(`npx eslint "${abs}" --format json 2>/dev/null`, { cwd: ROOT, timeout: 20000, stdio: ["ignore","pipe","pipe"] }).toString();
-    const parsed = JSON.parse(out);
+    const r = spawnSync("npx", ["eslint", "--format", "json", abs],
+      { cwd: ROOT, timeout: 20000, stdio: ["ignore","pipe","pipe"], encoding: "utf8" });
+    const parsed = JSON.parse(r.stdout || "[]");
     for (const f of parsed) {
       for (const m of f.messages) {
         issues.push({ file: f.filePath, line: m.line, col: m.column, severity: m.severity === 2 ? "error" : "warn", message: m.message, rule: m.ruleId });
@@ -247,23 +259,35 @@ function saveFile(filePath, content) {
 
 function commitChanges({ message, files = [], addAll = false } = {}) {
   if (!message) return { ok: false, error: "commit message required" };
+  // Sanitize message — strip shell-control characters that could break arg passing
+  const safeMessage = String(message).replace(/[\x00-\x1f\x7f]/g, " ").trim();
+  if (!safeMessage) return { ok: false, error: "commit message is empty after sanitization" };
+  const { spawnSync } = require("child_process");
   try {
     if (addAll) {
-      execSync("git add -A", { cwd: ROOT, timeout: 10000, stdio: "ignore" });
+      spawnSync("git", ["add", "-A"], { cwd: ROOT, timeout: 10000, stdio: "ignore" });
     } else if (files.length > 0) {
-      execSync(`git add ${files.map(f => `"${f}"`).join(" ")}`, { cwd: ROOT, timeout: 10000, stdio: "ignore" });
+      // Validate each file is within ROOT before staging
+      const safeFiles = files.filter(f => {
+        try { return !!_guardPath(path.isAbsolute(f) ? f : path.join(ROOT, f)); } catch { return false; }
+      });
+      if (safeFiles.length > 0)
+        spawnSync("git", ["add", "--", ...safeFiles], { cwd: ROOT, timeout: 10000, stdio: "ignore" });
     }
     // Guard: abort if nothing staged to avoid empty commits
-    const staged = execSync("git diff --cached --name-only", { cwd: ROOT, timeout: 5000, stdio: ["ignore","pipe","pipe"] }).toString().trim();
+    const stagedResult = spawnSync("git", ["diff", "--cached", "--name-only"],
+      { cwd: ROOT, timeout: 5000, stdio: ["ignore","pipe","pipe"], encoding: "utf8" });
+    const staged = (stagedResult.stdout || "").trim();
     if (!staged) return { ok: false, error: "Nothing to commit — working tree clean" };
-    const result = execSync(`git commit -m "${message.replace(/"/g, '\\"')}"`, { cwd: ROOT, timeout: 15000, stdio: ["ignore","pipe","pipe"] }).toString().trim();
+    const result = spawnSync("git", ["commit", "-m", safeMessage],
+      { cwd: ROOT, timeout: 15000, stdio: ["ignore","pipe","pipe"], encoding: "utf8" });
     const d = _load();
     d.stats.commits++;
     d.history.push({ event: "commit", message, ts: _ts() });
     _save(d);
     const commit = _git("rev-parse --short HEAD");
     _le()?.createLesson?.({ type: "git_commit", title: `Commit: ${message.slice(0, 60)}`, source: "editorController", confidence: 0.9, tags: ["git", "commit"] });
-    return { ok: true, message, commit: commit.out, output: result };
+    return { ok: true, message, commit: commit.out, output: (result.stdout || "").trim() };
   } catch (e) {
     return { ok: false, error: e.message?.slice(0, 300) };
   }

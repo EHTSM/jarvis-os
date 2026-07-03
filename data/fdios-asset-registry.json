@@ -1,0 +1,38 @@
+{
+  "assets": {
+    "payment:pay:razorpay": {
+      "id": "payment:pay:razorpay",
+      "type": "payment_processor",
+      "name": "Razorpay",
+      "meta": {
+        "source": "pay:razorpay",
+        "status": "READY"
+      },
+      "discoveredAt": "2026-07-02T02:18:25.506Z",
+      "updatedAt": "2026-07-02T21:02:52.050Z"
+    },
+    "git:git:github": {
+      "id": "git:git:github",
+      "type": "git_provider",
+      "name": "GitHub",
+      "meta": {
+        "source": "git:github",
+        "status": "READY"
+      },
+      "discoveredAt": "2026-07-02T02:18:25.506Z",
+      "updatedAt": "2026-07-02T21:02:52.050Z"
+    },
+    "monitoring:monitor:sentry": {
+      "id": "monitoring:monitor:sentry",
+      "type": "monitoring",
+      "name": "Sentry",
+      "meta": {
+        "source": "monitor:sentry",
+        "status": "READY"
+      },
+      "discoveredAt": "2026-07-02T02:18:25.506Z",
+      "updatedAt": "2026-07-02T21:02:52.050Z"
+    }
+  },
+  "lastScan": "2026-07-02T21:02:52.051Z"
+}

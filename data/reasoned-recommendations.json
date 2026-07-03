@@ -521,5 +521,78 @@
     "source": "auto_analysis",
     "createdAt": "2026-06-05T21:13:35.891Z",
     "updatedAt": "2026-06-07T19:32:36.938Z"
+  },
+  {
+    "recId": "rec_1782630033164_g3",
+    "title": "Fix: memory_pressure",
+    "description": "High-severity failure cluster (22 occurrences). Root cause: application error — review stack trace",
+    "explanation": "This recommendation targets \"Fix: memory_pressure\". Root cause identified: unclassified — insufficient data to determine root cause. No prior lessons directly match this pattern; the recommendation is derived from failure-cluster analysis alone. Confidence is 15% — evidence is limited; treat this as a hypothesis requiring investigation.",
+    "confidence": 15,
+    "confidenceFactors": [
+      "No directly corroborating lessons found — lower certainty",
+      "Historical fix success rate is only 1% — approach with caution"
+    ],
+    "alternatives": [
+      {
+        "approach": "Monitor and defer",
+        "tradeoffs": "No immediate risk; the problem may worsen before it is addressed",
+        "estimatedRisk": "low"
+      },
+      {
+        "approach": "Isolate the affected component and run it in degraded mode while investigating",
+        "tradeoffs": "Maintains partial service availability; root cause may take longer to resolve",
+        "estimatedRisk": "medium"
+      },
+      {
+        "approach": "Auto-remediate using the self-healing runtime with circuit-breaking enabled",
+        "tradeoffs": "Fully automated — fastest resolution but depends on healing strategy accuracy",
+        "estimatedRisk": "medium"
+      }
+    ],
+    "risk": {
+      "level": "medium",
+      "factors": [
+        "Highest-priority recommendation — urgency increases deployment risk",
+        "1985 prior healing attempts have failed"
+      ],
+      "mitigations": [
+        "Review healing-history.json for repeated failure patterns"
+      ]
+    },
+    "rollbackPlan": {
+      "steps": [
+        "Stop any processes executing the change mid-flight",
+        "Restore the affected resource to its last known good state",
+        "Validate system integrity against baseline metrics",
+        "Document what was reverted and why in the incident log"
+      ],
+      "estimatedTimeMin": 20,
+      "reversible": false
+    },
+    "recoveryPlan": {
+      "steps": [
+        "Confirm the failure is still active by checking current system health metrics.",
+        "Execute the rollback plan to restore the last known good state.",
+        "Monitor error rate for 5 minutes after rollback to confirm recovery.",
+        "Update lessons.json with findings from this incident to improve future confidence scoring."
+      ],
+      "fallbackAgent": "general_recovery_agent"
+    },
+    "rootCause": "unclassified — insufficient data to determine root cause",
+    "reasoning": [
+      "Observed signal: \"Fix: memory_pressure\" — type: fix, priority: 1.",
+      "Root-cause chain traced: No matching lesson found for this failure pattern.",
+      "Knowledge base cross-reference: no matching lessons — confidence derived from heuristics only.",
+      "Risk assessed as MEDIUM: Highest-priority recommendation — urgency increases deployment risk.",
+      "Recommended action: apply the fix with rollback plan ready."
+    ],
+    "computedAt": "2026-07-01T23:10:49.007Z",
+    "priority": 1,
+    "status": "open",
+    "type": "fix",
+    "category": "default",
+    "source": "auto_analysis",
+    "createdAt": "2026-06-28T07:00:33.164Z",
+    "updatedAt": "2026-06-28T21:05:07.656Z"
   }
 ]

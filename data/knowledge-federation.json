@@ -7,7 +7,7 @@
       "service": "knowledgeGraph",
       "itemCount": 7,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "totalEdges": 3,
         "totalNodes": 4,
@@ -33,9 +33,9 @@
       "domain": "engineering",
       "name": "Knowledge Reasoning Engine",
       "service": "knowledgeReasoningEngine",
-      "itemCount": 180,
+      "itemCount": 325,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "avgScore": 57.3
       }
@@ -45,14 +45,14 @@
       "domain": "engineering",
       "name": "Knowledge Quality Engine",
       "service": "knowledgeQualityEngine",
-      "itemCount": 64,
+      "itemCount": 128,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 64,
-        "contexts": 26,
-        "avgOverall": 81.3,
-        "updatedAt": "2026-06-29T22:44:38.765Z"
+        "total": 128,
+        "contexts": 28,
+        "avgOverall": 88.1,
+        "updatedAt": "2026-07-01T23:12:03.229Z"
       }
     },
     "knowledge_benchmark": {
@@ -60,14 +60,14 @@
       "domain": "engineering",
       "name": "Knowledge Benchmark Engine",
       "service": "knowledgeBenchmarkEngine",
-      "itemCount": 38,
+      "itemCount": 76,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 38,
-        "improvementsDetected": 2,
-        "regressionsDetected": 4,
-        "improvSuccessRate": 85.7,
+        "total": 76,
+        "improvementsDetected": 6,
+        "regressionsDetected": 8,
+        "improvSuccessRate": 85,
         "KNOWLEDGE_BASELINE": {
           "completeness": 55,
           "freshness": 70,
@@ -78,7 +78,7 @@
           "explainability": 50,
           "overall": 58
         },
-        "updatedAt": "2026-06-29T22:44:38.759Z"
+        "updatedAt": "2026-07-01T23:12:02.980Z"
       }
     },
     "knowledge_prediction": {
@@ -86,14 +86,14 @@
       "domain": "engineering",
       "name": "Knowledge Prediction Engine",
       "service": "knowledgePredictionEngine",
-      "itemCount": 36,
+      "itemCount": 72,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 36,
-        "criticalPredictions": 8,
-        "avgRisk": 54.4,
-        "updatedAt": "2026-06-29T22:44:38.762Z"
+        "total": 72,
+        "criticalPredictions": 16,
+        "avgRisk": 54.5,
+        "updatedAt": "2026-07-01T23:12:03.027Z"
       }
     },
     "knowledge_evolution": {
@@ -103,11 +103,11 @@
       "service": "knowledgeEvolutionEngine",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "totalCycles": 18,
-        "minutesSaved": 666,
-        "insightsGenerated": 54,
+        "totalCycles": 36,
+        "minutesSaved": 1332,
+        "insightsGenerated": 108,
         "knowledgeGrowth": 0,
         "evolutionSteps": [
           "observe",
@@ -124,7 +124,7 @@
           "publish",
           "evolve"
         ],
-        "updatedAt": "2026-06-29T22:44:38.765Z"
+        "updatedAt": "2026-07-01T23:12:03.235Z"
       }
     },
     "knowledge_intelligence": {
@@ -134,7 +134,7 @@
       "service": "knowledgeIntelligenceDashboard",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {}
     },
     "research_knowledge": {
@@ -142,16 +142,16 @@
       "domain": "research",
       "name": "Research Knowledge Engine",
       "service": "researchKnowledgeEngine",
-      "itemCount": 569,
+      "itemCount": 907,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "findingsIndexed": 211,
-        "recommendationsGenerated": 358,
-        "knowledgePublished": 3,
-        "totalFindings": 211,
+        "findingsIndexed": 423,
+        "recommendationsGenerated": 484,
+        "knowledgePublished": 5,
+        "totalFindings": 423,
         "radarEntries": 18,
-        "updatedAt": "2026-06-29T22:43:47.132Z"
+        "updatedAt": "2026-07-01T23:12:10.426Z"
       }
     },
     "autonomous_knowledge_org": {
@@ -161,7 +161,7 @@
       "service": "autonomousKnowledgeOrg",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": [
         {
           "id": "ako_cko",
@@ -292,7 +292,7 @@
       "service": "continuousLearningEngine",
       "itemCount": 2003,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "recs": 8
       }
@@ -304,7 +304,7 @@
       "service": "engineeringMemoryEngine",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {}
     },
     "mission_memory": {
@@ -314,7 +314,7 @@
       "service": "missionMemory",
       "itemCount": 87,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "total": 87,
         "byStatus": {
@@ -350,7 +350,7 @@
       "service": "productionBibleEngine",
       "itemCount": 118,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "workflows": 118
       }
@@ -362,7 +362,7 @@
       "service": "founderWorkRegistry",
       "itemCount": 56,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {}
     },
     "engineering_rule_registry": {
@@ -372,7 +372,7 @@
       "service": "engineeringRuleRegistry",
       "itemCount": 10,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "total": 10,
         "autoApply": 8,
@@ -400,7 +400,7 @@
       "service": "selfImprovementEngine",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "patterns": 14
       }
@@ -412,7 +412,7 @@
       "service": "selfReviewEngine",
       "itemCount": 1,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "score": 79
       }
@@ -422,11 +422,11 @@
       "domain": "marketplace",
       "name": "Marketplace Catalog Engine",
       "service": "marketplaceCatalogEngine",
-      "itemCount": 447,
+      "itemCount": 477,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "published": 447
+        "published": 477
       }
     },
     "product_planner": {
@@ -434,12 +434,12 @@
       "domain": "product",
       "name": "Product Planner Engine",
       "service": "productPlannerEngine",
-      "itemCount": 46,
+      "itemCount": 55,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 46,
-        "completed": 46,
+        "total": 55,
+        "completed": 55,
         "PLAN_STEPS": [
           "receive_objective",
           "derive_requirements",
@@ -450,7 +450,7 @@
           "twin_review",
           "finalize"
         ],
-        "updatedAt": "2026-06-29T22:44:50.852Z"
+        "updatedAt": "2026-07-01T23:12:35.007Z"
       }
     },
     "customer_journey": {
@@ -460,7 +460,7 @@
       "service": "customerJourneyEngine",
       "itemCount": 28,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "total": 28,
         "byStage": {
@@ -485,7 +485,7 @@
           "medium": 1,
           "low": 0
         },
-        "updatedAt": "2026-06-29T22:44:44.065Z"
+        "updatedAt": "2026-07-01T23:12:16.627Z"
       }
     },
     "company_blueprint": {
@@ -495,22 +495,22 @@
       "service": "companyBlueprintEngine",
       "itemCount": 200,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
         "total": 200,
         "byTemplate": {
-          "agency": 20,
-          "ecommerce": 10,
-          "erp": 20,
-          "internal_tool": 10,
-          "saas": 65,
-          "education": 20,
+          "agency": 19,
+          "erp": 19,
+          "saas": 68,
+          "education": 19,
           "ai_product": 19,
           "healthcare": 18,
           "marketplace": 9,
-          "crm": 9
+          "ecommerce": 9,
+          "internal_tool": 9,
+          "crm": 11
         },
-        "updatedAt": "2026-06-29T22:44:51.167Z"
+        "updatedAt": "2026-07-01T23:12:31.503Z"
       }
     },
     "workforce_manager": {
@@ -520,15 +520,15 @@
       "service": "workforceManager",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "missionsRun": 168,
-        "teamsBuilt": 168,
+        "missionsRun": 180,
+        "teamsBuilt": 180,
         "teamsReplaced": 4,
-        "rebalances": 163,
-        "minutesSaved": 5415,
-        "autoAssigned": 361,
-        "updatedAt": "2026-06-28T20:20:18.111Z"
+        "rebalances": 175,
+        "minutesSaved": 5775,
+        "autoAssigned": 385,
+        "updatedAt": "2026-06-30T00:13:25.864Z"
       }
     },
     "engineering_reasoning": {
@@ -536,13 +536,13 @@
       "domain": "engineering",
       "name": "Engineering Reasoning Engine",
       "service": "engineeringReasoningEngine",
-      "itemCount": 336,
+      "itemCount": 24,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 336,
-        "avgReasoningScore": 80.4,
-        "updatedAt": "2026-06-29T22:42:31.858Z"
+        "total": 24,
+        "avgReasoningScore": 84.8,
+        "updatedAt": "2026-07-01T23:12:33.304Z"
       }
     },
     "business_reasoning": {
@@ -550,13 +550,13 @@
       "domain": "business",
       "name": "Business Reasoning Engine",
       "service": "businessReasoningEngine",
-      "itemCount": 330,
+      "itemCount": 8,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 330,
-        "avgScore": 51.6,
-        "updatedAt": "2026-06-29T22:43:36.552Z"
+        "total": 8,
+        "avgScore": 51.3,
+        "updatedAt": "2026-07-01T23:12:34.937Z"
       }
     },
     "digital_twin": {
@@ -566,15 +566,15 @@
       "service": "digitalTwinEngine",
       "itemCount": 0,
       "healthy": true,
-      "lastProbed": "2026-06-29T22:44:53.165Z",
+      "lastProbed": "2026-07-01T23:12:36.592Z",
       "meta": {
-        "total": 232,
-        "correct": 23,
-        "accuracy": 10,
+        "total": 267,
+        "correct": 25,
+        "accuracy": 9,
         "autoResolved": 0,
-        "founderRequired": 232,
+        "founderRequired": 267,
         "minutesSaved": 0,
-        "updatedAt": "2026-06-29T22:44:51.316Z"
+        "updatedAt": "2026-07-01T23:10:03.200Z"
       }
     }
   },
@@ -582,17 +582,17 @@
     "totalSources": 25,
     "healthySources": 25,
     "degradedSources": 0,
-    "totalItems": 4556,
+    "totalItems": 4582,
     "coveragePct": 100,
     "byDomain": {
       "engineering": {
         "sources": 13,
-        "items": 2675,
+        "items": 2646,
         "healthy": 13
       },
       "research": {
         "sources": 1,
-        "items": 569,
+        "items": 907,
         "healthy": 1
       },
       "knowledge": {
@@ -612,12 +612,12 @@
       },
       "marketplace": {
         "sources": 1,
-        "items": 447,
+        "items": 477,
         "healthy": 1
       },
       "product": {
         "sources": 1,
-        "items": 46,
+        "items": 55,
         "healthy": 1
       },
       "customer": {
@@ -627,7 +627,7 @@
       },
       "business": {
         "sources": 2,
-        "items": 530,
+        "items": 208,
         "healthy": 2
       },
       "workforce": {
@@ -642,6 +642,6 @@
       }
     }
   },
-  "lastFederated": "2026-06-29T22:44:53.165Z",
-  "updatedAt": "2026-06-29T22:44:53.210Z"
+  "lastFederated": "2026-07-01T23:12:36.592Z",
+  "updatedAt": "2026-07-01T23:12:36.989Z"
 }

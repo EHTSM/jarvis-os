@@ -57,7 +57,7 @@ const providers= require("../services/providerManager.cjs");
 const analytics= require("../services/costAnalytics.cjs");
 const billing  = require("../services/billingService");
 
-router.use(requireAuth);
+router.use("/commercial", requireAuth);
 
 function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {

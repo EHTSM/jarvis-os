@@ -637,6 +637,72 @@
       "openedAt": "2026-06-30T00:12:30.310Z",
       "closedAt": null,
       "title": null
+    },
+    "bc_1782947595244_7o0": {
+      "tabId": "bc_1782947595244_7o0",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-07-01T23:13:15.244Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782947595340_s1y": {
+      "tabId": "bc_1782947595340_s1y",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-07-01T23:13:15.340Z",
+      "closedAt": "2026-07-01T23:13:15.348Z",
+      "title": null
+    },
+    "bc_1782947693768_1cr": {
+      "tabId": "bc_1782947693768_1cr",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-07-01T23:14:53.769Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782947910894_4uk": {
+      "tabId": "bc_1782947910894_4uk",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "browserName": "Google Chrome",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-07-01T23:18:30.894Z",
+      "closedAt": null,
+      "title": null
+    },
+    "bc_1782947911143_pc9": {
+      "tabId": "bc_1782947911143_pc9",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "closed",
+      "openedAt": "2026-07-01T23:18:31.143Z",
+      "closedAt": "2026-07-01T23:18:31.271Z",
+      "title": null
+    },
+    "bc_1782948008602_0rd": {
+      "tabId": "bc_1782948008602_0rd",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "browserName": "Playwright (Chromium)",
+      "profileId": "default",
+      "status": "open",
+      "openedAt": "2026-07-01T23:20:08.858Z",
+      "closedAt": null,
+      "title": null
     }
   },
   "history": [
@@ -1697,13 +1763,291 @@
       "url": "https://facade.example.com",
       "browserId": "playwright_chromium",
       "ts": "2026-06-30T00:12:30.310Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot homepage"
+          }
+        ],
+        "context": "mesh_1782778457448"
+      },
+      "ts": "2026-06-30T00:14:17.451Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "take screenshot of homepage"
+          }
+        ],
+        "context": "mesh_1782778457494_fb7n"
+      },
+      "ts": "2026-06-30T00:14:17.496Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "check for errors"
+          }
+        ],
+        "context": "mesh_1782778457494_fb7n"
+      },
+      "ts": "2026-06-30T00:14:17.501Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "open browser"
+          }
+        ],
+        "context": "mesh_1782778457557_g7b4"
+      },
+      "ts": "2026-06-30T00:14:17.560Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot"
+          }
+        ],
+        "context": "mesh_1782778457557_g7b4"
+      },
+      "ts": "2026-06-30T00:14:17.565Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782947595244_7o0",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-07-01T23:13:15.325Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782947595244_7o0",
+      "url": "https://example.com",
+      "ts": "2026-07-01T23:13:15.337Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782947595340_s1y",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-07-01T23:13:15.340Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782947595340_s1y",
+      "ts": "2026-07-01T23:13:15.348Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782947595244_7o0",
+      "query": "test query",
+      "ts": "2026-07-01T23:13:15.353Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-07-01T23:13:16.833Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-07-01T23:13:16.859Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782947693768_1cr",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-07-01T23:14:53.769Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782947910894_4uk",
+      "url": "https://example.com",
+      "browserId": "chrome",
+      "ts": "2026-07-01T23:18:30.894Z"
+    },
+    {
+      "event": "switch_tab",
+      "tabId": "bc_1782947910894_4uk",
+      "url": "https://example.com",
+      "ts": "2026-07-01T23:18:31.010Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782947911143_pc9",
+      "url": "https://close-me.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-07-01T23:18:31.143Z"
+    },
+    {
+      "event": "close_tab",
+      "tabId": "bc_1782947911143_pc9",
+      "ts": "2026-07-01T23:18:31.271Z"
+    },
+    {
+      "event": "inspect_page",
+      "tabId": "bc_1782947910894_4uk",
+      "query": "test query",
+      "ts": "2026-07-01T23:18:31.415Z"
+    },
+    {
+      "event": "authenticate",
+      "service": "github",
+      "profileId": "default",
+      "ts": "2026-07-01T23:18:35.380Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": "Click Pay now and confirm payment",
+      "ts": "2026-07-01T23:18:35.414Z"
+    },
+    {
+      "event": "open_tab",
+      "tabId": "bc_1782948008602_0rd",
+      "url": "https://facade.example.com",
+      "browserId": "playwright_chromium",
+      "ts": "2026-07-01T23:20:08.858Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot homepage"
+          }
+        ],
+        "context": "mesh_1782948075901"
+      },
+      "ts": "2026-07-01T23:21:15.922Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "take screenshot of homepage"
+          }
+        ],
+        "context": "mesh_1782948076303_dh6b"
+      },
+      "ts": "2026-07-01T23:21:16.357Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "check for errors"
+          }
+        ],
+        "context": "mesh_1782948076303_dh6b"
+      },
+      "ts": "2026-07-01T23:21:16.400Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "open browser"
+          }
+        ],
+        "context": "mesh_1782948076626_segy"
+      },
+      "ts": "2026-07-01T23:21:16.635Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot"
+          }
+        ],
+        "context": "mesh_1782948076626_segy"
+      },
+      "ts": "2026-07-01T23:21:16.669Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot homepage"
+          }
+        ],
+        "context": "mesh_1782948316907"
+      },
+      "ts": "2026-07-01T23:25:16.973Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "take screenshot of homepage"
+          }
+        ],
+        "context": "mesh_1782948318362_uaz9"
+      },
+      "ts": "2026-07-01T23:25:18.416Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "check for errors"
+          }
+        ],
+        "context": "mesh_1782948318362_uaz9"
+      },
+      "ts": "2026-07-01T23:25:18.435Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "open browser"
+          }
+        ],
+        "context": "mesh_1782948318861_obyt"
+      },
+      "ts": "2026-07-01T23:25:18.867Z"
+    },
+    {
+      "event": "execute_workflow",
+      "intent": {
+        "steps": [
+          {
+            "action": "screenshot"
+          }
+        ],
+        "context": "mesh_1782948318861_obyt"
+      },
+      "ts": "2026-07-01T23:25:18.969Z"
     }
   ],
   "stats": {
-    "openTabs": 58,
-    "closedTabs": 19,
-    "screenshots": 108,
-    "workflows": 29,
-    "authentications": 19
+    "openTabs": 64,
+    "closedTabs": 21,
+    "screenshots": 126,
+    "workflows": 46,
+    "authentications": 21
   }
 }

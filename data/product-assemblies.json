@@ -3023,13 +3023,685 @@
       "createdAt": "2026-06-29T22:44:49.658Z",
       "updatedAt": "2026-06-29T22:44:51.320Z",
       "completedAt": "2026-06-29T22:44:51.320Z"
+    },
+    {
+      "id": "asm_1782947394916_37jt",
+      "planId": "pp_1782947388005_tsck",
+      "archId": "pa_1782947393932_b9ol",
+      "status": "completed",
+      "stages": {
+        "scaffold": {
+          "stage": "scaffold",
+          "startedAt": "2026-07-01T23:09:54.917Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "project_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:54.917Z"
+            },
+            {
+              "skill": "scaffolding",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:54.917Z"
+            },
+            {
+              "skill": "architecture_implementation",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:54.917Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:09:54.917Z"
+        },
+        "engineering": {
+          "stage": "engineering",
+          "startedAt": "2026-07-01T23:10:02.916Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "backend_development",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.916Z"
+            },
+            {
+              "skill": "api_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.916Z"
+            },
+            {
+              "skill": "database_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.916Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:02.917Z"
+        },
+        "design": {
+          "stage": "design",
+          "startedAt": "2026-07-01T23:10:03.074Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "ui_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.075Z"
+            },
+            {
+              "skill": "ux_review",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.075Z"
+            },
+            {
+              "skill": "accessibility",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.075Z"
+            },
+            {
+              "skill": "design_system",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.075Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:10:03.075Z"
+        },
+        "integration": {
+          "stage": "integration",
+          "startedAt": "2026-07-01T23:10:03.210Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "api_integration",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.210Z"
+            },
+            {
+              "skill": "webhook_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.210Z"
+            },
+            {
+              "skill": "third_party_services",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.210Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:03.210Z"
+        },
+        "testing": {
+          "stage": "testing",
+          "startedAt": "2026-07-01T23:10:03.215Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "unit_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "integration_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "e2e_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "performance",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:10:03.215Z"
+        },
+        "documentation": {
+          "stage": "documentation",
+          "startedAt": "2026-07-01T23:10:03.215Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "technical_writing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "api_docs",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "user_guides",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:03.215Z"
+        }
+      },
+      "minutesSaved": 200,
+      "companyId": null,
+      "workspaceId": null,
+      "createdAt": "2026-07-01T23:09:54.916Z",
+      "updatedAt": "2026-07-01T23:10:03.215Z",
+      "completedAt": "2026-07-01T23:10:03.215Z"
+    },
+    {
+      "id": "asm_1782947398012_7z9b",
+      "planId": "pp_1782947396070_ivoo",
+      "archId": "pa_1782947397043_9dda",
+      "status": "completed",
+      "stages": {
+        "scaffold": {
+          "stage": "scaffold",
+          "startedAt": "2026-07-01T23:09:58.012Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "project_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:58.012Z"
+            },
+            {
+              "skill": "scaffolding",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:58.012Z"
+            },
+            {
+              "skill": "architecture_implementation",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:09:58.012Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:09:58.012Z"
+        },
+        "engineering": {
+          "stage": "engineering",
+          "startedAt": "2026-07-01T23:10:02.956Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "backend_development",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.956Z"
+            },
+            {
+              "skill": "api_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.956Z"
+            },
+            {
+              "skill": "database_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:02.956Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:02.956Z"
+        },
+        "design": {
+          "stage": "design",
+          "startedAt": "2026-07-01T23:10:03.118Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "ui_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.118Z"
+            },
+            {
+              "skill": "ux_review",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.118Z"
+            },
+            {
+              "skill": "accessibility",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.118Z"
+            },
+            {
+              "skill": "design_system",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.118Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:10:03.118Z"
+        },
+        "integration": {
+          "stage": "integration",
+          "startedAt": "2026-07-01T23:10:03.214Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "api_integration",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.214Z"
+            },
+            {
+              "skill": "webhook_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.214Z"
+            },
+            {
+              "skill": "third_party_services",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.214Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:03.214Z"
+        },
+        "testing": {
+          "stage": "testing",
+          "startedAt": "2026-07-01T23:10:03.215Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "unit_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "integration_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "e2e_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "performance",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:10:03.215Z"
+        },
+        "documentation": {
+          "stage": "documentation",
+          "startedAt": "2026-07-01T23:10:03.215Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "technical_writing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "api_docs",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            },
+            {
+              "skill": "user_guides",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:10:03.215Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:10:03.215Z"
+        }
+      },
+      "minutesSaved": 200,
+      "companyId": null,
+      "workspaceId": null,
+      "createdAt": "2026-07-01T23:09:58.012Z",
+      "updatedAt": "2026-07-01T23:10:03.216Z",
+      "completedAt": "2026-07-01T23:10:03.216Z"
+    },
+    {
+      "id": "asm_1782947541073_ciqw",
+      "planId": "pp_1782947530046_q783",
+      "archId": "pa_1782947538774_efiq",
+      "status": "completed",
+      "stages": {
+        "scaffold": {
+          "stage": "scaffold",
+          "startedAt": "2026-07-01T23:12:21.073Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "project_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:21.073Z"
+            },
+            {
+              "skill": "scaffolding",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:21.073Z"
+            },
+            {
+              "skill": "architecture_implementation",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:21.073Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:21.073Z"
+        },
+        "engineering": {
+          "stage": "engineering",
+          "startedAt": "2026-07-01T23:12:44.465Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "backend_development",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:44.465Z"
+            },
+            {
+              "skill": "api_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:44.465Z"
+            },
+            {
+              "skill": "database_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:44.465Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:44.465Z"
+        },
+        "design": {
+          "stage": "design",
+          "startedAt": "2026-07-01T23:12:45.955Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "ui_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.955Z"
+            },
+            {
+              "skill": "ux_review",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.955Z"
+            },
+            {
+              "skill": "accessibility",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.955Z"
+            },
+            {
+              "skill": "design_system",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.955Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:12:45.955Z"
+        },
+        "integration": {
+          "stage": "integration",
+          "startedAt": "2026-07-01T23:12:46.611Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "api_integration",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.611Z"
+            },
+            {
+              "skill": "webhook_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.611Z"
+            },
+            {
+              "skill": "third_party_services",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.611Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:46.611Z"
+        },
+        "testing": {
+          "stage": "testing",
+          "startedAt": "2026-07-01T23:12:46.646Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "unit_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.646Z"
+            },
+            {
+              "skill": "integration_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.646Z"
+            },
+            {
+              "skill": "e2e_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.646Z"
+            },
+            {
+              "skill": "performance",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.646Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:12:46.646Z"
+        },
+        "documentation": {
+          "stage": "documentation",
+          "startedAt": "2026-07-01T23:12:46.655Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "technical_writing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "api_docs",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "user_guides",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:46.655Z"
+        }
+      },
+      "minutesSaved": 200,
+      "companyId": null,
+      "workspaceId": null,
+      "createdAt": "2026-07-01T23:12:21.073Z",
+      "updatedAt": "2026-07-01T23:12:46.655Z",
+      "completedAt": "2026-07-01T23:12:46.655Z"
+    },
+    {
+      "id": "asm_1782947551948_56js",
+      "planId": "pp_1782947546196_lbvm",
+      "archId": "pa_1782947549031_c90p",
+      "status": "completed",
+      "stages": {
+        "scaffold": {
+          "stage": "scaffold",
+          "startedAt": "2026-07-01T23:12:31.948Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "project_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:31.948Z"
+            },
+            {
+              "skill": "scaffolding",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:31.948Z"
+            },
+            {
+              "skill": "architecture_implementation",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:31.948Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:31.948Z"
+        },
+        "engineering": {
+          "stage": "engineering",
+          "startedAt": "2026-07-01T23:12:45.197Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "backend_development",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.197Z"
+            },
+            {
+              "skill": "api_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.197Z"
+            },
+            {
+              "skill": "database_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:45.197Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:45.197Z"
+        },
+        "design": {
+          "stage": "design",
+          "startedAt": "2026-07-01T23:12:46.292Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "ui_design",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.292Z"
+            },
+            {
+              "skill": "ux_review",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.292Z"
+            },
+            {
+              "skill": "accessibility",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.292Z"
+            },
+            {
+              "skill": "design_system",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.292Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:12:46.292Z"
+        },
+        "integration": {
+          "stage": "integration",
+          "startedAt": "2026-07-01T23:12:46.645Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "api_integration",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.645Z"
+            },
+            {
+              "skill": "webhook_setup",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.645Z"
+            },
+            {
+              "skill": "third_party_services",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.645Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:46.645Z"
+        },
+        "testing": {
+          "stage": "testing",
+          "startedAt": "2026-07-01T23:12:46.655Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "unit_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "integration_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "e2e_testing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "performance",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            }
+          ],
+          "minutesSaved": 40,
+          "completedAt": "2026-07-01T23:12:46.655Z"
+        },
+        "documentation": {
+          "stage": "documentation",
+          "startedAt": "2026-07-01T23:12:46.655Z",
+          "ok": true,
+          "tasks": [
+            {
+              "skill": "technical_writing",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "api_docs",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            },
+            {
+              "skill": "user_guides",
+              "status": "completed",
+              "completedAt": "2026-07-01T23:12:46.655Z"
+            }
+          ],
+          "minutesSaved": 30,
+          "completedAt": "2026-07-01T23:12:46.655Z"
+        }
+      },
+      "minutesSaved": 200,
+      "companyId": null,
+      "workspaceId": null,
+      "createdAt": "2026-07-01T23:12:31.948Z",
+      "updatedAt": "2026-07-01T23:12:46.683Z",
+      "completedAt": "2026-07-01T23:12:46.683Z"
     }
   ],
   "stats": {
-    "total": 18,
-    "completed": 18,
+    "total": 22,
+    "completed": 22,
     "inProgress": 0,
-    "minutesSaved": 3600
+    "minutesSaved": 4400
   },
-  "updatedAt": "2026-06-29T22:44:51.320Z"
+  "updatedAt": "2026-07-01T23:12:46.699Z"
 }

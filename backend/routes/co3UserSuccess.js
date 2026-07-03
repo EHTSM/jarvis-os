@@ -7,7 +7,7 @@ const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const svc = require("../services/co3UserSuccess.cjs");
 
-router.use(requireAuth);
+router.use("/co3", requireAuth);
 
 function _ok(res, data)    { res.json({ ok: true, ...data }); }
 function _err(res, e, c)   { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

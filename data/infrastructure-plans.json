@@ -19,10 +19,10 @@
       ],
       "status": "executed",
       "createdAt": "2026-06-29T17:30:07.407Z",
-      "executedAt": "2026-06-29T22:46:05.945Z"
+      "executedAt": "2026-07-01T23:14:02.255Z"
     },
     {
-      "id": "ip_1782773167203_sek2",
+      "id": "ip_1782947657860_dt2v",
       "type": "redundancy",
       "priority": "high",
       "title": "Infrastructure reliability below threshold (75/100)",
@@ -39,11 +39,11 @@
         "all"
       ],
       "status": "pending",
-      "createdAt": "2026-06-29T22:46:07.203Z",
+      "createdAt": "2026-07-01T23:14:17.860Z",
       "executedAt": null
     },
     {
-      "id": "ip_1782773167203_21w4",
+      "id": "ip_1782947657860_pmwc",
       "type": "scaling",
       "priority": "medium",
       "title": "Infrastructure scalability below threshold (65/100)",
@@ -61,7 +61,7 @@
         "database"
       ],
       "status": "pending",
-      "createdAt": "2026-06-29T22:46:07.203Z",
+      "createdAt": "2026-07-01T23:14:17.860Z",
       "executedAt": null
     },
     {
@@ -168,26 +168,215 @@
       "status": "pending",
       "createdAt": "2026-06-29T22:46:07.203Z",
       "executedAt": null
+    },
+    {
+      "id": "ip_1782778465480_ugjc",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 7 degraded infrastructure resources",
+      "rationale": "7 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-06-30T00:14:25.480Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782778466917_e970",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 8 degraded infrastructure resources",
+      "rationale": "8 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-06-30T00:14:26.917Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782778467934_q3un",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 9 degraded infrastructure resources",
+      "rationale": "9 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-06-30T00:14:27.934Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947407529_0554",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 10 degraded infrastructure resources",
+      "rationale": "10 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:10:07.533Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947409498_51dp",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 11 degraded infrastructure resources",
+      "rationale": "11 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:10:09.498Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947411500_saxj",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 12 degraded infrastructure resources",
+      "rationale": "12 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:10:11.500Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947634872_0cii",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 13 degraded infrastructure resources",
+      "rationale": "13 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:13:54.872Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947651226_w35d",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 14 degraded infrastructure resources",
+      "rationale": "14 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:14:11.226Z",
+      "executedAt": null
+    },
+    {
+      "id": "ip_1782947657860_m56k",
+      "type": "redundancy",
+      "priority": "critical",
+      "title": "Restore 15 degraded infrastructure resources",
+      "rationale": "15 resource(s) in degraded status detected. Immediate redundancy or recovery required.",
+      "actions": [
+        "run_health_scan",
+        "isolate_degraded",
+        "route_to_healthy",
+        "alert_operator"
+      ],
+      "estimatedCost": 0,
+      "estimatedImpact": "restore_availability",
+      "resourceTypes": [
+        "all"
+      ],
+      "status": "pending",
+      "createdAt": "2026-07-01T23:14:17.860Z",
+      "executedAt": null
     }
   ],
   "stats": {
-    "total": 8,
+    "total": 17,
     "byType": {
       "scaling": 1,
       "consolidation": 0,
-      "redundancy": 7,
+      "redundancy": 16,
       "cost_reduction": 0,
       "security": 0,
       "migration": 0,
       "upgrade": 0
     },
     "byPriority": {
-      "critical": 6,
+      "critical": 15,
       "high": 1,
       "medium": 1,
       "low": 0
     },
     "executed": 1
   },
-  "updatedAt": "2026-06-29T22:46:07.203Z"
+  "updatedAt": "2026-07-01T23:14:17.860Z"
 }

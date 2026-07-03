@@ -1,4205 +1,2135 @@
 [
   {
-    "taskId": "t-mqzf9eww",
+    "taskId": "t-mr2pfx0q",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.481Z"
+    "deadAt": "2026-07-01T23:26:38.571Z"
   },
   {
-    "taskId": "t-mqzf9ewy",
+    "taskId": "t-mr2pfx16",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.482Z"
+    "deadAt": "2026-07-01T23:26:38.587Z"
   },
   {
-    "taskId": "t-mqzf9ewy",
+    "taskId": "t-mr2pfx1e",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.482Z"
+    "deadAt": "2026-07-01T23:26:38.604Z"
   },
   {
-    "taskId": "t-mqzf9e5i",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "dlq-wf9-1782948429558",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
     "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.497Z"
+    "deadAt": "2026-07-01T23:27:09.559Z"
   },
   {
-    "taskId": "t-mqzf9e68",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.522Z"
-  },
-  {
-    "taskId": "t-mqzf9ezm",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.579Z"
-  },
-  {
-    "taskId": "t-mqzf9ezq",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.583Z"
-  },
-  {
-    "taskId": "t-mqzf9ezr",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.584Z"
-  },
-  {
-    "taskId": "t-mqzf9ezs",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.584Z"
-  },
-  {
-    "taskId": "t-mqzf9ezs",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.584Z"
-  },
-  {
-    "taskId": "t-mqzf9ezt",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.585Z"
-  },
-  {
-    "taskId": "t-mqzf9e87",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.593Z"
-  },
-  {
-    "taskId": "t-mqzf9f02",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.594Z"
-  },
-  {
-    "taskId": "t-mqzf9f02",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.594Z"
-  },
-  {
-    "taskId": "t-mqzf9f03",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.595Z"
-  },
-  {
-    "taskId": "t-mqzf9f03",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.595Z"
-  },
-  {
-    "taskId": "t-mqzf9f03",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.595Z"
-  },
-  {
-    "taskId": "t-mqzf9e9q",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.651Z"
-  },
-  {
-    "taskId": "t-mqzf9f1q",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.655Z"
-  },
-  {
-    "taskId": "t-mqzf9f1r",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.656Z"
-  },
-  {
-    "taskId": "t-mqzf9f1s",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.657Z"
-  },
-  {
-    "taskId": "t-mqzf9e9y",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.658Z"
-  },
-  {
-    "taskId": "t-mqzf9f1u",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.658Z"
-  },
-  {
-    "taskId": "t-mqzf9f1v",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.659Z"
-  },
-  {
-    "taskId": "t-mqzf9f1w",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.660Z"
-  },
-  {
-    "taskId": "t-mqzf9f1w",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.660Z"
-  },
-  {
-    "taskId": "t-mqzf9f1w",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.661Z"
-  },
-  {
-    "taskId": "t-mqzf9f1x",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.661Z"
-  },
-  {
-    "taskId": "t-mqzf9ecw",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.762Z"
-  },
-  {
-    "taskId": "t-mqzf9ed2",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.768Z"
-  },
-  {
-    "taskId": "t-mqzf9f4x",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.769Z"
-  },
-  {
-    "taskId": "t-mqzf9f4y",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.770Z"
-  },
-  {
-    "taskId": "t-mqzf9f4y",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.770Z"
-  },
-  {
-    "taskId": "t-mqzf9f4y",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.770Z"
-  },
-  {
-    "taskId": "t-mqzf9f4z",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:20.771Z"
-  },
-  {
-    "taskId": "t-mqzf9ek1",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.020Z"
-  },
-  {
-    "taskId": "t-mqzf9fbw",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.021Z"
-  },
-  {
-    "taskId": "t-mqzf9fbx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.021Z"
-  },
-  {
-    "taskId": "t-mqzf9fbx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.021Z"
-  },
-  {
-    "taskId": "t-mqzf9fby",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.022Z"
-  },
-  {
-    "taskId": "t-mqzf9fby",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.022Z"
-  },
-  {
-    "taskId": "t-mqzf9ek9",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.026Z"
-  },
-  {
-    "taskId": "t-mqzf9fc3",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.027Z"
-  },
-  {
-    "taskId": "t-mqzf9fc3",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.027Z"
-  },
-  {
-    "taskId": "t-mqzf9fc4",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.028Z"
-  },
-  {
-    "taskId": "t-mqzf9fc4",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.028Z"
-  },
-  {
-    "taskId": "t-mqzf9fc5",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.029Z"
-  },
-  {
-    "taskId": "t-mqzf9ekz",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.053Z"
-  },
-  {
-    "taskId": "t-mqzf9fcu",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.054Z"
-  },
-  {
-    "taskId": "t-mqzf9fcu",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.054Z"
-  },
-  {
-    "taskId": "t-mqzf9fcv",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.055Z"
-  },
-  {
-    "taskId": "t-mqzf9fcv",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.055Z"
-  },
-  {
-    "taskId": "t-mqzf9fcx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.057Z"
-  },
-  {
-    "taskId": "t-mqzf9ewt",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.479Z"
-  },
-  {
-    "taskId": "t-mqzf9foo",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.481Z"
-  },
-  {
-    "taskId": "t-mqzf9fop",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.481Z"
-  },
-  {
-    "taskId": "t-mqzf9fop",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.482Z"
-  },
-  {
-    "taskId": "t-mqzf9foq",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.482Z"
-  },
-  {
-    "taskId": "t-mqzf9for",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.483Z"
-  },
-  {
-    "taskId": "t-mqzf9f4r",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.764Z"
-  },
-  {
-    "taskId": "t-mqzf9fwl",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.765Z"
-  },
-  {
-    "taskId": "t-mqzf9fwl",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.765Z"
-  },
-  {
-    "taskId": "t-mqzf9fwo",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.768Z"
-  },
-  {
-    "taskId": "t-mqzf9fwo",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.768Z"
-  },
-  {
-    "taskId": "t-mqzf9fwp",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:21.769Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:27.695Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:18:46.325Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:30:59.838Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:48:40.524Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:05.233Z"
-  },
-  {
-    "taskId": "t-mqzgeft5",
+    "taskId": "t-mr2pgong",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:15.541Z"
+    "deadAt": "2026-07-01T23:27:15.383Z"
   },
   {
-    "taskId": "t-mqzgegl2",
+    "taskId": "t-mr2pgpk3",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:16.544Z"
+    "deadAt": "2026-07-01T23:27:16.567Z"
   },
   {
-    "taskId": "t-mqzgehax",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.475Z"
-  },
-  {
-    "taskId": "t-mqzgehcx",
+    "taskId": "t-mr2pgqc8",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.548Z"
+    "deadAt": "2026-07-01T23:27:17.572Z"
   },
   {
-    "taskId": "t-mqzgei4t",
+    "taskId": "t-mr2pgram",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.549Z"
+    "deadAt": "2026-07-01T23:27:17.812Z"
   },
   {
-    "taskId": "t-mqzgei4t",
+    "taskId": "t-mr2pgrat",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.549Z"
+    "deadAt": "2026-07-01T23:27:17.814Z"
   },
   {
-    "taskId": "t-mqzgei4u",
+    "taskId": "t-mr2pgrau",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.550Z"
+    "deadAt": "2026-07-01T23:27:17.816Z"
   },
   {
-    "taskId": "t-mqzgei4u",
+    "taskId": "t-mr2pgrb0",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.550Z"
+    "deadAt": "2026-07-01T23:27:17.820Z"
   },
   {
-    "taskId": "t-mqzgei4u",
+    "taskId": "t-mr2pgrb2",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:17.550Z"
+    "deadAt": "2026-07-01T23:27:17.823Z"
   },
   {
-    "taskId": "t-mqzgei2s",
+    "taskId": "t-mr2ph5ej",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-01T23:27:37.099Z"
+  },
+  {
+    "taskId": "t-mr2ph6to",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:18.478Z"
+    "deadAt": "2026-07-01T23:27:38.940Z"
   },
   {
-    "taskId": "t-mqzgeiun",
+    "taskId": "t-mr2ph7r7",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.482Z"
+    "deadAt": "2026-07-01T23:27:40.142Z"
   },
   {
-    "taskId": "t-mqzgejmj",
+    "taskId": "t-mr2ph8jw",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.483Z"
+    "deadAt": "2026-07-01T23:27:40.172Z"
   },
   {
-    "taskId": "t-mqzgejmj",
+    "taskId": "t-mr2ph8jw",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.484Z"
+    "deadAt": "2026-07-01T23:27:40.172Z"
   },
   {
-    "taskId": "t-mqzgejmk",
+    "taskId": "t-mr2ph8jw",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.484Z"
+    "deadAt": "2026-07-01T23:27:40.173Z"
   },
   {
-    "taskId": "t-mqzgejmk",
+    "taskId": "t-mr2ph8jx",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.484Z"
+    "deadAt": "2026-07-01T23:27:40.173Z"
   },
   {
-    "taskId": "t-mqzgejmk",
+    "taskId": "t-mr2ph8jx",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.485Z"
+    "deadAt": "2026-07-01T23:27:40.173Z"
   },
   {
-    "taskId": "t-mqzgeizx",
+    "taskId": "t-mr2phx2p",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:19.672Z"
+    "deadAt": "2026-07-01T23:28:12.957Z"
   },
   {
-    "taskId": "t-mqzgejrw",
+    "taskId": "t-mr2phy8t",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:20.679Z"
+    "deadAt": "2026-07-01T23:28:14.483Z"
   },
   {
-    "taskId": "t-mqzgekjr",
+    "taskId": "t-mr2pi07d",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.681Z"
+    "deadAt": "2026-07-01T23:28:17.012Z"
   },
   {
-    "taskId": "t-mqzgelbm",
+    "taskId": "t-mr2pi159",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.682Z"
+    "deadAt": "2026-07-01T23:28:17.229Z"
   },
   {
-    "taskId": "t-mqzgelbn",
+    "taskId": "t-mr2pi15a",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.683Z"
+    "deadAt": "2026-07-01T23:28:17.236Z"
   },
   {
-    "taskId": "t-mqzgelbn",
+    "taskId": "t-mr2pi15j",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.683Z"
+    "deadAt": "2026-07-01T23:28:17.239Z"
   },
   {
-    "taskId": "t-mqzgelbn",
+    "taskId": "t-mr2pi15k",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.684Z"
+    "deadAt": "2026-07-01T23:28:17.240Z"
   },
   {
-    "taskId": "t-mqzgelbo",
+    "taskId": "t-mr2pi15k",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:21.684Z"
+    "deadAt": "2026-07-01T23:28:17.240Z"
   },
   {
-    "taskId": "t-mqzgekw3",
+    "taskId": "t-mr2pi18a",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:22.126Z"
+    "deadAt": "2026-07-01T23:28:18.341Z"
   },
   {
-    "taskId": "t-mqzgelol",
+    "taskId": "t-mr2pi208",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:23.151Z"
+    "deadAt": "2026-07-01T23:28:19.347Z"
   },
   {
-    "taskId": "t-mqzgemgg",
+    "taskId": "t-mr2pi3vd",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.155Z"
+    "deadAt": "2026-07-01T23:28:21.772Z"
   },
   {
-    "taskId": "t-mqzgen8b",
+    "taskId": "t-mr2pi4ni",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.156Z"
+    "deadAt": "2026-07-01T23:28:21.778Z"
   },
   {
-    "taskId": "t-mqzgen8c",
+    "taskId": "t-mr2pi4nm",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.156Z"
+    "deadAt": "2026-07-01T23:28:21.802Z"
   },
   {
-    "taskId": "t-mqzgen8c",
+    "taskId": "t-mr2pi4og",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.156Z"
+    "deadAt": "2026-07-01T23:28:21.834Z"
   },
   {
-    "taskId": "t-mqzgen8d",
+    "taskId": "t-mr2pi4pa",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.157Z"
+    "deadAt": "2026-07-01T23:28:21.858Z"
   },
   {
-    "taskId": "t-mqzgen8d",
+    "taskId": "t-mr2pi4tk",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.157Z"
+    "deadAt": "2026-07-01T23:28:21.992Z"
   },
   {
-    "taskId": "t-mqzgemrh",
+    "taskId": "t-mr2pjcy8",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:24.552Z"
+    "deadAt": "2026-07-01T23:29:20.195Z"
   },
   {
-    "taskId": "t-mqzgenjd",
+    "taskId": "t-mr2pjdv9",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:25.555Z"
+    "deadAt": "2026-07-01T23:29:21.375Z"
   },
   {
-    "taskId": "t-mqzgeob8",
+    "taskId": "t-mr2pjen8",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.559Z"
+    "deadAt": "2026-07-01T23:29:22.382Z"
   },
   {
-    "taskId": "t-mqzgep33",
+    "taskId": "t-mr2pjff4",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.560Z"
+    "deadAt": "2026-07-01T23:29:22.651Z"
   },
   {
-    "taskId": "t-mqzgep34",
+    "taskId": "t-mr2pjfmk",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.560Z"
+    "deadAt": "2026-07-01T23:29:22.654Z"
   },
   {
-    "taskId": "t-mqzgep34",
+    "taskId": "t-mr2pjfmn",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.560Z"
+    "deadAt": "2026-07-01T23:29:22.658Z"
   },
   {
-    "taskId": "t-mqzgep35",
+    "taskId": "t-mr2pjfmq",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.561Z"
+    "deadAt": "2026-07-01T23:29:22.665Z"
   },
   {
-    "taskId": "t-mqzgep35",
+    "taskId": "t-mr2pjfmy",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:26.561Z"
+    "deadAt": "2026-07-01T23:29:22.667Z"
   },
   {
-    "taskId": "t-mqzgeot9",
+    "taskId": "t-mr2pjwp0",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:27.207Z"
+    "deadAt": "2026-07-01T23:29:45.779Z"
   },
   {
-    "taskId": "t-mqzgepl9",
+    "taskId": "t-mr2pjxh1",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:28.215Z"
+    "deadAt": "2026-07-01T23:29:46.793Z"
   },
   {
-    "taskId": "t-mqzgeqd3",
+    "taskId": "t-mr2pjy9c",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.217Z"
+    "deadAt": "2026-07-01T23:29:47.809Z"
   },
   {
-    "taskId": "t-mqzger4y",
+    "taskId": "t-mr2pjz1h",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.218Z"
+    "deadAt": "2026-07-01T23:29:47.813Z"
   },
   {
-    "taskId": "t-mqzger4z",
+    "taskId": "t-mr2pjz1i",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.219Z"
+    "deadAt": "2026-07-01T23:29:47.814Z"
   },
   {
-    "taskId": "t-mqzger4z",
+    "taskId": "t-mr2pjz1j",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.219Z"
+    "deadAt": "2026-07-01T23:29:47.815Z"
   },
   {
-    "taskId": "t-mqzger4z",
+    "taskId": "t-mr2pjz1j",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.219Z"
+    "deadAt": "2026-07-01T23:29:47.816Z"
   },
   {
-    "taskId": "t-mqzger4z",
+    "taskId": "t-mr2pjz1k",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.220Z"
+    "deadAt": "2026-07-01T23:29:47.816Z"
   },
   {
-    "taskId": "t-mqzgeqy9",
+    "taskId": "t-mr2pk1ka",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:29.981Z"
+    "deadAt": "2026-07-01T23:29:52.098Z"
   },
   {
-    "taskId": "t-mqzgerq5",
+    "taskId": "t-mr2pk2ck",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:30.985Z"
+    "deadAt": "2026-07-01T23:29:53.133Z"
   },
   {
-    "taskId": "t-mqzgesi2",
+    "taskId": "t-mr2pk35t",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.988Z"
+    "deadAt": "2026-07-01T23:29:54.163Z"
   },
   {
-    "taskId": "t-mqzget9x",
+    "taskId": "t-mr2pk3xz",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.989Z"
+    "deadAt": "2026-07-01T23:29:54.169Z"
   },
   {
-    "taskId": "t-mqzget9y",
+    "taskId": "t-mr2pk3y2",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.990Z"
+    "deadAt": "2026-07-01T23:29:54.170Z"
   },
   {
-    "taskId": "t-mqzget9y",
+    "taskId": "t-mr2pk3y4",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.990Z"
+    "deadAt": "2026-07-01T23:29:54.173Z"
   },
   {
-    "taskId": "t-mqzget9z",
+    "taskId": "t-mr2pk3y6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.991Z"
+    "deadAt": "2026-07-01T23:29:54.174Z"
   },
   {
-    "taskId": "t-mqzget9z",
+    "taskId": "t-mr2pk3y7",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:31.991Z"
+    "deadAt": "2026-07-01T23:29:54.175Z"
   },
   {
-    "taskId": "t-mqzgetkf",
+    "taskId": "t-mr2pk9ik",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:33.369Z"
+    "deadAt": "2026-07-01T23:30:02.402Z"
   },
   {
-    "taskId": "t-mqzgeuca",
+    "taskId": "t-mr2pkaax",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:34.372Z"
+    "deadAt": "2026-07-01T23:30:03.412Z"
   },
   {
-    "taskId": "t-mqzgev45",
+    "taskId": "t-mr2pkb2t",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.376Z"
+    "deadAt": "2026-07-01T23:30:04.415Z"
   },
   {
-    "taskId": "t-mqzgevw1",
+    "taskId": "t-mr2pkbun",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.377Z"
+    "deadAt": "2026-07-01T23:30:04.475Z"
   },
   {
-    "taskId": "t-mqzgevw2",
+    "taskId": "t-mr2pkbwb",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.378Z"
+    "deadAt": "2026-07-01T23:30:04.611Z"
   },
   {
-    "taskId": "t-mqzgevw3",
+    "taskId": "t-mr2pkc03",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.379Z"
+    "deadAt": "2026-07-01T23:30:04.635Z"
   },
   {
-    "taskId": "t-mqzgevw3",
+    "taskId": "t-mr2pkc0s",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.379Z"
+    "deadAt": "2026-07-01T23:30:04.651Z"
   },
   {
-    "taskId": "t-mqzgevw3",
+    "taskId": "t-mr2pkc17",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:35.380Z"
+    "deadAt": "2026-07-01T23:30:04.667Z"
   },
   {
-    "taskId": "t-mqzgew0f",
+    "taskId": "t-mr2pkv5d",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:36.537Z"
+    "deadAt": "2026-07-01T23:30:30.431Z"
   },
   {
-    "taskId": "t-mqzgews9",
+    "taskId": "t-mr2pkw55",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:37.540Z"
+    "deadAt": "2026-07-01T23:30:31.717Z"
   },
   {
-    "taskId": "t-mqzgexk5",
+    "taskId": "t-mr2pkwx4",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.543Z"
+    "deadAt": "2026-07-01T23:30:32.722Z"
   },
   {
-    "taskId": "t-mqzgeyc0",
+    "taskId": "t-mr2pkxoz",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.544Z"
+    "deadAt": "2026-07-01T23:30:32.755Z"
   },
   {
-    "taskId": "t-mqzgeyc1",
+    "taskId": "t-mr2pkxpw",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.545Z"
+    "deadAt": "2026-07-01T23:30:32.780Z"
   },
   {
-    "taskId": "t-mqzgeyc1",
+    "taskId": "t-mr2pkxql",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.545Z"
+    "deadAt": "2026-07-01T23:30:32.820Z"
   },
   {
-    "taskId": "t-mqzgeyc1",
+    "taskId": "t-mr2pkxro",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.545Z"
+    "deadAt": "2026-07-01T23:30:32.852Z"
   },
   {
-    "taskId": "t-mqzgeyc2",
+    "taskId": "t-mr2pkxsk",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:38.546Z"
+    "deadAt": "2026-07-01T23:30:32.891Z"
   },
   {
-    "taskId": "t-mqzgeyuo",
+    "taskId": "t-mr2pkywo",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:40.218Z"
+    "deadAt": "2026-07-01T23:30:35.298Z"
   },
   {
-    "taskId": "t-mqzgezmi",
+    "taskId": "t-mr2pkzoj",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:41.221Z"
+    "deadAt": "2026-07-01T23:30:36.300Z"
   },
   {
-    "taskId": "t-mqzgf08r",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.021Z"
-  },
-  {
-    "taskId": "t-mqzgf0ed",
+    "taskId": "t-mr2pl0gd",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.223Z"
+    "deadAt": "2026-07-01T23:30:37.302Z"
   },
   {
-    "taskId": "t-mqzgf168",
+    "taskId": "t-mr2pl186",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.224Z"
+    "deadAt": "2026-07-01T23:30:37.321Z"
   },
   {
-    "taskId": "t-mqzgf168",
+    "taskId": "t-mr2pl18p",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.224Z"
+    "deadAt": "2026-07-01T23:30:37.339Z"
   },
   {
-    "taskId": "t-mqzgf169",
+    "taskId": "t-mr2pl197",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.225Z"
+    "deadAt": "2026-07-01T23:30:37.368Z"
   },
   {
-    "taskId": "t-mqzgf169",
+    "taskId": "t-mr2pl1a0",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.225Z"
+    "deadAt": "2026-07-01T23:30:37.395Z"
   },
   {
-    "taskId": "t-mqzgf169",
+    "taskId": "t-mr2pl1ar",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:42.225Z"
+    "deadAt": "2026-07-01T23:30:37.421Z"
   },
   {
-    "taskId": "t-mqzgf10l",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "dlq-wf9-1782949193022",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:43.023Z"
+    "deadAt": "2026-07-01T23:39:53.028Z"
   },
   {
-    "taskId": "t-mqzgf1k1",
+    "taskId": "t-mr2pwyo5",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:43.723Z"
+    "deadAt": "2026-07-01T23:39:54.866Z"
   },
   {
-    "taskId": "t-mqzgf1sg",
+    "taskId": "t-mr2pwzjs",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-01T23:39:56.007Z"
+  },
+  {
+    "taskId": "t-mr2px0s7",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.028Z"
+    "deadAt": "2026-07-01T23:39:57.602Z"
   },
   {
-    "taskId": "t-mqzgf2kd",
+    "taskId": "t-mr2px1w3",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.029Z"
+    "deadAt": "2026-07-01T23:39:58.035Z"
   },
   {
-    "taskId": "t-mqzgf2ke",
+    "taskId": "t-mr2px1w4",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.030Z"
+    "deadAt": "2026-07-01T23:39:58.036Z"
   },
   {
-    "taskId": "t-mqzgf2ke",
+    "taskId": "t-mr2px1w4",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.030Z"
+    "deadAt": "2026-07-01T23:39:58.037Z"
   },
   {
-    "taskId": "t-mqzgf2ke",
+    "taskId": "t-mr2px1w5",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.031Z"
+    "deadAt": "2026-07-01T23:39:58.037Z"
   },
   {
-    "taskId": "t-mqzgf2kf",
+    "taskId": "t-mr2px1w6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.031Z"
+    "deadAt": "2026-07-01T23:39:58.039Z"
   },
   {
-    "taskId": "t-mqzgf2bw",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:44.725Z"
-  },
-  {
-    "taskId": "t-mqzgf31q",
+    "taskId": "t-mr2py5zg",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.659Z"
+    "deadAt": "2026-07-01T23:40:51.000Z"
   },
   {
-    "taskId": "t-mqzgf33q",
+    "taskId": "t-mr2py725",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-01T23:40:52.392Z"
+  },
+  {
+    "taskId": "t-mr2py83n",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.728Z"
+    "deadAt": "2026-07-01T23:40:53.741Z"
   },
   {
-    "taskId": "t-mqzgf3vl",
+    "taskId": "t-mr2py96l",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.730Z"
+    "deadAt": "2026-07-01T23:40:54.142Z"
   },
   {
-    "taskId": "t-mqzgf3vn",
+    "taskId": "t-mr2py96n",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.731Z"
+    "deadAt": "2026-07-01T23:40:54.143Z"
   },
   {
-    "taskId": "t-mqzgf3vn",
+    "taskId": "t-mr2py96o",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.731Z"
+    "deadAt": "2026-07-01T23:40:54.144Z"
   },
   {
-    "taskId": "t-mqzgf3vn",
+    "taskId": "t-mr2py96u",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.732Z"
+    "deadAt": "2026-07-01T23:40:54.150Z"
   },
   {
-    "taskId": "t-mqzgf3vo",
+    "taskId": "t-mr2py96v",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:45.732Z"
+    "deadAt": "2026-07-01T23:40:54.151Z"
   },
   {
-    "taskId": "t-mqzgf3to",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1782949278209_9edic",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:46.663Z"
+    "deadAt": "2026-07-01T23:41:18.216Z"
   },
   {
-    "taskId": "t-mqzgf4l3",
+    "taskId": "dlq-wf9-1782949344347",
+    "taskType": "wf9-dlq",
+    "input": "dlq test",
+    "error": "test error",
+    "attempts": 3,
+    "agentId": null,
+    "deadAt": "2026-07-01T23:42:24.350Z"
+  },
+  {
+    "taskId": "t-mr2vky8f",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.649Z"
+    "deadAt": "2026-07-02T02:18:32.124Z"
   },
   {
-    "taskId": "t-mqzgf4lk",
+    "taskId": "t-mr2vkz0d",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T02:18:33.131Z"
+  },
+  {
+    "taskId": "t-mr2vkzsc",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.667Z"
+    "deadAt": "2026-07-02T02:18:34.134Z"
   },
   {
-    "taskId": "t-mqzgf5dg",
+    "taskId": "t-mr2vl0k8",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.668Z"
+    "deadAt": "2026-07-02T02:18:34.137Z"
   },
   {
-    "taskId": "t-mqzgf5dg",
+    "taskId": "t-mr2vl0k9",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.668Z"
+    "deadAt": "2026-07-02T02:18:34.138Z"
   },
   {
-    "taskId": "t-mqzgf5dh",
+    "taskId": "t-mr2vl0ka",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.669Z"
+    "deadAt": "2026-07-02T02:18:34.139Z"
   },
   {
-    "taskId": "t-mqzgf5dh",
+    "taskId": "t-mr2vl0kb",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.669Z"
+    "deadAt": "2026-07-02T02:18:34.140Z"
   },
   {
-    "taskId": "t-mqzgf5di",
+    "taskId": "t-mr2vl0kc",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:47.670Z"
+    "deadAt": "2026-07-02T02:18:34.141Z"
   },
   {
-    "taskId": "t-mqzgf5cx",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:48.653Z"
-  },
-  {
-    "taskId": "t-mqzgf5yl",
+    "taskId": "t-mr2w1zsi",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.433Z"
+    "deadAt": "2026-07-02T02:31:47.292Z"
   },
   {
-    "taskId": "t-mqzgf64u",
+    "taskId": "t-mr2w20kf",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T02:31:48.298Z"
+  },
+  {
+    "taskId": "t-mr2w21ca",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.657Z"
+    "deadAt": "2026-07-02T02:31:49.301Z"
   },
   {
-    "taskId": "t-mqzgf6wp",
+    "taskId": "t-mr2w2246",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.658Z"
+    "deadAt": "2026-07-02T02:31:49.302Z"
   },
   {
-    "taskId": "t-mqzgf6wq",
+    "taskId": "t-mr2w2246",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.658Z"
+    "deadAt": "2026-07-02T02:31:49.303Z"
   },
   {
-    "taskId": "t-mqzgf6wq",
+    "taskId": "t-mr2w2247",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.658Z"
+    "deadAt": "2026-07-02T02:31:49.303Z"
   },
   {
-    "taskId": "t-mqzgf6wr",
+    "taskId": "t-mr2w2248",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.659Z"
+    "deadAt": "2026-07-02T02:31:49.304Z"
   },
   {
-    "taskId": "t-mqzgf6wr",
+    "taskId": "t-mr2w2248",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:49.660Z"
+    "deadAt": "2026-07-02T02:31:49.304Z"
   },
   {
-    "taskId": "t-mqzgf6qi",
+    "taskId": "t-mr35f5an",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T06:53:57.497Z"
+  },
+  {
+    "taskId": "t-mr35f62i",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:50.435Z"
+    "deadAt": "2026-07-02T06:53:58.499Z"
   },
   {
-    "taskId": "t-mqzgf7ic",
+    "taskId": "t-mr35f6uc",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.438Z"
+    "deadAt": "2026-07-02T06:53:59.501Z"
   },
   {
-    "taskId": "t-mqzgf8a7",
+    "taskId": "t-mr35f7m6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.439Z"
+    "deadAt": "2026-07-02T06:53:59.502Z"
   },
   {
-    "taskId": "t-mqzgf8a7",
+    "taskId": "t-mr35f7m6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.440Z"
+    "deadAt": "2026-07-02T06:53:59.503Z"
   },
   {
-    "taskId": "t-mqzgf8a9",
+    "taskId": "t-mr35f7m7",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.441Z"
+    "deadAt": "2026-07-02T06:53:59.503Z"
   },
   {
-    "taskId": "t-mqzgf8a9",
+    "taskId": "t-mr35f7m7",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.442Z"
+    "deadAt": "2026-07-02T06:53:59.503Z"
   },
   {
-    "taskId": "t-mqzgf8aa",
+    "taskId": "t-mr35f7m7",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.443Z"
+    "deadAt": "2026-07-02T06:53:59.504Z"
   },
   {
-    "taskId": "t-mqzgf7qo",
+    "taskId": "disp_1782975259063_bhxaa",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T06:54:19.070Z"
+  },
+  {
+    "taskId": "t-mr35im99",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:51.738Z"
+    "deadAt": "2026-07-02T06:56:39.447Z"
   },
   {
-    "taskId": "t-mqzgf8ii",
+    "taskId": "t-mr35in14",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:52.739Z"
+    "deadAt": "2026-07-02T06:56:40.450Z"
   },
   {
-    "taskId": "t-mqzgf95n",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.575Z"
-  },
-  {
-    "taskId": "t-mqzgf9ac",
+    "taskId": "t-mr35insy",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.742Z"
+    "deadAt": "2026-07-02T06:56:41.452Z"
   },
   {
-    "taskId": "t-mqzgfa27",
+    "taskId": "t-mr35iokt",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.743Z"
+    "deadAt": "2026-07-02T06:56:41.453Z"
   },
   {
-    "taskId": "t-mqzgfa27",
+    "taskId": "t-mr35ioku",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.743Z"
+    "deadAt": "2026-07-02T06:56:41.454Z"
   },
   {
-    "taskId": "t-mqzgfa28",
+    "taskId": "t-mr35ioku",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.744Z"
+    "deadAt": "2026-07-02T06:56:41.454Z"
   },
   {
-    "taskId": "t-mqzgfa28",
+    "taskId": "t-mr35ioku",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.744Z"
+    "deadAt": "2026-07-02T06:56:41.455Z"
   },
   {
-    "taskId": "t-mqzgfa29",
+    "taskId": "t-mr35iokv",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:53.745Z"
+    "deadAt": "2026-07-02T06:56:41.455Z"
   },
   {
-    "taskId": "t-mqzgf9xl",
+    "taskId": "disp_1782975419443_h64bw",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T06:56:59.446Z"
+  },
+  {
+    "taskId": "t-mr37cvqg",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T07:48:11.031Z"
+  },
+  {
+    "taskId": "t-mr37cwit",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:54.579Z"
+    "deadAt": "2026-07-02T07:48:12.045Z"
   },
   {
-    "taskId": "t-mqzgfapg",
+    "taskId": "t-mr37cxam",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.582Z"
+    "deadAt": "2026-07-02T07:48:13.054Z"
   },
   {
-    "taskId": "t-mqzgfbha",
+    "taskId": "t-mr37cy2p",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.583Z"
+    "deadAt": "2026-07-02T07:48:13.059Z"
   },
   {
-    "taskId": "t-mqzgfbhb",
+    "taskId": "t-mr37cy2s",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.583Z"
+    "deadAt": "2026-07-02T07:48:13.061Z"
   },
   {
-    "taskId": "t-mqzgfbhc",
+    "taskId": "t-mr37cy2v",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.584Z"
+    "deadAt": "2026-07-02T07:48:13.063Z"
   },
   {
-    "taskId": "t-mqzgfbhc",
+    "taskId": "t-mr37cy2v",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.584Z"
+    "deadAt": "2026-07-02T07:48:13.064Z"
   },
   {
-    "taskId": "t-mqzgfbhd",
+    "taskId": "t-mr37cy2w",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.585Z"
+    "deadAt": "2026-07-02T07:48:13.068Z"
   },
   {
-    "taskId": "t-mqzgfaqd",
+    "taskId": "disp_1782978515643_5nexb",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T07:48:35.652Z"
+  },
+  {
+    "taskId": "t-mr37g7zm",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:55.613Z"
+    "deadAt": "2026-07-02T07:50:46.884Z"
   },
   {
-    "taskId": "t-mqzgfbi6",
+    "taskId": "t-mr37g8rq",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:56.616Z"
+    "deadAt": "2026-07-02T07:50:47.888Z"
   },
   {
-    "taskId": "t-mqzgfca1",
+    "taskId": "t-mr37g9jl",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.619Z"
+    "deadAt": "2026-07-02T07:50:48.891Z"
   },
   {
-    "taskId": "t-mqzgfd1v",
+    "taskId": "t-mr37gae9",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.619Z"
+    "deadAt": "2026-07-02T07:50:48.994Z"
   },
   {
-    "taskId": "t-mqzgfd1w",
+    "taskId": "t-mr37gaeg",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.620Z"
+    "deadAt": "2026-07-02T07:50:49.002Z"
   },
   {
-    "taskId": "t-mqzgfd1w",
+    "taskId": "t-mr37gaej",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.620Z"
+    "deadAt": "2026-07-02T07:50:49.004Z"
   },
   {
-    "taskId": "t-mqzgfd1x",
+    "taskId": "t-mr37gaek",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.621Z"
+    "deadAt": "2026-07-02T07:50:49.005Z"
   },
   {
-    "taskId": "t-mqzgfd1x",
+    "taskId": "t-mr37gaem",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:57.621Z"
+    "deadAt": "2026-07-02T07:50:49.006Z"
   },
   {
-    "taskId": "t-mqzgfdjx",
+    "taskId": "disp_1782978670101_6dko2",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T07:51:10.112Z"
+  },
+  {
+    "taskId": "t-mr37junp",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:50:59.270Z"
+    "deadAt": "2026-07-02T07:53:36.228Z"
   },
   {
-    "taskId": "t-mqzgfebr",
+    "taskId": "t-mr37jvfp",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:00.273Z"
+    "deadAt": "2026-07-02T07:53:37.234Z"
   },
   {
-    "taskId": "t-mqzgfev0",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:51:00.965Z"
-  },
-  {
-    "taskId": "t-mqzgff3l",
+    "taskId": "t-mr37jw7o",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.274Z"
+    "deadAt": "2026-07-02T07:53:38.239Z"
   },
   {
-    "taskId": "t-mqzgffvf",
+    "taskId": "t-mr37jx9e",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.275Z"
+    "deadAt": "2026-07-02T07:53:38.595Z"
   },
   {
-    "taskId": "t-mqzgffvg",
+    "taskId": "t-mr37jx9g",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.277Z"
+    "deadAt": "2026-07-02T07:53:38.596Z"
   },
   {
-    "taskId": "t-mqzgffvh",
+    "taskId": "t-mr37jx9g",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.277Z"
+    "deadAt": "2026-07-02T07:53:38.597Z"
   },
   {
-    "taskId": "t-mqzgffvh",
+    "taskId": "t-mr37jx9h",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.278Z"
+    "deadAt": "2026-07-02T07:53:38.598Z"
   },
   {
-    "taskId": "t-mqzgffvi",
+    "taskId": "t-mr37jx9j",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.278Z"
+    "deadAt": "2026-07-02T07:53:38.599Z"
   },
   {
-    "taskId": "t-mqzgffmu",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
+    "taskId": "disp_1782978839337_kesem",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:01.968Z"
+    "deadAt": "2026-07-02T07:53:59.344Z"
   },
   {
-    "taskId": "t-mqzgfgdx",
+    "taskId": "t-mr37mjoz",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.943Z"
+    "deadAt": "2026-07-02T07:55:41.983Z"
   },
   {
-    "taskId": "t-mqzgfgeo",
+    "taskId": "t-mr37mkh2",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T07:55:42.991Z"
+  },
+  {
+    "taskId": "t-mr37ml8v",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.970Z"
+    "deadAt": "2026-07-02T07:55:43.993Z"
   },
   {
-    "taskId": "t-mqzgfh6j",
+    "taskId": "t-mr37mm0q",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.971Z"
+    "deadAt": "2026-07-02T07:55:43.995Z"
   },
   {
-    "taskId": "t-mqzgfh6j",
+    "taskId": "t-mr37mm0r",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.972Z"
+    "deadAt": "2026-07-02T07:55:43.995Z"
   },
   {
-    "taskId": "t-mqzgfh6k",
+    "taskId": "t-mr37mm0r",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.972Z"
+    "deadAt": "2026-07-02T07:55:43.995Z"
   },
   {
-    "taskId": "t-mqzgfh6k",
+    "taskId": "t-mr37mm0s",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.973Z"
+    "deadAt": "2026-07-02T07:55:43.996Z"
   },
   {
-    "taskId": "t-mqzgfh6l",
+    "taskId": "t-mr37mm0s",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:02.974Z"
+    "deadAt": "2026-07-02T07:55:43.996Z"
   },
   {
-    "taskId": "t-mqzgfh5s",
+    "taskId": "disp_1782978961499_mfk5a",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T07:56:01.502Z"
+  },
+  {
+    "taskId": "disp_1782979606653_6zrbj",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1782979544434_e0] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-02T08:07:16.678Z"
+  },
+  {
+    "taskId": "t-mr3ad9me",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-02T09:12:27.872Z"
+  },
+  {
+    "taskId": "t-mr3adaea",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:03.946Z"
+    "deadAt": "2026-07-02T09:12:28.875Z"
   },
   {
-    "taskId": "t-mqzgfhxn",
+    "taskId": "t-mr3adb63",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.948Z"
+    "deadAt": "2026-07-02T09:12:29.877Z"
   },
   {
-    "taskId": "t-mqzgfiph",
+    "taskId": "t-mr3adbxy",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.950Z"
+    "deadAt": "2026-07-02T09:12:29.878Z"
   },
   {
-    "taskId": "t-mqzgfipi",
+    "taskId": "t-mr3adbxy",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.950Z"
+    "deadAt": "2026-07-02T09:12:29.878Z"
   },
   {
-    "taskId": "t-mqzgfipi",
+    "taskId": "t-mr3adbxz",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.951Z"
+    "deadAt": "2026-07-02T09:12:29.879Z"
   },
   {
-    "taskId": "t-mqzgfipj",
+    "taskId": "t-mr3adby0",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.951Z"
+    "deadAt": "2026-07-02T09:12:29.880Z"
   },
   {
-    "taskId": "t-mqzgfipk",
+    "taskId": "t-mr3adby0",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:04.952Z"
+    "deadAt": "2026-07-02T09:12:29.880Z"
   },
   {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
+    "taskId": "disp_1782983566913_zdj4t",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:05.240Z"
+    "deadAt": "2026-07-02T09:12:46.917Z"
   },
   {
-    "taskId": "t-mqzgfj87",
+    "taskId": "t-mr3xpo7r",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:06.625Z"
+    "deadAt": "2026-07-02T20:05:57.826Z"
   },
   {
-    "taskId": "t-mqzgfk01",
+    "taskId": "t-mr3xpp7i",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:07.626Z"
+    "deadAt": "2026-07-02T20:05:59.113Z"
   },
   {
-    "taskId": "t-mqzgfkrv",
+    "taskId": "t-mr3xppzd",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.630Z"
+    "deadAt": "2026-07-02T20:06:00.115Z"
   },
   {
-    "taskId": "t-mqzgfljs",
+    "taskId": "t-mr3xpqr8",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.632Z"
+    "deadAt": "2026-07-02T20:06:00.117Z"
   },
   {
-    "taskId": "t-mqzgfljt",
+    "taskId": "t-mr3xpqr9",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.633Z"
+    "deadAt": "2026-07-02T20:06:00.117Z"
   },
   {
-    "taskId": "t-mqzgfljt",
+    "taskId": "t-mr3xpqra",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.634Z"
+    "deadAt": "2026-07-02T20:06:00.118Z"
   },
   {
-    "taskId": "t-mqzgfljv",
+    "taskId": "t-mr3xpqra",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.635Z"
+    "deadAt": "2026-07-02T20:06:00.118Z"
   },
   {
-    "taskId": "t-mqzgfljv",
+    "taskId": "t-mr3xpqrb",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:08.636Z"
+    "deadAt": "2026-07-02T20:06:00.119Z"
   },
   {
-    "taskId": "t-mqzgfm9v",
+    "taskId": "disp_1783022778996_ao1ov",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:06:19.000Z"
+  },
+  {
+    "taskId": "t-mr3zggku",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:10.575Z"
+    "deadAt": "2026-07-02T20:54:47.273Z"
   },
   {
-    "taskId": "t-mqzgfn1t",
+    "taskId": "t-mr3zghdb",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:11.579Z"
+    "deadAt": "2026-07-02T20:54:48.280Z"
   },
   {
-    "taskId": "t-mqzgfnto",
+    "taskId": "t-mr3zgi57",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.582Z"
+    "deadAt": "2026-07-02T20:54:49.285Z"
   },
   {
-    "taskId": "t-mqzgfolj",
+    "taskId": "t-mr3zgix2",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.583Z"
+    "deadAt": "2026-07-02T20:54:49.286Z"
   },
   {
-    "taskId": "t-mqzgfolj",
+    "taskId": "t-mr3zgix3",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.583Z"
+    "deadAt": "2026-07-02T20:54:49.287Z"
   },
   {
-    "taskId": "t-mqzgfolk",
+    "taskId": "t-mr3zgix6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.584Z"
+    "deadAt": "2026-07-02T20:54:49.292Z"
   },
   {
-    "taskId": "t-mqzgfoll",
+    "taskId": "t-mr3zgix8",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.585Z"
+    "deadAt": "2026-07-02T20:54:49.294Z"
   },
   {
-    "taskId": "t-mqzgfolm",
+    "taskId": "t-mr3zgixb",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.586Z"
+    "deadAt": "2026-07-02T20:54:49.295Z"
   },
   {
-    "taskId": "t-mqzgfnug",
+    "taskId": "disp_1783025712496_luw4g",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:55:12.506Z"
+  },
+  {
+    "taskId": "t-mr3zj3od",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:12.610Z"
+    "deadAt": "2026-07-02T20:56:50.506Z"
   },
   {
-    "taskId": "t-mqzgfomb",
+    "taskId": "t-mr3zj4gb",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:13.613Z"
+    "deadAt": "2026-07-02T20:56:51.508Z"
   },
   {
-    "taskId": "t-mqzgfpe6",
+    "taskId": "t-mr3zj5x4",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.616Z"
+    "deadAt": "2026-07-02T20:56:53.413Z"
   },
   {
-    "taskId": "t-mqzgfq61",
+    "taskId": "t-mr3zj6p2",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.617Z"
+    "deadAt": "2026-07-02T20:56:53.415Z"
   },
   {
-    "taskId": "t-mqzgfq61",
+    "taskId": "t-mr3zj6p9",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.618Z"
+    "deadAt": "2026-07-02T20:56:53.424Z"
   },
   {
-    "taskId": "t-mqzgfq62",
+    "taskId": "t-mr3zj6pc",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.618Z"
+    "deadAt": "2026-07-02T20:56:53.425Z"
   },
   {
-    "taskId": "t-mqzgfq63",
+    "taskId": "t-mr3zj6pd",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.619Z"
+    "deadAt": "2026-07-02T20:56:53.440Z"
   },
   {
-    "taskId": "t-mqzgfq63",
+    "taskId": "t-mr3zj6pt",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.619Z"
+    "deadAt": "2026-07-02T20:56:53.441Z"
   },
   {
-    "taskId": "t-mqzgfpgm",
+    "taskId": "disp_1783025840639_7869h",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:57:20.802Z"
+  },
+  {
+    "taskId": "t-mr3zllgf",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:14.706Z"
+    "deadAt": "2026-07-02T20:58:46.862Z"
   },
   {
-    "taskId": "t-mqzgfq8i",
+    "taskId": "t-mr3zlm8i",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:15.709Z"
+    "deadAt": "2026-07-02T20:58:47.870Z"
   },
   {
-    "taskId": "t-mqzgfr0d",
+    "taskId": "t-mr3zln0g",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:16.712Z"
+    "deadAt": "2026-07-02T20:58:48.876Z"
   },
   {
-    "taskId": "t-mqzgfrs9",
+    "taskId": "t-mr3zlnsf",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:16.713Z"
+    "deadAt": "2026-07-02T20:58:48.880Z"
   },
   {
-    "taskId": "t-mqzgfrs9",
+    "taskId": "t-mr3zlnsj",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:16.714Z"
+    "deadAt": "2026-07-02T20:58:48.884Z"
   },
   {
-    "taskId": "t-mqzgfr0m",
+    "taskId": "t-mr3zlnsm",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:58:48.886Z"
+  },
+  {
+    "taskId": "t-mr3zlnso",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:58:48.888Z"
+  },
+  {
+    "taskId": "t-mr3zlnsq",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:58:48.890Z"
+  },
+  {
+    "taskId": "disp_1783025946795_iiotf",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-02T20:59:06.798Z"
+  },
+  {
+    "taskId": "t-mr3zomk8",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:16.721Z"
+    "deadAt": "2026-07-02T21:01:08.261Z"
   },
   {
-    "taskId": "t-mqzgfskt",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:51:18.743Z"
-  },
-  {
-    "taskId": "t-mqzgftcn",
+    "taskId": "t-mr3zonc7",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:19.745Z"
+    "deadAt": "2026-07-02T21:01:09.265Z"
   },
   {
-    "taskId": "t-mqzgfu4i",
+    "taskId": "t-mr3zoo44",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.747Z"
+    "deadAt": "2026-07-02T21:01:10.270Z"
   },
   {
-    "taskId": "t-mqzgfuwc",
+    "taskId": "t-mr3zoow2",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.748Z"
+    "deadAt": "2026-07-02T21:01:10.275Z"
   },
   {
-    "taskId": "t-mqzgfuwc",
+    "taskId": "t-mr3zoow6",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.748Z"
+    "deadAt": "2026-07-02T21:01:10.279Z"
   },
   {
-    "taskId": "t-mqzgfuwd",
+    "taskId": "t-mr3zoow8",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.749Z"
+    "deadAt": "2026-07-02T21:01:10.281Z"
   },
   {
-    "taskId": "t-mqzgfuwd",
+    "taskId": "t-mr3zoowb",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.750Z"
+    "deadAt": "2026-07-02T21:01:10.284Z"
   },
   {
-    "taskId": "t-mqzgfuwe",
+    "taskId": "t-mr3zoowe",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T16:51:20.750Z"
+    "deadAt": "2026-07-02T21:01:10.287Z"
   },
   {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
+    "taskId": "disp_1783026088291_msdqe",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-06-29T16:52:05.195Z"
+    "deadAt": "2026-07-02T21:01:28.295Z"
   },
   {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:53:05.194Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:54:05.242Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:55:05.194Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:57:03.956Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:58:04.209Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:58:21.965Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T16:59:04.258Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:00:04.253Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:01:04.219Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:02:04.221Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:17:54.713Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:25:23.558Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:26:23.417Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:26:40.499Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:27:23.445Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:28:23.495Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:29:34.380Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:30:34.429Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:31:34.454Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:32:34.359Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:33:34.328Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:34:14.737Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:34:34.351Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:35:34.318Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:36:34.365Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:37:34.838Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:38:33.069Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:38:34.821Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:39:34.783Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T17:56:34.994Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T18:12:18.073Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T18:28:54.379Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T18:43:58.523Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T19:00:24.469Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T19:17:03.500Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T19:32:21.515Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T19:41:01.503Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T19:56:34.427Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T20:13:18.369Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T20:28:43.432Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T20:42:01.467Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T20:58:36.891Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T21:10:34.966Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T21:27:53.087Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T21:43:53.078Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:00:50.051Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:17:11.121Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:33:54.103Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:37:43.905Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:38:43.992Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:39:43.950Z"
-  },
-  {
-    "taskId": "t-mqzsvvlg",
+    "taskId": "t-mr3zrcw1",
     "taskType": "content",
     "input": "content gen",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:44.541Z"
+    "deadAt": "2026-07-02T21:03:15.694Z"
   },
   {
-    "taskId": "t-mqzsvwda",
+    "taskId": "t-mr3zrdo2",
     "taskType": "content",
     "input": "content",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:45.545Z"
+    "deadAt": "2026-07-02T21:03:16.703Z"
   },
   {
-    "taskId": "t-mqzsvx55",
+    "taskId": "t-mr3zreg3",
     "taskType": "speak",
     "input": "speak test",
     "error": "permanent failure",
     "attempts": 2,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.547Z"
+    "deadAt": "2026-07-02T21:03:17.711Z"
   },
   {
-    "taskId": "t-mqzsvxx0",
+    "taskId": "t-mr3zrf82",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.548Z"
+    "deadAt": "2026-07-02T21:03:17.715Z"
   },
   {
-    "taskId": "t-mqzsvxx1",
+    "taskId": "t-mr3zrf85",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.549Z"
+    "deadAt": "2026-07-02T21:03:17.718Z"
   },
   {
-    "taskId": "t-mqzsvxx1",
+    "taskId": "t-mr3zrf87",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.550Z"
+    "deadAt": "2026-07-02T21:03:17.721Z"
   },
   {
-    "taskId": "t-mqzsvxx2",
+    "taskId": "t-mr3zrf8a",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.550Z"
+    "deadAt": "2026-07-02T21:03:17.723Z"
   },
   {
-    "taskId": "t-mqzsvxx3",
+    "taskId": "t-mr3zrf8c",
     "taskType": "media",
     "input": "media task",
     "error": "cb trigger",
     "attempts": 1,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:46.551Z"
+    "deadAt": "2026-07-02T21:03:17.725Z"
   },
   {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
+    "taskId": "disp_1783026215614_9ov06",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
     "agentId": null,
-    "deadAt": "2026-06-29T22:39:47.979Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:40:44.291Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:07.712Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:12.258Z"
-  },
-  {
-    "taskId": "t-mqzszbgj",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:25.076Z"
-  },
-  {
-    "taskId": "t-mqzszc8l",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:26.080Z"
-  },
-  {
-    "taskId": "t-mqzszd0h",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.084Z"
-  },
-  {
-    "taskId": "t-mqzszdsd",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.086Z"
-  },
-  {
-    "taskId": "t-mqzszdse",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.086Z"
-  },
-  {
-    "taskId": "t-mqzszdsk",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.092Z"
-  },
-  {
-    "taskId": "t-mqzszdsk",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.093Z"
-  },
-  {
-    "taskId": "t-mqzszdsl",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:42:27.093Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:43:34.309Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:44:34.472Z"
-  },
-  {
-    "taskId": "t-mqzt39zk",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:29.787Z"
-  },
-  {
-    "taskId": "t-mqzt3arg",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:30.792Z"
-  },
-  {
-    "taskId": "t-mqzt3bjd",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.794Z"
-  },
-  {
-    "taskId": "t-mqzt3cb8",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.796Z"
-  },
-  {
-    "taskId": "t-mqzt3cb9",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.797Z"
-  },
-  {
-    "taskId": "t-mqzt3cb9",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.798Z"
-  },
-  {
-    "taskId": "t-mqzt3cba",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.798Z"
-  },
-  {
-    "taskId": "t-mqzt3cbb",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.799Z"
-  },
-  {
-    "taskId": "t-mqzt3blx",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:31.888Z"
-  },
-  {
-    "taskId": "t-mqzt3cds",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:32.890Z"
-  },
-  {
-    "taskId": "t-mqzt3d5n",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.895Z"
-  },
-  {
-    "taskId": "t-mqzt3dxm",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.899Z"
-  },
-  {
-    "taskId": "t-mqzt3dxn",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.899Z"
-  },
-  {
-    "taskId": "t-mqzt3dxo",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.900Z"
-  },
-  {
-    "taskId": "t-mqzt3dxo",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.901Z"
-  },
-  {
-    "taskId": "t-mqzt3dxp",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:33.901Z"
-  },
-  {
-    "taskId": "t-mqzt3db0",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:34.085Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:34.525Z"
-  },
-  {
-    "taskId": "t-mqzt3e2u",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:35.087Z"
-  },
-  {
-    "taskId": "t-mqzt3euo",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.090Z"
-  },
-  {
-    "taskId": "t-mqzt3fmj",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.092Z"
-  },
-  {
-    "taskId": "t-mqzt3fmk",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.092Z"
-  },
-  {
-    "taskId": "t-mqzt3fml",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.093Z"
-  },
-  {
-    "taskId": "t-mqzt3fml",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.093Z"
-  },
-  {
-    "taskId": "t-mqzt3fmm",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.094Z"
-  },
-  {
-    "taskId": "t-mqzt3f98",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:36.615Z"
-  },
-  {
-    "taskId": "t-mqzt3g13",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:37.618Z"
-  },
-  {
-    "taskId": "t-mqzt3gsz",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.621Z"
-  },
-  {
-    "taskId": "t-mqzt3hku",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.622Z"
-  },
-  {
-    "taskId": "t-mqzt3hku",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.623Z"
-  },
-  {
-    "taskId": "t-mqzt3hkv",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.624Z"
-  },
-  {
-    "taskId": "t-mqzt3hkx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.625Z"
-  },
-  {
-    "taskId": "t-mqzt3hkx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:38.626Z"
-  },
-  {
-    "taskId": "t-mqzt3h4g",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:39.034Z"
-  },
-  {
-    "taskId": "t-mqzt3hwb",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:40.037Z"
-  },
-  {
-    "taskId": "t-mqzt3io5",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.040Z"
-  },
-  {
-    "taskId": "t-mqzt3jg1",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.041Z"
-  },
-  {
-    "taskId": "t-mqzt3jg2",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.042Z"
-  },
-  {
-    "taskId": "t-mqzt3jg2",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.042Z"
-  },
-  {
-    "taskId": "t-mqzt3jg3",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.043Z"
-  },
-  {
-    "taskId": "t-mqzt3jg3",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.044Z"
-  },
-  {
-    "taskId": "t-mqzt3j9t",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:41.819Z"
-  },
-  {
-    "taskId": "t-mqzt3k1n",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:42.822Z"
-  },
-  {
-    "taskId": "t-mqzt3kti",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.824Z"
-  },
-  {
-    "taskId": "t-mqzt3lld",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.826Z"
-  },
-  {
-    "taskId": "t-mqzt3lle",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.826Z"
-  },
-  {
-    "taskId": "t-mqzt3llf",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.827Z"
-  },
-  {
-    "taskId": "t-mqzt3llg",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.828Z"
-  },
-  {
-    "taskId": "t-mqzt3llg",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:43.828Z"
-  },
-  {
-    "taskId": "t-mqzt3lh9",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:44.679Z"
-  },
-  {
-    "taskId": "t-mqzt3m94",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:45.683Z"
-  },
-  {
-    "taskId": "t-mqzt3n12",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.688Z"
-  },
-  {
-    "taskId": "t-mqzt3nsx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.689Z"
-  },
-  {
-    "taskId": "t-mqzt3nsy",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.691Z"
-  },
-  {
-    "taskId": "t-mqzt3nt0",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.692Z"
-  },
-  {
-    "taskId": "t-mqzt3nt1",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.693Z"
-  },
-  {
-    "taskId": "t-mqzt3nt1",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:46.694Z"
-  },
-  {
-    "taskId": "t-mqzt3nva",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:47.777Z"
-  },
-  {
-    "taskId": "t-mqzt3on6",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:48.780Z"
-  },
-  {
-    "taskId": "t-mqzt3pf1",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.783Z"
-  },
-  {
-    "taskId": "t-mqzt3q6w",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.784Z"
-  },
-  {
-    "taskId": "t-mqzt3q6x",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.785Z"
-  },
-  {
-    "taskId": "t-mqzt3q6x",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.785Z"
-  },
-  {
-    "taskId": "t-mqzt3q6y",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.786Z"
-  },
-  {
-    "taskId": "t-mqzt3q6z",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:49.787Z"
-  },
-  {
-    "taskId": "t-mqzt3q67",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:50.761Z"
-  },
-  {
-    "taskId": "t-mqzt3qy2",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:51.764Z"
-  },
-  {
-    "taskId": "t-mqzt3rpx",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.769Z"
-  },
-  {
-    "taskId": "t-mqzt3shu",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.771Z"
-  },
-  {
-    "taskId": "t-mqzt3shv",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.771Z"
-  },
-  {
-    "taskId": "t-mqzt3shw",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.772Z"
-  },
-  {
-    "taskId": "t-mqzt3shx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.773Z"
-  },
-  {
-    "taskId": "t-mqzt3shx",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:52.774Z"
-  },
-  {
-    "taskId": "t-mqzt3sv3",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:54.250Z"
-  },
-  {
-    "taskId": "t-mqzt3tmz",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:55.252Z"
-  },
-  {
-    "taskId": "t-mqzt3u6s",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:55.966Z"
-  },
-  {
-    "taskId": "t-mqzt3uet",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.254Z"
-  },
-  {
-    "taskId": "t-mqzt3v6n",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.255Z"
-  },
-  {
-    "taskId": "t-mqzt3v6o",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.256Z"
-  },
-  {
-    "taskId": "t-mqzt3v6o",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.257Z"
-  },
-  {
-    "taskId": "t-mqzt3v6p",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.257Z"
-  },
-  {
-    "taskId": "t-mqzt3v6q",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.258Z"
-  },
-  {
-    "taskId": "t-mqzt3uyn",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:56.970Z"
-  },
-  {
-    "taskId": "t-mqzt3vld",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.789Z"
-  },
-  {
-    "taskId": "t-mqzt3vqi",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.974Z"
-  },
-  {
-    "taskId": "t-mqzt3wif",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.976Z"
-  },
-  {
-    "taskId": "t-mqzt3wih",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.977Z"
-  },
-  {
-    "taskId": "t-mqzt3wii",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.979Z"
-  },
-  {
-    "taskId": "t-mqzt3wik",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.981Z"
-  },
-  {
-    "taskId": "t-mqzt3wip",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:57.986Z"
-  },
-  {
-    "taskId": "t-mqzt3wda",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:58.793Z"
-  },
-  {
-    "taskId": "t-mqzt3x56",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.797Z"
-  },
-  {
-    "taskId": "t-mqzt3xx2",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.800Z"
-  },
-  {
-    "taskId": "t-mqzt3xx4",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.801Z"
-  },
-  {
-    "taskId": "t-mqzt3xx5",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.801Z"
-  },
-  {
-    "taskId": "t-mqzt3xx6",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.802Z"
-  },
-  {
-    "taskId": "t-mqzt3xx7",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.803Z"
-  },
-  {
-    "taskId": "t-mqzt3x5g",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:45:59.807Z"
-  },
-  {
-    "taskId": "t-mqzt3xxc",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:00.810Z"
-  },
-  {
-    "taskId": "t-mqzt3yp7",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.814Z"
-  },
-  {
-    "taskId": "t-mqzt3zh3",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.815Z"
-  },
-  {
-    "taskId": "t-mqzt3zh4",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.816Z"
-  },
-  {
-    "taskId": "t-mqzt3zh5",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.817Z"
-  },
-  {
-    "taskId": "t-mqzt3zh5",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.818Z"
-  },
-  {
-    "taskId": "t-mqzt3zh6",
-    "taskType": "media",
-    "input": "media task",
-    "error": "cb trigger",
-    "attempts": 1,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.818Z"
-  },
-  {
-    "taskId": "t-mqzt3ysr",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:01.941Z"
-  },
-  {
-    "taskId": "t-mqzt3zkm",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:02.945Z"
-  },
-  {
-    "taskId": "t-mqzt4075",
-    "taskType": "content",
-    "input": "content gen",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:03.755Z"
-  },
-  {
-    "taskId": "t-mqzt40ch",
-    "taskType": "speak",
-    "input": "speak test",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:03.948Z"
-  },
-  {
-    "taskId": "t-mqzt40z0",
-    "taskType": "content",
-    "input": "content",
-    "error": "permanent failure",
-    "attempts": 2,
-    "agentId": null,
-    "deadAt": "2026-06-29T22:46:04.757Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T23:02:34.477Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T23:19:08.433Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T23:36:47.519Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-29T23:52:37.609Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-30T00:08:03.654Z"
-  },
-  {
-    "taskId": "tq_1782514192213",
-    "taskType": "auto_recover",
-    "input": "",
-    "error": "Cannot find module './agentRouter.cjs'\nRequire stack:\n- /Users/ehtsm/jarvis-os/agents/executor.cjs\n- /Users/ehtsm/jarvis-os/agents/autonomousLoop.cjs\n- /Users/ehtsm/jarvis-os/backend/routes/tasks.js\n- /Users/ehtsm/jarvis-os/backend/routes/index.js\n- /Users/ehtsm/jarvis-os/backend/server.js",
-    "attempts": 4,
-    "agentId": null,
-    "deadAt": "2026-06-30T00:11:42.513Z"
+    "deadAt": "2026-07-02T21:03:35.617Z"
   }
 ]

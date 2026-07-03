@@ -2214,6 +2214,835 @@
       "contributionScore": 0,
       "joinedAt": "2026-06-29T22:46:08.572Z",
       "updatedAt": "2026-06-29T22:46:08.572Z"
+    },
+    {
+      "id": "cmem_1782947363496_0523",
+      "name": "OrgA-1782947363478",
+      "type": "organization",
+      "capabilities": [
+        "code",
+        "design"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 50,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "premium",
+      "status": "active",
+      "reputation": 80,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:09:23.496Z",
+      "updatedAt": "2026-07-01T23:09:23.509Z"
+    },
+    {
+      "id": "cmem_1782947363506_juk5",
+      "name": "OrgB-1782947363478",
+      "type": "enterprise",
+      "capabilities": [
+        "sales",
+        "marketing"
+      ],
+      "resources": {
+        "compute": 0,
+        "data": 0,
+        "knowledge": 0,
+        "capability": 0,
+        "capital": 500,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:09:23.506Z",
+      "updatedAt": "2026-07-01T23:09:23.506Z"
+    },
+    {
+      "id": "cmem_1782947363508_zlog",
+      "name": "OrgC-1782947363478",
+      "type": "organization",
+      "capabilities": [
+        "knowledge",
+        "research"
+      ],
+      "resources": {
+        "compute": 0,
+        "data": 0,
+        "knowledge": 0,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:09:23.508Z",
+      "updatedAt": "2026-07-01T23:09:23.508Z"
+    },
+    {
+      "id": "cmem_1782947367483_54ju",
+      "name": "LowRep-1782947363478",
+      "type": "organization",
+      "capabilities": [],
+      "resources": {
+        "compute": 0,
+        "data": 0,
+        "knowledge": 0,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:09:27.483Z",
+      "updatedAt": "2026-07-01T23:09:27.483Z"
+    },
+    {
+      "id": "cmem_1782947410447_dz4g",
+      "name": "AgencyA-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.447Z",
+      "updatedAt": "2026-07-01T23:10:10.447Z"
+    },
+    {
+      "id": "cmem_1782947410467_en5o",
+      "name": "agency-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "odi"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.467Z",
+      "updatedAt": "2026-07-01T23:10:10.467Z"
+    },
+    {
+      "id": "cmem_1782947410475_e1ri",
+      "name": "startup-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.475Z",
+      "updatedAt": "2026-07-01T23:10:10.475Z"
+    },
+    {
+      "id": "cmem_1782947410492_qk4g",
+      "name": "enterprise-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "enterprise",
+        "ecosystem"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.492Z",
+      "updatedAt": "2026-07-01T23:10:10.492Z"
+    },
+    {
+      "id": "cmem_1782947410497_z85d",
+      "name": "department-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "business",
+        "knowledge"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.497Z",
+      "updatedAt": "2026-07-01T23:10:10.497Z"
+    },
+    {
+      "id": "cmem_1782947410501_ogz5",
+      "name": "team-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "knowledge"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.501Z",
+      "updatedAt": "2026-07-01T23:10:10.501Z"
+    },
+    {
+      "id": "cmem_1782947410504_xnkz",
+      "name": "solo-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.504Z",
+      "updatedAt": "2026-07-01T23:10:10.504Z"
+    },
+    {
+      "id": "cmem_1782947410510_beow",
+      "name": "marketplace-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "ecosystem",
+        "business"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.510Z",
+      "updatedAt": "2026-07-01T23:10:10.510Z"
+    },
+    {
+      "id": "cmem_1782947410514_0b9i",
+      "name": "research-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "knowledge",
+        "evolution"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.514Z",
+      "updatedAt": "2026-07-01T23:10:10.514Z"
+    },
+    {
+      "id": "cmem_1782947410521_o1am",
+      "name": "service-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "business",
+        "engineering"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.521Z",
+      "updatedAt": "2026-07-01T23:10:10.521Z"
+    },
+    {
+      "id": "cmem_1782947410529_5vjy",
+      "name": "custom-1782947410400",
+      "type": "organization",
+      "capabilities": [],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.529Z",
+      "updatedAt": "2026-07-01T23:10:10.529Z"
+    },
+    {
+      "id": "cmem_1782947410536_gwc2",
+      "name": "AutoCaps-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive",
+        "enterprise",
+        "ecosystem"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:10.536Z",
+      "updatedAt": "2026-07-01T23:10:10.536Z"
+    },
+    {
+      "id": "cmem_1782947412261_zu35",
+      "name": "BlueprintA-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:10:12.261Z",
+      "updatedAt": "2026-07-01T23:10:12.261Z"
+    },
+    {
+      "id": "cmem_1782948591786_qrsf",
+      "name": "Clone-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.786Z",
+      "updatedAt": "2026-07-01T23:29:51.786Z"
+    },
+    {
+      "id": "cmem_1782948591805_8bm0",
+      "name": "BPClone-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.805Z",
+      "updatedAt": "2026-07-01T23:29:51.805Z"
+    },
+    {
+      "id": "cmem_1782948591838_fq7c",
+      "name": "Fork-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.838Z",
+      "updatedAt": "2026-07-01T23:29:51.838Z"
+    },
+    {
+      "id": "cmem_1782948591861_pfmv",
+      "name": "Imported-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.861Z",
+      "updatedAt": "2026-07-01T23:29:51.861Z"
+    },
+    {
+      "id": "cmem_1782948591881_han8",
+      "name": "Imported2-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.881Z",
+      "updatedAt": "2026-07-01T23:29:51.881Z"
+    },
+    {
+      "id": "cmem_1782948591920_g96d",
+      "name": "BlueprintA-1782947410400 (purchased)",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.920Z",
+      "updatedAt": "2026-07-01T23:29:51.920Z"
+    },
+    {
+      "id": "cmem_1782948591946_cdda",
+      "name": "CertOrg-bronze-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.946Z",
+      "updatedAt": "2026-07-01T23:29:51.946Z"
+    },
+    {
+      "id": "cmem_1782948591972_srus",
+      "name": "CertOrg-silver-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:51.972Z",
+      "updatedAt": "2026-07-01T23:29:51.972Z"
+    },
+    {
+      "id": "cmem_1782948592004_k5q3",
+      "name": "CertOrg-gold-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:52.004Z",
+      "updatedAt": "2026-07-01T23:29:52.004Z"
+    },
+    {
+      "id": "cmem_1782948592038_9ugc",
+      "name": "CertOrg-platinum-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:52.038Z",
+      "updatedAt": "2026-07-01T23:29:52.038Z"
+    },
+    {
+      "id": "cmem_1782948599061_ku2g",
+      "name": "SmokeClone-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:59.061Z",
+      "updatedAt": "2026-07-01T23:29:59.061Z"
+    },
+    {
+      "id": "cmem_1782948599066_6pte",
+      "name": "Roundtrip-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering",
+        "business",
+        "knowledge",
+        "evolution",
+        "executive"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:29:59.066Z",
+      "updatedAt": "2026-07-01T23:29:59.066Z"
+    },
+    {
+      "id": "cmem_1782948600263_tlxu",
+      "name": "EventTest-1782947410400",
+      "type": "organization",
+      "capabilities": [
+        "engineering"
+      ],
+      "resources": {
+        "compute": 100,
+        "data": 0,
+        "knowledge": 100,
+        "capability": 0,
+        "capital": 0,
+        "attention": 100,
+        "trust": 70
+      },
+      "region": "global",
+      "tier": "standard",
+      "status": "active",
+      "reputation": 70,
+      "trustScore": 70,
+      "contributionScore": 0,
+      "joinedAt": "2026-07-01T23:30:00.263Z",
+      "updatedAt": "2026-07-01T23:30:00.263Z"
     }
   ],
   "alliances": [
@@ -2268,6 +3097,19 @@
       "status": "active",
       "expiresAt": null,
       "formedAt": "2026-06-29T22:39:57.721Z"
+    },
+    {
+      "id": "call_1782947363509_tcg4",
+      "name": "AllianceAB-1782947363478",
+      "memberIds": [
+        "cmem_1782947363496_0523",
+        "cmem_1782947363506_juk5"
+      ],
+      "type": "collaboration",
+      "purpose": "Joint engineering",
+      "status": "active",
+      "expiresAt": null,
+      "formedAt": "2026-07-01T23:09:23.509Z"
     }
   ]
 }

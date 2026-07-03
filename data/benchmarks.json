@@ -1527,6 +1527,770 @@
       },
       "targetName": "Autonomous Systems",
       "ts": "2026-06-30T00:11:54.200Z"
+    },
+    {
+      "id": "bm_1782947438765_a4q6",
+      "target": "execution_pipeline",
+      "planId": null,
+      "metrics": {
+        "throughput": 0,
+        "latency_ms": 349.5,
+        "success_rate": 0.85,
+        "error_rate": 0.15
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "throughput": 0,
+          "latency_ms": 487,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        },
+        {
+          "throughput": 0,
+          "latency_ms": 212,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        }
+      ],
+      "baseline": {
+        "throughput": 0,
+        "latency_ms": 295,
+        "success_rate": 0.85,
+        "error_rate": 0.15
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 0,
+        "regressions": 1,
+        "deltas": {
+          "throughput": {
+            "current": 0,
+            "baseline": 0,
+            "delta": 0
+          },
+          "latency_ms": {
+            "current": 349.5,
+            "baseline": 295,
+            "delta": 18.5
+          },
+          "success_rate": {
+            "current": 0.85,
+            "baseline": 0.85,
+            "delta": 0
+          },
+          "error_rate": {
+            "current": 0.15,
+            "baseline": 0.15,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Execution Pipeline",
+      "ts": "2026-07-01T23:10:39.863Z"
+    },
+    {
+      "id": "bm_1782947439867_4irs",
+      "target": "workspace_mesh",
+      "planId": null,
+      "metrics": {
+        "dispatch_latency": 97.5,
+        "sync_accuracy": 0.935,
+        "recovery_rate": 0.91,
+        "workspace_coverage": 12
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "dispatch_latency": 109,
+          "sync_accuracy": 0.93,
+          "recovery_rate": 0.85,
+          "workspace_coverage": 12
+        },
+        {
+          "dispatch_latency": 86,
+          "sync_accuracy": 0.94,
+          "recovery_rate": 0.97,
+          "workspace_coverage": 12
+        }
+      ],
+      "baseline": {
+        "dispatch_latency": 169,
+        "sync_accuracy": 0.945,
+        "recovery_rate": 0.9,
+        "workspace_coverage": 12
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 2,
+        "regressions": 1,
+        "deltas": {
+          "dispatch_latency": {
+            "current": 97.5,
+            "baseline": 169,
+            "delta": -42.3
+          },
+          "sync_accuracy": {
+            "current": 0.935,
+            "baseline": 0.945,
+            "delta": -1.1
+          },
+          "recovery_rate": {
+            "current": 0.91,
+            "baseline": 0.9,
+            "delta": 1.1
+          },
+          "workspace_coverage": {
+            "current": 12,
+            "baseline": 12,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Workspace Mesh",
+      "ts": "2026-07-01T23:10:39.925Z"
+    },
+    {
+      "id": "bm_1782947439931_qlx0",
+      "target": "approval_engine",
+      "planId": null,
+      "metrics": {
+        "auto_approval_rate": 0.75,
+        "approval_latency": 300,
+        "false_positive_rate": 0.025
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "auto_approval_rate": 0.83,
+          "approval_latency": 339,
+          "false_positive_rate": 0.033
+        },
+        {
+          "auto_approval_rate": 0.67,
+          "approval_latency": 261,
+          "false_positive_rate": 0.017
+        }
+      ],
+      "baseline": {
+        "auto_approval_rate": 0.645,
+        "approval_latency": 194.5,
+        "false_positive_rate": 0.015
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 2,
+        "regressions": 1,
+        "deltas": {
+          "auto_approval_rate": {
+            "current": 0.75,
+            "baseline": 0.645,
+            "delta": 16.3
+          },
+          "approval_latency": {
+            "current": 300,
+            "baseline": 194.5,
+            "delta": 54.2
+          },
+          "false_positive_rate": {
+            "current": 0.025,
+            "baseline": 0.015,
+            "delta": 66.7
+          }
+        }
+      },
+      "targetName": "Approval Engine",
+      "ts": "2026-07-01T23:10:40.006Z"
+    },
+    {
+      "id": "bm_1782947440010_y9pb",
+      "target": "workforce_allocation",
+      "planId": null,
+      "metrics": {
+        "agent_utilization": 0.78,
+        "mission_success_rate": 0.82,
+        "avg_mission_duration_ms": 1007
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "agent_utilization": 0.83,
+          "mission_success_rate": 0.79,
+          "avg_mission_duration_ms": 1389
+        },
+        {
+          "agent_utilization": 0.73,
+          "mission_success_rate": 0.85,
+          "avg_mission_duration_ms": 625
+        }
+      ],
+      "baseline": {
+        "agent_utilization": 0.785,
+        "mission_success_rate": 0.855,
+        "avg_mission_duration_ms": 1482.5
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 1,
+        "regressions": 1,
+        "deltas": {
+          "agent_utilization": {
+            "current": 0.78,
+            "baseline": 0.785,
+            "delta": -0.6
+          },
+          "mission_success_rate": {
+            "current": 0.82,
+            "baseline": 0.855,
+            "delta": -4.1
+          },
+          "avg_mission_duration_ms": {
+            "current": 1007,
+            "baseline": 1482.5,
+            "delta": -32.1
+          }
+        }
+      },
+      "targetName": "Workforce Allocation",
+      "ts": "2026-07-01T23:10:40.075Z"
+    },
+    {
+      "id": "bm_1782947440080_jvt0",
+      "target": "deployment_strategy",
+      "planId": null,
+      "metrics": {
+        "deploy_success_rate": 0.79,
+        "rollback_rate": 0.82,
+        "time_to_deploy_ms": 0.78
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "deploy_success_rate": 0.73,
+          "rollback_rate": 0.9,
+          "time_to_deploy_ms": 0.81
+        },
+        {
+          "deploy_success_rate": 0.85,
+          "rollback_rate": 0.74,
+          "time_to_deploy_ms": 0.75
+        }
+      ],
+      "baseline": {
+        "deploy_success_rate": 0.825,
+        "rollback_rate": 0.93,
+        "time_to_deploy_ms": 0.835
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 0,
+        "regressions": 3,
+        "deltas": {
+          "deploy_success_rate": {
+            "current": 0.79,
+            "baseline": 0.825,
+            "delta": -4.2
+          },
+          "rollback_rate": {
+            "current": 0.82,
+            "baseline": 0.93,
+            "delta": -11.8
+          },
+          "time_to_deploy_ms": {
+            "current": 0.78,
+            "baseline": 0.835,
+            "delta": -6.6
+          }
+        }
+      },
+      "targetName": "Deployment Strategy",
+      "ts": "2026-07-01T23:10:40.169Z"
+    },
+    {
+      "id": "bm_1782947440178_sc1v",
+      "target": "knowledge_recall",
+      "planId": null,
+      "metrics": {
+        "recall_precision": 0.815,
+        "recall_latency_ms": 36.5,
+        "knowledge_coverage": 0
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "recall_precision": 0.76,
+          "recall_latency_ms": 39,
+          "knowledge_coverage": 0
+        },
+        {
+          "recall_precision": 0.87,
+          "recall_latency_ms": 34,
+          "knowledge_coverage": 0
+        }
+      ],
+      "baseline": {
+        "recall_precision": 0.82,
+        "recall_latency_ms": 34.5,
+        "knowledge_coverage": 0
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 0,
+        "regressions": 1,
+        "deltas": {
+          "recall_precision": {
+            "current": 0.815,
+            "baseline": 0.82,
+            "delta": -0.6
+          },
+          "recall_latency_ms": {
+            "current": 36.5,
+            "baseline": 34.5,
+            "delta": 5.8
+          },
+          "knowledge_coverage": {
+            "current": 0,
+            "baseline": 0,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Knowledge Recall",
+      "ts": "2026-07-01T23:10:40.224Z"
+    },
+    {
+      "id": "bm_1782947440228_9fbd",
+      "target": "autonomous_systems",
+      "planId": null,
+      "metrics": {
+        "autonomy_rate": 0.89,
+        "human_interventions": 0.855,
+        "tasks_per_hour": 0.775
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "autonomy_rate": 0.94,
+          "human_interventions": 0.82,
+          "tasks_per_hour": 0.83
+        },
+        {
+          "autonomy_rate": 0.84,
+          "human_interventions": 0.89,
+          "tasks_per_hour": 0.72
+        }
+      ],
+      "baseline": {
+        "autonomy_rate": 0.86,
+        "human_interventions": 0.865,
+        "tasks_per_hour": 0.875
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 1,
+        "regressions": 2,
+        "deltas": {
+          "autonomy_rate": {
+            "current": 0.89,
+            "baseline": 0.86,
+            "delta": 3.5
+          },
+          "human_interventions": {
+            "current": 0.855,
+            "baseline": 0.865,
+            "delta": -1.2
+          },
+          "tasks_per_hour": {
+            "current": 0.775,
+            "baseline": 0.875,
+            "delta": -11.4
+          }
+        }
+      },
+      "targetName": "Autonomous Systems",
+      "ts": "2026-07-01T23:10:40.253Z"
+    },
+    {
+      "id": "bm_1782947791896_oov0",
+      "target": "execution_pipeline",
+      "planId": null,
+      "metrics": {
+        "throughput": 0,
+        "latency_ms": 282.5,
+        "success_rate": 0.85,
+        "error_rate": 0.15
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "throughput": 0,
+          "latency_ms": 368,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        },
+        {
+          "throughput": 0,
+          "latency_ms": 197,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        }
+      ],
+      "baseline": {
+        "throughput": 0,
+        "latency_ms": 295,
+        "success_rate": 0.85,
+        "error_rate": 0.15
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 1,
+        "regressions": 0,
+        "deltas": {
+          "throughput": {
+            "current": 0,
+            "baseline": 0,
+            "delta": 0
+          },
+          "latency_ms": {
+            "current": 282.5,
+            "baseline": 295,
+            "delta": -4.2
+          },
+          "success_rate": {
+            "current": 0.85,
+            "baseline": 0.85,
+            "delta": 0
+          },
+          "error_rate": {
+            "current": 0.15,
+            "baseline": 0.15,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Execution Pipeline",
+      "ts": "2026-07-01T23:16:34.459Z"
+    },
+    {
+      "id": "bm_1782947794478_0tvb",
+      "target": "workspace_mesh",
+      "planId": null,
+      "metrics": {
+        "dispatch_latency": 70,
+        "sync_accuracy": 0.94,
+        "recovery_rate": 0.87,
+        "workspace_coverage": 12
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "dispatch_latency": 60,
+          "sync_accuracy": 0.93,
+          "recovery_rate": 0.83,
+          "workspace_coverage": 12
+        },
+        {
+          "dispatch_latency": 80,
+          "sync_accuracy": 0.95,
+          "recovery_rate": 0.91,
+          "workspace_coverage": 12
+        }
+      ],
+      "baseline": {
+        "dispatch_latency": 169,
+        "sync_accuracy": 0.945,
+        "recovery_rate": 0.9,
+        "workspace_coverage": 12
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 1,
+        "regressions": 1,
+        "deltas": {
+          "dispatch_latency": {
+            "current": 70,
+            "baseline": 169,
+            "delta": -58.6
+          },
+          "sync_accuracy": {
+            "current": 0.94,
+            "baseline": 0.945,
+            "delta": -0.5
+          },
+          "recovery_rate": {
+            "current": 0.87,
+            "baseline": 0.9,
+            "delta": -3.3
+          },
+          "workspace_coverage": {
+            "current": 12,
+            "baseline": 12,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Workspace Mesh",
+      "ts": "2026-07-01T23:16:34.570Z"
+    },
+    {
+      "id": "bm_1782947794591_e54l",
+      "target": "approval_engine",
+      "planId": null,
+      "metrics": {
+        "auto_approval_rate": 0.755,
+        "approval_latency": 252,
+        "false_positive_rate": 0.005
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "auto_approval_rate": 0.77,
+          "approval_latency": 315,
+          "false_positive_rate": 0.001
+        },
+        {
+          "auto_approval_rate": 0.74,
+          "approval_latency": 189,
+          "false_positive_rate": 0.01
+        }
+      ],
+      "baseline": {
+        "auto_approval_rate": 0.645,
+        "approval_latency": 194.5,
+        "false_positive_rate": 0.015
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 1,
+        "regressions": 2,
+        "deltas": {
+          "auto_approval_rate": {
+            "current": 0.755,
+            "baseline": 0.645,
+            "delta": 17.1
+          },
+          "approval_latency": {
+            "current": 252,
+            "baseline": 194.5,
+            "delta": 29.6
+          },
+          "false_positive_rate": {
+            "current": 0.005,
+            "baseline": 0.015,
+            "delta": -66.7
+          }
+        }
+      },
+      "targetName": "Approval Engine",
+      "ts": "2026-07-01T23:16:34.642Z"
+    },
+    {
+      "id": "bm_1782947794647_lgfm",
+      "target": "workforce_allocation",
+      "planId": null,
+      "metrics": {
+        "agent_utilization": 0.72,
+        "mission_success_rate": 0.9,
+        "avg_mission_duration_ms": 1225.5
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "agent_utilization": 0.76,
+          "mission_success_rate": 0.93,
+          "avg_mission_duration_ms": 1251
+        },
+        {
+          "agent_utilization": 0.68,
+          "mission_success_rate": 0.87,
+          "avg_mission_duration_ms": 1200
+        }
+      ],
+      "baseline": {
+        "agent_utilization": 0.785,
+        "mission_success_rate": 0.855,
+        "avg_mission_duration_ms": 1482.5
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 2,
+        "regressions": 1,
+        "deltas": {
+          "agent_utilization": {
+            "current": 0.72,
+            "baseline": 0.785,
+            "delta": -8.3
+          },
+          "mission_success_rate": {
+            "current": 0.9,
+            "baseline": 0.855,
+            "delta": 5.3
+          },
+          "avg_mission_duration_ms": {
+            "current": 1225.5,
+            "baseline": 1482.5,
+            "delta": -17.3
+          }
+        }
+      },
+      "targetName": "Workforce Allocation",
+      "ts": "2026-07-01T23:16:36.447Z"
+    },
+    {
+      "id": "bm_1782947797615_qkov",
+      "target": "deployment_strategy",
+      "planId": null,
+      "metrics": {
+        "deploy_success_rate": 0.865,
+        "rollback_rate": 0.73,
+        "time_to_deploy_ms": 0.835
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "deploy_success_rate": 0.75,
+          "rollback_rate": 0.75,
+          "time_to_deploy_ms": 0.81
+        },
+        {
+          "deploy_success_rate": 0.98,
+          "rollback_rate": 0.71,
+          "time_to_deploy_ms": 0.86
+        }
+      ],
+      "baseline": {
+        "deploy_success_rate": 0.825,
+        "rollback_rate": 0.93,
+        "time_to_deploy_ms": 0.835
+      },
+      "comparison": {
+        "isImprovement": false,
+        "improvements": 1,
+        "regressions": 1,
+        "deltas": {
+          "deploy_success_rate": {
+            "current": 0.865,
+            "baseline": 0.825,
+            "delta": 4.8
+          },
+          "rollback_rate": {
+            "current": 0.73,
+            "baseline": 0.93,
+            "delta": -21.5
+          },
+          "time_to_deploy_ms": {
+            "current": 0.835,
+            "baseline": 0.835,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Deployment Strategy",
+      "ts": "2026-07-01T23:16:37.707Z"
+    },
+    {
+      "id": "bm_1782947797720_ei2j",
+      "target": "knowledge_recall",
+      "planId": null,
+      "metrics": {
+        "recall_precision": 0.88,
+        "recall_latency_ms": 34,
+        "knowledge_coverage": 0
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "recall_precision": 0.87,
+          "recall_latency_ms": 48,
+          "knowledge_coverage": 0
+        },
+        {
+          "recall_precision": 0.89,
+          "recall_latency_ms": 20,
+          "knowledge_coverage": 0
+        }
+      ],
+      "baseline": {
+        "recall_precision": 0.82,
+        "recall_latency_ms": 34.5,
+        "knowledge_coverage": 0
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 2,
+        "regressions": 0,
+        "deltas": {
+          "recall_precision": {
+            "current": 0.88,
+            "baseline": 0.82,
+            "delta": 7.3
+          },
+          "recall_latency_ms": {
+            "current": 34,
+            "baseline": 34.5,
+            "delta": -1.4
+          },
+          "knowledge_coverage": {
+            "current": 0,
+            "baseline": 0,
+            "delta": 0
+          }
+        }
+      },
+      "targetName": "Knowledge Recall",
+      "ts": "2026-07-01T23:16:37.826Z"
+    },
+    {
+      "id": "bm_1782947797841_mulo",
+      "target": "autonomous_systems",
+      "planId": null,
+      "metrics": {
+        "autonomy_rate": 0.855,
+        "human_interventions": 0.875,
+        "tasks_per_hour": 0.945
+      },
+      "iterations": 2,
+      "runs": [
+        {
+          "autonomy_rate": 0.83,
+          "human_interventions": 0.81,
+          "tasks_per_hour": 0.98
+        },
+        {
+          "autonomy_rate": 0.88,
+          "human_interventions": 0.94,
+          "tasks_per_hour": 0.91
+        }
+      ],
+      "baseline": {
+        "autonomy_rate": 0.86,
+        "human_interventions": 0.865,
+        "tasks_per_hour": 0.875
+      },
+      "comparison": {
+        "isImprovement": true,
+        "improvements": 2,
+        "regressions": 0,
+        "deltas": {
+          "autonomy_rate": {
+            "current": 0.855,
+            "baseline": 0.86,
+            "delta": -0.6
+          },
+          "human_interventions": {
+            "current": 0.875,
+            "baseline": 0.865,
+            "delta": 1.2
+          },
+          "tasks_per_hour": {
+            "current": 0.945,
+            "baseline": 0.875,
+            "delta": 8
+          }
+        }
+      },
+      "targetName": "Autonomous Systems",
+      "ts": "2026-07-01T23:16:37.870Z"
     }
   ],
   "history": {
@@ -1570,6 +2334,26 @@
           "error_rate": 0.15
         },
         "ts": "2026-06-30T00:11:54.013Z"
+      },
+      {
+        "id": "bm_1782947438765_a4q6",
+        "metrics": {
+          "throughput": 0,
+          "latency_ms": 349.5,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        },
+        "ts": "2026-07-01T23:10:39.863Z"
+      },
+      {
+        "id": "bm_1782947791896_oov0",
+        "metrics": {
+          "throughput": 0,
+          "latency_ms": 282.5,
+          "success_rate": 0.85,
+          "error_rate": 0.15
+        },
+        "ts": "2026-07-01T23:16:34.459Z"
       }
     ],
     "workspace_mesh": [
@@ -1612,6 +2396,26 @@
           "workspace_coverage": 12
         },
         "ts": "2026-06-30T00:11:54.040Z"
+      },
+      {
+        "id": "bm_1782947439867_4irs",
+        "metrics": {
+          "dispatch_latency": 97.5,
+          "sync_accuracy": 0.935,
+          "recovery_rate": 0.91,
+          "workspace_coverage": 12
+        },
+        "ts": "2026-07-01T23:10:39.925Z"
+      },
+      {
+        "id": "bm_1782947794478_0tvb",
+        "metrics": {
+          "dispatch_latency": 70,
+          "sync_accuracy": 0.94,
+          "recovery_rate": 0.87,
+          "workspace_coverage": 12
+        },
+        "ts": "2026-07-01T23:16:34.570Z"
       }
     ],
     "approval_engine": [
@@ -1650,6 +2454,24 @@
           "false_positive_rate": 0.033
         },
         "ts": "2026-06-30T00:11:54.080Z"
+      },
+      {
+        "id": "bm_1782947439931_qlx0",
+        "metrics": {
+          "auto_approval_rate": 0.75,
+          "approval_latency": 300,
+          "false_positive_rate": 0.025
+        },
+        "ts": "2026-07-01T23:10:40.006Z"
+      },
+      {
+        "id": "bm_1782947794591_e54l",
+        "metrics": {
+          "auto_approval_rate": 0.755,
+          "approval_latency": 252,
+          "false_positive_rate": 0.005
+        },
+        "ts": "2026-07-01T23:16:34.642Z"
       }
     ],
     "workforce_allocation": [
@@ -1688,6 +2510,24 @@
           "avg_mission_duration_ms": 1942
         },
         "ts": "2026-06-30T00:11:54.112Z"
+      },
+      {
+        "id": "bm_1782947440010_y9pb",
+        "metrics": {
+          "agent_utilization": 0.78,
+          "mission_success_rate": 0.82,
+          "avg_mission_duration_ms": 1007
+        },
+        "ts": "2026-07-01T23:10:40.075Z"
+      },
+      {
+        "id": "bm_1782947794647_lgfm",
+        "metrics": {
+          "agent_utilization": 0.72,
+          "mission_success_rate": 0.9,
+          "avg_mission_duration_ms": 1225.5
+        },
+        "ts": "2026-07-01T23:16:36.447Z"
       }
     ],
     "deployment_strategy": [
@@ -1726,6 +2566,24 @@
           "time_to_deploy_ms": 0.85
         },
         "ts": "2026-06-30T00:11:54.145Z"
+      },
+      {
+        "id": "bm_1782947440080_jvt0",
+        "metrics": {
+          "deploy_success_rate": 0.79,
+          "rollback_rate": 0.82,
+          "time_to_deploy_ms": 0.78
+        },
+        "ts": "2026-07-01T23:10:40.169Z"
+      },
+      {
+        "id": "bm_1782947797615_qkov",
+        "metrics": {
+          "deploy_success_rate": 0.865,
+          "rollback_rate": 0.73,
+          "time_to_deploy_ms": 0.835
+        },
+        "ts": "2026-07-01T23:16:37.707Z"
       }
     ],
     "knowledge_recall": [
@@ -1764,6 +2622,24 @@
           "knowledge_coverage": 0
         },
         "ts": "2026-06-30T00:11:54.177Z"
+      },
+      {
+        "id": "bm_1782947440178_sc1v",
+        "metrics": {
+          "recall_precision": 0.815,
+          "recall_latency_ms": 36.5,
+          "knowledge_coverage": 0
+        },
+        "ts": "2026-07-01T23:10:40.224Z"
+      },
+      {
+        "id": "bm_1782947797720_ei2j",
+        "metrics": {
+          "recall_precision": 0.88,
+          "recall_latency_ms": 34,
+          "knowledge_coverage": 0
+        },
+        "ts": "2026-07-01T23:16:37.826Z"
       }
     ],
     "autonomous_systems": [
@@ -1802,6 +2678,24 @@
           "tasks_per_hour": 0.94
         },
         "ts": "2026-06-30T00:11:54.200Z"
+      },
+      {
+        "id": "bm_1782947440228_9fbd",
+        "metrics": {
+          "autonomy_rate": 0.89,
+          "human_interventions": 0.855,
+          "tasks_per_hour": 0.775
+        },
+        "ts": "2026-07-01T23:10:40.253Z"
+      },
+      {
+        "id": "bm_1782947797841_mulo",
+        "metrics": {
+          "autonomy_rate": 0.855,
+          "human_interventions": 0.875,
+          "tasks_per_hour": 0.945
+        },
+        "ts": "2026-07-01T23:16:37.870Z"
       }
     ]
   },
@@ -1845,9 +2739,9 @@
     }
   },
   "stats": {
-    "totalRuns": 28,
+    "totalRuns": 42,
     "targetsRun": 7,
-    "improvementsDetected": 12
+    "improvementsDetected": 18
   },
-  "updatedAt": "2026-06-30T00:11:54.200Z"
+  "updatedAt": "2026-07-01T23:16:37.871Z"
 }

@@ -27,7 +27,7 @@ const readiness  = require("../services/launchReadiness.cjs");
 const simulator  = require("../services/commercialSimulator.cjs");
 const creditEngine = require("../services/creditEngine.cjs");
 
-router.use(requireAuth);
+router.use("/launch", requireAuth);
 
 function _account(req) { return req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }

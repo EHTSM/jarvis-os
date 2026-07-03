@@ -5471,6 +5471,2310 @@
       ],
       "reasoningOverall": 67,
       "scoredAt": "2026-06-29T22:43:35.599Z"
+    },
+    {
+      "id": "eq_1782947441985_cgmb",
+      "context": "test_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 67,
+        "maintainability": 68,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 85,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 67,
+          "priority": "high",
+          "recommendation": "Improve code quality (67/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 68,
+          "priority": "high",
+          "recommendation": "Improve maintainability (68/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:41.987Z"
+    },
+    {
+      "id": "eq_1782947441993_eldo",
+      "context": "history_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:41.994Z"
+    },
+    {
+      "id": "eq_1782947441997_m2na",
+      "context": "filter_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:41.997Z"
+    },
+    {
+      "id": "eq_1782947442000_w2q0",
+      "context": "id_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 76,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 76,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (76/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.000Z"
+    },
+    {
+      "id": "eq_1782947442003_uooc",
+      "context": "trend_ctx",
+      "dimensions": {
+        "architecture": 95,
+        "code_quality": 40,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 79,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 76,
+      "scoredAt": "2026-07-01T23:10:42.003Z"
+    },
+    {
+      "id": "eq_1782947442007_ngc2",
+      "context": "stats_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.007Z"
+    },
+    {
+      "id": "eq_1782947442010_8uot",
+      "context": "priority_ctx",
+      "dimensions": {
+        "architecture": 90,
+        "code_quality": 40,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 78,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 75,
+      "scoredAt": "2026-07-01T23:10:42.010Z"
+    },
+    {
+      "id": "eq_1782947442014_xtq4",
+      "context": "bm_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 76,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 76,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (76/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.015Z"
+    },
+    {
+      "id": "eq_1782947442017_muv8",
+      "context": "baseline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.017Z"
+    },
+    {
+      "id": "eq_1782947442521_ireh",
+      "context": "get_bm_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 77,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 77,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (77/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.522Z"
+    },
+    {
+      "id": "eq_1782947442534_rhc8",
+      "context": "stats_bm_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.534Z"
+    },
+    {
+      "id": "eq_1782947442673_3vup",
+      "context": "debt_ctx",
+      "dimensions": {
+        "architecture": 98,
+        "code_quality": 55,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 83,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 55,
+          "priority": "high",
+          "recommendation": "Improve code quality (55/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 77,
+      "scoredAt": "2026-07-01T23:10:42.673Z"
+    },
+    {
+      "id": "eq_1782947442677_pkg2",
+      "context": "trend_evo_ctx",
+      "dimensions": {
+        "architecture": 95,
+        "code_quality": 40,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 79,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 76,
+      "scoredAt": "2026-07-01T23:10:42.677Z"
+    },
+    {
+      "id": "eq_1782947442711_v2tn",
+      "context": "summary_seed_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:42.711Z"
+    },
+    {
+      "id": "eq_1782947452113_okwq",
+      "context": "pipeline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 69,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:52.113Z"
+    },
+    {
+      "id": "eq_1782947452118_oaho",
+      "context": "chain_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:52.118Z"
+    },
+    {
+      "id": "eq_1782947452125_20z3",
+      "context": "view_pipeline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 67,
+        "maintainability": 77,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 67,
+          "priority": "high",
+          "recommendation": "Improve code quality (67/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 77,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (77/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:52.125Z"
+    },
+    {
+      "id": "eq_1782947452211_blb0",
+      "context": "debt_pipeline_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 46,
+        "maintainability": 8,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 71,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 8,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (8/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 46,
+          "priority": "critical",
+          "recommendation": "Improve code quality (46/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 95,
+      "scoredAt": "2026-07-01T23:10:52.211Z"
+    },
+    {
+      "id": "eq_1782947453563_gqpe",
+      "context": "trend_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:53.563Z"
+    },
+    {
+      "id": "eq_1782947453596_ujcn",
+      "context": "bm_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 77,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 77,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (77/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:10:53.596Z"
+    },
+    {
+      "id": "eq_1782947500910_sfea",
+      "context": "trend_evo_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:11:40.910Z"
+    },
+    {
+      "id": "eq_1782947561302_9vm6",
+      "context": "chain_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 70,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 70,
+          "priority": "medium",
+          "recommendation": "Improve code quality (70/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:12:41.302Z"
+    },
+    {
+      "id": "eq_1782947648796_nx2q",
+      "context": "current_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:14:08.796Z"
+    },
+    {
+      "id": "eq_1782947677244_jidj",
+      "context": "test_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 72,
+        "maintainability": 68,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 86,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 68,
+          "priority": "high",
+          "recommendation": "Improve maintainability (68/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve code quality (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.244Z"
+    },
+    {
+      "id": "eq_1782947677296_0fpr",
+      "context": "history_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 76,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 76,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (76/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.296Z"
+    },
+    {
+      "id": "eq_1782947677341_fufg",
+      "context": "filter_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 76,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 76,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (76/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.349Z"
+    },
+    {
+      "id": "eq_1782947677398_ruys",
+      "context": "id_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.398Z"
+    },
+    {
+      "id": "eq_1782947677458_pvuz",
+      "context": "trend_ctx",
+      "dimensions": {
+        "architecture": 95,
+        "code_quality": 45,
+        "maintainability": 77,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 81,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 77,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (77/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 76,
+      "scoredAt": "2026-07-01T23:14:37.458Z"
+    },
+    {
+      "id": "eq_1782947677514_8bnc",
+      "context": "stats_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.514Z"
+    },
+    {
+      "id": "eq_1782947677594_wg8e",
+      "context": "priority_ctx",
+      "dimensions": {
+        "architecture": 90,
+        "code_quality": 45,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 79,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 75,
+      "scoredAt": "2026-07-01T23:14:37.594Z"
+    },
+    {
+      "id": "eq_1782947677662_w5v6",
+      "context": "bm_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 77,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 88,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 77,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (77/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.662Z"
+    },
+    {
+      "id": "eq_1782947677674_makg",
+      "context": "baseline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:37.674Z"
+    },
+    {
+      "id": "eq_1782947678992_xz4y",
+      "context": "iso_1782947401600_ryt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:14:38.992Z"
+    },
+    {
+      "id": "eq_1782947681985_3g03",
+      "context": "get_bm_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 73,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 73,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (73/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:41.985Z"
+    },
+    {
+      "id": "eq_1782947683909_1hy1",
+      "context": "stats_bm_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 74,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 74,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (74/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:43.909Z"
+    },
+    {
+      "id": "eq_1782947684168_pzhn",
+      "context": "debt_ctx",
+      "dimensions": {
+        "architecture": 98,
+        "code_quality": 60,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 83,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 60,
+          "priority": "high",
+          "recommendation": "Improve code quality (60/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 77,
+      "scoredAt": "2026-07-01T23:14:44.168Z"
+    },
+    {
+      "id": "eq_1782947684229_2xch",
+      "context": "trend_evo_ctx",
+      "dimensions": {
+        "architecture": 95,
+        "code_quality": 45,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 80,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 76,
+      "scoredAt": "2026-07-01T23:14:44.229Z"
+    },
+    {
+      "id": "eq_1782947684293_w0ml",
+      "context": "summary_seed_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 73,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 73,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (73/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:44.293Z"
+    },
+    {
+      "id": "eq_1782947687200_6uez",
+      "context": "status_seed_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:14:47.200Z"
+    },
+    {
+      "id": "eq_1782947687815_7kjj",
+      "context": "pipeline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 70,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:47.815Z"
+    },
+    {
+      "id": "eq_1782947688118_x6n6",
+      "context": "chain_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 73,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 73,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (73/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:48.118Z"
+    },
+    {
+      "id": "eq_1782947688122_0say",
+      "context": "view_pipeline_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 72,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve code quality (72/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:48.122Z"
+    },
+    {
+      "id": "eq_1782947688230_87f0",
+      "context": "debt_pipeline_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 51,
+        "maintainability": 8,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 72,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 8,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (8/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 51,
+          "priority": "high",
+          "recommendation": "Improve code quality (51/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 95,
+      "scoredAt": "2026-07-01T23:14:48.230Z"
+    },
+    {
+      "id": "eq_1782947688639_cxd1",
+      "context": "trend_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:48.639Z"
+    },
+    {
+      "id": "eq_1782947688642_wlnt",
+      "context": "bm_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 72,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 72,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (72/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:14:48.642Z"
+    },
+    {
+      "id": "eq_1782947692298_ellw",
+      "context": "multi_cycle_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:14:52.298Z"
+    },
+    {
+      "id": "eq_1782947697147_1xbb",
+      "context": "dashboard_evo_seed",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:14:57.147Z"
+    },
+    {
+      "id": "eq_1782947702131_rbwb",
+      "context": "trend_evo_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 76,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 76,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (76/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:15:02.131Z"
+    },
+    {
+      "id": "eq_1782947703520_eu3l",
+      "context": "current_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:03.520Z"
+    },
+    {
+      "id": "eq_1782947706027_cpzj",
+      "context": "founder_time_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:06.027Z"
+    },
+    {
+      "id": "eq_1782947708751_p8ba",
+      "context": "chain_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 75,
+        "maintainability": 75,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 100,
+        "performance": 80
+      },
+      "overall": 87,
+      "improvements": [
+        {
+          "dimension": "code_quality",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve code quality (75/100)"
+        },
+        {
+          "dimension": "maintainability",
+          "currentScore": 75,
+          "priority": "medium",
+          "recommendation": "Improve maintainability (75/100)"
+        },
+        {
+          "dimension": "reliability",
+          "currentScore": 80,
+          "priority": "medium",
+          "recommendation": "Improve reliability (80/100)"
+        }
+      ],
+      "reasoningOverall": 97,
+      "scoredAt": "2026-07-01T23:15:08.751Z"
+    },
+    {
+      "id": "eq_1782947720424_dm3t",
+      "context": "current_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:20.436Z"
+    },
+    {
+      "id": "eq_1782947731941_qawj",
+      "context": "iso_1782947534668_4jt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:31.953Z"
+    },
+    {
+      "id": "eq_1782947734104_pjtq",
+      "context": "status_seed_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:34.104Z"
+    },
+    {
+      "id": "eq_1782947737871_bwm8",
+      "context": "multi_cycle_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:37.872Z"
+    },
+    {
+      "id": "eq_1782947742523_nxw3",
+      "context": "dashboard_evo_seed",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:42.523Z"
+    },
+    {
+      "id": "eq_1782947758543_3k6n",
+      "context": "current_repo",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:15:58.544Z"
+    },
+    {
+      "id": "eq_1782947766106_sdq9",
+      "context": "iso_1782947401600_ryt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:16:06.106Z"
+    },
+    {
+      "id": "eq_1782947800146_8e63",
+      "context": "multi_cycle_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:16:40.147Z"
+    },
+    {
+      "id": "eq_1782947801622_lu8t",
+      "context": "founder_time_test",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:16:41.622Z"
+    },
+    {
+      "id": "eq_1782947839430_o9zw",
+      "context": "iso_1782947401600_ryt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 40,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 59,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 40,
+          "priority": "critical",
+          "recommendation": "Improve code quality (40/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:17:19.430Z"
+    },
+    {
+      "id": "eq_1782947917395_4vff",
+      "context": "iso_1782947534668_4jt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:18:37.395Z"
+    },
+    {
+      "id": "eq_1782947926146_wdv8",
+      "context": "multi_cycle_ctx",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:18:46.146Z"
+    },
+    {
+      "id": "eq_1782947991906_znhv",
+      "context": "iso_1782947534668_4jt",
+      "dimensions": {
+        "architecture": 100,
+        "code_quality": 45,
+        "maintainability": 0,
+        "reliability": 80,
+        "security": 100,
+        "scalability": 0,
+        "performance": 80
+      },
+      "overall": 60,
+      "improvements": [
+        {
+          "dimension": "maintainability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve maintainability (0/100)"
+        },
+        {
+          "dimension": "scalability",
+          "currentScore": 0,
+          "priority": "critical",
+          "recommendation": "Improve scalability (0/100)"
+        },
+        {
+          "dimension": "code_quality",
+          "currentScore": 45,
+          "priority": "critical",
+          "recommendation": "Improve code quality (45/100)"
+        }
+      ],
+      "reasoningOverall": 67,
+      "scoredAt": "2026-07-01T23:19:51.914Z"
     }
   ],
   "history": {
@@ -5544,6 +7848,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.235Z"
+      },
+      {
+        "id": "eq_1782947441985_cgmb",
+        "overall": 85,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 67,
+          "maintainability": 68,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:41.987Z"
+      },
+      {
+        "id": "eq_1782947677244_jidj",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 72,
+          "maintainability": 68,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.244Z"
       }
     ],
     "history_ctx": [
@@ -5616,6 +7948,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.243Z"
+      },
+      {
+        "id": "eq_1782947441993_eldo",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:41.994Z"
+      },
+      {
+        "id": "eq_1782947677296_0fpr",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 76,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.296Z"
       }
     ],
     "filter_ctx": [
@@ -5688,6 +8048,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.245Z"
+      },
+      {
+        "id": "eq_1782947441997_m2na",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:41.997Z"
+      },
+      {
+        "id": "eq_1782947677341_fufg",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 76,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.349Z"
       }
     ],
     "id_ctx": [
@@ -5760,6 +8148,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.246Z"
+      },
+      {
+        "id": "eq_1782947442000_w2q0",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 76,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.000Z"
+      },
+      {
+        "id": "eq_1782947677398_ruys",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.398Z"
       }
     ],
     "trend_ctx": [
@@ -5902,6 +8318,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:22.602Z"
+      },
+      {
+        "id": "eq_1782947442003_uooc",
+        "overall": 79,
+        "dimensions": {
+          "architecture": 95,
+          "code_quality": 40,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.003Z"
+      },
+      {
+        "id": "eq_1782947453563_gqpe",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:53.563Z"
+      },
+      {
+        "id": "eq_1782947677458_pvuz",
+        "overall": 81,
+        "dimensions": {
+          "architecture": 95,
+          "code_quality": 45,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.458Z"
+      },
+      {
+        "id": "eq_1782947688639_cxd1",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:48.639Z"
       }
     ],
     "stats_ctx": [
@@ -5974,6 +8446,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.248Z"
+      },
+      {
+        "id": "eq_1782947442007_ngc2",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.007Z"
+      },
+      {
+        "id": "eq_1782947677514_8bnc",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.514Z"
       }
     ],
     "priority_ctx": [
@@ -6046,6 +8546,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.248Z"
+      },
+      {
+        "id": "eq_1782947442010_8uot",
+        "overall": 78,
+        "dimensions": {
+          "architecture": 90,
+          "code_quality": 40,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.010Z"
+      },
+      {
+        "id": "eq_1782947677594_wg8e",
+        "overall": 79,
+        "dimensions": {
+          "architecture": 90,
+          "code_quality": 45,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.594Z"
       }
     ],
     "bm_test": [
@@ -6188,6 +8716,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:22.603Z"
+      },
+      {
+        "id": "eq_1782947442014_xtq4",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 76,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.015Z"
+      },
+      {
+        "id": "eq_1782947453596_ujcn",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:53.596Z"
+      },
+      {
+        "id": "eq_1782947677662_w5v6",
+        "overall": 88,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.662Z"
+      },
+      {
+        "id": "eq_1782947688642_wlnt",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:48.642Z"
       }
     ],
     "baseline_test": [
@@ -6260,6 +8844,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.250Z"
+      },
+      {
+        "id": "eq_1782947442017_muv8",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.017Z"
+      },
+      {
+        "id": "eq_1782947677674_makg",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:37.674Z"
       }
     ],
     "get_bm_ctx": [
@@ -6332,6 +8944,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.256Z"
+      },
+      {
+        "id": "eq_1782947442521_ireh",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.522Z"
+      },
+      {
+        "id": "eq_1782947681985_3g03",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 73,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:41.985Z"
       }
     ],
     "stats_bm_ctx": [
@@ -6404,6 +9044,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.257Z"
+      },
+      {
+        "id": "eq_1782947442534_rhc8",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.534Z"
+      },
+      {
+        "id": "eq_1782947683909_1hy1",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:43.909Z"
       }
     ],
     "debt_ctx": [
@@ -6476,6 +9144,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.268Z"
+      },
+      {
+        "id": "eq_1782947442673_3vup",
+        "overall": 83,
+        "dimensions": {
+          "architecture": 98,
+          "code_quality": 55,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.673Z"
+      },
+      {
+        "id": "eq_1782947684168_pzhn",
+        "overall": 83,
+        "dimensions": {
+          "architecture": 98,
+          "code_quality": 60,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:44.168Z"
       }
     ],
     "trend_evo_ctx": [
@@ -6618,6 +9314,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:26.587Z"
+      },
+      {
+        "id": "eq_1782947442677_pkg2",
+        "overall": 79,
+        "dimensions": {
+          "architecture": 95,
+          "code_quality": 40,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.677Z"
+      },
+      {
+        "id": "eq_1782947500910_sfea",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:11:40.910Z"
+      },
+      {
+        "id": "eq_1782947684229_2xch",
+        "overall": 80,
+        "dimensions": {
+          "architecture": 95,
+          "code_quality": 45,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:44.229Z"
+      },
+      {
+        "id": "eq_1782947702131_rbwb",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 76,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:02.131Z"
       }
     ],
     "summary_seed_ctx": [
@@ -6690,6 +9442,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:21.272Z"
+      },
+      {
+        "id": "eq_1782947442711_v2tn",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:42.711Z"
+      },
+      {
+        "id": "eq_1782947684293_w0ml",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 73,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:44.293Z"
       }
     ],
     "pipeline_test": [
@@ -6762,6 +9542,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:22.514Z"
+      },
+      {
+        "id": "eq_1782947452113_okwq",
+        "overall": 69,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:52.113Z"
+      },
+      {
+        "id": "eq_1782947687815_7kjj",
+        "overall": 70,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:47.815Z"
       }
     ],
     "chain_test": [
@@ -6904,6 +9712,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:29.261Z"
+      },
+      {
+        "id": "eq_1782947452118_oaho",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 72,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:52.118Z"
+      },
+      {
+        "id": "eq_1782947561302_9vm6",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 70,
+          "maintainability": 74,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:12:41.302Z"
+      },
+      {
+        "id": "eq_1782947688118_x6n6",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 73,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:48.118Z"
+      },
+      {
+        "id": "eq_1782947708751_p8ba",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 75,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:08.751Z"
       }
     ],
     "view_pipeline_test": [
@@ -6976,6 +9840,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:22.516Z"
+      },
+      {
+        "id": "eq_1782947452125_20z3",
+        "overall": 86,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 67,
+          "maintainability": 77,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:52.125Z"
+      },
+      {
+        "id": "eq_1782947688122_0say",
+        "overall": 87,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 72,
+          "maintainability": 75,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:48.122Z"
       }
     ],
     "debt_pipeline_ctx": [
@@ -7048,6 +9940,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:22.522Z"
+      },
+      {
+        "id": "eq_1782947452211_blb0",
+        "overall": 71,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 46,
+          "maintainability": 8,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:10:52.211Z"
+      },
+      {
+        "id": "eq_1782947688230_87f0",
+        "overall": 72,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 51,
+          "maintainability": 8,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 100,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:48.230Z"
       }
     ],
     "current_repo": [
@@ -7176,6 +10096,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:33.132Z"
+      },
+      {
+        "id": "eq_1782947648796_nx2q",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:08.800Z"
+      },
+      {
+        "id": "eq_1782947703520_eu3l",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:03.520Z"
+      },
+      {
+        "id": "eq_1782947720424_dm3t",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:20.455Z"
+      },
+      {
+        "id": "eq_1782947758543_3k6n",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:58.588Z"
       }
     ],
     "get_cycle_ctx": [
@@ -7294,6 +10270,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:35.962Z"
+      },
+      {
+        "id": "eq_1782947687200_6uez",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:47.203Z"
+      },
+      {
+        "id": "eq_1782947734104_pjtq",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:34.104Z"
       }
     ],
     "multi_cycle_ctx": [
@@ -7422,6 +10426,62 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:42:37.264Z"
+      },
+      {
+        "id": "eq_1782947692298_ellw",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:52.298Z"
+      },
+      {
+        "id": "eq_1782947737871_bwm8",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:37.872Z"
+      },
+      {
+        "id": "eq_1782947800146_8e63",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:16:40.149Z"
+      },
+      {
+        "id": "eq_1782947926146_wdv8",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:18:46.147Z"
       }
     ],
     "dashboard_evo_seed": [
@@ -7494,6 +10554,34 @@
           "performance": 80
         },
         "ts": "2026-06-29T22:43:35.599Z"
+      },
+      {
+        "id": "eq_1782947697147_1xbb",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:57.147Z"
+      },
+      {
+        "id": "eq_1782947742523_nxw3",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:42.523Z"
       }
     ],
     "founder_time_test": [
@@ -7552,6 +10640,34 @@
           "performance": 80
         },
         "ts": "2026-06-28T23:09:08.426Z"
+      },
+      {
+        "id": "eq_1782947706027_cpzj",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:06.027Z"
+      },
+      {
+        "id": "eq_1782947801622_lu8t",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:16:41.622Z"
       }
     ],
     "probe_ctx": [
@@ -7659,11 +10775,99 @@
         },
         "ts": "2026-06-29T22:42:34.568Z"
       }
+    ],
+    "iso_1782947401600_ryt": [
+      {
+        "id": "eq_1782947678992_xz4y",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:14:38.992Z"
+      },
+      {
+        "id": "eq_1782947766106_sdq9",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:16:06.130Z"
+      },
+      {
+        "id": "eq_1782947839430_o9zw",
+        "overall": 59,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 40,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:17:19.430Z"
+      }
+    ],
+    "iso_1782947534668_4jt": [
+      {
+        "id": "eq_1782947731941_qawj",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:15:31.953Z"
+      },
+      {
+        "id": "eq_1782947917395_4vff",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:18:37.397Z"
+      },
+      {
+        "id": "eq_1782947991906_znhv",
+        "overall": 60,
+        "dimensions": {
+          "architecture": 100,
+          "code_quality": 45,
+          "maintainability": 0,
+          "reliability": 80,
+          "security": 100,
+          "scalability": 0,
+          "performance": 80
+        },
+        "ts": "2026-07-01T23:19:51.914Z"
+      }
     ]
   },
   "stats": {
-    "total": 152,
-    "avgOverall": 77.2
+    "total": 216,
+    "avgOverall": 63.7
   },
-  "updatedAt": "2026-06-29T22:43:35.599Z"
+  "updatedAt": "2026-07-01T23:19:51.917Z"
 }

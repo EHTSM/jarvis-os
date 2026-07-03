@@ -1,7 +1,7 @@
 {
   "plans": [
     {
-      "id": "csp_1782773082055_j812",
+      "id": "csp_1782947529082_7z0j",
       "customerId": "919999999999",
       "stage": "activation",
       "healthScore": 59,
@@ -80,10 +80,10 @@
           "Provide temporary credit top-up"
         ]
       },
-      "generatedAt": "2026-06-29T22:44:42.055Z"
+      "generatedAt": "2026-07-01T23:12:09.082Z"
     },
     {
-      "id": "csp_1782773082040_474d",
+      "id": "csp_1782947529016_crnp",
       "customerId": "test_plan_cid",
       "stage": "onboarding",
       "healthScore": 0,
@@ -162,10 +162,10 @@
           "Provide temporary credit top-up"
         ]
       },
-      "generatedAt": "2026-06-29T22:44:42.040Z"
+      "generatedAt": "2026-07-01T23:12:09.016Z"
     },
     {
-      "id": "csp_1782773083741_0hec",
+      "id": "csp_1782947535369_rafy",
       "customerId": "919000000002",
       "stage": "qualification",
       "healthScore": 43,
@@ -240,14 +240,14 @@
           "Provide temporary credit top-up"
         ]
       },
-      "generatedAt": "2026-06-29T22:44:43.741Z"
+      "generatedAt": "2026-07-01T23:12:15.369Z"
     }
   ],
   "predictions": [],
   "stats": {
     "total": 3,
-    "churnPrevented": 3,
+    "churnPrevented": 5,
     "expansionsTriggered": 0
   },
-  "updatedAt": "2026-06-29T22:44:43.741Z"
+  "updatedAt": "2026-07-01T23:12:15.374Z"
 }

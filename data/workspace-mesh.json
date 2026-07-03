@@ -30,13 +30,58 @@
         "total": 17
       },
       "ts": "2026-06-28T22:49:36.959Z"
+    },
+    {
+      "id": "mesh_1782778457573_g0tf",
+      "command": "deploy to VPS",
+      "domain": "deployment",
+      "missionId": "e2e_sync_test",
+      "steps": 1,
+      "status": "completed",
+      "minutesSaved": 12,
+      "recoveries": 1,
+      "meshHealth": {
+        "healthy": 15,
+        "total": 17
+      },
+      "ts": "2026-06-30T00:14:20.044Z"
+    },
+    {
+      "id": "mesh_1782948076784_j6do",
+      "command": "deploy to VPS",
+      "domain": "deployment",
+      "missionId": "e2e_sync_test",
+      "steps": 1,
+      "status": "completed",
+      "minutesSaved": 12,
+      "recoveries": 1,
+      "meshHealth": {
+        "healthy": 15,
+        "total": 17
+      },
+      "ts": "2026-07-01T23:21:33.818Z"
+    },
+    {
+      "id": "mesh_1782948319168_do6s",
+      "command": "deploy to VPS",
+      "domain": "deployment",
+      "missionId": "e2e_sync_test",
+      "steps": 1,
+      "status": "completed",
+      "minutesSaved": 12,
+      "recoveries": 1,
+      "meshHealth": {
+        "healthy": 15,
+        "total": 17
+      },
+      "ts": "2026-07-01T23:25:33.577Z"
     }
   ],
   "stats": {
-    "totalExecutions": 4,
-    "successfulExecutions": 2,
-    "totalMinutesSaved": 24,
+    "totalExecutions": 10,
+    "successfulExecutions": 5,
+    "totalMinutesSaved": 60,
     "workspacesManaged": 17
   },
-  "updatedAt": "2026-06-28T22:49:36.959Z"
+  "updatedAt": "2026-07-01T23:25:33.577Z"
 }

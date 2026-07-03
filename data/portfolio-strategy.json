@@ -1679,10 +1679,1130 @@
       "overallScore": 40,
       "topFocus": "ai_capabilities",
       "strategizedAt": "2026-06-29T22:45:02.957Z"
+    },
+    {
+      "id": "pfs_1782947401589_2qtb",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 50,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.589Z"
+    },
+    {
+      "id": "pfs_1782947401605_geui",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.605Z"
+    },
+    {
+      "id": "pfs_1782947401617_ny6g",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.617Z"
+    },
+    {
+      "id": "pfs_1782947401628_wmq1",
+      "mode": "growth",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.337,
+          "budget": 33700,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.25,
+          "budget": 25000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "products",
+      "strategizedAt": "2026-07-01T23:10:01.628Z"
+    },
+    {
+      "id": "pfs_1782947401638_0b7e",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.638Z"
+    },
+    {
+      "id": "pfs_1782947401693_0rt2",
+      "mode": "retention",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.185,
+          "budget": 18500,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.049,
+          "budget": 4900,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.494,
+          "budget": 49400,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.185,
+          "budget": 18500,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.086,
+          "budget": 8600,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.693Z"
+    },
+    {
+      "id": "pfs_1782947401706_jd8w",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:01.706Z"
+    },
+    {
+      "id": "pfs_1782947401725_uxon",
+      "mode": "growth",
+      "totalBudget": 200000,
+      "portfolio": {
+        "products": {
+          "weight": 0.337,
+          "budget": 67400,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.137,
+          "budget": 27400,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.25,
+          "budget": 50000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.088,
+          "budget": 17600,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.188,
+          "budget": 37600,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "products",
+      "strategizedAt": "2026-07-01T23:10:01.725Z"
+    },
+    {
+      "id": "pfs_1782947405848_mgee",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:10:05.848Z"
+    },
+    {
+      "id": "pfs_1782947406241_14h2",
+      "mode": "efficiency",
+      "totalBudget": 500000,
+      "portfolio": {
+        "products": {
+          "weight": 0.235,
+          "budget": 117500,
+          "score": 30,
+          "items": 51,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.049,
+          "budget": 24500,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.198,
+          "budget": 99000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.235,
+          "budget": 117500,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.284,
+          "budget": 142000,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "ai_capabilities",
+      "strategizedAt": "2026-07-01T23:10:06.241Z"
+    },
+    {
+      "id": "pfs_1782947579151_i6xg",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.151Z"
+    },
+    {
+      "id": "pfs_1782947579195_582x",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.195Z"
+    },
+    {
+      "id": "pfs_1782947579273_tzdg",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.273Z"
+    },
+    {
+      "id": "pfs_1782947579300_nrn5",
+      "mode": "growth",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.337,
+          "budget": 33700,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.25,
+          "budget": 25000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "products",
+      "strategizedAt": "2026-07-01T23:12:59.300Z"
+    },
+    {
+      "id": "pfs_1782947579371_4ifc",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.371Z"
+    },
+    {
+      "id": "pfs_1782947579390_tm7m",
+      "mode": "retention",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.185,
+          "budget": 18500,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.049,
+          "budget": 4900,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.494,
+          "budget": 49400,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.185,
+          "budget": 18500,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.086,
+          "budget": 8600,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.390Z"
+    },
+    {
+      "id": "pfs_1782947579427_kyi6",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:12:59.427Z"
+    },
+    {
+      "id": "pfs_1782947579462_7juo",
+      "mode": "growth",
+      "totalBudget": 200000,
+      "portfolio": {
+        "products": {
+          "weight": 0.337,
+          "budget": 67400,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.137,
+          "budget": 27400,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.25,
+          "budget": 50000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.088,
+          "budget": 17600,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.188,
+          "budget": 37600,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "products",
+      "strategizedAt": "2026-07-01T23:12:59.462Z"
+    },
+    {
+      "id": "pfs_1782947604556_2m53",
+      "mode": "balanced",
+      "totalBudget": 100000,
+      "portfolio": {
+        "products": {
+          "weight": 0.238,
+          "budget": 23800,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.088,
+          "budget": 8800,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.35,
+          "budget": 35000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.188,
+          "budget": 18800,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.137,
+          "budget": 13700,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "customers",
+      "strategizedAt": "2026-07-01T23:13:24.556Z"
+    },
+    {
+      "id": "pfs_1782947606534_sudu",
+      "mode": "efficiency",
+      "totalBudget": 500000,
+      "portfolio": {
+        "products": {
+          "weight": 0.235,
+          "budget": 117500,
+          "score": 30,
+          "items": 56,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "companies": {
+          "weight": 0.049,
+          "budget": 24500,
+          "score": 20,
+          "items": 0,
+          "signals": [],
+          "action": "increase_investment"
+        },
+        "customers": {
+          "weight": 0.198,
+          "budget": 99000,
+          "score": 8,
+          "items": 28,
+          "signals": [
+            "high_churn_risk"
+          ],
+          "action": "increase_investment"
+        },
+        "infrastructure": {
+          "weight": 0.235,
+          "budget": 117500,
+          "score": 0,
+          "items": 0,
+          "signals": [
+            "infra_degraded"
+          ],
+          "action": "increase_investment"
+        },
+        "ai_capabilities": {
+          "weight": 0.284,
+          "budget": 142000,
+          "score": 90,
+          "items": 0,
+          "signals": [
+            "ai_mature"
+          ],
+          "action": "maintain"
+        }
+      },
+      "overallScore": 40,
+      "topFocus": "ai_capabilities",
+      "strategizedAt": "2026-07-01T23:13:26.535Z"
     }
   ],
   "current": {
-    "id": "pfs_1782773102957_ijoh",
+    "id": "pfs_1782947606534_sudu",
     "mode": "efficiency",
     "totalBudget": 500000,
     "portfolio": {
@@ -1690,7 +2810,7 @@
         "weight": 0.235,
         "budget": 117500,
         "score": 30,
-        "items": 46,
+        "items": 56,
         "signals": [],
         "action": "increase_investment"
       },
@@ -1735,16 +2855,16 @@
     },
     "overallScore": 40,
     "topFocus": "ai_capabilities",
-    "strategizedAt": "2026-06-29T22:45:02.957Z"
+    "strategizedAt": "2026-07-01T23:13:26.535Z"
   },
   "stats": {
-    "total": 30,
+    "total": 50,
     "byMode": {
-      "growth": 6,
-      "retention": 3,
-      "efficiency": 3,
-      "balanced": 18
+      "growth": 10,
+      "retention": 5,
+      "efficiency": 5,
+      "balanced": 30
     }
   },
-  "updatedAt": "2026-06-29T22:45:02.957Z"
+  "updatedAt": "2026-07-01T23:13:26.536Z"
 }

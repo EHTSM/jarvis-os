@@ -214,15 +214,21 @@
     ],
     "quantum_research": [
       "org_1782754785880_trfz",
-      "org_1782773167928_722t"
+      "org_1782773167928_722t",
+      "org_1782778468953_y2ea",
+      "org_1782947409593_zjg1"
     ],
     "hypothesis_generation": [
       "org_1782754785880_trfz",
-      "org_1782773167928_722t"
+      "org_1782773167928_722t",
+      "org_1782778468953_y2ea",
+      "org_1782947409593_zjg1"
     ],
     "ai_experimentation": [
       "org_1782754785880_trfz",
-      "org_1782773167928_722t"
+      "org_1782773167928_722t",
+      "org_1782778468953_y2ea",
+      "org_1782947409593_zjg1"
     ]
   },
   "events": [
@@ -980,6 +986,168 @@
       "orgId": "org_1782754785880_trfz",
       "score": 125,
       "ts": "2026-06-29T22:46:07.929Z"
+    },
+    {
+      "id": "cap_1782778468114_1mv9",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "write code and deploy",
+      "score": 130,
+      "ts": "2026-06-30T00:14:28.114Z"
+    },
+    {
+      "id": "cap_1782778468114_wx91",
+      "type": "best_org_matched",
+      "orgId": "org_knowledge",
+      "score": 130,
+      "ts": "2026-06-30T00:14:28.114Z"
+    },
+    {
+      "id": "cap_1782778468115_lfdc",
+      "type": "best_org_matched",
+      "orgId": "org_executive",
+      "goal": "strategic planning",
+      "score": 120,
+      "ts": "2026-06-30T00:14:28.115Z"
+    },
+    {
+      "id": "cap_1782778468116_f3tb",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "code review",
+      "score": 130,
+      "ts": "2026-06-30T00:14:28.116Z"
+    },
+    {
+      "id": "cap_1782778468952_scah",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "deploy software to production",
+      "score": 120,
+      "ts": "2026-06-30T00:14:28.952Z"
+    },
+    {
+      "id": "cap_1782778468952_tcfi",
+      "type": "best_org_matched",
+      "orgId": "org_business",
+      "goal": "grow revenue and manage sales pipeline",
+      "score": 130,
+      "ts": "2026-06-30T00:14:28.952Z"
+    },
+    {
+      "id": "cap_1782778468954_c9oe",
+      "type": "best_org_matched",
+      "orgId": "org_1782754785880_trfz",
+      "score": 125,
+      "ts": "2026-06-30T00:14:28.954Z"
+    },
+    {
+      "id": "cap_1782947408101_xtn2",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "write code and deploy",
+      "score": 130,
+      "ts": "2026-07-01T23:10:08.101Z"
+    },
+    {
+      "id": "cap_1782947408104_206m",
+      "type": "best_org_matched",
+      "orgId": "org_knowledge",
+      "score": 130,
+      "ts": "2026-07-01T23:10:08.104Z"
+    },
+    {
+      "id": "cap_1782947408106_h0ig",
+      "type": "best_org_matched",
+      "orgId": "org_executive",
+      "goal": "strategic planning",
+      "score": 120,
+      "ts": "2026-07-01T23:10:08.106Z"
+    },
+    {
+      "id": "cap_1782947408110_b2iw",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "code review",
+      "score": 130,
+      "ts": "2026-07-01T23:10:08.110Z"
+    },
+    {
+      "id": "cap_1782947409586_43gn",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "deploy software to production",
+      "score": 120,
+      "ts": "2026-07-01T23:10:09.586Z"
+    },
+    {
+      "id": "cap_1782947409587_x5ad",
+      "type": "best_org_matched",
+      "orgId": "org_business",
+      "goal": "grow revenue and manage sales pipeline",
+      "score": 130,
+      "ts": "2026-07-01T23:10:09.587Z"
+    },
+    {
+      "id": "cap_1782947409597_knwy",
+      "type": "best_org_matched",
+      "orgId": "org_1782754785880_trfz",
+      "score": 125,
+      "ts": "2026-07-01T23:10:09.597Z"
+    },
+    {
+      "id": "cap_1782947659119_bjv3",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "write code and deploy",
+      "score": 130,
+      "ts": "2026-07-01T23:14:19.119Z"
+    },
+    {
+      "id": "cap_1782947659126_y0w6",
+      "type": "best_org_matched",
+      "orgId": "org_knowledge",
+      "score": 130,
+      "ts": "2026-07-01T23:14:19.126Z"
+    },
+    {
+      "id": "cap_1782947659129_o1q1",
+      "type": "best_org_matched",
+      "orgId": "org_executive",
+      "goal": "strategic planning",
+      "score": 120,
+      "ts": "2026-07-01T23:14:19.129Z"
+    },
+    {
+      "id": "cap_1782947659133_dzmp",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "code review",
+      "score": 130,
+      "ts": "2026-07-01T23:14:19.133Z"
+    },
+    {
+      "id": "cap_1782947661845_qdk8",
+      "type": "best_org_matched",
+      "orgId": "org_engineering",
+      "goal": "deploy software to production",
+      "score": 120,
+      "ts": "2026-07-01T23:14:21.845Z"
+    },
+    {
+      "id": "cap_1782947661862_xpf3",
+      "type": "best_org_matched",
+      "orgId": "org_business",
+      "goal": "grow revenue and manage sales pipeline",
+      "score": 130,
+      "ts": "2026-07-01T23:14:21.862Z"
+    },
+    {
+      "id": "cap_1782947661966_nm77",
+      "type": "best_org_matched",
+      "orgId": "org_1782754785880_trfz",
+      "score": 125,
+      "ts": "2026-07-01T23:14:21.966Z"
     }
   ],
   "gapDetections": [
@@ -1080,6 +1248,153 @@
       "severity": "medium",
       "source": "benchmark_engine",
       "ts": "2026-06-29T22:46:07.584Z"
+    },
+    {
+      "id": "cap_1782778468457_ozhw",
+      "category": "code_quality",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_3nwu",
+      "category": "maintainability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_d57p",
+      "category": "reliability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_lp83",
+      "category": "security",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_pet3",
+      "category": "scalability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_mav1",
+      "category": "performance",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782778468457_yil2",
+      "category": "overall",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-06-30T00:14:28.457Z"
+    },
+    {
+      "id": "cap_1782947408511_sg7w",
+      "category": "code_quality",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_exmn",
+      "category": "maintainability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_rtea",
+      "category": "reliability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_4pnj",
+      "category": "security",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_3vu9",
+      "category": "scalability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_vuzu",
+      "category": "performance",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947408511_3114",
+      "category": "overall",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:10:08.511Z"
+    },
+    {
+      "id": "cap_1782947660010_frff",
+      "category": "code_quality",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_d0bn",
+      "category": "maintainability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_8hoo",
+      "category": "reliability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_8gkr",
+      "category": "security",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_xbtl",
+      "category": "scalability",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_33y6",
+      "category": "performance",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
+    },
+    {
+      "id": "cap_1782947660010_ix3m",
+      "category": "overall",
+      "severity": "medium",
+      "source": "benchmark_engine",
+      "ts": "2026-07-01T23:14:20.010Z"
     }
   ]
 }

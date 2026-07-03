@@ -8351,12 +8351,2316 @@
       ],
       "reasoningOverall": 51.3,
       "scoredAt": "2026-06-29T22:43:36.593Z"
+    },
+    {
+      "id": "bq_1782947376009_otjo",
+      "context": "quality_test_biz",
+      "dimensions": {
+        "revenue_health": 72,
+        "customer_health": 74,
+        "growth_health": 66,
+        "sales_health": 70,
+        "marketing_health": 65,
+        "retention_health": 73,
+        "operational_health": 50
+      },
+      "overall": 69.5,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 65,
+          "priority": "medium",
+          "suggestion": "Improve marketing health from 65 to at least 80"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 66,
+          "priority": "medium",
+          "suggestion": "Improve growth health from 66 to at least 81"
+        }
+      ],
+      "reasoningOverall": 70,
+      "scoredAt": "2026-07-01T23:09:36.009Z"
+    },
+    {
+      "id": "bq_1782947376304_y396",
+      "context": "trend_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 40,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 40,
+        "retention_health": 40,
+        "operational_health": 50
+      },
+      "overall": 40.5,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve customer health from 40 to at least 55"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:36.304Z"
+    },
+    {
+      "id": "bq_1782947376312_u0hi",
+      "context": "impr_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 45,
+        "growth_health": 44,
+        "sales_health": 42,
+        "marketing_health": 43,
+        "retention_health": 41,
+        "operational_health": 50
+      },
+      "overall": 42.8,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "retention_health",
+          "currentScore": 41,
+          "priority": "critical",
+          "suggestion": "Improve retention health from 41 to at least 56"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 42,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 42 to at least 57"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:36.312Z"
+    },
+    {
+      "id": "bq_1782947377229_4q5t",
+      "context": "debt_biz_ctx",
+      "dimensions": {
+        "revenue_health": 50,
+        "customer_health": 55,
+        "growth_health": 52,
+        "sales_health": 48,
+        "marketing_health": 49,
+        "retention_health": 51,
+        "operational_health": 50
+      },
+      "overall": 51,
+      "improvements": [
+        {
+          "dimension": "sales_health",
+          "currentScore": 48,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 48 to at least 63"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 49,
+          "priority": "critical",
+          "suggestion": "Improve marketing health from 49 to at least 64"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve revenue health from 50 to at least 65"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:37.229Z"
+    },
+    {
+      "id": "bq_1782947377237_j30x",
+      "context": "trend_evo_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 40,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 40,
+        "retention_health": 40,
+        "operational_health": 50
+      },
+      "overall": 40.5,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve customer health from 40 to at least 55"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:37.237Z"
+    },
+    {
+      "id": "bq_1782947378121_zyjb",
+      "context": "debt_pipeline_biz",
+      "dimensions": {
+        "revenue_health": 55,
+        "customer_health": 52,
+        "growth_health": 53,
+        "sales_health": 50,
+        "marketing_health": 51,
+        "retention_health": 54,
+        "operational_health": 50
+      },
+      "overall": 52.6,
+      "improvements": [
+        {
+          "dimension": "sales_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve sales health from 50 to at least 65"
+        },
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 51,
+          "priority": "high",
+          "suggestion": "Improve marketing health from 51 to at least 66"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:38.121Z"
+    },
+    {
+      "id": "bq_1782947378149_k17t",
+      "context": "history_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.149Z"
+    },
+    {
+      "id": "bq_1782947378153_cnfo",
+      "context": "filter_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.153Z"
+    },
+    {
+      "id": "bq_1782947378158_f4bs",
+      "context": "id_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.158Z"
+    },
+    {
+      "id": "bq_1782947378162_psbi",
+      "context": "trend_biz",
+      "dimensions": {
+        "revenue_health": 85,
+        "customer_health": 85,
+        "growth_health": 85,
+        "sales_health": 85,
+        "marketing_health": 85,
+        "retention_health": 85,
+        "operational_health": 50
+      },
+      "overall": 83.3,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve revenue health from 85 to at least 100"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve customer health from 85 to at least 100"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:38.162Z"
+    },
+    {
+      "id": "bq_1782947378167_h0ix",
+      "context": "stats_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.167Z"
+    },
+    {
+      "id": "bq_1782947378175_y2k8",
+      "context": "bm_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.175Z"
+    },
+    {
+      "id": "bq_1782947378179_jpig",
+      "context": "baseline_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.179Z"
+    },
+    {
+      "id": "bq_1782947378183_5lzv",
+      "context": "quarter_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.183Z"
+    },
+    {
+      "id": "bq_1782947378186_kmxf",
+      "context": "get_bm_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.186Z"
+    },
+    {
+      "id": "bq_1782947378193_oq57",
+      "context": "stats_bm_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.193Z"
+    },
+    {
+      "id": "bq_1782947378240_h5yk",
+      "context": "trend_evo_biz",
+      "dimensions": {
+        "revenue_health": 85,
+        "customer_health": 85,
+        "growth_health": 85,
+        "sales_health": 85,
+        "marketing_health": 85,
+        "retention_health": 85,
+        "operational_health": 50
+      },
+      "overall": 83.3,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve revenue health from 85 to at least 100"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve customer health from 85 to at least 100"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:09:38.240Z"
+    },
+    {
+      "id": "bq_1782947378257_pvdf",
+      "context": "summary_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.257Z"
+    },
+    {
+      "id": "bq_1782947378269_i6fq",
+      "context": "pipeline_biz",
+      "dimensions": {
+        "revenue_health": 70,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 55.5,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve marketing health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 57.5,
+      "scoredAt": "2026-07-01T23:09:38.269Z"
+    },
+    {
+      "id": "bq_1782947378273_rz6n",
+      "context": "chain_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.273Z"
+    },
+    {
+      "id": "bq_1782947378279_slsy",
+      "context": "view_pipeline_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.279Z"
+    },
+    {
+      "id": "bq_1782947378543_fgjl",
+      "context": "bm_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.543Z"
+    },
+    {
+      "id": "bq_1782947378552_0qcz",
+      "context": "current_business",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.552Z"
+    },
+    {
+      "id": "bq_1782947378555_z92k",
+      "context": "get_cycle_biz_direct",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.555Z"
+    },
+    {
+      "id": "bq_1782947378558_txex",
+      "context": "list_biz_1782947377068",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.558Z"
+    },
+    {
+      "id": "bq_1782947378561_8hbn",
+      "context": "status_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.561Z"
+    },
+    {
+      "id": "bq_1782947378566_4zir",
+      "context": "multi_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.566Z"
+    },
+    {
+      "id": "bq_1782947378571_d33p",
+      "context": "dashboard_evo_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.571Z"
+    },
+    {
+      "id": "bq_1782947378575_zpx3",
+      "context": "chain_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.575Z"
+    },
+    {
+      "id": "bq_1782947378590_wsgg",
+      "context": "current_business",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.590Z"
+    },
+    {
+      "id": "bq_1782947378594_w90b",
+      "context": "founder_time_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.594Z"
+    },
+    {
+      "id": "bq_1782947378870_7353",
+      "context": "multi_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:09:38.870Z"
+    },
+    {
+      "id": "bq_1782947492923_8m88",
+      "context": "quality_test_biz",
+      "dimensions": {
+        "revenue_health": 72,
+        "customer_health": 74,
+        "growth_health": 66,
+        "sales_health": 70,
+        "marketing_health": 65,
+        "retention_health": 73,
+        "operational_health": 50
+      },
+      "overall": 69.5,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 65,
+          "priority": "medium",
+          "suggestion": "Improve marketing health from 65 to at least 80"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 66,
+          "priority": "medium",
+          "suggestion": "Improve growth health from 66 to at least 81"
+        }
+      ],
+      "reasoningOverall": 70,
+      "scoredAt": "2026-07-01T23:11:32.923Z"
+    },
+    {
+      "id": "bq_1782947493437_0czy",
+      "context": "trend_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 40,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 40,
+        "retention_health": 40,
+        "operational_health": 50
+      },
+      "overall": 40.5,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve customer health from 40 to at least 55"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:33.437Z"
+    },
+    {
+      "id": "bq_1782947493452_p7b1",
+      "context": "impr_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 45,
+        "growth_health": 44,
+        "sales_health": 42,
+        "marketing_health": 43,
+        "retention_health": 41,
+        "operational_health": 50
+      },
+      "overall": 42.8,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "retention_health",
+          "currentScore": 41,
+          "priority": "critical",
+          "suggestion": "Improve retention health from 41 to at least 56"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 42,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 42 to at least 57"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:33.453Z"
+    },
+    {
+      "id": "bq_1782947495996_jgo0",
+      "context": "debt_biz_ctx",
+      "dimensions": {
+        "revenue_health": 50,
+        "customer_health": 55,
+        "growth_health": 52,
+        "sales_health": 48,
+        "marketing_health": 49,
+        "retention_health": 51,
+        "operational_health": 50
+      },
+      "overall": 51,
+      "improvements": [
+        {
+          "dimension": "sales_health",
+          "currentScore": 48,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 48 to at least 63"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 49,
+          "priority": "critical",
+          "suggestion": "Improve marketing health from 49 to at least 64"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve revenue health from 50 to at least 65"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:35.996Z"
+    },
+    {
+      "id": "bq_1782947496431_7dpq",
+      "context": "trend_evo_biz",
+      "dimensions": {
+        "revenue_health": 40,
+        "customer_health": 40,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 40,
+        "retention_health": 40,
+        "operational_health": 50
+      },
+      "overall": 40.5,
+      "improvements": [
+        {
+          "dimension": "revenue_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 40 to at least 55"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve customer health from 40 to at least 55"
+        },
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:36.431Z"
+    },
+    {
+      "id": "bq_1782947497677_cquu",
+      "context": "debt_pipeline_biz",
+      "dimensions": {
+        "revenue_health": 55,
+        "customer_health": 52,
+        "growth_health": 53,
+        "sales_health": 50,
+        "marketing_health": 51,
+        "retention_health": 54,
+        "operational_health": 50
+      },
+      "overall": 52.6,
+      "improvements": [
+        {
+          "dimension": "sales_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve sales health from 50 to at least 65"
+        },
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 51,
+          "priority": "high",
+          "suggestion": "Improve marketing health from 51 to at least 66"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:37.677Z"
+    },
+    {
+      "id": "bq_1782947497769_vw80",
+      "context": "history_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.769Z"
+    },
+    {
+      "id": "bq_1782947497786_kbd8",
+      "context": "filter_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.786Z"
+    },
+    {
+      "id": "bq_1782947497791_p94u",
+      "context": "id_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.791Z"
+    },
+    {
+      "id": "bq_1782947497814_utek",
+      "context": "trend_biz",
+      "dimensions": {
+        "revenue_health": 85,
+        "customer_health": 85,
+        "growth_health": 85,
+        "sales_health": 85,
+        "marketing_health": 85,
+        "retention_health": 85,
+        "operational_health": 50
+      },
+      "overall": 83.3,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve revenue health from 85 to at least 100"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve customer health from 85 to at least 100"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:37.814Z"
+    },
+    {
+      "id": "bq_1782947497818_it4l",
+      "context": "stats_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.818Z"
+    },
+    {
+      "id": "bq_1782947497822_entn",
+      "context": "bm_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.822Z"
+    },
+    {
+      "id": "bq_1782947497852_ipd2",
+      "context": "baseline_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.852Z"
+    },
+    {
+      "id": "bq_1782947497856_o5ox",
+      "context": "quarter_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.856Z"
+    },
+    {
+      "id": "bq_1782947497865_bwad",
+      "context": "get_bm_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.865Z"
+    },
+    {
+      "id": "bq_1782947497873_4a42",
+      "context": "stats_bm_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:37.873Z"
+    },
+    {
+      "id": "bq_1782947498231_vacp",
+      "context": "trend_evo_biz",
+      "dimensions": {
+        "revenue_health": 85,
+        "customer_health": 85,
+        "growth_health": 85,
+        "sales_health": 85,
+        "marketing_health": 85,
+        "retention_health": 85,
+        "operational_health": 50
+      },
+      "overall": 83.3,
+      "improvements": [
+        {
+          "dimension": "operational_health",
+          "currentScore": 50,
+          "priority": "high",
+          "suggestion": "Improve operational health from 50 to at least 65"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve revenue health from 85 to at least 100"
+        },
+        {
+          "dimension": "customer_health",
+          "currentScore": 85,
+          "priority": "medium",
+          "suggestion": "Improve customer health from 85 to at least 100"
+        }
+      ],
+      "reasoningOverall": null,
+      "scoredAt": "2026-07-01T23:11:38.231Z"
+    },
+    {
+      "id": "bq_1782947498247_usxl",
+      "context": "summary_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:38.247Z"
+    },
+    {
+      "id": "bq_1782947498266_n42h",
+      "context": "pipeline_biz",
+      "dimensions": {
+        "revenue_health": 70,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 55.5,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "marketing_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve marketing health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 57.5,
+      "scoredAt": "2026-07-01T23:11:38.266Z"
+    },
+    {
+      "id": "bq_1782947498294_plog",
+      "context": "chain_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:38.294Z"
+    },
+    {
+      "id": "bq_1782947498311_roai",
+      "context": "view_pipeline_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:38.311Z"
+    },
+    {
+      "id": "bq_1782947499184_wv3w",
+      "context": "bm_biz_test",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.184Z"
+    },
+    {
+      "id": "bq_1782947499193_qowp",
+      "context": "current_business",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.193Z"
+    },
+    {
+      "id": "bq_1782947499209_vyjt",
+      "context": "get_cycle_biz_direct",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.209Z"
+    },
+    {
+      "id": "bq_1782947499212_ihjm",
+      "context": "list_biz_1782947495928",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.212Z"
+    },
+    {
+      "id": "bq_1782947499216_ue2v",
+      "context": "status_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.216Z"
+    },
+    {
+      "id": "bq_1782947499227_k1wu",
+      "context": "multi_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.227Z"
+    },
+    {
+      "id": "bq_1782947499231_0jwx",
+      "context": "dashboard_evo_seed_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.231Z"
+    },
+    {
+      "id": "bq_1782947499234_ylll",
+      "context": "chain_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.234Z"
+    },
+    {
+      "id": "bq_1782947499273_s6o7",
+      "context": "current_business",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.273Z"
+    },
+    {
+      "id": "bq_1782947499287_84ur",
+      "context": "founder_time_biz",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.287Z"
+    },
+    {
+      "id": "bq_1782947499868_io8f",
+      "context": "multi_biz_ctx",
+      "dimensions": {
+        "revenue_health": 45,
+        "customer_health": 60,
+        "growth_health": 40,
+        "sales_health": 40,
+        "marketing_health": 45,
+        "retention_health": 70,
+        "operational_health": 50
+      },
+      "overall": 49.3,
+      "improvements": [
+        {
+          "dimension": "growth_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve growth health from 40 to at least 55"
+        },
+        {
+          "dimension": "sales_health",
+          "currentScore": 40,
+          "priority": "critical",
+          "suggestion": "Improve sales health from 40 to at least 55"
+        },
+        {
+          "dimension": "revenue_health",
+          "currentScore": 45,
+          "priority": "critical",
+          "suggestion": "Improve revenue health from 45 to at least 60"
+        }
+      ],
+      "reasoningOverall": 51.3,
+      "scoredAt": "2026-07-01T23:11:39.868Z"
     }
   ],
   "stats": {
-    "total": 232,
-    "contexts": 33,
+    "total": 296,
+    "contexts": 35,
     "avgOverall": 51.3
   },
-  "updatedAt": "2026-06-29T22:43:36.593Z"
+  "updatedAt": "2026-07-01T23:11:39.874Z"
 }

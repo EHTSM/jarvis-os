@@ -1146,15 +1146,771 @@
       "createdAt": "2026-06-29T22:44:44.151Z",
       "updatedAt": "2026-06-29T22:44:44.151Z",
       "executedAt": "2026-06-29T22:44:44.151Z"
+    },
+    {
+      "id": "ca_1782947394578_5hd5",
+      "customerId": "auto_test_1",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:09:54.578Z",
+      "updatedAt": "2026-07-01T23:09:54.583Z",
+      "executedAt": "2026-07-01T23:09:54.583Z"
+    },
+    {
+      "id": "ca_1782947394588_kwym",
+      "customerId": "auto_test_2",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "awaiting_approval",
+      "context": {},
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:54.588Z",
+      "updatedAt": "2026-07-01T23:09:54.592Z"
+    },
+    {
+      "id": "ca_1782947394597_5x01",
+      "customerId": "get_auto_test",
+      "type": "reminder",
+      "label": "Reminder",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 5,
+      "createdAt": "2026-07-01T23:09:54.597Z",
+      "updatedAt": "2026-07-01T23:09:54.597Z",
+      "executedAt": "2026-07-01T23:09:54.597Z"
+    },
+    {
+      "id": "ca_1782947394600_wlbh",
+      "customerId": "list_auto_test",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:09:54.600Z",
+      "updatedAt": "2026-07-01T23:09:54.600Z",
+      "executedAt": "2026-07-01T23:09:54.600Z"
+    },
+    {
+      "id": "ca_1782947396479_9e05",
+      "customerId": "919999999999",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 59,
+        "stage": "onboarding",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:56.479Z",
+      "updatedAt": "2026-07-01T23:09:56.480Z",
+      "executedAt": "2026-07-01T23:09:56.480Z"
+    },
+    {
+      "id": "ca_1782947396483_clwa",
+      "customerId": "ms_test_1",
+      "type": "prepare_onboarding",
+      "label": "Prepare Onboarding",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 45,
+      "createdAt": "2026-07-01T23:09:56.483Z",
+      "updatedAt": "2026-07-01T23:09:56.483Z",
+      "executedAt": "2026-07-01T23:09:56.483Z"
+    },
+    {
+      "id": "ca_1782947399155_kxa5",
+      "customerId": "919000000002",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification"
+      },
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:09:59.155Z",
+      "updatedAt": "2026-07-01T23:09:59.156Z",
+      "executedAt": "2026-07-01T23:09:59.156Z"
+    },
+    {
+      "id": "ca_1782947399159_hvep",
+      "customerId": "churn_test_customer",
+      "type": "detect_churn",
+      "label": "Detect Churn",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 15,
+      "createdAt": "2026-07-01T23:09:59.159Z",
+      "updatedAt": "2026-07-01T23:09:59.160Z",
+      "executedAt": "2026-07-01T23:09:59.160Z"
+    },
+    {
+      "id": "ca_1782947399162_vvmz",
+      "customerId": "919999999999",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 57,
+        "stage": "onboarding",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.162Z",
+      "updatedAt": "2026-07-01T23:09:59.162Z",
+      "executedAt": "2026-07-01T23:09:59.162Z"
+    },
+    {
+      "id": "ca_1782947399402_3piw",
+      "customerId": "919582010431",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.402Z",
+      "updatedAt": "2026-07-01T23:09:59.402Z",
+      "executedAt": "2026-07-01T23:09:59.402Z"
+    },
+    {
+      "id": "ca_1782947399406_6sm2",
+      "customerId": "ms_test_2",
+      "type": "prepare_documentation",
+      "label": "Prepare Documentation",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 40,
+      "createdAt": "2026-07-01T23:09:59.406Z",
+      "updatedAt": "2026-07-01T23:09:59.406Z",
+      "executedAt": "2026-07-01T23:09:59.406Z"
+    },
+    {
+      "id": "ca_1782947399415_kier",
+      "customerId": "919582010431",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.415Z",
+      "updatedAt": "2026-07-01T23:09:59.415Z",
+      "executedAt": "2026-07-01T23:09:59.415Z"
+    },
+    {
+      "id": "ca_1782947399417_c6xx",
+      "customerId": "91XXXXXXXXXX",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.417Z",
+      "updatedAt": "2026-07-01T23:09:59.417Z",
+      "executedAt": "2026-07-01T23:09:59.417Z"
+    },
+    {
+      "id": "ca_1782947399420_c9l5",
+      "customerId": "91XXXXXXXXXX",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.420Z",
+      "updatedAt": "2026-07-01T23:09:59.420Z",
+      "executedAt": "2026-07-01T23:09:59.420Z"
+    },
+    {
+      "id": "ca_1782947399422_44vn",
+      "customerId": "919000000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.422Z",
+      "updatedAt": "2026-07-01T23:09:59.422Z",
+      "executedAt": "2026-07-01T23:09:59.422Z"
+    },
+    {
+      "id": "ca_1782947399424_vs6q",
+      "customerId": "919000000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.424Z",
+      "updatedAt": "2026-07-01T23:09:59.425Z",
+      "executedAt": "2026-07-01T23:09:59.425Z"
+    },
+    {
+      "id": "ca_1782947399426_ul0g",
+      "customerId": "919999000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.426Z",
+      "updatedAt": "2026-07-01T23:09:59.427Z",
+      "executedAt": "2026-07-01T23:09:59.427Z"
+    },
+    {
+      "id": "ca_1782947399428_0quh",
+      "customerId": "919999000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.428Z",
+      "updatedAt": "2026-07-01T23:09:59.428Z",
+      "executedAt": "2026-07-01T23:09:59.428Z"
+    },
+    {
+      "id": "ca_1782947399433_juv7",
+      "customerId": "911234567890",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.433Z",
+      "updatedAt": "2026-07-01T23:09:59.434Z",
+      "executedAt": "2026-07-01T23:09:59.434Z"
+    },
+    {
+      "id": "ca_1782947399435_qxpb",
+      "customerId": "911234567890",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.435Z",
+      "updatedAt": "2026-07-01T23:09:59.435Z",
+      "executedAt": "2026-07-01T23:09:59.435Z"
+    },
+    {
+      "id": "ca_1782947399437_tcga",
+      "customerId": "919000000002",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.437Z",
+      "updatedAt": "2026-07-01T23:09:59.437Z",
+      "executedAt": "2026-07-01T23:09:59.437Z"
+    },
+    {
+      "id": "ca_1782947399439_tts6",
+      "customerId": "919000000002",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.439Z",
+      "updatedAt": "2026-07-01T23:09:59.439Z",
+      "executedAt": "2026-07-01T23:09:59.439Z"
+    },
+    {
+      "id": "ca_1782947399441_bfa8",
+      "customerId": "919988776655",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 49,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.441Z",
+      "updatedAt": "2026-07-01T23:09:59.441Z",
+      "executedAt": "2026-07-01T23:09:59.441Z"
+    },
+    {
+      "id": "ca_1782947399442_l9ps",
+      "customerId": "919988776655",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 49,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:09:59.442Z",
+      "updatedAt": "2026-07-01T23:09:59.443Z",
+      "executedAt": "2026-07-01T23:09:59.443Z"
+    },
+    {
+      "id": "ca_1782947529451_k3fg",
+      "customerId": "auto_test_1",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:12:09.451Z",
+      "updatedAt": "2026-07-01T23:12:09.464Z",
+      "executedAt": "2026-07-01T23:12:09.464Z"
+    },
+    {
+      "id": "ca_1782947529474_6taw",
+      "customerId": "auto_test_2",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "awaiting_approval",
+      "context": {},
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:09.474Z",
+      "updatedAt": "2026-07-01T23:12:09.501Z"
+    },
+    {
+      "id": "ca_1782947529510_ms5j",
+      "customerId": "get_auto_test",
+      "type": "reminder",
+      "label": "Reminder",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 5,
+      "createdAt": "2026-07-01T23:12:09.510Z",
+      "updatedAt": "2026-07-01T23:12:09.513Z",
+      "executedAt": "2026-07-01T23:12:09.513Z"
+    },
+    {
+      "id": "ca_1782947529534_2o3h",
+      "customerId": "list_auto_test",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:12:09.534Z",
+      "updatedAt": "2026-07-01T23:12:09.534Z",
+      "executedAt": "2026-07-01T23:12:09.534Z"
+    },
+    {
+      "id": "ca_1782947530198_1nnu",
+      "customerId": "919999999999",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 59,
+        "stage": "onboarding",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:10.199Z",
+      "updatedAt": "2026-07-01T23:12:10.199Z",
+      "executedAt": "2026-07-01T23:12:10.199Z"
+    },
+    {
+      "id": "ca_1782947530210_nknv",
+      "customerId": "ms_test_1",
+      "type": "prepare_onboarding",
+      "label": "Prepare Onboarding",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 45,
+      "createdAt": "2026-07-01T23:12:10.210Z",
+      "updatedAt": "2026-07-01T23:12:10.210Z",
+      "executedAt": "2026-07-01T23:12:10.210Z"
+    },
+    {
+      "id": "ca_1782947535393_1gih",
+      "customerId": "919000000002",
+      "type": "follow_up",
+      "label": "Follow-up",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification"
+      },
+      "requiresApproval": false,
+      "minutesSaved": 20,
+      "createdAt": "2026-07-01T23:12:15.393Z",
+      "updatedAt": "2026-07-01T23:12:15.393Z",
+      "executedAt": "2026-07-01T23:12:15.393Z"
+    },
+    {
+      "id": "ca_1782947535419_fmyr",
+      "customerId": "churn_test_customer",
+      "type": "detect_churn",
+      "label": "Detect Churn",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 15,
+      "createdAt": "2026-07-01T23:12:15.419Z",
+      "updatedAt": "2026-07-01T23:12:15.420Z",
+      "executedAt": "2026-07-01T23:12:15.420Z"
+    },
+    {
+      "id": "ca_1782947535427_2o8o",
+      "customerId": "919999999999",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 57,
+        "stage": "onboarding",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:15.427Z",
+      "updatedAt": "2026-07-01T23:12:15.430Z",
+      "executedAt": "2026-07-01T23:12:15.430Z"
+    },
+    {
+      "id": "ca_1782947536846_4cfg",
+      "customerId": "919582010431",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.846Z",
+      "updatedAt": "2026-07-01T23:12:16.846Z",
+      "executedAt": "2026-07-01T23:12:16.846Z"
+    },
+    {
+      "id": "ca_1782947536847_j0vs",
+      "customerId": "ms_test_2",
+      "type": "prepare_documentation",
+      "label": "Prepare Documentation",
+      "status": "executed",
+      "context": {},
+      "requiresApproval": false,
+      "minutesSaved": 40,
+      "createdAt": "2026-07-01T23:12:16.847Z",
+      "updatedAt": "2026-07-01T23:12:16.847Z",
+      "executedAt": "2026-07-01T23:12:16.847Z"
+    },
+    {
+      "id": "ca_1782947536861_xle6",
+      "customerId": "919582010431",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.861Z",
+      "updatedAt": "2026-07-01T23:12:16.862Z",
+      "executedAt": "2026-07-01T23:12:16.862Z"
+    },
+    {
+      "id": "ca_1782947536863_xe04",
+      "customerId": "91XXXXXXXXXX",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.863Z",
+      "updatedAt": "2026-07-01T23:12:16.864Z",
+      "executedAt": "2026-07-01T23:12:16.864Z"
+    },
+    {
+      "id": "ca_1782947536868_lfmn",
+      "customerId": "91XXXXXXXXXX",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 45,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.868Z",
+      "updatedAt": "2026-07-01T23:12:16.869Z",
+      "executedAt": "2026-07-01T23:12:16.869Z"
+    },
+    {
+      "id": "ca_1782947536870_4lk0",
+      "customerId": "919000000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.870Z",
+      "updatedAt": "2026-07-01T23:12:16.871Z",
+      "executedAt": "2026-07-01T23:12:16.871Z"
+    },
+    {
+      "id": "ca_1782947536876_7343",
+      "customerId": "919000000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.876Z",
+      "updatedAt": "2026-07-01T23:12:16.877Z",
+      "executedAt": "2026-07-01T23:12:16.877Z"
+    },
+    {
+      "id": "ca_1782947536879_w328",
+      "customerId": "919999000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.879Z",
+      "updatedAt": "2026-07-01T23:12:16.879Z",
+      "executedAt": "2026-07-01T23:12:16.879Z"
+    },
+    {
+      "id": "ca_1782947536881_uhus",
+      "customerId": "919999000001",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.881Z",
+      "updatedAt": "2026-07-01T23:12:16.881Z",
+      "executedAt": "2026-07-01T23:12:16.881Z"
+    },
+    {
+      "id": "ca_1782947536883_1q3a",
+      "customerId": "911234567890",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.883Z",
+      "updatedAt": "2026-07-01T23:12:16.883Z",
+      "executedAt": "2026-07-01T23:12:16.883Z"
+    },
+    {
+      "id": "ca_1782947536885_ffek",
+      "customerId": "911234567890",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 58,
+        "stage": "adoption",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.885Z",
+      "updatedAt": "2026-07-01T23:12:16.885Z",
+      "executedAt": "2026-07-01T23:12:16.885Z"
+    },
+    {
+      "id": "ca_1782947536887_xlbe",
+      "customerId": "919000000002",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.887Z",
+      "updatedAt": "2026-07-01T23:12:16.887Z",
+      "executedAt": "2026-07-01T23:12:16.887Z"
+    },
+    {
+      "id": "ca_1782947536889_ktzx",
+      "customerId": "919000000002",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 43,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.889Z",
+      "updatedAt": "2026-07-01T23:12:16.889Z",
+      "executedAt": "2026-07-01T23:12:16.889Z"
+    },
+    {
+      "id": "ca_1782947536890_2ow4",
+      "customerId": "919988776655",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 49,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.890Z",
+      "updatedAt": "2026-07-01T23:12:16.890Z",
+      "executedAt": "2026-07-01T23:12:16.890Z"
+    },
+    {
+      "id": "ca_1782947536892_bs4c",
+      "customerId": "919988776655",
+      "type": "retention_workflow",
+      "label": "Retention Workflow",
+      "status": "executed",
+      "context": {
+        "healthScore": 49,
+        "stage": "qualification",
+        "reason": "critical_health"
+      },
+      "requiresApproval": true,
+      "minutesSaved": 90,
+      "createdAt": "2026-07-01T23:12:16.892Z",
+      "updatedAt": "2026-07-01T23:12:16.892Z",
+      "executedAt": "2026-07-01T23:12:16.892Z"
     }
   ],
   "stats": {
-    "total": 73,
-    "executed": 70,
+    "total": 121,
+    "executed": 116,
     "pending": 0,
     "failed": 0,
-    "minutesSaved": 4835,
-    "churnInterventions": 54
+    "minutesSaved": 8045,
+    "churnInterventions": 90
   },
-  "updatedAt": "2026-06-29T22:44:44.151Z"
+  "updatedAt": "2026-07-01T23:12:16.892Z"
 }

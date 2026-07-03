@@ -1,7 +1,10 @@
 "use strict";
 /**
  * Account routes — registration, profile, account management.
- * Self-serve signup: POST /accounts/register
+ *
+ * Closed Beta gate (Mission 6): Registration requires a valid invite code
+ * and enforces a hard cap of 50 beta users. Email verification is sent on
+ * successful registration.
  */
 
 const router   = require("express").Router();
@@ -11,14 +14,27 @@ const auditLog = require("../utils/auditLog.cjs");
 const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
 
+// Lazy-load betaReadiness to avoid circular-require at startup
+const _beta = () => { try { return require("../services/betaReadiness.cjs"); } catch { return null; } };
+
 // ── POST /accounts/register ───────────────────────────────────────
-// Self-serve signup — creates account + starts trial
+// Closed-beta registration — requires inviteCode, enforces 50-user cap,
+// sends email verification on success.
 router.post("/accounts/register",
   rateLimiter(5, 15 * 60_000), // 5 registrations per 15 min per IP
   (req, res) => {
-    const { email, password, name } = req.body || {};
+    const { email, password, name, inviteCode } = req.body || {};
     if (!email || !password) {
       return res.status(400).json({ error: "email and password are required" });
+    }
+
+    // Beta gate: invite code required + hard cap of 50 users
+    const beta = _beta();
+    if (beta) {
+      const gate = beta.checkBetaGate(inviteCode);
+      if (!gate.allowed) {
+        return res.status(403).json({ error: gate.reason });
+      }
     }
 
     const result = accounts.createAccount({ email, password, name, role: "user" });
@@ -26,12 +42,20 @@ router.post("/accounts/register",
       return res.status(409).json({ error: result.error });
     }
 
-    // Trial already created by createAccount → billingService.createTrial
+    // Mark invite code as used
+    if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
+
+    // Send email verification
+    if (beta) {
+      try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
+      catch { /* non-fatal */ }
+    }
+
     auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
     res.status(201).json({
       success: true,
       account: result.account,
-      message: "Account created. Your 7-day free trial starts now.",
+      message: "Account created. Check your email to verify your address.",
     });
   }
 );
@@ -78,19 +102,33 @@ router.get("/accounts", requireAuth, (req, res) => {
 const _registerRL = rateLimiter(5, 15 * 60_000);
 
 function _handleRegister(req, res) {
-  const { email, password, name } = req.body || {};
+  const { email, password, name, inviteCode } = req.body || {};
   if (!email || !password) {
     return res.status(400).json({ error: "email and password are required" });
   }
+
+  const beta = _beta();
+  if (beta) {
+    const gate = beta.checkBetaGate(inviteCode);
+    if (!gate.allowed) return res.status(403).json({ error: gate.reason });
+  }
+
   const result = accounts.createAccount({ email, password, name, role: "user" });
   if (!result.success) {
     return res.status(409).json({ error: result.error });
   }
+
+  if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
+  if (beta) {
+    try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
+    catch { /* non-fatal */ }
+  }
+
   auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
   res.status(201).json({
     success: true,
     account: result.account,
-    message: "Account created. Your 7-day free trial starts now.",
+    message: "Account created. Check your email to verify your address.",
   });
 }
 

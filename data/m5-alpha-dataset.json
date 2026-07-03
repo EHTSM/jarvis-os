@@ -1,0 +1,330 @@
+{
+  "version": "1.0",
+  "seededAt": "2026-07-02T21:02:56.170Z",
+  "orgs": [
+    {
+      "id": "org-fintech-01",
+      "name": "ClearPay India",
+      "industry": "Fintech",
+      "size": "5",
+      "revenue": "₹12L/month"
+    },
+    {
+      "id": "org-edtech-01",
+      "name": "Learnly",
+      "industry": "EdTech",
+      "size": "3",
+      "revenue": "₹5L/month"
+    },
+    {
+      "id": "org-saas-01",
+      "name": "Queueify",
+      "industry": "SaaS / Ops",
+      "size": "7",
+      "revenue": "₹18L/month"
+    },
+    {
+      "id": "org-agency-01",
+      "name": "Orbit Creative",
+      "industry": "Marketing Agency",
+      "size": "12",
+      "revenue": "₹25L/month"
+    },
+    {
+      "id": "org-ecomm-01",
+      "name": "SpiceRoute Market",
+      "industry": "eCommerce",
+      "size": "8",
+      "revenue": "₹32L/month"
+    },
+    {
+      "id": "org-health-01",
+      "name": "Wellnest",
+      "industry": "Health & Wellness",
+      "size": "4",
+      "revenue": "₹8L/month"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-fp-001",
+      "orgId": "org-fintech-01",
+      "name": "Payment Gateway V2",
+      "type": "engineering",
+      "status": "active"
+    },
+    {
+      "id": "proj-fp-002",
+      "orgId": "org-fintech-01",
+      "name": "KYC Automation",
+      "type": "automation",
+      "status": "active"
+    },
+    {
+      "id": "proj-et-001",
+      "orgId": "org-edtech-01",
+      "name": "Live Class Platform",
+      "type": "engineering",
+      "status": "planning"
+    },
+    {
+      "id": "proj-et-002",
+      "orgId": "org-edtech-01",
+      "name": "AI Tutor Bot",
+      "type": "ai",
+      "status": "active"
+    },
+    {
+      "id": "proj-q-001",
+      "orgId": "org-saas-01",
+      "name": "Queue Management API",
+      "type": "engineering",
+      "status": "active"
+    },
+    {
+      "id": "proj-q-002",
+      "orgId": "org-saas-01",
+      "name": "Dashboard 2.0",
+      "type": "frontend",
+      "status": "active"
+    },
+    {
+      "id": "proj-oc-001",
+      "orgId": "org-agency-01",
+      "name": "Client Portal",
+      "type": "product",
+      "status": "active"
+    },
+    {
+      "id": "proj-oc-002",
+      "orgId": "org-agency-01",
+      "name": "Brand Identity System",
+      "type": "design",
+      "status": "active"
+    },
+    {
+      "id": "proj-sp-001",
+      "orgId": "org-ecomm-01",
+      "name": "WhatsApp Commerce Bot",
+      "type": "automation",
+      "status": "active"
+    },
+    {
+      "id": "proj-wn-001",
+      "orgId": "org-health-01",
+      "name": "Member Health Portal",
+      "type": "product",
+      "status": "planning"
+    }
+  ],
+  "missions": [
+    {
+      "id": "m-001",
+      "projectId": "proj-fp-001",
+      "title": "Integrate Razorpay V2 APIs",
+      "priority": "critical",
+      "status": "in_progress"
+    },
+    {
+      "id": "m-002",
+      "projectId": "proj-fp-002",
+      "title": "Automate PAN verification",
+      "priority": "high",
+      "status": "completed"
+    },
+    {
+      "id": "m-003",
+      "projectId": "proj-et-002",
+      "title": "Build AI question generator",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "id": "m-004",
+      "projectId": "proj-q-001",
+      "title": "Add webhook retry logic",
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "id": "m-005",
+      "projectId": "proj-q-002",
+      "title": "Real-time queue metrics UI",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "id": "m-006",
+      "projectId": "proj-sp-001",
+      "title": "WhatsApp product catalog sync",
+      "priority": "critical",
+      "status": "active"
+    },
+    {
+      "id": "m-007",
+      "projectId": "proj-oc-001",
+      "title": "Client approval workflow",
+      "priority": "medium",
+      "status": "active"
+    },
+    {
+      "id": "m-008",
+      "projectId": "proj-oc-002",
+      "title": "Generate brand style guide",
+      "priority": "low",
+      "status": "planned"
+    }
+  ],
+  "leads": [
+    {
+      "name": "Rajan Mehta",
+      "email": "rajan@clearpay.in",
+      "status": "customer",
+      "revenue": 2499,
+      "company": "ClearPay India"
+    },
+    {
+      "name": "Priya Krishnaswamy",
+      "email": "priya@learnly.co",
+      "status": "customer",
+      "revenue": 999,
+      "company": "Learnly"
+    },
+    {
+      "name": "Arjun Sharma",
+      "email": "arjun@queueify.io",
+      "status": "customer",
+      "revenue": 2499,
+      "company": "Queueify"
+    },
+    {
+      "name": "Meera Nair",
+      "email": "meera@orbitcreative.in",
+      "status": "customer",
+      "revenue": 2499,
+      "company": "Orbit Creative"
+    },
+    {
+      "name": "Vikram Singh",
+      "email": "vikram@spiceroute.com",
+      "status": "customer",
+      "revenue": 2499,
+      "company": "SpiceRoute Market"
+    },
+    {
+      "name": "Ananya Reddy",
+      "email": "ananya@wellnest.in",
+      "status": "trial",
+      "revenue": 0,
+      "company": "Wellnest"
+    },
+    {
+      "name": "Rohan Kapoor",
+      "email": "rohan@techventures.co",
+      "status": "lead",
+      "revenue": 0,
+      "company": "TechVentures"
+    },
+    {
+      "name": "Sunita Pillai",
+      "email": "sunita@growfast.in",
+      "status": "lead",
+      "revenue": 0,
+      "company": "GrowFast India"
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "k-001",
+      "type": "insight",
+      "title": "WhatsApp bots convert 3x better than email for Indian SMBs"
+    },
+    {
+      "id": "k-002",
+      "type": "pattern",
+      "title": "Founders using Missions complete 40% more work per week"
+    },
+    {
+      "id": "k-003",
+      "type": "playbook",
+      "title": "SaaS launch checklist: 12 steps from MVP to first 100 users"
+    },
+    {
+      "id": "k-004",
+      "type": "lesson",
+      "title": "Rate limits hit at 500 WhatsApp messages/hour on sandbox"
+    },
+    {
+      "id": "k-005",
+      "type": "benchmark",
+      "title": "AI task completion: avg 4.2 minutes, 87% acceptance rate"
+    },
+    {
+      "id": "k-006",
+      "type": "insight",
+      "title": "Most-used Ooplix feature: AI Mission generation (92% of sessions)"
+    }
+  ],
+  "dashboards": [
+    {
+      "id": "dash-001",
+      "type": "engineering",
+      "title": "Engineering Health",
+      "status": "healthy",
+      "items": 12
+    },
+    {
+      "id": "dash-002",
+      "type": "business",
+      "title": "Revenue Dashboard",
+      "status": "healthy",
+      "items": 8
+    },
+    {
+      "id": "dash-003",
+      "type": "customer",
+      "title": "Customer Org",
+      "status": "degraded",
+      "items": 6
+    },
+    {
+      "id": "dash-004",
+      "type": "operations",
+      "title": "Workforce OS",
+      "status": "healthy",
+      "items": 15
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n-001",
+      "type": "mission_complete",
+      "title": "Mission m-002 completed",
+      "ts": "2026-07-02T20:02:56.162Z"
+    },
+    {
+      "id": "n-002",
+      "type": "integration_warning",
+      "title": "WhatsApp sandbox rate limit at 80%",
+      "ts": "2026-07-02T19:02:56.163Z"
+    },
+    {
+      "id": "n-003",
+      "type": "deploy_success",
+      "title": "Staging deploy successful",
+      "ts": "2026-07-02T18:02:56.163Z"
+    },
+    {
+      "id": "n-004",
+      "type": "ai_insight",
+      "title": "New pattern discovered: KYC flow",
+      "ts": "2026-07-02T15:02:56.163Z"
+    },
+    {
+      "id": "n-005",
+      "type": "security_ok",
+      "title": "Vault backup verified",
+      "ts": "2026-07-02T09:02:56.163Z"
+    }
+  ]
+}

@@ -1,0 +1,1627 @@
+[
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:55.803Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:55.781Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:55.758Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:55.746Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:52.000Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:51.978Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T21:02:51.967Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T21:02:51.944Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:51.888Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:51.866Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:51.832Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:02:51.809Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 18,
+    "ts": "2026-07-02T21:02:51.772Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 18,
+    "ts": "2026-07-02T21:02:51.771Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 18,
+    "ts": "2026-07-02T21:02:51.770Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:44.411Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:44.388Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:44.363Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:44.350Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:40.090Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:40.067Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T21:00:40.055Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T21:00:40.030Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:39.971Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:39.947Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:39.911Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T21:00:39.888Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 17,
+    "ts": "2026-07-02T21:00:39.849Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 17,
+    "ts": "2026-07-02T21:00:39.848Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 17,
+    "ts": "2026-07-02T21:00:39.848Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:18.708Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:18.684Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:18.660Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:18.647Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.759Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.735Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:58:09.723Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:58:09.698Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.638Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.614Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.577Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:58:09.552Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 16,
+    "ts": "2026-07-02T20:58:09.506Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 16,
+    "ts": "2026-07-02T20:58:09.505Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 16,
+    "ts": "2026-07-02T20:58:09.504Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:19.787Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:19.763Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:19.737Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:19.724Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:08.168Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:08.145Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:56:08.133Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:56:08.109Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:08.050Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:08.016Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:07.978Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:56:07.955Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 15,
+    "ts": "2026-07-02T20:56:07.914Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 15,
+    "ts": "2026-07-02T20:56:07.912Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 15,
+    "ts": "2026-07-02T20:56:07.911Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:54:02.138Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:54:02.115Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:54:02.090Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:54:01.649Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.210Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.187Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:53:53.175Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T20:53:53.151Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.088Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.065Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.030Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:53:53.007Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 14,
+    "ts": "2026-07-02T20:53:52.897Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 14,
+    "ts": "2026-07-02T20:53:52.896Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 14,
+    "ts": "2026-07-02T20:53:52.893Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:05:30.155Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:05:30.132Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:05:30.108Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T20:05:30.096Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:12:01.685Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:12:01.662Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:12:01.635Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:12:01.623Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.914Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.891Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T09:11:53.878Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T09:11:53.853Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.794Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.771Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.731Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T09:11:53.707Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 13,
+    "ts": "2026-07-02T09:11:53.594Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 13,
+    "ts": "2026-07-02T09:11:53.593Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 13,
+    "ts": "2026-07-02T09:11:53.592Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:45:07.739Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:45:07.704Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:45:07.666Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:45:07.645Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.967Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.931Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T07:44:59.911Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T07:44:59.871Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.773Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.736Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.683Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T07:44:59.648Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 12,
+    "ts": "2026-07-02T07:44:59.590Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 12,
+    "ts": "2026-07-02T07:44:59.588Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 12,
+    "ts": "2026-07-02T07:44:59.587Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:13.452Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:13.429Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:13.404Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:13.392Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.692Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.668Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T06:56:06.656Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T06:56:06.631Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.569Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.545Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.510Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:56:06.485Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 11,
+    "ts": "2026-07-02T06:56:06.430Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 11,
+    "ts": "2026-07-02T06:56:06.429Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 11,
+    "ts": "2026-07-02T06:56:06.428Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:34.230Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:34.206Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:34.181Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:34.169Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.642Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.619Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T06:53:23.607Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T06:53:23.583Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.524Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.501Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.465Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T06:53:23.443Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 10,
+    "ts": "2026-07-02T06:53:23.386Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 10,
+    "ts": "2026-07-02T06:53:23.385Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 10,
+    "ts": "2026-07-02T06:53:23.383Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:09:04.397Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:09:04.375Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:09:04.350Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:09:04.337Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.884Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.847Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T03:08:59.826Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T03:08:59.790Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.668Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.604Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.507Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T03:08:59.474Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 9,
+    "ts": "2026-07-02T03:08:59.380Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 9,
+    "ts": "2026-07-02T03:08:59.378Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 9,
+    "ts": "2026-07-02T03:08:59.376Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:57.227Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:57.203Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:57.176Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:57.164Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.808Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.779Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:59:51.765Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:59:51.729Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.318Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.280Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.210Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:59:51.178Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 8,
+    "ts": "2026-07-02T02:59:51.096Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 8,
+    "ts": "2026-07-02T02:59:51.093Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 8,
+    "ts": "2026-07-02T02:59:51.092Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:07.771Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:07.748Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:07.723Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:07.711Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.786Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.755Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:54:02.739Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:54:02.701Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.629Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.599Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.540Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:54:02.507Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 7,
+    "ts": "2026-07-02T02:54:02.409Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 7,
+    "ts": "2026-07-02T02:54:02.406Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 7,
+    "ts": "2026-07-02T02:54:02.404Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:50.995Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:50.963Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:50.905Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:50.892Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.322Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.279Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:47:46.265Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:47:46.228Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.152Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.116Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.071Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:47:46.039Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 6,
+    "ts": "2026-07-02T02:47:45.954Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 6,
+    "ts": "2026-07-02T02:47:45.951Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 6,
+    "ts": "2026-07-02T02:47:45.950Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:49.556Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:49.522Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:49.494Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:49.480Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.505Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.477Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:31:45.463Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:31:45.411Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.329Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.258Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.188Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:45.147Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 5,
+    "ts": "2026-07-02T02:31:45.049Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 5,
+    "ts": "2026-07-02T02:31:45.044Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 5,
+    "ts": "2026-07-02T02:31:45.042Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:37.062Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:37.039Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:37.013Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:31:37.001Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:43.646Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:28.377Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:28.344Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:28.305Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:28.285Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:18.649Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:18.625Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:18.601Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:30:18.422Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:38.736Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:38.696Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:18:38.683Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:18:38.649Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:38.473Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:38.443Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:37.863Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:37.831Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 4,
+    "ts": "2026-07-02T02:18:37.748Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 4,
+    "ts": "2026-07-02T02:18:37.747Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 4,
+    "ts": "2026-07-02T02:18:37.746Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.907Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.872Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:18:25.825Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:18:25.785Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.713Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.682Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.637Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:18:25.606Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 3,
+    "ts": "2026-07-02T02:18:25.528Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 3,
+    "ts": "2026-07-02T02:18:25.526Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 3,
+    "ts": "2026-07-02T02:18:25.525Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.658Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.633Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:17:51.620Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:17:51.593Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.530Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.503Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.436Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:51.408Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 2,
+    "ts": "2026-07-02T02:17:51.322Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 2,
+    "ts": "2026-07-02T02:17:51.304Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 2,
+    "ts": "2026-07-02T02:17:51.298Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:43.084Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:43.055Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:17:43.040Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 3,
+    "ts": "2026-07-02T02:17:43.010Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:42.930Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:42.903Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:42.706Z"
+  },
+  {
+    "event": "exported",
+    "count": 3,
+    "ts": "2026-07-02T02:17:42.674Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-02T02:17:42.587Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:openai",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-02T02:17:42.585Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-02T02:17:42.584Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "msg:discord",
+    "type": "api_key",
+    "ts": "2026-07-01T23:42:10.036Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "ts": "2026-07-01T23:42:10.035Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "git:github",
+    "type": "personal_access_token",
+    "ts": "2026-07-01T23:42:10.035Z"
+  },
+  {
+    "event": "rotation_complete",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "newVersion": 2,
+    "ts": "2026-07-01T23:42:10.034Z"
+  },
+  {
+    "event": "rotated",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "oldVersion": 1,
+    "ts": "2026-07-01T23:42:10.023Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "msg:discord",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-01T23:42:09.563Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-01T23:42:09.563Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "git:github",
+    "type": "personal_access_token",
+    "version": 1,
+    "ts": "2026-07-01T23:42:09.562Z"
+  },
+  {
+    "event": "imported",
+    "imported": 0,
+    "skipped": 0,
+    "ts": "2026-07-01T23:36:43.176Z"
+  },
+  {
+    "event": "exported",
+    "count": 0,
+    "ts": "2026-07-01T23:36:42.497Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "msg:telegram",
+    "type": "api_key",
+    "ts": "2026-07-01T23:36:20.975Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "ts": "2026-07-01T23:36:20.975Z"
+  },
+  {
+    "event": "imported",
+    "imported": 2,
+    "skipped": 0,
+    "ts": "2026-07-01T23:36:20.974Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "msg:telegram",
+    "type": "api_key",
+    "ts": "2026-07-01T23:36:20.956Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "ts": "2026-07-01T23:36:20.956Z"
+  },
+  {
+    "event": "exported",
+    "count": 2,
+    "ts": "2026-07-01T23:36:20.955Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "msg:telegram",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-01T23:36:20.936Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "pay:stripe",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-01T23:36:20.936Z"
+  },
+  {
+    "event": "deleted",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "ts": "2026-07-01T23:36:09.459Z"
+  },
+  {
+    "event": "stored",
+    "connectorId": "ai:groq",
+    "type": "api_key",
+    "version": 1,
+    "ts": "2026-07-01T23:36:09.303Z"
+  }
+]

@@ -13845,112 +13845,619 @@
     {
       "runId": "cee_1782778348770_1od",
       "command": "Commit changes.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:28.770Z",
-      "classification": null,
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "commit|git.*commit"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 9683,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "message": "Commit changes.",
+        "commit": "1e8c09f",
+        "output": "[main 1e8c09f] Commit changes.\n 996 files changed, 2299966 insertions(+), 87731 deletions(-)\n create mode 100644 data/auto-marketplace-catalog.json\n create mode 100644 data/automation-scenarios.json\n create mode 100644 data/business-benchmarks.json\n create mode 100644 data/business-evolution.json\n create mode 100644 data/business-predictions.json\n create mode 100644 data/business-quality.json\n create mode 100644 data/business-reasoning.json\n create mode 100644 data/capital-allocation.json\n create mode 100644 data/customer-automations.json\n create mode 100644 data/customer-health.json\n create mode 100644 data/customer-journeys.json\n create mode 100644 data/customer-success-plans.json\n create mode 100644 data/customer-support.json\n create mode 100644 data/design-benchmarks.json\n create mode 100644 data/design-evolution.json\n create mode 100644 data/design-predictions.json\n create mode 100644 data/design-quality.json\n create mode 100644 data/device-health.json\n create mode 100644 data/device-orchestration.json\n create mode 100644 data/device-registry.json\n create mode 100644 data/discovery-plans.json\n create mode 100644 data/engineering-benchmarks.json\n create mode 100644 data/engineering-evolution.json\n create mode 100644 data/engineering-predictions.json\n create mode 100644 data/engineering-quality.json\n create mode 100644 data/engineering-reasoning.json\n create mode 100644 data/evolution-benchmarks.json\n create mode 100644 data/evolution-evolution.json\n create mode 100644 data/evolution-predictions.json\n create mode 100644 data/evolution-quality.json\n create mode 100644 data/evolution-reasoning.json\n create mode 100644 data/hypotheses.json\n create mode 100644 data/infrastructure-health.json\n create mode 100644 data/infrastructure-optimization.json\n create mode 100644 data/infrastructure-plans.json\n create mode 100644 data/infrastructure-recovery.json\n create mode 100644 data/infrastructure-registry.json\n create mode 100644 data/innovations.json\n create mode 100644 data/investment-analysis.json\n create mode 100644 data/investment-automation.json\n create mode 100644 data/knowledge-benchmarks.json\n create mode 100644 data/knowledge-correlations.json\n create mode 100644 data/knowledge-discovery.json\n create mode 100644 data/knowledge-evolution.json\n create mode 100644 data/knowledge-exchange.json\n create mode 100644 data/knowledge-federation.json\n create mode 100644 data/knowledge-governance.json\n create mode 100644 data/knowledge-predictions.json\n create mode 100644 data/knowledge-quality.json\n create mode 100644 data/knowledge-reasoning.json\n create mode 100644 data/marketplace-automations.json\n create mode 100644 data/marketplace-certifications.json\n create mode 100644 data/marketplace-economy.json\n create mode 100644 data/marketplace-recommendations.json\n delete mode 100644 data/metrics/metrics_2026-06-22.ndjson\n create mode 100644 data/metrics/metrics_2026-06-30.ndjson\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-406Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-423Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-427Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-429Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-430Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-435Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-436Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-439Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-443Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-444Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-446Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-447Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-451Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-452Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-36-453Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-38-878Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-38-969Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-38-971Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-011Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-063Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-072Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-079Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-120Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-175Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-176Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-177Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-39-201Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-36-41-696Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-462Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-466Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-467Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-472Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-473Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-474Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-475Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-476Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-477Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-478Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-479Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-24-480Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-26-862Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-26-937Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-26-965Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-26-985Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-033Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-047Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-082Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-097Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-101Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-141Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-275Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-287Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-358Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-361Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-362Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-383Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-27-424Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-29-999Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-37-30-039Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-660Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-784Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-796Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-802Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-805Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-806Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-810Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-811Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-812Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-814Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-815Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-816Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-817Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-22-818Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-26-471Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-121Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-149Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-167Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-184Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-203Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-221Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-236Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-271Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-272Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-335Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-336Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-338Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-339Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-343Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-351Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-352Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-27-373Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-30-042Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-42-30-677Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-284Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-288Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-298Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-299Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-313Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-314Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-315Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-316Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-317Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-318Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-42-319Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-606Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-671Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-692Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-711Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-733Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-738Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-763Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-764Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-784Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-808Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-829Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-849Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-851Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-892Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-893Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-44-895Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-45-064Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-45-112Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-47-458Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-43-47-504Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-518Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-702Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-765Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-766Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-812Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-813Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-814Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-822Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-825Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-828Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-829Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-853Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-854Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-855Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-856Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-859Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-860Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-862Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-863Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-10-864Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-230Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-310Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-329Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-350Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-379Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-380Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-449Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-497Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-553Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-572Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-610Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-652Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-663Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-666Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-691Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-779Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-13-828Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-16-125Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-46-16-173Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-614Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-615Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-624Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-652Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-660Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-661Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-672Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-675Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-676Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-677Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-678Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-679Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-680Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-681Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-683Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-684Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-685Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-686Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-687Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-22-688Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-389Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-494Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-523Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-544Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-583Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-602Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-649Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-705Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-707Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-708Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-721Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-785Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-786Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-791Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-28-836Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-29-596Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-29-652Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-31-450Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-28T22-48-31-531Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-928Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-954Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-991Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-992Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-993Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-995Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-996Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-997Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-39-998Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-42-981Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-132Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-173Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-188Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-235Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-272Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-906Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-43-956Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-44-056Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-44-116Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-44-761Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-44-816Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-031Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-082Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-819Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-926Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-927Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-45-928Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-47-120Z.json\n create mode 100644 data/odi/accessibility/a11y-2026-06-29T22-43-47-170Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-38-880Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-38-973Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-39-065Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-39-073Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-39-081Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-39-136Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-36-41-698Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-26-865Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-26-939Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-034Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-048Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-102Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-276Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-290Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-27-384Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-37-30-000Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-028Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-123Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-153Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-170Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-186Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-205Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-223Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-27-237Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-42-30-608Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-609Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-673Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-694Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-714Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-767Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-785Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-44-810Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-45-065Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-43-47-459Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-232Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-312Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-331Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-452Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-555Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-576Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-614Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-13-780Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-46-16-126Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-391Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-495Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-584Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-604Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-709Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-722Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-28-793Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-29-597Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-28T22-48-31-486Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-42-991Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-43-133Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-43-191Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-43-907Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-44-057Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-44-762Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-45-034Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-45-849Z.json\n create mode 100644 data/odi/analyses/analysis-2026-06-29T22-43-47-126Z.json\n create mode 100644 data/odi/animations/anim-2026-06-28T22-50-32-894Z.json\n create mode 100644 data/odi/animations/anim-2026-06-29T22-44-37-217Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-092Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-102Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-143Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-160Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-221Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-38-251Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-36-40-938Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-25-983Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-120Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-131Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-146Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-156Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-317Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-320Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-26-443Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-37-29-231Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-674Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-678Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-681Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-685Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-748Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-786Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-850Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-25-856Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-42-29-256Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-720Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-737Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-840Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-847Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-875Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-885Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-43-947Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-44-303Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-43-46-688Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-415Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-427Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-488Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-585Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-641Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-692Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-12-719Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-13-014Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-46-15-330Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-606Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-612Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-650Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-704Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-752Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-756Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-27-801Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-28-632Z.json\n create mode 100644 data/odi/components/components-2026-06-28T22-48-30-540Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-42-587Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-42-631Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-42-818Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-43-523Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-43-660Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-44-379Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-44-645Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-45-447Z.json\n create mode 100644 data/odi/components/components-2026-06-29T22-43-46-731Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-36-406Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-36-446Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-36-447Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-086Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-101Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-141Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-159Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-217Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-38-246Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-39-177Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-36-40-937Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-468Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-472Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-473Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-474Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-475Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-476Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-24-478Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-25-980Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-118Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-129Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-144Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-154Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-316Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-319Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-26-442Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-27-362Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-37-29-230Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-22-819Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-22-820Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-22-821Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-22-822Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-668Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-676Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-679Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-683Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-745Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-785Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-849Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-25-854Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-27-346Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-42-29-253Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-272Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-303Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-313Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-314Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-317Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-318Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-42-319Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-716Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-736Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-838Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-846Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-871Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-882Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-43-946Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-44-302Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-44-893Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-43-46-687Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-813Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-828Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-854Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-856Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-859Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-10-864Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-411Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-426Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-487Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-584Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-640Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-691Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-12-716Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-13-013Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-13-662Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-46-15-329Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-614Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-623Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-680Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-684Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-685Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-687Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-22-688Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-604Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-610Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-648Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-703Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-751Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-755Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-27-800Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-28-630Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-28-706Z.json\n create mode 100644 data/odi/dom/dom-2026-06-28T22-48-30-538Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-39-992Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-39-995Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-39-996Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-39-998Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-39-999Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-40-000Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-42-581Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-42-630Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-42-816Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-43-521Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-43-659Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-44-378Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-44-644Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-45-446Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-45-929Z.json\n create mode 100644 data/odi/dom/dom-2026-06-29T22-43-46-730Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-090Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-101Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-142Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-160Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-221Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-38-250Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-36-40-938Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-25-981Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-119Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-131Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-145Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-155Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-317Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-320Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-26-443Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-37-29-230Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-673Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-677Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-680Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-684Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-747Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-785Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-850Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-25-855Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-42-29-256Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-719Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-737Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-839Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-846Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-873Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-884Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-43-947Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-44-303Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-43-46-688Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-414Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-426Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-488Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-584Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-640Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-692Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-12-717Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-13-014Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-46-15-329Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-606Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-611Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-650Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-704Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-752Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-755Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-27-801Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-28-632Z.json\n create mode 100644 data/odi/layout/layout-2026-06-28T22-48-30-539Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-42-583Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-42-630Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-42-817Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-43-522Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-43-660Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-44-379Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-44-645Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-45-447Z.json\n create mode 100644 data/odi/layout/layout-2026-06-29T22-43-46-731Z.json\n create mode 100644 data/odi/memory/mem-1782687032877-ip43i.json\n create mode 100644 data/odi/memory/mem-1782773077158-842gt.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-36-35-007Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-36-35-009Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-36-35-010Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-36-39-087Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-37-22-896Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-37-22-897Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-37-22-898Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-37-27-286Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-388Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-389Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-391Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-393Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-394Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-20-395Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-42-27-248Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-41-198Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-41-199Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-41-200Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-41-201Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-41-202Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-43-44-828Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-46-09-881Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-46-09-882Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-46-09-883Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-46-09-884Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-46-13-568Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-48-21-572Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-48-21-577Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-48-21-578Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-48-21-579Z.json\n create mode 100644 data/odi/runs/run-2026-06-28T22-48-28-628Z.json\n create mode 100644 data/odi/runs/run-2026-06-29T22-43-37-569Z.json\n create mode 100644 data/odi/runs/run-2026-06-29T22-43-37-570Z.json\n create mode 100644 data/odi/runs/run-2026-06-29T22-43-37-572Z.json\n create mode 100644 data/odi/runs/run-2026-06-29T22-43-37-574Z.json\n create mode 100644 data/odi/runs/run-2026-06-29T22-43-45-876Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-230Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-230Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-261Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-261Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-262Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-262Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-291Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-291Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-325Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-325Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-326Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-37-326Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-40-018Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-36-40-018Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-193Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-193Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-208Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-208Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-239Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-239Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-263Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-263Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-290Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-290Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-395Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-395Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-397Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-397Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-518Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-25-518Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-28-352Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-37-28-352Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-790Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-790Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-792Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-792Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-793Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-793Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-794Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-794Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-795Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-795Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-846Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-846Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-852Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-852Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-916Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-24-916Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-28-315Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-42-28-315Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-945Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-945Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-947Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-947Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-968Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-968Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-999Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-42-999Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-038Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-038Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-097Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-097Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-180Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-43-180Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-45-797Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-43-45-797Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-628Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-628Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-631Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-631Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-632Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-632Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-682Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-682Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-687Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-687Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-830Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-830Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-831Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-831Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-870Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-11-870Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-14-547Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-46-14-547Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-790Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-790Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-792Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-792Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-793Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-793Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-794Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-794Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-795Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-795Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-816Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-816Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-883Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-26-883Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-27-739Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-27-739Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-29-620Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-28T22-48-29-620Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-181Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-181Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-182Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-182Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-248Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-42-248Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-124Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-124Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-265Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-265Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-997Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-43-997Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-44-248Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-44-248Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-45-045Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-45-045Z.png\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-46-347Z.json\n create mode 100644 data/odi/screenshots/screenshot-2026-06-29T22-43-46-347Z.png\n create mode 100644 data/odi/themes/theme-dark-2026-06-28T22-50-32-887Z.css\n create mode 100644 data/odi/themes/theme-dark-2026-06-28T22-50-32-887Z.json\n create mode 100644 data/odi/themes/theme-dark-2026-06-28T22-50-32-888Z.css\n create mode 100644 data/odi/themes/theme-dark-2026-06-28T22-50-32-888Z.json\n create mode 100644 data/odi/themes/theme-dark-2026-06-29T22-44-37-186Z.css\n create mode 100644 data/odi/themes/theme-dark-2026-06-29T22-44-37-186Z.json\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-28T22-50-32-887Z.css\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-28T22-50-32-887Z.json\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-28T22-50-32-889Z.css\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-28T22-50-32-889Z.json\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-29T22-44-37-186Z.css\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-29T22-44-37-186Z.json\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-29T22-44-37-187Z.css\n create mode 100644 data/odi/themes/theme-enterprise-2026-06-29T22-44-37-187Z.json\n create mode 100644 data/odi/themes/theme-glass-2026-06-28T22-50-32-889Z.css\n create mode 100644 data/odi/themes/theme-glass-2026-06-28T22-50-32-889Z.json\n create mode 100644 data/odi/themes/theme-glass-2026-06-29T22-44-37-187Z.css\n create mode 100644 data/odi/themes/theme-glass-2026-06-29T22-44-37-187Z.json\n create mode 100644 data/odi/themes/theme-light-2026-06-28T22-50-32-888Z.css\n create mode 100644 data/odi/themes/theme-light-2026-06-28T22-50-32-888Z.json\n create mode 100644 data/odi/themes/theme-light-2026-06-29T22-44-37-186Z.css\n create mode 100644 data/odi/themes/theme-light-2026-06-29T22-44-37-186Z.json\n create mode 100644 data/odi/themes/theme-luxury-2026-06-28T22-50-32-889Z.css\n create mode 100644 data/odi/themes/theme-luxury-2026-06-28T22-50-32-889Z.json\n create mode 100644 data/odi/themes/theme-luxury-2026-06-29T22-44-37-187Z.css\n create mode 100644 data/odi/themes/theme-luxury-2026-06-29T22-44-37-187Z.json\n create mode 100644 data/odi/themes/theme-minimal-2026-06-28T22-50-32-889Z.css\n create mode 100644 data/odi/themes/theme-minimal-2026-06-28T22-50-32-889Z.json\n create mode 100644 data/odi/themes/theme-minimal-2026-06-29T22-44-37-187Z.css\n create mode 100644 data/odi/themes/theme-minimal-2026-06-29T22-44-37-187Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-38-880Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-38-972Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-39-064Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-39-073Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-39-080Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-39-126Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-36-41-697Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-26-863Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-26-937Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-034Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-048Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-101Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-276Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-289Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-27-384Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-37-30-000Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-023Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-122Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-152Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-169Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-185Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-204Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-222Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-27-236Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-42-30-599Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-608Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-672Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-693Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-713Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-766Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-785Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-44-809Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-45-065Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-43-47-459Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-231Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-311Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-331Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-451Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-554Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-575Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-612Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-13-780Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-46-16-126Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-390Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-494Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-584Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-603Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-709Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-722Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-28-792Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-29-597Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-28T22-48-31-485Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-42-990Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-43-132Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-43-190Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-43-907Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-44-057Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-44-762Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-45-033Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-45-848Z.json\n create mode 100644 data/odi/tokens/tokens-2026-06-29T22-43-47-125Z.json\n create mode 100644 data/org-capability-exchange.json\n create mode 100644 data/org-collaborations.json\n create mode 100644 data/org-governance.json\n create mode 100644 data/org-network-evolution.json\n create mode 100644 data/org-network-registry.json\n create mode 100644 data/physical-workflows.json\n create mode 100644 data/portfolio-strategy.json\n create mode 100644 data/pricing-intelligence.json\n create mode 100644 data/product-architectures.json\n create mode 100644 data/product-assemblies.json\n create mode 100644 data/product-plans.json\n create mode 100644 data/product-releases.json\n create mode 100644 data/product-validations.json\n create mode 100644 data/revenue-automation.json\n create mode 100644 data/revenue-discovery.json\n create mode 100644 data/revenue-forecast.json\n create mode 100644 data/revenue-optimization.json\n create mode 100644 data/risk-assessment.json\n create mode 100644 data/scientific-experiments.json\n create mode 100644 data/scientific-publications.json\n create mode 100644 data/visual-reasoning.json"
+      },
+      "completedAt": "2026-06-30T00:12:38.453Z"
     },
     {
       "runId": "cee_1782778348781_kce",
       "command": "Take screenshots.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:28.781Z",
-      "classification": null,
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 28317,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778350310_owz",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778331001_lwi",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782677882367_nln",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-06-30T00:12:57.098Z"
     },
     {
       "runId": "cee_1782778348792_9kn",
       "command": "Run regression.",
-      "status": "running",
+      "status": "completed_with_errors",
       "startedAt": "2026-06-30T00:12:28.792Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "partial",
+      "minutesSaved": 15,
       "error": null,
-      "durationMs": null
+      "durationMs": 26888,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782778359348_fj9",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-06-30T00:12:55.680Z"
     },
     {
       "runId": "cee_1782778348802_59l",
       "command": "Generate documentation.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:28.802Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 30,
       "error": null,
-      "durationMs": null
+      "durationMs": 27151,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782778359918_can",
+            "output": "1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n9db1ede fix(crm): add name length validation to POST /crm/lead [benchmark-3]\n",
+            "exitCode": 0,
+            "durationMs": 32
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782778359960_qiy",
+            "output": "./V4_PHASE5_IMPLEMENTATION_REPORT.md\n./MEMORY_OS_V2_REPORT.md\n./DAILY_OPERATIONS_CHECKLIST.md\n./V5_PHASE3_CAPABILITY_MATRIX.md\n./V4_PHASE2_CAPABILITY_MATRIX.md\n./DEVELOPER_COPILOT_V2.md\n./V5_PHASE6_CAPABILITY_MATRIX.md\n./USER_JOURNEY_RETEST.md\n./USABILITY_AUDIT_REPORT.md\n./MISSION_CONTROL_V1_REPORT.md\n",
+            "exitCode": 0,
+            "durationMs": 6132
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782778366107_9re",
+            "output": "     345\n",
+            "exitCode": 0,
+            "durationMs": 24
+          }
+        ]
+      },
+      "completedAt": "2026-06-30T00:12:55.953Z"
     },
     {
       "runId": "cee_1782778351988_n4p",
       "command": "Open the CRM project.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:31.988Z",
-      "classification": null,
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 2,
       "error": null,
-      "durationMs": null
+      "durationMs": 14728,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-06-30T00:12:46.716Z"
     },
     {
       "runId": "cee_1782778352000_5k3",
       "command": "Run regression.",
-      "status": "running",
+      "status": "completed_with_errors",
       "startedAt": "2026-06-30T00:12:32.000Z",
-      "classification": null,
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "partial",
+      "minutesSaved": 15,
       "error": null,
-      "durationMs": null
+      "durationMs": 24315,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782778367246_ec4",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-06-30T00:12:56.315Z"
     },
     {
       "runId": "cee_1782778352012_0sq",
       "command": "Take screenshots.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:32.012Z",
-      "classification": null,
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 5,
       "error": null,
-      "durationMs": null
+      "durationMs": 25316,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778350310_owz",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778331001_lwi",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782677882367_nln",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-06-30T00:12:57.328Z"
     },
     {
       "runId": "cee_1782778352026_tuh",
       "command": "Verify environment health.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:32.026Z",
-      "classification": null,
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
       "toolsUsed": [],
       "steps": [],
-      "outcome": null,
-      "minutesSaved": 0,
+      "outcome": "success",
+      "minutesSaved": 10,
       "error": null,
-      "durationMs": null
+      "durationMs": 16267,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-06-30T00:12:48.293Z"
     },
     {
       "runId": "cee_1782778352045_5qv",
       "command": "Generate documentation.",
-      "status": "running",
+      "status": "completed",
       "startedAt": "2026-06-30T00:12:32.045Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 24542,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782778368816_k68",
+            "output": "1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n9db1ede fix(crm): add name length validation to POST /crm/lead [benchmark-3]\n",
+            "exitCode": 0,
+            "durationMs": 29
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782778368855_d34",
+            "output": "./V4_PHASE5_IMPLEMENTATION_REPORT.md\n./MEMORY_OS_V2_REPORT.md\n./DAILY_OPERATIONS_CHECKLIST.md\n./V5_PHASE3_CAPABILITY_MATRIX.md\n./V4_PHASE2_CAPABILITY_MATRIX.md\n./DEVELOPER_COPILOT_V2.md\n./V5_PHASE6_CAPABILITY_MATRIX.md\n./USER_JOURNEY_RETEST.md\n./USABILITY_AUDIT_REPORT.md\n./MISSION_CONTROL_V1_REPORT.md\n",
+            "exitCode": 0,
+            "durationMs": 6052
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782778374947_79t",
+            "output": "     345\n",
+            "exitCode": 0,
+            "durationMs": 19
+          }
+        ]
+      },
+      "completedAt": "2026-06-30T00:12:56.587Z"
+    },
+    {
+      "runId": "cee_1782778352055_46h",
+      "command": "Deploy today release.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-06-30T00:12:32.055Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal",
+          "editor",
+          "browser"
+        ],
+        "matched": "deploy|release|push.*prod"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 25,
+      "error": null,
+      "durationMs": 24788,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "steps": [
+          {
+            "step": "regression",
+            "ok": false,
+            "output": ""
+          }
+        ],
+        "error": "Regression failed — aborting deploy"
+      },
+      "completedAt": "2026-06-30T00:12:56.843Z"
+    },
+    {
+      "runId": "cee_1782778457424_3wd",
+      "command": {
+        "command": "Deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-06-30T00:14:17.424Z",
       "classification": null,
       "toolsUsed": [],
       "steps": [],
@@ -13960,10 +14467,1759 @@
       "durationMs": null
     },
     {
-      "runId": "cee_1782778352055_46h",
-      "command": "Deploy today release.",
+      "runId": "cee_1782778457472_eep",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
       "status": "running",
-      "startedAt": "2026-06-30T00:12:32.055Z",
+      "startedAt": "2026-06-30T00:14:17.472Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782778457478_eg0",
+      "command": {
+        "command": "verify health",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-06-30T00:14:17.478Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782778457510_bim",
+      "command": {
+        "command": "build the project",
+        "workspaceType": "github"
+      },
+      "status": "running",
+      "startedAt": "2026-06-30T00:14:17.510Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782778457519_n1f",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-06-30T00:14:17.519Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782778457576_a3c",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-06-30T00:14:17.576Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782947684584_tj8",
+      "command": "Verify environment health",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:44.584Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 17409,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-07-01T23:15:01.993Z"
+    },
+    {
+      "runId": "cee_1782947688644_rdt",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:48.645Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 20338,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-07-01T23:15:08.982Z"
+    },
+    {
+      "runId": "cee_1782947688687_yad",
+      "command": "Commit changes.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:14:48.687Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "commit|git.*commit"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 27289,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "error": "Command failed: git add -A"
+      },
+      "completedAt": "2026-07-01T23:15:15.978Z"
+    },
+    {
+      "runId": "cee_1782947688711_iv7",
+      "command": "Take screenshots.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:48.711Z",
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 148536,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947693768_1cr",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947595244_7o0",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778350310_owz",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:17:17.247Z"
+    },
+    {
+      "runId": "cee_1782947688745_hx4",
+      "command": "Run regression.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:14:48.746Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 15,
+      "error": null,
+      "durationMs": 129153,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782947719734_67h",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-07-01T23:16:57.898Z"
+    },
+    {
+      "runId": "cee_1782947688773_8zm",
+      "command": "Generate documentation.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:48.773Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 132739,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782947726021_qll",
+            "output": "629b825 feat(electron-prod): Production Electron readiness — backend spawner, CSP, permissions, nav guard, packaging\n1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n",
+            "exitCode": 0,
+            "durationMs": 1558
+          },
+          {
+            "ok": false,
+            "cmdId": "tc_1782947729031_zpd",
+            "output": "",
+            "error": "spawnSync /bin/sh ETIMEDOUT",
+            "exitCode": 1,
+            "durationMs": 15077
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782947744363_wvx",
+            "output": "     346\n",
+            "exitCode": 0,
+            "durationMs": 49
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:17:01.513Z"
+    },
+    {
+      "runId": "cee_1782947699694_dxr",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:59.694Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 62528,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-07-01T23:16:02.230Z"
+    },
+    {
+      "runId": "cee_1782947699719_x3u",
+      "command": "Run regression.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:14:59.719Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 15,
+      "error": null,
+      "durationMs": 127044,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782947778409_rv1",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-07-01T23:17:06.763Z"
+    },
+    {
+      "runId": "cee_1782947699848_x8s",
+      "command": "Take screenshots.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:14:59.848Z",
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 146198,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947693768_1cr",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947595244_7o0",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782778350310_owz",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:17:26.046Z"
+    },
+    {
+      "runId": "cee_1782947700023_uuy",
+      "command": "Verify environment health.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:15:00.023Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 91415,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-07-01T23:16:31.438Z"
+    },
+    {
+      "runId": "cee_1782947700489_zyx",
+      "command": "Generate documentation.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:15:00.489Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 130596,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782947794335_67a",
+            "output": "629b825 feat(electron-prod): Production Electron readiness — backend spawner, CSP, permissions, nav guard, packaging\n1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n",
+            "exitCode": 0,
+            "durationMs": 107
+          },
+          {
+            "ok": false,
+            "cmdId": "tc_1782947794504_lea",
+            "output": "",
+            "error": "spawnSync /bin/sh ETIMEDOUT",
+            "exitCode": 1,
+            "durationMs": 15048
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782947809601_0ye",
+            "output": "     346\n",
+            "exitCode": 0,
+            "durationMs": 97
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:17:11.085Z"
+    },
+    {
+      "runId": "cee_1782947700519_g43",
+      "command": "Deploy today release.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:15:00.519Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal",
+          "editor",
+          "browser"
+        ],
+        "matched": "deploy|release|push.*prod"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 25,
+      "error": null,
+      "durationMs": 131468,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "steps": [
+          {
+            "step": "regression",
+            "ok": false,
+            "output": ""
+          }
+        ],
+        "error": "Regression failed — aborting deploy"
+      },
+      "completedAt": "2026-07-01T23:17:11.987Z"
+    },
+    {
+      "runId": "cee_1782947992656_7os",
+      "command": "Verify environment health",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:19:52.659Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 35292,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-07-01T23:20:27.950Z"
+    },
+    {
+      "runId": "cee_1782947999670_otf",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:19:59.670Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 39591,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-07-01T23:20:39.261Z"
+    },
+    {
+      "runId": "cee_1782947999718_p46",
+      "command": "Commit changes.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:19:59.718Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "commit|git.*commit"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 54489,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": false,
+            "detail": "spawnSync /bin/sh ETIMEDOUT"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "error": "Command failed: git add -A"
+      },
+      "completedAt": "2026-07-01T23:20:54.207Z"
+    },
+    {
+      "runId": "cee_1782947999788_ymy",
+      "command": "Take screenshots.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:19:59.788Z",
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 230304,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782948008602_0rd",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947910894_4uk",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947693768_1cr",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:23:50.093Z"
+    },
+    {
+      "runId": "cee_1782947999836_lwv",
+      "command": "Run regression.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:19:59.836Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 15,
+      "error": null,
+      "durationMs": 147466,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782948060930_xlw",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-07-01T23:22:27.302Z"
+    },
+    {
+      "runId": "cee_1782948000106_gr8",
+      "command": "Generate documentation.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:20:00.106Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 169272,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": false,
+            "detail": "spawnSync /bin/sh ETIMEDOUT"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782948066608_lqm",
+            "output": "629b825 feat(electron-prod): Production Electron readiness — backend spawner, CSP, permissions, nav guard, packaging\n1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n",
+            "exitCode": 0,
+            "durationMs": 255
+          },
+          {
+            "ok": false,
+            "cmdId": "tc_1782948068152_yud",
+            "output": "",
+            "error": "spawnSync /bin/sh ETIMEDOUT",
+            "exitCode": 1,
+            "durationMs": 16277
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782948084564_a9o",
+            "output": "     346\n",
+            "exitCode": 0,
+            "durationMs": 239
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:22:49.378Z"
+    },
+    {
+      "runId": "cee_1782948017003_l21",
+      "command": "Open the CRM project.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:20:17.003Z",
+      "classification": {
+        "domain": "editor",
+        "tools": [
+          "editor"
+        ],
+        "matched": "open.*project|load.*project"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 2,
+      "error": null,
+      "durationMs": 74861,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "projectId": "proj__Users_ehtsm_jarvis_os",
+        "path": "/Users/ehtsm/jarvis-os",
+        "name": "jarvis-os",
+        "branch": "main"
+      },
+      "completedAt": "2026-07-01T23:21:31.864Z"
+    },
+    {
+      "runId": "cee_1782948017028_hkt",
+      "command": "Run regression.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:20:17.028Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "run.*regression|regression.*test"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 15,
+      "error": null,
+      "durationMs": 170728,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": false,
+            "detail": "spawnSync /bin/sh ETIMEDOUT"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "cmdId": "tc_1782948096592_sif",
+        "passed": 0,
+        "failed": 0,
+        "output": ""
+      },
+      "completedAt": "2026-07-01T23:23:07.756Z"
+    },
+    {
+      "runId": "cee_1782948017101_ghz",
+      "command": "Take screenshots.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:20:17.101Z",
+      "classification": {
+        "domain": "browser",
+        "tools": [
+          "browser",
+          "desktop"
+        ],
+        "matched": "review.*ui|ui.*review|screenshot"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 5,
+      "error": null,
+      "durationMs": 218940,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "screenshots": [
+          {
+            "type": "desktop",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782948008602_0rd",
+            "url": "https://facade.example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947910894_4uk",
+            "url": "https://example.com",
+            "ok": false
+          },
+          {
+            "type": "browser",
+            "tabId": "bc_1782947693768_1cr",
+            "url": "https://facade.example.com",
+            "ok": false
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:23:56.041Z"
+    },
+    {
+      "runId": "cee_1782948019680_w1e",
+      "command": "Verify environment health.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:20:19.680Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal"
+        ],
+        "matched": "health.*check|verify.*env"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 10,
+      "error": null,
+      "durationMs": 83535,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "category": "environment",
+        "score": 38,
+        "checks": [
+          {
+            "name": "NODE_ENV",
+            "status": "warn",
+            "detail": "NODE_ENV=unset — set to 'production'"
+          },
+          {
+            "name": "PORT",
+            "status": "warn",
+            "detail": "PORT not set — defaulting to 5050"
+          },
+          {
+            "name": "JWT_SECRET",
+            "status": "fail",
+            "detail": "JWT_SECRET missing — auth will fail"
+          },
+          {
+            "name": "OPERATOR_PASSWORD_HASH",
+            "status": "fail",
+            "detail": "Missing — operator login disabled"
+          },
+          {
+            "name": "env_file",
+            "status": "pass",
+            "detail": ".env file present"
+          },
+          {
+            "name": "APP_URL",
+            "status": "warn",
+            "detail": "APP_URL/BASE_URL not set — OAuth redirects may break"
+          },
+          {
+            "name": "node_version",
+            "status": "pass",
+            "detail": "Node v24.11.1"
+          },
+          {
+            "name": "data_writable",
+            "status": "pass",
+            "detail": "data/ writable"
+          }
+        ],
+        "context": "general"
+      },
+      "completedAt": "2026-07-01T23:21:43.215Z"
+    },
+    {
+      "runId": "cee_1782948019742_jjz",
+      "command": "Generate documentation.",
+      "status": "completed",
+      "startedAt": "2026-07-01T23:20:19.742Z",
+      "classification": {
+        "domain": "engineering",
+        "tools": [
+          "terminal",
+          "editor"
+        ],
+        "matched": "generate.*doc|documentation"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "success",
+      "minutesSaved": 30,
+      "error": null,
+      "durationMs": 188709,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": true,
+        "results": [
+          {
+            "ok": true,
+            "cmdId": "tc_1782948106897_l9t",
+            "output": "629b825 feat(electron-prod): Production Electron readiness — backend spawner, CSP, permissions, nav guard, packaging\n1e8c09f Commit changes.\nf9e03bc feat(post-omega-p20): Artificial Organization Network — FINAL PLATFORM EXPANSION SPRINT\nf2787d6 feat(post-omega-p19): Global Infrastructure Orchestrator — unified infra control plane\n6b9ba54 feat(post-omega-p18): Scientific Discovery Engine — hypothesis-to-publication pipeline\nd954c6a fix(dlq): early-exit when DLQ is empty [benchmark-5]\n34162d9 fix(rules): add structured log to classifyError on successful match [benchmark-4]\nce9bc77 fix(crm): add name length validation to POST /crm/lead [benchmark-3]\nd35bf19 fix(dlq): early-exit when DLQ is empty [benchmark-5]\n057be03 fix(rules): add structured log to classifyError on successful match [benchmark-4]\n",
+            "exitCode": 0,
+            "durationMs": 209
+          },
+          {
+            "ok": false,
+            "cmdId": "tc_1782948109344_qgv",
+            "output": "",
+            "error": "spawnSync /bin/sh ETIMEDOUT",
+            "exitCode": 1,
+            "durationMs": 15233
+          },
+          {
+            "ok": true,
+            "cmdId": "tc_1782948125606_w0d",
+            "output": "     346\n",
+            "exitCode": 0,
+            "durationMs": 184
+          }
+        ]
+      },
+      "completedAt": "2026-07-01T23:23:28.451Z"
+    },
+    {
+      "runId": "cee_1782948019769_y2q",
+      "command": "Deploy today release.",
+      "status": "completed_with_errors",
+      "startedAt": "2026-07-01T23:20:19.769Z",
+      "classification": {
+        "domain": "deployment",
+        "tools": [
+          "terminal",
+          "editor",
+          "browser"
+        ],
+        "matched": "deploy|release|push.*prod"
+      },
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": "partial",
+      "minutesSaved": 25,
+      "error": null,
+      "durationMs": 200016,
+      "memoryHits": 0,
+      "validation": {
+        "allPass": true,
+        "checks": [
+          {
+            "check": "git_clean_or_staged",
+            "pass": true,
+            "detail": "git status ok"
+          },
+          {
+            "check": "node_modules_present",
+            "pass": true,
+            "detail": "node_modules present"
+          },
+          {
+            "check": "server_file_present",
+            "pass": true,
+            "detail": "server file present"
+          }
+        ]
+      },
+      "result": {
+        "ok": false,
+        "steps": [
+          {
+            "step": "regression",
+            "ok": false,
+            "output": ""
+          }
+        ],
+        "error": "Regression failed — aborting deploy"
+      },
+      "completedAt": "2026-07-01T23:23:39.786Z"
+    },
+    {
+      "runId": "cee_1782948075230_bx6",
+      "command": {
+        "command": "Deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:15.230Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948076057_z1g",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:16.057Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948076073_mrw",
+      "command": {
+        "command": "verify health",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:16.073Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948076427_zab",
+      "command": {
+        "command": "build the project",
+        "workspaceType": "github"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:16.427Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948076490_r8a",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:16.490Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948076795_al3",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:21:16.795Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948316324_jvo",
+      "command": {
+        "command": "Deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:16.324Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948317253_8ot",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:17.253Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948317794_b02",
+      "command": {
+        "command": "verify health",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:17.794Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948318475_nvu",
+      "command": {
+        "command": "build the project",
+        "workspaceType": "github"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:18.475Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948318515_xwg",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:18.515Z",
+      "classification": null,
+      "toolsUsed": [],
+      "steps": [],
+      "outcome": null,
+      "minutesSaved": 0,
+      "error": null,
+      "durationMs": null
+    },
+    {
+      "runId": "cee_1782948319171_0e5",
+      "command": {
+        "command": "deploy to VPS",
+        "workspaceType": "vps"
+      },
+      "status": "running",
+      "startedAt": "2026-07-01T23:25:19.171Z",
       "classification": null,
       "toolsUsed": [],
       "steps": [],
@@ -13974,10 +16230,10 @@
     }
   ],
   "stats": {
-    "total": 242,
-    "succeeded": 165,
-    "failed": 55,
-    "minutesSaved": 2764,
+    "total": 284,
+    "succeeded": 188,
+    "failed": 66,
+    "minutesSaved": 3214,
     "toolsUsed": {}
   }
 }

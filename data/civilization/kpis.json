@@ -1,7 +1,7 @@
 {
   "civ_registry": {
     "domainId": "civ_registry",
-    "membersRegistered": 81,
+    "membersRegistered": 56,
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
@@ -9,47 +9,47 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.113Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.610Z",
+    "tickCount": 2
   },
   "civ_council": {
     "domainId": "civ_council",
     "membersRegistered": 0,
-    "proposalsProcessed": 8,
+    "proposalsProcessed": 2,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.113Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.611Z",
+    "tickCount": 2
   },
   "civ_economy": {
     "domainId": "civ_economy",
     "membersRegistered": 0,
     "proposalsProcessed": 0,
-    "tradesExecuted": 4,
+    "tradesExecuted": 1,
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.115Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.613Z",
+    "tickCount": 2
   },
   "civ_mission_network": {
     "domainId": "civ_mission_network",
     "membersRegistered": 0,
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
-    "missionsExchanged": 61,
+    "missionsExchanged": 256,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.116Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.614Z",
+    "tickCount": 2
   },
   "civ_knowledge_network": {
     "domainId": "civ_knowledge_network",
@@ -57,25 +57,25 @@
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
-    "knowledgeShared": 12,
+    "knowledgeShared": 6,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.116Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.614Z",
+    "tickCount": 2
   },
   "civ_reputation": {
     "domainId": "civ_reputation",
-    "membersRegistered": 12,
+    "membersRegistered": 3,
     "proposalsProcessed": 0,
-    "tradesExecuted": 90,
+    "tradesExecuted": 45,
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.116Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.614Z",
+    "tickCount": 2
   },
   "civ_diplomacy": {
     "domainId": "civ_diplomacy",
@@ -84,11 +84,11 @@
     "tradesExecuted": 0,
     "missionsExchanged": 0,
     "knowledgeShared": 0,
-    "treatiesSigned": 5,
+    "treatiesSigned": 1,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.117Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.615Z",
+    "tickCount": 2
   },
   "civ_innovation": {
     "domainId": "civ_innovation",
@@ -98,14 +98,14 @@
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
-    "innovationsAdopted": 2,
+    "innovationsAdopted": 1,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.118Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.616Z",
+    "tickCount": 2
   },
   "civ_director": {
     "domainId": "civ_director",
-    "membersRegistered": 3,
+    "membersRegistered": 2,
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
@@ -113,8 +113,8 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.162Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.656Z",
+    "tickCount": 2
   },
   "civ_analytics": {
     "domainId": "civ_analytics",
@@ -125,9 +125,9 @@
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
-    "reportsGenerated": 106,
-    "lastTickAt": "2026-06-29T22:39:59.133Z",
-    "tickCount": 3
+    "reportsGenerated": 107,
+    "lastTickAt": "2026-06-28T06:55:57.631Z",
+    "tickCount": 2
   },
   "civ_governance": {
     "domainId": "civ_governance",
@@ -139,8 +139,8 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.114Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.611Z",
+    "tickCount": 2
   },
   "civ_constitution": {
     "domainId": "civ_constitution",
@@ -152,8 +152,8 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.114Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.612Z",
+    "tickCount": 2
   },
   "civ_policy": {
     "domainId": "civ_policy",
@@ -165,25 +165,25 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.114Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.612Z",
+    "tickCount": 2
   },
   "civ_resource_exchange": {
     "domainId": "civ_resource_exchange",
     "membersRegistered": 0,
     "proposalsProcessed": 0,
-    "tradesExecuted": 8,
+    "tradesExecuted": 2,
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.115Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.613Z",
+    "tickCount": 2
   },
   "civ_trust": {
     "domainId": "civ_trust",
-    "membersRegistered": 40,
+    "membersRegistered": 14,
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
@@ -191,21 +191,21 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.117Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.615Z",
+    "tickCount": 2
   },
   "civ_collaboration": {
     "domainId": "civ_collaboration",
     "membersRegistered": 0,
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
-    "missionsExchanged": 2,
+    "missionsExchanged": 1,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.117Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.615Z",
+    "tickCount": 2
   },
   "civ_arbitration": {
     "domainId": "civ_arbitration",
@@ -217,8 +217,8 @@
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.118Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.615Z",
+    "tickCount": 2
   },
   "civ_research": {
     "domainId": "civ_research",
@@ -226,12 +226,12 @@
     "proposalsProcessed": 0,
     "tradesExecuted": 0,
     "missionsExchanged": 0,
-    "knowledgeShared": 2,
+    "knowledgeShared": 1,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.120Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.617Z",
+    "tickCount": 2
   },
   "civ_evolution": {
     "domainId": "civ_evolution",
@@ -241,10 +241,10 @@
     "missionsExchanged": 0,
     "knowledgeShared": 0,
     "treatiesSigned": 0,
-    "innovationsAdopted": 2,
+    "innovationsAdopted": 1,
     "reportsGenerated": 0,
-    "lastTickAt": "2026-06-29T22:39:59.120Z",
-    "tickCount": 3
+    "lastTickAt": "2026-06-28T06:55:57.617Z",
+    "tickCount": 2
   },
   "civ_health": {
     "domainId": "civ_health",
@@ -255,8 +255,8 @@
     "knowledgeShared": 0,
     "treatiesSigned": 0,
     "innovationsAdopted": 0,
-    "reportsGenerated": 5,
-    "lastTickAt": "2026-06-29T22:39:59.148Z",
-    "tickCount": 3
+    "reportsGenerated": 3,
+    "lastTickAt": "2026-06-28T06:55:57.643Z",
+    "tickCount": 2
   }
 }

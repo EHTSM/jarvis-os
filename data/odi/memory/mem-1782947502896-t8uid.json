@@ -1,0 +1,23 @@
+{
+  "id": "mem-1782947502896-t8uid",
+  "finding": {
+    "type": "test_finding",
+    "severity": "warning",
+    "message": "test"
+  },
+  "patchSpec": [
+    {
+      "patchTarget": "foo",
+      "patchReplacement": "bar"
+    }
+  ],
+  "targetFile": null,
+  "strategy": "test",
+  "scoreBefore": null,
+  "scoreAfter": null,
+  "improvement": null,
+  "outcome": "applied",
+  "usageCount": 1,
+  "createdAt": "2026-07-01T23:11:42.896Z",
+  "lastUsedAt": "2026-07-01T23:11:42.914Z"
+}

@@ -14,7 +14,7 @@
 #    bash deploy/validate-production.sh --json   # machine-readable JSON
 # ════════════════════════════════════════════════════════════════════════
 
-set -euo pipefail
+set -uo pipefail
 cd "$(dirname "$0")/.."
 
 PORT="${PORT:-5050}"
@@ -176,7 +176,7 @@ section "4. Core API Routes"
 
 check_route() {
     local label="$1" url="$2" expected="${3:-200}"
-    CODE=$(curl -sf --max-time 5 -o /dev/null -w "%{http_code}" "$url" 2>/dev/null || echo "000")
+    CODE=$(curl -s --max-time 5 -o /dev/null -w "%{http_code}" "$url" 2>/dev/null || echo "000")
     if [ "$CODE" = "$expected" ] || [ "$CODE" = "401" ] || [ "$CODE" = "403" ]; then
         check "$label ($CODE)" PASS
     else
@@ -185,7 +185,7 @@ check_route() {
 }
 
 check_route "GET /health"       "http://localhost:${PORT}/health"       "200"
-check_route "GET /ops"          "http://localhost:${PORT}/ops"          "200"
+check_route "GET /ops"          "http://localhost:${PORT}/ops"          "401"
 check_route "GET /auth/me"      "http://localhost:${PORT}/auth/me"      "401"
 check_route "GET /billing/status" "http://localhost:${PORT}/billing/status" "401"
 check_route "GET /launch/dashboard" "http://localhost:${PORT}/launch/dashboard" "401"

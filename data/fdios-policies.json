@@ -1,0 +1,316 @@
+{
+  "policies": {
+    "provider:test:provider-xyz": {
+      "scope": {
+        "provider": "test:provider-xyz"
+      },
+      "mode": "always_allow",
+      "meta": {
+        "setBy": "test"
+      },
+      "setAt": "2026-07-02T21:02:51.790Z",
+      "setBy": "test"
+    },
+    "workflow:auto-promote-test": {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "mode": "always_allow",
+      "meta": {
+        "promotedAt": "2026-07-02T21:02:51.791Z"
+      },
+      "setAt": "2026-07-02T21:02:51.791Z",
+      "setBy": "founder"
+    }
+  },
+  "decisions": [
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T21:02:51.791Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T21:02:51.791Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T21:00:39.869Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T21:00:39.869Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:58:09.529Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:58:09.529Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:56:07.935Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:56:07.934Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:53:52.978Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T20:53:52.977Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T09:11:53.677Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T09:11:53.676Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T07:44:59.619Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T07:44:59.618Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T06:56:06.464Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T06:56:06.463Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T06:53:23.421Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T06:53:23.420Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T03:08:59.429Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T03:08:59.428Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:59:51.148Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:59:51.148Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:54:02.474Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:54:02.473Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:47:46.007Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:47:46.006Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:31:45.097Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:31:45.096Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:18:37.783Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:18:37.781Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:18:25.570Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:18:25.569Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:17:51.378Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:17:51.377Z"
+    },
+    {
+      "scope": {
+        "workflow": "auto-promote-test"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:17:42.645Z"
+    },
+    {
+      "scope": {
+        "workflow": "test-workflow"
+      },
+      "decision": "allowed",
+      "meta": {},
+      "ts": "2026-07-02T02:17:42.645Z"
+    }
+  ]
+}

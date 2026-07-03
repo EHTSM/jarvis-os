@@ -55,7 +55,7 @@ const rie  = require("../services/repoIntelligenceEngine.cjs");
 const are  = require("../services/autonomousRefactorEngine.cjs");
 const mre  = require("../services/multiRepoEngineeringEngine.cjs");
 
-router.use(requireAuth);
+router.use("/p24", requireAuth);
 
 // ── 24A VS Code Extension ─────────────────────────────────────────────────────
 

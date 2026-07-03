@@ -49,7 +49,7 @@ const cre = require("../services/codeReviewEngine.cjs");
 const re  = require("../services/releaseEngine.cjs");
 const ap  = require("../services/engineeringAutopilot.cjs");
 
-router.use(requireAuth);
+router.use("/p23", requireAuth);
 
 // ── 23A GitHub Engineering Agent ──────────────────────────────────────────
 

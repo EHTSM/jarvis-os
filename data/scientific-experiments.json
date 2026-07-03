@@ -6929,20 +6929,4790 @@
       "validated": true,
       "status": "completed",
       "completedAt": "2026-06-29T22:46:01.532Z"
+    },
+    {
+      "id": "sci_1782778375174_vspl",
+      "hypothesisId": "hyp_1782778375172_96zu",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:12:55.174Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778375174",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:12:55.174Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:12:55.408Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 297,
+                "baseline": 50,
+                "delta": 247,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:12:55.408Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:12:55.819Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:12:55.819Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:12:55.819Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:12:55.825Z"
+    },
+    {
+      "id": "sci_1782778378115_ww0h",
+      "hypothesisId": "hyp_1782778378112_puye",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:12:58.115Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778378115",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:12:58.115Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:12:58.135Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 298,
+                "baseline": 50,
+                "delta": 248,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:12:58.135Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:12:58.513Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:12:58.513Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:12:58.513Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:12:58.516Z"
+    },
+    {
+      "id": "sci_1782778381083_uum3",
+      "hypothesisId": "hyp_1782778381082_jl33",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:01.084Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778381084",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:01.084Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:01.102Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 299,
+                "baseline": 50,
+                "delta": 249,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:01.102Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:01.500Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:01.500Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:01.500Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:01.502Z"
+    },
+    {
+      "id": "sci_1782778384262_brfk",
+      "hypothesisId": "hyp_1782778384259_f524",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:04.262Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778384262",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:04.262Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:04.280Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 300,
+                "baseline": 50,
+                "delta": 250,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:04.281Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:04.638Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:04.638Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:04.638Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:04.641Z"
+    },
+    {
+      "id": "sci_1782778387707_7eny",
+      "hypothesisId": "hyp_1782778387706_4r3g",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:07.707Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778387707",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:07.707Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:07.723Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 301,
+                "baseline": 50,
+                "delta": 251,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:07.724Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:08.212Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:08.212Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:08.212Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:08.214Z"
+    },
+    {
+      "id": "sci_1782778391284_qmi0",
+      "hypothesisId": "hyp_1782778391275_tptq",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:11.284Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778391284",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:11.284Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:11.316Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 302,
+                "baseline": 50,
+                "delta": 252,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:11.317Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:11.814Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:11.814Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:11.814Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:11.816Z"
+    },
+    {
+      "id": "sci_1782778395427_c6em",
+      "hypothesisId": "hyp_1782778395426_18k6",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:15.427Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778395427",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:15.427Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:15.443Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 303,
+                "baseline": 50,
+                "delta": 253,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:15.444Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:15.816Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:15.816Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:15.816Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:15.818Z"
+    },
+    {
+      "id": "sci_1782778399184_zguz",
+      "hypothesisId": "hyp_1782778399183_xnoq",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:19.184Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778399184",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:19.184Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:19.202Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 304,
+                "baseline": 50,
+                "delta": 254,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:19.202Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:19.660Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:19.660Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:19.660Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:19.662Z"
+    },
+    {
+      "id": "sci_1782778403645_gtoa",
+      "hypothesisId": "hyp_1782778403643_93bx",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:23.645Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778403645",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:23.645Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:23.661Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 305,
+                "baseline": 50,
+                "delta": 255,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:23.661Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:24.011Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:24.011Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:24.011Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:24.014Z"
+    },
+    {
+      "id": "sci_1782778408151_ln5s",
+      "hypothesisId": "hyp_1782778408149_k3yc",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:28.151Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778408151",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:28.151Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:28.168Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 306,
+                "baseline": 50,
+                "delta": 256,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:28.168Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:28.565Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:28.565Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:28.565Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:28.567Z"
+    },
+    {
+      "id": "sci_1782778413009_x7ld",
+      "hypothesisId": "hyp_1782778413006_lpyv",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:33.009Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778413009",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:33.009Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:33.025Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 307,
+                "baseline": 50,
+                "delta": 257,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:33.025Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:33.390Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:33.390Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:33.390Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:33.392Z"
+    },
+    {
+      "id": "sci_1782778417824_c7ir",
+      "hypothesisId": "hyp_1782778417823_56ff",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:37.824Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778417824",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:37.824Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:37.839Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 308,
+                "baseline": 50,
+                "delta": 258,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:37.840Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:38.197Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:38.197Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:38.197Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:38.199Z"
+    },
+    {
+      "id": "sci_1782778423423_f1yo",
+      "hypothesisId": "hyp_1782778423422_146y",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:43.423Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778423423",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:43.423Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:43.441Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 309,
+                "baseline": 50,
+                "delta": 259,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:43.442Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:43.872Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:43.872Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:43.872Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:43.875Z"
+    },
+    {
+      "id": "sci_1782778428853_wxr7",
+      "hypothesisId": "hyp_1782778428851_c6dg",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:48.853Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778428853",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:48.853Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:48.869Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 310,
+                "baseline": 50,
+                "delta": 260,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:48.870Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:49.210Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:49.210Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:49.210Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:49.212Z"
+    },
+    {
+      "id": "sci_1782778434152_p729",
+      "hypothesisId": "hyp_1782778434150_xxpn",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:54.152Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778434152",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:54.152Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:54.170Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 311,
+                "baseline": 50,
+                "delta": 261,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:54.171Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:13:54.627Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:13:54.627Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:13:54.627Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:13:54.629Z"
+    },
+    {
+      "id": "sci_1782778439619_rc9l",
+      "hypothesisId": "hyp_1782778439617_cww5",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:13:59.619Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778439619",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:13:59.619Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:13:59.634Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 312,
+                "baseline": 50,
+                "delta": 262,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:13:59.635Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:14:00.010Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:14:00.010Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:14:00.010Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:14:00.012Z"
+    },
+    {
+      "id": "sci_1782778444925_flh0",
+      "hypothesisId": "hyp_1782778444924_p2m2",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:14:04.925Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778444925",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:14:04.925Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:14:04.943Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 313,
+                "baseline": 50,
+                "delta": 263,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:14:04.944Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:14:05.318Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:14:05.318Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:14:05.318Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:14:05.321Z"
+    },
+    {
+      "id": "sci_1782778450138_t7by",
+      "hypothesisId": "hyp_1782778450137_t68o",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:14:10.138Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778450138",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:14:10.138Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:14:10.154Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 314,
+                "baseline": 50,
+                "delta": 264,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:14:10.155Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:14:10.531Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:14:10.531Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:14:10.531Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:14:10.533Z"
+    },
+    {
+      "id": "sci_1782778455330_xfo0",
+      "hypothesisId": "hyp_1782778455328_7rzi",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:14:15.330Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778455330",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:14:15.330Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:14:15.345Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 315,
+                "baseline": 50,
+                "delta": 265,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:14:15.346Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:14:15.758Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:14:15.758Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:14:15.758Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:14:15.760Z"
+    },
+    {
+      "id": "sci_1782778460623_sm8j",
+      "hypothesisId": "hyp_1782778460622_0e95",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-06-30T00:14:20.623Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782778460623",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-06-30T00:14:20.623Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-06-30T00:14:20.637Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 316,
+                "baseline": 50,
+                "delta": 266,
+                "supportive": true,
+                "collectedAt": "2026-06-30T00:14:20.638Z"
+              }
+            ]
+          },
+          "completedAt": "2026-06-30T00:14:20.996Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-06-30T00:14:20.996Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-06-30T00:14:20.996Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-06-30T00:14:20.998Z"
+    },
+    {
+      "id": "sci_1782947595401_acef",
+      "hypothesisId": "hyp_1782947595376_vhl3",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:13:15.402Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947595405",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:13:15.405Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:13:18.210Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 423,
+                "baseline": 50,
+                "delta": 373,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:13:18.268Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:13:23.880Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:13:23.881Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:13:23.882Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:13:23.912Z"
+    },
+    {
+      "id": "sci_1782947631181_x8o6",
+      "hypothesisId": "hyp_1782947631053_mous",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:13:51.182Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947631183",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:13:51.183Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:13:57.731Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 424,
+                "baseline": 50,
+                "delta": 374,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:13:57.828Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:14:05.226Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:14:05.226Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:14:05.226Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:14:06.765Z"
+    },
+    {
+      "id": "sci_1782947678031_pm8c",
+      "hypothesisId": "hyp_1782947677679_j6vl",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:14:38.034Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947678035",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:14:38.035Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:14:40.108Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 458,
+                "baseline": 50,
+                "delta": 408,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:14:40.117Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:14:44.687Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:14:44.687Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:14:44.687Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:14:46.346Z"
+    },
+    {
+      "id": "sci_1782947697703_4xud",
+      "hypothesisId": "hyp_1782947697675_x861",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:14:57.703Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947697703",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:14:57.703Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:14:57.816Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 459,
+                "baseline": 50,
+                "delta": 409,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:14:57.823Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:14:59.080Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:14:59.080Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:14:59.080Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:14:59.092Z"
+    },
+    {
+      "id": "sci_1782947718722_tssd",
+      "hypothesisId": "hyp_1782947718702_p95m",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:15:18.722Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947718722",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:15:18.723Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:15:19.779Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 460,
+                "baseline": 50,
+                "delta": 410,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:15:19.796Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:15:22.380Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:15:22.380Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:15:22.380Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:15:24.246Z"
+    },
+    {
+      "id": "sci_1782947735166_uwmr",
+      "hypothesisId": "hyp_1782947735153_nsp9",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:15:35.166Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947735166",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:15:35.166Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:15:35.948Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 461,
+                "baseline": 50,
+                "delta": 411,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:15:35.949Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:15:36.717Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:15:36.717Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:15:36.717Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:15:42.463Z"
+    },
+    {
+      "id": "sci_1782947742463_v9ea",
+      "hypothesisId": "hyp_1782947742306_82ue",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:15:42.463Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947742463",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:15:42.463Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:15:42.612Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 462,
+                "baseline": 50,
+                "delta": 412,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:15:42.617Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:15:43.882Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:15:43.882Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:15:43.882Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:15:43.896Z"
+    },
+    {
+      "id": "sci_1782947758797_8kvw",
+      "hypothesisId": "hyp_1782947758710_o2h4",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:15:58.797Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947758797",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:15:58.797Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:15:58.977Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 463,
+                "baseline": 50,
+                "delta": 413,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:15:59.002Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:16:05.731Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:16:05.731Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:16:05.731Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:16:05.818Z"
+    },
+    {
+      "id": "sci_1782947801199_ycap",
+      "hypothesisId": "hyp_1782947801189_ghg8",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:16:41.200Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947801200",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:16:41.200Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:16:41.846Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 504,
+                "baseline": 50,
+                "delta": 454,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:16:41.847Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:16:43.975Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:16:43.976Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:16:43.976Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:16:44.002Z"
+    },
+    {
+      "id": "sci_1782947803601_iv5q",
+      "hypothesisId": "hyp_1782947803559_sfk3",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:16:43.601Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947803601",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:16:43.601Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:16:43.930Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 504,
+                "baseline": 50,
+                "delta": 454,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:16:43.935Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:16:45.517Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:16:45.517Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:16:45.517Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:16:45.657Z"
+    },
+    {
+      "id": "sci_1782947836734_xgc1",
+      "hypothesisId": "hyp_1782947836705_2fuc",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:17:16.734Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947836734",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:17:16.734Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:17:17.666Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 506,
+                "baseline": 50,
+                "delta": 456,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:17:17.668Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:17:19.221Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:17:19.221Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:17:19.221Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:17:20.192Z"
+    },
+    {
+      "id": "sci_1782947894592_enky",
+      "hypothesisId": "hyp_1782947894478_yyur",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:18:14.592Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947894592",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:18:14.592Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:18:15.590Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 508,
+                "baseline": 50,
+                "delta": 458,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:18:15.608Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:18:16.993Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:18:16.993Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:18:16.993Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:18:17.029Z"
+    },
+    {
+      "id": "sci_1782947894625_84je",
+      "hypothesisId": "hyp_1782947894610_cs3w",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:18:14.625Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947894625",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:18:14.625Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:18:18.248Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 509,
+                "baseline": 50,
+                "delta": 459,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:18:18.250Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:18:21.264Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:18:21.264Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:18:21.264Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:18:21.281Z"
+    },
+    {
+      "id": "sci_1782947916838_c30p",
+      "hypothesisId": "hyp_1782947916800_xwb7",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:18:36.838Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947916838",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:18:36.838Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:18:37.336Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 510,
+                "baseline": 50,
+                "delta": 460,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:18:37.353Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:18:39.807Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:18:39.809Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:18:39.809Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:18:40.478Z"
+    },
+    {
+      "id": "sci_1782947927868_neu3",
+      "hypothesisId": "hyp_1782947927809_2iv7",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:18:47.868Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947927868",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:18:47.868Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:18:48.220Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 511,
+                "baseline": 50,
+                "delta": 461,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:18:48.226Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:18:50.194Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:18:50.194Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:18:50.194Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:18:50.304Z"
+    },
+    {
+      "id": "sci_1782947937695_bzhp",
+      "hypothesisId": "hyp_1782947937647_ez7g",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:18:57.695Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947937695",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:18:57.695Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:18:57.894Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 512,
+                "baseline": 50,
+                "delta": 462,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:18:57.927Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:18:59.301Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:18:59.301Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:18:59.301Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:19:00.642Z"
+    },
+    {
+      "id": "sci_1782947990565_ce07",
+      "hypothesisId": "hyp_1782947990548_gp3y",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:19:50.565Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782947990565",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:19:50.565Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:19:52.096Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 513,
+                "baseline": 50,
+                "delta": 463,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:19:52.097Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:19:52.995Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:19:52.995Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:19:52.995Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:19:53.319Z"
+    },
+    {
+      "id": "sci_1782948024308_l6sk",
+      "hypothesisId": "hyp_1782948024224_c62r",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:20:24.308Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948024308",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:20:24.308Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:20:24.862Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 514,
+                "baseline": 50,
+                "delta": 464,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:20:24.910Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:20:26.683Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:20:26.683Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:20:26.683Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:20:27.897Z"
+    },
+    {
+      "id": "sci_1782948059402_tos9",
+      "hypothesisId": "hyp_1782948059277_uozh",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:20:59.402Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948059402",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:20:59.402Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:21:01.065Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 515,
+                "baseline": 50,
+                "delta": 465,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:21:01.093Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:21:01.939Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:21:01.939Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:21:01.939Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:21:02.992Z"
+    },
+    {
+      "id": "sci_1782948120217_5qoc",
+      "hypothesisId": "hyp_1782948120160_0p2s",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:22:00.220Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948120221",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:22:00.221Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:22:00.910Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 516,
+                "baseline": 50,
+                "delta": 466,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:22:00.924Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:22:05.784Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:22:05.784Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:22:05.784Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:22:05.884Z"
+    },
+    {
+      "id": "sci_1782948173161_vcjr",
+      "hypothesisId": "hyp_1782948172934_3s60",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:22:53.176Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948173176",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:22:53.192Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:22:58.011Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 517,
+                "baseline": 50,
+                "delta": 467,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:22:58.097Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:23:03.302Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:23:03.302Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:23:03.302Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:23:03.475Z"
+    },
+    {
+      "id": "sci_1782948246132_14w1",
+      "hypothesisId": "hyp_1782948246117_hhd1",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:24:06.132Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948246132",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:24:06.132Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:24:07.075Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 518,
+                "baseline": 50,
+                "delta": 468,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:24:07.090Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:24:12.099Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:24:12.100Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:24:12.100Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:24:13.563Z"
+    },
+    {
+      "id": "sci_1782948258401_yylo",
+      "hypothesisId": "hyp_1782948258358_l3h0",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:24:18.402Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948258402",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:24:18.402Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:24:20.065Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 519,
+                "baseline": 50,
+                "delta": 469,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:24:20.080Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:24:23.425Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:24:23.425Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:24:23.425Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:24:23.611Z"
+    },
+    {
+      "id": "sci_1782948293895_9m9m",
+      "hypothesisId": "hyp_1782948293874_rv9l",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:24:53.896Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948293896",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:24:53.896Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:24:54.022Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 520,
+                "baseline": 50,
+                "delta": 470,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:24:54.028Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:24:55.715Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:24:55.715Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:24:55.715Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:24:55.774Z"
+    },
+    {
+      "id": "sci_1782948293885_qzdz",
+      "hypothesisId": "hyp_1782948293860_ts15",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:24:53.885Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948293885",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:24:53.885Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:24:54.806Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 520,
+                "baseline": 50,
+                "delta": 470,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:24:54.808Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:24:58.298Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:24:58.298Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:24:58.298Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:24:59.039Z"
+    },
+    {
+      "id": "sci_1782948353658_ph6t",
+      "hypothesisId": "hyp_1782948353653_kfn6",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:25:53.658Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948353658",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:25:53.658Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:25:54.479Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 522,
+                "baseline": 50,
+                "delta": 472,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:25:54.487Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:25:56.460Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:25:56.460Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:25:56.460Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:25:56.479Z"
+    },
+    {
+      "id": "sci_1782948355245_399c",
+      "hypothesisId": "hyp_1782948355224_4e4e",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:25:55.247Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948355247",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:25:55.247Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:25:56.137Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 522,
+                "baseline": 50,
+                "delta": 472,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:25:56.147Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:26:00.651Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:26:00.651Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:26:00.651Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:26:00.828Z"
+    },
+    {
+      "id": "sci_1782948430256_cvar",
+      "hypothesisId": "hyp_1782948430217_dxln",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:27:10.259Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948430259",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:27:10.259Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:27:11.334Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 524,
+                "baseline": 50,
+                "delta": 474,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:27:11.337Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:27:12.622Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:27:12.622Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:27:12.622Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:27:12.632Z"
+    },
+    {
+      "id": "sci_1782948478538_kglg",
+      "hypothesisId": "hyp_1782948478515_1s52",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:27:58.538Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948478538",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:27:58.538Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 13,
+                "baseline": 5,
+                "delta": 8,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:28:02.341Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 525,
+                "baseline": 50,
+                "delta": 475,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:28:02.379Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:28:04.127Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:28:04.130Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:28:04.130Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:28:05.336Z"
+    },
+    {
+      "id": "sci_1782948546056_15or",
+      "hypothesisId": "hyp_1782948546035_tq34",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:29:06.056Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948546056",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:29:06.056Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:29:07.456Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 526,
+                "baseline": 50,
+                "delta": 476,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:29:07.490Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:29:09.359Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:29:09.359Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:29:09.359Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:29:09.368Z"
+    },
+    {
+      "id": "sci_1782948575150_en3t",
+      "hypothesisId": "hyp_1782948575143_ccda",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:29:35.154Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948575154",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:29:35.154Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:29:35.215Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 527,
+                "baseline": 50,
+                "delta": 477,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:29:35.227Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:29:36.685Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:29:36.685Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:29:36.685Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:29:36.699Z"
+    },
+    {
+      "id": "sci_1782948586382_4rdj",
+      "hypothesisId": "hyp_1782948586369_69ln",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:29:46.382Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948586382",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:29:46.382Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:29:46.447Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 528,
+                "baseline": 50,
+                "delta": 478,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:29:46.449Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:29:47.226Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:29:47.226Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:29:47.226Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:29:47.237Z"
+    },
+    {
+      "id": "sci_1782948624182_u3k0",
+      "hypothesisId": "hyp_1782948624165_5dte",
+      "hypothesisStatement": "Improving architecture from 70 to 90+ will increase platform reliability by ≥15%.",
+      "domain": "engineering",
+      "phases": [
+        {
+          "phase": "design",
+          "status": "completed",
+          "output": {
+            "experimentType": "benchmark_comparison",
+            "controlGroup": "current platform state",
+            "treatmentGroup": "post-intervention platform state",
+            "duration": "30 days",
+            "successCriteria": "architecture score ≥90 after intervention",
+            "failureCriteria": "If architecture score does not increase by ≥10 points after 2 weeks of changes, the hypothesis is refuted."
+          },
+          "completedAt": "2026-07-01T23:30:24.182Z"
+        },
+        {
+          "phase": "execute",
+          "status": "completed",
+          "output": {
+            "workflowId": "mock_wf_1782948624182",
+            "executionMode": "mock"
+          },
+          "completedAt": "2026-07-01T23:30:24.182Z"
+        },
+        {
+          "phase": "collect_evidence",
+          "status": "completed",
+          "output": {
+            "evidenceCount": 2,
+            "evidence": [
+              {
+                "type": "pattern_analysis",
+                "source": "selfImprovementEngine",
+                "metric": "open_patterns",
+                "value": 14,
+                "baseline": 5,
+                "delta": 9,
+                "supportive": false,
+                "collectedAt": "2026-07-01T23:30:24.691Z"
+              },
+              {
+                "type": "knowledge_base",
+                "source": "researchKnowledgeEngine",
+                "metric": "findings_indexed",
+                "value": 529,
+                "baseline": 50,
+                "delta": 479,
+                "supportive": true,
+                "collectedAt": "2026-07-01T23:30:24.697Z"
+              }
+            ]
+          },
+          "completedAt": "2026-07-01T23:30:25.888Z"
+        },
+        {
+          "phase": "analyze",
+          "status": "completed",
+          "output": {
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "supportingCount": 1,
+            "totalEvidence": 2,
+            "ratio": 50,
+            "summary": "1/2 evidence points support the hypothesis (50% supportive). Outcome: requires_follow_up."
+          },
+          "completedAt": "2026-07-01T23:30:25.888Z"
+        },
+        {
+          "phase": "validate",
+          "status": "completed",
+          "output": {
+            "validated": true,
+            "outcome": "requires_follow_up",
+            "confidence": 60,
+            "message": "Experiment complete: requires_follow_up with 60% confidence."
+          },
+          "completedAt": "2026-07-01T23:30:25.888Z"
+        }
+      ],
+      "outcome": "requires_follow_up",
+      "confidence": 60,
+      "evidenceCount": 2,
+      "validated": true,
+      "status": "completed",
+      "completedAt": "2026-07-01T23:30:25.896Z"
     }
   ],
   "stats": {
-    "total": 77,
-    "completed": 77,
+    "total": 130,
+    "completed": 130,
     "supported": 0,
     "refuted": 0,
     "byPhase": {
-      "design": 77,
-      "execute": 77,
-      "collect_evidence": 77,
-      "analyze": 77,
-      "validate": 77
+      "design": 130,
+      "execute": 130,
+      "collect_evidence": 130,
+      "analyze": 130,
+      "validate": 130
     }
   },
-  "updatedAt": "2026-06-29T22:46:01.533Z"
+  "updatedAt": "2026-07-01T23:30:25.910Z"
 }

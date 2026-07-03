@@ -1,5 +1,56 @@
 # Ooplix Changelog
 
+## [1.0.0-rc1] — 2026-07-02 — Release Candidate 1
+
+### RC-1 — Production Freeze
+
+This is the first Release Candidate eligible for real-world deployment.
+All critical and high-priority blockers resolved. Code surface frozen.
+
+### What's New Since 3.0.0
+
+**Closed Beta Operations (Production Mission 6 Extended)**
+- Invite revocation: `POST /cbeta/invites/:code/revoke`
+- First AI workflow tracking: 8 workflow types, per-account completion history
+- Org deletion safeguards: member count + open mission gate before `deleteOrg()`
+- DAU/WAU/MAU aggregation: 14-day daily breakdown, activity-type breakdown
+- Per-connector usage tracking: calls, errors, latency, unique users
+- Org limit (max 5 per account) + Workspace limit (max 10 per account)
+- Multi-user beta scenario simulation: 25 users / 5 orgs / 50 projects / 100 workflows
+- Billing downgrade path with plan hierarchy validation
+- Payment failure + 3-attempt retry queue (1h / 24h / 72h)
+- Invoices, credits, coupons (% and fixed discount)
+- Unified ops dashboard composing 8 service sections
+- End-of-day summary: DAU, platform health, AI workflows, connectors, billing
+- Launch readiness report: top-20 issues, top-10 risks, top-10 pain points, confidence score
+
+**Version Management (RC-1 Freeze)**
+- Version frozen to `1.0.0-rc1` (package.json + data/version.json)
+- Immutable version manifest: API surface, route count, env schema, Electron build spec
+- Compatibility report: breaking changes, non-breaking additions, data preservation status
+- Backup manifest: 16 critical data files tracked for RC-1
+- SHA-256 checksums for all dist artifacts
+- Release metadata JSON + latest-mac.yml for auto-update
+
+**Environment Schema (RC-1)**
+- Added: RESEND_API_KEY, RESEND_FROM_EMAIL — email verification + password reset
+- Added: BETA_MAX_USERS — configurable beta user cap (default 50)
+- Added: RAZORPAY_PLAN_ID_STARTER, RAZORPAY_PLAN_ID_GROWTH, RAZORPAY_PLAN_ID_ENTERPRISE
+- Added: TELEGRAM_OPERATOR_CHAT_ID — crash alerts and EOD summaries
+
+**Backup Coverage (RC-1)**
+- safe-backup.cjs now includes all M6/M6b state files
+- Vault index included in every backup
+
+### Go/No-Go: CONDITIONAL GO
+- Code surface frozen and verified
+- 514/514 regression tests passing
+- 2 FOUNDER_ACTION items remaining: rebuild DMG artifacts with new version
+
+---
+
+
+
 ## [3.0.0] — 2026-06-18 — Public Beta
 
 ### First External Release

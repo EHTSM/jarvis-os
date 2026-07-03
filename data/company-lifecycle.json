@@ -30317,6 +30317,6356 @@
       "createdAt": "2026-06-28T22:53:42.034Z",
       "updatedAt": "2026-06-28T22:53:42.046Z",
       "launchedAt": null
+    },
+    {
+      "id": "lc_1782778408006_gz2j",
+      "name": "TestSaaS",
+      "blueprintId": "bp_1782778406309_azmc",
+      "workspaceId": null,
+      "templateId": "saas",
+      "stage": "building",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:13:28.006Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-06-30T00:13:28.791Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:13:28.018Z",
+          "evidence": "Test approval"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 5000,
+        "churn": 2.5,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "TestSaaS core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 0,
+      "minutesSaved": 4800,
+      "createdAt": "2026-06-30T00:13:28.006Z",
+      "updatedAt": "2026-06-30T00:13:28.791Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778409180_wfi9",
+      "name": "FinalCo",
+      "blueprintId": null,
+      "workspaceId": null,
+      "templateId": "internal_tool",
+      "stage": "maintenance",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:13:29.180Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-06-30T00:13:29.187Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        },
+        {
+          "stage": "testing",
+          "enteredAt": "2026-06-30T00:13:54.647Z",
+          "gates": [
+            "core_features_complete",
+            "unit_tests_passing",
+            "staging_deployed"
+          ]
+        },
+        {
+          "stage": "launch",
+          "enteredAt": "2026-06-30T00:14:07.725Z",
+          "gates": [
+            "security_review_passed",
+            "load_test_passed",
+            "runbook_complete"
+          ]
+        },
+        {
+          "stage": "growth",
+          "enteredAt": "2026-06-30T00:14:09.236Z",
+          "gates": [
+            "first_customers",
+            "payment_live",
+            "support_sla_met"
+          ]
+        },
+        {
+          "stage": "scale",
+          "enteredAt": "2026-06-30T00:14:16.378Z",
+          "gates": [
+            "100_customers",
+            "99_9_uptime",
+            "team_expanded"
+          ]
+        },
+        {
+          "stage": "maintenance",
+          "enteredAt": "2026-06-30T00:14:16.894Z",
+          "gates": [
+            "product_stable",
+            "retention_target_met",
+            "automation_complete"
+          ]
+        }
+      ],
+      "gates": {},
+      "missions": [],
+      "risks": [],
+      "kpis": {},
+      "roadmap": [],
+      "readinessScore": 0,
+      "minutesSaved": 0,
+      "createdAt": "2026-06-30T00:13:29.180Z",
+      "updatedAt": "2026-06-30T00:14:16.894Z",
+      "launchedAt": "2026-06-30T00:14:07.725Z"
+    },
+    {
+      "id": "lc_1782778455507_z437",
+      "name": "SaaSCo Alpha",
+      "blueprintId": "bp_1782778409602_je2w",
+      "workspaceId": "ws_1782778410427_9wun",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.507Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.520Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.525Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.529Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "SaaSCo Alpha core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-06-30T00:14:15.507Z",
+      "updatedAt": "2026-06-30T00:14:15.529Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455571_1fz3",
+      "name": "MarketplaceCo",
+      "blueprintId": "bp_1782778410853_9764",
+      "workspaceId": "ws_1782778411726_4749",
+      "templateId": "marketplace",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.571Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.578Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.583Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.587Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Supply-demand imbalance",
+          "severity": "high",
+          "mitigation": "Curated onboarding, liquidity incentives"
+        }
+      ],
+      "kpis": {
+        "gmv": 0,
+        "take_rate": 0,
+        "buyer_retention": 0,
+        "seller_satisfaction": 0,
+        "liquidity": 0
+      },
+      "roadmap": [
+        {
+          "phase": "supply_side",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "50 quality sellers onboarded",
+            "Verification process",
+            "Catalog live"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "demand_side",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "500 registered buyers",
+            "First transaction",
+            "Retention loop"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "matching",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Search live",
+            "Recommendation engine",
+            "Quality scoring"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "trust",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Escrow system",
+            "Review system",
+            "Fraud detection"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "international",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Multi-currency",
+            "Localization",
+            "Global logistics"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5200,
+      "createdAt": "2026-06-30T00:14:15.571Z",
+      "updatedAt": "2026-06-30T00:14:15.587Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455621_79rn",
+      "name": "HealthVenture",
+      "blueprintId": "bp_1782778412121_ycct",
+      "workspaceId": "ws_1782778412889_4gzr",
+      "templateId": "healthcare",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.621Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.646Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.667Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.678Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "HIPAA violation",
+          "severity": "critical",
+          "mitigation": "All PHI access audited, BAAs in place"
+        }
+      ],
+      "kpis": {
+        "patient_outcomes": 0,
+        "adherence": 0,
+        "nps": 0,
+        "hipaa_audit_score": 0,
+        "downtime": 0
+      },
+      "roadmap": [
+        {
+          "phase": "compliance_setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "HIPAA BAAs signed",
+            "Security audit",
+            "Encryption keys managed"
+          ],
+          "estimatedWeeks": 9,
+          "missions": []
+        },
+        {
+          "phase": "core_product",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Core workflows complete",
+            "Pilot user signed",
+            "Integration tested"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "regulatory",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Regulatory clearance",
+            "Audit trail verified",
+            "Data governance"
+          ],
+          "estimatedWeeks": 18,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "HealthVenture publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 36,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 6400,
+      "createdAt": "2026-06-30T00:14:15.621Z",
+      "updatedAt": "2026-06-30T00:14:15.678Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455711_8wht",
+      "name": "AIAgency",
+      "blueprintId": "bp_1782778413280_vx8d",
+      "workspaceId": "ws_1782778414179_dcwe",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.711Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.719Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.723Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.728Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-06-30T00:14:15.711Z",
+      "updatedAt": "2026-06-30T00:14:15.728Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455760_mcmx",
+      "name": "ShopNow",
+      "blueprintId": "bp_1782778414614_q0uj",
+      "workspaceId": "ws_1782778415468_rimq",
+      "templateId": "ecommerce",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.760Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.768Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.775Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.781Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "gmv": 0,
+        "conversion": 0,
+        "aov": 0,
+        "cart_abandonment": 0,
+        "return_rate": 0
+      },
+      "roadmap": [
+        {
+          "phase": "catalog_setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "100 products listed",
+            "Categories defined",
+            "SEO optimized"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "payment_integration",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Stripe connected",
+            "Checkout tested",
+            "Tax configured"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "ShopNow publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "marketing",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "First ad campaign",
+            "Email automation",
+            "Social presence"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "expansion",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "10+ product categories",
+            "Wholesale tier",
+            "Mobile app"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3600,
+      "createdAt": "2026-06-30T00:14:15.760Z",
+      "updatedAt": "2026-06-30T00:14:15.781Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455812_a7d3",
+      "name": "ERPCo",
+      "blueprintId": "bp_1782778415872_iq9m",
+      "workspaceId": "ws_1782778416754_c6zg",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.812Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.821Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.826Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.831Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-06-30T00:14:15.812Z",
+      "updatedAt": "2026-06-30T00:14:15.831Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455867_lyel",
+      "name": "HRTool",
+      "blueprintId": "bp_1782778417150_5jpk",
+      "workspaceId": "ws_1782778417921_7vxc",
+      "templateId": "internal_tool",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.867Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.877Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.882Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.888Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "time_saved": 0,
+        "adoption": 0,
+        "errors_reduced": 0,
+        "process_efficiency": 0
+      },
+      "roadmap": [
+        {
+          "phase": "requirements",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Requirements gathered",
+            "Stakeholder sign-off",
+            "Wireframes"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "prototype",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "feedback",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "User feedback sessions",
+            "Iteration complete",
+            "Approval"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "v1",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "v1 milestone 1",
+            "v1 milestone 2",
+            "v1 milestone 3"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "training",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Training delivered",
+            "Documentation live",
+            "Support SLA"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "iterate",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "v2 roadmap",
+            "Feature backlog groomed",
+            "KPIs tracked"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 2400,
+      "createdAt": "2026-06-30T00:14:15.867Z",
+      "updatedAt": "2026-06-30T00:14:15.888Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455924_2ljp",
+      "name": "BillFlow",
+      "blueprintId": "bp_1782778418268_xi7q",
+      "workspaceId": "ws_1782778419211_zec1",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.924Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.932Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.937Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.946Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "BillFlow core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-06-30T00:14:15.924Z",
+      "updatedAt": "2026-06-30T00:14:15.946Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778455985_gwow",
+      "name": "LearnCo",
+      "blueprintId": "bp_1782778419668_1whb",
+      "workspaceId": "ws_1782778420550_joa2",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:15.985Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:15.996Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.002Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.007Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-06-30T00:14:15.985Z",
+      "updatedAt": "2026-06-30T00:14:16.007Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778456051_vyii",
+      "name": "FreelanceHub",
+      "blueprintId": "bp_1782778421030_vnbi",
+      "workspaceId": "ws_1782778422045_r6ei",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:16.051Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.071Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.079Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.088Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-06-30T00:14:16.051Z",
+      "updatedAt": "2026-06-30T00:14:16.088Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778456148_f5ll",
+      "name": "MfgERP",
+      "blueprintId": "bp_1782778422458_bxq1",
+      "workspaceId": "ws_1782778423275_kj88",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:16.148Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.163Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.169Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.176Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-06-30T00:14:16.148Z",
+      "updatedAt": "2026-06-30T00:14:16.176Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778456214_p0fq",
+      "name": "AnalyticsCo",
+      "blueprintId": "bp_1782778423671_7mdw",
+      "workspaceId": "ws_1782778424566_blft",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:16.214Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.224Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.230Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.237Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "AnalyticsCo core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-06-30T00:14:16.214Z",
+      "updatedAt": "2026-06-30T00:14:16.237Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778456274_lslw",
+      "name": "EduPlatform",
+      "blueprintId": "bp_1782778424975_gta4",
+      "workspaceId": "ws_1782778425796_66c3",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:16.274Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.284Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.290Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.296Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-06-30T00:14:16.274Z",
+      "updatedAt": "2026-06-30T00:14:16.296Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782778456338_4by5",
+      "name": "DevAI",
+      "blueprintId": "bp_1782778426220_zya2",
+      "workspaceId": "ws_1782778427072_prus",
+      "templateId": "ai_product",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-06-30T00:14:16.338Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.346Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.352Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-06-30T00:14:16.357Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Hallucination in prod",
+          "severity": "high",
+          "mitigation": "Evals gate before every release"
+        }
+      ],
+      "kpis": {
+        "latency_p99": 0,
+        "accuracy": 0,
+        "cost_per_call": 0,
+        "user_satisfaction": 0,
+        "hallucination_rate": 0
+      },
+      "roadmap": [
+        {
+          "phase": "prototype",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "evals_framework",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Automated evals",
+            "Benchmark baseline",
+            "Accuracy >90%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "beta milestone 1",
+            "beta milestone 2",
+            "beta milestone 3"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "safety_review",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Red-team complete",
+            "Safety filters",
+            "Content policy"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "DevAI publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 30,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5600,
+      "createdAt": "2026-06-30T00:14:16.338Z",
+      "updatedAt": "2026-06-30T00:14:16.357Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948003070_mbtf",
+      "name": "TestSaaS",
+      "blueprintId": "bp_1782947990434_gceu",
+      "workspaceId": null,
+      "templateId": "saas",
+      "stage": "building",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:20:03.070Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-07-01T23:20:13.005Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:20:03.230Z",
+          "evidence": "Test approval"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 5000,
+        "churn": 2.5,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "TestSaaS core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 0,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:20:03.070Z",
+      "updatedAt": "2026-07-01T23:20:13.005Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948014063_9e1w",
+      "name": "FinalCo",
+      "blueprintId": null,
+      "workspaceId": null,
+      "templateId": "internal_tool",
+      "stage": "maintenance",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:20:14.063Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-07-01T23:20:14.106Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        },
+        {
+          "stage": "testing",
+          "enteredAt": "2026-07-01T23:23:11.130Z",
+          "gates": [
+            "core_features_complete",
+            "unit_tests_passing",
+            "staging_deployed"
+          ]
+        },
+        {
+          "stage": "launch",
+          "enteredAt": "2026-07-01T23:24:59.444Z",
+          "gates": [
+            "security_review_passed",
+            "load_test_passed",
+            "runbook_complete"
+          ]
+        },
+        {
+          "stage": "growth",
+          "enteredAt": "2026-07-01T23:25:16.789Z",
+          "gates": [
+            "first_customers",
+            "payment_live",
+            "support_sla_met"
+          ]
+        },
+        {
+          "stage": "scale",
+          "enteredAt": "2026-07-01T23:26:00.222Z",
+          "gates": [
+            "100_customers",
+            "99_9_uptime",
+            "team_expanded"
+          ]
+        },
+        {
+          "stage": "maintenance",
+          "enteredAt": "2026-07-01T23:26:06.183Z",
+          "gates": [
+            "product_stable",
+            "retention_target_met",
+            "automation_complete"
+          ]
+        }
+      ],
+      "gates": {},
+      "missions": [],
+      "risks": [],
+      "kpis": {},
+      "roadmap": [],
+      "readinessScore": 0,
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:20:14.063Z",
+      "updatedAt": "2026-07-01T23:26:06.183Z",
+      "launchedAt": "2026-07-01T23:24:59.444Z"
+    },
+    {
+      "id": "lc_1782948272512_tlve",
+      "name": "TestSaaS",
+      "blueprintId": "bp_1782948257903_urzn",
+      "workspaceId": null,
+      "templateId": "saas",
+      "stage": "building",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:24:32.512Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-07-01T23:24:37.539Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:24:32.621Z",
+          "evidence": "Test approval"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 5000,
+        "churn": 2.5,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "TestSaaS core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 0,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:24:32.512Z",
+      "updatedAt": "2026-07-01T23:24:37.539Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948279150_g2cb",
+      "name": "FinalCo",
+      "blueprintId": null,
+      "workspaceId": null,
+      "templateId": "internal_tool",
+      "stage": "maintenance",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:24:39.150Z",
+          "gates": []
+        },
+        {
+          "stage": "building",
+          "enteredAt": "2026-07-01T23:24:39.178Z",
+          "gates": [
+            "blueprint_approved",
+            "workspace_ready",
+            "team_allocated"
+          ]
+        },
+        {
+          "stage": "testing",
+          "enteredAt": "2026-07-01T23:27:20.243Z",
+          "gates": [
+            "core_features_complete",
+            "unit_tests_passing",
+            "staging_deployed"
+          ]
+        },
+        {
+          "stage": "launch",
+          "enteredAt": "2026-07-01T23:28:27.480Z",
+          "gates": [
+            "security_review_passed",
+            "load_test_passed",
+            "runbook_complete"
+          ]
+        },
+        {
+          "stage": "growth",
+          "enteredAt": "2026-07-01T23:28:36.280Z",
+          "gates": [
+            "first_customers",
+            "payment_live",
+            "support_sla_met"
+          ]
+        },
+        {
+          "stage": "scale",
+          "enteredAt": "2026-07-01T23:29:06.048Z",
+          "gates": [
+            "100_customers",
+            "99_9_uptime",
+            "team_expanded"
+          ]
+        },
+        {
+          "stage": "maintenance",
+          "enteredAt": "2026-07-01T23:29:09.441Z",
+          "gates": [
+            "product_stable",
+            "retention_target_met",
+            "automation_complete"
+          ]
+        }
+      ],
+      "gates": {},
+      "missions": [],
+      "risks": [],
+      "kpis": {},
+      "roadmap": [],
+      "readinessScore": 0,
+      "minutesSaved": 0,
+      "createdAt": "2026-07-01T23:24:39.150Z",
+      "updatedAt": "2026-07-01T23:29:09.441Z",
+      "launchedAt": "2026-07-01T23:28:27.480Z"
+    },
+    {
+      "id": "lc_1782948351697_f0sz",
+      "name": "SaaSCo Alpha",
+      "blueprintId": "bp_1782948014969_zlvy",
+      "workspaceId": "ws_1782948017002_1q0c",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:51.697Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:51.986Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.031Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.046Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "SaaSCo Alpha core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:25:51.697Z",
+      "updatedAt": "2026-07-01T23:25:52.046Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948352243_5wur",
+      "name": "MarketplaceCo",
+      "blueprintId": "bp_1782948019669_qbqm",
+      "workspaceId": "ws_1782948025623_8tki",
+      "templateId": "marketplace",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:52.243Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.281Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.302Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.416Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Supply-demand imbalance",
+          "severity": "high",
+          "mitigation": "Curated onboarding, liquidity incentives"
+        }
+      ],
+      "kpis": {
+        "gmv": 0,
+        "take_rate": 0,
+        "buyer_retention": 0,
+        "seller_satisfaction": 0,
+        "liquidity": 0
+      },
+      "roadmap": [
+        {
+          "phase": "supply_side",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "50 quality sellers onboarded",
+            "Verification process",
+            "Catalog live"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "demand_side",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "500 registered buyers",
+            "First transaction",
+            "Retention loop"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "matching",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Search live",
+            "Recommendation engine",
+            "Quality scoring"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "trust",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Escrow system",
+            "Review system",
+            "Fraud detection"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "international",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Multi-currency",
+            "Localization",
+            "Global logistics"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5200,
+      "createdAt": "2026-07-01T23:25:52.243Z",
+      "updatedAt": "2026-07-01T23:25:52.416Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948352642_ipq3",
+      "name": "HealthVenture",
+      "blueprintId": "bp_1782948028002_tw2e",
+      "workspaceId": "ws_1782948031192_e6du",
+      "templateId": "healthcare",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:52.642Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.670Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.688Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:52.701Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "HIPAA violation",
+          "severity": "critical",
+          "mitigation": "All PHI access audited, BAAs in place"
+        }
+      ],
+      "kpis": {
+        "patient_outcomes": 0,
+        "adherence": 0,
+        "nps": 0,
+        "hipaa_audit_score": 0,
+        "downtime": 0
+      },
+      "roadmap": [
+        {
+          "phase": "compliance_setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "HIPAA BAAs signed",
+            "Security audit",
+            "Encryption keys managed"
+          ],
+          "estimatedWeeks": 9,
+          "missions": []
+        },
+        {
+          "phase": "core_product",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Core workflows complete",
+            "Pilot user signed",
+            "Integration tested"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "regulatory",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Regulatory clearance",
+            "Audit trail verified",
+            "Data governance"
+          ],
+          "estimatedWeeks": 18,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "HealthVenture publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 36,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 6400,
+      "createdAt": "2026-07-01T23:25:52.642Z",
+      "updatedAt": "2026-07-01T23:25:52.701Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948353029_ittm",
+      "name": "AIAgency",
+      "blueprintId": "bp_1782948034705_u3vw",
+      "workspaceId": "ws_1782948041073_tox3",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:53.029Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.053Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.075Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.089Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-07-01T23:25:53.029Z",
+      "updatedAt": "2026-07-01T23:25:53.089Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948353191_qk56",
+      "name": "ShopNow",
+      "blueprintId": "bp_1782948046144_6wg2",
+      "workspaceId": "ws_1782948056495_lyg7",
+      "templateId": "ecommerce",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:53.191Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.239Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.251Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.263Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "gmv": 0,
+        "conversion": 0,
+        "aov": 0,
+        "cart_abandonment": 0,
+        "return_rate": 0
+      },
+      "roadmap": [
+        {
+          "phase": "catalog_setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "100 products listed",
+            "Categories defined",
+            "SEO optimized"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "payment_integration",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Stripe connected",
+            "Checkout tested",
+            "Tax configured"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "ShopNow publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "marketing",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "First ad campaign",
+            "Email automation",
+            "Social presence"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "expansion",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "10+ product categories",
+            "Wholesale tier",
+            "Mobile app"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3600,
+      "createdAt": "2026-07-01T23:25:53.191Z",
+      "updatedAt": "2026-07-01T23:25:53.263Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948353484_1teu",
+      "name": "ERPCo",
+      "blueprintId": "bp_1782948059457_s8y3",
+      "workspaceId": "ws_1782948064443_na3s",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:53.484Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.522Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.570Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.604Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-07-01T23:25:53.484Z",
+      "updatedAt": "2026-07-01T23:25:53.604Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948353733_krh9",
+      "name": "HRTool",
+      "blueprintId": "bp_1782948066426_sj65",
+      "workspaceId": "ws_1782948069619_3mew",
+      "templateId": "internal_tool",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:53.733Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.916Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.938Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:53.964Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "time_saved": 0,
+        "adoption": 0,
+        "errors_reduced": 0,
+        "process_efficiency": 0
+      },
+      "roadmap": [
+        {
+          "phase": "requirements",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Requirements gathered",
+            "Stakeholder sign-off",
+            "Wireframes"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "prototype",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "feedback",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "User feedback sessions",
+            "Iteration complete",
+            "Approval"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "v1",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "v1 milestone 1",
+            "v1 milestone 2",
+            "v1 milestone 3"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "training",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Training delivered",
+            "Documentation live",
+            "Support SLA"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "iterate",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "v2 roadmap",
+            "Feature backlog groomed",
+            "KPIs tracked"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 2400,
+      "createdAt": "2026-07-01T23:25:53.733Z",
+      "updatedAt": "2026-07-01T23:25:53.964Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948354060_hg2d",
+      "name": "BillFlow",
+      "blueprintId": "bp_1782948071546_2abi",
+      "workspaceId": "ws_1782948074429_1kyy",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:54.060Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:54.087Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:54.111Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:54.132Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "BillFlow core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:25:54.060Z",
+      "updatedAt": "2026-07-01T23:25:54.132Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948354271_ialg",
+      "name": "LearnCo",
+      "blueprintId": "bp_1782948076375_0lm5",
+      "workspaceId": "ws_1782948079567_7gad",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:54.271Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:55.235Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:55.276Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:55.346Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-07-01T23:25:54.272Z",
+      "updatedAt": "2026-07-01T23:25:55.346Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948356289_pguo",
+      "name": "FreelanceHub",
+      "blueprintId": "bp_1782948082096_3czl",
+      "workspaceId": "ws_1782948087067_p5nt",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:56.289Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.331Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.358Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.381Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-07-01T23:25:56.289Z",
+      "updatedAt": "2026-07-01T23:25:56.381Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948356556_umfj",
+      "name": "MfgERP",
+      "blueprintId": "bp_1782948091171_lcue",
+      "workspaceId": "ws_1782948093442_wsou",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:56.556Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.569Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.588Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.602Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-07-01T23:25:56.556Z",
+      "updatedAt": "2026-07-01T23:25:56.602Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948356712_nhx2",
+      "name": "AnalyticsCo",
+      "blueprintId": "bp_1782948094525_hocg",
+      "workspaceId": "ws_1782948096712_m3t5",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:56.713Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.761Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.839Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:56.899Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "AnalyticsCo core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:25:56.713Z",
+      "updatedAt": "2026-07-01T23:25:56.899Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948357104_85ge",
+      "name": "EduPlatform",
+      "blueprintId": "bp_1782948098388_ratk",
+      "workspaceId": "ws_1782948101395_7qhg",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:57.104Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.157Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.227Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.275Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-07-01T23:25:57.104Z",
+      "updatedAt": "2026-07-01T23:25:57.275Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948357714_wguo",
+      "name": "DevAI",
+      "blueprintId": "bp_1782948104353_t17s",
+      "workspaceId": "ws_1782948106455_1oji",
+      "templateId": "ai_product",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:25:57.715Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.779Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.827Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:25:57.865Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Hallucination in prod",
+          "severity": "high",
+          "mitigation": "Evals gate before every release"
+        }
+      ],
+      "kpis": {
+        "latency_p99": 0,
+        "accuracy": 0,
+        "cost_per_call": 0,
+        "user_satisfaction": 0,
+        "hallucination_rate": 0
+      },
+      "roadmap": [
+        {
+          "phase": "prototype",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "evals_framework",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Automated evals",
+            "Benchmark baseline",
+            "Accuracy >90%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "beta milestone 1",
+            "beta milestone 2",
+            "beta milestone 3"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "safety_review",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Red-team complete",
+            "Safety filters",
+            "Content policy"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "DevAI publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 30,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5600,
+      "createdAt": "2026-07-01T23:25:57.715Z",
+      "updatedAt": "2026-07-01T23:25:57.865Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948538489_b7q6",
+      "name": "SaaSCo Alpha",
+      "blueprintId": "bp_1782948280403_syto",
+      "workspaceId": "ws_1782948283535_hq15",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:28:58.489Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.538Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.589Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.618Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "SaaSCo Alpha core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:28:58.489Z",
+      "updatedAt": "2026-07-01T23:28:58.618Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948538765_92a5",
+      "name": "MarketplaceCo",
+      "blueprintId": "bp_1782948285177_xclv",
+      "workspaceId": "ws_1782948288941_29bz",
+      "templateId": "marketplace",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:28:58.765Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.817Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.844Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:58.889Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Supply-demand imbalance",
+          "severity": "high",
+          "mitigation": "Curated onboarding, liquidity incentives"
+        }
+      ],
+      "kpis": {
+        "gmv": 0,
+        "take_rate": 0,
+        "buyer_retention": 0,
+        "seller_satisfaction": 0,
+        "liquidity": 0
+      },
+      "roadmap": [
+        {
+          "phase": "supply_side",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "50 quality sellers onboarded",
+            "Verification process",
+            "Catalog live"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "demand_side",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "500 registered buyers",
+            "First transaction",
+            "Retention loop"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "matching",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Search live",
+            "Recommendation engine",
+            "Quality scoring"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "trust",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Escrow system",
+            "Review system",
+            "Fraud detection"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "international",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Multi-currency",
+            "Localization",
+            "Global logistics"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5200,
+      "createdAt": "2026-07-01T23:28:58.765Z",
+      "updatedAt": "2026-07-01T23:28:58.889Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948539110_72k0",
+      "name": "HealthVenture",
+      "blueprintId": "bp_1782948290452_l9bf",
+      "workspaceId": "ws_1782948295501_poov",
+      "templateId": "healthcare",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:28:59.110Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.140Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.403Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.488Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "HIPAA violation",
+          "severity": "critical",
+          "mitigation": "All PHI access audited, BAAs in place"
+        }
+      ],
+      "kpis": {
+        "patient_outcomes": 0,
+        "adherence": 0,
+        "nps": 0,
+        "hipaa_audit_score": 0,
+        "downtime": 0
+      },
+      "roadmap": [
+        {
+          "phase": "compliance_setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "HIPAA BAAs signed",
+            "Security audit",
+            "Encryption keys managed"
+          ],
+          "estimatedWeeks": 9,
+          "missions": []
+        },
+        {
+          "phase": "core_product",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Core workflows complete",
+            "Pilot user signed",
+            "Integration tested"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "regulatory",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Regulatory clearance",
+            "Audit trail verified",
+            "Data governance"
+          ],
+          "estimatedWeeks": 18,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "HealthVenture publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 36,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 6400,
+      "createdAt": "2026-07-01T23:28:59.110Z",
+      "updatedAt": "2026-07-01T23:28:59.488Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948539630_yri4",
+      "name": "AIAgency",
+      "blueprintId": "bp_1782948299101_jwio",
+      "workspaceId": "ws_1782948303969_y7pq",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:28:59.630Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.675Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.716Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.754Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-07-01T23:28:59.630Z",
+      "updatedAt": "2026-07-01T23:28:59.754Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948539884_79ny",
+      "name": "ERPCo",
+      "blueprintId": "bp_1782948315451_0bek",
+      "workspaceId": "ws_1782948320191_6hu0",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:28:59.884Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.927Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.948Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:28:59.972Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-07-01T23:28:59.884Z",
+      "updatedAt": "2026-07-01T23:28:59.972Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948540101_x39y",
+      "name": "HRTool",
+      "blueprintId": "bp_1782948324141_v7du",
+      "workspaceId": "ws_1782948330269_zssp",
+      "templateId": "internal_tool",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:00.101Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.133Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.172Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.194Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "time_saved": 0,
+        "adoption": 0,
+        "errors_reduced": 0,
+        "process_efficiency": 0
+      },
+      "roadmap": [
+        {
+          "phase": "requirements",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Requirements gathered",
+            "Stakeholder sign-off",
+            "Wireframes"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "prototype",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "feedback",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "User feedback sessions",
+            "Iteration complete",
+            "Approval"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "v1",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "v1 milestone 1",
+            "v1 milestone 2",
+            "v1 milestone 3"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "training",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Training delivered",
+            "Documentation live",
+            "Support SLA"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "iterate",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "v2 roadmap",
+            "Feature backlog groomed",
+            "KPIs tracked"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 2400,
+      "createdAt": "2026-07-01T23:29:00.101Z",
+      "updatedAt": "2026-07-01T23:29:00.194Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948540338_pcsm",
+      "name": "BillFlow",
+      "blueprintId": "bp_1782948331707_7sep",
+      "workspaceId": "ws_1782948334974_l72h",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:00.338Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.390Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.435Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:00.468Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "BillFlow core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:29:00.338Z",
+      "updatedAt": "2026-07-01T23:29:00.468Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948540624_tf1z",
+      "name": "LearnCo",
+      "blueprintId": "bp_1782948337063_j9qg",
+      "workspaceId": "ws_1782948340331_7jve",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:00.624Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.259Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.276Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.306Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-07-01T23:29:00.624Z",
+      "updatedAt": "2026-07-01T23:29:02.306Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948542421_bzea",
+      "name": "FreelanceHub",
+      "blueprintId": "bp_1782948342036_l4i1",
+      "workspaceId": "ws_1782948345013_zypa",
+      "templateId": "agency",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:02.421Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.474Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.488Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.510Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "revenue": 0,
+        "utilization": 0,
+        "clientSatisfaction": 0,
+        "projectMargin": 0
+      },
+      "roadmap": [
+        {
+          "phase": "setup",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Legal entity",
+            "Brand identity",
+            "Tooling setup"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "first_clients",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "First 3 paid clients",
+            "Testimonials collected",
+            "Process documented"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "portfolio",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "5 completed projects",
+            "Case studies published",
+            "Referral network"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "team_growth",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Team of 5+",
+            "SOPs documented",
+            "Hiring pipeline"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "productize",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "First productized offer",
+            "Self-serve onboarding",
+            "Content flywheel"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3200,
+      "createdAt": "2026-07-01T23:29:02.421Z",
+      "updatedAt": "2026-07-01T23:29:02.510Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948542616_eife",
+      "name": "MfgERP",
+      "blueprintId": "bp_1782948347380_x2au",
+      "workspaceId": "ws_1782948351018_yxlg",
+      "templateId": "erp",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:02.616Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.658Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:02.680Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:04.134Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Data migration failure",
+          "severity": "critical",
+          "mitigation": "Staged migration with rollback plan"
+        }
+      ],
+      "kpis": {
+        "process_efficiency": 0,
+        "data_accuracy": 0,
+        "user_adoption": 0,
+        "audit_score": 0
+      },
+      "roadmap": [
+        {
+          "phase": "architecture",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "System architecture finalized",
+            "Data model locked",
+            "Tech stack chosen"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "core_modules",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Finance module",
+            "HR module",
+            "Inventory module"
+          ],
+          "estimatedWeeks": 15,
+          "missions": []
+        },
+        {
+          "phase": "integration",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "API integrations",
+            "Legacy data migration",
+            "SSO"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "pilot",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Pilot results validated",
+            "Clinical workflow optimized",
+            "Billing live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "rollout",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "Department rollout",
+            "Training complete",
+            "Go-live"
+          ],
+          "estimatedWeeks": 10,
+          "missions": []
+        },
+        {
+          "phase": "optimization",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Conversion >3%",
+            "CAC reduced 30%",
+            "Repeat purchase >40%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 7200,
+      "createdAt": "2026-07-01T23:29:02.616Z",
+      "updatedAt": "2026-07-01T23:29:04.134Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948544376_3oy6",
+      "name": "AnalyticsCo",
+      "blueprintId": "bp_1782948352697_463d",
+      "workspaceId": "ws_1782948355067_hb5w",
+      "templateId": "saas",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:04.376Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:04.393Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:04.402Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:04.414Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "High churn",
+          "severity": "high",
+          "mitigation": "Onboarding automation, NPS monitoring"
+        }
+      ],
+      "kpis": {
+        "mrr": 0,
+        "churn": 0,
+        "nps": 0,
+        "uptime": 99.9,
+        "cac": 0,
+        "ltv": 0
+      },
+      "roadmap": [
+        {
+          "phase": "mvp",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "AnalyticsCo core feature set",
+            "Basic auth + auth flow",
+            "First working demo"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "private_beta",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "10 beta users onboarded",
+            "Feedback loop established",
+            "Critical bugs fixed"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "public_beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "100 active users",
+            "Billing operational",
+            "99%+ uptime"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "v1_launch",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Public launch",
+            "Press & marketing",
+            "Support system ready"
+          ],
+          "estimatedWeeks": 2,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 24,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 4800,
+      "createdAt": "2026-07-01T23:29:04.376Z",
+      "updatedAt": "2026-07-01T23:29:04.414Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948545011_b3yb",
+      "name": "EduPlatform",
+      "blueprintId": "bp_1782948356488_os6l",
+      "workspaceId": "ws_1782948358678_gidq",
+      "templateId": "education",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:05.011Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.029Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.042Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.048Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        }
+      ],
+      "kpis": {
+        "learners": 0,
+        "completion_rate": 0,
+        "nps": 0,
+        "revenue": 0,
+        "content_hours": 0
+      },
+      "roadmap": [
+        {
+          "phase": "content_framework",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "Curriculum designed",
+            "Content guidelines",
+            "Review process"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "delivery_platform",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Video delivery",
+            "Quiz engine",
+            "Progress tracking"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        },
+        {
+          "phase": "first_cohort",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "First 50 learners",
+            "Completion rate >70%",
+            "NPS >50"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "self_serve",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Self-enroll live",
+            "Certificate system",
+            "Payment tiers"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "growth",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "1000 users / first revenue",
+            "Referral program",
+            "Feature expansion"
+          ],
+          "estimatedWeeks": 12,
+          "missions": []
+        },
+        {
+          "phase": "enterprise",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise SSO",
+            "Custom branding",
+            "Bulk seats"
+          ],
+          "estimatedWeeks": 6,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 3800,
+      "createdAt": "2026-07-01T23:29:05.011Z",
+      "updatedAt": "2026-07-01T23:29:05.048Z",
+      "launchedAt": null
+    },
+    {
+      "id": "lc_1782948545099_ydzh",
+      "name": "DevAI",
+      "blueprintId": "bp_1782948361043_4wgi",
+      "workspaceId": "ws_1782948371592_ecnp",
+      "templateId": "ai_product",
+      "stage": "planning",
+      "stageHistory": [
+        {
+          "stage": "planning",
+          "enteredAt": "2026-07-01T23:29:05.099Z",
+          "gates": []
+        }
+      ],
+      "gates": {
+        "blueprint_approved": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.141Z",
+          "evidence": "Blueprint auto-generated"
+        },
+        "workspace_ready": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.187Z",
+          "evidence": "Workspace auto-built"
+        },
+        "team_allocated": {
+          "passed": true,
+          "passedAt": "2026-07-01T23:29:05.202Z",
+          "evidence": "Workforce dry-run complete"
+        }
+      },
+      "missions": [],
+      "risks": [
+        {
+          "risk": "Scope creep",
+          "severity": "high",
+          "mitigation": "Lock MVP scope, use feature flags"
+        },
+        {
+          "risk": "Team capacity",
+          "severity": "medium",
+          "mitigation": "Workforce OS auto-rebalancing"
+        },
+        {
+          "risk": "Technical debt",
+          "severity": "medium",
+          "mitigation": "Code review gate on every sprint"
+        },
+        {
+          "risk": "Hallucination in prod",
+          "severity": "high",
+          "mitigation": "Evals gate before every release"
+        }
+      ],
+      "kpis": {
+        "latency_p99": 0,
+        "accuracy": 0,
+        "cost_per_call": 0,
+        "user_satisfaction": 0,
+        "hallucination_rate": 0
+      },
+      "roadmap": [
+        {
+          "phase": "prototype",
+          "order": 1,
+          "status": "pending",
+          "milestones": [
+            "LLM integration working",
+            "Prompt framework",
+            "First eval suite"
+          ],
+          "estimatedWeeks": 8,
+          "missions": []
+        },
+        {
+          "phase": "evals_framework",
+          "order": 2,
+          "status": "pending",
+          "milestones": [
+            "Automated evals",
+            "Benchmark baseline",
+            "Accuracy >90%"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "beta",
+          "order": 3,
+          "status": "pending",
+          "milestones": [
+            "beta milestone 1",
+            "beta milestone 2",
+            "beta milestone 3"
+          ],
+          "estimatedWeeks": 5,
+          "missions": []
+        },
+        {
+          "phase": "safety_review",
+          "order": 4,
+          "status": "pending",
+          "milestones": [
+            "Red-team complete",
+            "Safety filters",
+            "Content policy"
+          ],
+          "estimatedWeeks": 4,
+          "missions": []
+        },
+        {
+          "phase": "launch",
+          "order": 5,
+          "status": "pending",
+          "milestones": [
+            "DevAI publicly live",
+            "Payment processing live",
+            "Monitoring active"
+          ],
+          "estimatedWeeks": 3,
+          "missions": []
+        },
+        {
+          "phase": "scale",
+          "order": 6,
+          "status": "pending",
+          "milestones": [
+            "Enterprise tier",
+            "International",
+            "Team scale"
+          ],
+          "estimatedWeeks": 30,
+          "missions": []
+        }
+      ],
+      "readinessScore": 40,
+      "minutesSaved": 5600,
+      "createdAt": "2026-07-01T23:29:05.099Z",
+      "updatedAt": "2026-07-01T23:29:05.202Z",
+      "launchedAt": null
     }
   ],
   "transitions": [
@@ -31103,12 +37453,180 @@
       "to": "maintenance",
       "ts": "2026-06-28T22:53:42.475Z",
       "forced": true
+    },
+    {
+      "companyId": "lc_1782778408006_gz2j",
+      "companyName": "TestSaaS",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-06-30T00:13:28.791Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-06-30T00:13:29.187Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "building",
+      "to": "testing",
+      "ts": "2026-06-30T00:13:54.647Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "testing",
+      "to": "launch",
+      "ts": "2026-06-30T00:14:07.725Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "launch",
+      "to": "growth",
+      "ts": "2026-06-30T00:14:09.236Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "growth",
+      "to": "scale",
+      "ts": "2026-06-30T00:14:16.378Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782778409180_wfi9",
+      "companyName": "FinalCo",
+      "from": "scale",
+      "to": "maintenance",
+      "ts": "2026-06-30T00:14:16.894Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948003070_mbtf",
+      "companyName": "TestSaaS",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-07-01T23:20:13.005Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-07-01T23:20:14.106Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "building",
+      "to": "testing",
+      "ts": "2026-07-01T23:23:11.130Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948272512_tlve",
+      "companyName": "TestSaaS",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-07-01T23:24:37.539Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "planning",
+      "to": "building",
+      "ts": "2026-07-01T23:24:39.178Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "testing",
+      "to": "launch",
+      "ts": "2026-07-01T23:24:59.444Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "launch",
+      "to": "growth",
+      "ts": "2026-07-01T23:25:16.790Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "growth",
+      "to": "scale",
+      "ts": "2026-07-01T23:26:00.223Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948014063_9e1w",
+      "companyName": "FinalCo",
+      "from": "scale",
+      "to": "maintenance",
+      "ts": "2026-07-01T23:26:06.183Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "building",
+      "to": "testing",
+      "ts": "2026-07-01T23:27:20.243Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "testing",
+      "to": "launch",
+      "ts": "2026-07-01T23:28:27.480Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "launch",
+      "to": "growth",
+      "ts": "2026-07-01T23:28:36.280Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "growth",
+      "to": "scale",
+      "ts": "2026-07-01T23:29:06.048Z",
+      "forced": true
+    },
+    {
+      "companyId": "lc_1782948279150_g2cb",
+      "companyName": "FinalCo",
+      "from": "scale",
+      "to": "maintenance",
+      "ts": "2026-07-01T23:29:09.441Z",
+      "forced": true
     }
   ],
   "stats": {
-    "totalCompanies": 226,
-    "launched": 14,
-    "scaled": 14
+    "totalCompanies": 273,
+    "launched": 17,
+    "scaled": 17
   },
-  "updatedAt": "2026-06-28T22:53:42.475Z"
+  "updatedAt": "2026-07-01T23:29:09.441Z"
 }

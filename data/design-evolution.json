@@ -9080,21 +9080,2673 @@
       "improved": false,
       "minutesSaved": 25,
       "ts": "2026-06-29T22:43:47.137Z"
+    },
+    {
+      "id": "de_1782947377860_3wd0",
+      "pageUrl": "https://example.com/multi-cycle",
+      "steps": [
+        {
+          "name": "capture",
+          "ok": true,
+          "result": {
+            "pageUrl": "https://example.com/multi-cycle",
+            "capturedAt": "2026-07-01T23:09:37.865Z",
+            "source": "existing_odi_services"
+          }
+        },
+        {
+          "name": "analyze",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "analysis": {
+              "id": "vr_1782947377868_a0y9",
+              "pageUrl": "https://example.com/multi-cycle",
+              "cognitiveLoad": 0,
+              "hierarchyScore": 50,
+              "readingFlow": {
+                "pattern": "unknown",
+                "confidence": 0
+              },
+              "attentionHotspots": [
+                {
+                  "element": "above_fold_hero",
+                  "weight": 0.8,
+                  "reason": "default_primary_attention"
+                }
+              ],
+              "confusionSignals": [],
+              "reasoningScore": 65,
+              "insights": [
+                "Dominant reading pattern: unknown (confidence=0)",
+                "1 attention hotspots identified"
+              ],
+              "analyzedAt": "2026-07-01T23:09:37.868Z"
+            }
+          }
+        },
+        {
+          "name": "compare",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmarks": [
+              {
+                "id": "dbm_1782773025874_nrvf",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "version_compare",
+                "current": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 87,
+                    "usability": 89,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "previous": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 84,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "deltas": {
+                  "aesthetics": {
+                    "current": 87,
+                    "previous": 84,
+                    "delta": 3
+                  },
+                  "usability": {
+                    "current": 89,
+                    "previous": 90,
+                    "delta": -1
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "performance": {
+                    "current": 100,
+                    "previous": 100,
+                    "delta": 0
+                  }
+                },
+                "overallDelta": 0,
+                "isImprovement": false,
+                "vsBaseline": -2,
+                "ts": "2026-06-29T22:43:45.874Z"
+              },
+              {
+                "id": "dbm_1782773027130_xzm6",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "baseline_compare",
+                "current": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 86,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "baseline": {
+                  "aesthetics": 75,
+                  "usability": 80,
+                  "accessibility": 90,
+                  "consistency": 75,
+                  "responsiveness": 85,
+                  "maintainability": 70,
+                  "performance": 75,
+                  "overall": 78
+                },
+                "gaps": {
+                  "aesthetics": {
+                    "current": 86,
+                    "baseline": 75,
+                    "gap": 11,
+                    "meetsBaseline": true
+                  },
+                  "usability": {
+                    "current": 90,
+                    "baseline": 80,
+                    "gap": 10,
+                    "meetsBaseline": true
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "baseline": 90,
+                    "gap": -20,
+                    "meetsBaseline": false
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "baseline": 75,
+                    "gap": -15,
+                    "meetsBaseline": false
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "baseline": 85,
+                    "gap": -25,
+                    "meetsBaseline": false
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "baseline": 70,
+                    "gap": 0,
+                    "meetsBaseline": true
+                  },
+                  "performance": {
+                    "current": 100,
+                    "baseline": 75,
+                    "gap": 25,
+                    "meetsBaseline": true
+                  }
+                },
+                "meetsOverall": false,
+                "dimensionsMeeting": "4/7",
+                "readyForProduction": false,
+                "ts": "2026-06-29T22:43:47.130Z"
+              }
+            ]
+          }
+        },
+        {
+          "name": "benchmark",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947378411_uovo",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "version_compare",
+              "current": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 86,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "previous": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 87,
+                  "usability": 89,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "deltas": {
+                "aesthetics": {
+                  "current": 86,
+                  "previous": 87,
+                  "delta": -1
+                },
+                "usability": {
+                  "current": 90,
+                  "previous": 89,
+                  "delta": 1
+                },
+                "accessibility": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "consistency": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "maintainability": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "performance": {
+                  "current": 100,
+                  "previous": 100,
+                  "delta": 0
+                }
+              },
+              "overallDelta": 0,
+              "isImprovement": false,
+              "vsBaseline": -2,
+              "ts": "2026-07-01T23:09:38.411Z"
+            }
+          }
+        },
+        {
+          "name": "predict",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "prediction": {
+              "id": "dp_1782947378564_fchg",
+              "pageUrl": "https://example.com/multi-cycle",
+              "uxProblems": [],
+              "accessibilityFailures": [],
+              "responsiveFailures": [
+                {
+                  "type": "responsive_degradation",
+                  "likelihood": 0.8,
+                  "description": "Low responsiveness score predicts layout breakage on mobile devices",
+                  "severity": "high"
+                }
+              ],
+              "confusionIssues": [],
+              "total": 1,
+              "criticalCount": 0,
+              "riskScore": 80,
+              "qualityOverall": 76,
+              "predictedAt": "2026-07-01T23:09:38.564Z"
+            }
+          }
+        },
+        {
+          "name": "generate_improvements",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "runId": "run-2026-07-01T23-09-38-784Z",
+            "report": {
+              "url": "https://example.com/multi-cycle",
+              "runId": "run-2026-07-01T23-09-38-784Z",
+              "stagesRun": 7,
+              "stagesFailed": 0,
+              "totalFindings": 11,
+              "errors": 10,
+              "warnings": 1,
+              "patchesGenerated": 0,
+              "patchesCommitted": 0,
+              "aiScore": null,
+              "screenshotPath": "data/odi/screenshots/screenshot-2026-07-01T23-09-48-111Z.png",
+              "domPath": "data/odi/dom/dom-2026-07-01T23-09-48-721Z.json",
+              "completedAt": "2026-07-01T23:09:49.569Z"
+            },
+            "findings": [
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n2",
+                "tagB": "h1",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 28
+                },
+                "message": "<body> overlaps <h1> by 768×28px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n3",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n4",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<body> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n1",
+                "tagA": "div",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<div> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "accessibility",
+                "type": "missing_landmark",
+                "severity": "warning",
+                "landmark": "main",
+                "message": "No <main> landmark element"
+              },
+              {
+                "source": "ai_vision",
+                "id": "S1",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <h1> by 768×28px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S2",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S3",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S4",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S5",
+                "severity": "error",
+                "category": "layout",
+                "message": "<div> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              }
+            ],
+            "patches": []
+          }
+        },
+        {
+          "name": "simulate",
+          "ok": true,
+          "result": {
+            "simulated": true,
+            "viewports": [
+              "mobile",
+              "tablet",
+              "desktop"
+            ],
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        },
+        {
+          "name": "validate",
+          "ok": true,
+          "result": {
+            "valid": true,
+            "patchCount": 0
+          }
+        },
+        {
+          "name": "score",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "score": {
+              "id": "dq_1782947389599_iweo",
+              "pageUrl": "https://example.com/multi-cycle",
+              "dimensions": {
+                "aesthetics": 87,
+                "usability": 90,
+                "accessibility": 70,
+                "consistency": 60,
+                "responsiveness": 60,
+                "maintainability": 70,
+                "performance": 100
+              },
+              "overall": 77,
+              "improvements": [
+                {
+                  "dimension": "consistency",
+                  "currentScore": 60,
+                  "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "responsiveness",
+                  "currentScore": 60,
+                  "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "accessibility",
+                  "currentScore": 70,
+                  "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                  "priority": "low"
+                }
+              ],
+              "reasoningScore": 63,
+              "scoredAt": "2026-07-01T23:09:49.599Z"
+            }
+          }
+        },
+        {
+          "name": "learn",
+          "ok": true,
+          "result": {
+            "stored": true
+          }
+        },
+        {
+          "name": "recommend",
+          "ok": true,
+          "result": {
+            "recommendations": [
+              {
+                "dimension": "consistency",
+                "currentScore": 60,
+                "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "responsiveness",
+                "currentScore": 60,
+                "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "accessibility",
+                "currentScore": 70,
+                "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                "priority": "low"
+              }
+            ],
+            "count": 3
+          }
+        },
+        {
+          "name": "apply",
+          "ok": true,
+          "result": {
+            "skipped": true,
+            "reason": "skipApply=true (test/dry-run mode)"
+          }
+        },
+        {
+          "name": "measure",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947389618_c6f5",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "baseline_compare",
+              "current": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 87,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "baseline": {
+                "aesthetics": 75,
+                "usability": 80,
+                "accessibility": 90,
+                "consistency": 75,
+                "responsiveness": 85,
+                "maintainability": 70,
+                "performance": 75,
+                "overall": 78
+              },
+              "gaps": {
+                "aesthetics": {
+                  "current": 87,
+                  "baseline": 75,
+                  "gap": 12,
+                  "meetsBaseline": true
+                },
+                "usability": {
+                  "current": 90,
+                  "baseline": 80,
+                  "gap": 10,
+                  "meetsBaseline": true
+                },
+                "accessibility": {
+                  "current": 70,
+                  "baseline": 90,
+                  "gap": -20,
+                  "meetsBaseline": false
+                },
+                "consistency": {
+                  "current": 60,
+                  "baseline": 75,
+                  "gap": -15,
+                  "meetsBaseline": false
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "baseline": 85,
+                  "gap": -25,
+                  "meetsBaseline": false
+                },
+                "maintainability": {
+                  "current": 70,
+                  "baseline": 70,
+                  "gap": 0,
+                  "meetsBaseline": true
+                },
+                "performance": {
+                  "current": 100,
+                  "baseline": 75,
+                  "gap": 25,
+                  "meetsBaseline": true
+                }
+              },
+              "meetsOverall": false,
+              "dimensionsMeeting": "4/7",
+              "readyForProduction": false,
+              "ts": "2026-07-01T23:09:49.618Z"
+            }
+          }
+        },
+        {
+          "name": "publish",
+          "ok": true,
+          "result": {
+            "published": true,
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        }
+      ],
+      "qualityBefore": null,
+      "qualityAfter": 77,
+      "improved": false,
+      "minutesSaved": 25,
+      "ts": "2026-07-01T23:09:49.729Z"
+    },
+    {
+      "id": "de_1782947389734_t67s",
+      "pageUrl": "https://example.com/multi-cycle",
+      "steps": [
+        {
+          "name": "capture",
+          "ok": true,
+          "result": {
+            "pageUrl": "https://example.com/multi-cycle",
+            "capturedAt": "2026-07-01T23:09:49.740Z",
+            "source": "existing_odi_services"
+          }
+        },
+        {
+          "name": "analyze",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "analysis": {
+              "id": "vr_1782947389745_0zum",
+              "pageUrl": "https://example.com/multi-cycle",
+              "cognitiveLoad": 0,
+              "hierarchyScore": 50,
+              "readingFlow": {
+                "pattern": "unknown",
+                "confidence": 0
+              },
+              "attentionHotspots": [
+                {
+                  "element": "above_fold_hero",
+                  "weight": 0.8,
+                  "reason": "default_primary_attention"
+                }
+              ],
+              "confusionSignals": [],
+              "reasoningScore": 65,
+              "insights": [
+                "Dominant reading pattern: unknown (confidence=0)",
+                "1 attention hotspots identified"
+              ],
+              "analyzedAt": "2026-07-01T23:09:49.745Z"
+            }
+          }
+        },
+        {
+          "name": "compare",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmarks": [
+              {
+                "id": "dbm_1782947378411_uovo",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "version_compare",
+                "current": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 86,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "previous": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 87,
+                    "usability": 89,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "deltas": {
+                  "aesthetics": {
+                    "current": 86,
+                    "previous": 87,
+                    "delta": -1
+                  },
+                  "usability": {
+                    "current": 90,
+                    "previous": 89,
+                    "delta": 1
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "performance": {
+                    "current": 100,
+                    "previous": 100,
+                    "delta": 0
+                  }
+                },
+                "overallDelta": 0,
+                "isImprovement": false,
+                "vsBaseline": -2,
+                "ts": "2026-07-01T23:09:38.411Z"
+              },
+              {
+                "id": "dbm_1782947389618_c6f5",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "baseline_compare",
+                "current": {
+                  "overall": 77,
+                  "dimensions": {
+                    "aesthetics": 87,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "baseline": {
+                  "aesthetics": 75,
+                  "usability": 80,
+                  "accessibility": 90,
+                  "consistency": 75,
+                  "responsiveness": 85,
+                  "maintainability": 70,
+                  "performance": 75,
+                  "overall": 78
+                },
+                "gaps": {
+                  "aesthetics": {
+                    "current": 87,
+                    "baseline": 75,
+                    "gap": 12,
+                    "meetsBaseline": true
+                  },
+                  "usability": {
+                    "current": 90,
+                    "baseline": 80,
+                    "gap": 10,
+                    "meetsBaseline": true
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "baseline": 90,
+                    "gap": -20,
+                    "meetsBaseline": false
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "baseline": 75,
+                    "gap": -15,
+                    "meetsBaseline": false
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "baseline": 85,
+                    "gap": -25,
+                    "meetsBaseline": false
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "baseline": 70,
+                    "gap": 0,
+                    "meetsBaseline": true
+                  },
+                  "performance": {
+                    "current": 100,
+                    "baseline": 75,
+                    "gap": 25,
+                    "meetsBaseline": true
+                  }
+                },
+                "meetsOverall": false,
+                "dimensionsMeeting": "4/7",
+                "readyForProduction": false,
+                "ts": "2026-07-01T23:09:49.618Z"
+              }
+            ]
+          }
+        },
+        {
+          "name": "benchmark",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947389781_784y",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "version_compare",
+              "current": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 87,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "previous": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 86,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "deltas": {
+                "aesthetics": {
+                  "current": 87,
+                  "previous": 86,
+                  "delta": 1
+                },
+                "usability": {
+                  "current": 90,
+                  "previous": 90,
+                  "delta": 0
+                },
+                "accessibility": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "consistency": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "maintainability": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "performance": {
+                  "current": 100,
+                  "previous": 100,
+                  "delta": 0
+                }
+              },
+              "overallDelta": 1,
+              "isImprovement": true,
+              "vsBaseline": -1,
+              "ts": "2026-07-01T23:09:49.781Z"
+            }
+          }
+        },
+        {
+          "name": "predict",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "prediction": {
+              "id": "dp_1782947389795_mpta",
+              "pageUrl": "https://example.com/multi-cycle",
+              "uxProblems": [],
+              "accessibilityFailures": [],
+              "responsiveFailures": [
+                {
+                  "type": "responsive_degradation",
+                  "likelihood": 0.8,
+                  "description": "Low responsiveness score predicts layout breakage on mobile devices",
+                  "severity": "high"
+                }
+              ],
+              "confusionIssues": [],
+              "total": 1,
+              "criticalCount": 0,
+              "riskScore": 80,
+              "qualityOverall": 77,
+              "predictedAt": "2026-07-01T23:09:49.795Z"
+            }
+          }
+        },
+        {
+          "name": "generate_improvements",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "runId": "run-2026-07-01T23-09-49-797Z",
+            "report": {
+              "url": "https://example.com/multi-cycle",
+              "runId": "run-2026-07-01T23-09-49-797Z",
+              "stagesRun": 7,
+              "stagesFailed": 0,
+              "totalFindings": 11,
+              "errors": 10,
+              "warnings": 1,
+              "patchesGenerated": 0,
+              "patchesCommitted": 0,
+              "aiScore": null,
+              "screenshotPath": "data/odi/screenshots/screenshot-2026-07-01T23-09-51-015Z.png",
+              "domPath": "data/odi/dom/dom-2026-07-01T23-09-51-504Z.json",
+              "completedAt": "2026-07-01T23:09:52.096Z"
+            },
+            "findings": [
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n2",
+                "tagB": "h1",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 28
+                },
+                "message": "<body> overlaps <h1> by 768×28px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n3",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n4",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<body> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n1",
+                "tagA": "div",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<div> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "accessibility",
+                "type": "missing_landmark",
+                "severity": "warning",
+                "landmark": "main",
+                "message": "No <main> landmark element"
+              },
+              {
+                "source": "ai_vision",
+                "id": "S1",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <h1> by 768×28px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S2",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S3",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S4",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S5",
+                "severity": "error",
+                "category": "layout",
+                "message": "<div> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              }
+            ],
+            "patches": []
+          }
+        },
+        {
+          "name": "simulate",
+          "ok": true,
+          "result": {
+            "simulated": true,
+            "viewports": [
+              "mobile",
+              "tablet",
+              "desktop"
+            ],
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        },
+        {
+          "name": "validate",
+          "ok": true,
+          "result": {
+            "valid": true,
+            "patchCount": 0
+          }
+        },
+        {
+          "name": "score",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "score": {
+              "id": "dq_1782947392102_ljee",
+              "pageUrl": "https://example.com/multi-cycle",
+              "dimensions": {
+                "aesthetics": 86,
+                "usability": 91,
+                "accessibility": 70,
+                "consistency": 60,
+                "responsiveness": 60,
+                "maintainability": 70,
+                "performance": 100
+              },
+              "overall": 77,
+              "improvements": [
+                {
+                  "dimension": "consistency",
+                  "currentScore": 60,
+                  "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "responsiveness",
+                  "currentScore": 60,
+                  "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "accessibility",
+                  "currentScore": 70,
+                  "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                  "priority": "low"
+                }
+              ],
+              "reasoningScore": 63,
+              "scoredAt": "2026-07-01T23:09:52.102Z"
+            }
+          }
+        },
+        {
+          "name": "learn",
+          "ok": true,
+          "result": {
+            "stored": true
+          }
+        },
+        {
+          "name": "recommend",
+          "ok": true,
+          "result": {
+            "recommendations": [
+              {
+                "dimension": "consistency",
+                "currentScore": 60,
+                "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "responsiveness",
+                "currentScore": 60,
+                "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "accessibility",
+                "currentScore": 70,
+                "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                "priority": "low"
+              }
+            ],
+            "count": 3
+          }
+        },
+        {
+          "name": "apply",
+          "ok": true,
+          "result": {
+            "skipped": true,
+            "reason": "skipApply=true (test/dry-run mode)"
+          }
+        },
+        {
+          "name": "measure",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947392107_y0dj",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "baseline_compare",
+              "current": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 86,
+                  "usability": 91,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "baseline": {
+                "aesthetics": 75,
+                "usability": 80,
+                "accessibility": 90,
+                "consistency": 75,
+                "responsiveness": 85,
+                "maintainability": 70,
+                "performance": 75,
+                "overall": 78
+              },
+              "gaps": {
+                "aesthetics": {
+                  "current": 86,
+                  "baseline": 75,
+                  "gap": 11,
+                  "meetsBaseline": true
+                },
+                "usability": {
+                  "current": 91,
+                  "baseline": 80,
+                  "gap": 11,
+                  "meetsBaseline": true
+                },
+                "accessibility": {
+                  "current": 70,
+                  "baseline": 90,
+                  "gap": -20,
+                  "meetsBaseline": false
+                },
+                "consistency": {
+                  "current": 60,
+                  "baseline": 75,
+                  "gap": -15,
+                  "meetsBaseline": false
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "baseline": 85,
+                  "gap": -25,
+                  "meetsBaseline": false
+                },
+                "maintainability": {
+                  "current": 70,
+                  "baseline": 70,
+                  "gap": 0,
+                  "meetsBaseline": true
+                },
+                "performance": {
+                  "current": 100,
+                  "baseline": 75,
+                  "gap": 25,
+                  "meetsBaseline": true
+                }
+              },
+              "meetsOverall": false,
+              "dimensionsMeeting": "4/7",
+              "readyForProduction": false,
+              "ts": "2026-07-01T23:09:52.107Z"
+            }
+          }
+        },
+        {
+          "name": "publish",
+          "ok": true,
+          "result": {
+            "published": true,
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        }
+      ],
+      "qualityBefore": null,
+      "qualityAfter": 77,
+      "improved": false,
+      "minutesSaved": 25,
+      "ts": "2026-07-01T23:09:52.123Z"
+    },
+    {
+      "id": "de_1782947503831_mckp",
+      "pageUrl": "https://example.com/multi-cycle",
+      "steps": [
+        {
+          "name": "capture",
+          "ok": true,
+          "result": {
+            "pageUrl": "https://example.com/multi-cycle",
+            "capturedAt": "2026-07-01T23:11:43.837Z",
+            "source": "existing_odi_services"
+          }
+        },
+        {
+          "name": "analyze",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "analysis": {
+              "id": "vr_1782947503862_czhy",
+              "pageUrl": "https://example.com/multi-cycle",
+              "cognitiveLoad": 0,
+              "hierarchyScore": 50,
+              "readingFlow": {
+                "pattern": "unknown",
+                "confidence": 0
+              },
+              "attentionHotspots": [
+                {
+                  "element": "above_fold_hero",
+                  "weight": 0.8,
+                  "reason": "default_primary_attention"
+                }
+              ],
+              "confusionSignals": [],
+              "reasoningScore": 65,
+              "insights": [
+                "Dominant reading pattern: unknown (confidence=0)",
+                "1 attention hotspots identified"
+              ],
+              "analyzedAt": "2026-07-01T23:11:43.862Z"
+            }
+          }
+        },
+        {
+          "name": "compare",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmarks": [
+              {
+                "id": "dbm_1782947389781_784y",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "version_compare",
+                "current": {
+                  "overall": 77,
+                  "dimensions": {
+                    "aesthetics": 87,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "previous": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 86,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "deltas": {
+                  "aesthetics": {
+                    "current": 87,
+                    "previous": 86,
+                    "delta": 1
+                  },
+                  "usability": {
+                    "current": 90,
+                    "previous": 90,
+                    "delta": 0
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "performance": {
+                    "current": 100,
+                    "previous": 100,
+                    "delta": 0
+                  }
+                },
+                "overallDelta": 1,
+                "isImprovement": true,
+                "vsBaseline": -1,
+                "ts": "2026-07-01T23:09:49.781Z"
+              },
+              {
+                "id": "dbm_1782947392107_y0dj",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "baseline_compare",
+                "current": {
+                  "overall": 77,
+                  "dimensions": {
+                    "aesthetics": 86,
+                    "usability": 91,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "baseline": {
+                  "aesthetics": 75,
+                  "usability": 80,
+                  "accessibility": 90,
+                  "consistency": 75,
+                  "responsiveness": 85,
+                  "maintainability": 70,
+                  "performance": 75,
+                  "overall": 78
+                },
+                "gaps": {
+                  "aesthetics": {
+                    "current": 86,
+                    "baseline": 75,
+                    "gap": 11,
+                    "meetsBaseline": true
+                  },
+                  "usability": {
+                    "current": 91,
+                    "baseline": 80,
+                    "gap": 11,
+                    "meetsBaseline": true
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "baseline": 90,
+                    "gap": -20,
+                    "meetsBaseline": false
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "baseline": 75,
+                    "gap": -15,
+                    "meetsBaseline": false
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "baseline": 85,
+                    "gap": -25,
+                    "meetsBaseline": false
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "baseline": 70,
+                    "gap": 0,
+                    "meetsBaseline": true
+                  },
+                  "performance": {
+                    "current": 100,
+                    "baseline": 75,
+                    "gap": 25,
+                    "meetsBaseline": true
+                  }
+                },
+                "meetsOverall": false,
+                "dimensionsMeeting": "4/7",
+                "readyForProduction": false,
+                "ts": "2026-07-01T23:09:52.107Z"
+              }
+            ]
+          }
+        },
+        {
+          "name": "benchmark",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947505504_d7tv",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "version_compare",
+              "current": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 86,
+                  "usability": 91,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "previous": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 87,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "deltas": {
+                "aesthetics": {
+                  "current": 86,
+                  "previous": 87,
+                  "delta": -1
+                },
+                "usability": {
+                  "current": 91,
+                  "previous": 90,
+                  "delta": 1
+                },
+                "accessibility": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "consistency": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "maintainability": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "performance": {
+                  "current": 100,
+                  "previous": 100,
+                  "delta": 0
+                }
+              },
+              "overallDelta": 0,
+              "isImprovement": false,
+              "vsBaseline": -1,
+              "ts": "2026-07-01T23:11:45.504Z"
+            }
+          }
+        },
+        {
+          "name": "predict",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "prediction": {
+              "id": "dp_1782947505961_dglr",
+              "pageUrl": "https://example.com/multi-cycle",
+              "uxProblems": [],
+              "accessibilityFailures": [],
+              "responsiveFailures": [
+                {
+                  "type": "responsive_degradation",
+                  "likelihood": 0.8,
+                  "description": "Low responsiveness score predicts layout breakage on mobile devices",
+                  "severity": "high"
+                }
+              ],
+              "confusionIssues": [],
+              "total": 1,
+              "criticalCount": 0,
+              "riskScore": 80,
+              "qualityOverall": 77,
+              "predictedAt": "2026-07-01T23:11:45.961Z"
+            }
+          }
+        },
+        {
+          "name": "generate_improvements",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "runId": "run-2026-07-01T23-11-46-414Z",
+            "report": {
+              "url": "https://example.com/multi-cycle",
+              "runId": "run-2026-07-01T23-11-46-414Z",
+              "stagesRun": 7,
+              "stagesFailed": 0,
+              "totalFindings": 11,
+              "errors": 10,
+              "warnings": 1,
+              "patchesGenerated": 0,
+              "patchesCommitted": 0,
+              "aiScore": null,
+              "screenshotPath": "data/odi/screenshots/screenshot-2026-07-01T23-12-03-442Z.png",
+              "domPath": "data/odi/dom/dom-2026-07-01T23-12-05-021Z.json",
+              "completedAt": "2026-07-01T23:12:06.568Z"
+            },
+            "findings": [
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n2",
+                "tagB": "h1",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 28
+                },
+                "message": "<body> overlaps <h1> by 768×28px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n3",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n4",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<body> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n1",
+                "tagA": "div",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<div> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "accessibility",
+                "type": "missing_landmark",
+                "severity": "warning",
+                "landmark": "main",
+                "message": "No <main> landmark element"
+              },
+              {
+                "source": "ai_vision",
+                "id": "S1",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <h1> by 768×28px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S2",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S3",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S4",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S5",
+                "severity": "error",
+                "category": "layout",
+                "message": "<div> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              }
+            ],
+            "patches": []
+          }
+        },
+        {
+          "name": "simulate",
+          "ok": true,
+          "result": {
+            "simulated": true,
+            "viewports": [
+              "mobile",
+              "tablet",
+              "desktop"
+            ],
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        },
+        {
+          "name": "validate",
+          "ok": true,
+          "result": {
+            "valid": true,
+            "patchCount": 0
+          }
+        },
+        {
+          "name": "score",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "score": {
+              "id": "dq_1782947526597_z0ua",
+              "pageUrl": "https://example.com/multi-cycle",
+              "dimensions": {
+                "aesthetics": 85,
+                "usability": 90,
+                "accessibility": 70,
+                "consistency": 60,
+                "responsiveness": 60,
+                "maintainability": 70,
+                "performance": 100
+              },
+              "overall": 76,
+              "improvements": [
+                {
+                  "dimension": "consistency",
+                  "currentScore": 60,
+                  "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "responsiveness",
+                  "currentScore": 60,
+                  "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "accessibility",
+                  "currentScore": 70,
+                  "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                  "priority": "low"
+                }
+              ],
+              "reasoningScore": 63,
+              "scoredAt": "2026-07-01T23:12:06.597Z"
+            }
+          }
+        },
+        {
+          "name": "learn",
+          "ok": true,
+          "result": {
+            "stored": true
+          }
+        },
+        {
+          "name": "recommend",
+          "ok": true,
+          "result": {
+            "recommendations": [
+              {
+                "dimension": "consistency",
+                "currentScore": 60,
+                "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "responsiveness",
+                "currentScore": 60,
+                "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "accessibility",
+                "currentScore": 70,
+                "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                "priority": "low"
+              }
+            ],
+            "count": 3
+          }
+        },
+        {
+          "name": "apply",
+          "ok": true,
+          "result": {
+            "skipped": true,
+            "reason": "skipApply=true (test/dry-run mode)"
+          }
+        },
+        {
+          "name": "measure",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947526620_1pw8",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "baseline_compare",
+              "current": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 85,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "baseline": {
+                "aesthetics": 75,
+                "usability": 80,
+                "accessibility": 90,
+                "consistency": 75,
+                "responsiveness": 85,
+                "maintainability": 70,
+                "performance": 75,
+                "overall": 78
+              },
+              "gaps": {
+                "aesthetics": {
+                  "current": 85,
+                  "baseline": 75,
+                  "gap": 10,
+                  "meetsBaseline": true
+                },
+                "usability": {
+                  "current": 90,
+                  "baseline": 80,
+                  "gap": 10,
+                  "meetsBaseline": true
+                },
+                "accessibility": {
+                  "current": 70,
+                  "baseline": 90,
+                  "gap": -20,
+                  "meetsBaseline": false
+                },
+                "consistency": {
+                  "current": 60,
+                  "baseline": 75,
+                  "gap": -15,
+                  "meetsBaseline": false
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "baseline": 85,
+                  "gap": -25,
+                  "meetsBaseline": false
+                },
+                "maintainability": {
+                  "current": 70,
+                  "baseline": 70,
+                  "gap": 0,
+                  "meetsBaseline": true
+                },
+                "performance": {
+                  "current": 100,
+                  "baseline": 75,
+                  "gap": 25,
+                  "meetsBaseline": true
+                }
+              },
+              "meetsOverall": false,
+              "dimensionsMeeting": "4/7",
+              "readyForProduction": false,
+              "ts": "2026-07-01T23:12:06.620Z"
+            }
+          }
+        },
+        {
+          "name": "publish",
+          "ok": true,
+          "result": {
+            "published": true,
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        }
+      ],
+      "qualityBefore": null,
+      "qualityAfter": 76,
+      "improved": false,
+      "minutesSaved": 25,
+      "ts": "2026-07-01T23:12:06.664Z"
+    },
+    {
+      "id": "de_1782947526671_dqq0",
+      "pageUrl": "https://example.com/multi-cycle",
+      "steps": [
+        {
+          "name": "capture",
+          "ok": true,
+          "result": {
+            "pageUrl": "https://example.com/multi-cycle",
+            "capturedAt": "2026-07-01T23:12:06.674Z",
+            "source": "existing_odi_services"
+          }
+        },
+        {
+          "name": "analyze",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "analysis": {
+              "id": "vr_1782947526676_20ty",
+              "pageUrl": "https://example.com/multi-cycle",
+              "cognitiveLoad": 0,
+              "hierarchyScore": 50,
+              "readingFlow": {
+                "pattern": "unknown",
+                "confidence": 0
+              },
+              "attentionHotspots": [
+                {
+                  "element": "above_fold_hero",
+                  "weight": 0.8,
+                  "reason": "default_primary_attention"
+                }
+              ],
+              "confusionSignals": [],
+              "reasoningScore": 65,
+              "insights": [
+                "Dominant reading pattern: unknown (confidence=0)",
+                "1 attention hotspots identified"
+              ],
+              "analyzedAt": "2026-07-01T23:12:06.676Z"
+            }
+          }
+        },
+        {
+          "name": "compare",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmarks": [
+              {
+                "id": "dbm_1782947505504_d7tv",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "version_compare",
+                "current": {
+                  "overall": 77,
+                  "dimensions": {
+                    "aesthetics": 86,
+                    "usability": 91,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "previous": {
+                  "overall": 77,
+                  "dimensions": {
+                    "aesthetics": 87,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "deltas": {
+                  "aesthetics": {
+                    "current": 86,
+                    "previous": 87,
+                    "delta": -1
+                  },
+                  "usability": {
+                    "current": 91,
+                    "previous": 90,
+                    "delta": 1
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "previous": 60,
+                    "delta": 0
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "previous": 70,
+                    "delta": 0
+                  },
+                  "performance": {
+                    "current": 100,
+                    "previous": 100,
+                    "delta": 0
+                  }
+                },
+                "overallDelta": 0,
+                "isImprovement": false,
+                "vsBaseline": -1,
+                "ts": "2026-07-01T23:11:45.504Z"
+              },
+              {
+                "id": "dbm_1782947526620_1pw8",
+                "pageUrl": "https://example.com/multi-cycle",
+                "type": "baseline_compare",
+                "current": {
+                  "overall": 76,
+                  "dimensions": {
+                    "aesthetics": 85,
+                    "usability": 90,
+                    "accessibility": 70,
+                    "consistency": 60,
+                    "responsiveness": 60,
+                    "maintainability": 70,
+                    "performance": 100
+                  }
+                },
+                "baseline": {
+                  "aesthetics": 75,
+                  "usability": 80,
+                  "accessibility": 90,
+                  "consistency": 75,
+                  "responsiveness": 85,
+                  "maintainability": 70,
+                  "performance": 75,
+                  "overall": 78
+                },
+                "gaps": {
+                  "aesthetics": {
+                    "current": 85,
+                    "baseline": 75,
+                    "gap": 10,
+                    "meetsBaseline": true
+                  },
+                  "usability": {
+                    "current": 90,
+                    "baseline": 80,
+                    "gap": 10,
+                    "meetsBaseline": true
+                  },
+                  "accessibility": {
+                    "current": 70,
+                    "baseline": 90,
+                    "gap": -20,
+                    "meetsBaseline": false
+                  },
+                  "consistency": {
+                    "current": 60,
+                    "baseline": 75,
+                    "gap": -15,
+                    "meetsBaseline": false
+                  },
+                  "responsiveness": {
+                    "current": 60,
+                    "baseline": 85,
+                    "gap": -25,
+                    "meetsBaseline": false
+                  },
+                  "maintainability": {
+                    "current": 70,
+                    "baseline": 70,
+                    "gap": 0,
+                    "meetsBaseline": true
+                  },
+                  "performance": {
+                    "current": 100,
+                    "baseline": 75,
+                    "gap": 25,
+                    "meetsBaseline": true
+                  }
+                },
+                "meetsOverall": false,
+                "dimensionsMeeting": "4/7",
+                "readyForProduction": false,
+                "ts": "2026-07-01T23:12:06.620Z"
+              }
+            ]
+          }
+        },
+        {
+          "name": "benchmark",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947526713_da0c",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "version_compare",
+              "current": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 85,
+                  "usability": 90,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "previous": {
+                "overall": 77,
+                "dimensions": {
+                  "aesthetics": 86,
+                  "usability": 91,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "deltas": {
+                "aesthetics": {
+                  "current": 85,
+                  "previous": 86,
+                  "delta": -1
+                },
+                "usability": {
+                  "current": 90,
+                  "previous": 91,
+                  "delta": -1
+                },
+                "accessibility": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "consistency": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "previous": 60,
+                  "delta": 0
+                },
+                "maintainability": {
+                  "current": 70,
+                  "previous": 70,
+                  "delta": 0
+                },
+                "performance": {
+                  "current": 100,
+                  "previous": 100,
+                  "delta": 0
+                }
+              },
+              "overallDelta": -1,
+              "isImprovement": false,
+              "vsBaseline": -2,
+              "ts": "2026-07-01T23:12:06.713Z"
+            }
+          }
+        },
+        {
+          "name": "predict",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "prediction": {
+              "id": "dp_1782947526802_6nhu",
+              "pageUrl": "https://example.com/multi-cycle",
+              "uxProblems": [],
+              "accessibilityFailures": [],
+              "responsiveFailures": [
+                {
+                  "type": "responsive_degradation",
+                  "likelihood": 0.8,
+                  "description": "Low responsiveness score predicts layout breakage on mobile devices",
+                  "severity": "high"
+                }
+              ],
+              "confusionIssues": [],
+              "total": 1,
+              "criticalCount": 0,
+              "riskScore": 80,
+              "qualityOverall": 76,
+              "predictedAt": "2026-07-01T23:12:06.802Z"
+            }
+          }
+        },
+        {
+          "name": "generate_improvements",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "runId": "run-2026-07-01T23-12-06-809Z",
+            "report": {
+              "url": "https://example.com/multi-cycle",
+              "runId": "run-2026-07-01T23-12-06-809Z",
+              "stagesRun": 7,
+              "stagesFailed": 0,
+              "totalFindings": 11,
+              "errors": 10,
+              "warnings": 1,
+              "patchesGenerated": 0,
+              "patchesCommitted": 0,
+              "aiScore": null,
+              "screenshotPath": "data/odi/screenshots/screenshot-2026-07-01T23-12-08-979Z.png",
+              "domPath": "data/odi/dom/dom-2026-07-01T23-12-09-738Z.json",
+              "completedAt": "2026-07-01T23:12:10.377Z"
+            },
+            "findings": [
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n2",
+                "tagB": "h1",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 28
+                },
+                "message": "<body> overlaps <h1> by 768×28px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n3",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n4",
+                "tagB": "p",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 768,
+                  "y": 18
+                },
+                "message": "<body> overlaps <p> by 768×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n0",
+                "tagA": "body",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<body> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "layout",
+                "type": "overlap",
+                "severity": "error",
+                "nodeA": "n1",
+                "tagA": "div",
+                "classesA": [],
+                "nodeB": "n5",
+                "tagB": "a",
+                "classesB": [],
+                "overlapPx": {
+                  "x": 82,
+                  "y": 18
+                },
+                "message": "<div> overlaps <a> by 82×18px"
+              },
+              {
+                "source": "accessibility",
+                "type": "missing_landmark",
+                "severity": "warning",
+                "landmark": "main",
+                "message": "No <main> landmark element"
+              },
+              {
+                "source": "ai_vision",
+                "id": "S1",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <h1> by 768×28px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S2",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S3",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <p> by 768×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S4",
+                "severity": "error",
+                "category": "layout",
+                "message": "<body> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              },
+              {
+                "source": "ai_vision",
+                "id": "S5",
+                "severity": "error",
+                "category": "layout",
+                "message": "<div> overlaps <a> by 82×18px",
+                "location": "",
+                "suggestion": ""
+              }
+            ],
+            "patches": []
+          }
+        },
+        {
+          "name": "simulate",
+          "ok": true,
+          "result": {
+            "simulated": true,
+            "viewports": [
+              "mobile",
+              "tablet",
+              "desktop"
+            ],
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        },
+        {
+          "name": "validate",
+          "ok": true,
+          "result": {
+            "valid": true,
+            "patchCount": 0
+          }
+        },
+        {
+          "name": "score",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "score": {
+              "id": "dq_1782947530394_xac3",
+              "pageUrl": "https://example.com/multi-cycle",
+              "dimensions": {
+                "aesthetics": 85,
+                "usability": 88,
+                "accessibility": 70,
+                "consistency": 60,
+                "responsiveness": 60,
+                "maintainability": 70,
+                "performance": 100
+              },
+              "overall": 76,
+              "improvements": [
+                {
+                  "dimension": "consistency",
+                  "currentScore": 60,
+                  "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "responsiveness",
+                  "currentScore": 60,
+                  "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                  "priority": "medium"
+                },
+                {
+                  "dimension": "accessibility",
+                  "currentScore": 70,
+                  "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                  "priority": "low"
+                }
+              ],
+              "reasoningScore": 63,
+              "scoredAt": "2026-07-01T23:12:10.394Z"
+            }
+          }
+        },
+        {
+          "name": "learn",
+          "ok": true,
+          "result": {
+            "stored": true
+          }
+        },
+        {
+          "name": "recommend",
+          "ok": true,
+          "result": {
+            "recommendations": [
+              {
+                "dimension": "consistency",
+                "currentScore": 60,
+                "recommendation": "Improve consistency: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "responsiveness",
+                "currentScore": 60,
+                "recommendation": "Improve responsiveness: score 60/100 is below target threshold",
+                "priority": "medium"
+              },
+              {
+                "dimension": "accessibility",
+                "currentScore": 70,
+                "recommendation": "Improve accessibility: score 70/100 is below target threshold",
+                "priority": "low"
+              }
+            ],
+            "count": 3
+          }
+        },
+        {
+          "name": "apply",
+          "ok": true,
+          "result": {
+            "skipped": true,
+            "reason": "skipApply=true (test/dry-run mode)"
+          }
+        },
+        {
+          "name": "measure",
+          "ok": true,
+          "result": {
+            "ok": true,
+            "benchmark": {
+              "id": "dbm_1782947530412_cn89",
+              "pageUrl": "https://example.com/multi-cycle",
+              "type": "baseline_compare",
+              "current": {
+                "overall": 76,
+                "dimensions": {
+                  "aesthetics": 85,
+                  "usability": 88,
+                  "accessibility": 70,
+                  "consistency": 60,
+                  "responsiveness": 60,
+                  "maintainability": 70,
+                  "performance": 100
+                }
+              },
+              "baseline": {
+                "aesthetics": 75,
+                "usability": 80,
+                "accessibility": 90,
+                "consistency": 75,
+                "responsiveness": 85,
+                "maintainability": 70,
+                "performance": 75,
+                "overall": 78
+              },
+              "gaps": {
+                "aesthetics": {
+                  "current": 85,
+                  "baseline": 75,
+                  "gap": 10,
+                  "meetsBaseline": true
+                },
+                "usability": {
+                  "current": 88,
+                  "baseline": 80,
+                  "gap": 8,
+                  "meetsBaseline": true
+                },
+                "accessibility": {
+                  "current": 70,
+                  "baseline": 90,
+                  "gap": -20,
+                  "meetsBaseline": false
+                },
+                "consistency": {
+                  "current": 60,
+                  "baseline": 75,
+                  "gap": -15,
+                  "meetsBaseline": false
+                },
+                "responsiveness": {
+                  "current": 60,
+                  "baseline": 85,
+                  "gap": -25,
+                  "meetsBaseline": false
+                },
+                "maintainability": {
+                  "current": 70,
+                  "baseline": 70,
+                  "gap": 0,
+                  "meetsBaseline": true
+                },
+                "performance": {
+                  "current": 100,
+                  "baseline": 75,
+                  "gap": 25,
+                  "meetsBaseline": true
+                }
+              },
+              "meetsOverall": false,
+              "dimensionsMeeting": "4/7",
+              "readyForProduction": false,
+              "ts": "2026-07-01T23:12:10.412Z"
+            }
+          }
+        },
+        {
+          "name": "publish",
+          "ok": true,
+          "result": {
+            "published": true,
+            "pageUrl": "https://example.com/multi-cycle"
+          }
+        }
+      ],
+      "qualityBefore": null,
+      "qualityAfter": 76,
+      "improved": false,
+      "minutesSaved": 25,
+      "ts": "2026-07-01T23:12:10.460Z"
     }
   ],
   "pages": {
     "https://example.com/multi-cycle": {
-      "cycles": 14,
-      "lastCycle": "2026-06-29T22:43:47.137Z"
+      "cycles": 18,
+      "lastCycle": "2026-07-01T23:12:10.460Z"
     }
   },
   "stats": {
-    "totalCycles": 14,
+    "totalCycles": 18,
     "pagesTracked": 1,
     "totalImprovements": 0,
     "avgVisualDebt": 0,
     "avgUXDebt": 0,
-    "minutesSaved": 350
+    "minutesSaved": 450
   },
-  "updatedAt": "2026-06-29T22:43:47.137Z"
+  "updatedAt": "2026-07-01T23:12:10.460Z"
 }

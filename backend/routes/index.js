@@ -109,6 +109,8 @@ router.use(require("./productionWiring")); // /wiring/* — Production Wiring Sp
 router.use(require("./productionWiring2")); // /wiring2/* — Production Wiring Sprint 2: SMTP/AI-extended/OAuth/Monitoring/Storage/E2E
 router.use(require("./pcsCredentials")); // /credentials/* — PCS-1: Email/AI/OAuth/Crash/Storage credential audit + env var report
 router.use(require("./pcs2ExternalPlatforms")); // /ext/* — PCS-2: Meta/Google/Microsoft/Git/Productivity/Design/Commerce/Automation audit
+router.use(require("./integrations")); // /integrations/* — Production Mission 3: unified A-L connector connect/health/status/reconnect/rotate
+router.use(require("./founderVault")); // /vault/* — Production Mission 3.1: Founder Identity & Secret Vault (57 connectors, 12 cred types, env manager)
 router.use(require("./dop1")); // /dop/* — DOP-1: Production Infrastructure Validation (10 modules: VPS/Nginx/SSL/DNS/Domains/Deploy/Backup/Monitor/Security/Stress)
 router.use(require("./dop2")); // /dop2/* — DOP-2: Real Production Deployment (10 phases: Connect/Deps/Repo/Env/Nginx/SSL/PM2/Health/Smoke/Reports)
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
@@ -148,5 +150,14 @@ router.use(require("./physicalWorld"));          // POST-Ω P17: /physical/* reg
 router.use(require("./scientificDiscovery"));      // POST-Ω P18: /science/* plan+hypotheses+experiments+publications+innovations+dashboard
 router.use(require("./globalInfrastructure"));    // POST-Ω P19: /infra/* registry+planner+health+recovery+optimization+dashboard
 router.use(require("./organizationNetwork"));     // POST-Ω P20: /org-network/* registry+collab+capability+governance+evolution+dashboard
+router.use(require("./founderIdentityOS"));       // Mission 3.2: /fdios/* 12 FDIOS modules
+router.use(require("./alphaProgram"));            // Mission 5:   /alpha/* 7-phase internal alpha program
+router.use(require("./betaReadiness"));           // Mission 6:   /beta/* closed beta readiness + auth fixes
+router.use(require("./closedBeta"));              // Mission 6 Extended: /cbeta/* 14 FIX REQUIRED items
+router.use(require("./rc1"));                     // RC-1: /rc1/* release candidate freeze, verify, report
+router.use(require("./rc2"));                     // RC-2: /rc2/* deployment rehearsal, 13-step, Go/No-Go
+router.use(require("./rc3"));                     // RC-3: /rc3/* 7-day stability certification, 7-area, Go/No-Go
+router.use(require("./rc4"));                     // RC-4: /rc4/* final launch certification, 8-area, Go/No-Go
+router.use(require("./productionDeployment"));    // PM-7: /pm7/* live production deployment tracking
 
 module.exports = router;
