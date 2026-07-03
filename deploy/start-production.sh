@@ -60,6 +60,19 @@ fi
 
 # ── Create required dirs ─────────────────────────────────────────────────
 mkdir -p logs data backups
+log "Directories: logs/ data/ backups/ ensured."
+
+# ── Clear stale startup marker ────────────────────────────────────────────
+# If a prior boot crashed before calling app.listen(), data/startup_in_progress.json
+# remains. The startup gate treats its presence as a crash and increments the crash
+# counter. Clearing it here ensures the first PM2 start is treated as a clean boot.
+if [ -f "data/startup_in_progress.json" ]; then
+    warn "Stale startup marker found — clearing (prior boot did not clean up)."
+    rm -f data/startup_in_progress.json
+fi
+# Also reset crash counter so the quarantine gate starts fresh.
+echo '{"count":0}' > data/startup_crash_count.json
+log "Startup gate: cleared (clean boot)."
 
 # ── Stop existing PM2 process if running ────────────────────────────────
 if pm2 list 2>/dev/null | grep -q "jarvis-os"; then
@@ -77,11 +90,21 @@ pm2 save
 log "PM2 process list saved."
 
 # ── Wait for startup and verify ──────────────────────────────────────────
-log "Waiting for server to be ready..."
-sleep 5
-
+# The server registers 100+ agents and performs async RCA during boot.
+# On a fresh VPS, this takes 8-20s. Retry for up to 40s (20 x 2s) before giving up.
+log "Waiting for server to be ready (up to 40s)..."
 PORT="${PORT:-5050}"
-if curl -sf "http://localhost:${PORT}/health" >/dev/null 2>&1; then
+READY=0
+for i in $(seq 1 20); do
+    sleep 2
+    if curl -sf "http://localhost:${PORT}/health" >/dev/null 2>&1; then
+        READY=1
+        log "Server ready after $((i * 2))s."
+        break
+    fi
+done
+
+if [ "$READY" = "1" ]; then
     log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     log " JARVIS is running on port ${PORT}"
     log " Health: $(curl -s http://localhost:${PORT}/health | python3 -c "import sys,json; d=json.load(sys.stdin); print('ok | uptime:', d.get('uptime_seconds','?'), 's | memory:', d.get('memory',{}).get('heap_used_mb','?'), 'MB')" 2>/dev/null || echo "ok")"
@@ -91,5 +114,7 @@ if curl -sf "http://localhost:${PORT}/health" >/dev/null 2>&1; then
     log " Stats URL:  ${BASE_URL}/stats"
     log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 else
-    die "Server did not start on port ${PORT}. Check logs: pm2 logs jarvis-os"
+    warn "Server did not respond after 40s. Showing last 30 lines of PM2 error log:"
+    pm2 logs jarvis-os --lines 30 --nostream 2>/dev/null || true
+    die "Server not healthy on port ${PORT}. Fix the error above, then re-run this script."
 fi

@@ -41,16 +41,34 @@ else
     warn "If this is a production VPS, set BASE_URL in .env and run 'npm run build:frontend' manually."
 fi
 
+# ── Ensure required dirs exist ────────────────────────────────────────────
+mkdir -p logs data backups
+
+# ── Clear stale startup marker before reload ──────────────────────────────
+rm -f data/startup_in_progress.json
+echo '{"count":0}' > data/startup_crash_count.json
+
 # ── Reload PM2 (zero-downtime) ───────────────────────────────────────────
 log "Reloading JARVIS (PM2 graceful reload)..."
 pm2 reload jarvis-os 2>/dev/null || pm2 restart jarvis-os
 
-sleep 3
-if curl -sf "http://localhost:${PORT:-5050}/health" >/dev/null 2>&1; then
+# Wait up to 40s for server to be ready after reload
+PORT="${PORT:-5050}"
+READY=0
+for i in $(seq 1 20); do
+    sleep 2
+    if curl -sf "http://localhost:${PORT}/health" >/dev/null 2>&1; then
+        READY=1
+        log "Server ready after $((i * 2))s."
+        break
+    fi
+done
+
+if [ "$READY" = "1" ]; then
     log "Update complete. JARVIS is running."
     pm2 status jarvis-os
 else
-    warn "Server may not be healthy. Checking logs..."
-    pm2 logs jarvis-os --lines 20 --nostream
+    warn "Server may not be healthy after 40s. Checking logs..."
+    pm2 logs jarvis-os --lines 30 --nostream
     die "Update may have failed. Check logs above."
 fi

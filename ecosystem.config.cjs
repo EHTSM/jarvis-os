@@ -74,8 +74,8 @@ module.exports = {
             // kill_timeout must be > the 5 s drain window in _gracefulShutdown().
             kill_timeout:    8000,
             // listen_timeout: how long PM2 waits for the process to become ready.
-            // Set to 15 s to cover slow cold-disk executor loading.
-            listen_timeout:  15000,
+            // 30 s covers 100+ agent registrations + async RCA bootstrap on cold VPS.
+            listen_timeout:  30000,
 
             // wait_ready: true — server.js calls process.send("ready") after app.listen().
             // PM2 considers the restart complete only when this signal fires,
