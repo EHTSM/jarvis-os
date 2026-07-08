@@ -541,7 +541,14 @@ const _CRASH_COUNTER  = require("path").join(__dirname, "../data/startup_crash_c
 
 // ── Startup ────────────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT) || 5050;
-_httpServer = app.listen(PORT, () => {
+// Explicit HOST — listen(PORT) alone lets Node pick the default bind
+// address, which is platform-dependent (dual-stack "::" on some Linux
+// configs). nginx's upstream connects via plain IPv4 (127.0.0.1:5050);
+// an IPv6-only listener can silently refuse that connection at the OS
+// level, producing 502 even though the process is running and healthy
+// on its own host. Binding explicitly to 0.0.0.0 removes the ambiguity.
+const HOST = process.env.HOST || "0.0.0.0";
+_httpServer = app.listen(PORT, HOST, () => {
     // Signal PM2 that this process is ready (used when wait_ready:true in ecosystem config)
     if (typeof process.send === "function") process.send("ready");
     // Clear startup-in-progress marker — clean listen

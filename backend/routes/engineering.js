@@ -65,15 +65,61 @@ function _deadLetterItems() {
     return Array.isArray(raw) ? raw : [];
 }
 
+// Records can embed multi-MB "artifacts" (array) or "output" (string) fields
+// (e.g. code_search echoing raw grep matches from minified JS bundles) — this
+// view never reads either field. A JSON.parse reviver isn't enough (V8 must
+// fully tokenize the value before a reviver can discard it), so strip both
+// out of the raw line string first. Same fix as rootCauseAnalysisEngine.cjs.
+function _stripBloatField(line, fieldName) {
+    const i = line.indexOf(`"${fieldName}"`);
+    if (i === -1) return line;
+    let j = line.indexOf(":", i) + 1;
+    while (j < line.length && (line[j] === " " || line[j] === "\t")) j++;
+    const openChar = line[j];
+    let end = -1;
+    if (openChar === "[" || openChar === "{") {
+        const closeChar = openChar === "[" ? "]" : "}";
+        let depth = 0, inStr = false, esc = false;
+        for (let k = j; k < line.length; k++) {
+            const c = line[k];
+            if (inStr) {
+                if (esc) esc = false;
+                else if (c === "\\") esc = true;
+                else if (c === '"') inStr = false;
+                continue;
+            }
+            if (c === '"') inStr = true;
+            else if (c === openChar) depth++;
+            else if (c === closeChar) { depth--; if (depth === 0) { end = k + 1; break; } }
+        }
+    } else if (openChar === '"') {
+        let esc = false;
+        for (let k = j + 1; k < line.length; k++) {
+            const c = line[k];
+            if (esc) { esc = false; continue; }
+            if (c === "\\") { esc = true; continue; }
+            if (c === '"') { end = k + 1; break; }
+        }
+    } else {
+        return line;
+    }
+    if (end === -1) return line;
+    let removeEnd = end;
+    if (line[removeEnd] === ",") removeEnd++;
+    return line.slice(0, i) + line.slice(removeEnd);
+}
+
 function _execHistory() {
     const eh = _try(() => require("../../agents/runtime/executionHistory.cjs"));
     if (eh) try { return eh.list?.({ limit: 200 }) || eh.getHistory?.({ limit: 200 }) || []; } catch {}
-    // Fall back to ndjson. Records can embed multi-MB repo-status artifacts
-    // per line — this view never reads that field, so drop it during parse.
+    // Fall back to ndjson.
     try {
         const lines = fs.readFileSync(path.join(_data(), "execution-runtime.ndjson"), "utf8")
             .split("\n").filter(Boolean).slice(-200);
-        return lines.map(l => { try { return JSON.parse(l, (k, v) => k === "artifacts" ? undefined : v); } catch { return null; } }).filter(Boolean);
+        return lines.map(l => {
+            try { return JSON.parse(_stripBloatField(_stripBloatField(l, "artifacts"), "output")); }
+            catch { return null; }
+        }).filter(Boolean);
     } catch { return []; }
 }
 

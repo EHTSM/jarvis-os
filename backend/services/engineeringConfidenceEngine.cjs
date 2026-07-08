@@ -48,19 +48,62 @@ function _rj(name, fb = []) {
     try { return JSON.parse(fs.readFileSync(path.join(DATA, name), "utf8")); }
     catch { return fb; }
 }
-// execution-runtime.ndjson records carry an "artifacts" array that can embed
-// multi-MB repo-status snapshots per line; this module never reads that field,
-// so drop it during parse to avoid retaining it (see rootCauseAnalysisEngine.cjs
-// for the OOM this caused when left unstripped).
-function _dropArtifactsReviver(key, value) {
-    return key === "artifacts" ? undefined : value;
+// execution-runtime.ndjson records carry "artifacts" (array) and "output"
+// (string) fields that can embed multi-MB repo-status snapshots or raw
+// grep/file content per line; this module never reads either field. A
+// JSON.parse reviver isn't enough — V8 must fully tokenize and build the
+// giant value before a reviver can discard it, so the transient parse cost
+// alone can exhaust the heap. Strip both fields out of the raw line string
+// before it reaches JSON.parse (same fix as rootCauseAnalysisEngine.cjs,
+// which is where this pattern was first found and fixed).
+function _stripField(line, fieldName) {
+    const i = line.indexOf(`"${fieldName}"`);
+    if (i === -1) return line;
+    let j = line.indexOf(":", i) + 1;
+    while (j < line.length && (line[j] === " " || line[j] === "\t")) j++;
+    const openChar = line[j];
+    let end = -1;
+    if (openChar === "[" || openChar === "{") {
+        const closeChar = openChar === "[" ? "]" : "}";
+        let depth = 0, inStr = false, esc = false;
+        for (let k = j; k < line.length; k++) {
+            const c = line[k];
+            if (inStr) {
+                if (esc) esc = false;
+                else if (c === "\\") esc = true;
+                else if (c === '"') inStr = false;
+                continue;
+            }
+            if (c === '"') inStr = true;
+            else if (c === openChar) depth++;
+            else if (c === closeChar) { depth--; if (depth === 0) { end = k + 1; break; } }
+        }
+    } else if (openChar === '"') {
+        let esc = false;
+        for (let k = j + 1; k < line.length; k++) {
+            const c = line[k];
+            if (esc) { esc = false; continue; }
+            if (c === "\\") { esc = true; continue; }
+            if (c === '"') { end = k + 1; break; }
+        }
+    } else {
+        return line;
+    }
+    if (end === -1) return line;
+    let removeEnd = end;
+    if (line[removeEnd] === ",") removeEnd++;
+    return line.slice(0, i) + line.slice(removeEnd);
+}
+
+function _stripBloat(line) {
+    return _stripField(_stripField(line, "artifacts"), "output");
 }
 
 function _rjLines(name) {
     try {
         return fs.readFileSync(path.join(DATA, name), "utf8")
             .split("\n").filter(Boolean)
-            .map(l => { try { return JSON.parse(l, _dropArtifactsReviver); } catch { return null; } })
+            .map(l => { try { return JSON.parse(_stripBloat(l)); } catch { return null; } })
             .filter(Boolean);
     } catch { return []; }
 }
