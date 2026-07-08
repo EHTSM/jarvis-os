@@ -11752,7 +11752,351 @@
         "failureCount": 0,
         "deploymentCount": 0
       }
+    },
+    {
+      "id": "msn_3b06468b92354558a639a0458c31b467",
+      "objective": "V1 validation: end-to-end mission scenario",
+      "status": "cancelled",
+      "priority": "high",
+      "createdAt": "2026-07-03T09:44:19.697Z",
+      "updatedAt": "2026-07-03T09:44:19.723Z",
+      "completedAt": "2026-07-03T09:44:19.723Z",
+      "subtasks": [
+        {
+          "id": "stg_1783071859699_1",
+          "description": "Decompose goal: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783071859700_2",
+          "description": "Plan execution tasks for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783071859700_3",
+          "description": "Validate plan for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783071859700_4",
+          "description": "Execute plan for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783071859700_5",
+          "description": "Report completion for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        }
+      ],
+      "decisions": [],
+      "artifacts": [],
+      "failures": [],
+      "deployments": [],
+      "approvals": [],
+      "learnings": [],
+      "timeline": [
+        {
+          "timestamp": "2026-07-03T09:44:19.698Z",
+          "event": "mission_created",
+          "details": {
+            "objective": "V1 validation: end-to-end mission scenario",
+            "priority": "high"
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.701Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783071859699_1",
+            "description": "Decompose goal: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.703Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783071859700_2",
+            "description": "Plan execution tasks for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.705Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783071859700_3",
+            "description": "Validate plan for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.707Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783071859700_4",
+            "description": "Execute plan for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.710Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783071859700_5",
+            "description": "Report completion for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.712Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {}
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.716Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "planned",
+                "to": "paused"
+              }
+            }
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.719Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "paused",
+                "to": "planned"
+              }
+            }
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.721Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {}
+          }
+        },
+        {
+          "timestamp": "2026-07-03T09:44:19.723Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "planned",
+                "to": "cancelled"
+              },
+              "completedAt": {
+                "from": null,
+                "to": "2026-07-03T09:44:19.723Z"
+              }
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "totalSubtasks": 5,
+        "completedSubtasks": 0,
+        "failureCount": 0,
+        "deploymentCount": 0
+      }
+    },
+    {
+      "id": "msn_a78fe9c6bbdb4ef2948df3592e92fd15",
+      "objective": "V1 validation: end-to-end mission scenario",
+      "status": "cancelled",
+      "priority": "high",
+      "createdAt": "2026-07-03T18:41:40.916Z",
+      "updatedAt": "2026-07-03T18:41:40.983Z",
+      "completedAt": "2026-07-03T18:41:40.983Z",
+      "subtasks": [
+        {
+          "id": "stg_1783104100922_1",
+          "description": "Decompose goal: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783104100922_2",
+          "description": "Plan execution tasks for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783104100922_3",
+          "description": "Validate plan for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783104100922_4",
+          "description": "Execute plan for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        },
+        {
+          "id": "stg_1783104100922_5",
+          "description": "Report completion for: \"V1 validation: end-to-end mission scenario\"",
+          "status": "pending",
+          "assignedAgent": null,
+          "startedAt": null,
+          "completedAt": null,
+          "output": null
+        }
+      ],
+      "decisions": [],
+      "artifacts": [],
+      "failures": [],
+      "deployments": [],
+      "approvals": [],
+      "learnings": [],
+      "timeline": [
+        {
+          "timestamp": "2026-07-03T18:41:40.916Z",
+          "event": "mission_created",
+          "details": {
+            "objective": "V1 validation: end-to-end mission scenario",
+            "priority": "high"
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.923Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783104100922_1",
+            "description": "Decompose goal: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.931Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783104100922_2",
+            "description": "Plan execution tasks for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.941Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783104100922_3",
+            "description": "Validate plan for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.946Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783104100922_4",
+            "description": "Execute plan for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.950Z",
+          "event": "subtask_added",
+          "details": {
+            "subtaskId": "stg_1783104100922_5",
+            "description": "Report completion for: \"V1 validation: end-to-end mission scenario\""
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.958Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {}
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.966Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "planned",
+                "to": "paused"
+              }
+            }
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.972Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "paused",
+                "to": "planned"
+              }
+            }
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.979Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {}
+          }
+        },
+        {
+          "timestamp": "2026-07-03T18:41:40.983Z",
+          "event": "mission_updated",
+          "details": {
+            "changes": {
+              "status": {
+                "from": "planned",
+                "to": "cancelled"
+              },
+              "completedAt": {
+                "from": null,
+                "to": "2026-07-03T18:41:40.983Z"
+              }
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "totalSubtasks": 5,
+        "completedSubtasks": 0,
+        "failureCount": 0,
+        "deploymentCount": 0
+      }
     }
   ],
-  "lastUpdated": "2026-07-02T21:03:35.608Z"
+  "lastUpdated": "2026-07-03T18:41:40.983Z"
 }

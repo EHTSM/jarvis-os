@@ -3,57 +3,57 @@
     "ai:groq::api_key": {
       "connectorId": "ai:groq",
       "type": "api_key",
-      "encrypted": "08db57987a7190b1184deaf3:05493bdec90a005c0feccb3c268909be:34f7959a9e7c05d4e105e77dd0e9bead38dca013619109d01908cfac46e23af858fc51769ff9",
+      "encrypted": "26e7774cad6f58c8c90a734f:ce2cbb8efc1224bb3c5de8b0838eebaa:54de2bccd3bc9745845b65dd9b9b3636fdda95b22c08e7a8b77ba16c221b9e580debcd5acf20",
       "storedAt": "2026-07-02T02:17:42.580Z",
-      "updatedAt": "2026-07-02T21:02:51.768Z",
+      "updatedAt": "2026-07-03T18:40:23.361Z",
       "meta": {
         "importedFrom": "generic_json",
         "originalName": "Groq API",
         "url": "https://groq.com",
-        "importedAt": "2026-07-02T21:02:51.767Z"
+        "importedAt": "2026-07-03T18:40:23.358Z"
       },
       "rotationDueDays": 180,
-      "rotationDueAt": "2026-12-29T21:02:51.768Z",
+      "rotationDueAt": "2026-12-30T18:40:23.361Z",
       "lastValidatedAt": null,
       "lastFailure": null,
-      "version": 18
+      "version": 20
     },
     "ai:openai::api_key": {
       "connectorId": "ai:openai",
       "type": "api_key",
-      "encrypted": "e5a080d70a224d054781e07a:d793b52606e133059ba8610b1466e954:9bd57fd6260db5ea6848f9952e9006d2f8c4e7a2746d54b2e19f831f1dcc2a9ac900ed186257710a",
+      "encrypted": "f0426f7f67da25441efefc67:0d0c25ab1db22d30cde88dfd4a111cc4:991eff0e1cccb01603a95112c2d1a99dea949ef4aa1be5ebd0072fba639866ce669a8f56384c507c",
       "storedAt": "2026-07-02T02:17:42.585Z",
-      "updatedAt": "2026-07-02T21:02:51.771Z",
+      "updatedAt": "2026-07-03T18:40:23.364Z",
       "meta": {
         "importedFrom": "generic_json",
         "originalName": "OpenAI",
         "url": "https://openai.com",
-        "importedAt": "2026-07-02T21:02:51.771Z"
+        "importedAt": "2026-07-03T18:40:23.363Z"
       },
       "rotationDueDays": 180,
-      "rotationDueAt": "2026-12-29T21:02:51.771Z",
+      "rotationDueAt": "2026-12-30T18:40:23.364Z",
       "lastValidatedAt": null,
       "lastFailure": null,
-      "version": 18
+      "version": 20
     },
     "pay:stripe::api_key": {
       "connectorId": "pay:stripe",
       "type": "api_key",
-      "encrypted": "abb1cdba8a33cbe817767a1a:9eaaa97c958bcc1d80d00c208a84abf5:b8dc2b17730ef519f6e63fd5fb6ed1e7827306251b949f4d3c430d2ea92165f090677e1651cfd1a3147dca",
+      "encrypted": "e00a25a49b0d402f781182fe:bbda0686420023b801fb823571d3489a:607547fc42305c5582810b770e699dc97e33fe57518f83b71fe6d91906deb6844baf5674543a714fb26957",
       "storedAt": "2026-07-02T02:17:42.587Z",
-      "updatedAt": "2026-07-02T21:02:51.771Z",
+      "updatedAt": "2026-07-03T18:40:23.366Z",
       "meta": {
         "importedFrom": "generic_csv",
         "originalName": "Stripe",
         "username": "founder",
         "url": "https://stripe.com",
-        "importedAt": "2026-07-02T21:02:51.771Z"
+        "importedAt": "2026-07-03T18:40:23.366Z"
       },
       "rotationDueDays": 180,
-      "rotationDueAt": "2026-12-29T21:02:51.771Z",
+      "rotationDueAt": "2026-12-30T18:40:23.366Z",
       "lastValidatedAt": null,
       "lastFailure": null,
-      "version": 18
+      "version": 20
     }
   },
   "meta": {}

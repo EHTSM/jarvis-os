@@ -1,14 +1,14 @@
 {
   "mode": "active",
   "autonomyLevel": 1,
-  "confidenceThreshold": 0.6,
+  "confidenceThreshold": 0.5599999999999999,
   "epoch": 1,
   "startedAt": "2026-06-28T05:36:00.555Z",
-  "lastHealthAt": "2026-07-02T20:59:05.241Z",
+  "lastHealthAt": "2026-07-08T14:32:08.846Z",
   "globalHealth": 93,
   "layerHealth": {
     "civilization": {
-      "score": 86,
+      "score": 89,
       "alerts": 0
     },
     "ecosystem": {
@@ -21,8 +21,8 @@
       "score": 100
     },
     "runtime": {
-      "total": 70,
-      "running": 70,
+      "total": 210,
+      "running": 210,
       "score": 100
     }
   }

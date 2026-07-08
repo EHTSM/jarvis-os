@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "seededAt": "2026-07-02T21:02:56.170Z",
+  "seededAt": "2026-07-03T18:40:23.447Z",
   "orgs": [
     {
       "id": "org-fintech-01",
@@ -300,31 +300,31 @@
       "id": "n-001",
       "type": "mission_complete",
       "title": "Mission m-002 completed",
-      "ts": "2026-07-02T20:02:56.162Z"
+      "ts": "2026-07-03T17:40:23.430Z"
     },
     {
       "id": "n-002",
       "type": "integration_warning",
       "title": "WhatsApp sandbox rate limit at 80%",
-      "ts": "2026-07-02T19:02:56.163Z"
+      "ts": "2026-07-03T16:40:23.432Z"
     },
     {
       "id": "n-003",
       "type": "deploy_success",
       "title": "Staging deploy successful",
-      "ts": "2026-07-02T18:02:56.163Z"
+      "ts": "2026-07-03T15:40:23.432Z"
     },
     {
       "id": "n-004",
       "type": "ai_insight",
       "title": "New pattern discovered: KYC flow",
-      "ts": "2026-07-02T15:02:56.163Z"
+      "ts": "2026-07-03T12:40:23.432Z"
     },
     {
       "id": "n-005",
       "type": "security_ok",
       "title": "Vault backup verified",
-      "ts": "2026-07-02T09:02:56.163Z"
+      "ts": "2026-07-03T06:40:23.432Z"
     }
   ]
 }

@@ -21,53 +21,53 @@
       }
     },
     "blueprints": {
-      "total": 28,
-      "published": 28
+      "total": 40,
+      "published": 40
     },
     "templates": {
-      "total": 4,
-      "public": 4,
-      "totalInstalls": 2
+      "total": 7,
+      "public": 7,
+      "totalInstalls": 5
     },
     "deployments": {
-      "total": 6,
-      "completed": 6
+      "total": 11,
+      "completed": 11
     },
     "marketplace": {
-      "total": 4,
-      "totalPurchases": 2
+      "total": 8,
+      "totalPurchases": 4
     },
     "certifications": {
-      "total": 12
+      "total": 47
     },
     "clones": {
-      "total": 10
+      "total": 19
     },
     "packages": {
-      "total": 18
+      "total": 37
     },
     "events": {
-      "total": 161,
+      "total": 262,
       "byType": {
-        "org:registered": 53,
-        "blueprint:created": 28,
-        "template:published": 4,
-        "template:installed": 2,
-        "org:deployed": 6,
-        "org:cloned": 8,
-        "org:forked": 2,
-        "org:exported": 18,
-        "org:imported": 6,
-        "marketplace:listed": 4,
-        "marketplace:purchased": 2,
-        "org:certified": 12,
-        "org:upgraded": 4,
-        "org:migrated": 2,
-        "org:simulated": 10
+        "org:registered": 79,
+        "blueprint:created": 38,
+        "template:published": 5,
+        "template:installed": 3,
+        "org:deployed": 9,
+        "org:cloned": 12,
+        "org:forked": 3,
+        "org:exported": 35,
+        "org:imported": 9,
+        "marketplace:listed": 6,
+        "marketplace:purchased": 3,
+        "org:certified": 36,
+        "org:upgraded": 6,
+        "org:migrated": 3,
+        "org:simulated": 15
       }
     }
   },
-  "lastTickAt": "2026-07-02T20:20:01.855Z",
+  "lastTickAt": "2026-07-08T14:32:08.548Z",
   "sdkManifest": {
     "version": "1.1.0",
     "name": "Ooplix Organization SDK",

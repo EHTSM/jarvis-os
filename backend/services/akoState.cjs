@@ -107,6 +107,7 @@ function createObjective({ title, deptId = "ako_cko", kpis = [], description = "
     return { ok: false, error: "Duplicate objective" };
   const obj = { id: _id("aobj"), title, deptId, description, kpis, quarter: currentQuarter(), status: "active", createdAt: new Date().toISOString(), completedAt: null };
   s.objectives.push(obj);
+  if (s.objectives.length > 2000) s.objectives.splice(0, s.objectives.length - 2000);
   _save("state");
   return { ok: true, objective: obj };
 }
@@ -162,6 +163,7 @@ function createItem({
     updatedAt: new Date().toISOString(),
   };
   s.items.push(item);
+  if (s.items.length > 5000) s.items.splice(0, s.items.length - 5000);
 
   // Index into semantic memory search
   try {
@@ -255,7 +257,9 @@ function detectContradictions(itemId) {
     }
   }
   if (found.length > 0) {
-    _s().contradictions.push(...found);
+    const s2 = _s();
+    s2.contradictions.push(...found);
+    if (s2.contradictions.length > 2000) s2.contradictions.splice(0, s2.contradictions.length - 2000);
     _save("state");
   }
   return found;
@@ -282,6 +286,7 @@ function createPlaybook({ title, problem, solution, steps = [], type = "engineer
   if (s.playbooks.some(p => p.title === title)) return { ok: false, error: "Duplicate playbook" };
   const pb = { id: _id("akpb"), title, problem, solution, steps, type, confidence, source, deptId, tags, timesUsed: 0, createdAt: new Date().toISOString() };
   s.playbooks.push(pb);
+  if (s.playbooks.length > 2000) s.playbooks.splice(0, s.playbooks.length - 2000);
   _kpi(deptId).playbooksCreated++;
   // Also ingest as a validated knowledge item
   createItem({ title, content: solution, type: "playbook", source, deptId, confidence, tags });
@@ -316,7 +321,9 @@ function listPlaybooks({ type, tags, deptId, limit = 50 } = {}) {
 function createTask({ title, description = "", deptId, type = "research", priority = "medium", objectiveId, itemId } = {}) {
   if (!title || !deptId) return { ok: false, error: "title and deptId required" };
   const task = { id: _id("aktsk"), title, description, deptId, type, priority, objectiveId, itemId, status: "planned", claimedBy: null, claimedAt: null, completedAt: null, createdAt: new Date().toISOString() };
-  _s().tasks.push(task);
+  const s3 = _s();
+  s3.tasks.push(task);
+  if (s3.tasks.length > 2000) s3.tasks.splice(0, s3.tasks.length - 2000);
   _save("state");
   return { ok: true, task };
 }
@@ -363,7 +370,9 @@ function listTasks({ deptId, status, type, limit = 100 } = {}) {
 function addMemory({ deptId, type, title, detail, tags = [], meta = {} } = {}) {
   if (!deptId || !title) return { ok: false, error: "deptId and title required" };
   const entry = { id: _id("akmem"), deptId, type, title, detail, tags, meta, createdAt: new Date().toISOString() };
-  _m().push(entry);
+  const mem = _m();
+  mem.push(entry);
+  if (mem.length > 2000) mem.splice(0, mem.length - 2000);
   _kpi(deptId).memoryEntries++;
   _save("memory");
   _save("kpis");
@@ -381,7 +390,9 @@ function getMemory({ deptId, type, tags, limit = 50 } = {}) {
 function createReport({ title, deptId, type = "knowledge", data = {}, summary = "" } = {}) {
   if (!title || !deptId) return { ok: false, error: "title and deptId required" };
   const report = { id: _id("akrpt"), title, deptId, type, data, summary, createdAt: new Date().toISOString() };
-  _r().push(report);
+  const reports = _r();
+  reports.push(report);
+  if (reports.length > 1000) reports.splice(0, reports.length - 1000);
   _kpi(deptId).reportsGenerated++;
   _save("reports");
   _save("kpis");

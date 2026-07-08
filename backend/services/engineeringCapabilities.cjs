@@ -196,8 +196,15 @@ async function _repoIndex(ctx) {
 async function _codeSearch(ctx) {
     const query = ctx.input?.replace(/^code_search:\s*/i, "").trim() || ctx.input;
     const r = searchCode(query, { limit: 20 });
-    const output = JSON.stringify({ query, results: r.results.slice(0, 20), total: r.results.length });
-    return { success: true, output, artifacts: [{ type: "code_search_results", value: r }], logs: [] };
+    // Cap the artifact the same way `output` is capped below — the raw `r`
+    // embeds full-length content snippets per result; left untruncated, this
+    // record sits in autonomousExecutionRuntime's 1000-slot in-memory ring
+    // buffer and gets appended to execution-runtime.ndjson, both effectively
+    // unbounded per-entry despite the ring's fixed *count* cap. Confirmed via
+    // heap-snapshot diff as a multi-MB-per-entry retained-string leak.
+    const cappedResults = r.results.slice(0, 20).map(x => ({ ...x, content: x.content?.slice(0, 300) }));
+    const output = JSON.stringify({ query, results: cappedResults, total: r.results.length });
+    return { success: true, output, artifacts: [{ type: "code_search_results", value: { query, results: cappedResults, total: r.results.length } }], logs: [] };
 }
 
 // ── file_read: read a file relative to repo root ───────────────────────────

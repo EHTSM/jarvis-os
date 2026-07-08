@@ -1,6 +1,54 @@
 {
   "kits": [
     {
+      "createdAt": "2026-07-03T18:40:28.236Z",
+      "size": 40337,
+      "checksum": "f78a879a1a2d49ac",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T18:40:23.803Z",
+      "size": 40261,
+      "checksum": "fec38a58fa3f5b07",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T18:40:23.598Z",
+      "size": 40261,
+      "checksum": "0831cfed929c6f68",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T18:40:23.505Z",
+      "size": 40261,
+      "checksum": "61be74d6e6cdabfb",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T09:44:00.570Z",
+      "size": 39921,
+      "checksum": "d22ed588da3a4f75",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T09:43:56.927Z",
+      "size": 39845,
+      "checksum": "39869c4b15570f1e",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T09:43:56.802Z",
+      "size": 39845,
+      "checksum": "3f46ff16b24f4aaf",
+      "items": 8
+    },
+    {
+      "createdAt": "2026-07-03T09:43:56.738Z",
+      "size": 39845,
+      "checksum": "41fd422f24adac34",
+      "items": 8
+    },
+    {
       "createdAt": "2026-07-02T21:02:55.827Z",
       "size": 39505,
       "checksum": "77ca0075963024ef",
@@ -71,57 +119,19 @@
       "size": 38597,
       "checksum": "2258f6a6e4f020b5",
       "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:56:19.814Z",
-      "size": 38257,
-      "checksum": "d33cd411eb2132cc",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:56:08.191Z",
-      "size": 38181,
-      "checksum": "df3b1306417a7b59",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:56:08.074Z",
-      "size": 38181,
-      "checksum": "cfea3ef1f84c6e3a",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:56:08.002Z",
-      "size": 38181,
-      "checksum": "1849476fcf1c333b",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:54:02.165Z",
-      "size": 37841,
-      "checksum": "d3372ed2b1021d7b",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:53:53.233Z",
-      "size": 37765,
-      "checksum": "5dcb6c644d17f20c",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:53:53.114Z",
-      "size": 37765,
-      "checksum": "a553aaca42e87019",
-      "items": 8
-    },
-    {
-      "createdAt": "2026-07-02T20:53:53.053Z",
-      "size": 37765,
-      "checksum": "d416356f7421fead",
-      "items": 8
     }
   ],
   "checks": [
+    {
+      "restoredAt": "2026-07-03T18:40:23.709Z",
+      "success": true,
+      "steps": 5
+    },
+    {
+      "restoredAt": "2026-07-03T09:43:56.865Z",
+      "success": true,
+      "steps": 5
+    },
     {
       "restoredAt": "2026-07-02T21:02:51.967Z",
       "success": true,

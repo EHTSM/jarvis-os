@@ -68,11 +68,12 @@ function _deadLetterItems() {
 function _execHistory() {
     const eh = _try(() => require("../../agents/runtime/executionHistory.cjs"));
     if (eh) try { return eh.list?.({ limit: 200 }) || eh.getHistory?.({ limit: 200 }) || []; } catch {}
-    // Fall back to ndjson
+    // Fall back to ndjson. Records can embed multi-MB repo-status artifacts
+    // per line — this view never reads that field, so drop it during parse.
     try {
         const lines = fs.readFileSync(path.join(_data(), "execution-runtime.ndjson"), "utf8")
             .split("\n").filter(Boolean).slice(-200);
-        return lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+        return lines.map(l => { try { return JSON.parse(l, (k, v) => k === "artifacts" ? undefined : v); } catch { return null; } }).filter(Boolean);
     } catch { return []; }
 }
 

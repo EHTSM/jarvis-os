@@ -3923,6 +3923,272 @@
       "createdAt": "2026-07-02T08:03:22.159Z",
       "updatedAt": "2026-07-02T08:04:37.668Z",
       "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783247161453_30fj",
+      "title": "Runtime: heal rate 7% is critically low",
+      "description": "Healed: 145, Failed: 1860. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 1875,
+        "_timestamp": 1783248412270
+      },
+      "afterMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 1875,
+        "_timestamp": 1783248412288
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-05T10:46:52.270Z",
+      "measuredAt": "2026-07-05T10:46:52.288Z",
+      "keptAt": "2026-07-05T10:46:52.289Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-05T10:26:01.453Z",
+      "updatedAt": "2026-07-05T10:26:06.225Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783248249426_0vae",
+      "title": "Runtime: heal rate 8% is critically low",
+      "description": "Healed: 155, Failed: 1865. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 1900,
+        "_timestamp": 1783249468729
+      },
+      "afterMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 1900,
+        "_timestamp": 1783249468747
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-05T11:04:28.729Z",
+      "measuredAt": "2026-07-05T11:04:28.747Z",
+      "keptAt": "2026-07-05T11:04:28.749Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-05T10:44:09.426Z",
+      "updatedAt": "2026-07-05T10:46:53.911Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783279350520_bimp",
+      "title": "Runtime: heal rate 6% is critically low",
+      "description": "Healed: 155, Failed: 2235. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 2250,
+        "_timestamp": 1783280100761
+      },
+      "afterMetrics": {
+        "healedTotal": 155,
+        "failedTotal": 2250,
+        "_timestamp": 1783280100806
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-05T19:35:00.761Z",
+      "measuredAt": "2026-07-05T19:35:00.806Z",
+      "keptAt": "2026-07-05T19:35:00.808Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-05T19:22:30.521Z",
+      "updatedAt": "2026-07-05T19:22:31.392Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783341647059_urzd",
+      "title": "Runtime: heal rate 4% is critically low",
+      "description": "Healed: 75, Failed: 1945. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 90,
+        "failedTotal": 1935,
+        "_timestamp": 1783345983592
+      },
+      "afterMetrics": {
+        "healedTotal": 90,
+        "failedTotal": 1935,
+        "_timestamp": 1783345983618
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-06T13:53:03.592Z",
+      "measuredAt": "2026-07-06T13:53:03.619Z",
+      "keptAt": "2026-07-06T13:53:03.620Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-06T12:40:47.059Z",
+      "updatedAt": "2026-07-06T13:41:21.832Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783359089974_gkx3",
+      "title": "Runtime: heal rate 5% is critically low",
+      "description": "Healed: 95, Failed: 1910. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 165,
+        "failedTotal": 1850,
+        "_timestamp": 1783362817462
+      },
+      "afterMetrics": {
+        "healedTotal": 165,
+        "failedTotal": 1850,
+        "_timestamp": 1783362817493
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-06T18:33:37.462Z",
+      "measuredAt": "2026-07-06T18:33:37.493Z",
+      "keptAt": "2026-07-06T18:33:37.496Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-06T17:31:29.974Z",
+      "updatedAt": "2026-07-06T18:09:51.872Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783363415930_j436",
+      "title": "Runtime: heal rate 9% is critically low",
+      "description": "Healed: 180, Failed: 1825. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 240,
+        "failedTotal": 1775,
+        "_timestamp": 1783364284885
+      },
+      "afterMetrics": {
+        "healedTotal": 240,
+        "failedTotal": 1775,
+        "_timestamp": 1783364284922
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-06T18:58:04.885Z",
+      "measuredAt": "2026-07-06T18:58:04.922Z",
+      "keptAt": "2026-07-06T18:58:04.924Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-06T18:43:35.930Z",
+      "updatedAt": "2026-07-06T18:57:36.346Z",
+      "confidenceExplanation": null
+    },
+    {
+      "id": "aevo_1783363835918_heea",
+      "title": "Runtime: heal rate 10% is critically low",
+      "description": "Healed: 200, Failed: 1805. Improve self-healing strategies.",
+      "type": "runtime",
+      "target": "runtime",
+      "deptId": "aeo_runtime",
+      "confidence": 85,
+      "impact": 80,
+      "rollbackStrategy": "revert_state",
+      "objectiveId": "aeobj_1782591078056_5r9g",
+      "tags": [
+        "runtime",
+        "heal",
+        "reliability"
+      ],
+      "status": "kept",
+      "beforeMetrics": {
+        "healedTotal": 240,
+        "failedTotal": 1775,
+        "_timestamp": 1783364284841
+      },
+      "afterMetrics": {
+        "healedTotal": 240,
+        "failedTotal": 1775,
+        "_timestamp": 1783364284915
+      },
+      "impactMeasured": 0,
+      "appliedAt": "2026-07-06T18:58:04.842Z",
+      "measuredAt": "2026-07-06T18:58:04.915Z",
+      "keptAt": "2026-07-06T18:58:04.917Z",
+      "revertedAt": null,
+      "revertedReason": null,
+      "approvedBy": "aeo_coordinator",
+      "createdAt": "2026-07-06T18:50:35.918Z",
+      "updatedAt": "2026-07-06T18:57:36.338Z",
+      "confidenceExplanation": null
     }
   ],
   "experiments": [
@@ -10033,6 +10299,62 @@
       "type": "runtime",
       "target": "runtime",
       "keptAt": "2026-07-02T08:04:38.217Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783247161453_30fj",
+      "title": "Runtime: heal rate 7% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-05T10:46:52.289Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783248249426_0vae",
+      "title": "Runtime: heal rate 8% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-05T11:04:28.749Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783279350520_bimp",
+      "title": "Runtime: heal rate 6% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-05T19:35:00.808Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783341647059_urzd",
+      "title": "Runtime: heal rate 4% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-06T13:53:03.620Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783359089974_gkx3",
+      "title": "Runtime: heal rate 5% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-06T18:33:37.496Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783363835918_heea",
+      "title": "Runtime: heal rate 10% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-06T18:58:04.917Z",
+      "impactMeasured": 0
+    },
+    {
+      "evoId": "aevo_1783363415930_j436",
+      "title": "Runtime: heal rate 9% is critically low",
+      "type": "runtime",
+      "target": "runtime",
+      "keptAt": "2026-07-06T18:58:04.924Z",
       "impactMeasured": 0
     }
   ]

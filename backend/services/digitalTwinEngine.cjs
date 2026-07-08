@@ -73,7 +73,13 @@ function _default() {
 }
 
 // In-memory index for fast lookup — survives concurrent file writes within the same process
+// Never evicted (set-only) previously — grew one entry per decision for the
+// life of the process. Capped to match the on-disk store.decisions limit (500) below.
 const _memoryIndex = new Map();
+const MEMORY_INDEX_MAX = 500;
+function _capMemoryIndex() {
+  while (_memoryIndex.size > MEMORY_INDEX_MAX) _memoryIndex.delete(_memoryIndex.keys().next().value);
+}
 
 function _load() {
   try { return JSON.parse(fs.readFileSync(DATA, "utf8")); }
@@ -161,6 +167,7 @@ async function decide(command, {
   else                        store.stats.founderRequired++;
 
   _memoryIndex.set(id, decision); // fast in-process lookup
+  _capMemoryIndex();
   _save(store);
   return { ok: true, ...decision };
 }

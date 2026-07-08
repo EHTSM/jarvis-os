@@ -44,11 +44,52 @@ function _rj(name, fb = []) {
     try { return JSON.parse(fs.readFileSync(path.join(DATA, name), "utf8")); }
     catch { return fb; }
 }
+// Some NDJSON records (execution-runtime.ndjson in particular) embed an
+// "artifacts" array carrying full repo-status snapshots — individual lines
+// have been observed at 4-5MB each, almost entirely that one field. RCA only
+// reads status/error/capability/missionId/startedAt off these records, never
+// artifacts. A JSON.parse reviver still isn't enough: V8 must fully tokenize
+// and build the giant artifacts value before a reviver can discard it, so the
+// transient parse cost alone was enough to exhaust a 400MB heap across a few
+// such lines. Instead, cut the "artifacts" field out of the raw line string
+// before it ever reaches JSON.parse, so the bloat is never tokenized at all.
+function _stripArtifactsField(line) {
+    const i = line.indexOf('"artifacts"');
+    if (i === -1) return line;
+    // Find the start of the field's value (after the colon) and walk forward
+    // tracking bracket/brace depth and string state to find its matching end,
+    // then splice the whole "artifacts":<value> span out of the line.
+    let j = line.indexOf(":", i) + 1;
+    while (j < line.length && (line[j] === " " || line[j] === "\t")) j++;
+    const openChar = line[j];
+    if (openChar !== "[" && openChar !== "{") return line;
+    const closeChar = openChar === "[" ? "]" : "}";
+    let depth = 0, inStr = false, esc = false, end = -1;
+    for (let k = j; k < line.length; k++) {
+        const c = line[k];
+        if (inStr) {
+            if (esc) esc = false;
+            else if (c === "\\") esc = true;
+            else if (c === '"') inStr = false;
+            continue;
+        }
+        if (c === '"') inStr = true;
+        else if (c === openChar) depth++;
+        else if (c === closeChar) { depth--; if (depth === 0) { end = k + 1; break; } }
+    }
+    if (end === -1) return line;
+    // Remove from the field's opening quote through the value's end, plus a
+    // trailing comma if present, so the remaining JSON stays well-formed.
+    let removeEnd = end;
+    if (line[removeEnd] === ",") removeEnd++;
+    return line.slice(0, i) + line.slice(removeEnd);
+}
+
 function _rjLines(name) {
     try {
         return fs.readFileSync(path.join(DATA, name), "utf8")
             .split("\n").filter(Boolean)
-            .map(l => { try { return JSON.parse(l); } catch { return null; } })
+            .map(l => { try { return JSON.parse(_stripArtifactsField(l)); } catch { return null; } })
             .filter(Boolean);
     } catch { return []; }
 }

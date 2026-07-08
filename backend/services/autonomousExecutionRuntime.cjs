@@ -93,6 +93,27 @@ function _pushRing(rec) {
     _total++;
 }
 
+// The ring buffer's count cap (above) doesn't bound per-entry size. A
+// capability handler that embeds an uncapped result (e.g. code_search
+// returning full-file snippets) produces a multi-MB artifact that then sits
+// in this 1000-slot ring AND gets appended to execution-runtime.ndjson —
+// confirmed via heap-snapshot diff as the dominant runtime memory leak.
+// Defensively cap any artifact's serialized size here so no current or
+// future capability handler can reintroduce this, regardless of source.
+const MAX_ARTIFACT_JSON_LEN = 4096;
+function _capArtifacts(artifacts) {
+    if (!Array.isArray(artifacts)) return [];
+    return artifacts.map(a => {
+        try {
+            const json = JSON.stringify(a.value);
+            if (json && json.length > MAX_ARTIFACT_JSON_LEN) {
+                return { ...a, value: json.slice(0, MAX_ARTIFACT_JSON_LEN), _truncated: true };
+            }
+            return a;
+        } catch { return a; }
+    });
+}
+
 // ── Active executions (for cancellation / rollback) ────────────────────────
 const _active = new Map();  // executionId → { cancel: fn, record }
 
@@ -198,7 +219,7 @@ async function executeStage(opts = {}) {
                 rec.logs.push({ ts: new Date().toISOString(), msg: `Timeout on attempt ${attempt}` });
             } else if (result.success) {
                 rec.output    = result.output;
-                rec.artifacts = result.artifacts || [];
+                rec.artifacts = _capArtifacts(result.artifacts);
                 rec.logs.push(...(result.logs || []));
                 rec.status             = "completed";
                 rec.verificationResult = _verify(rec);

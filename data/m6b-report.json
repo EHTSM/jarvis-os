@@ -1,7 +1,7 @@
 {
-  "id": "launch-1783026284792-e0372c",
+  "id": "launch-1783104025987-7ca963",
   "version": "1.0",
-  "generatedAt": "2026-07-02T21:04:44.792Z",
+  "generatedAt": "2026-07-03T18:40:25.987Z",
   "missionId": "production-mission-6-extended",
   "filesChanged": [
     "backend/services/closedBeta.cjs (new)",
@@ -350,7 +350,7 @@
   "openIssues": 7,
   "fixedIssues": 13,
   "openRisks": 3,
-  "recommendedLaunchDate": "2026-07-05",
+  "recommendedLaunchDate": "2026-07-06",
   "confidenceScore": 71,
   "goNoGo": "CONDITIONAL GO",
   "goNoGoRationale": "Confidence 71/100. 2 open item(s) require founder env configuration before beta launch.",

@@ -1798,7 +1798,7 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 90,
+      "health": 91,
       "kpis": {},
       "governance": {
         "policies": [
@@ -1832,7 +1832,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.039Z",
-      "updatedAt": "2026-07-02T20:20:01.855Z"
+      "updatedAt": "2026-07-08T14:32:08.548Z"
     },
     {
       "id": "org_1782627037040_4051",
@@ -1851,7 +1851,7 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 90,
+      "health": 91,
       "kpis": {},
       "governance": {
         "policies": [
@@ -1885,7 +1885,7 @@
       ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.040Z",
-      "updatedAt": "2026-07-02T20:20:01.808Z"
+      "updatedAt": "2026-07-08T14:32:08.492Z"
     },
     {
       "id": "org_1782627037683_5f9a",
@@ -1907,7 +1907,7 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 90,
+      "health": 91,
       "kpis": {},
       "governance": {
         "policies": [
@@ -1936,10 +1936,12 @@
         }
       ],
       "deploymentHistory": [],
-      "certifications": [],
+      "certifications": [
+        "bronze"
+      ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.683Z",
-      "updatedAt": "2026-07-02T20:20:01.761Z"
+      "updatedAt": "2026-07-08T14:32:08.438Z"
     },
     {
       "id": "org_1782627037686_425l",
@@ -1961,7 +1963,7 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 90,
+      "health": 91,
       "kpis": {},
       "governance": {
         "policies": [
@@ -2006,10 +2008,12 @@
           "environment": "production"
         }
       ],
-      "certifications": [],
+      "certifications": [
+        "bronze"
+      ],
       "version": "1.1.0",
       "createdAt": "2026-06-28T06:10:37.686Z",
-      "updatedAt": "2026-07-02T20:20:01.702Z"
+      "updatedAt": "2026-07-08T14:32:08.384Z"
     },
     {
       "id": "org_1782627037729_dgem",
@@ -2024,7 +2028,7 @@
       "visibility": "private",
       "plan": "free",
       "status": "active",
-      "health": 90,
+      "health": 91,
       "kpis": {},
       "governance": {
         "policies": [
@@ -2053,10 +2057,12 @@
         }
       ],
       "deploymentHistory": [],
-      "certifications": [],
+      "certifications": [
+        "bronze"
+      ],
       "version": "1.0.0",
       "createdAt": "2026-06-28T06:10:37.729Z",
-      "updatedAt": "2026-07-02T20:20:01.653Z"
+      "updatedAt": "2026-07-08T14:32:08.331Z"
     }
   ],
   "total": 53

@@ -1,12 +1,12 @@
 {
-  "id": "manifest-1783026285597",
+  "id": "manifest-1783104024825",
   "version": "1.0.0-rc1",
-  "generatedAt": "2026-07-02T21:04:45.597Z",
+  "generatedAt": "2026-07-03T18:40:24.825Z",
   "releaseStage": "release-candidate",
   "frozen": true,
   "apiSurface": {
-    "totalRoutes": 4269,
-    "routeFiles": 125,
+    "totalRoutes": 4281,
+    "routeFiles": 126,
     "routeSurface": {
       "accounts": 6,
       "admin": 10,
@@ -110,6 +110,7 @@
       "plugins": 14,
       "postOmega": 12,
       "productFactory": 28,
+      "productionDeployment": 12,
       "productionInfra": 22,
       "productionWiring": 11,
       "productionWiring2": 12,
@@ -134,7 +135,7 @@
       "workspace": 7,
       "workspaceMesh": 41
     },
-    "serviceCount": 365,
+    "serviceCount": 366,
     "mountPoint": "backend/routes/index.js"
   },
   "routePrefixes": [

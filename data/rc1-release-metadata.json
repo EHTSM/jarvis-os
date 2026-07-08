@@ -2,8 +2,8 @@
   "name": "Ooplix",
   "version": "1.0.0-rc1",
   "releaseStage": "release-candidate",
-  "releaseDate": "2026-07-02T21:04:45.735Z",
-  "buildId": "build-1783026285735",
+  "releaseDate": "2026-07-03T18:40:24.987Z",
+  "buildId": "build-1783104024987",
   "platform": {
     "mac": {
       "target": "dmg",
@@ -33,7 +33,7 @@
     "owner": "EHTSM",
     "repo": "jarvis-os"
   },
-  "generatedAt": "2026-07-02T21:04:45.735Z",
+  "generatedAt": "2026-07-03T18:40:24.987Z",
   "artifacts": [
     {
       "file": "JARVIS-3.0.0-arm64.dmg",
@@ -44,7 +44,7 @@
       "sha256": "1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41"
     }
   ],
-  "latestMacYaml": "version: 1.0.0-rc1\nfiles:\n  - url: JARVIS-3.0.0-arm64.dmg\n    sha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\n    size: 130811233\n  - url: JARVIS-3.0.0.dmg\n    sha512: 1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41\n    size: 136318694\npath: JARVIS-3.0.0-arm64.dmg\nsha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\nsize: 130811233\nreleaseDate: 2026-07-02T21:04:45.734Z",
+  "latestMacYaml": "version: 1.0.0-rc1\nfiles:\n  - url: JARVIS-3.0.0-arm64.dmg\n    sha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\n    size: 130811233\n  - url: JARVIS-3.0.0.dmg\n    sha512: 1850929680fa026d5f808b73276d51d158291b37164df6c429bee4bca673be41\n    size: 136318694\npath: JARVIS-3.0.0-arm64.dmg\nsha512: 3fbeffe253562db909b7274647ee87b17c261a1f56f0e6f7708faafd023657a1\nsize: 130811233\nreleaseDate: 2026-07-03T18:40:24.987Z",
   "backendVersion": "1.0.0-rc1",
   "nodeMinVersion": "18.0.0",
   "electronVersion": "41.4.0",

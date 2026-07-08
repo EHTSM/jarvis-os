@@ -1057,5 +1057,140 @@
     "builtin": false,
     "usageCount": 0,
     "createdAt": 1783026171706
+  },
+  {
+    "id": "wf-mr4qxiw2-zyc",
+    "name": "Test Template",
+    "category": "testing",
+    "tags": [
+      "test"
+    ],
+    "goal": "Run a test job for {{ project }}",
+    "chain": null,
+    "steps": [
+      {
+        "label": "Build {{ project }}",
+        "cmd": "npm run build --project={{ project }}",
+        "approvalLevel": "SAFE"
+      },
+      {
+        "label": "Test",
+        "cmd": "npm test",
+        "approvalLevel": "SAFE"
+      }
+    ],
+    "replayable": true,
+    "exportable": true,
+    "builtin": false,
+    "usageCount": 0,
+    "createdAt": 1783071832034
+  },
+  {
+    "id": "wf-mr4t59gd-kd3",
+    "name": "Test Template",
+    "category": "testing",
+    "tags": [
+      "test"
+    ],
+    "goal": "Run a test job for {{ project }}",
+    "chain": null,
+    "steps": [
+      {
+        "label": "Build {{ project }}",
+        "cmd": "npm run build --project={{ project }}",
+        "approvalLevel": "SAFE"
+      },
+      {
+        "label": "Test",
+        "cmd": "npm test",
+        "approvalLevel": "SAFE"
+      }
+    ],
+    "replayable": true,
+    "exportable": true,
+    "builtin": false,
+    "usageCount": 0,
+    "createdAt": 1783075552285
+  },
+  {
+    "id": "wf-mr4t5d81-0yz",
+    "name": "Test Template",
+    "category": "testing",
+    "tags": [
+      "test"
+    ],
+    "goal": "Run a test job for {{ project }}",
+    "chain": null,
+    "steps": [
+      {
+        "label": "Build {{ project }}",
+        "cmd": "npm run build --project={{ project }}",
+        "approvalLevel": "SAFE"
+      },
+      {
+        "label": "Test",
+        "cmd": "npm test",
+        "approvalLevel": "SAFE"
+      }
+    ],
+    "replayable": true,
+    "exportable": true,
+    "builtin": false,
+    "usageCount": 0,
+    "createdAt": 1783075557169
+  },
+  {
+    "id": "wf-mr4t5goy-hne",
+    "name": "Test Template",
+    "category": "testing",
+    "tags": [
+      "test"
+    ],
+    "goal": "Run a test job for {{ project }}",
+    "chain": null,
+    "steps": [
+      {
+        "label": "Build {{ project }}",
+        "cmd": "npm run build --project={{ project }}",
+        "approvalLevel": "SAFE"
+      },
+      {
+        "label": "Test",
+        "cmd": "npm test",
+        "approvalLevel": "SAFE"
+      }
+    ],
+    "replayable": true,
+    "exportable": true,
+    "builtin": false,
+    "usageCount": 0,
+    "createdAt": 1783075561666
+  },
+  {
+    "id": "wf-mr5a3hvi-w2x",
+    "name": "Test Template",
+    "category": "testing",
+    "tags": [
+      "test"
+    ],
+    "goal": "Run a test job for {{ project }}",
+    "chain": null,
+    "steps": [
+      {
+        "label": "Build {{ project }}",
+        "cmd": "npm run build --project={{ project }}",
+        "approvalLevel": "SAFE"
+      },
+      {
+        "label": "Test",
+        "cmd": "npm test",
+        "approvalLevel": "SAFE"
+      }
+    ],
+    "replayable": true,
+    "exportable": true,
+    "builtin": false,
+    "usageCount": 0,
+    "createdAt": 1783104023358
   }
 ]

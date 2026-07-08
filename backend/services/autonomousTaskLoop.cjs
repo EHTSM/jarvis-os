@@ -53,8 +53,13 @@ let _learning = Array.isArray(_rawLearning) ? _rawLearning : (Array.isArray(_raw
 let _seq = _cycles.length;
 function _cycleId() { return `cyc_${Date.now()}_${(++_seq).toString(36)}`; }
 
-function _saveCycles()   { try { _writeJson(CYCLE_FILE,    _cycles.slice(-500));   } catch { /* non-fatal */ } }
-function _saveLearning() { try { _writeJson(LEARNING_FILE, _learning.slice(-1000)); } catch { /* non-fatal */ } }
+// _cycles/_learning grow by one push per cycle/learning-event for the life of
+// the process — slice(-N) here previously only trimmed the copy written to
+// disk, never the in-memory array itself, so RSS grew unbounded (each cycle
+// record embeds a full tasks[] array with output/error strings). Reassigning
+// keeps memory and disk bounded together.
+function _saveCycles()   { try { _cycles   = _cycles.slice(-500);    _writeJson(CYCLE_FILE,    _cycles);   } catch { /* non-fatal */ } }
+function _saveLearning() { try { _learning = _learning.slice(-1000); _writeJson(LEARNING_FILE, _learning); } catch { /* non-fatal */ } }
 
 function _readQueue()  { return _readJson(CYCLE_QUEUE_FILE, []); }
 function _writeQueue(q) {

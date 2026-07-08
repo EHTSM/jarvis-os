@@ -63,15 +63,15 @@
       "status": "active",
       "maxUses": 5,
       "uses": 1,
-      "createdAt": "2026-07-02T21:04:43.747Z"
+      "createdAt": "2026-07-03T18:40:23.735Z"
     },
     "REVOKED1": {
       "code": "REVOKED1",
       "status": "revoked",
       "maxUses": 1,
       "uses": 0,
-      "createdAt": "2026-07-02T21:04:43.748Z",
-      "revokedAt": "2026-07-02T21:04:43.752Z",
+      "createdAt": "2026-07-03T18:40:23.735Z",
+      "revokedAt": "2026-07-03T18:40:23.741Z",
       "revokedReason": "test revocation"
     }
   },
@@ -2429,6 +2429,258 @@
       "slug": "most-used-ooplix-feature-ai-mission-generation-92-of-session",
       "createdAt": "2026-07-02T21:02:56.175Z",
       "updatedAt": "2026-07-02T21:02:56.175Z"
+    },
+    "kb-1783071836599-86k5": {
+      "id": "kb-1783071836599-86k5",
+      "type": "article",
+      "category": "insight",
+      "title": "WhatsApp bots convert 3x better than email for Indian SMBs",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "insight"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "whatsapp-bots-convert-3x-better-than-email-for-indian-smbs",
+      "createdAt": "2026-07-03T09:43:56.599Z",
+      "updatedAt": "2026-07-03T09:43:56.599Z"
+    },
+    "kb-1783071836600-x4n1": {
+      "id": "kb-1783071836600-x4n1",
+      "type": "article",
+      "category": "pattern",
+      "title": "Founders using Missions complete 40% more work per week",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "pattern"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "founders-using-missions-complete-40-more-work-per-week",
+      "createdAt": "2026-07-03T09:43:56.600Z",
+      "updatedAt": "2026-07-03T09:43:56.600Z"
+    },
+    "kb-1783071836601-k2tf": {
+      "id": "kb-1783071836601-k2tf",
+      "type": "article",
+      "category": "playbook",
+      "title": "SaaS launch checklist: 12 steps from MVP to first 100 users",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "playbook"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "saas-launch-checklist-12-steps-from-mvp-to-first-100-users",
+      "createdAt": "2026-07-03T09:43:56.601Z",
+      "updatedAt": "2026-07-03T09:43:56.601Z"
+    },
+    "kb-1783071836602-hprr": {
+      "id": "kb-1783071836602-hprr",
+      "type": "article",
+      "category": "lesson",
+      "title": "Rate limits hit at 500 WhatsApp messages/hour on sandbox",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "lesson"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "rate-limits-hit-at-500-whatsapp-messages-hour-on-sandbox",
+      "createdAt": "2026-07-03T09:43:56.602Z",
+      "updatedAt": "2026-07-03T09:43:56.602Z"
+    },
+    "kb-1783071836602-3tog": {
+      "id": "kb-1783071836602-3tog",
+      "type": "article",
+      "category": "benchmark",
+      "title": "AI task completion: avg 4.2 minutes, 87% acceptance rate",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "benchmark"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "ai-task-completion-avg-4-2-minutes-87-acceptance-rate",
+      "createdAt": "2026-07-03T09:43:56.602Z",
+      "updatedAt": "2026-07-03T09:43:56.602Z"
+    },
+    "kb-1783071836604-nnxo": {
+      "id": "kb-1783071836604-nnxo",
+      "type": "article",
+      "category": "insight",
+      "title": "Most-used Ooplix feature: AI Mission generation (92% of sessions)",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "insight"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "most-used-ooplix-feature-ai-mission-generation-92-of-session",
+      "createdAt": "2026-07-03T09:43:56.604Z",
+      "updatedAt": "2026-07-03T09:43:56.604Z"
+    },
+    "kb-1783104023454-2f5t": {
+      "id": "kb-1783104023454-2f5t",
+      "type": "article",
+      "category": "insight",
+      "title": "WhatsApp bots convert 3x better than email for Indian SMBs",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "insight"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "whatsapp-bots-convert-3x-better-than-email-for-indian-smbs",
+      "createdAt": "2026-07-03T18:40:23.454Z",
+      "updatedAt": "2026-07-03T18:40:23.454Z"
+    },
+    "kb-1783104023459-c84o": {
+      "id": "kb-1783104023459-c84o",
+      "type": "article",
+      "category": "pattern",
+      "title": "Founders using Missions complete 40% more work per week",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "pattern"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "founders-using-missions-complete-40-more-work-per-week",
+      "createdAt": "2026-07-03T18:40:23.459Z",
+      "updatedAt": "2026-07-03T18:40:23.459Z"
+    },
+    "kb-1783104023460-tpf7": {
+      "id": "kb-1783104023460-tpf7",
+      "type": "article",
+      "category": "playbook",
+      "title": "SaaS launch checklist: 12 steps from MVP to first 100 users",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "playbook"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "saas-launch-checklist-12-steps-from-mvp-to-first-100-users",
+      "createdAt": "2026-07-03T18:40:23.460Z",
+      "updatedAt": "2026-07-03T18:40:23.460Z"
+    },
+    "kb-1783104023461-0uey": {
+      "id": "kb-1783104023461-0uey",
+      "type": "article",
+      "category": "lesson",
+      "title": "Rate limits hit at 500 WhatsApp messages/hour on sandbox",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "lesson"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "rate-limits-hit-at-500-whatsapp-messages-hour-on-sandbox",
+      "createdAt": "2026-07-03T18:40:23.461Z",
+      "updatedAt": "2026-07-03T18:40:23.461Z"
+    },
+    "kb-1783104023461-wdel": {
+      "id": "kb-1783104023461-wdel",
+      "type": "article",
+      "category": "benchmark",
+      "title": "AI task completion: avg 4.2 minutes, 87% acceptance rate",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "benchmark"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "ai-task-completion-avg-4-2-minutes-87-acceptance-rate",
+      "createdAt": "2026-07-03T18:40:23.461Z",
+      "updatedAt": "2026-07-03T18:40:23.461Z"
+    },
+    "kb-1783104023463-3v9s": {
+      "id": "kb-1783104023463-3v9s",
+      "type": "article",
+      "category": "insight",
+      "title": "Most-used Ooplix feature: AI Mission generation (92% of sessions)",
+      "body": "",
+      "videoUrl": null,
+      "videoThumb": null,
+      "tags": [
+        "alpha-dataset",
+        "insight"
+      ],
+      "relatedIds": [],
+      "views": 0,
+      "helpful": 0,
+      "notHelpful": 0,
+      "published": true,
+      "slug": "most-used-ooplix-feature-ai-mission-generation-92-of-session",
+      "createdAt": "2026-07-03T18:40:23.463Z",
+      "updatedAt": "2026-07-03T18:40:23.463Z"
     }
   },
   "crashGroups": {

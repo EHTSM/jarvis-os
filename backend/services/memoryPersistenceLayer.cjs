@@ -57,7 +57,27 @@ let _archive = new Map(
     (_readJson(ARCHIVE_FILE, [])).map(n => [n.nodeId, n])
 );
 
+// _store/_archive previously had no cap at all — every tick's saveTypedMemory()
+// call added a node and neither this file nor memoryIntelligenceEngine's
+// archiveStale() (60-day staleness window, so effectively inert on any
+// realistic uptime) ever removed anything from _archive. Grew to 11,000+
+// archive entries / 7MB+, re-serialized in full on every single save() —
+// a steady, compounding memory + I/O leak. Cap both, evicting lowest-importance
+// then oldest first so frequently-recalled/important nodes survive longest.
+const MAX_STORE_NODES   = 2000;
+const MAX_ARCHIVE_NODES = 2000;
+
+function _evictOverflow(map, maxSize) {
+    if (map.size <= maxSize) return;
+    const over = map.size - maxSize;
+    const sorted = Array.from(map.values())
+        .sort((a, b) => (a.importance || 0) - (b.importance || 0) || a.updatedAt.localeCompare(b.updatedAt));
+    for (let i = 0; i < over; i++) map.delete(sorted[i].nodeId);
+}
+
 function _persist() {
+    _evictOverflow(_store,   MAX_STORE_NODES);
+    _evictOverflow(_archive, MAX_ARCHIVE_NODES);
     try { _writeJson(STORE_FILE,   Array.from(_store.values()));   } catch (e) { logger.warn(`[Memory] persist store failed: ${e.message}`); }
     try { _writeJson(ARCHIVE_FILE, Array.from(_archive.values())); } catch (e) { logger.warn(`[Memory] persist archive failed: ${e.message}`); }
     _rebuildIndex();

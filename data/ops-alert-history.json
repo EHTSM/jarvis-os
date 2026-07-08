@@ -32,5 +32,22 @@
     "suppressedUntil": null,
     "escalated": false,
     "notifications": []
+  },
+  {
+    "alertId": "oal_1780686803272_1",
+    "title": "High autonomous cycle failure rate",
+    "detail": "100% cycles failing",
+    "severity": "warning",
+    "source": "probe",
+    "category": "autonomy",
+    "dedupeKey": "cycle_failures",
+    "status": "resolved",
+    "count": 2533,
+    "firedAt": "2026-06-05T19:13:23.272Z",
+    "resolvedAt": "2026-07-06T10:04:24.910Z",
+    "lastSeenAt": "2026-07-06T09:21:37.809Z",
+    "suppressedUntil": null,
+    "escalated": false,
+    "notifications": []
   }
 ]

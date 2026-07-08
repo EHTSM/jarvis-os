@@ -91,9 +91,27 @@ function _loadState() {
   try { _memory = JSON.parse(fs.readFileSync(MEMORY_FILE, "utf8")); } catch { _memory = []; }
 }
 
+// _state's top-level arrays previously had no cap — every one of the 20
+// engineering-dept ticks that runs a workflow step (CTO objective → EM epic
+// → work item → review → handoff → ...) pushes to these without bound,
+// growing this file and its in-memory _state object forever. Cap each on
+// save, same pattern as executiveState.cjs/akoState.cjs/businessOrgState.cjs.
+const STATE_ARRAY_CAPS = {
+  objectives: 500, epics: 1000, workItems: 5000,
+  blockers: 1000, handoffs: 1000, approvals: 1000, reviews: 1000,
+};
+function _capStateArrays() {
+  for (const [key, max] of Object.entries(STATE_ARRAY_CAPS)) {
+    const arr = _state[key];
+    if (Array.isArray(arr) && arr.length > max) arr.splice(0, arr.length - max);
+  }
+}
+
 function _save() {
   _ensureDir();
   _state.updatedAt = new Date().toISOString();
+  _capStateArrays();
+  if (_memory.length > 2000) _memory.splice(0, _memory.length - 2000);
   fs.writeFileSync(STATE_FILE,  JSON.stringify(_state,  null, 2));
   fs.writeFileSync(KPI_FILE,    JSON.stringify(_kpis,   null, 2));
   fs.writeFileSync(MEMORY_FILE, JSON.stringify(_memory, null, 2));

@@ -601,8 +601,8 @@ function stopProbeLoop() {
     if (_probeTimer) { clearInterval(_probeTimer); _probeTimer = null; }
 }
 
-// Auto-start probe loop when module is loaded in server context
-startProbeLoop();
+// Probe loop is started explicitly by server.js after app.listen() succeeds —
+// NOT at module load — so background work never runs ahead of the HTTP bind.
 
 // ── Query API ────────────────────────────────────────────────────────────
 function getHistory({ strategy, targetType, limit = 100, offset = 0 } = {}) {

@@ -515,10 +515,19 @@ function syncOrgStatus() {
 // MEMORY & REPORTS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Unbounded — every EOS department tick can call addMemory(), and this store
+// was never trimmed. It grew to 99MB+/4M+ entries over time, and the first
+// _m() call in a fresh process (the module cache starts empty) parses that
+// entire file synchronously — a major contributor to the startup OOM. Cap it
+// the same way continuousLearningEngine.cjs caps lessons/recommendations.
+const MAX_MEMORY_ENTRIES = 2000;
+
 function addMemory({ deptId, type, title, detail = "", tags = [] } = {}) {
   if (!deptId || !title) return { ok: false, error: "deptId and title required" };
   const entry = { id: _id("emem"), deptId, type, title, detail, tags, createdAt: new Date().toISOString() };
-  _m().push(entry);
+  const mem = _m();
+  mem.push(entry);
+  if (mem.length > MAX_MEMORY_ENTRIES) mem.splice(0, mem.length - MAX_MEMORY_ENTRIES);
   _save("memory");
   return { ok: true, entry };
 }

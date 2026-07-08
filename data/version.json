@@ -1,10 +1,10 @@
 {
   "version": "1.0.0-rc1",
   "previous": "1.0.0-rc1",
-  "frozenAt": "2026-07-02T21:04:45.590Z",
+  "frozenAt": "2026-07-03T18:40:24.817Z",
   "frozenBy": "rc1-freeze",
   "releaseStage": "release-candidate",
-  "buildId": "rc1-build-1783026285590",
+  "buildId": "rc1-build-1783104024817",
   "history": [
     {
       "from": "3.0.2",
@@ -428,6 +428,258 @@
       "from": "1.0.0-rc1",
       "to": "1.0.0-rc1",
       "at": "2026-07-02T21:04:45.590Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:33.004Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:33.011Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:33.579Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:33.765Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:33.953Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:34.126Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.184Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.187Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.459Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.642Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.802Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:45.957Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:52.245Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:52.251Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:52.481Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:52.682Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:52.857Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:53.026Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.148Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.153Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.360Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.563Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.727Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:45:57.891Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:01.650Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:01.657Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:01.854Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:02.099Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:02.270Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T10:46:02.436Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:17.641Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:17.645Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:18.023Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:18.183Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:18.336Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:18.486Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:23.903Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:23.909Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:24.152Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:24.373Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:24.642Z",
+      "strategy": "rc-freeze"
+    },
+    {
+      "from": "1.0.0-rc1",
+      "to": "1.0.0-rc1",
+      "at": "2026-07-03T18:40:24.817Z",
       "strategy": "rc-freeze"
     }
   ]

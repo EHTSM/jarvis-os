@@ -67,6 +67,14 @@ const ORCH_STATES = new Set([
     "paused", "cancelled",
 ]);
 
+// Mirrors the terminal-state filter _loadOrch() already applies when
+// restoring _live from disk on boot (see below) — but nothing evicted these
+// from _live during a running process, so it grew by one entry per mission
+// ever created for the life of the process. missionMemory is authoritative
+// for terminal missions (getMission() already falls back to it when a
+// missionId isn't in _live), so evicting here is safe.
+const TERMINAL_STATES = new Set(["completed", "failed", "rolledback", "cancelled"]);
+
 // Map orchestrator state → missionMemory status
 const TO_MEM_STATUS = {
     created:    "planned",
@@ -97,7 +105,7 @@ function _loadOrch() {
     try { _orcState = JSON.parse(fs.readFileSync(ORCH_FILE, "utf8")); } catch { _orcState = { records: [] }; }
     // Restore live map from persisted state
     for (const rec of _orcState.records || []) {
-        if (!["completed", "failed", "rolledback", "cancelled"].includes(rec.orchStatus)) {
+        if (!TERMINAL_STATES.has(rec.orchStatus)) {
             _live.set(rec.missionId, rec);
         }
     }
@@ -279,10 +287,30 @@ function _transition(missionId, nextStatus, patch = {}) {
         try { _getMem()?.updateMission(missionId, { status: memStatus }); } catch { /* non-fatal */ }
     }
 
+    if (TERMINAL_STATES.has(nextStatus)) rec._terminalAt = Date.now();
+
     _saveOrch();
     _emit(`orchestrator:${nextStatus}`, missionId, { orchStatus: nextStatus, ...patch });
     return { ...rec };
 }
+
+// ── Evict terminal missions from _live ─────────────────────────────────────
+// _live is meant to hold only in-flight orchestration state (missionMemory is
+// authoritative once a mission finishes — getMission()/listMissions() already
+// fall back to it). A short grace window keeps just-completed missions
+// visible to callers polling for a result before the record is dropped.
+const LIVE_EVICTION_GRACE_MS = 5 * 60_000;
+
+function _sweepTerminalMissions() {
+    const now = Date.now();
+    for (const [missionId, rec] of _live) {
+        if (rec._terminalAt && now - rec._terminalAt > LIVE_EVICTION_GRACE_MS) {
+            _live.delete(missionId);
+        }
+    }
+}
+
+setInterval(_sweepTerminalMissions, 60_000).unref();
 
 // ── Queue for execution (non-approval missions auto-advance) ───────────────
 function _queue(missionId) {

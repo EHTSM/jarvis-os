@@ -66,15 +66,31 @@ let _seq     = _lessons.length + _recs.length;
 
 function _lid() { return `les_${Date.now()}_${(++_seq).toString(36)}`; }
 function _rid() { return `rec_${Date.now()}_${(++_seq).toString(36)}`; }
-function _saveLessons() { try { _wj(LESSONS_FILE, _lessons.slice(-2000)); } catch { /* non-fatal */ } }
-function _saveRecs()    { try { _wj(RECS_FILE,    _recs.slice(-500));    } catch { /* non-fatal */ } }
+// _lessons/_recs grow by one push per createLesson()/recommendation for the
+// life of the process — slice(-N) here previously only trimmed the copy
+// written to disk, never the in-memory array itself, so RSS grew unbounded.
+// createLesson() fires on nearly every tick across 3 of the 10 org files
+// (autonomousEvolutionOrg, autonomousKnowledgeOrg, businessOrg), making this
+// the dominant steady-state leak. Reassigning keeps memory and disk bounded
+// together — same fix as autonomousTaskLoop.cjs's _cycles/_learning.
+function _saveLessons() { try { _lessons = _lessons.slice(-2000); _wj(LESSONS_FILE, _lessons); } catch { /* non-fatal */ } }
+function _saveRecs()    { try { _recs    = _recs.slice(-500);    _wj(RECS_FILE,    _recs);    } catch { /* non-fatal */ } }
 
 // ── Data loading ─────────────────────────────────────────────────────────
-function _loadRuns()      { return _rj(DATA_SOURCES.agentRuns,     []); }
-function _loadCycles()    { return _rj(DATA_SOURCES.cycles,        []); }
-function _loadToolUsage() { return _rj(DATA_SOURCES.toolUsage,     []); }
-function _loadCoordSess() { return _rj(DATA_SOURCES.coordSessions, []); }
-function _loadHealHist()  { return _rj(DATA_SOURCES.healHistory,   []); }
+// Cached per-tick (cleared at the top of runFullAnalysis) so a single analysis
+// pass parses each source file at most once instead of once per call site.
+const _dataCache = {};
+function _cached(key, file) {
+    if (!(key in _dataCache)) _dataCache[key] = _rj(file, []);
+    return _dataCache[key];
+}
+function _clearDataCache() { for (const k of Object.keys(_dataCache)) delete _dataCache[k]; }
+
+function _loadRuns()      { return _cached("agentRuns",     DATA_SOURCES.agentRuns); }
+function _loadCycles()    { return _cached("cycles",        DATA_SOURCES.cycles); }
+function _loadToolUsage() { return _cached("toolUsage",     DATA_SOURCES.toolUsage); }
+function _loadCoordSess() { return _cached("coordSessions", DATA_SOURCES.coordSessions); }
+function _loadHealHist()  { return _cached("healHistory",   DATA_SOURCES.healHistory); }
 
 // ── Failure analysis ─────────────────────────────────────────────────────
 function analyzeFailures({ since, limit = 200 } = {}) {
@@ -265,6 +281,7 @@ function updateRecommendation(recId, patch) {
 // ── Full analysis pipeline ────────────────────────────────────────────────
 function runFullAnalysis() {
     logger.info("[LearningEngine] Running full analysis...");
+    _clearDataCache();
     const failResult    = analyzeFailures();
     const successResult = analyzeSuccesses();
 
@@ -316,9 +333,16 @@ function getStats() {
     };
 }
 
-// Auto-run analysis on load (non-blocking) — populates lessons/recs on first start
-setImmediate(() => {
-    try { runFullAnalysis(); } catch { /* non-critical */ }
-});
+// Populates lessons/recs on first run. Call after the HTTP server is listening —
+// NOT at module load — so a large agent-runs/tool-usage/cycles history doesn't
+// get parsed and clustered in memory before the process can bind its port.
+let _autoAnalysisStarted = false;
+function startAutoAnalysis() {
+    if (_autoAnalysisStarted) return;
+    _autoAnalysisStarted = true;
+    setImmediate(() => {
+        try { runFullAnalysis(); } catch { /* non-critical */ }
+    });
+}
 
-module.exports = { analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats };
+module.exports = { analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis };

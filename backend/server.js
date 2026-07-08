@@ -605,6 +605,22 @@ _httpServer = app.listen(PORT, () => {
     startTelegramBot();
     automation.start();
 
+    // ── Deferred heavy analysis / probe loops ──────────────────────
+    // These previously ran at require()-time (module scope), which parsed
+    // and clustered agent-runs/tool-usage/cycles history before the HTTP
+    // server could bind — the root cause of the startup heap-limit crash.
+    // Starting them here guarantees app.listen() has already succeeded.
+    try {
+        require("./services/continuousLearningEngine.cjs").startAutoAnalysis();
+    } catch (err) {
+        logger.warn("[LearningEngine] deferred start failed:", err.message);
+    }
+    try {
+        require("./services/selfHealingRuntime.cjs").startProbeLoop();
+    } catch (err) {
+        logger.warn("[SelfHeal] deferred start failed:", err.message);
+    }
+
     // ── Autonomous task loop ───────────────────────────────────────
     try {
         _autoLoopRef = require("../agents/autonomousLoop.cjs");

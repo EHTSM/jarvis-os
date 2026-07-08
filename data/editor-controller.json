@@ -855,12 +855,32 @@
       "event": "search",
       "query": "`id`",
       "ts": "2026-07-02T21:02:54.964Z"
+    },
+    {
+      "event": "search",
+      "query": "\"; echo pwned; echo \"",
+      "ts": "2026-07-03T09:43:56.753Z"
+    },
+    {
+      "event": "search",
+      "query": "`id`",
+      "ts": "2026-07-03T09:43:59.619Z"
+    },
+    {
+      "event": "search",
+      "query": "\"; echo pwned; echo \"",
+      "ts": "2026-07-03T18:40:23.516Z"
+    },
+    {
+      "event": "search",
+      "query": "`id`",
+      "ts": "2026-07-03T18:40:27.274Z"
     }
   ],
   "stats": {
     "filesCreated": 42,
     "filesModified": 0,
     "commits": 20,
-    "searches": 83
+    "searches": 87
   }
 }

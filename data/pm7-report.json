@@ -1,0 +1,434 @@
+{
+  "mission": "Production Mission 7 — Live Production Deployment",
+  "deployVersion": "1.0.0-rc1",
+  "reportGeneratedAt": "2026-07-03T00:13:33.885Z",
+  "goNoGo": "IN PROGRESS",
+  "deploymentStatus": "DEPLOYMENT IN PROGRESS",
+  "localReadiness": {
+    "phase": "local-readiness",
+    "score": 100,
+    "passed": 10,
+    "total": 10,
+    "checks": [
+      {
+        "id": "L1",
+        "name": "package.json version 1.0.0-rc1",
+        "pass": true,
+        "detail": "1.0.0-rc1"
+      },
+      {
+        "id": "L2",
+        "name": "data/version.json frozen",
+        "pass": true,
+        "detail": "1.0.0-rc1"
+      },
+      {
+        "id": "L3",
+        "name": "CHANGELOG.md has rc1 entry",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "id": "L4",
+        "name": "RC-4 service exists",
+        "pass": true,
+        "detail": ""
+      },
+      {
+        "id": "L5",
+        "name": "CookiePolicy.jsx added",
+        "pass": true,
+        "detail": "FIX from RC-4"
+      },
+      {
+        "id": "L6",
+        "name": "nginx catch-all API proxy updated",
+        "pass": true,
+        "detail": "covers all POST-Ω routes"
+      },
+      {
+        "id": "L7",
+        "name": "ecosystem.config.cjs present",
+        "pass": true,
+        "detail": "PM2 config"
+      },
+      {
+        "id": "L8",
+        "name": "deploy/validate-production.sh present",
+        "pass": true,
+        "detail": "30-check validation"
+      },
+      {
+        "id": "L9",
+        "name": "deploy/update.sh present",
+        "pass": true,
+        "detail": "zero-downtime update"
+      },
+      {
+        "id": "L10",
+        "name": "deploy/https-setup.sh present",
+        "pass": true,
+        "detail": "SSL provisioning"
+      }
+    ]
+  },
+  "localHealth": {
+    "reachable": false
+  },
+  "rc3Score": 99,
+  "rc3GoNoGo": "GO",
+  "rc4Score": 89,
+  "rc4GoNoGo": "CONDITIONAL GO",
+  "taskSummary": {
+    "done": 0,
+    "failed": 0,
+    "pending": 18,
+    "total": 18
+  },
+  "tasks": [
+    {
+      "id": 1,
+      "phase": "Pre-deploy",
+      "name": "Push HEAD to GitHub",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 2,
+      "phase": "Pre-deploy",
+      "name": "Create Release Tag v1.0.0-rc1",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 3,
+      "phase": "Pre-deploy",
+      "name": "Verify GitHub Release assets",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 4,
+      "phase": "VPS",
+      "name": "SSH into Hostinger VPS",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 5,
+      "phase": "VPS",
+      "name": "Pull latest code (git pull)",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 6,
+      "phase": "VPS",
+      "name": "Install/update dependencies",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 7,
+      "phase": "VPS",
+      "name": "Build frontend",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 8,
+      "phase": "VPS",
+      "name": "Validate .env",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 9,
+      "phase": "VPS",
+      "name": "Restart PM2 (pm2 reload jarvis-os)",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 10,
+      "phase": "VPS",
+      "name": "Reload Nginx",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 11,
+      "phase": "VPS",
+      "name": "Verify SSL certificate",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 12,
+      "phase": "Verification",
+      "name": "Run validate-production.sh",
+      "founder": true,
+      "status": "FOUNDER_PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 13,
+      "phase": "Verification",
+      "name": "Verify GET /health",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 14,
+      "phase": "Verification",
+      "name": "Verify frontend loads",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 15,
+      "phase": "Verification",
+      "name": "Verify backend APIs",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 16,
+      "phase": "Verification",
+      "name": "Verify WebSocket / SSE stream",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 17,
+      "phase": "Verification",
+      "name": "Verify PM2 auto-restart",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    },
+    {
+      "id": 18,
+      "phase": "Report",
+      "name": "Produce deployment report",
+      "founder": false,
+      "status": "PENDING",
+      "completedAt": null,
+      "notes": "",
+      "error": null
+    }
+  ],
+  "deploymentInstructions": {
+    "task1_push": {
+      "description": "Commit all changes and push to GitHub",
+      "commands": [
+        "git add -A",
+        "git commit -m \"feat(pm7): Production Mission 7 — deploy RC-4 to Hostinger VPS\"",
+        "git push origin main"
+      ]
+    },
+    "task2_tag": {
+      "description": "Create and push release tag",
+      "commands": [
+        "git tag -a v1.0.0-rc1 -m 'Release Candidate 1 — Ooplix v1.0.0'",
+        "git push origin v1.0.0-rc1"
+      ]
+    },
+    "task3_release": {
+      "description": "Create GitHub Release (via gh CLI or GitHub UI)",
+      "commands": [
+        "gh release create v1.0.0-rc1 --title 'Ooplix v1.0.0-rc1' --notes-file CHANGELOG.md"
+      ]
+    },
+    "task4_ssh": {
+      "description": "SSH into Hostinger VPS",
+      "commands": [
+        "ssh root@<VPS_IP>   # or: ssh jarvis@<VPS_IP>"
+      ]
+    },
+    "task5_pull": {
+      "description": "On VPS — pull latest code",
+      "commands": [
+        "cd /opt/jarvis-os",
+        "git pull origin main"
+      ]
+    },
+    "task6_deps": {
+      "description": "On VPS — install dependencies",
+      "commands": [
+        "npm install --omit=dev --ignore-scripts"
+      ]
+    },
+    "task7_build": {
+      "description": "On VPS — build frontend (uses committed build if present)",
+      "commands": [
+        "# Frontend build is committed to git — git pull already fetched it.",
+        "# Only rebuild if you changed frontend source since the last commit:",
+        "# npm run build:frontend",
+        "ls frontend/build/index.html && echo 'Build present'"
+      ]
+    },
+    "task8_env": {
+      "description": "On VPS — validate .env",
+      "commands": [
+        "bash deploy/validate-production.sh | head -40",
+        "# Fix any FAIL items before proceeding"
+      ]
+    },
+    "task9_pm2": {
+      "description": "On VPS — reload PM2 (zero-downtime)",
+      "commands": [
+        "pm2 reload jarvis-os 2>/dev/null || pm2 restart jarvis-os",
+        "sleep 3 && curl -sf http://localhost:5050/health | python3 -m json.tool"
+      ]
+    },
+    "task10_nginx": {
+      "description": "On VPS — copy new nginx config and reload",
+      "commands": [
+        "# First time setup:",
+        "sudo cp deploy/nginx-jarvis.conf /etc/nginx/sites-available/jarvis",
+        "sudo ln -sf /etc/nginx/sites-available/jarvis /etc/nginx/sites-enabled/jarvis",
+        "# Replace yourdomain.com with actual domain in the config:",
+        "sudo sed -i 's/yourdomain.com/<YOUR_DOMAIN>/g' /etc/nginx/sites-available/jarvis",
+        "sudo nginx -t && sudo systemctl reload nginx"
+      ]
+    },
+    "task11_ssl": {
+      "description": "On VPS — provision SSL via certbot",
+      "commands": [
+        "bash deploy/https-setup.sh <YOUR_DOMAIN>",
+        "# Or: sudo certbot --nginx -d <YOUR_DOMAIN> -d www.<YOUR_DOMAIN>",
+        "sudo nginx -t && sudo systemctl reload nginx"
+      ]
+    },
+    "task12_validate": {
+      "description": "On VPS — run full production validation",
+      "commands": [
+        "bash deploy/validate-production.sh",
+        "# Target: 0 FAIL, warnings acceptable (external service items)"
+      ]
+    },
+    "task13_health": {
+      "description": "Verify /health endpoint",
+      "commands": [
+        "curl -sf https://<YOUR_DOMAIN>/health | python3 -m json.tool",
+        "# Expect: {\"status\":\"ok\", \"uptime_seconds\": N, ...}"
+      ]
+    },
+    "task14_frontend": {
+      "description": "Verify frontend loads",
+      "commands": [
+        "curl -sf https://<YOUR_DOMAIN>/ | grep -c 'Ooplix'",
+        "# Or open in browser — should show Ooplix landing/login page"
+      ]
+    },
+    "task15_apis": {
+      "description": "Verify backend API routes",
+      "commands": [
+        "curl -s -o /dev/null -w '%{http_code}' https://<YOUR_DOMAIN>/auth/me   # expect 401",
+        "curl -s -o /dev/null -w '%{http_code}' https://<YOUR_DOMAIN>/ops        # expect 401",
+        "curl -s -o /dev/null -w '%{http_code}' https://<YOUR_DOMAIN>/billing/status # expect 401",
+        "curl -s -o /dev/null -w '%{http_code}' https://<YOUR_DOMAIN>/rc4/metadata  # expect 200 (no auth required on metadata)"
+      ]
+    },
+    "task16_websocket": {
+      "description": "Verify SSE / WebSocket stream",
+      "commands": [
+        "# SSE stream is auth-gated — test by logging into the app and opening the operator console",
+        "# OR with a valid JWT:",
+        "curl -sf -H 'Cookie: token=<JWT>' https://<YOUR_DOMAIN>/runtime/stream --max-time 3 | head -3"
+      ]
+    },
+    "task17_autorestart": {
+      "description": "Verify PM2 auto-restart",
+      "commands": [
+        "pm2 show jarvis-os | grep -E 'status|restarts|uptime'",
+        "# autorestart: true, max_restarts: 5, min_uptime: 15s",
+        "# PM2 startup should be saved: pm2 startup && pm2 save"
+      ]
+    }
+  },
+  "healthReport": {
+    "endpoint": "/health",
+    "localStatus": "NOT_REACHABLE",
+    "serverStatus": "UNKNOWN",
+    "uptimeSecs": null,
+    "heapMb": null,
+    "note": "Backend not running locally — expected on production VPS after pm2 reload"
+  },
+  "filesDeployed": [
+    "backend/services/rc4.cjs (RC-4 certification)",
+    "backend/routes/rc4.js (18 /rc4/* routes)",
+    "tests/integration/15-rc4.test.cjs (154 tests)",
+    "frontend/src/components/legal/CookiePolicy.jsx (legal compliance fix)",
+    "frontend/src/App.jsx (CookiePolicy wired)",
+    "frontend/src/components/legal/CompanyFooter.jsx (Cookie Policy link)",
+    "deploy/nginx-jarvis.conf (catch-all API proxy — covers all POST-Ω routes)",
+    "backend/services/productionDeployment.cjs (this service)",
+    "backend/routes/productionDeployment.js (PM7 routes)"
+  ],
+  "remainingFounderActions": [
+    "G1: Provision/confirm Hostinger VPS is Ubuntu 22.04 with 2+ vCPU, 4GB RAM",
+    "G2: DNS — point ooplix.com A record to VPS IP",
+    "G4: .env — all required vars must be set (JWT_SECRET, GROQ_API_KEY, BASE_URL, RAZORPAY_*, RESEND_*, TELEGRAM_*)",
+    "G7: SSL — run https-setup.sh or certbot manually",
+    "G9: Create Razorpay plans (Starter 999 INR / Growth 2499 INR)",
+    "G10: Verify Resend email delivery (noreply@ooplix.com)",
+    "G11: Telegram alert bot connected (TELEGRAM_BOT_TOKEN + TELEGRAM_OPERATOR_CHAT_ID)",
+    "G13: Schedule offsite backup (pm2 start ecosystem.config.cjs — ooplix-backup cron job)",
+    "G14: GST registration (external — not a code item)",
+    "G15: Build Electron DMG (npm run electron:build) → publish to GitHub Releases",
+    "G16: Cloudflare CDN in front of ooplix.com",
+    "G17: Public status page at status.ooplix.com"
+  ],
+  "regression": "1051/1051 tests passing (01-15-rc4)"
+}

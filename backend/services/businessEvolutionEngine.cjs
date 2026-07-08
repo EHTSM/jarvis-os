@@ -47,7 +47,13 @@ const EVOLUTION_STEPS = [
 ];
 
 // ── In-memory index — survives concurrent file clobbers ───────────────────────
+// Never evicted (set-only) previously — grew one entry per cycle for the life
+// of the process. Capped to match the on-disk d.cycles limit (200) below.
 const _memIndex = new Map(); // id → cycleEntry
+const MEM_INDEX_MAX = 200;
+function _capMemIndex() {
+  while (_memIndex.size > MEM_INDEX_MAX) _memIndex.delete(_memIndex.keys().next().value);
+}
 
 // ── Storage ───────────────────────────────────────────────────────────────────
 
@@ -237,6 +243,7 @@ async function runEvolutionCycle(context, { skipExecute = false } = {}) {
     };
     // Register in memory index first (survives file-level race conditions)
     _memIndex.set(cycleId, cycleEntry);
+    _capMemIndex();
     d.cycles.push(cycleEntry);
     d.stats.totalCycles++;
     d.stats.minutesSaved += minutesSaved;

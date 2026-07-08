@@ -9,12 +9,12 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:52:49.796Z",
-    "tickCount": 114
+    "lastTickAt": "2026-07-08T14:31:51.475Z",
+    "tickCount": 458
   },
   "ent_product": {
     "divId": "ent_product",
-    "goalsCreated": 4,
+    "goalsCreated": 24,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -22,8 +22,8 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:17:07.007Z",
-    "tickCount": 82
+    "lastTickAt": "2026-07-08T14:31:54.443Z",
+    "tickCount": 366
   },
   "ent_customer": {
     "divId": "ent_customer",
@@ -35,12 +35,12 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:52:28.574Z",
-    "tickCount": 117
+    "lastTickAt": "2026-07-08T14:31:55.944Z",
+    "tickCount": 491
   },
   "ent_partner": {
     "divId": "ent_partner",
-    "goalsCreated": 1,
+    "goalsCreated": 6,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -48,12 +48,12 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:38.709Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:31:57.445Z",
+    "tickCount": 335
   },
   "ent_vendor": {
     "divId": "ent_vendor",
-    "goalsCreated": 2,
+    "goalsCreated": 12,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -61,8 +61,8 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:53.135Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:12.446Z",
+    "tickCount": 335
   },
   "ent_portfolio": {
     "divId": "ent_portfolio",
@@ -74,8 +74,8 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:15:10.010Z",
-    "tickCount": 92
+    "lastTickAt": "2026-07-08T14:31:52.947Z",
+    "tickCount": 390
   },
   "ent_finance": {
     "divId": "ent_finance",
@@ -85,27 +85,27 @@
     "auditsCompleted": 0,
     "reportsGenerated": 0,
     "risksResolved": 0,
-    "budgetAllocated": 1010500,
+    "budgetAllocated": 6063000,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:17:21.022Z",
-    "tickCount": 82
+    "lastTickAt": "2026-07-08T14:31:58.944Z",
+    "tickCount": 366
   },
   "ent_compliance": {
     "divId": "ent_compliance",
     "goalsCreated": 0,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
-    "auditsCompleted": 112,
+    "auditsCompleted": 1152,
     "reportsGenerated": 0,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:38.740Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:01.981Z",
+    "tickCount": 335
   },
   "ent_hr": {
     "divId": "ent_hr",
-    "goalsCreated": 2,
+    "goalsCreated": 12,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -113,8 +113,8 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:53.137Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:13.948Z",
+    "tickCount": 335
   },
   "ent_board": {
     "divId": "ent_board",
@@ -122,16 +122,16 @@
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
-    "reportsGenerated": 91,
+    "reportsGenerated": 351,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:53.160Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:18.508Z",
+    "tickCount": 335
   },
   "ent_director": {
     "divId": "ent_director",
-    "goalsCreated": 122,
+    "goalsCreated": 521,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -139,34 +139,34 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:49:16.985Z",
-    "tickCount": 122
+    "lastTickAt": "2026-07-08T14:32:20.010Z",
+    "tickCount": 521
   },
   "ent_audit": {
     "divId": "ent_audit",
     "goalsCreated": 0,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
-    "auditsCompleted": 98,
+    "auditsCompleted": 382,
     "reportsGenerated": 0,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:17:21.030Z",
-    "tickCount": 82
+    "lastTickAt": "2026-07-08T14:32:16.946Z",
+    "tickCount": 366
   },
   "ent_legal": {
     "divId": "ent_legal",
     "goalsCreated": 0,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
-    "auditsCompleted": 1,
+    "auditsCompleted": 6,
     "reportsGenerated": 0,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:38.716Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:00.445Z",
+    "tickCount": 335
   },
   "ent_risk": {
     "divId": "ent_risk",
@@ -175,11 +175,11 @@
     "approvalsGranted": 0,
     "auditsCompleted": 0,
     "reportsGenerated": 0,
-    "risksResolved": 63,
+    "risksResolved": 78,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:53:00.219Z",
-    "tickCount": 114
+    "lastTickAt": "2026-07-08T14:32:03.499Z",
+    "tickCount": 457
   },
   "ent_operations": {
     "divId": "ent_operations",
@@ -191,12 +191,12 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:52:28.589Z",
-    "tickCount": 117
+    "lastTickAt": "2026-07-08T14:32:04.947Z",
+    "tickCount": 491
   },
   "ent_infrastructure": {
     "divId": "ent_infrastructure",
-    "goalsCreated": 3,
+    "goalsCreated": 18,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
@@ -204,21 +204,21 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:17:21.028Z",
-    "tickCount": 82
+    "lastTickAt": "2026-07-08T14:32:07.930Z",
+    "tickCount": 366
   },
   "ent_security": {
     "divId": "ent_security",
     "goalsCreated": 0,
     "policiesEnforced": 0,
     "approvalsGranted": 0,
-    "auditsCompleted": 114,
+    "auditsCompleted": 457,
     "reportsGenerated": 0,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:53:10.785Z",
-    "tickCount": 114
+    "lastTickAt": "2026-07-08T14:32:09.070Z",
+    "tickCount": 457
   },
   "ent_analytics": {
     "divId": "ent_analytics",
@@ -226,12 +226,12 @@
     "policiesEnforced": 0,
     "approvalsGranted": 0,
     "auditsCompleted": 0,
-    "reportsGenerated": 75,
+    "reportsGenerated": 335,
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:38.768Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:09.466Z",
+    "tickCount": 335
   },
   "ent_procurement": {
     "divId": "ent_procurement",
@@ -243,8 +243,8 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:53.121Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:10.946Z",
+    "tickCount": 335
   },
   "ent_strategy": {
     "divId": "ent_strategy",
@@ -256,7 +256,7 @@
     "risksResolved": 0,
     "budgetAllocated": 0,
     "complianceScore": 100,
-    "lastTickAt": "2026-07-02T20:16:53.138Z",
-    "tickCount": 75
+    "lastTickAt": "2026-07-08T14:32:15.445Z",
+    "tickCount": 335
   }
 }

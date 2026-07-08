@@ -1,261 +1,307 @@
 {
-  "ts": "2026-07-02T09:09:04.861Z",
-  "uptime_s": 6,
-  "pid": 83808,
+  "ts": "2026-07-08T14:32:09.078Z",
+  "uptime_s": 184,
+  "pid": 26965,
   "nodeVersion": "v24.11.1",
   "memory": {
-    "rss_mb": 399,
-    "heap_mb": 352,
-    "heapTotal_mb": 410
+    "rss_mb": 339,
+    "heap_mb": 201,
+    "heapTotal_mb": 267
   },
   "os": {
     "platform": "darwin",
     "arch": "arm64",
     "loadavg": [
-      3.4228515625,
-      3.2919921875,
-      3.0556640625
+      1.9365234375,
+      4.0263671875,
+      4.51171875
     ],
-    "freemem_mb": 396,
+    "freemem_mb": 140,
     "totalmem_mb": 8192
   },
   "health": {
     "self": {
       "service": "self",
-      "status": "down",
-      "latencyMs": 4687,
-      "error": "timeout"
+      "status": "healthy",
+      "latencyMs": 2655
     },
     "ollama": {
       "service": "ollama",
-      "status": "down",
-      "latencyMs": 4687,
-      "error": "timeout"
+      "status": "healthy",
+      "latencyMs": 2656
     },
     "openrouter": {
       "service": "openrouter",
       "status": "degraded",
-      "latencyMs": 4411
+      "latencyMs": 1
     },
     "github": {
       "service": "github",
       "status": "degraded",
-      "latencyMs": 4411
+      "latencyMs": 1
     },
     "slack": {
       "service": "slack",
       "status": "degraded",
-      "latencyMs": 4411
+      "latencyMs": 1
     },
     "google": {
       "service": "google",
       "status": "degraded",
-      "latencyMs": 4411
+      "latencyMs": 1
     },
     "notion": {
       "service": "notion",
       "status": "degraded",
-      "latencyMs": 4411
+      "latencyMs": 1
     }
   },
   "metrics": [
     {
       "name": "system.rss_mb",
-      "count": 1,
-      "lastValue": 174,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 141,
+      "lastTs": 1783521126106
     },
     {
       "name": "system.heap_mb",
-      "count": 1,
-      "lastValue": 69,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 177,
+      "lastTs": 1783521126106
     },
     {
       "name": "system.heap_total_mb",
-      "count": 1,
-      "lastValue": 113,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 188,
+      "lastTs": 1783521126106
     },
     {
       "name": "system.uptime_s",
-      "count": 1,
-      "lastValue": 0,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 181,
+      "lastTs": 1783521126106
     },
     {
       "name": "system.cpu_user_ms",
-      "count": 1,
-      "lastValue": 389.989,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 9887.394,
+      "lastTs": 1783521126106
     },
     {
       "name": "os.loadavg_1m",
-      "count": 1,
-      "lastValue": 3.4599609375,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 1.9365234375,
+      "lastTs": 1783521126106
     },
     {
       "name": "os.freemem_mb",
-      "count": 1,
-      "lastValue": 280,
-      "lastTs": 1782983338979
+      "count": 7,
+      "lastValue": 76,
+      "lastTs": 1783521126106
     },
     {
       "name": "observer.events.observer",
       "count": 1,
       "lastValue": 1,
-      "lastTs": 1782983339100
+      "lastTs": 1783520946353
     },
     {
       "name": "engineering.capabilities.registered",
       "count": 1,
       "lastValue": 12,
-      "lastTs": 1782983339100
-    },
-    {
-      "name": "aeo.keep_rate.0",
-      "count": 1,
-      "lastValue": null,
-      "lastTs": 1782983342280
-    },
-    {
-      "name": "aeo.effectiveness",
-      "count": 1,
-      "lastValue": 83,
-      "lastTs": 1782983342365
-    },
-    {
-      "name": "aeo.weaknesses",
-      "count": 1,
-      "lastValue": 0,
-      "lastTs": 1782983342365
-    },
-    {
-      "name": "eos.health_score",
-      "count": 1,
-      "lastValue": 100,
-      "lastTs": 1782983342826
+      "lastTs": 1783520946355
     },
     {
       "name": "decisions.Ignore",
-      "count": 1,
+      "count": 3,
       "lastValue": 1,
-      "lastTs": 1782983344584
+      "lastTs": 1783521071367
     },
     {
       "name": "observer.events.git",
+      "count": 2,
+      "lastValue": 1,
+      "lastTs": 1783520976824
+    },
+    {
+      "name": "observer.events.pm2",
       "count": 1,
       "lastValue": 1,
-      "lastTs": 1782983344855
+      "lastTs": 1783520947561
     },
     {
       "name": "observer.events.build",
-      "count": 1,
+      "count": 2,
       "lastValue": 1,
-      "lastTs": 1782983344858
+      "lastTs": 1783521067867
     },
     {
       "name": "observer.events.tasks",
       "count": 1,
       "lastValue": 1,
-      "lastTs": 1782983344858
+      "lastTs": 1783520948860
     },
     {
       "name": "observer.events.agents",
       "count": 1,
       "lastValue": 1,
-      "lastTs": 1782983344861
+      "lastTs": 1783520949857
     },
     {
       "name": "observer.events.plugins",
       "count": 1,
       "lastValue": 1,
-      "lastTs": 1782983344861
+      "lastTs": 1783520950358
+    },
+    {
+      "name": "observer.events.extensions",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1783520950861
+    },
+    {
+      "name": "observer.events.memory",
+      "count": 2,
+      "lastValue": 1,
+      "lastTs": 1783521071367
+    },
+    {
+      "name": "observer.events.ai",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1783520951858
+    },
+    {
+      "name": "decisions.Escalate",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1783520951858
+    },
+    {
+      "name": "observer.events.system",
+      "count": 5,
+      "lastValue": 1,
+      "lastTs": 1783521112466
+    },
+    {
+      "name": "decisions.Notify",
+      "count": 4,
+      "lastValue": 1,
+      "lastTs": 1783521112466
     },
     {
       "name": "health.latency.self",
-      "count": 2,
-      "lastValue": 4687,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 2655,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.self",
-      "count": 2,
-      "lastValue": 0,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.ollama",
-      "count": 2,
-      "lastValue": 4687,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 2656,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.ollama",
-      "count": 2,
-      "lastValue": 0,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.openrouter",
-      "count": 2,
-      "lastValue": 4411,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.openrouter",
-      "count": 2,
+      "count": 3,
       "lastValue": 0,
-      "lastTs": 1782983344861
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.github",
-      "count": 2,
-      "lastValue": 4411,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.github",
-      "count": 2,
+      "count": 3,
       "lastValue": 0,
-      "lastTs": 1782983344861
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.slack",
-      "count": 2,
-      "lastValue": 4411,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.slack",
-      "count": 2,
+      "count": 3,
       "lastValue": 0,
-      "lastTs": 1782983344861
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.google",
-      "count": 2,
-      "lastValue": 4411,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.google",
-      "count": 2,
+      "count": 3,
       "lastValue": 0,
-      "lastTs": 1782983344861
+      "lastTs": 1783521129078
     },
     {
       "name": "health.latency.notion",
-      "count": 2,
-      "lastValue": 4411,
-      "lastTs": 1782983344861
+      "count": 3,
+      "lastValue": 1,
+      "lastTs": 1783521129078
     },
     {
       "name": "health.up.notion",
-      "count": 2,
+      "count": 3,
       "lastValue": 0,
-      "lastTs": 1782983344861
+      "lastTs": 1783521129078
+    },
+    {
+      "name": "decisions.Recommend",
+      "count": 1,
+      "lastValue": 1,
+      "lastTs": 1783520976824
+    },
+    {
+      "name": "aeo.keep_rate.0",
+      "count": 1,
+      "lastValue": null,
+      "lastTs": 1783521063383
+    },
+    {
+      "name": "eos.health_score",
+      "count": 2,
+      "lastValue": 100,
+      "lastTs": 1783521100912
+    },
+    {
+      "name": "aeo.effectiveness",
+      "count": 1,
+      "lastValue": 84,
+      "lastTs": 1783521078388
+    },
+    {
+      "name": "aeo.weaknesses",
+      "count": 1,
+      "lastValue": 0,
+      "lastTs": 1783521078388
     }
   ],
   "alerts": []

@@ -167,6 +167,12 @@ function addEdge(fromType, fromId, relation, toType, toId, opts = {}) {
         metadata:  opts.metadata || {},
     };
     store.edges.push(edge);
+    // Called from nearly every tick (e.g. akoState.createItem indexing new
+    // knowledge into the graph); with no cap, store.edges grew unboundedly
+    // and every read/write in this file re-parses/re-serializes the whole
+    // file, so both the transient per-call allocation and disk I/O scaled
+    // up with total edges ever created, forever.
+    if (store.edges.length > 20000) store.edges.splice(0, store.edges.length - 20000);
     _writeEdges(store);
     return edge;
 }

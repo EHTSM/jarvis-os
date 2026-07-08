@@ -579,7 +579,52 @@
       "status": "active",
       "expiresAt": "2027-07-02T08:58:18.740Z",
       "issuedAt": "2026-07-02T08:58:18.740Z"
+    },
+    {
+      "id": "cert_1783038780150_zhnw",
+      "orgId": "org_1782627037729_dgem",
+      "level": "bronze",
+      "criteria": [
+        "health>90",
+        "active",
+        "deployed"
+      ],
+      "issuedBy": "platform_auto",
+      "score": 91,
+      "status": "active",
+      "expiresAt": "2027-07-03T00:33:00.150Z",
+      "issuedAt": "2026-07-03T00:33:00.150Z"
+    },
+    {
+      "id": "cert_1783038780197_ylxk",
+      "orgId": "org_1782627037686_425l",
+      "level": "bronze",
+      "criteria": [
+        "health>90",
+        "active",
+        "deployed"
+      ],
+      "issuedBy": "platform_auto",
+      "score": 91,
+      "status": "active",
+      "expiresAt": "2027-07-03T00:33:00.197Z",
+      "issuedAt": "2026-07-03T00:33:00.197Z"
+    },
+    {
+      "id": "cert_1783038780245_ifyq",
+      "orgId": "org_1782627037683_5f9a",
+      "level": "bronze",
+      "criteria": [
+        "health>90",
+        "active",
+        "deployed"
+      ],
+      "issuedBy": "platform_auto",
+      "score": 91,
+      "status": "active",
+      "expiresAt": "2027-07-03T00:33:00.245Z",
+      "issuedAt": "2026-07-03T00:33:00.245Z"
     }
   ],
-  "total": 44
+  "total": 47
 }

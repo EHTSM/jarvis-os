@@ -2131,5 +2131,797 @@
     "attempts": 0,
     "agentId": null,
     "deadAt": "2026-07-02T21:03:35.617Z"
+  },
+  {
+    "taskId": "t-mr4qxzxk",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:15.126Z"
+  },
+  {
+    "taskId": "t-mr4qy0pm",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:16.135Z"
+  },
+  {
+    "taskId": "t-mr4qy1hn",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.143Z"
+  },
+  {
+    "taskId": "t-mr4qy29n",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.150Z"
+  },
+  {
+    "taskId": "t-mr4qy29s",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.153Z"
+  },
+  {
+    "taskId": "t-mr4qy29v",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.155Z"
+  },
+  {
+    "taskId": "t-mr4qy29x",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.158Z"
+  },
+  {
+    "taskId": "t-mr4qy29z",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:17.160Z"
+  },
+  {
+    "taskId": "disp_1783071859729_x06or",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-03T09:44:19.731Z"
+  },
+  {
+    "taskId": "t-mr5a50xz",
+    "taskType": "content",
+    "input": "content gen",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:35.732Z"
+  },
+  {
+    "taskId": "t-mr5a51pz",
+    "taskType": "content",
+    "input": "content",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:36.739Z"
+  },
+  {
+    "taskId": "t-mr5a52hy",
+    "taskType": "speak",
+    "input": "speak test",
+    "error": "permanent failure",
+    "attempts": 2,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.745Z"
+  },
+  {
+    "taskId": "t-mr5a539x",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.749Z"
+  },
+  {
+    "taskId": "t-mr5a539z",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.751Z"
+  },
+  {
+    "taskId": "t-mr5a53a1",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.754Z"
+  },
+  {
+    "taskId": "t-mr5a53a3",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.756Z"
+  },
+  {
+    "taskId": "t-mr5a53a5",
+    "taskType": "media",
+    "input": "media task",
+    "error": "cb trigger",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:37.758Z"
+  },
+  {
+    "taskId": "disp_1783104100999_sm0l5",
+    "taskType": "ai",
+    "input": "test",
+    "error": "unknown",
+    "attempts": 0,
+    "agentId": null,
+    "deadAt": "2026-07-03T18:41:41.002Z"
+  },
+  {
+    "taskId": "disp_1783108533988_x2urq",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783108397683_e1] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-03T20:11:08.189Z"
+  },
+  {
+    "taskId": "disp_1783247176152_z7hni",
+    "taskType": "ai",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783112396746_e3] Update CRM with outcome — context: Qualify new leads from Ph, Cy",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-05T10:28:28.039Z"
+  },
+  {
+    "taskId": "disp_1783247176209_4qkhc",
+    "taskType": "ai",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783112396746_e3] Update CRM with outcome — context: Qualify new leads from Ph, Cy",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-05T10:28:28.041Z"
+  },
+  {
+    "taskId": "disp_1783247176250_nt0l7",
+    "taskType": "ai",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783112396746_e3] Update CRM with outcome — context: Qualify new leads from Ph, Cy",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-05T10:28:28.042Z"
+  },
+  {
+    "taskId": "disp_1783247176293_ojd42",
+    "taskType": "ai",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783112396746_e3] Update CRM with outcome — context: Qualify new leads from Ph, Cy",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-05T10:28:28.043Z"
+  },
+  {
+    "taskId": "disp_1783247176329_pjei9",
+    "taskType": "ai",
+    "input": "[Agent: sales] Update CRM with outcome — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783112396746_e3] Update CRM with outcome — context: Qualify new leads from Ph, Cy",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-05T10:28:28.044Z"
+  },
+  {
+    "taskId": "disp_1783317693477_6gixa",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783247309811_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:32:50.858Z"
+  },
+  {
+    "taskId": "disp_1783317693514_3ai8z",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783247309811_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:32:50.905Z"
+  },
+  {
+    "taskId": "disp_1783317693547_zpo11",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783247309811_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:32:50.950Z"
+  },
+  {
+    "taskId": "disp_1783317693572_aduos",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783247309811_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:32:50.992Z"
+  },
+  {
+    "taskId": "disp_1783317693596_1r06u",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783247309811_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:32:51.035Z"
+  },
+  {
+    "taskId": "disp_1783319570904_gm7bj",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783247309811_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:46:05.686Z"
+  },
+  {
+    "taskId": "disp_1783319570948_duzn1",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783247309811_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:46:05.687Z"
+  },
+  {
+    "taskId": "disp_1783319570991_ys50j",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783247309811_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:46:05.843Z"
+  },
+  {
+    "taskId": "disp_1783319571034_yhlmm",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783247309811_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T06:46:06.093Z"
+  },
+  {
+    "taskId": "disp_1783319570904_gm7bj",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783247309811_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T07:02:54.842Z"
+  },
+  {
+    "taskId": "disp_1783327111340_fz7el",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783319574703_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T08:48:03.745Z"
+  },
+  {
+    "taskId": "disp_1783327111370_fual7",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783319574703_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T08:48:03.802Z"
+  },
+  {
+    "taskId": "disp_1783327111399_0hjzg",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783319574703_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T08:48:03.855Z"
+  },
+  {
+    "taskId": "disp_1783327111423_lm7j4",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783319574703_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T08:48:03.909Z"
+  },
+  {
+    "taskId": "disp_1783327111448_8vv9w",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783319574703_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T08:48:03.966Z"
+  },
+  {
+    "taskId": "disp_1783327683854_li0i8",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783319574703_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T09:04:49.653Z"
+  },
+  {
+    "taskId": "disp_1783327683908_silh5",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783319574703_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T09:04:49.654Z"
+  },
+  {
+    "taskId": "disp_1783327683854_li0i8",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783319574703_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T09:21:39.927Z"
+  },
+  {
+    "taskId": "disp_1783327683908_silh5",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783319574703_eb] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T09:21:39.982Z"
+  },
+  {
+    "taskId": "disp_1783331339553_7hr90",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783327686721_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:04:27.411Z"
+  },
+  {
+    "taskId": "disp_1783331339594_fj1a7",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783327686721_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:04:27.461Z"
+  },
+  {
+    "taskId": "disp_1783331339658_mcsic",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783327686721_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:04:27.531Z"
+  },
+  {
+    "taskId": "disp_1783331339697_7f3ak",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783327686721_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:04:27.593Z"
+  },
+  {
+    "taskId": "disp_1783331339737_xqbw9",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783327686721_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:04:27.638Z"
+  },
+  {
+    "taskId": "disp_1783332267460_4w8yo",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783327111403_e0] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:20:19.036Z"
+  },
+  {
+    "taskId": "disp_1783332267529_ccv62",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783327111403_e0] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:37:40.454Z"
+  },
+  {
+    "taskId": "disp_1783332267592_qndlf",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783327111403_e0] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:37:40.590Z"
+  },
+  {
+    "taskId": "disp_1783332267637_ixxfi",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783327111403_e0] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:37:40.711Z"
+  },
+  {
+    "taskId": "disp_1783333215546_yzwbn",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783327111403_e0] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:37:45.202Z"
+  },
+  {
+    "taskId": "disp_1783334260452_0selw",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783332268256_e3] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T10:50:02.676Z"
+  },
+  {
+    "taskId": "disp_1783339672200_twoo6",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783334260345_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:23:19.995Z"
+  },
+  {
+    "taskId": "disp_1783339672230_idl7j",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783334260345_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:23:20.041Z"
+  },
+  {
+    "taskId": "disp_1783339672260_39col",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783334260345_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:23:20.084Z"
+  },
+  {
+    "taskId": "disp_1783339672284_i7hwd",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783334260345_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:23:20.127Z"
+  },
+  {
+    "taskId": "disp_1783339672308_n3xe3",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783334260345_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:23:20.172Z"
+  },
+  {
+    "taskId": "disp_1783340600039_f7w1i",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783333220190_ea] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:40:44.517Z"
+  },
+  {
+    "taskId": "disp_1783340600082_rsbzz",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783333220190_ea] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:40:46.650Z"
+  },
+  {
+    "taskId": "disp_1783340600125_kalv9",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783333220190_ea] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:40:46.827Z"
+  },
+  {
+    "taskId": "disp_1783340600170_r5lml",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783333220190_ea] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T12:40:46.942Z"
+  },
+  {
+    "taskId": "disp_1783343274491_a1u0v",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:41:23.408Z"
+  },
+  {
+    "taskId": "disp_1783343274527_gckvw",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:41:23.410Z"
+  },
+  {
+    "taskId": "disp_1783343274579_i9t7h",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:41:23.411Z"
+  },
+  {
+    "taskId": "disp_1783343274618_53c8r",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:41:23.412Z"
+  },
+  {
+    "taskId": "disp_1783343274653_gt4t3",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:41:23.414Z"
+  },
+  {
+    "taskId": "disp_1783343274491_a1u0v",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:53:03.951Z"
+  },
+  {
+    "taskId": "disp_1783343274527_gckvw",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:53:04.020Z"
+  },
+  {
+    "taskId": "disp_1783343274579_i9t7h",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:53:04.212Z"
+  },
+  {
+    "taskId": "disp_1783343274618_53c8r",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783339672288_e1]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T13:53:04.408Z"
+  },
+  {
+    "taskId": "disp_1783345984017_pofn8",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783345285740_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T14:08:50.362Z"
+  },
+  {
+    "taskId": "disp_1783345984017_pofn8",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783345285740_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T14:24:07.363Z"
+  },
+  {
+    "taskId": "disp_1783364941202_pbshw",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783364293369_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:12:57.283Z"
+  },
+  {
+    "taskId": "disp_1783364941229_7v95t",
+    "taskType": "ai",
+    "input": "[Agent: sales] Qualify lead and assess fit — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783364293369_eb] Quali",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:12:57.334Z"
+  },
+  {
+    "taskId": "disp_1783364950287_pqhnj",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783364293369_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:12:57.442Z"
+  },
+  {
+    "taskId": "disp_1783364950335_i4m6y",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783364293369_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:12:57.444Z"
+  },
+  {
+    "taskId": "disp_1783364950380_8y7cz",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783364293369_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:12:57.445Z"
+  },
+  {
+    "taskId": "disp_1783365177332_xcvsn",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783364941149_dz]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:14:04.314Z"
+  },
+  {
+    "taskId": "disp_1783364950287_pqhnj",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783364293369_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:14:04.359Z"
+  },
+  {
+    "taskId": "disp_1783364950335_i4m6y",
+    "taskType": "ai",
+    "input": "[Agent: sales] Schedule follow-up reminder — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783364293369_eb] Schedule follow-up reminder — context: Qualify new leads fro",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:14:04.418Z"
+  },
+  {
+    "taskId": "disp_1783365177382_o656l",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: Cycle summary: Qualify new leads from Phase 33 retest, [Cycle cyc_1783364941149_dz]",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T19:14:04.473Z"
+  },
+  {
+    "taskId": "disp_1783376325017_ktnjn",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783375182620_dz] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T22:51:55.283Z"
+  },
+  {
+    "taskId": "disp_1783376325070_icsjo",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783375182620_dz] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T22:51:55.284Z"
+  },
+  {
+    "taskId": "disp_1783376325121_tfzcy",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783375182620_dz] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T22:51:55.285Z"
+  },
+  {
+    "taskId": "disp_1783376325176_5l1wd",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783375182620_dz] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T22:51:55.286Z"
+  },
+  {
+    "taskId": "disp_1783376325235_8svvy",
+    "taskType": "ai",
+    "input": "[Agent: sales] Draft personalised outreach email — context: Qualify new leads from Phase 33 retest\n\n[Memory context: [Cycle cyc_1783375182620_dz] Draft personalised outreach email — context: Qualify n",
+    "error": "Timeout: ai/ai exceeded 30000ms",
+    "attempts": 1,
+    "agentId": null,
+    "deadAt": "2026-07-06T22:51:55.287Z"
   }
 ]

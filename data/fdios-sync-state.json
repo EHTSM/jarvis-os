@@ -2,9 +2,9 @@
   "devices": {
     "electron": {
       "deviceId": "electron",
-      "lastSync": "2026-07-02T21:02:52.046Z",
+      "lastSync": "2026-07-03T18:40:23.834Z",
       "status": "synced",
-      "vaultHash": "1f44eb6b6964ebda",
+      "vaultHash": "4a4f39186e32f55a",
       "version": "3.2.0",
       "meta": {
         "version": "3.2.0"
@@ -12,6 +12,20 @@
     }
   },
   "conflicts": [
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T18:40:23.833Z",
+      "prevHash": "d9e71c51214486cd",
+      "newHash": "4a4f39186e32f55a",
+      "resolution": "pending"
+    },
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T09:43:56.952Z",
+      "prevHash": "1f44eb6b6964ebda",
+      "newHash": "d9e71c51214486cd",
+      "resolution": "pending"
+    },
     {
       "deviceId": "electron",
       "ts": "2026-07-02T21:02:52.045Z",
@@ -133,6 +147,30 @@
     }
   ],
   "history": [
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T18:40:23.834Z",
+      "vaultHash": "4a4f39186e32f55a",
+      "hasConflict": false
+    },
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T18:40:23.833Z",
+      "vaultHash": "4a4f39186e32f55a",
+      "hasConflict": true
+    },
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T09:43:56.953Z",
+      "vaultHash": "d9e71c51214486cd",
+      "hasConflict": false
+    },
+    {
+      "deviceId": "electron",
+      "ts": "2026-07-03T09:43:56.952Z",
+      "vaultHash": "d9e71c51214486cd",
+      "hasConflict": true
+    },
     {
       "deviceId": "electron",
       "ts": "2026-07-02T21:02:52.046Z",

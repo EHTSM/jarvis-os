@@ -918,6 +918,18 @@ async function _tick(id) {
 // LIFECYCLE
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Startup burst control: with 200+ agents registered in one synchronous pass
+// (11 org registries x ~20 depts each), firing every agent's first tick
+// immediately would run that many maintenance/analysis passes in the same
+// window, spiking heap right after listen(). Stagger first ticks so they
+// spread out over a couple minutes instead of bursting all at once — a
+// 150ms stagger (observed) still clustered ~60-70 first ticks (many of which
+// trigger shared, non-trivial work like memoryIntelligenceEngine maintenance
+// or RCA analysis) inside the first 10s, which was still enough to exhaust a
+// 400MB heap before V8 got a chance to reclaim between bursts.
+let _startupTickOffset = 0;
+const _STARTUP_TICK_STAGGER_MS = 1500;
+
 function _startAgent(id) {
     const s = _agents.get(id);
     if (!s || !s.enabled) return;
@@ -926,7 +938,12 @@ function _startAgent(id) {
     _setState(id, { status: "starting", startedAt: new Date().toISOString(), health: 100 });
     logger.info(`[AgentSupervisor] Starting: ${id} (${s.role}) @ ${s._intervalMs}ms`);
 
-    _tick(id).then(() => _setState(id, { status: "running" })).catch(() => {});
+    const staggerMs = _startupTickOffset;
+    _startupTickOffset += _STARTUP_TICK_STAGGER_MS;
+    const t = setTimeout(() => {
+        _tick(id).then(() => _setState(id, { status: "running" })).catch(() => {});
+    }, staggerMs);
+    if (t.unref) t.unref();
     s._intervalHandle = setInterval(() => _tick(id), s._intervalMs);
     _setState(id, { status: "running", nextTickAt: new Date(Date.now() + s._intervalMs).toISOString() });
     try { _bus()?.emit("agent:supervisor:started", { agentId: id, role: s.role }); } catch {}

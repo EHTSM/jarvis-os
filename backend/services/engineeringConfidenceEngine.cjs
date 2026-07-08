@@ -48,11 +48,19 @@ function _rj(name, fb = []) {
     try { return JSON.parse(fs.readFileSync(path.join(DATA, name), "utf8")); }
     catch { return fb; }
 }
+// execution-runtime.ndjson records carry an "artifacts" array that can embed
+// multi-MB repo-status snapshots per line; this module never reads that field,
+// so drop it during parse to avoid retaining it (see rootCauseAnalysisEngine.cjs
+// for the OOM this caused when left unstripped).
+function _dropArtifactsReviver(key, value) {
+    return key === "artifacts" ? undefined : value;
+}
+
 function _rjLines(name) {
     try {
         return fs.readFileSync(path.join(DATA, name), "utf8")
             .split("\n").filter(Boolean)
-            .map(l => { try { return JSON.parse(l); } catch { return null; } })
+            .map(l => { try { return JSON.parse(l, _dropArtifactsReviver); } catch { return null; } })
             .filter(Boolean);
     } catch { return []; }
 }
