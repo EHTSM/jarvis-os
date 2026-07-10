@@ -14,20 +14,18 @@ mobile/node_modules/
 logs/
 logs/pm2-out.log
 logs/pm2-err.log
+!logs/.gitkeep
 
-# Data — keep git out of user data
-data/jarvis.db
-runtime_validation_overrides.json
-data/leads.json
-data/task-queue.json
-data/memory-store.json
-data/learning.json
-data/learning-patterns.json
+# ── Runtime-generated data — self-initializing, never seed/config ──────────
+# Every file under data/ is created and rewritten by backend/services/*State.cjs
+# and agents/runtime/*.cjs modules with hardcoded defaults on first run. None of
+# it ships as source. Ignore the whole tree instead of enumerating file-by-file.
+data/
+!data/.gitkeep
 
-# Runtime log and database noise
-/data/logs/
-data/*.db-wal
-data/*.db-shm
+# Code-generation agent output (agents/dev/codeGeneratorAgent.cjs writes here)
+generated/
+!generated/.gitkeep
 
 # Backups
 backups/
@@ -58,4 +56,3 @@ tests/legacy/
 key.properties
 ooplix-release.keystore
 *.keystore
-data/repo-index.json
