@@ -566,6 +566,7 @@ function generateRecommendations({ limit = 10, autoCreate = false } = {}) {
             try {
                 const mission = _orch()?.createManual({
                     objective:  c.autoMissionCandidate.objective,
+                    goal:       c.autoMissionCandidate.objective,
                     priority:   c.autoMissionCandidate.priority,
                     subtasks:   [{ description: c.description }, { description: "Verify completion and record lesson" }],
                     metadata:   { ...c.autoMissionCandidate.metadata, recommendationId: c.id, autoCreated: true },

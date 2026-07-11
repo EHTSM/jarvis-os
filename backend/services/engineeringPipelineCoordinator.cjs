@@ -327,6 +327,7 @@ function _createRecoveryMission(run, failedStage, reason) {
     try {
         return _orch()?.createManual({
             objective: `Pipeline recovery: ${failedStage} failed — "${run.goal.slice(0, 80)}"`,
+            goal: `Pipeline recovery: ${failedStage} failed — "${run.goal.slice(0, 80)}"`,
             priority:  "high",
             subtasks: [
                 { description: `Failure reason: ${reason.slice(0, 200)}` },

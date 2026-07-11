@@ -174,6 +174,7 @@ async function assemble(planId, archId, { skipExecute = false } = {}) {
     // Create mission for the full assembly
     try {
       const m = _mo()?.createManual?.({
+        goal:    `Autonomous product assembly: ${plan.objective}`,
         title:   `Autonomous product assembly: ${plan.objective}`,
         context: { planId, archId: arch.id, complexity: plan.complexity?.level },
       });

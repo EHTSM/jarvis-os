@@ -72,9 +72,10 @@ function _missionExists(prefix) {
 }
 
 function _mission(agentId, spec, s) {
+  if (!spec.objective?.trim()) return null;
   if (_missionExists(spec.objective)) return null;
   try {
-    const m = _orch()?.createManual({ ...spec, metadata: { ...spec.metadata, autoCreatedBy: agentId } });
+    const m = _orch()?.createManual({ ...spec, goal: spec.objective, metadata: { ...spec.metadata, autoCreatedBy: agentId } });
     if (m && s) { s.missionsCreated = (s.missionsCreated || 0) + 1; s.lastDecision = spec.objective?.slice(0,60); }
     try { _bus()?.emit(`agent:${agentId}:mission_created`, { missionId: m?.missionId || m?.id }); } catch {}
     return m;
