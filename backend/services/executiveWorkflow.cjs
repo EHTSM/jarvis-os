@@ -488,6 +488,7 @@ function recoverOrg({ goalId, missionId, failedOrg, reason }) {
     try {
       _orch()?.createManual?.({
         objective: `Recover ${failedOrg} for goal: ${goalId}`,
+        goal: `Recover ${failedOrg} for goal: ${goalId}`,
         priority: "critical",
         subtasks: r.recovery?.recoveryPlan?.map(p => ({ description: p })) || [],
         metadata: { failedOrg, reason, goalId, source: "eos_recovery" },

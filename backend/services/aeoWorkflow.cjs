@@ -60,8 +60,9 @@ function _missionExists(prefix) {
 }
 
 function _createMission(spec, agentId) {
+  if (!spec.objective?.trim()) return null;
   if (_missionExists(spec.objective)) return null;
-  try { return _orch()?.createManual({ ...spec, metadata: { ...spec.metadata, autoCreatedBy: agentId } }); }
+  try { return _orch()?.createManual({ ...spec, goal: spec.objective, metadata: { ...spec.metadata, autoCreatedBy: agentId } }); }
   catch { return null; }
 }
 

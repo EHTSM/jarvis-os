@@ -74,9 +74,10 @@ function _missionExists(objectivePrefix) {
 }
 
 function _mission(agentId, spec, s) {
+  if (!spec.objective?.trim()) return null;
   if (_missionExists(spec.objective)) return null;
   try {
-    const m = _orch()?.createManual(spec);
+    const m = _orch()?.createManual({ ...spec, goal: spec.objective });
     if (m && s) {
       s.missionsCreated = (s.missionsCreated || 0) + 1;
       s.lastDecision    = `Created: ${spec.objective?.slice(0, 60)}`;

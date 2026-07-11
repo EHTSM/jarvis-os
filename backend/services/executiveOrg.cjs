@@ -32,11 +32,12 @@ function _activeGoal()     { return _st().listGoals({ status: "active" })[0]; }
 function _kpuInc(id, field) { try { const k = _st().getKpi(id); _st().updateKpi(id, { [field]: (k[field]||0)+1, tickCount: (k.tickCount||0)+1, lastTickAt: new Date().toISOString() }); } catch {} }
 
 function _mission(agentId, spec, s) {
+  if (!spec.objective?.trim()) return null;
   try {
     const prefix = spec.objective?.slice(0,50);
     const exists = ((_mm()?.listMissions({ limit: 300 }) || { missions: [] }).missions).some(m => ["active","pending","planned"].includes(m.status) && m.objective?.slice(0,50) === prefix);
     if (!exists) {
-      const m = _orch()?.createManual({ ...spec, metadata: { ...spec.metadata, autoCreatedBy: agentId } });
+      const m = _orch()?.createManual({ ...spec, goal: spec.objective, metadata: { ...spec.metadata, autoCreatedBy: agentId } });
       if (m && s) s.missionsCreated = (s.missionsCreated||0)+1;
       return m;
     }

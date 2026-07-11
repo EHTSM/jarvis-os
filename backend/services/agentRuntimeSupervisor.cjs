@@ -201,10 +201,11 @@ function _missionExists(objectivePrefix) {
 }
 
 function _createMission(agentId, spec) {
+    if (!spec.objective?.trim()) return null;
     if (_missionExists(spec.objective)) return null;
     try {
         const s = _agents.get(agentId);
-        const mission = _orch()?.createManual(spec);
+        const mission = _orch()?.createManual({ ...spec, goal: spec.objective });
         if (mission && s) {
             s.missionsCreated++;
             _setState(agentId, {

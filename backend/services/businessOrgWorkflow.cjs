@@ -69,6 +69,7 @@ function _kpiUp(deptId, patch) {
 }
 
 function _mission(deptId, spec) {
+  if (!spec.objective?.trim()) return null;
   try {
     const all = mm()?.listMissions({ limit: 300 }) || { missions: [] };
     const dup = (all.missions || []).some(m =>
@@ -76,7 +77,7 @@ function _mission(deptId, spec) {
       m.objective?.slice(0,50) === (spec.objective || "").slice(0,50)
     );
     if (dup) return null;
-    return orch()?.createManual({ ...spec, metadata: { ...spec.metadata, autoCreatedBy: deptId } });
+    return orch()?.createManual({ ...spec, goal: spec.objective, metadata: { ...spec.metadata, autoCreatedBy: deptId } });
   } catch { return null; }
 }
 

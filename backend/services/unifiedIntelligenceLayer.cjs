@@ -597,6 +597,7 @@ function detectCrossDomainEvents(opts = {}) {
             const priority = ev.severity === "critical" ? "critical" : ev.severity === "warning" ? "high" : "medium";
             const mission  = _orch()?.createManual({
                 objective: `[Cross-Domain] ${ev.recommendation}`,
+                goal: `[Cross-Domain] ${ev.recommendation}`,
                 priority,
                 subtasks: [
                     { description: `Signal: ${ev.description}` },

@@ -199,7 +199,7 @@ function createExecMission({ goalId, strategyId, title, description = "", orgTar
       .find(m => ["active","pending","planned"].includes(m.status) && m.objective?.slice(0,50) === prefix);
     if (!existing) {
       orchMission = _orch()?.createManual({
-        objective: title, description, priority,
+        objective: title, goal: title, description, priority,
         subtasks: subtasks.map(t => ({ description: t.description || t })),
         metadata: { goalId, strategyId, orgTargets, source: "executive" },
       });

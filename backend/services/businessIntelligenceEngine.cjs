@@ -339,6 +339,7 @@ function _triggerMission(signal, entityType, entityId) {
                        : "medium";
         const mission = orch.createManual({
             objective: `[Auto] ${signal.recommendation}`,
+            goal: `[Auto] ${signal.recommendation}`,
             priority,
             subtasks:  [
                 { description: `Signal detected: ${signal.description}` },
@@ -603,6 +604,7 @@ function acceptRecommendation(recId, opts = {}) {
         if (orch) {
             orch.createManual({
                 objective: `[Accepted Recommendation] ${updated.title}`,
+                goal: `[Accepted Recommendation] ${updated.title}`,
                 priority:  "medium",
                 subtasks:  [{ description: updated.detail || updated.title }],
                 metadata:  { domain: "business", source: "recommendation", recId },

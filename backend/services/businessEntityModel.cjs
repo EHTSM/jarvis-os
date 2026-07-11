@@ -270,7 +270,7 @@ function createBusinessMission(entityType, entity, opts = {}) {
     if (!orch) throw new Error("missionOrchestrator not available");
 
     const missionOpts = entityToMission(entityType, entity, opts);
-    const mission = orch.createManual(missionOpts);
+    const mission = orch.createManual({ ...missionOpts, goal: missionOpts.objective });
 
     // Record a business-specific lesson on creation
     try {
