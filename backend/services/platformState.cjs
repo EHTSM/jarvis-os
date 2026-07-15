@@ -209,14 +209,18 @@ function addOrgPolicy(orgId, { policy, addedBy = "platform" } = {}) {
 function getOrgHealth(orgId) {
   const org = getOrg(orgId);
   if (!org) return null;
-  // Aggregate from all layers this org touches
+  // Aggregate from all layers this org touches. A layer that's unavailable
+  // (throws, or the sub-service isn't wired up) is omitted rather than
+  // defaulted to a hardcoded score — a fabricated "70" would silently drag
+  // the average toward a fake-looking moderate-health baseline instead of
+  // reflecting that the layer has no real signal at all.
   let layerHealth = {};
-  try { const h = _autoSt()?.getGlobalHealthSnapshot?.(); layerHealth.autonomous = h?.score ?? 70; } catch {}
-  try { const h = _civSt()?.getCivilizationHealth?.();    layerHealth.civilization = h?.score ?? 70; } catch {}
-  try { const h = _ecoSt()?.getEcosystemHealth?.();       layerHealth.ecosystem = h?.score ?? 70; } catch {}
+  try { const h = _autoSt()?.getGlobalHealthSnapshot?.(); if (h?.score != null) layerHealth.autonomous = h.score; } catch {}
+  try { const h = _civSt()?.getCivilizationHealth?.();    if (h?.score != null) layerHealth.civilization = h.score; } catch {}
+  try { const h = _ecoSt()?.getEcosystemHealth?.();       if (h?.score != null) layerHealth.ecosystem = h.score; } catch {}
   const scores = Object.values(layerHealth);
   const avgScore = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : org.health;
-  return { orgId, name: org.name, health: avgScore, layers: layerHealth, status: org.status, kpis: org.kpis };
+  return { orgId, name: org.name, health: avgScore, layers: layerHealth, layersReporting: scores.length, status: org.status, kpis: org.kpis };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
