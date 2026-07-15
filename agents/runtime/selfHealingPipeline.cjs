@@ -167,8 +167,12 @@ function _execPatchFile(stage, run, patchedContentFn) {
     if (!pa) return { ok: false, error: "patchAssistant unavailable" };
     if (!stage.targetFile) return { ok: false, error: "targetFile not specified" };
 
-    // Generate placeholder patch content (real content supplied by patchedContentFn if provided)
-    const patchedContent = patchedContentFn
+    // Only patchedContentFn produces a real, reviewed fix. Without it there is
+    // no actual patch to apply — just a placeholder stub — so it must never be
+    // auto-approved, in any mode, or auto_heal silently overwrites working
+    // source files with a non-functional comment.
+    const hasRealContent = typeof patchedContentFn === "function";
+    const patchedContent = hasRealContent
         ? patchedContentFn(stage.targetFile)
         : `// [AutoFixPlanner patch] ${stage.detail}\n// Replace this placeholder with the actual fix.\n`;
 
@@ -184,8 +188,9 @@ function _execPatchFile(stage, run, patchedContentFn) {
     stage.patchId = proposal.patchId;
     run.patchIds.push(proposal.patchId);
 
-    // In auto_heal or approval_required-with-approved mode, apply immediately
-    if (run._applyPatches) {
+    // In auto_heal or approval_required-with-approved mode, apply immediately —
+    // but only when there's real patch content behind it.
+    if (run._applyPatches && hasRealContent) {
         const applyResult = pa.applyPatch(proposal.patchId, { approved: true, operatorId: "self-heal" });
         if (!applyResult.ok) return { ok: false, error: `Apply failed: ${applyResult.error}`, patchId: proposal.patchId };
         return { ok: true, detail: `Patch applied to ${stage.targetFile}`, patchId: proposal.patchId, applied: true };
@@ -193,7 +198,7 @@ function _execPatchFile(stage, run, patchedContentFn) {
 
     return {
         ok:              true,
-        detail:          `Patch proposed for ${stage.targetFile} — awaiting approval`,
+        detail:          `Patch proposed for ${stage.targetFile} — awaiting approval${hasRealContent ? "" : " (placeholder only — no generated fix content)"}`,
         patchId:         proposal.patchId,
         requiresApproval: true,
         applied:         false,
