@@ -1448,12 +1448,16 @@ function _startBackend() {
         return;
     }
 
-    const nodeBin = process.execPath.includes("electron") ? "node" : process.execPath;
+    // Packaged builds don't bundle a standalone Node binary. Electron's own
+    // executable can run plain Node scripts via ELECTRON_RUN_AS_NODE=1, so
+    // reuse it instead of depending on a system-installed `node`.
+    const nodeBin = app.isPackaged ? process.execPath : "node";
     const env = {
         ...process.env,
         NODE_ENV:    "production",
         PORT:        "5050",
         ELECTRON_RUN: "1",
+        ...(app.isPackaged ? { ELECTRON_RUN_AS_NODE: "1" } : {}),
     };
 
     _backendProc = spawn(nodeBin, [serverEntry], {
