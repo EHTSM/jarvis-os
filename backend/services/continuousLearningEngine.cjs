@@ -333,16 +333,21 @@ function getStats() {
     };
 }
 
-// Populates lessons/recs on first run. Call after the HTTP server is listening —
-// NOT at module load — so a large agent-runs/tool-usage/cycles history doesn't
-// get parsed and clustered in memory before the process can bind its port.
+// Populates lessons/recs on first run, then keeps re-analyzing on an interval
+// so new failures/successes actually get turned into lessons over the life of
+// the process — this is a "Continuous" learning engine in name, and other
+// callers (server.js boot log) already describe it as an ongoing loop.
+// Call after the HTTP server is listening — NOT at module load — so a large
+// agent-runs/tool-usage/cycles history doesn't get parsed and clustered in
+// memory before the process can bind its port.
+const AUTO_ANALYSIS_INTERVAL_MS = 30 * 60 * 1000; // 30 min — cheap bounded-file re-read, no need to run tighter
 let _autoAnalysisStarted = false;
 function startAutoAnalysis() {
     if (_autoAnalysisStarted) return;
     _autoAnalysisStarted = true;
-    setImmediate(() => {
-        try { runFullAnalysis(); } catch { /* non-critical */ }
-    });
+    const _run = () => { try { runFullAnalysis(); } catch { /* non-critical */ } };
+    setImmediate(_run);
+    setInterval(_run, AUTO_ANALYSIS_INTERVAL_MS).unref();
 }
 
 module.exports = { analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis };

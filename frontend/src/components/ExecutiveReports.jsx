@@ -111,6 +111,10 @@ export default function ExecutiveReports({ onNavigate }) {
         <button className="er-export-btn" onClick={handleExport}>↓ Export CSV</button>
       </div>
 
+      <div className="ac-api-banner ac-api-banner--error">
+        ⚠ No monthly revenue/leads/conversion ledger is tracked yet — the figures below are illustrative seed data, not real account activity.
+      </div>
+
       {/* Summary KPIs */}
       <div className="er-kpi-grid">
         {[

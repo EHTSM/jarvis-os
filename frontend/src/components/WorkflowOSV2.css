@@ -663,6 +663,7 @@
   gap: 6px;
 }
 .wov2-rr-title { margin: 0 0 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-faint, #4a5470); }
+.wov2-rr-illustrative { text-transform: none; font-weight: 500; letter-spacing: normal; opacity: 0.7; }
 .wov2-rr-row   { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 .wov2-rr-dot   { width: 6px; height: 6px; border-radius: 50%; background: #52d68a; flex-shrink: 0; }
 .wov2-rr-agent { color: var(--accent, #7c6fff); font-family: var(--font-mono, monospace); font-weight: 600; min-width: 130px; }

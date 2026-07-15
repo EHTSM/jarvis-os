@@ -22,6 +22,11 @@ export async function getOAuthProviderStatus() {
   return _fetch("/oauth/status");
 }
 
+// ── Integration connectors (live-probed, non-OAuth credential checks) ─
+export async function getIntegrationsStatus() {
+  return _fetch("/integrations");
+}
+
 // ── Observability ────────────────────────────────────────────────────
 export async function getObsSnapshot() {
   return _fetch("/p21/obs");

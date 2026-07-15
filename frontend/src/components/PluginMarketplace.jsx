@@ -22,17 +22,9 @@ async function post(path, body = {}) {
   return r.json();
 }
 
-// Curated marketplace catalog (shown when no custom plugins installed yet)
-const CATALOG = [
-  { id: "eslint-runner",       name: "ESLint Runner",      category: "linting",    icon: "◈", description: "Run ESLint in the AI pipeline. Auto-fix on save.", version: "1.0.0" },
-  { id: "prettier-format",     name: "Prettier Format",    category: "formatter",  icon: "⬡", description: "Auto-format code with Prettier on save.", version: "1.2.0" },
-  { id: "git-smart",           name: "Git Smart",          category: "git",        icon: "⎇", description: "AI commit messages, branch suggestions, conflict resolution.", version: "2.1.0" },
-  { id: "test-guardian",       name: "Test Guardian",      category: "testing",    icon: "✓", description: "Auto-generate and run tests after each patch.", version: "1.0.3" },
-  { id: "deploy-bot",          name: "Deploy Bot",         category: "deployment", icon: "▲", description: "One-click deploy to Vercel, Netlify, Fly.io from the editor.", version: "0.9.1" },
-  { id: "ai-docs",             name: "AI Docs",            category: "docs",       icon: "◎", description: "Auto-generate JSDoc, README, and API docs from code.", version: "1.1.0" },
-  { id: "security-scanner",    name: "Security Scanner",   category: "security",   icon: "🔒", description: "Scan for OWASP Top 10 vulnerabilities in real time.", version: "1.0.0" },
-  { id: "perf-profiler",       name: "Perf Profiler",      category: "performance",icon: "⚡", description: "Identify slow functions and suggest optimizations.", version: "0.8.0" },
-];
+// Fallback icon when the catalog entry doesn't specify one (backend catalog
+// entries don't carry an icon glyph field).
+const DEFAULT_ICON = "◈";
 
 const STATUS_COLORS = {
   enabled:  "var(--success, #52d68a)",
@@ -99,6 +91,8 @@ function PluginCard({ plugin, installed, onInstall, onEnable, onDisable, onRemov
 
 export default function PluginMarketplace() {
   const [installed, setInstalled] = useState({});
+  const [catalog,   setCatalog]   = useState([]);
+  const [catalogErr,setCatalogErr]= useState(false);
   const [search,    setSearch]    = useState("");
   const [tab,       setTab]       = useState("marketplace"); // marketplace | installed
   const [loading,   setLoading]   = useState(false);
@@ -118,7 +112,16 @@ export default function PluginMarketplace() {
     } catch {}
   }, []);
 
-  useEffect(() => { loadInstalled(); }, [loadInstalled]);
+  const loadCatalog = useCallback(async () => {
+    try {
+      const r = await get("/marketplace/catalog");
+      if (!Array.isArray(r.plugins)) throw new Error("bad catalog response");
+      setCatalog(r.plugins);
+      setCatalogErr(false);
+    } catch { setCatalogErr(true); }
+  }, []);
+
+  useEffect(() => { loadInstalled(); loadCatalog(); }, [loadInstalled, loadCatalog]);
 
   const installPlugin = useCallback(async (plugin) => {
     setLoading(true);
@@ -152,7 +155,7 @@ export default function PluginMarketplace() {
   }, [loadInstalled]);
 
   const query = search.toLowerCase();
-  const filteredCatalog = CATALOG.filter(p =>
+  const filteredCatalog = catalog.filter(p =>
     !query || p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
   );
   const installedList = Object.values(installed);
@@ -186,6 +189,10 @@ export default function PluginMarketplace() {
         value={search}
         onChange={e => setSearch(e.target.value)}
       />
+
+      {tab === "marketplace" && catalogErr && (
+        <div className="pm-empty">Marketplace catalog unavailable — check your connection and retry.</div>
+      )}
 
       <div className="pm-list">
         {tab === "marketplace" && filteredCatalog.map(p => (

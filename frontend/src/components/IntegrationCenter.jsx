@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl } from "../phase21Api";
+import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl, getIntegrationsStatus } from "../phase21Api";
 import "./IntegrationCenter.css";
 
 // ── Integration definitions ───────────────────────────────────────────
@@ -38,12 +38,12 @@ const INTEGRATIONS = [
     icon:     "◉",
     color:    "#e6edf3",
     desc:     "Access repositories, read issues and PRs, trigger CI workflows, post status checks.",
-    status:   "connected",
+    status:   "disconnected",
     permissions: ["Read repos", "Read issues", "Read PRs", "Write comments"],
-    syncStatus:  "synced",
-    lastSync:    "2 hours ago",
-    health:   "healthy",
-    repoCount: 4,
+    syncStatus:  null,
+    lastSync:    null,
+    health:   null,
+    setupUrl: "https://github.com/settings/developers",
   },
   {
     id:       "gitlab",
@@ -65,12 +65,12 @@ const INTEGRATIONS = [
     icon:     "N",
     color:    "#ffffff",
     desc:     "Sync pages and databases to the Knowledge Base. Write meeting notes and reports.",
-    status:   "connected",
+    status:   "disconnected",
     permissions: ["Read pages", "Write pages", "Read databases"],
-    syncStatus:  "synced",
-    lastSync:    "1 hour ago",
-    health:   "healthy",
-    pageCount: 23,
+    syncStatus:  null,
+    lastSync:    null,
+    health:   null,
+    setupUrl: "https://www.notion.so/my-integrations",
   },
   {
     id:       "slack",
@@ -230,6 +230,19 @@ function DetailPanel({ integ, onClose, onConnect, onDisconnect }) {
   );
 }
 
+// This panel's plain ids (github, notion, slack, telegram) don't match the
+// namespaced connector ids integrationConnectors.cjs registers under
+// (git:github, msg:slack, msg:telegram) — Notion has no live probe there at
+// all (its status only lives in the OAuth layer). Map what does exist so we
+// can merge in real probe results instead of only OAuth-connection state.
+const CONNECTOR_ID_MAP = {
+  github:   "git:github",
+  slack:    "msg:slack",
+  telegram: "msg:telegram",
+  gmail:    "prod:google_workspace",
+  gdrive:   "prod:google_workspace",
+};
+
 export default function IntegrationCenter({ onNavigate }) {
   const [integs,    setInteg]    = useState(INTEGRATIONS);
   const [category,  setCategory] = useState("all");
@@ -239,27 +252,35 @@ export default function IntegrationCenter({ onNavigate }) {
 
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2600); };
 
-  // Merge live OAuth status from backend over static definitions
-  const _applyLiveStatus = useCallback((providerStatus, connections) => {
+  // Merge live OAuth status + real connector probe results over static definitions
+  const _applyLiveStatus = useCallback((providerStatus, connections, connectorsById) => {
     setInteg(prev => prev.map(integ => {
-      const pStatus = providerStatus?.[integ.id];
-      const conn    = connections?.find(c => c.provider === integ.id);
-      if (!pStatus && !conn) return integ;
+      const pStatus  = providerStatus?.[integ.id];
+      const conn     = connections?.find(c => c.provider === integ.id);
+      const cid      = CONNECTOR_ID_MAP[integ.id];
+      const connector = cid ? connectorsById?.[cid] : null;
+      if (!pStatus && !conn && !connector) return integ;
+
+      const isConnected = !!conn || connector?.status === "CONNECTED";
       return {
         ...integ,
-        status:     conn ? "connected" : (pStatus?.configured ? "disconnected" : "disconnected"),
-        syncStatus: conn ? "synced" : null,
-        lastSync:   conn?.updatedAt ? new Date(conn.updatedAt).toLocaleString() : null,
-        health:     conn ? "healthy" : null,
+        status:     isConnected ? "connected" : "disconnected",
+        syncStatus: isConnected ? "synced" : null,
+        lastSync:   conn?.updatedAt ? new Date(conn.updatedAt).toLocaleString()
+                   : connector?.lastSuccess ? new Date(connector.lastSuccess).toLocaleString()
+                   : null,
+        health:     isConnected ? "healthy" : (connector?.status === "PARTIAL" ? "degraded" : null),
       };
     }));
   }, []);
 
   useEffect(() => {
     track.event("integration_center_viewed");
-    Promise.all([getOAuthProviderStatus(), listOAuthConnections()])
-      .then(([ps, cs]) => {
-        _applyLiveStatus(ps?.providers, cs?.connections);
+    Promise.all([getOAuthProviderStatus(), listOAuthConnections(), getIntegrationsStatus()])
+      .then(([ps, cs, is]) => {
+        const connectorsById = {};
+        for (const c of is?.connectors || []) connectorsById[c.id] = c;
+        _applyLiveStatus(ps?.providers, cs?.connections, connectorsById);
       })
       .catch(() => {}) // backend may not have OAuth keys — fail silently, show static state
       .finally(() => setLoading(false));

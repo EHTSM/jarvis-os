@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import { sendMessage } from "../api";
 import { getRuntimeHistory, dispatchTask, emergencyStop } from "../runtimeApi";
-import { getOpsData } from "../telemetryApi";
+import { getOpsData, getHealStatus } from "../telemetryApi";
 import { startCycle, listCycles, cycleStats } from "../phase18Api";
 import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
@@ -155,14 +155,15 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
   const [loading, setLoading] = useState(true);
   const [liveWfs, setLiveWfs] = useState(null);
   const [cycles,  setCycles]  = useState(null);
+  const [apiError, setApiError] = useState(null);
   const [triggerInput, setTriggerInput] = useState("");
   const [triggering,   setTriggering]   = useState(false);
 
   useEffect(() => {
     Promise.all([
       fetch("/runtime/workflows/library", { credentials: "include" })
-        .then(r => r.ok ? r.json() : null)
-        .catch(() => null),
+        .then(r => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+        .catch(e => { setApiError(e.message); return null; }),
       listCycles({ limit: 10 }).catch(() => null),
     ]).then(([libRes, cycRes]) => {
       const serverWfs = libRes?.workflows;
@@ -180,6 +181,8 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
           runsToday: w.usageCount || 0,
           errorDetail: w.lastError || null,
         })));
+      } else if (!apiError) {
+        setApiError("empty library response");
       }
       const arr = Array.isArray(cycRes) ? cycRes : (cycRes?.cycles || cycRes?.items || []);
       if (arr.length > 0) setCycles(arr);
@@ -232,6 +235,9 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
 
   return (
     <div className="wov2-library-root">
+      {!liveWfs && apiError && (
+        <div className="ac-api-banner ac-api-banner--error">⚠ Live workflow library unavailable — showing seed data ({apiError})</div>
+      )}
       <div className="wov2-library-toolbar">
         <div className="wov2-search-wrap">
           <span className="wov2-search-icon">🔍</span>
@@ -630,6 +636,7 @@ function TabScheduled() {
 
   return (
     <div className="wov2-sched-root">
+      <div className="ac-api-banner ac-api-banner--error">⚠ No cron/schedule backend exists yet — this list is illustrative and toggles are not persisted.</div>
       <div className="wov2-sched-list">
         {schedules.map(s => (
           <div key={s.name} className={`wov2-sched-row${!s.enabled ? " wov2-sched-row--off" : ""}`}>
@@ -815,7 +822,7 @@ function TabRouter({ addToast }) {
       </div>
 
       <div className="wov2-routing-rules">
-        <p className="wov2-rr-title">Routing Rules</p>
+        <p className="wov2-rr-title">Routing Rules <span className="wov2-rr-illustrative">(illustrative — not live agent routing)</span></p>
         {ROUTING_RULES.map(r => (
           <div key={r.agent} className="wov2-rr-row">
             <span className="wov2-rr-dot" />
@@ -898,9 +905,11 @@ function TabRouter({ addToast }) {
 function TabAutonomous({ addToast }) {
   const [selected, setSelected] = useState(null);
   const [opsData,  setOpsData]  = useState(null);
+  const [healStatus, setHealStatus] = useState(null);
 
   useEffect(() => {
     getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    getHealStatus().then(r => { if (r) setHealStatus(r); }).catch(() => {});
   }, []);
 
   const WK_STATUS = { in_progress: "⟳", queued: "○", done: "✓" };
@@ -912,8 +921,8 @@ function TabAutonomous({ addToast }) {
         <p className="wov2-lt-title">Live Today</p>
         <div className="wov2-live-cards">
           {[
-            { icon: "●", title: "Self-healing agent monitor", status: "ACTIVE", color: "#52d68a", detail: "Restarts crashed agents automatically", stat: "24 restarts prevented this week" },
-            { icon: "●", title: "Retry logic with exponential backoff", status: "ACTIVE", color: "#52d68a", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: "12 tasks recovered this week" },
+            { icon: "●", title: "Self-healing agent monitor", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Restarts crashed agents automatically", stat: healStatus ? `${healStatus.healedTotal ?? 0} healed total` : "—" },
+            { icon: "●", title: "Retry logic with exponential backoff", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: healStatus ? `${healStatus.failedTotal ?? 0} unrecovered` : "—" },
             { icon: "○", title: "Evolution scoring engine", status: "MONITORING", color: "#f0b429", detail: "Scoring system improvement opportunities", stat: `Score: ${opsData?.evolution?.score ?? 72}/100` },
           ].map(item => (
             <div key={item.title} className="wov2-live-card">
@@ -930,7 +939,7 @@ function TabAutonomous({ addToast }) {
       </div>
 
       <div className="wov2-dept-section">
-        <p className="wov2-dept-title">Department View</p>
+        <p className="wov2-dept-title">Department View <span className="wov2-rr-illustrative">(illustrative — not live department telemetry)</span></p>
         <div className="wov2-dept-grid">
           {DEPARTMENTS.map(dept => (
             <div

@@ -24,3 +24,8 @@ export async function getMetrics() {
   try { return await _fetch("/metrics"); }
   catch { return null; }
 }
+
+export async function getHealStatus() {
+  try { return await _fetch("/p19/heal/status"); }
+  catch { return null; }
+}
