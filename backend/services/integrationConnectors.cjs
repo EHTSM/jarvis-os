@@ -47,11 +47,42 @@ function _save(d) {
   } catch { /* non-fatal */ }
 }
 function _ts()       { return new Date().toISOString(); }
-function _env(k)     { return process.env[k] || ""; }
-function _has(...ks) { return ks.every(k => !!_env(k)); }
 
 // ── Lazy service loaders ──────────────────────────────────────────────────────
 const _try = fn => { try { return fn(); } catch { return null; } };
+const _vault    = () => _try(() => require("./secretVault.cjs"));
+
+// Reverse index of secretVault's ENV_MAP (envVarName -> "connectorId::type"),
+// built once and cached. Lets every connector below check the encrypted
+// vault first — via the same env-var-name key it already uses — before
+// falling back to process.env, without restructuring each connector's own
+// _has()/_env() calls or duplicating the vault's connector-id mapping here.
+let _envToVaultKey = null;
+function _buildEnvToVaultKey() {
+  const vault = _vault();
+  if (!vault?.ENV_MAP) return {};
+  const rev = {};
+  for (const [vaultKey, envName] of Object.entries(vault.ENV_MAP)) {
+    if (!rev[envName]) rev[envName] = vaultKey; // first mapping wins on collision
+  }
+  return rev;
+}
+function _env(k) {
+  const vault = _vault();
+  if (vault) {
+    if (_envToVaultKey === null) _envToVaultKey = _buildEnvToVaultKey();
+    const vaultKey = _envToVaultKey[k];
+    if (vaultKey) {
+      const [connectorId, type] = vaultKey.split("::");
+      try {
+        const fromVault = vault.getSecret(connectorId, type);
+        if (fromVault) return fromVault;
+      } catch { /* fall through to env var */ }
+    }
+  }
+  return process.env[k] || "";
+}
+function _has(...ks) { return ks.every(k => !!_env(k)); }
 const _ai       = () => _try(() => require("./aiService.js"));
 const _ghAgent  = () => _try(() => require("./gitHubEngineeringAgent.cjs"));
 const _pcs2     = () => _try(() => require("./pcs2ExternalPlatforms.cjs"));
@@ -782,12 +813,28 @@ async function connectGoogleWorkspace() {
 
 async function connectMicrosoft365() {
   const clientId = _env("MICROSOFT_CLIENT_ID");
-  const token    = _env("MS_GRAPH_TOKEN") || _env("MICROSOFT_GRAPH_TOKEN");
-  const creds    = _creds(["MICROSOFT_CLIENT_ID", "MICROSOFT_CLIENT_SECRET"], ["MS_GRAPH_TOKEN"]);
+  const creds    = _creds(["MICROSOFT_CLIENT_ID", "MICROSOFT_CLIENT_SECRET"], []);
   if (!clientId) return _record("prod:m365", "H", "Microsoft 365", "READY",
     "MICROSOFT_CLIENT_ID not set", creds);
+
+  // Prefer the token oauthIntegrationLayer already obtained via the real OAuth
+  // flow (auto-refreshed) over a manually-set env var — MS_GRAPH_TOKEN/
+  // MICROSOFT_GRAPH_TOKEN kept only as a fallback for pre-OAuth setups.
+  let token = null;
+  const oauthLayer = _oauth();
+  if (oauthLayer) {
+    try {
+      const conns = oauthLayer.listConnections().filter(c => c.provider === "microsoft");
+      if (conns.length > 0) {
+        const rec = await oauthLayer.getToken("microsoft", conns[0].userId);
+        token = rec?.access_token || null;
+      }
+    } catch { /* fall through to env var */ }
+  }
+  if (!token) token = _env("MS_GRAPH_TOKEN") || _env("MICROSOFT_GRAPH_TOKEN");
+
   if (!token) return _record("prod:m365", "H", "Microsoft 365", "PARTIAL",
-    "OAuth app configured — MS_GRAPH_TOKEN not set (user must authorize)", creds);
+    "OAuth app configured — no authorized user yet (waiting for OAuth) and MS_GRAPH_TOKEN not set", creds);
 
   const r = await _probe("https://graph.microsoft.com/v1.0/me",
     { Authorization: `Bearer ${token}` });
