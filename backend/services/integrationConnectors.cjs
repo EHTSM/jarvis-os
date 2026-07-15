@@ -713,8 +713,16 @@ async function connectLinkedInAuth() {
   const creds        = _creds(["LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET"], ["LINKEDIN_REDIRECT_URL"]);
   if (!clientId || !clientSecret) return _record("auth:linkedin", "G", "LinkedIn OAuth", "READY",
     "LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET not set", creds);
-  return _record("auth:linkedin", "G", "LinkedIn OAuth", "CONNECTED",
-    `LinkedIn OAuth app configured — client: ${clientId}`, creds);
+  // Env vars being present doesn't mean they're real — actually hit LinkedIn's
+  // public OIDC discovery endpoint (same verification depth as Microsoft/
+  // Google auth checks above) instead of reporting CONNECTED from presence alone.
+  const r = await _probe("https://www.linkedin.com/oauth/.well-known/openid-configuration");
+  return _record("auth:linkedin", "G", "LinkedIn OAuth",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `LinkedIn OAuth app configured — client: ${clientId}`
+         : `LinkedIn discovery endpoint unreachable: HTTP ${r.status || r.error}`,
+    creds
+  );
 }
 
 async function connectAppleAuth() {
