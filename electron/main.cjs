@@ -1439,8 +1439,13 @@ function _startBackend() {
     // In packaged builds, Electron owns the backend process.
     if (isDev || process.env.BACKEND_URL) return;
 
+    // Packaged builds keep backend/**/* inside app.asar (see "asarUnpack" in
+    // package.json — only native modules are unpacked). Electron's Node fork
+    // can require() plain JS straight out of the asar archive, so the entry
+    // path must point at app.asar, not an unpacked "app" directory that
+    // doesn't exist.
     const serverEntry = app.isPackaged
-        ? path.join(process.resourcesPath, "app", "backend", "server.js")
+        ? path.join(process.resourcesPath, "app.asar", "backend", "server.js")
         : path.join(__dirname, "..", "backend", "server.js");
 
     if (!fs.existsSync(serverEntry)) {
@@ -1460,9 +1465,16 @@ function _startBackend() {
         ...(app.isPackaged ? { ELECTRON_RUN_AS_NODE: "1" } : {}),
     };
 
+    // `cwd` is passed to the OS process-creation call, which cannot chdir
+    // into a path inside a .asar archive (unlike Node's asar-aware `fs`).
+    // Use a real on-disk directory as the working directory instead.
+    const backendCwd = app.isPackaged
+        ? process.resourcesPath
+        : path.dirname(serverEntry);
+
     _backendProc = spawn(nodeBin, [serverEntry], {
         env,
-        cwd:   path.dirname(serverEntry),
+        cwd:   backendCwd,
         stdio: ["ignore", "pipe", "pipe"],
     });
 
@@ -1521,7 +1533,7 @@ function _installSecurityHeaders() {
                 "Content-Security-Policy": [
                     [
                         "default-src 'self' http://localhost:5050",
-                        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",  // React needs unsafe-eval in dev
+                        `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
                         "style-src 'self' 'unsafe-inline'",
                         "img-src 'self' data: blob: https:",
                         "connect-src 'self' http://localhost:5050 https://api.ooplix.com wss://api.ooplix.com",

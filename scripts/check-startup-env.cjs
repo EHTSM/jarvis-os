@@ -45,7 +45,12 @@ const REQUIRED_ALWAYS = [
 const OPTIONAL_GROUPS = [
     {
         label: "WhatsApp",
-        vars:  ["WA_TOKEN", "WA_PHONE_ID"],
+        // Each entry is a list of accepted aliases for the same setting — the
+        // rest of the codebase (server.js, whatsappService.js, settings.js)
+        // accepts either name, so the checker must too or it permanently
+        // reports WhatsApp as unconfigured even when .env.example's names
+        // (WHATSAPP_TOKEN / PHONE_NUMBER_ID) are filled in.
+        varAliases: [["WA_TOKEN", "WHATSAPP_TOKEN"], ["WA_PHONE_ID", "PHONE_NUMBER_ID"]],
         note:  "WhatsApp send and inbound webhook disabled if missing",
     },
     {
@@ -107,11 +112,16 @@ if (isProd) {
 
 // Optional
 const missingOptional = [];
-for (const { label, vars, note } of OPTIONAL_GROUPS) {
-    const missing = vars.filter(k => !process.env[k]);
+for (const { label, vars, varAliases, note } of OPTIONAL_GROUPS) {
+    // varAliases: each entry is a list of interchangeable env var names for one
+    // setting — satisfied if ANY alias in the group is set. Plain `vars` still
+    // supported for single-name settings with no alias.
+    const groups  = varAliases || (vars || []).map(v => [v]);
+    const missing = groups.filter(aliases => !aliases.some(k => process.env[k]));
     if (missing.length > 0) {
         warnings++;
-        missingOptional.push(`  [OPTIONAL] ${label}: ${missing.join(", ")} — ${note}`);
+        const names = missing.map(aliases => aliases.join("/")).join(", ");
+        missingOptional.push(`  [OPTIONAL] ${label}: ${names} — ${note}`);
     }
 }
 

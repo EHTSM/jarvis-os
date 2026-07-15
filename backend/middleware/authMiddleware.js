@@ -56,9 +56,14 @@ function _parseCookies(req) {
 function requireAuth(req, res, next) {
   const jwtSecret = process.env.JWT_SECRET;
 
-  // Dev passthrough: if JWT_SECRET not set, allow access outside production
+  // Dev passthrough: only when JWT_SECRET is unset AND the operator has
+  // explicitly opted in with ALLOW_DEV_AUTH_BYPASS=1. Gating this on
+  // NODE_ENV!=='production' alone fails open — a deploy that simply forgets
+  // to set NODE_ENV would silently run with zero auth on every route.
+  // Requiring an explicit, differently-named opt-in means a missing env var
+  // fails closed instead.
   if (!jwtSecret) {
-    if (process.env.NODE_ENV !== "production") {
+    if (process.env.NODE_ENV !== "production" && process.env.ALLOW_DEV_AUTH_BYPASS === "1") {
       req.user = { role: "operator", sub: "dev" };
       return next();
     }

@@ -79,7 +79,10 @@ function _save(d) {
   const dir = path.dirname(VAULT_FILE);
   fs.mkdirSync(dir, { recursive: true });
   const tmp = VAULT_FILE + ".tmp";
-  fs.writeFileSync(tmp, JSON.stringify(d, null, 2));
+  // mode 0o600: vault holds AES-GCM ciphertext of live credentials — other
+  // local users/processes on the same host must not be able to read it.
+  fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
+  fs.chmodSync(tmp, 0o600);
   fs.renameSync(tmp, VAULT_FILE);
 }
 function _loadHistory() {
@@ -93,7 +96,8 @@ function _appendHistory(entry) {
   try {
     const dir = path.dirname(HISTORY_FILE);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(trimmed, null, 2));
+    fs.writeFileSync(HISTORY_FILE, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.chmodSync(HISTORY_FILE, 0o600);
   } catch { /* non-fatal */ }
 }
 
