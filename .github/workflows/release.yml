@@ -101,7 +101,58 @@ jobs:
             ooplix-server-v*.tar.gz
             ooplix-server-v*.tar.gz.sha256
 
-  # ── 3. Extract changelog for this release ───────────────────────────────────
+  # ── 3. Build + publish Electron desktop app (mac/win/linux) ─────────────────
+  desktop:
+    name: Build Desktop (${{ matrix.os }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            platform: mac
+          - os: windows-latest
+            platform: win
+          - os: ubuntu-latest
+            platform: linux
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+      # Code signing is opt-in via repo secrets. electron-builder accepts a
+      # base64-encoded cert directly in CSC_LINK/WIN_CSC_LINK — no manual
+      # keychain import needed. Unset secrets resolve to empty strings, which
+      # electron-builder treats as "no signing", producing an unsigned build
+      # instead of failing.
+      - name: Build + publish desktop app (frontend already built)
+        run: npx electron-builder --${{ matrix.platform }} --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ matrix.os == 'macos-latest' && secrets.MACOS_CERT_P12 || '' }}
+          CSC_KEY_PASSWORD: ${{ matrix.os == 'macos-latest' && secrets.MACOS_CERT_PASSWORD || '' }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          WIN_CSC_LINK: ${{ matrix.os == 'windows-latest' && secrets.WIN_CERT_PFX || '' }}
+          WIN_CSC_KEY_PASSWORD: ${{ matrix.os == 'windows-latest' && secrets.WIN_CERT_PASSWORD || '' }}
+
+  # ── 4. Extract changelog for this release ───────────────────────────────────
   changelog:
     name: Extract Changelog
     runs-on: ubuntu-latest
