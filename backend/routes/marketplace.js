@@ -14,7 +14,7 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const { requireFeature } = require("../services/featureGate.cjs");
 const svc = require("../services/marketplaceService.cjs");
 
@@ -104,6 +104,43 @@ router.post("/marketplace/plugin/:id/review", (req, res) => {
     res.json({ review });
   } catch (e) {
     const status = e.message.includes("not in catalog") ? 404 : 400;
+    res.status(status).json({ error: e.message });
+  }
+});
+
+// ── Third-party developer publishing workflow ──────────────────────
+// Any authenticated dev can submit; only Admin+ can review/approve —
+// same pattern as requireRole("Admin") on /plugins/install.
+router.post("/marketplace/submit", (req, res) => {
+  try {
+    const submission = svc.submitConnector(req.user.sub, req.body);
+    res.status(201).json({ submission });
+  } catch (e) {
+    const status = e.validationErrors ? 400 : (e.message.includes("already exists") ? 409 : 400);
+    res.status(status).json({ error: e.message, validationErrors: e.validationErrors });
+  }
+});
+
+router.get("/marketplace/submissions", requireRole("Admin"), (req, res) => {
+  try { res.json({ submissions: svc.listSubmissions(req.query.status) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/marketplace/submissions/:id", requireRole("Admin"), (req, res) => {
+  try {
+    const submission = svc.getSubmission(req.params.id);
+    if (!submission) return res.status(404).json({ error: "Submission not found" });
+    res.json({ submission });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/marketplace/submissions/:id/review", requireRole("Admin"), (req, res) => {
+  try {
+    const { decision, notes } = req.body;
+    const submission = svc.reviewSubmission(req.params.id, decision, req.user.sub, notes);
+    res.json({ submission });
+  } catch (e) {
+    const status = e.message.includes("not found") ? 404 : 400;
     res.status(status).json({ error: e.message });
   }
 });

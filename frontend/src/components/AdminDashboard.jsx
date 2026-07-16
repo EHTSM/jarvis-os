@@ -51,6 +51,7 @@ const TABS = [
   { id: "cost",       label: "Cost"       },
   { id: "users",      label: "Users"      },
   { id: "providers",  label: "Providers"  },
+  { id: "connectors", label: "Connectors" },
 ];
 
 export default function AdminDashboard() {
@@ -58,6 +59,9 @@ export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [submissions, setSubmissions] = useState([]);
+  const [submissionsErr, setSubmissionsErr] = useState(null);
+  const [reviewingId, setReviewingId] = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError(null);
@@ -69,7 +73,33 @@ export default function AdminDashboard() {
     finally { setLoading(false); }
   }, []);
 
+  const loadSubmissions = useCallback(async () => {
+    try {
+      const r = await fetch(`${BASE}/marketplace/submissions?status=pending`, { credentials: "include" });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const body = await r.json();
+      setSubmissions(body.submissions || []);
+      setSubmissionsErr(null);
+    } catch (e) { setSubmissionsErr(e.message); }
+  }, []);
+
+  const reviewSubmission = useCallback(async (id, decision) => {
+    setReviewingId(id);
+    try {
+      const r = await fetch(`${BASE}/marketplace/submissions/${id}/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ decision }),
+      });
+      if (!r.ok) { const body = await r.json().catch(() => ({})); throw new Error(body.error || `HTTP ${r.status}`); }
+      await loadSubmissions();
+    } catch (e) { setSubmissionsErr(e.message); }
+    finally { setReviewingId(null); }
+  }, [loadSubmissions]);
+
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { if (tab === "connectors") loadSubmissions(); }, [tab, loadSubmissions]);
 
   const PLAN_COLORS = { trial: "#64748b", starter: "#06b6d4", growth: "#7c6fff", scale: "#f59e0b" };
 
@@ -177,6 +207,34 @@ export default function AdminDashboard() {
               <span className="ad-prov-reqs">{p.requests} req</span>
               <span className="ad-prov-cost">${(p.costUsd || 0).toFixed(5)}</span>
               {p.errors > 0 && <span className="ad-prov-err">{p.errors} err</span>}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === "connectors" && (
+        <div className="ad-panel">
+          <h3 className="ad-section-title">Connector Submissions — Pending Review</h3>
+          {submissionsErr && <div className="ad-error">{submissionsErr}</div>}
+          {submissions.length === 0 && !submissionsErr && (
+            <div className="ad-empty">No pending submissions.</div>
+          )}
+          {submissions.map(s => (
+            <div key={s.id} className="ad-provider-cost-row" style={{ flexDirection: "column", alignItems: "flex-start", gap: 6, padding: "12px 0" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <span className="ad-prov-name">{s.manifest.name} <span style={{ opacity: 0.6, fontSize: 12 }}>({s.manifest.id} v{s.manifest.version})</span></span>
+                <span style={{ fontSize: 12, opacity: 0.7 }}>submitted {new Date(s.submittedAt).toLocaleDateString()}</span>
+              </div>
+              <div style={{ fontSize: 13, opacity: 0.8 }}>{s.manifest.description}</div>
+              <div style={{ fontSize: 12, opacity: 0.6 }}>by {s.manifest.author} · category: {s.manifest.category || "uncategorized"} · capabilities: {(s.manifest.capabilities || []).join(", ") || "none"}</div>
+              <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+                <button className="ad-refresh-btn" disabled={reviewingId === s.id} onClick={() => reviewSubmission(s.id, "approved")}>
+                  {reviewingId === s.id ? "…" : "Approve"}
+                </button>
+                <button className="ad-refresh-btn" disabled={reviewingId === s.id} onClick={() => reviewSubmission(s.id, "rejected")}>
+                  {reviewingId === s.id ? "…" : "Reject"}
+                </button>
+              </div>
             </div>
           ))}
         </div>

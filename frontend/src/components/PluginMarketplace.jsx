@@ -89,15 +89,21 @@ function PluginCard({ plugin, installed, onInstall, onEnable, onDisable, onRemov
   );
 }
 
+const SUBMIT_FIELDS = ["id", "name", "version", "description", "author", "category"];
+const SUBMIT_DEFAULTS = { id: "", name: "", version: "1.0.0", description: "", author: "", category: "integration", capabilities: "" };
+
 export default function PluginMarketplace() {
   const [installed, setInstalled] = useState({});
   const [catalog,   setCatalog]   = useState([]);
   const [catalogErr,setCatalogErr]= useState(false);
   const [search,    setSearch]    = useState("");
-  const [tab,       setTab]       = useState("marketplace"); // marketplace | installed
+  const [tab,       setTab]       = useState("marketplace"); // marketplace | installed | submit
   const [loading,   setLoading]   = useState(false);
   const [toast,     setToast]     = useState(null);
   const [health,    setHealth]    = useState(null);
+  const [submitForm, setSubmitForm] = useState(SUBMIT_DEFAULTS);
+  const [submitErrors, setSubmitErrors] = useState([]);
+  const [submitOk,   setSubmitOk] = useState(false);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2500); };
 
@@ -154,6 +160,24 @@ export default function PluginMarketplace() {
     setLoading(false);
   }, [loadInstalled]);
 
+  const submitConnector = useCallback(async () => {
+    setSubmitErrors([]); setSubmitOk(false);
+    const manifest = {
+      id: submitForm.id.trim(), name: submitForm.name.trim(), version: submitForm.version.trim(),
+      description: submitForm.description.trim(), author: submitForm.author.trim(), category: submitForm.category,
+      capabilities: submitForm.capabilities.split(",").map(c => c.trim()).filter(Boolean),
+    };
+    try {
+      const res = await post("/marketplace/submit", manifest);
+      if (res?.error) {
+        setSubmitErrors(res.validationErrors || [res.error]);
+      } else {
+        setSubmitOk(true);
+        setSubmitForm(SUBMIT_DEFAULTS);
+      }
+    } catch { setSubmitErrors(["Submit failed — check server connection"]); }
+  }, [submitForm]);
+
   const query = search.toLowerCase();
   const filteredCatalog = catalog.filter(p =>
     !query || p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
@@ -172,23 +196,25 @@ export default function PluginMarketplace() {
       </div>
 
       <div className="pm-tabs">
-        {["marketplace", "installed"].map(t => (
+        {["marketplace", "installed", "submit"].map(t => (
           <button
             key={t}
             className={`pm-tab${tab === t ? " pm-tab--active" : ""}`}
             onClick={() => setTab(t)}
           >
-            {t === "marketplace" ? "Marketplace" : `Installed (${installedList.length})`}
+            {t === "marketplace" ? "Marketplace" : t === "installed" ? `Installed (${installedList.length})` : "Submit a Connector"}
           </button>
         ))}
       </div>
 
-      <input
-        className="pm-search"
-        placeholder="Search plugins…"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
+      {tab !== "submit" && (
+        <input
+          className="pm-search"
+          placeholder="Search plugins…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      )}
 
       {tab === "marketplace" && catalogErr && (
         <div className="pm-empty">Marketplace catalog unavailable — check your connection and retry.</div>
@@ -224,6 +250,38 @@ export default function PluginMarketplace() {
             ))
         )}
       </div>
+
+      {tab === "submit" && (
+        <div className="pm-list" style={{ display: "flex", flexDirection: "column", gap: 10, padding: "0 4px" }}>
+          <p style={{ fontSize: 13, opacity: 0.75, margin: 0 }}>
+            Submit a connector manifest for review. An operator will approve or reject it before it appears in the marketplace.
+          </p>
+          {submitOk && <div className="pm-toast" style={{ position: "static" }}>Submitted — pending operator review.</div>}
+          {submitErrors.length > 0 && (
+            <div className="pm-empty" style={{ color: "var(--danger, #f55b5b)" }}>
+              {submitErrors.map((e, i) => <div key={i}>{e}</div>)}
+            </div>
+          )}
+          {SUBMIT_FIELDS.map(field => (
+            <input
+              key={field}
+              className="pm-search"
+              placeholder={field}
+              value={submitForm[field]}
+              onChange={e => setSubmitForm(prev => ({ ...prev, [field]: e.target.value }))}
+            />
+          ))}
+          <input
+            className="pm-search"
+            placeholder="capabilities (comma-separated)"
+            value={submitForm.capabilities}
+            onChange={e => setSubmitForm(prev => ({ ...prev, capabilities: e.target.value }))}
+          />
+          <button className="pm-btn pm-btn--install" onClick={submitConnector}>
+            Submit for review
+          </button>
+        </div>
+      )}
 
       {toast && <div className="pm-toast">{toast}</div>}
     </div>

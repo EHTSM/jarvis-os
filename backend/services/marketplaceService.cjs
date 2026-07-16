@@ -34,7 +34,7 @@ function _evtBus()    { if (!_bus) try { _bus = require("../../agents/runtime/ru
 // ── Storage ───────────────────────────────────────────────────────
 function _read() {
   try { return JSON.parse(fs.readFileSync(DATA_FILE, "utf8")); }
-  catch { return { reviews: {}, customEntries: [] }; }
+  catch { return { reviews: {}, customEntries: [], submissions: [] }; }
 }
 function _write(data) { fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2)); }
 
@@ -440,6 +440,94 @@ function addReview(pluginId, { rating, body, author }, requestingAccountId, work
   return review;
 }
 
+// ── Third-party developer publishing workflow ──────────────────────
+// Submissions are held separately from the visible catalog until an
+// operator reviews them — approving is what actually adds an entry to
+// customEntries (the array _allEntries() reads). This is the missing
+// piece: customEntries existed in the schema but nothing ever wrote to
+// it, so no third-party submission could ever reach the catalog.
+// Reuses pluginManagerService.validateManifest() — no duplicate
+// manifest-validation logic.
+
+function submitConnector(submitterAccountId, manifest) {
+  const validation = _pluginMgr()?.validateManifest(manifest);
+  if (!validation) throw new Error("pluginManagerService unavailable — cannot validate manifest");
+  if (!validation.valid) {
+    const err = new Error(`Manifest invalid: ${validation.errors.join("; ")}`);
+    err.validationErrors = validation.errors;
+    throw err;
+  }
+
+  const store = _read();
+  if (!store.submissions) store.submissions = [];
+
+  if (_allEntries().some(e => e.id === manifest.id)) {
+    throw new Error(`A catalog entry with id "${manifest.id}" already exists`);
+  }
+  if (store.submissions.some(s => s.manifest.id === manifest.id && s.status === "pending")) {
+    throw new Error(`A pending submission for "${manifest.id}" already exists`);
+  }
+
+  const submission = {
+    id:            `sub-${crypto.randomBytes(8).toString("hex")}`,
+    manifest,
+    submitterAccountId,
+    status:        "pending",   // pending | approved | rejected
+    submittedAt:   new Date().toISOString(),
+    reviewedAt:    null,
+    reviewerAccountId: null,
+    reviewNotes:   null,
+  };
+  store.submissions.push(submission);
+  _write(store);
+  try { _evtBus()?.emit("marketplace:submission_created", { submissionId: submission.id, pluginId: manifest.id }); } catch {}
+  return submission;
+}
+
+function listSubmissions(status) {
+  const store = _read();
+  const all   = store.submissions || [];
+  return status ? all.filter(s => s.status === status) : all;
+}
+
+function getSubmission(submissionId) {
+  const store = _read();
+  return (store.submissions || []).find(s => s.id === submissionId) || null;
+}
+
+function reviewSubmission(submissionId, decision, reviewerAccountId, notes = "") {
+  if (!["approved", "rejected"].includes(decision)) {
+    throw new Error('decision must be "approved" or "rejected"');
+  }
+  const store = _read();
+  const submission = (store.submissions || []).find(s => s.id === submissionId);
+  if (!submission) throw new Error(`Submission not found: ${submissionId}`);
+  if (submission.status !== "pending") throw new Error(`Submission already ${submission.status}`);
+
+  submission.status             = decision;
+  submission.reviewedAt         = new Date().toISOString();
+  submission.reviewerAccountId  = reviewerAccountId;
+  submission.reviewNotes        = notes;
+
+  if (decision === "approved") {
+    if (!store.customEntries) store.customEntries = [];
+    store.customEntries.push({
+      ...submission.manifest,
+      author:       submission.manifest.author,
+      verified:     false,   // third-party submissions are never auto-verified
+      featured:     false,
+      rating:       0,
+      installCount: 0,
+      publishedAt:  submission.reviewedAt,
+      submissionId: submission.id,
+    });
+  }
+
+  _write(store);
+  try { _evtBus()?.emit(`marketplace:submission_${decision}`, { submissionId, pluginId: submission.manifest.id }); } catch {}
+  return submission;
+}
+
 module.exports = {
   getCatalog,
   getPlugin,
@@ -450,5 +538,9 @@ module.exports = {
   getVersions,
   getChangelog,
   addReview,
+  submitConnector,
+  listSubmissions,
+  getSubmission,
+  reviewSubmission,
   CATEGORIES,
 };
