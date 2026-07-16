@@ -627,6 +627,15 @@ _httpServer = app.listen(PORT, HOST, () => {
     } catch (err) {
         logger.warn("[SelfHeal] deferred start failed:", err.message);
     }
+    try {
+        const rot = require("./services/secretRotationAutomation.cjs");
+        rot.bootstrapSchedules();
+        rot.checkReminders();
+        setInterval(() => { try { rot.checkReminders(); } catch { /* non-fatal */ } }, 24 * 60 * 60 * 1000).unref();
+        logger.info("[SecretRotation] schedule bootstrapped, daily reminder check running");
+    } catch (err) {
+        logger.warn("[SecretRotation] deferred start failed:", err.message);
+    }
 
     // ── Autonomous task loop ───────────────────────────────────────
     try {
