@@ -1,5 +1,13 @@
 # Ooplix Changelog
 
+## [1.0.0-rc2] — 2026-07-16 — Release Candidate 2
+
+35 commits since rc1: billing usage metering + plan quotas, marketplace connector
+submission/review workflow, vault rotation-candidate staging, connector OAuth/data
+fixes, benchmark/dedup fixes, real tool-calling bridge for AI agents, and CPU/latency
+fixes (duplicate memory scan, unguarded local AI provider fallback). See commit log
+between `v1.0.0-rc1` and `v1.0.0-rc2` for the full list.
+
 ## [1.0.0-rc1] — 2026-07-02 — Release Candidate 1
 
 ### RC-1 — Production Freeze
