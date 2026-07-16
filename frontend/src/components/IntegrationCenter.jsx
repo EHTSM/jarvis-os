@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl, getIntegrationsStatus } from "../phase21Api";
+import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, refreshOAuth, getOAuthUrl, getIntegrationsStatus } from "../phase21Api";
 import "./IntegrationCenter.css";
 
 // ── Integration definitions ───────────────────────────────────────────
@@ -168,7 +168,7 @@ function IntegCard({ integ, onConnect, onDisconnect, onViewDetail, isSelected })
   );
 }
 
-function DetailPanel({ integ, onClose, onConnect, onDisconnect }) {
+function DetailPanel({ integ, onClose, onConnect, onDisconnect, onRefresh }) {
   const connected = integ.status === "connected";
   return (
     <div className="ic-detail">
@@ -217,7 +217,7 @@ function DetailPanel({ integ, onClose, onConnect, onDisconnect }) {
       <div className="ic-detail-actions">
         {connected ? (
           <>
-            <button className="ic-detail-btn ic-detail-btn--secondary">Force re-sync</button>
+            <button className="ic-detail-btn ic-detail-btn--secondary" onClick={() => onRefresh(integ.id)}>Refresh token</button>
             <button className="ic-detail-btn ic-detail-btn--danger" onClick={() => onDisconnect(integ.id)}>Disconnect</button>
           </>
         ) : (
@@ -303,6 +303,16 @@ export default function IntegrationCenter({ onNavigate }) {
     }
   }, []);
 
+  const handleRefresh = useCallback(async (id) => {
+    track.event("integration_refresh_clicked", { id });
+    try {
+      await refreshOAuth(id);
+      showToast(`${INTEGRATIONS.find(i=>i.id===id)?.name} token refreshed`);
+    } catch {
+      showToast("Refresh failed — reconnect may be required");
+    }
+  }, []);
+
   const handleDisconnect = useCallback(async (id) => {
     try {
       await revokeOAuth(id);
@@ -381,6 +391,7 @@ export default function IntegrationCenter({ onNavigate }) {
             onClose={() => setSelected(null)}
             onConnect={handleConnect}
             onDisconnect={handleDisconnect}
+            onRefresh={handleRefresh}
           />
         )}
       </div>

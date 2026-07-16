@@ -20,6 +20,7 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { requireFeature } = require("../services/featureGate.cjs");
 const mgr = require("../services/pluginManagerService.cjs");
 
 router.use("/plugins", requireAuth);
@@ -30,7 +31,7 @@ function _wsId(req) {
 }
 
 // ── List ──────────────────────────────────────────────────────────
-router.get("/plugins", (req, res) => {
+router.get("/plugins", requireFeature("plugins.marketplace"), (req, res) => {
   try {
     const { category, enabled, tag } = req.query;
     const enabledFilter = enabled === undefined ? undefined : enabled === "true";
@@ -73,7 +74,7 @@ router.post("/plugins/validate", (req, res) => {
 });
 
 // ── Install / Uninstall ───────────────────────────────────────────
-router.post("/plugins/install", requireRole("Admin"), (req, res) => {
+router.post("/plugins/install", requireRole("Admin"), requireFeature("plugins.install"), (req, res) => {
   try {
     const result = mgr.install(_wsId(req), req.body, req.user.sub);
     res.json(result);

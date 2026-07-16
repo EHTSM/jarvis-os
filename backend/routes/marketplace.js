@@ -15,10 +15,12 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace } = require("../middleware/workspaceMiddleware.cjs");
+const { requireFeature } = require("../services/featureGate.cjs");
 const svc = require("../services/marketplaceService.cjs");
 
 router.use("/marketplace", requireAuth);
 router.use(attachWorkspace);
+router.use("/marketplace", requireFeature("plugins.marketplace"));
 
 function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
