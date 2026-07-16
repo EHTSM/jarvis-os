@@ -1,5 +1,19 @@
 # Ooplix Changelog
 
+## [1.0.0-rc4] — 2026-07-17 — Release Candidate 4
+
+Fixes the release CI pipeline (continued): v1.0.0-rc3 fixed the frontend
+lockfile drift, and "Build Frontend" passed for the first time — but all
+three "Build Desktop" matrix jobs and "Package Server Release" then failed
+on the same *class* of bug at the root `package-lock.json`: `electron-rebuild`
+(and its transitive deps) was declared in `devDependencies` but never
+present in the lockfile. Regenerated `package-lock.json` to resync it, which
+in turn exposed a second, previously-masked issue — `postinstall` ran
+`electron-builder install-app-deps` unconditionally, which fails when
+`--omit=dev` (used by "Package Server Release") correctly excludes
+electron-builder. Added `|| exit 0` so prod-only installs degrade
+gracefully. v1.0.0-rc3 is left in place as a record of this attempt.
+
 ## [1.0.0-rc3] — 2026-07-17 — Release Candidate 3
 
 Fixes the release CI pipeline: v1.0.0-rc2's tag push triggered the Release
