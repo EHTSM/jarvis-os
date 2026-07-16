@@ -33,6 +33,12 @@ const TRIAL_DAYS    = 7;
 const GRACE_HOURS   = 24;
 const PLAN_PRICES   = { starter: 999, growth: 2499, scale: 0 }; // INR / month
 
+// Monthly AI request quotas per plan. null = unlimited. These bound cost
+// exposure per plan tier — usageMetering.record() logs every request but
+// never enforced a limit against it; checkUsageQuota() below is what
+// actually reads that ledger and compares it to these caps.
+const PLAN_QUOTAS = { trial: 200, starter: 2000, growth: 10000, scale: null };
+
 function _load() {
   try { return JSON.parse(fs.readFileSync(BILLING_FILE, "utf8")); }
   catch { return {}; }
@@ -123,6 +129,53 @@ function checkAccess(accountId) {
   // Unknown status — allow with warning
   logger.warn(`[Billing] Unknown status '${r.status}' for ${accountId} — allowing`);
   return { allowed: true, status: r.status, plan: r.plan, daysLeft: null, graceActive: false };
+}
+
+/**
+ * Returns { allowed, plan, used, limit, remaining } based on this calendar
+ * month's request count for the account, read from usageMetering's ledger.
+ * limit=null means unlimited (scale plan). ollama/local requests are free
+ * and excluded from the count — only requests that cost real money count
+ * against the quota.
+ */
+function checkUsageQuota(accountId) {
+  const r     = getRecord(accountId);
+  const plan  = r.plan || "trial";
+  const limit = PLAN_QUOTAS[plan] ?? PLAN_QUOTAS.trial;
+
+  if (limit === null) return { allowed: true, plan, used: 0, limit: null, remaining: null };
+
+  const metering = require("./usageMetering.cjs");
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+
+  const used = metering.loadHistory(10000)
+    .filter(e => e.accountId === accountId && e.provider !== "ollama" && new Date(e.ts) >= monthStart)
+    .length;
+
+  const remaining = Math.max(0, limit - used);
+  return { allowed: used < limit, plan, used, limit, remaining };
+}
+
+/**
+ * Express middleware — blocks requests once the account's monthly AI
+ * request quota is exhausted. Mount after requireAuth.
+ */
+function requireUsageQuota(req, res, next) {
+  const accountId = req.user?.sub || req.user?.id;
+  if (!accountId) return next();   // let requireAuth handle missing identity
+  const quota = checkUsageQuota(accountId);
+  if (!quota.allowed) {
+    return res.status(429).json({
+      error: "usage_quota_exceeded",
+      plan: quota.plan, used: quota.used, limit: quota.limit,
+      message: `Monthly AI request limit reached (${quota.used}/${quota.limit}) for the ${quota.plan} plan.`,
+      upgradeUrl: `${process.env.BASE_URL || ""}/pricing`,
+    });
+  }
+  req.usageQuota = quota;
+  next();
 }
 
 // ── Subscription activation ───────────────────────────────────────
@@ -253,5 +306,8 @@ module.exports = {
   cancelPlan,
   createRazorpaySubscription,
   requireActiveAccount,
+  checkUsageQuota,
+  requireUsageQuota,
   PLAN_PRICES,
+  PLAN_QUOTAS,
 };
