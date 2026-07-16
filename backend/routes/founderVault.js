@@ -13,7 +13,7 @@
  */
 
 const router         = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 const _try    = fn => { try { return fn(); } catch { return null; } };
 const _vault  = () => _try(() => require("../services/secretVault.cjs"));
@@ -23,7 +23,13 @@ const _oauth  = () => _try(() => require("../services/oauthIntegrationLayer.cjs"
 const _sml    = () => _try(() => require("../services/secretManagementLayer.cjs"));
 const _rot    = () => _try(() => require("../services/secretRotationAutomation.cjs"));
 
-router.use("/vault", requireAuth);
+// This is the single-operator Founder Identity & Secret Vault (userId
+// defaults to "founder" below) — distinct from the regular end-user OAuth
+// connect flow in phase21 routes. Every route here reads, writes, rotates,
+// exports, or restores production credentials, so it must be operator-only,
+// not merely authenticated — requireAuth alone would let any logged-in
+// "user"-role account read/write/export/delete production secrets.
+router.use("/vault", requireAuth, operatorOnly);
 
 // ════════════════════════════════════════════════════════════════════════════
 // VAULT CORE
