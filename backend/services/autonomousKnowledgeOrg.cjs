@@ -499,9 +499,13 @@ async function _qaTick(s) {
       const found = _st().detectContradictions(item.id);
       contradictions += found.length;
     }
-    // Run memory maintenance
-    const maintenance = _st().runMemoryMaintenance();
-    s.v4QA = { validated: result.validated, rejected: result.rejected, contradictions, maintenance };
+    // Memory maintenance (dedup/conflict-detect over up to 2000 nodes, O(n^2))
+    // already runs in _memoryTick every 300s — this tick's own job is
+    // knowledge-item QA, not memory maintenance, so it should not also run
+    // it every 180s. Running it from both ticks was doubling an expensive
+    // full-store scan for no behavioral benefit (its result was write-only,
+    // never read downstream) and was the dominant idle CPU cost in profiling.
+    s.v4QA = { validated: result.validated, rejected: result.rejected, contradictions };
     _lesson(s.id, { type: "qa", severity: contradictions > 0 ? "warning" : "info", title: `QA: +${result.validated} validated, ${result.rejected} rejected, ${contradictions} contradictions`, detail: "", tags: ["qa","quality","knowledge"] });
     if (contradictions > 3) {
       _mission(s.id, {

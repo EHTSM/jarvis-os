@@ -27,7 +27,32 @@
  */
 
 const axios  = require("axios");
+const net    = require("net");
 const logger = require("../utils/logger");
+
+// Local-only providers (Ollama, LM Studio) have no API key to fail-fast on,
+// unlike every other provider here — so when the server isn't installed/
+// running (the common case in production, where only cloud providers are
+// configured), callAI()'s fallback loop was blocking for the full 30s HTTP
+// timeout on each one before moving on. A raw TCP probe with a short timeout
+// tells "nothing listening" from "listening but slow to respond" in well
+// under a second, without touching the real request's timeout at all.
+function _isPortOpen(host, port, timeoutMs = 800) {
+    return new Promise(resolve => {
+        const socket = net.connect({ host, port });
+        const done = ok => { socket.destroy(); resolve(ok); };
+        socket.setTimeout(timeoutMs);
+        socket.once("connect", () => done(true));
+        socket.once("timeout", () => done(false));
+        socket.once("error",   () => done(false));
+    });
+}
+async function _assertLocalServerUp(url, label) {
+    const { hostname, port, protocol } = new URL(url);
+    const p = port ? parseInt(port, 10) : (protocol === "https:" ? 443 : 80);
+    const up = await _isPortOpen(hostname, p);
+    if (!up) throw new Error(`${label} not reachable at ${hostname}:${p} (not installed/running?)`);
+}
 
 // ── Provider endpoints ────────────────────────────────────────────────────────
 const GROQ_URL        = "https://api.groq.com/openai/v1/chat/completions";
@@ -184,6 +209,7 @@ async function _openai(messages, model) {
 
 async function _ollama(messages, model) {
     const url = _ollamaUrl();
+    await _assertLocalServerUp(url, "Ollama");
     const res = await axios.post(
         url,
         { model: model || _ollamaModel(), messages, stream: false },
@@ -333,6 +359,7 @@ async function _nvidia(messages, model) {
 // ── LM Studio adapter (OpenAI-compatible, local) ─────────────────────────────
 async function _lmstudio(messages, model) {
     const url = _lmStudioUrl();
+    await _assertLocalServerUp(url, "LM Studio");
     const res = await axios.post(
         url,
         { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: 1024 },
