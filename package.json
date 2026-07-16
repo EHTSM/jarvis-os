@@ -1,6 +1,6 @@
 {
   "name": "jarvis-os",
-  "version": "1.0.0-rc4",
+  "version": "1.0.0-rc5",
   "description": "Ooplix — AI Operating System for Solo Founders & Small Teams by ALWALIY TECHNOLOGIES PRIVATE LIMITED",
   "main": "electron/main.cjs",
   "type": "commonjs",
@@ -170,6 +170,9 @@
     "electron": "^41.4.0",
     "electron-builder": "^25.1.8",
     "electron-rebuild": "^3.2.9"
+  },
+  "overrides": {
+    "node-gyp": "^10.3.1"
   },
   "repository": {
     "type": "git",
