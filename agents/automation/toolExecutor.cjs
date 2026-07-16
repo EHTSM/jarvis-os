@@ -28,13 +28,19 @@ async function execute({ tool, task }, handlers = {}) {
         return { success: true, type: task?.type, result: "System task acknowledged" };
     }
 
-    // No handler registered for this tool — return safe unknown response
+    // No handler registered for this tool — return safe unknown response.
+    // nonRetriable: the tool registry is static per-process; it will not
+    // suddenly gain a handler between retry attempts, so retrying wastes
+    // backoff time on a guaranteed failure (matches rule_builtin_004 in
+    // engineeringRuleRegistry.cjs — "unknown capability dispatch is
+    // non-retriable").
     logManager.warn("ToolExecutor: no handler for tool", { tool, taskType: task?.type });
     return {
         success:  false,
         type:     "unsupported",
         result:   `No handler registered for tool: ${tool}`,
-        tool
+        tool,
+        nonRetriable: true,
     };
 }
 

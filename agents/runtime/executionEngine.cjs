@@ -124,13 +124,31 @@ async function executeTask(task, options = {}) {
                         `legacy/${task.type}`
                     );
                     const durationMs = Date.now() - t0;
+                    // The legacy executor can return a soft failure
+                    // (result.success === false) without throwing — e.g. an
+                    // unrecognized capability falls through to a "no handler
+                    // registered" response. Not throwing isn't the same as
+                    // succeeding; trust the result's own success flag when present.
+                    const softFailed = result && result.success === false;
                     history.record({
                         agentId: "legacy", taskType: task.type, taskId,
-                        success: true, durationMs,
+                        success: !softFailed, durationMs,
                         input:  task.input || task.label || "",
                         output: result?.message || result?.result || "",
                     });
-                    return { success: true, result, agentId: "legacy", durationMs, attempts: attempt + 1, error: null };
+                    if (softFailed) {
+                        lastError = new Error(result?.error || result?.result || "legacy executor reported failure");
+                        logger.warn(`[ExecEngine] legacy/${task.type} attempt ${attempt + 1} soft-failed: ${lastError.message}`);
+                        // A guaranteed, deterministic failure (e.g. no handler
+                        // registered for this capability) will not change
+                        // between retries — bail immediately instead of
+                        // burning backoff time on remaining attempts.
+                        if (result.nonRetriable) {
+                            return { success: false, result: null, agentId: "legacy", durationMs, attempts: attempt + 1, error: lastError.message };
+                        }
+                    } else {
+                        return { success: true, result, agentId: "legacy", durationMs, attempts: attempt + 1, error: null };
+                    }
                 } catch (err) {
                     lastError = err;
                     history.record({

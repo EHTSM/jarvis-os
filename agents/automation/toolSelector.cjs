@@ -1699,7 +1699,14 @@ function select(task) {
         if (fromText) tool = fromText;
     }
 
-    tool = tool || "ai";
+    // Only default to "ai" for genuinely generic/unset types (chat-style
+    // dispatch, e.g. runtimeOrchestrator.cjs's free-text path always sets
+    // type:"ai" explicitly). A specific-but-unrecognized type string is a
+    // caller/config mistake, not a chat message — silently routing it to the
+    // AI handler masked broken capability names as fake "successful"
+    // AI replies instead of surfacing a clear "no handler" error.
+    const isGenericType = !task?.type || task.type === "ai";
+    if (!tool) tool = isGenericType ? "ai" : "__unregistered__";
     logManager.debug("ToolSelector.select", { taskType: task?.type, tool });
     return { tool, task };
 }
