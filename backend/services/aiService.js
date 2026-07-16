@@ -739,4 +739,140 @@ function getProviderStatus() {
     return result;
 }
 
-module.exports = { callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, getProviderStatus };
+// ── Tool-calling bridge (additive — does not change callAI/chat behavior) ────
+// Native function/tool-calling for the 4 providers with a real tools API.
+// Returns a unified shape: { text, toolCalls: [{id,name,arguments}], provider, model }.
+// toolCalls is [] when the model responded with plain text instead of a call.
+
+async function _openaiCompatWithTools(url, key, messages, tools, model, defaultModel, timeout) {
+    if (!key) throw new Error("API key not set");
+    const res = await axios.post(
+        url,
+        {
+            model: model || defaultModel,
+            messages,
+            tools: tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.parameters } })),
+            tool_choice: "auto",
+            temperature: 0.7,
+            max_tokens: 1024,
+        },
+        { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout }
+    );
+    const msg = res.data?.choices?.[0]?.message;
+    if (!msg) throw new Error("Empty response");
+    const toolCalls = (msg.tool_calls || []).map(tc => ({
+        id: tc.id, name: tc.function?.name, arguments: _safeJsonParse(tc.function?.arguments),
+    }));
+    return { text: msg.content || "", toolCalls };
+}
+
+async function _claudeWithTools(messages, tools, model, opts = {}) {
+    const key = process.env.ANTHROPIC_API_KEY;
+    if (!key) throw new Error("ANTHROPIC_API_KEY not set");
+
+    const systemMsg = messages.find(m => m.role === "system");
+    const userMsgs  = messages.filter(m => m.role !== "system");
+
+    const body = {
+        model:      model || _claudeModel(),
+        max_tokens: opts.maxTokens || 1024,
+        messages:   userMsgs.map(m => ({ role: m.role, content: m.content })),
+        tools:      tools.map(t => ({ name: t.name, description: t.description, input_schema: t.parameters })),
+    };
+    if (systemMsg) body.system = systemMsg.content;
+
+    const res = await axios.post(ANTHROPIC_URL, body, {
+        headers: { "x-api-key": key, "anthropic-version": ANTHROPIC_VER, "Content-Type": "application/json" },
+        timeout: TIMEOUTS.claude,
+    });
+    const blocks = res.data?.content || [];
+    const text = blocks.filter(b => b.type === "text").map(b => b.text).join("");
+    const toolCalls = blocks.filter(b => b.type === "tool_use").map(b => ({ id: b.id, name: b.name, arguments: b.input || {} }));
+    if (!text && !toolCalls.length) throw new Error("Empty Claude response");
+    return { text, toolCalls };
+}
+
+async function _geminiWithTools(messages, tools, model, opts = {}) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) throw new Error("GEMINI_API_KEY not set");
+
+    const systemMsg  = messages.find(m => m.role === "system");
+    const userMsgs   = messages.filter(m => m.role !== "system");
+    const chosenModel = model || _geminiModel();
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${chosenModel}:generateContent?key=${key}`;
+
+    const body = {
+        contents: userMsgs.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] })),
+        tools: [{ function_declarations: tools.map(t => ({ name: t.name, description: t.description, parameters: t.parameters })) }],
+    };
+    if (systemMsg) body.systemInstruction = { parts: [{ text: systemMsg.content }] };
+
+    const res = await axios.post(url, body, { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.gemini });
+    const parts = res.data?.candidates?.[0]?.content?.parts || [];
+    const text = parts.filter(p => p.text).map(p => p.text).join("");
+    const toolCalls = parts.filter(p => p.functionCall).map((p, i) => ({
+        id: `gemini_call_${i}`, name: p.functionCall.name, arguments: p.functionCall.args || {},
+    }));
+    if (!text && !toolCalls.length) throw new Error("Empty Gemini response");
+    return { text, toolCalls };
+}
+
+function _safeJsonParse(str) {
+    try { return JSON.parse(str || "{}"); } catch { return {}; }
+}
+
+/**
+ * chatWithTools(messages, tools, opts) — like chat(), but supports native
+ * tool/function-calling. Only providers with a real tools API are attempted:
+ * openai, openrouter (OpenAI-compatible), claude, gemini.
+ *
+ * @param {Array<{role,content}>} messages
+ * @param {Array<{name,description,parameters}>} tools  JSON-schema-style tool defs
+ * @param {object} [opts]  same as chat() — provider, model, maxTokens, temperature
+ * @returns {Promise<{text:string, toolCalls:Array, provider:string, model:string}>}
+ */
+async function chatWithTools(messages, tools = [], opts = {}) {
+    if (!Array.isArray(tools) || !tools.length) {
+        const result = await chat(messages, opts);
+        return { ...result, toolCalls: [] };
+    }
+
+    const TOOL_CAPABLE = ["claude", "openai", "openrouter", "gemini"];
+    const providers = opts.provider ? [opts.provider] : TOOL_CAPABLE.filter(p => _providerOrder().includes(p));
+    const model = opts.model || null;
+
+    for (const p of providers) {
+        if (!TOOL_CAPABLE.includes(p)) continue;
+        try {
+            let result;
+            switch (p) {
+                case "openai":
+                    result = await _openaiCompatWithTools(OPENAI_URL, process.env.OPENAI_API_KEY, messages, tools, model, "gpt-4o-mini", TIMEOUTS.openai);
+                    break;
+                case "openrouter":
+                    result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter);
+                    break;
+                case "claude":
+                    result = await _claudeWithTools(messages, tools, model, opts);
+                    break;
+                case "gemini":
+                    result = await _geminiWithTools(messages, tools, model, opts);
+                    break;
+                default:
+                    continue;
+            }
+            if (_state.callCount[p] !== undefined) _state.callCount[p]++;
+            _state.activeProvider = p;
+            _state.lastSuccess    = new Date().toISOString();
+            return { ...result, provider: p, model: model || _defaultModel(p) };
+        } catch (err) {
+            _state.failCount++;
+            _state.lastFailures[p] = { reason: err.message, ts: new Date().toISOString() };
+            logger.warn(`AI chatWithTools [${p}] failed: ${err.message}`);
+        }
+    }
+
+    throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini.");
+}
+
+module.exports = { callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus };
