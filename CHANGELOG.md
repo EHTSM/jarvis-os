@@ -1,5 +1,19 @@
 # Ooplix Changelog
 
+## [1.0.0-rc5] — 2026-07-17 — Release Candidate 5
+
+Fixes the release CI pipeline (continued): v1.0.0-rc4 got "Package Server
+Release" and the Linux desktop build passing, but macOS and Windows desktop
+builds both failed compiling native modules (`better-sqlite3`, `node-pty`)
+— neither has a prebuilt binary for the exact Node patch version
+(`20.20.2`) GitHub's runners use, so npm falls back to compiling from
+source via the old `node-gyp@9.4.1` pulled in transitively by
+`@electron/rebuild`/`electron-rebuild`. That fails on macOS (Python 3.14
+removed the `distutils` module `node-gyp@9.4.1` still imports) and on
+Windows (it doesn't recognize the VS 2026 toolchain). Added an `overrides`
+entry pinning `node-gyp` to `^10.3.1` everywhere it's pulled in, which
+supports both. v1.0.0-rc4 is left in place as a record of this attempt.
+
 ## [1.0.0-rc4] — 2026-07-17 — Release Candidate 4
 
 Fixes the release CI pipeline (continued): v1.0.0-rc3 fixed the frontend
