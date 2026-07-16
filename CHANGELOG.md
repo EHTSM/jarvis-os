@@ -1,5 +1,17 @@
 # Ooplix Changelog
 
+## [1.0.0-rc3] — 2026-07-17 — Release Candidate 3
+
+Fixes the release CI pipeline: v1.0.0-rc2's tag push triggered the Release
+workflow successfully (confirming the tag-glob fix), but the "Install
+frontend deps" job failed — `frontend/package-lock.json` had drifted out of
+sync (`typescript` was unpinned and had resolved to an incompatible major,
+producing an invalid `yaml` dependency graph underneath it). Pinned
+`typescript` to `^4.9.5` and regenerated the lockfile; verified a clean
+`npm ci` + `npm run build:frontend` both succeed. v1.0.0-rc2 is left in
+place as a record of the broken attempt — no working release was ever
+published under it.
+
 ## [1.0.0-rc2] — 2026-07-16 — Release Candidate 2
 
 35 commits since rc1: billing usage metering + plan quotas, marketplace connector
