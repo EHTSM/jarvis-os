@@ -133,10 +133,23 @@ async function _run(def, rt, opts = {}) {
     // ── PATCH ─────────────────────────────────────────────────────────────
     let patched = fileContent;
     try {
+        // Idempotency: patchTarget is the anchor line the patch is inserted
+        // after/around, which patchReplacement always still contains — so
+        // checking for patchTarget alone never detects "already applied" and
+        // every re-run of the benchmark re-appended the same patch, growing
+        // duplicate content forever (found via crm.js accumulating 340+
+        // duplicate validation checks from repeated benchmark runs). Check
+        // for the full replacement instead — if it's already there, this
+        // scenario is a no-op success, not a fresh patch.
+        if (fileContent.includes(def.patchReplacement)) {
+            stages.push({ name: "patch_apply", ok: true, note: "already applied — no-op" });
+            return _result(def, t0, stages, true, null,
+                { buildOk: true, testOk: true, patchOk: true, filesChanged: [], rulesConsulted, rcaConsulted, confidence });
+        }
         if (!fileContent.includes(def.patchTarget)) {
-            // Already patched or target not found
-            stages.push({ name: "patch_apply", ok: false, error: "patch target not found (may already be applied)" });
-            return _fail(def, t0, stages, "patch target not found — already applied or file changed", { rulesConsulted, rcaConsulted, confidence });
+            // Target not found (file changed upstream) — not the same as already-patched
+            stages.push({ name: "patch_apply", ok: false, error: "patch target not found (file may have changed)" });
+            return _fail(def, t0, stages, "patch target not found — file changed", { rulesConsulted, rcaConsulted, confidence });
         }
         patched = fileContent.replace(def.patchTarget, def.patchReplacement);
         _write(def.targetFile, patched);
