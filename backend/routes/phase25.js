@@ -58,11 +58,12 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
-const da  = require("../services/deploymentAutopilot.cjs");
-const sra = require("../services/secretRotationAutomation.cjs");
-const eo  = require("../services/enterpriseObservability.cjs");
-const lcs = require("../services/largeContextCodeSearch.cjs");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const da    = require("../services/deploymentAutopilot.cjs");
+const sra   = require("../services/secretRotationAutomation.cjs");
+const vault = require("../services/secretVault.cjs");
+const eo    = require("../services/enterpriseObservability.cjs");
+const lcs   = require("../services/largeContextCodeSearch.cjs");
 
 router.use("/p25", requireAuth);
 
@@ -184,6 +185,19 @@ router.get("/p25/secrets/health", (_req, res) => {
 router.post("/p25/secrets/bootstrap", (_req, res) => {
     try { res.json({ success: true, ...sra.bootstrapSchedules() }); }
     catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// Staged auto-rotation candidates (jwt_secret/webhook_secret only — see
+// secretVault.AUTO_ROTATABLE_TYPES). Applying a staged candidate changes the
+// live secret in use, so this is operator-only, unlike the read-only routes above.
+router.get("/p25/secrets/staged", requireAuth, operatorOnly, (_req, res) => {
+    try { res.json({ success: true, staged: vault.listStagedRotations() }); }
+    catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+router.post("/p25/secrets/:connectorId/:type/apply-staged", requireAuth, operatorOnly, (req, res) => {
+    try { res.json({ success: true, record: vault.applyStagedRotation(req.params.connectorId, req.params.type) }); }
+    catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
 // ── 25C Enterprise Observability ─────────────────────────────────────────────

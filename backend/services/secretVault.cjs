@@ -600,9 +600,60 @@ function getCredentialTypes() {
   }));
 }
 
+// ── Automatic rotation candidates ─────────────────────────────────────────────
+// Only credential types with no external issuer can be safely auto-generated:
+// jwt_secret and webhook_secret are symmetric values the app itself defines
+// and validates against, so a fresh cryptographically-random value is always
+// valid. Every other type (api_key, oauth_token, ssh_key, certificate, etc.)
+// is issued by an external provider or a human — generating a replacement
+// value for those would silently produce an unusable, fake credential, so
+// they are deliberately NOT supported here. Staged, not applied: a live
+// jwt_secret rotation invalidates every active session immediately, so the
+// candidate is stored for review, not auto-promoted.
+const AUTO_ROTATABLE_TYPES = new Set(["jwt_secret", "webhook_secret"]);
+
+function prepareRotationCandidate(connectorId, type) {
+  if (!AUTO_ROTATABLE_TYPES.has(type)) {
+    throw new Error(`Cannot auto-generate a replacement for credential type "${type}" — it is issued externally. Use rotateSecret() with a value from the provider instead.`);
+  }
+  const vault = _load();
+  const vk    = _vkey(connectorId, type);
+  const existing = vault.secrets[vk];
+  if (!existing) throw new Error(`No vault entry found for ${connectorId}::${type}`);
+
+  const candidate = crypto.randomBytes(48).toString("base64url");
+  existing.stagedRotation = {
+    encrypted:  _encrypt(candidate),
+    preparedAt: _ts(),
+  };
+  _save(vault);
+  _appendHistory({ event: "rotation_staged", connectorId, type, version: existing.version });
+  return { connectorId, type, preparedAt: existing.stagedRotation.preparedAt };
+}
+
+function applyStagedRotation(connectorId, type) {
+  const vault = _load();
+  const vk    = _vkey(connectorId, type);
+  const existing = vault.secrets[vk];
+  if (!existing?.stagedRotation) throw new Error(`No staged rotation candidate for ${connectorId}::${type}`);
+
+  const candidate = _decrypt(existing.stagedRotation.encrypted);
+  delete existing.stagedRotation;
+  _save(vault);
+  return rotateSecret(connectorId, type, candidate);
+}
+
+function listStagedRotations() {
+  const vault = _load();
+  return Object.values(vault.secrets)
+    .filter(r => r.stagedRotation)
+    .map(r => ({ connectorId: r.connectorId, type: r.type, preparedAt: r.stagedRotation.preparedAt }));
+}
+
 module.exports = {
   storeSecret, getSecret, listSecrets, deleteSecret,
   rotateSecret, validateSecret, getHealth, getHistory,
   exportVault, importVault, getDashboard, resolveEnvKey, resolveAll,
   getCredentialTypes, CRED_TYPES, ENV_MAP,
+  prepareRotationCandidate, applyStagedRotation, listStagedRotations, AUTO_ROTATABLE_TYPES,
 };

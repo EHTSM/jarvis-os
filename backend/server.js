@@ -628,11 +628,35 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[SelfHeal] deferred start failed:", err.message);
     }
     try {
-        const rot = require("./services/secretRotationAutomation.cjs");
+        const rot   = require("./services/secretRotationAutomation.cjs");
+        const vault = require("./services/secretVault.cjs");
+
+        // For overdue secrets whose type has no external issuer (jwt_secret,
+        // webhook_secret), stage a fresh candidate automatically so an
+        // operator only needs to review + apply rather than generate one by
+        // hand. Every other credential type still requires a human/provider
+        // to supply the replacement — see AUTO_ROTATABLE_TYPES in
+        // secretVault.cjs for why.
+        function _autoStageOverdueRotations() {
+            try {
+                const { overdue } = rot.checkReminders();
+                for (const item of overdue) {
+                    const [connectorId, type] = String(item.secretName).includes("::")
+                        ? item.secretName.split("::")
+                        : [item.secretName, "jwt_secret"];
+                    if (!vault.AUTO_ROTATABLE_TYPES.has(type)) continue;
+                    try { vault.prepareRotationCandidate(connectorId, type); }
+                    catch { /* no vault entry for this schedule name — skip */ }
+                }
+            } catch { /* non-fatal */ }
+        }
+
         rot.bootstrapSchedules();
         rot.checkReminders();
+        _autoStageOverdueRotations();
         setInterval(() => { try { rot.checkReminders(); } catch { /* non-fatal */ } }, 24 * 60 * 60 * 1000).unref();
-        logger.info("[SecretRotation] schedule bootstrapped, daily reminder check running");
+        setInterval(_autoStageOverdueRotations, 24 * 60 * 60 * 1000).unref();
+        logger.info("[SecretRotation] schedule bootstrapped, daily reminder + auto-stage check running");
     } catch (err) {
         logger.warn("[SecretRotation] deferred start failed:", err.message);
     }
