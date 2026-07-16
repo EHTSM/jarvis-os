@@ -374,13 +374,14 @@ function listConnections(userId) {
 
 function getProviderStatus() {
     const E = process.env;
+    const scopesOf = provider => { try { return _cfg(provider).defaultScopes; } catch { return []; } };
     return {
-        google:    { configured: !!(E.GOOGLE_CLIENT_ID    && E.GOOGLE_CLIENT_SECRET),    clientId: E.GOOGLE_CLIENT_ID    ? "set" : "missing" },
-        github:    { configured: !!(E.GITHUB_CLIENT_ID    && E.GITHUB_CLIENT_SECRET),    clientId: E.GITHUB_CLIENT_ID    ? "set" : "missing" },
-        slack:     { configured: !!(E.SLACK_CLIENT_ID     && E.SLACK_CLIENT_SECRET),     clientId: E.SLACK_CLIENT_ID     ? "set" : "missing" },
-        notion:    { configured: !!(E.NOTION_CLIENT_ID    && E.NOTION_CLIENT_SECRET),    clientId: E.NOTION_CLIENT_ID    ? "set" : "missing" },
-        microsoft: { configured: !!(E.MICROSOFT_CLIENT_ID && E.MICROSOFT_CLIENT_SECRET), clientId: E.MICROSOFT_CLIENT_ID ? "set" : "missing" },
-        linkedin:  { configured: !!(E.LINKEDIN_CLIENT_ID  && E.LINKEDIN_CLIENT_SECRET),  clientId: E.LINKEDIN_CLIENT_ID  ? "set" : "missing" },
+        google:    { configured: !!(E.GOOGLE_CLIENT_ID    && E.GOOGLE_CLIENT_SECRET),    clientId: E.GOOGLE_CLIENT_ID    ? "set" : "missing", scopes: scopesOf("google") },
+        github:    { configured: !!(E.GITHUB_CLIENT_ID    && E.GITHUB_CLIENT_SECRET),    clientId: E.GITHUB_CLIENT_ID    ? "set" : "missing", scopes: scopesOf("github") },
+        slack:     { configured: !!(E.SLACK_CLIENT_ID     && E.SLACK_CLIENT_SECRET),     clientId: E.SLACK_CLIENT_ID     ? "set" : "missing", scopes: scopesOf("slack") },
+        notion:    { configured: !!(E.NOTION_CLIENT_ID    && E.NOTION_CLIENT_SECRET),    clientId: E.NOTION_CLIENT_ID    ? "set" : "missing", scopes: scopesOf("notion") },
+        microsoft: { configured: !!(E.MICROSOFT_CLIENT_ID && E.MICROSOFT_CLIENT_SECRET), clientId: E.MICROSOFT_CLIENT_ID ? "set" : "missing", scopes: scopesOf("microsoft") },
+        linkedin:  { configured: !!(E.LINKEDIN_CLIENT_ID  && E.LINKEDIN_CLIENT_SECRET),  clientId: E.LINKEDIN_CLIENT_ID  ? "set" : "missing", scopes: scopesOf("linkedin") },
     };
 }
 

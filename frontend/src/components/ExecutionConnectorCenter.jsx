@@ -1,206 +1,174 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { listActions, getActionAuditTrail } from "../phase18Api";
+import { listActions, getAgentFailures } from "../phase18Api";
+import { getOAuthProviderStatus, listOAuthConnections } from "../phase21Api";
 import "./ExecutionConnectorCenter.css";
 
-const KEY = "ooplix_exec_connectors_v1";
-function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
-function _save(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+// Static display metadata only (icon/color/label) — connection state, scopes,
+// and history/failures all come from the live backend below. No fake counts.
+const CONNECTOR_META = {
+  google:     { icon: "📧", name: "Google",     type: "Email/Drive" },
+  github:     { icon: "🐙", name: "GitHub",     type: "Code" },
+  slack:      { icon: "💬", name: "Slack",      type: "Comms" },
+  notion:     { icon: "📝", name: "Notion",     type: "Docs" },
+  microsoft:  { icon: "🪟", name: "Microsoft",  type: "Productivity" },
+  linkedin:   { icon: "💼", name: "LinkedIn",   type: "Social" },
+};
 
-const CONNECTORS = [
-  { id: "github",   icon: "🐙", name: "GitHub",       type: "Code",    color: "#e2e8f0", actions: 8,  runs: 312, failRate: "0.3%" },
-  { id: "gmail",    icon: "📧", name: "Gmail",         type: "Email",   color: "#ea4335", actions: 5,  runs: 891, failRate: "0.1%" },
-  { id: "slack",    icon: "💬", name: "Slack",         type: "Comms",   color: "#4a154b", actions: 6,  runs: 544, failRate: "0.2%" },
-  { id: "notion",   icon: "📝", name: "Notion",        type: "Docs",    color: "#000000", actions: 7,  runs: 221, failRate: "0.4%" },
-  { id: "gdrive",   icon: "📁", name: "Google Drive",  type: "Storage", color: "#4285f4", actions: 4,  runs: 178, failRate: "0.0%" },
-  { id: "telegram", icon: "✈️", name: "Telegram",      type: "Comms",   color: "#2ca5e0", actions: 3,  runs: 402, failRate: "0.5%" },
-  { id: "openrouter",icon:"🔀", name: "OpenRouter",    type: "AI",      color: "#7c6fff", actions: 12, runs: 1204, failRate: "0.8%" },
-  { id: "ollama",   icon: "🦙", name: "Ollama",        type: "AI",      color: "#00dc82", actions: 10, runs: 388, failRate: "0.2%" },
-];
-
-const SEED_CONNECTED = ["github","gmail","slack","openrouter","ollama"];
-
-const ACTIONS_SEED = [
-  { connector:"github",    action:"create_pr",      permission:"allowed", desc:"Open a pull request on any repo" },
-  { connector:"github",    action:"push_commit",     permission:"allowed", desc:"Push commits to non-main branches" },
-  { connector:"github",    action:"merge_pr",        permission:"denied",  desc:"Merge PRs without human review" },
-  { connector:"gmail",     action:"send_email",      permission:"allowed", desc:"Send emails from connected account" },
-  { connector:"gmail",     action:"read_inbox",      permission:"allowed", desc:"Read unread inbox messages" },
-  { connector:"slack",     action:"post_message",    permission:"allowed", desc:"Post to any channel" },
-  { connector:"slack",     action:"create_channel",  permission:"denied",  desc:"Create new Slack channels" },
-  { connector:"openrouter",action:"call_model",      permission:"allowed", desc:"Route inference to any model" },
-  { connector:"openrouter",action:"stream_response", permission:"allowed", desc:"Stream long-form model output" },
-  { connector:"ollama",    action:"run_local_model",  permission:"allowed", desc:"Run local inference" },
-  { connector:"notion",    action:"create_page",      permission:"pending", desc:"Create pages in connected workspace" },
-  { connector:"gdrive",    action:"upload_file",      permission:"pending", desc:"Upload files to Drive" },
-];
-
-const HISTORY_SEED = [
-  { ts:"2m ago",  connector:"github",     action:"create_pr",     status:"success", detail:"PR #142: fix auth middleware" },
-  { ts:"5m ago",  connector:"slack",      action:"post_message",  status:"success", detail:"#ops: deploy complete" },
-  { ts:"12m ago", connector:"openrouter", action:"call_model",    status:"success", detail:"claude-sonnet-4-6 · 1,204 tokens" },
-  { ts:"18m ago", connector:"gmail",      action:"send_email",    status:"success", detail:"lead@acmecorp.com · follow-up" },
-  { ts:"24m ago", connector:"ollama",     action:"run_local_model",status:"success",detail:"llama3:70b · 840 tokens" },
-  { ts:"31m ago", connector:"github",     action:"push_commit",   status:"success", detail:"feat: memory node refresh" },
-  { ts:"40m ago", connector:"slack",      action:"post_message",  status:"failed",  detail:"Rate limit hit — channel #alerts" },
-  { ts:"55m ago", connector:"openrouter", action:"call_model",    status:"failed",  detail:"Timeout after 30s · retry queued" },
-];
-
-const FAIL_SEED = [
-  { ts:"40m ago", connector:"slack",      action:"post_message",  reason:"Rate limit — 429 from Slack API",      retries:3 },
-  { ts:"55m ago", connector:"openrouter", action:"call_model",    reason:"Timeout 30s — upstream model overload", retries:2 },
-  { ts:"3h ago",  connector:"notion",     action:"create_page",   reason:"401 Unauthorized — token expired",      retries:1 },
-  { ts:"6h ago",  connector:"github",     action:"push_commit",   reason:"Branch protection rule violation",      retries:0 },
-];
-
-const iconOf = id => CONNECTORS.find(c => c.id === id)?.icon || "🔌";
-const nameOf = id => CONNECTORS.find(c => c.id === id)?.name || id;
+const iconOf = id => CONNECTOR_META[id]?.icon || "🔌";
+const nameOf = id => CONNECTOR_META[id]?.name || id;
 
 export default function ExecutionConnectorCenter({ onNavigate }) {
-  const [connected,   setConnected]   = useState(() => _load(KEY, SEED_CONNECTED));
+  const [providers,   setProviders]   = useState({});
+  const [connections, setConnections] = useState([]);
   const [tab,         setTab]         = useState("connectors");
-  const [liveActions, setLiveActions] = useState([]);
+  const [history,     setHistory]     = useState([]);
+  const [failures,    setFailures]    = useState([]);
   const [apiError,    setApiError]    = useState(null);
-  const TABS = ["connectors","actions","history","failures"];
+  const [loading,     setLoading]     = useState(true);
+  const TABS = ["connectors", "permissions", "history", "failures"];
 
   useEffect(() => {
     let cancelled = false;
+    track.event("execution_connector_center_viewed");
     Promise.all([
-      listActions({ status: "completed", limit: 20 }),
-      listActions({ status: "failed", limit: 10 }),
-    ]).then(([doneRes, failRes]) => {
+      getOAuthProviderStatus(),
+      listOAuthConnections(),
+      listActions({ limit: 30 }),
+      getAgentFailures({ limit: 20 }),
+    ]).then(([statusRes, connRes, actionsRes, failuresRes]) => {
       if (cancelled) return;
-      const done = doneRes?.actions || [];
-      const failed = failRes?.actions || [];
-      if (done.length || failed.length) {
-        setLiveActions([...done, ...failed].map(a => ({
-          id:     a.id,
-          name:   a.input?.slice(0, 60) || "Action",
-          status: a.status || "executed",
-          ts:     a.createdAt ? new Date(a.createdAt).toLocaleTimeString() : "—",
-          result: a.result?.message || a.error || "—",
-        })));
-      }
-    }).catch(err => { if (!cancelled) setApiError(err.message); });
+      setProviders(statusRes?.providers || {});
+      setConnections(connRes?.connections || []);
+      setHistory(actionsRes?.actions || []);
+      setFailures(failuresRes?.failures || []);
+    }).catch(err => { if (!cancelled) setApiError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
-  function toggle(id) {
-    const next = connected.includes(id) ? connected.filter(x => x !== id) : [...connected, id];
-    setConnected(next); _save(KEY, next);
-    track("ecc_toggle", { id, connected: !connected.includes(id) });
-  }
+  const connectedIds = new Set(connections.map(c => c.provider));
+  const providerIds = Object.keys(providers);
+  const connectedCount = providerIds.filter(id => connectedIds.has(id)).length;
 
   return (
     <div className="ecc">
-      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live action data unavailable — showing cached data ({apiError})</div>}
+      {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live connector data unavailable ({apiError})</div>}
       <div className="ecc-header">
         <div>
           <h1 className="ecc-title">Execution Connector Center</h1>
-          <p className="ecc-subtitle">Connect tools, manage action permissions and audit execution history.</p>
+          <p className="ecc-subtitle">Connected services, granted OAuth scopes, and real execution history.</p>
         </div>
       </div>
 
       <div className="ecc-stats">
-        <div className="ecc-stat"><span className="ecc-stat-val" style={{color:"#00dc82"}}>{connected.length}</span><span className="ecc-stat-lbl">Connected</span></div>
-        <div className="ecc-stat"><span className="ecc-stat-val">{CONNECTORS.length}</span><span className="ecc-stat-lbl">Available</span></div>
-        <div className="ecc-stat"><span className="ecc-stat-val" style={{color:"var(--accent)"}}>{ACTIONS_SEED.filter(a=>a.permission==="allowed").length}</span><span className="ecc-stat-lbl">Permitted</span></div>
-        <div className="ecc-stat"><span className="ecc-stat-val" style={{color:"var(--warning)"}}>{HISTORY_SEED.filter(h=>h.status==="success").length}</span><span className="ecc-stat-lbl">Runs Today</span></div>
-        <div className="ecc-stat"><span className="ecc-stat-val" style={{color:"#ff6464"}}>{FAIL_SEED.length}</span><span className="ecc-stat-lbl">Failures</span></div>
+        <div className="ecc-stat"><span className="ecc-stat-val" style={{ color: "#00dc82" }}>{connectedCount}</span><span className="ecc-stat-lbl">Connected</span></div>
+        <div className="ecc-stat"><span className="ecc-stat-val">{providerIds.length}</span><span className="ecc-stat-lbl">Available</span></div>
+        <div className="ecc-stat"><span className="ecc-stat-val" style={{ color: "var(--warning)" }}>{history.length}</span><span className="ecc-stat-lbl">Recent actions</span></div>
+        <div className="ecc-stat"><span className="ecc-stat-val" style={{ color: "#ff6464" }}>{failures.length}</span><span className="ecc-stat-lbl">Failures</span></div>
       </div>
 
       <div className="ecc-tabs">
-        {["connectors","actions","history","failures"].map(t => (
-          <button key={t} className={`ecc-tab${tab===t?" active":""}`} onClick={() => setTab(t)} style={{textTransform:"capitalize"}}>{t}</button>
+        {TABS.map(t => (
+          <button key={t} className={`ecc-tab${tab === t ? " active" : ""}`} onClick={() => setTab(t)} style={{ textTransform: "capitalize" }}>{t}</button>
         ))}
       </div>
 
-      {tab === "connectors" && (
-        <div className="ecc-connector-grid">
-          {CONNECTORS.map(c => {
-            const on = connected.includes(c.id);
-            return (
-              <div key={c.id} className="ecc-connector-card">
-                <div className="ecc-connector-head">
-                  <div className="ecc-connector-icon" style={{background: on ? c.color+"22" : "var(--surface-raised)"}}>{c.icon}</div>
-                  <div>
-                    <div className="ecc-connector-name">{c.name}</div>
-                    <div className="ecc-connector-type">{c.type}</div>
+      {loading ? (
+        <div className="ecc-empty">Loading…</div>
+      ) : (
+        <>
+          {tab === "connectors" && (
+            <div className="ecc-connector-grid">
+              {providerIds.map(id => {
+                const on = connectedIds.has(id);
+                const p = providers[id];
+                return (
+                  <div key={id} className="ecc-connector-card">
+                    <div className="ecc-connector-head">
+                      <div className="ecc-connector-icon" style={{ background: on ? "#00dc8222" : "var(--surface-raised)" }}>{iconOf(id)}</div>
+                      <div>
+                        <div className="ecc-connector-name">{nameOf(id)}</div>
+                        <div className="ecc-connector-type">{p.configured ? "Configured" : "Not configured on server"}</div>
+                      </div>
+                    </div>
+                    <div className="ecc-connector-status">
+                      <div className="ecc-status-dot" style={{ background: on ? "#00dc82" : "var(--text-faint)" }} />
+                      <span style={{ color: on ? "#00dc82" : "var(--text-faint)" }}>{on ? "Connected" : "Disconnected"}</span>
+                    </div>
+                    <div className="ecc-connector-actions">{(p.scopes || []).length} scopes available</div>
+                    <div className="ecc-connector-footer">
+                      <span className="ecc-connector-runs">{p.clientId === "set" ? "credentials set" : "credentials missing"}</span>
+                      <button className="ecc-connect-btn" onClick={() => onNavigate?.("integrations")}>
+                        Manage in Integrations →
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="ecc-connector-status">
-                  <div className="ecc-status-dot" style={{background: on ? "#00dc82" : "var(--text-faint)"}} />
-                  <span style={{color: on ? "#00dc82" : "var(--text-faint)"}}>{on ? "Connected" : "Disconnected"}</span>
-                </div>
-                <div className="ecc-connector-actions">{c.actions} actions · {c.runs} runs · {c.failRate} fail rate</div>
-                <div className="ecc-connector-footer">
-                  <span className="ecc-connector-runs">{c.runs} total</span>
-                  <button className={`ecc-connect-btn${on?" connected":""}`} onClick={() => toggle(c.id)}>
-                    {on ? "Connected ✓" : "Connect"}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+                );
+              })}
+            </div>
+          )}
 
-      {tab === "actions" && (
-        <table className="ecc-table">
-          <thead>
-            <tr>
-              <th>Connector</th><th>Action</th><th>Permission</th><th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ACTIONS_SEED.map((a,i) => (
-              <tr key={i}>
-                <td>{iconOf(a.connector)} {nameOf(a.connector)}</td>
-                <td style={{fontFamily:"monospace",fontSize:12,color:"var(--accent)"}}>{a.action}</td>
-                <td><span className={`ecc-badge ecc-badge-${a.permission}`}>{a.permission}</span></td>
-                <td>{a.desc}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          {tab === "permissions" && (
+            <table className="ecc-table">
+              <thead>
+                <tr><th>Connector</th><th>Granted scopes</th></tr>
+              </thead>
+              <tbody>
+                {providerIds.map(id => (
+                  <tr key={id}>
+                    <td>{iconOf(id)} {nameOf(id)}</td>
+                    <td style={{ fontFamily: "monospace", fontSize: 12 }}>
+                      {(providers[id].scopes || []).length ? providers[id].scopes.join(", ") : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
-      {tab === "history" && (
-        <table className="ecc-table">
-          <thead>
-            <tr><th>Time</th><th>Connector</th><th>Action</th><th>Status</th><th>Detail</th></tr>
-          </thead>
-          <tbody>
-            {HISTORY_SEED.map((h,i) => (
-              <tr key={i}>
-                <td style={{color:"var(--text-faint)"}}>{h.ts}</td>
-                <td>{iconOf(h.connector)} {nameOf(h.connector)}</td>
-                <td style={{fontFamily:"monospace",fontSize:12}}>{h.action}</td>
-                <td><span className={`ecc-badge ecc-badge-${h.status}`}>{h.status}</span></td>
-                <td style={{fontSize:12}}>{h.detail}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          {tab === "history" && (
+            history.length === 0 ? <div className="ecc-empty">No recent actions.</div> : (
+              <table className="ecc-table">
+                <thead>
+                  <tr><th>Time</th><th>Action</th><th>Status</th><th>Detail</th></tr>
+                </thead>
+                <tbody>
+                  {history.map((h, i) => (
+                    <tr key={h.actionId || i}>
+                      <td style={{ color: "var(--text-faint)" }}>{h.startedAt ? new Date(h.startedAt).toLocaleTimeString() : "—"}</td>
+                      <td style={{ fontFamily: "monospace", fontSize: 12 }}>{(h.input || "").slice(0, 60) || h.type || "action"}</td>
+                      <td><span className={`ecc-badge ecc-badge-${h.status || "unknown"}`}>{h.status || "unknown"}</span></td>
+                      <td style={{ fontSize: 12 }}>{h.error || "—"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
+          )}
 
-      {tab === "failures" && (
-        <table className="ecc-table">
-          <thead>
-            <tr><th>Time</th><th>Connector</th><th>Action</th><th>Reason</th><th>Retries</th></tr>
-          </thead>
-          <tbody>
-            {FAIL_SEED.map((f,i) => (
-              <tr key={i}>
-                <td style={{color:"var(--text-faint)"}}>{f.ts}</td>
-                <td>{iconOf(f.connector)} {nameOf(f.connector)}</td>
-                <td style={{fontFamily:"monospace",fontSize:12}}>{f.action}</td>
-                <td style={{color:"#ff6464",fontSize:12}}>{f.reason}</td>
-                <td style={{textAlign:"center"}}>{f.retries}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {tab === "failures" && (
+            failures.length === 0 ? <div className="ecc-empty">No recent failures.</div> : (
+              <table className="ecc-table">
+                <thead>
+                  <tr><th>Time</th><th>Agent/Action</th><th>Reason</th></tr>
+                </thead>
+                <tbody>
+                  {failures.map((f, i) => {
+                    const ts = f.completedAt || f.startedAt;
+                    return (
+                      <tr key={f.id || i}>
+                        <td style={{ color: "var(--text-faint)" }}>{ts ? new Date(ts).toLocaleTimeString() : "—"}</td>
+                        <td style={{ fontFamily: "monospace", fontSize: 12 }}>{f.agentId || "—"}</td>
+                        <td style={{ color: "#ff6464", fontSize: 12 }}>{f.error || "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )
+          )}
+        </>
       )}
     </div>
   );
