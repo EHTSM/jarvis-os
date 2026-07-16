@@ -59,16 +59,21 @@ router.use(_deprecate("/p25/obs", "/analytics/*"));
 router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
 router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, /p26/observer, /p26/plugins, /p26/capabilities, /p26/manifest, /p26/templates
 router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/planning, /p27/ai, /p27/improvement
+router.use("/mission", requireAuth);   // gate all /mission/* routes
+router.use("/missions", requireAuth);  // gate all /missions/* routes
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
 router.use(require("./agentsRuntime")); // /agents/runtime/supervisor — Phase I4 long-running agent runtime
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
+router.use("/intelligence", requireAuth); // gate all /intelligence/* routes
 router.use(require("./intelligence"));   // /intelligence/correlations, /intelligence/insights, /intelligence/patterns, /intelligence/trends, /intelligence/recommendation-confidence
+router.use("/engineering", requireAuth); // gate all /engineering/* routes
 router.use(require("./engineering"));   // /engineering/intelligence (J4 engineering risk panel)
 router.use(require("./business"));      // /business/pipeline, /business/missions, /business/leads, /business/deals, /business/marketing/*, /business/customers, /business/operations
 router.use(require("./organizations")); // /orgs, /orgs/:orgId, /orgs/:orgId/departments, /orgs/:orgId/teams, /orgs/:orgId/missions, /orgs/me/context
 router.use(require("./workforce"));    // /workforce/:missionId/plan, /workforce/:missionId/steps/:stepId/*, /workforce/:missionId/approvals/*, /workforce/org/:orgId/workers
 router.use(require("./graph"));        // /graph/stats, /graph/node/:type/:id, /graph/traverse, /graph/related, /graph/impact, /graph/lookup, /graph/edges, /graph/index
+router.use("/collaboration", requireAuth);    // gate all /collaboration/* routes
 router.use(require("./collaboration"));       // /collaboration/session/*, /collaboration/history/*, /collaboration/message, /collaboration/action, /collaboration/replan, /collaboration/approve, /collaboration/reject
 router.use(require("./collaborationEngine")); // /collab/plans/*, /collab/handoff, /collab/active, /collab/blocked, /collab/stalled, /collab/stats (Phase I6)
 router.use(require("./pipeline"));           // /pipeline/run, /pipeline/:id, /pipeline/active, /pipeline/stats, /pipeline/validate (Phase I7)
@@ -83,9 +88,13 @@ router.use(require("./codingDecisions")); // /coding/decisions/* (ACP-4)
 router.use(require("./codingBundle"));   // /coding/bundle/* (ACP-6)
 router.use(require("./composer"));        // /composer/* (ACP-7)
 router.use(require("./autonomousAgent")); // /autonomous/* (ACP-8)
+router.use("/repo-viz", requireAuth);        // gate all /repo-viz/* routes
 router.use(require("./repositoryViz"));      // /repo-viz/* (ACP-9)
+router.use("/memory", requireAuth);           // gate all /memory/* routes
 router.use(require("./engineeringMemory"));   // /memory/* (ACP-10)
+router.use("/improvement", requireAuth);       // gate all /improvement/* routes
 router.use(require("./selfImprovement"));      // /improvement/* (ACP-11)
+router.use("/platform", requireAuth);         // gate all /platform/* routes
 router.use(require("./autonomousPlatform"));  // /platform/* (ACP-12)
 router.use(require("./analytics"));    // /analytics/executive, /workspace, /productivity, /automation, /security, /governance, /ai, /runtime, /missions, /reports
 router.use(require("./plugins"));      // /plugins, /plugins/:id, /plugins/install, /plugins/uninstall, /plugins/enable, /plugins/disable, /plugins/health, /plugins/diagnostics
@@ -118,13 +127,19 @@ router.use(require("./odi"));            // ODI-1..10: /odi/screenshots /odi/cap
 router.use(require("./engineeringOrg")); // Level 2: /engorg/status /engorg/summary /engorg/agents/:id /engorg/missions
 router.use(require("./businessOrg"));              // Level 3: /bizorg/status /bizorg/summary /bizorg/agents/:id /bizorg/v3/*
 router.use(require("./autonomousKnowledgeOrg")); // Level 4: /ako/status /ako/summary /ako/agents/:id /ako/v4/*
+router.use("/aeo", requireAuth);                 // gate all /aeo/* routes
 router.use(require("./autonomousEvolutionOrg")); // Level 5: /aeo/status /aeo/summary /aeo/agents/:id /aeo/v5/*
+router.use("/eos", requireAuth);                 // gate all /eos/* routes
 router.use(require("./executiveOrg"));           // Level 6: /eos/status /eos/summary /eos/agents/:id /eos/v6/*
+router.use("/ent", requireAuth);                 // gate all /ent/* routes
 router.use(require("./enterpriseOrg"));          // Level 7: /ent/status /ent/summary /ent/agents/:id /ent/v7/*
+router.use("/eco", requireAuth);                 // gate all /eco/* routes
 router.use(require("./ecosystemOrg"));           // Level 8: /eco/status /eco/summary /eco/agents/:id /eco/v8/*
+router.use("/civ", requireAuth);                 // gate all /civ/* routes
 router.use(require("./civilizationOrg"));        // Level 9: /civ/status /civ/summary /civ/agents/:id /civ/v9/*
+router.use("/auto", requireAuth);                // gate all /auto/* routes
 router.use(require("./autonomousOrg"));          // Level 10: /auto/status /auto/summary /auto/agents/:id /auto/v10/*
-router.use(require("./platformOrg"));           // Level Ω:  /platform/status /platform/summary /platform/v1/*
+router.use(require("./platformOrg"));           // Level Ω:  /platform/status /platform/summary /platform/v1/* (guarded above by /platform requireAuth)
 router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
 router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
@@ -133,22 +148,38 @@ router.use(require("./computerController"));    // POST-Ω P5: /computer/* deskt
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
+router.use("/workspace-mesh", requireAuth);   // gate all /workspace-mesh/* routes
 router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* registry+coordinator+sync+health+dashboard
+router.use("/research", requireAuth);        // gate all /research/* routes
 router.use(require("./researchInstitute"));  // POST-Ω P10: /research/* planner+knowledge+benchmark+experiments+publications+dashboard
+router.use("/odi", requireAuth);            // gate all /odi/* routes (incl. /odi/x/*)
 router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+quality+benchmark+predict+evolution+dashboard
-router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard (guarded above by /engineering requireAuth)
+router.use("/business", requireAuth);       // gate all /business/* routes (incl. /business/x/*)
 router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use("/knowledge", requireAuth);      // gate all /knowledge/* routes
 router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use("/evolution", requireAuth);      // gate all /evolution/* routes
 router.use(require("./ose-x"));             // OSE X V1:   /evolution/x/* reasoning+quality+benchmark+predict+evolution+dashboard
+router.use("/customer-org", requireAuth);   // gate all /customer-org/* routes
 router.use(require("./customerOrg"));       // POST-Ω P11: /customer-org/* journey+health+success+support+automation+dashboard
+router.use("/product-factory", requireAuth);      // gate all /product-factory/* routes
 router.use(require("./productFactory"));          // POST-Ω P12: /product-factory/* planner+arch+assembly+validation+release+dashboard+pipeline
+router.use("/auto-market", requireAuth);         // gate all /auto-market/* routes
 router.use(require("./autonomousMarketplace"));  // POST-Ω P13: /auto-market/* catalog+recommend+cert+automate+economy+dashboard
+router.use("/knowledge-net", requireAuth);      // gate all /knowledge-net/* routes
 router.use(require("./knowledgeNetwork"));      // POST-Ω P14: /knowledge-net/* federation+correlation+discovery+governance+exchange+dashboard
+router.use("/revenue-engine", requireAuth);     // gate all /revenue-engine/* routes
 router.use(require("./autonomousRevenue"));     // POST-Ω P15: /revenue-engine/* discovery+optimization+pricing+forecast+automation+dashboard
+router.use("/investment", requireAuth);        // gate all /investment/* routes
 router.use(require("./autonomousInvestment")); // POST-Ω P16: /investment/* capital+analysis+portfolio+risk+automation+dashboard
+router.use("/physical", requireAuth);            // gate all /physical/* routes
 router.use(require("./physicalWorld"));          // POST-Ω P17: /physical/* registry+orchestration+scenarios+health+workflow+dashboard
+router.use("/science", requireAuth);               // gate all /science/* routes
 router.use(require("./scientificDiscovery"));      // POST-Ω P18: /science/* plan+hypotheses+experiments+publications+innovations+dashboard
+router.use("/infra", requireAuth);                // gate all /infra/* routes
 router.use(require("./globalInfrastructure"));    // POST-Ω P19: /infra/* registry+planner+health+recovery+optimization+dashboard
+router.use("/org-network", requireAuth);          // gate all /org-network/* routes
 router.use(require("./organizationNetwork"));     // POST-Ω P20: /org-network/* registry+collab+capability+governance+evolution+dashboard
 router.use(require("./founderIdentityOS"));       // Mission 3.2: /fdios/* 12 FDIOS modules
 router.use(require("./alphaProgram"));            // Mission 5:   /alpha/* 7-phase internal alpha program

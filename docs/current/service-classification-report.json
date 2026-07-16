@@ -1,0 +1,1848 @@
+{
+  "generatedAt": "2026-07-16T21:42:31.897Z",
+  "totalFiles": 367,
+  "totals": {
+    "BUSINESS_LOGIC": 287,
+    "SIMULATION": 34,
+    "REAL_EXTERNAL_INTEGRATION": 19,
+    "LOCAL_EXECUTION": 24,
+    "INFRASTRUCTURE": 3
+  },
+  "files": [
+    {
+      "file": "backend/services/academyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/accessibilityAuditor.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/accountService.js",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/adminService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/aeoState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/aeoWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/agentExecutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/agentFactoryAutomation.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/agentRuntimeSupervisor.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/aiBenchmarkLab.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/aiComposerEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/aiDesignPlanner.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/aiRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/aiService.js",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/aiThemeEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/akoState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/akoWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/alphaProgram.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/analyticsService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/animationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/approvalAnalytics.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/approvalDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/approvalEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/approvalEvidence.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/approvalPolicy.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/approvalPredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/approvalQueue.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/automationScenarioEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/automationService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/automationService.js",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousCompanyLiveMode.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousDecisionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousDesignLoop.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/autonomousEngineeringAgent.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousEngineeringPlatform.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousEngineeringScenario.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/autonomousEvolutionOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousExecutionEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/autonomousExecutionRuntime.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousKnowledgeOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousLoop.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/autonomousPageBuilder.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousPlanning.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousRefactorEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousState.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousTaskLoop.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/autonomousUIEngineer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/backgroundRuntime.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/benchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/betaReadiness.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/billingService.js",
+      "category": "INFRASTRUCTURE",
+      "reason": "cross-cutting plumbing (config/logging/vault/core org-account service), not a feature engine"
+    },
+    {
+      "file": "backend/services/brandIntelligence.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/brandStudio.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/browserBenchmark.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/browserController.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/browserMarketplace.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/browserMemory.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/browserRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/browserSessionManager.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessBenchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessDataService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessEntityModel.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessEventAdapter.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessIntelligenceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessIntelligenceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessMissionAutomation.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessOrgState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/businessOrgWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/businessPredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessQualityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/businessTemplateEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/capabilityRouter.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/capacityPlanner.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/capitalAllocationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/civilizationOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/civilizationState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/civilizationWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/closedBeta.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/co2FounderOps.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/co3UserSuccess.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/codeReviewEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/commercialSimulator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/companyBlueprintEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/companyDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/companyFactory.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/companyLifecycleEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/companyWorkspaceBuilder.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/componentGenerator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/componentGraphService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/computerController.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/computerExecutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/connectorToolBridge.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/consolidationAudit.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/contentSEOEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/contextBuilder.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/continuousDesignObserver.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/continuousLearningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/continuousRuntimeObserver.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/costAnalytics.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/creativeAssetLibrary.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/creativeBenchmark.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/creativeJobQueue.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/creativeRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/creativeRouter.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/creditEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/crmService.js",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerAutomationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerHealthEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerJourneyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerOrganizationDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/customerSuccess.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerSuccessEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/customerSupportEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/decisionLearningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/deploymentAutopilot.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/deploymentCoordinator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/deploymentReport.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/deploymentValidator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/designBenchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designIntelligenceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/designMemory.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designPredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designQualityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designSystemAI.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/designTokenEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/desktopController.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/deviceHealthEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/deviceOrchestrationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/deviceRegistryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/digitalTwinEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/discoveryPlannerEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/distributionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/dlqDrainEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/domAnalyzerService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/dop1InfraValidation.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/dop2Deployment.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/ecosystemOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/ecosystemState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/ecosystemWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/editorController.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/emailService.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/engineeringAutopilot.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringBenchmark.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/engineeringBenchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringCapabilities.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/engineeringConfidenceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringDecisionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringIntelligenceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/engineeringMemoryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/engineeringOrgState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/engineeringOrgWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/engineeringPipelineCoordinator.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/engineeringPredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringQualityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/engineeringRuleRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/engineeringSmellDetector.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/enterpriseDesignReview.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/enterpriseObservability.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/enterpriseOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/enterprisePolicies.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/enterpriseState.cjs",
+      "category": "SIMULATION",
+      "reason": "persists to local data/*.json only; models self-generated org/company/civilization/knowledge entities with no external I/O"
+    },
+    {
+      "file": "backend/services/enterpriseWorkflow.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/envManager.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/errorAggregator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/evolutionBenchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/evolutionEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/evolutionIntelligenceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/evolutionPredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/evolutionQualityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/evolutionReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/executionEvidence.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/executionMetrics.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/executionPlanner.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/executionRecovery.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/executionValidator.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/executiveOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/executiveReasoning.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/executiveState.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/executiveWorkflow.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/experimentManager.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/experimentOrchestratorEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/extensionRuntime.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/featureGate.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/feedbackHub.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/founderAutomationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/founderIdentityOS.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.github.com"
+    },
+    {
+      "file": "backend/services/founderJournal.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/founderProfileEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/founderWorkRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/gitHubEngineeringAgent.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/globalDesignRefactor.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/governanceService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/graphReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/growthOS.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/humanInTheLoop.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/hybridWorkforceService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/hypothesisEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/improvementLoop.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/improvementLoopEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/infrastructureDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/infrastructureHealthEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/infrastructureOptimizationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/infrastructurePlannerEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/infrastructureRecoveryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/infrastructureRegistryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/innovationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/integrationConnectors.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.groq.com"
+    },
+    {
+      "file": "backend/services/intelligenceLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/interactionIntelligence.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/investmentAnalysisEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/investmentAutomationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/investmentDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/knowledgeBenchmarkEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeCorrelationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeDiscoveryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeExchangeEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeFederationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeGovernanceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeGraph.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeIntelligenceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/knowledgeNetworkDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/knowledgePredictionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeQualityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/knowledgeReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/largeContextCodeSearch.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/launchMetrics.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/launchReadiness.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/layoutGraphService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/liveDesignEditor.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/liveDesignInspector.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/localAiRuntime.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/marketplaceAutomationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/marketplaceCatalogEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/marketplaceCertificationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/marketplaceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/marketplaceEconomyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/marketplaceRecommendationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/marketplaceService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/memoryIntelligenceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/memoryPersistenceLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/missionCollaborationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/missionMemory.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/missionOrchestrator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/modelMarketplace.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/multiAgentCoordinator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/multiRepoEngineeringEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/nlBrowser.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/oauthIntegrationLayer.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/observabilityEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/onboardingEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/ooplixAutonomyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/op1PublicLaunch.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/op2Report.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/operationsAlertingLayer.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.telegram.org"
+    },
+    {
+      "file": "backend/services/organizationCapabilityExchangeEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/organizationCollaborationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/organizationEvolutionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/organizationGovernanceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/organizationNetworkDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/organizationRegistryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/organizationService.cjs",
+      "category": "INFRASTRUCTURE",
+      "reason": "cross-cutting plumbing (config/logging/vault/core org-account service), not a feature engine"
+    },
+    {
+      "file": "backend/services/paymentService.js",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/pcpReport.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/pcs2ExternalPlatforms.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: graph.facebook.com"
+    },
+    {
+      "file": "backend/services/pcsCredentials.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.resend.com"
+    },
+    {
+      "file": "backend/services/performanceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/physicalWorkflowEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/physicalWorldDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/pipReport.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/plan-management.js",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/platformOrg.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/platformState.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/pluginManagerService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/pluginSDK.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/portfolioStrategyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/pricingIntelligenceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productArchitectureEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productAssemblyEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productFactoryDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/productPlannerEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productReleaseEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productValidationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productionBibleEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productionDeployment.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/productionInfra.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productionReadinessEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/productionWiring.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.groq.com"
+    },
+    {
+      "file": "backend/services/productionWiring2.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.sendgrid.com"
+    },
+    {
+      "file": "backend/services/providerManager.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/publicationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/rc1.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/rc2.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/rc3.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/rc4.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.ooplix.com"
+    },
+    {
+      "file": "backend/services/reasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/referralEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/releaseEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/repoIntelligenceEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/repositoryEditingEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/repositoryVisualizationEngine.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/researchDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/researchKnowledgeEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/researchPlanner.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/researchPublicationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/responsiveSimulator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/revenueAutomationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/revenueDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/revenueDiscoveryEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/revenueForecastEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/revenueOS.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/revenueOptimizationEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/riskAssessmentEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/rootCauseAnalysisEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/runtimeActionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/scientificDiscoveryDashboard.cjs",
+      "category": "SIMULATION",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/screenshotAnalyzerService.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.anthropic.com"
+    },
+    {
+      "file": "backend/services/secretManagementLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/secretRotationAutomation.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/secretVault.cjs",
+      "category": "INFRASTRUCTURE",
+      "reason": "cross-cutting plumbing (config/logging/vault/core org-account service), not a feature engine"
+    },
+    {
+      "file": "backend/services/securityHardeningLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/securityLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/selfHealingFrontend.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/selfHealingRuntime.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/selfImprovementEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/selfOperatingDesignSystem.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/selfReviewEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/semanticMemorySearch.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/sentryService.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/skillEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/smartRouter.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/socialContentEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/storageService.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/taskGraph.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/teamBuilder.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/telegramService.js",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/terminalController.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/toolExecutionLayer.cjs",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "external vendor host referenced: api.github.com"
+    },
+    {
+      "file": "backend/services/uiPatchGenerator.cjs",
+      "category": "LOCAL_EXECUTION",
+      "reason": "runs local process/OS commands (execSync/spawn) with no external network call"
+    },
+    {
+      "file": "backend/services/unifiedIntelligenceLayer.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/usageMetering.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/uxOptimizerService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/visionQA.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/visualCaptureService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/visualReasoningEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/visualRegressionEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/vsCodeExtensionService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "internal orchestration logic not matching other categories"
+    },
+    {
+      "file": "backend/services/whatsappService.js",
+      "category": "REAL_EXTERNAL_INTEGRATION",
+      "reason": "verified real vendor HTTP/SDK call (manual audit)"
+    },
+    {
+      "file": "backend/services/workflowPreferenceEngine.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workforceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/workforceManager.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceController.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceCoordinator.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceDashboard.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "pure in-memory logic, no persistence and no external I/O"
+    },
+    {
+      "file": "backend/services/workspaceHealth.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceMesh.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceRegistry.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceService.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    },
+    {
+      "file": "backend/services/workspaceSynchronization.cjs",
+      "category": "BUSINESS_LOGIC",
+      "reason": "persists to local data/*.json only; orchestrates the product's own real feature state (missions/workspace/etc), not fabricated business entities"
+    }
+  ]
+}
