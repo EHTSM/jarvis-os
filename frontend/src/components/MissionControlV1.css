@@ -541,3 +541,104 @@
 .mc-stop-btn--cancel:hover { background: rgba(255,255,255,0.12); }
 .mc-stop-btn--confirm { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.35); color: #f87171; }
 .mc-stop-btn--confirm:hover { background: rgba(239,68,68,0.30); }
+
+/* ── Approval Queue ─────────────────────────────────────────────────────── */
+.mc-approvals-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 8px;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.mc-approvals-stats {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+.mc-approvals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mc-approval-item {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+.mc-approval-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.mc-approval-row:hover { background: rgba(255,255,255,0.04); }
+.mc-approval-risk {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  border: 1px solid;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mc-approval-action {
+  flex: 1;
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mc-approval-type {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.mc-approval-conf {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  font-variant-numeric: tabular-nums;
+}
+.mc-approval-caret {
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.7rem;
+}
+.mc-approval-detail {
+  padding: 4px 14px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.mc-approval-detail-row {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 0.78rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.mc-approval-detail-row:last-of-type { border-bottom: none; }
+.mc-approval-detail-row > span:first-child {
+  flex-shrink: 0;
+  width: 130px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+.mc-approval-detail-row > span:last-child { color: rgba(255,255,255,0.75); }
+.mc-approval-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}

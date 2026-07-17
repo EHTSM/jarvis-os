@@ -7,8 +7,9 @@
 
 const router = require("express").Router();
 
+const { requireAuth } = require("../middleware/authMiddleware");
+
 const _try = fn => { try { return fn(); } catch { return null; } };
-const requireAuth = _try(() => require("../middleware/requireAuth")) || ((req, res, next) => next());
 
 const _ae  = () => _try(() => require("../services/approvalEngine.cjs"));
 const _aq  = () => _try(() => require("../services/approvalQueue.cjs"));

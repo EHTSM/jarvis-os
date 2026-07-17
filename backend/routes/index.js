@@ -144,7 +144,7 @@ router.use(require("./platformOrg"));           // Level Ω:  /platform/status /
 router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
 router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
-router.use("/approval", requireAuth);          // gate all /approval/* routes (in-file requireAuth resolves to no-op due to bad require path)
+router.use("/approval", requireAuth);          // gate all /approval/* routes
 router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
 router.use("/computer", requireAuth);          // gate all /computer/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run

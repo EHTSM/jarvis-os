@@ -59,6 +59,131 @@ const LC_STAGE_COLOR = {
   heal: '#94a3b8', learn: '#94a3b8',
 };
 
+// ── Approval Queue Panel ───────────────────────────────────────────────────
+// Surfaces backend/routes/approvalRoutes.js (/approval/*) — had no frontend
+// anywhere before this. Founder-facing human-in-the-loop approve/reject for
+// autonomous execution requests above the auto-approve confidence threshold.
+const APPROVAL_RISK_COLOR = { low: '#34d399', medium: '#fbbf24', high: '#f87171', critical: '#dc2626' };
+
+function ApprovalQueuePanel() {
+  const [items,    setItems]    = useState([]);
+  const [stats,    setStats]    = useState(null);
+  const [loading,  setLoading]  = useState(true);
+  const [err,      setErr]      = useState(null);
+  const [busyId,   setBusyId]   = useState(null);
+  const [expanded, setExpanded] = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const [q, s] = await Promise.all([
+        _fetch('/approval/queue'),
+        _fetch('/approval/queue/stats'),
+      ]);
+      setItems(q.items || []);
+      setStats(s.stats || null);
+      setErr(null);
+    } catch (e) {
+      // 401/403 for non-operator roles — degrade quietly, this is a founder-only queue
+      if (e.status === 401 || e.status === 403) { setItems([]); setStats(null); }
+      else setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 15000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  const decide = useCallback(async (reqId, verdict) => {
+    setBusyId(reqId);
+    try {
+      const path = verdict === 'approve' ? `/approval/approve/${reqId}` : `/approval/reject/${reqId}`;
+      const body = verdict === 'approve'
+        ? { approvedBy: 'founder' }
+        : { rejectedBy: 'founder', reason: 'founder_rejected' };
+      await _fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      await load();
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusyId(null);
+    }
+  }, [load]);
+
+  if (!loading && !err && items.length === 0 && !stats) return null; // no access — hide, don't error
+
+  return (
+    <section className="mc-section mc-approvals">
+      <div className="mc-section-head">
+        <h2>Approvals{items.length > 0 && <span className="mc-approvals-badge">{items.length}</span>}</h2>
+        {stats && (
+          <span className="mc-approvals-stats">
+            {stats.approved ?? 0} approved · {stats.rejected ?? 0} rejected · {stats.autoApproved ?? 0} auto
+            {stats.avgResponseMinutes > 0 && ` · ~${stats.avgResponseMinutes}m avg response`}
+          </span>
+        )}
+      </div>
+
+      {err && <p className="mc-empty" style={{ color: '#f87171' }}>{err}</p>}
+
+      {loading ? (
+        <p className="mc-empty">Loading approvals…</p>
+      ) : items.length === 0 ? (
+        <p className="mc-empty">✓ Queue clear — no pending approvals</p>
+      ) : (
+        <div className="mc-approvals-list">
+          {items.map(item => {
+            const isExpanded = expanded === item.id;
+            const riskColor  = APPROVAL_RISK_COLOR[item.risk] || '#6b7280';
+            const isBusy     = busyId === item.id;
+            return (
+              <div key={item.id} className="mc-approval-item">
+                <div className="mc-approval-row" onClick={() => setExpanded(isExpanded ? null : item.id)}>
+                  <span className="mc-approval-risk" style={{ background: riskColor + '22', color: riskColor, borderColor: riskColor + '55' }}>
+                    {item.risk || 'medium'}
+                  </span>
+                  <span className="mc-approval-action">{item.action || item.workflowId}</span>
+                  <span className="mc-approval-type">{item.approvalType}</span>
+                  <span className="mc-approval-conf">{Math.round((item.confidence || 0) * 100)}% confidence</span>
+                  <span className="mc-approval-caret">{isExpanded ? '▾' : '▸'}</span>
+                </div>
+                {isExpanded && (
+                  <div className="mc-approval-detail">
+                    <div className="mc-approval-detail-row"><span>Reason</span><span>{item.reason}</span></div>
+                    <div className="mc-approval-detail-row"><span>Expected outcome</span><span>{item.expectedOutcome}</span></div>
+                    <div className="mc-approval-detail-row"><span>Rollback plan</span><span>{item.rollbackPlan}</span></div>
+                    <div className="mc-approval-detail-row"><span>Triggered by</span><span>{item.triggeredBy}</span></div>
+                    <div className="mc-approval-detail-row"><span>Requested</span><span>{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</span></div>
+                    <div className="mc-approval-actions">
+                      <button
+                        className="mc-btn mc-btn--sm mc-btn--danger"
+                        disabled={isBusy}
+                        onClick={(e) => { e.stopPropagation(); decide(item.id, 'reject'); }}
+                      >
+                        {isBusy ? '…' : 'Reject'}
+                      </button>
+                      <button
+                        className="mc-btn mc-btn--sm mc-btn--resume"
+                        disabled={isBusy}
+                        onClick={(e) => { e.stopPropagation(); decide(item.id, 'approve'); }}
+                      >
+                        {isBusy ? '…' : 'Approve'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ── J6: Mission Timeline Strip ───────────────────────────────────────────────
 const MC_LC_STAGE_COLORS = {
   observe:'#60a5fa', detect:'#60a5fa', reason:'#a78bfa', recommend:'#a78bfa',
@@ -874,6 +999,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* J6: Mission Timeline Strip */}
       <MissionTimelineStrip />
+
+      {/* Approvals — human-in-the-loop queue for autonomous execution */}
+      <ApprovalQueuePanel />
 
       {/* Lifecycle Runtime */}
       <LifecyclePanel />
