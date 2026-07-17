@@ -197,7 +197,7 @@ jobs:
         id: prerelease
         run: |
           TAG="${GITHUB_REF_NAME}"
-          if [[ "$TAG" == *"-beta."* ]] || [[ "$TAG" == *"-rc."* ]]; then
+          if [[ "$TAG" == *"-beta"* ]] || [[ "$TAG" == *"-rc"* ]]; then
             echo "IS_PRERELEASE=true" >> $GITHUB_OUTPUT
           else
             echo "IS_PRERELEASE=false" >> $GITHUB_OUTPUT
