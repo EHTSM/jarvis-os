@@ -112,7 +112,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
     });
     if (!decision.ok) return res.status(400).json({ error: decision.error });
 
-    if (!decision.creditCheck.allowed) {
+    if (!decision.creditCheck.canProceed) {
       return res.status(402).json({ error: "insufficient_credits", creditCheck: decision.creditCheck });
     }
 

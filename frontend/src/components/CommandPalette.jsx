@@ -64,6 +64,7 @@ const NAV_ACTIONS = [
   { id: "nav-oroplix",    label: "Ooplix Runs Ooplix",    icon: "✦", group: "Executive",           tab: "oroplix"    },
 
   // Growth & Revenue
+  { id: "nav-creative",   label: "Creative Studio",       icon: "✦", group: "Growth & Revenue",    tab: "creative"   },
   { id: "nav-seo",        label: "SEO",                   icon: "◇", group: "Growth & Revenue",    tab: "seo"        },
   { id: "nav-content",    label: "Content",               icon: "◈", group: "Growth & Revenue",    tab: "content"    },
   { id: "nav-social",     label: "Social",                icon: "◉", group: "Growth & Revenue",    tab: "social"     },

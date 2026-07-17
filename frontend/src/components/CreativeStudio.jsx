@@ -35,6 +35,10 @@ const CAP_ICONS = {
 
 const PLATFORMS = ["instagram","facebook","linkedin","pinterest","x","youtube","threads","blog","email","ads"];
 
+// Capabilities the registry declares but that have no backing /creative/* route —
+// listed for routing/credit metadata only, never actually invokable.
+const NO_ROUTE_CAPABILITIES = new Set(["presentation_generate"]);
+
 async function apiPost(path, body) {
   const r = await fetch(`${BASE}${path}`, {
     method: "POST", credentials: "include",
@@ -174,14 +178,23 @@ function WorkspacePanel({ ws, caps }) {
       <div className="cs-section">
         <div className="cs-section-title">Capabilities ({caps.length})</div>
         <div className="cs-cap-grid">
-          {caps.map(c => (
-            <div key={c.id} className="cs-cap-card">
-              <span className="cs-cap-icon">{CAP_ICONS[c.id] || "◻"}</span>
-              <span className="cs-cap-label">{c.label}</span>
-              <span className="cs-cap-providers">{c.providerCount}p · {c.minCredits}cr</span>
-            </div>
-          ))}
+          {caps.map(c => {
+            const noRoute = NO_ROUTE_CAPABILITIES.has(c.id);
+            return (
+              <div key={c.id} className={`cs-cap-card${noRoute ? " cs-cap-card--noroute" : ""}`} title={noRoute ? "Listed in the capability registry but no studio is wired up to invoke it yet." : undefined}>
+                <span className="cs-cap-icon">{CAP_ICONS[c.id] || "◻"}</span>
+                <span className="cs-cap-label">{c.label}</span>
+                {noRoute
+                  ? <span className="cs-cap-noroute-tag">No studio yet</span>
+                  : <span className="cs-cap-providers">{c.providerCount}p · {c.minCredits}cr</span>}
+              </div>
+            );
+          })}
         </div>
+        <p className="cs-cap-footnote">
+          Figma and slide-deck/presentation studios aren't available yet — no backend capability exists for
+          Figma, and presentation generation is registered but has no working studio.
+        </p>
       </div>
     </div>
   );
@@ -586,6 +599,7 @@ function AssetsPanel() {
                 <span className="cs-dim">{a.provider}</span>
                 <span className="cs-dim">{a.folder}</span>
                 <span className="cs-dim">{new Date(a.createdAt).toLocaleDateString()}</span>
+                {!a.url && <span className="cs-badge cs-badge--noroute" title="No real file was generated for this asset — description only.">no file</span>}
               </div>
             </div>
             <button className={`cs-fav-btn${a.favorite ? " active" : ""}`} onClick={() => toggleFav(a.id)}>
@@ -664,8 +678,16 @@ function PromptBox({ prompt, onChange, onRun, busy, placeholder, btnLabel = "Gen
 function ResultCard({ result }) {
   if (!result) return null;
   if (!result.ok) return <div className="cs-result-error">{result.error || "Request failed"}</div>;
+  const hasMedia = !!result.asset?.url;
   return (
     <div className="cs-result-card">
+      {!hasMedia && (
+        <div className="cs-result-noconnector">
+          ⚠ No connected provider produced a real file for this request. Credits were still charged
+          ({result.creditsUsed ?? "—"}). Connect a provider (Stability AI, ElevenLabs, Runway, etc.)
+          in Connector Center to generate real output — below is a text description only.
+        </div>
+      )}
       <div className="cs-result-row">
         <span className="cs-dim">Provider:</span> {result.decision?.providerName || result.decision?.provider || "—"}
         <span className="cs-dim" style={{ marginLeft: 12 }}>Credits:</span> {result.creditsUsed || "—"}
@@ -674,7 +696,7 @@ function ResultCard({ result }) {
       {result.output && typeof result.output === "object" && result.output.result && (
         <div className="cs-result-desc">{result.output.result}</div>
       )}
-      {result.asset?.url && (
+      {hasMedia && (
         <div className="cs-result-url">
           <a href={result.asset.url} target="_blank" rel="noreferrer">{result.asset.url.slice(0,60)}</a>
         </div>

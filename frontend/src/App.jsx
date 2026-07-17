@@ -68,6 +68,7 @@ const AgentCollaborationCenter = lazy(() => import("./components/AgentCollaborat
 const ToolFabricCenter         = lazy(() => import("./components/ToolFabricCenter.jsx"));
 const AutonomousCompanyCenter  = lazy(() => import("./components/AutonomousCompanyCenter.jsx"));
 const CompanyFactoryCenter     = lazy(() => import("./components/CompanyFactoryCenter.jsx"));
+const CreativeStudio           = lazy(() => import("./components/CreativeStudio.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
 const DataOwnershipCenter      = lazy(() => import("./components/DataOwnershipCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
@@ -189,6 +190,7 @@ const MORE_TABS = [
   { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
+  { id: "creative",   label: "Creative Studio",    group: "Growth"       },
   { id: "seo",        label: "SEO",                group: "Growth"       },
   { id: "content",    label: "Content",            group: "Growth"       },
   { id: "social",     label: "Social",             group: "Growth"       },
@@ -1197,6 +1199,7 @@ function AppInner() {
           />
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
+        {tab === "creative"  && <CreativeStudio />}
         {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} initialTab="seo"      />}
         {tab === "content"   && <GrowthOSV2 onNavigate={setTab} initialTab="content"   />}
         {tab === "social"    && <GrowthOSV2 onNavigate={setTab} initialTab="social"    />}

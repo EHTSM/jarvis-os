@@ -78,7 +78,7 @@ function route(opts = {}) {
   const fallbackChain = creativeRegistry.getFallbackChain(capability, primary.id);
 
   // Credit validation
-  let creditCheck = { allowed: true, remaining: 999, reason: "no_account" };
+  let creditCheck = { canProceed: true, source: "no_account", balance: Infinity, cost: 0 };
   if (accountId) {
     creditCheck = creditEngine.checkCredit(accountId, "creative", plan);
   }
