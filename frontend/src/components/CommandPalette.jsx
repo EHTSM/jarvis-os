@@ -17,6 +17,7 @@ const NAV_ACTIONS = [
 
   // Runtime & Ops
   { id: "nav-workflowautomation", label: "Workflow Automation", icon: "⚡", group: "Runtime & Ops", tab: "workflowautomation" },
+  { id: "nav-analyticscenter", label: "Analytics",         icon: "◎", group: "Runtime & Ops",       tab: "analyticscenter" },
   { id: "nav-runtime",    label: "Execution Engine",      icon: "⬡", group: "Runtime & Ops",       tab: "runtime"    },
   { id: "nav-execution",  label: "Execution Monitor",     icon: "⬡", group: "Runtime & Ops",       tab: "execution"  },
   { id: "nav-operations", label: "Operations",            icon: "◉", group: "Runtime & Ops",       tab: "operations" },

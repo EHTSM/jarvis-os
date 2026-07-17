@@ -70,6 +70,7 @@ const AutonomousCompanyCenter  = lazy(() => import("./components/AutonomousCompa
 const CompanyFactoryCenter     = lazy(() => import("./components/CompanyFactoryCenter.jsx"));
 const CreativeStudio           = lazy(() => import("./components/CreativeStudio.jsx"));
 const WorkflowAutomationCenter = lazy(() => import("./components/WorkflowAutomationCenter.jsx"));
+const AnalyticsCenter          = lazy(() => import("./components/AnalyticsCenter.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
 const DataOwnershipCenter      = lazy(() => import("./components/DataOwnershipCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
@@ -155,6 +156,7 @@ const MORE_TABS = [
   { id: "overview",   label: "Overview",           group: "Account"      },
   // ── Operations
   { id: "workflowautomation", label: "Workflow Automation", group: "Operations" },
+  { id: "analyticscenter", label: "Analytics",       group: "Operations"   },
   { id: "activity",   label: "History",            group: "Operations"   },
   { id: "reports",    label: "Reports",            group: "Operations"   },
   { id: "mission",    label: "Mission Control",    group: "Operations"   },
@@ -1153,6 +1155,7 @@ function AppInner() {
         <Suspense fallback={<TabSkeleton />}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "workflowautomation" && <WorkflowAutomationCenter />}
+        {tab === "analyticscenter" && <AnalyticsCenter />}
         {tab === "home"     && (
           <CommandCenter
             stats={stats}
