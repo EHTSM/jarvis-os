@@ -14,6 +14,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const INT_DIR = path.join(__dirname, "../../data/odi/interactions");
 function _ensureDir() { if (!fs.existsSync(INT_DIR)) fs.mkdirSync(INT_DIR, { recursive: true }); }
@@ -132,6 +133,8 @@ async function _simulateClick(page, url) {
 
 async function analyzeInteractions({ url } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

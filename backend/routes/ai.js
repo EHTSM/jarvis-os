@@ -5,8 +5,9 @@ const connectorTools = require("../services/connectorToolBridge.cjs");
 const usageMetering  = require("../services/usageMetering.cjs");
 const billing        = require("../services/billingService");
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter    = require("../middleware/rateLimiter");
 
-router.post("/ai/chat", requireAuth, billing.requireUsageQuota, async (req, res) => {
+router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
     const t0 = Date.now();
     try {
         const { prompt, system, history, provider, model } = req.body;
@@ -30,7 +31,7 @@ router.post("/ai/chat", requireAuth, billing.requireUsageQuota, async (req, res)
 // Executes any tool calls the model requests (connector status/connect-url/
 // list-connections — see connectorToolBridge.cjs) and returns both the
 // model's tool call(s) and their real execution results.
-router.post("/ai/chat-with-tools", requireAuth, billing.requireUsageQuota, async (req, res) => {
+router.post("/ai/chat-with-tools", requireAuth, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
     const t0 = Date.now();
     try {
         const { prompt, system, history, provider, model } = req.body;

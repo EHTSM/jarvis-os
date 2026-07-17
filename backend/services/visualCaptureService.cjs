@@ -13,6 +13,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const SCREENSHOTS_DIR = path.join(__dirname, "../../data/odi/screenshots");
 
@@ -82,6 +83,8 @@ async function captureFromPage({ pageId, fullPage = false, url } = {}) {
     page = r.page;
 
     if (url) {
+      const safety = await assertSafeNavigationTarget(url);
+      if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
       try { await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 }); }
       catch (e) { return { ok: false, error: `Navigation failed: ${e.message}` }; }
     }
@@ -161,6 +164,8 @@ async function captureViewport({ url, width = 1280, height = 900, fullPage = fal
   if (!session) return { ok: false, error: "Playwright not available" };
 
   if (!url) return { ok: false, error: "url required for viewport capture" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   if (!session.isRunning()) {
     const launch = await session.launch({ headless: true });

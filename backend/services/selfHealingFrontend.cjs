@@ -17,6 +17,7 @@
 const fs   = require("fs");
 const path = require("path");
 const ai   = require("./aiService");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const ROOT = path.resolve(__dirname, "../..");
 
@@ -38,6 +39,8 @@ function _getSession() { try { return require("../../agents/browser/browserSessi
 
 async function collectErrors({ url, durationMs = 5000 } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

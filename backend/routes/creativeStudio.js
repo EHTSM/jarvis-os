@@ -16,6 +16,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const creativeRegistry = require("../services/creativeRegistry.cjs");
 const creativeRouter   = require("../services/creativeRouter.cjs");
@@ -32,6 +33,7 @@ function _ai() {
 }
 
 router.use("/creative", requireAuth);
+router.use("/creative", rateLimiter(30, 60_000));
 
 function _account(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }

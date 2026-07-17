@@ -51,6 +51,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const er   = require("../services/executiveReasoning.cjs");
 const mm   = require("../services/missionMemory.cjs");
@@ -59,6 +60,7 @@ const ai   = require("../services/aiService.js");
 const il   = require("../services/improvementLoop.cjs");
 
 router.use("/p27", requireAuth);
+router.use("/p27", rateLimiter(30, 60_000));
 
 // ── F1 Executive Reasoning ────────────────────────────────────────────────────
 

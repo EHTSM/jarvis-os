@@ -26,6 +26,7 @@ const path    = require("path");
 const crypto  = require("crypto");
 const { execSync, spawnSync } = require("child_process");
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 const ai      = require("../services/aiService");
 const logger  = require("../utils/logger");
 
@@ -157,6 +158,7 @@ function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedF
 
 // ── All routes require auth ───────────────────────────────────────────────────
 router.use("/coding", requireAuth);
+router.use("/coding", rateLimiter(30, 60_000));
 
 // ── POST /coding/ask — free-form question with full repo context ──────────────
 router.post("/coding/ask", async (req, res) => {

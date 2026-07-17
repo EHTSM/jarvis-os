@@ -30,6 +30,8 @@
  *   checkElement(page, selector)
  */
 
+const { assertSafeNavigationTarget } = require("../../backend/utils/urlSafety.cjs");
+
 const DEFAULT_TIMEOUT    = 12_000;
 const NAVIGATE_TIMEOUT   = 20_000;
 const MAX_TEXT_LEN       = 3_000;
@@ -122,6 +124,8 @@ async function navigate(page, url, {
   if (!url) return _fail("navigate", "URL is required");
 
   const normalized = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+  const safety = await assertSafeNavigationTarget(normalized);
+  if (!safety.safe) return _fail("navigate", `unsafe navigation target: ${safety.reason}`);
 
   try {
     const response = await page.goto(normalized, { timeout, waitUntil });
