@@ -1,0 +1,273 @@
+{
+  "generatedAt": "2026-07-17",
+  "methodology": "Every entry verified against live source code and, where marked liveVerified:true, against a running local server (JWT_SECRET set locally, PORT 5092-5099, never a shared/production instance). Categories are feature-level, not raw file counts. A feature can only be REAL if it performs genuine external I/O or genuine internal product work that survives restart; DUPLICATE is reserved for near-identical re-implementations of the same capability; SIMULATED means the code runs for real but only mutates self-generated, self-contained JSON state with no connection to external reality.",
+  "categories": ["REAL", "PARTIALLY_REAL", "SIMULATED", "DEAD_CODE", "UNUSED", "BROKEN", "DUPLICATE"],
+  "sourceReports": [
+    "docs/current/service-classification-report.json",
+    "docs/current/phase3-connector-verification.md",
+    "docs/current/phase4-frontend-audit.md",
+    "docs/current/phase6-autonomous-runtime.md",
+    "docs/current/phase7-9-performance-devops.md"
+  ],
+  "features": [
+    {
+      "feature": "JWT authentication (login/session)",
+      "category": "REAL",
+      "evidence": "backend/middleware/authMiddleware.js:11-40 — HS256, crypto.timingSafeEqual constant-time compare, expiry enforced, fail-closed dev bypass (requires NODE_ENV!==production AND ALLOW_DEV_AUTH_BYPASS=1, else 503).",
+      "liveVerified": true,
+      "notes": "Re-verified live this session: no-cookie->401, bad-token->401, valid-token->200."
+    },
+    {
+      "feature": "Firebase Auth middleware (backend/middleware/firebaseAuth.js)",
+      "category": "DEAD_CODE",
+      "evidence": "backend/middleware/firebaseAuth.js — fully real requireAuth/optionalAuth using real firebase-admin SDK and Firebase ID-token verification. grep -rln 'firebaseAuth' backend/ (excluding the file itself) returns zero results — never imported by any route.",
+      "liveVerified": false,
+      "notes": "Not a stub — genuinely working code, but unreachable. Duplicate auth mechanism relative to authMiddleware.js's cookie-JWT scheme, never wired."
+    },
+    {
+      "feature": "Organization RBAC (orgs/:orgId/*)",
+      "category": "REAL",
+      "evidence": "backend/services/organizationService.cjs:138 _assertPermission() enforced inside every mutation (updateOrg, deleteOrg, addMember, etc — lines 227,241,277,295,309,328,353,369,397,424,442,471,487,508). Route-layer orgMiddleware.cjs (attachOrg/requireOrgPermission) now also mounted in backend/routes/organizations.js as of this session's fix.",
+      "liveVerified": true,
+      "notes": "FIXED THIS SESSION (2 bugs): (1) prior session's attachOrg id-forwarding used req.query.orgId, which Express 5 exposes as a getter that does not persist mutations across middleware — silently never worked, fixed to use req.body.orgId. (2) Full 5-role (owner/admin/dept_lead/member/viewer) matrix re-verified live end-to-end after the fix: update_org/delete_org/manage_members/create_mission/cross-org-isolation all correct."
+    },
+    {
+      "feature": "Workspace isolation (workspace/*)",
+      "category": "PARTIALLY_REAL",
+      "evidence": "backend/middleware/workspaceMiddleware.cjs — attachWorkspace/requireWorkspaceMember/requireRole real. backend/services/workspaceService.cjs:132,166 enforce role checks inside updateWorkspace/createInvitation. GET /workspace/:id/members (backend/routes/workspace.js) previously had ZERO membership check.",
+      "liveVerified": true,
+      "notes": "FIXED THIS SESSION: GET /workspace/:id/members returned any workspace's member list (names+emails, real PII) to any authenticated user regardless of membership. Wired requireWorkspaceMember via the same req.body-forwarding adapter pattern. Live-verified: owner->200, non-member outsider->403."
+    },
+    {
+      "feature": "33 previously-unauthenticated route prefixes (aeo/auto/civ/eco/ent/eos/mission/research/investment/physical/science/infra/org-network/knowledge-net/revenue-engine/auto-market/customer-org/product-factory/engineering/x-suite/odi/business/knowledge/evolution/workspace-mesh/repo-viz/memory/improvement/platform/intelligence/collaboration)",
+      "category": "REAL",
+      "evidence": "backend/routes/index.js — requireAuth now mounted per-prefix immediately before each router.use(require(...)) line.",
+      "liveVerified": true,
+      "notes": "Fixed in prior session (security/hardening-p0, commit a262db7), re-verified live this session still holding after further changes: all 33 target endpoints return 401 without a session."
+    },
+    {
+      "feature": "Feature-plan gating (requireFeature / plan enforcement)",
+      "category": "BROKEN",
+      "evidence": "backend/services/featureGate.cjs:115 (pre-fix) read only req.user?.accountId || req.user?.id; the actual JWT claim used everywhere else in this codebase (authMiddleware.js signJWT/verifyJWT, billingService.js:284) is req.user.sub. Same bug independently present in backend/routes/{aiEcosystem,growthOS,creativeStudio,launchPlatform,browserPlatform,commercial,contentSEO}.js.",
+      "liveVerified": true,
+      "notes": "FIXED THIS SESSION across 8 files (featureGate.cjs + 7 route files) — every real logged-in user was being treated as unauthenticated by every requireFeature()-gated route (hard 401 on e.g. /marketplace/catalog) or silently bucketed into a shared 'unknown'/'global' account. Live-verified: /marketplace/catalog now correctly returns 402 feature_gated/requires_starter_or_higher for a real trial user instead of a false 401."
+    },
+    {
+      "feature": "AI provider router (aiService.js)",
+      "category": "REAL",
+      "evidence": "backend/services/aiService.js:58-95 — 12 real provider endpoints (Groq/OpenAI/OpenRouter/Anthropic/Gemini/DeepSeek/Together/Fireworks/Cohere/NVIDIA/Ollama/LM Studio), real axios HTTP, TCP local-probe fail-fast, documented failover order.",
+      "liveVerified": true,
+      "notes": "Live-verified this session: /ai/status 200 with real provider list; raw GROQ reachability confirmed ~350-450ms round trip with a real key. App-level /ai/chat is rate-limit-fragile under burst (full-provider-loop + retry amplifies request count against GROQ's per-minute limit) — real but fragile, not fake."
+    },
+    {
+      "feature": "Vault / secret storage",
+      "category": "REAL",
+      "evidence": "backend/services/secretVault.cjs — real AES-256-GCM, key=SHA-256(JWT_SECRET). Wired to real callers (integrationConnectors.cjs:78, founderIdentityOS.cjs). Live /vault/dashboard and /vault/health return real per-connector rotation/health data (3 real secrets, score 100).",
+      "liveVerified": true,
+      "notes": null
+    },
+    {
+      "feature": "OAuth token exchange/refresh/revoke",
+      "category": "REAL",
+      "evidence": "backend/services/oauthIntegrationLayer.cjs:264 (exchange), :325 (refresh), :342 (revoke) — real authorization-code flow over raw https for google/github/slack/notion/microsoft/linkedin.",
+      "liveVerified": false,
+      "notes": "Confirmed by Phase 3 sub-audit. Caveat: Google/Microsoft/LinkedIn 'CONNECTED' health probes hit a PUBLIC discovery endpoint (integrationConnectors.cjs:709) that returns 200 regardless of whether the app's own client_id/secret are valid — proves the vendor is reachable, not that this app's OAuth credentials work."
+    },
+    {
+      "feature": "Connectors: GitHub, Telegram, WhatsApp, Razorpay, OpenAI, email/Resend-SendGrid-Postmark-Mailgun, S3/R2 storage, Sentry",
+      "category": "REAL",
+      "evidence": "See docs/current/phase3-connector-verification.md. Telegram + OpenAI live-CONNECTED with real keys in .env (bot @Alwaliy_Technologies_Jarvis_Bot verified, OpenAI /v1/models succeeded). GitHub/WhatsApp/Razorpay have real code paths (api.github.com, graph.facebook.com, api.razorpay.com) that returned real non-2xx statuses live because no/incomplete credentials are configured in this environment — code is real, not stubbed.",
+      "liveVerified": true,
+      "notes": null
+    },
+    {
+      "feature": "Connectors: Slack, Discord, Stripe, Firebase, Supabase, Cloudflare, AWS, Anthropic, Gemini",
+      "category": "PARTIALLY_REAL",
+      "evidence": "See docs/current/phase3-connector-verification.md. All have real vendor-host HTTP probes and/or real SDK usage but no credentials present in .env; Firebase's probe never makes an outbound call at all (JSON-parses its own service-account env var).",
+      "liveVerified": true,
+      "notes": "Anthropic and Gemini keys are fully real end-to-end in code but ANTHROPIC_API_KEY/GEMINI_API_KEY were absent from .env.example — FIXED THIS SESSION (added to .env.example so a by-the-book deploy is told to set them)."
+    },
+    {
+      "feature": "Connectors: Gmail, Google Calendar, Google Drive",
+      "category": "SIMULATED",
+      "evidence": "Ride Google OAuth scopes only (oauthIntegrationLayer.cjs:110). Zero outbound calls anywhere in source to gmail.googleapis.com, googleapis.com/calendar, or googleapis.com/drive. Status reported is scope-declared + 'pending user auth', never a real API round trip.",
+      "liveVerified": false,
+      "notes": "Reports PARTIAL/READY in the connector dashboard despite no actual Gmail/Calendar/Drive API call existing in the codebase."
+    },
+    {
+      "feature": "Connector: PayPal",
+      "category": "UNUSED",
+      "evidence": "Zero code anywhere in backend/services or backend/routes. Not present in the 57-connector registry, no env vars, no .env.example entries.",
+      "liveVerified": false,
+      "notes": "Named in this mission's Phase 3 scope but never built at all — not partial, not broken, simply absent."
+    },
+    {
+      "feature": "Mission Engine",
+      "category": "REAL",
+      "evidence": "backend/routes/mission.js, backend/services/missionOrchestrator.cjs, missionMemory.cjs — real fs persistence to data/*.json, survives restart. Live /mission/runtime/status returned 228 real missions with status/priority breakdown.",
+      "liveVerified": true,
+      "notes": null
+    },
+    {
+      "feature": "Workflow/Pipeline Engine",
+      "category": "PARTIALLY_REAL",
+      "evidence": "backend/routes/pipeline.js live-tested: /pipeline/active returns 200 with real (empty at test time) pipeline list — real code path, not fake, but only MANUAL-ONLY (fires when POST /pipeline/run is called, not on its own timer).",
+      "liveVerified": true,
+      "notes": null
+    },
+    {
+      "feature": "Memory system (engineeringMemoryEngine — remember/recall)",
+      "category": "REAL",
+      "evidence": "backend/services/engineeringMemoryEngine.cjs:124-157 (remember, real branches for type=lesson and type=mission_learning, real persistence via continuousLearningEngine/missionMemory) and :163+ (recall, real TF-IDF-style cosine similarity search across 5 real memory sources).",
+      "liveVerified": true,
+      "notes": "Live-verified: POST /memory/remember with type:lesson returned stored:true with a real generated lessonId; type:decision correctly and intentionally returns stored:false (documented — decisions derive from a separate pipeline, this is not a bug)."
+    },
+    {
+      "feature": "Autonomous runtime core (Observe/Execute/Recover/Self-heal/Loop)",
+      "category": "REAL",
+      "evidence": "See docs/current/phase6-autonomous-runtime.md. Live 70s idle-window observation with zero API calls showed: real execSync(git status)/exec(pm2 jlist) firing autonomously (continuousRuntimeObserver.cjs), 80 autonomous dispatch batches making 1585 real outbound HTTP calls to AI providers (agents/autonomousLoop.cjs), and a self-heal probe that detected 5 real failed cycles and re-executed them live.",
+      "liveVerified": true,
+      "notes": "Genuinely autonomous — fires with zero human trigger and produces real external side effects (network calls), not just JSON mutation."
+    },
+    {
+      "feature": "Autonomous Learning/Planning/Memory-writes",
+      "category": "PARTIALLY_REAL",
+      "evidence": "continuousLearningEngine.cjs:345-351 (real 30-min timer, real fs-backed clustering) and agentRuntimeSupervisor.cjs:948 (real 60s planner tick) both fire autonomously with zero human action, confirmed live.",
+      "liveVerified": true,
+      "notes": "Triggers and code are real, but the data consumed is largely the system's own historical output (data/agent-runs.json — its own prior failures), not fresh external-world signal. Self-monitoring, not learning from the outside world. At boot, Learning produced 0 new lessons (already exhausted its static input)."
+    },
+    {
+      "feature": "14 duplicate *Org engines (businessOrg, autonomousOrg, civilizationOrg, ecosystemOrg, enterpriseOrg, executiveOrg, autonomousEvolutionOrg, autonomousKnowledgeOrg, platformOrg + *State/*Workflow siblings)",
+      "category": "DUPLICATE",
+      "evidence": "docs/current/service-classification-report.json (34 files flagged SIMULATION, largely this family). organizationRegistryEngine.cjs explicitly documents itself as a federation layer over these same engines. Each follows an identical registry+tick pattern.",
+      "liveVerified": false,
+      "notes": null
+    },
+    {
+      "feature": "*Org engines' autonomy",
+      "category": "SIMULATED",
+      "evidence": "docs/current/phase6-autonomous-runtime.md Caveat 2 — confirmed 0 setInterval/cron/node-cron calls in any of the 9 core *Org engine files; they only run when an API route calls them (MANUAL-ONLY) or an AgentSupervisor persona tick invokes them. Where a persona tick does fire them, 100% of resulting actions are self-contained data/*.json mutations — zero calls to a real connector or real repo/infra modification found.",
+      "liveVerified": true,
+      "notes": "Live-confirmed this run, not just by static grep — the 70s idle-window trace showed *Org persona ticks firing and only emitting internal events + JSON writes."
+    },
+    {
+      "feature": "Frontend: DeveloperOS, PersonalOS, EnterpriseOS, MemoryOSV2 tabs",
+      "category": "BROKEN",
+      "evidence": "docs/current/phase4-frontend-audit.md — developerApi.js -> /dev/*, personalApi.js -> /personal/*, enterpriseApi.js -> /enterprise/*: no backend route file exists for any of these three prefixes anywhere in backend/routes/. Live probes of /dev/repos, /personal/dashboard, /enterprise/orgs all return the HTML SPA shell, not JSON.",
+      "liveVerified": true,
+      "notes": "Not fixed — building 3 entire new backend namespaces is new architecture/new features, explicitly out of scope for this mission. These 4 top-level tabs render as permanently empty shells with no visible error to the user."
+    },
+    {
+      "feature": "Frontend: EnterpriseCRM, KnowledgeCenter, DataOwnershipCenter, DisasterRecoveryCenter, MobilePlatformCenter, CommunityCenter, AutonomousCompanyCenter, AutonomousRevenueCenter, AutonomousMarketingCenter, AutonomousSupportCenter",
+      "category": "SIMULATED",
+      "evidence": "docs/current/phase4-frontend-audit.md rows — each renders hardcoded const arrays (e.g. DATA_INVENTORY with literal record counts, BACKUPS/RECOVERY_PLANS, named fake leads 'Arjun Mehta, Priya Sharma') as if they were live operational data, with zero backend API call.",
+      "liveVerified": true,
+      "notes": "The 4 Autonomous*Center pages are also a DUPLICATE cluster — ~240 lines each, ~90% identical structure, mirroring the backend *Org duplication pattern."
+    },
+    {
+      "feature": "Frontend pages with real backend wiring (~50 of ~69 audited tabs)",
+      "category": "REAL",
+      "evidence": "docs/current/phase4-frontend-audit.md full table — Dashboard, CRM/Payments, Chat, Mission Control, Billing, Workspace Settings, Team, Marketplace, Engineering/Runtime centers, AI cost center, etc. all confirmed calling real, existing backend routes with JSON responses.",
+      "liveVerified": true,
+      "notes": null
+    },
+    {
+      "feature": "Metrics collector (/queue/status deep metrics)",
+      "category": "BROKEN",
+      "evidence": "backend/routes/tasks.js:28-33 requires agents/metrics/metricsCollector.cjs, which does not exist in the live agents/ tree — only a copy survives under _archive/20260520_010917/agents/metrics/metricsCollector.cjs. The route degrades gracefully (503 'Metrics collector unavailable') rather than crashing, but the feature has never worked in the current tree.",
+      "liveVerified": true,
+      "notes": "Not fixed — resurrecting archived code without knowing why it was archived risks reintroducing a deliberately-removed component; reported precisely instead. Narrow blast radius: /scheduler/status uses a different, working code path (taskQueueMod) and is unaffected."
+    },
+    {
+      "feature": "SQLite persistence layer (backend/db/sqlite.cjs)",
+      "category": "DEAD_CODE",
+      "evidence": "grep -rln 'db/sqlite' backend/ (excluding the file itself) returns zero results — required by nothing in the live server path. better-sqlite3 is a real dependency with correct, parameterized (non-SQLi) query code, but it is never invoked in production, and data/jarvis.db does not exist in this environment.",
+      "liveVerified": true,
+      "notes": "The native module ABI mismatch (compiled for NODE_MODULE_VERSION 145, this Node needs 137) was FIXED THIS SESSION via `npm rebuild better-sqlite3`, resolving repeated non-fatal '[SQLite Shadow]' warnings — but the module remains unwired/dead regardless."
+    },
+    {
+      "feature": "Disaster recovery validator (scripts/test-restore.cjs)",
+      "category": "BROKEN",
+      "evidence": "Unconditionally assumed a snapshot always contains jarvis.db and crashed with ENOENT when it didn't — because safe-backup.cjs only writes jarvis.db when a live SQLite DB exists to back up (it doesn't, in this or presumably most environments — see sqlite dead-code entry above), and falls back to jarvis.db.raw on VACUUM-INTO failure.",
+      "liveVerified": true,
+      "notes": "FIXED THIS SESSION: script now checks for either jarvis.db or jarvis.db.raw in the snapshot, and skips gracefully (with a clear log line) if neither is present rather than assuming one always exists. Live-verified: `node scripts/test-restore.cjs` now exits 0 / 'PASSED' (was previously a hard crash)."
+    },
+    {
+      "feature": "safe-backup.cjs / rollback.sh (backup, list, restore)",
+      "category": "REAL",
+      "evidence": "docs/current/phase7-9-performance-devops.md — safe-backup.cjs live-run created a real tar.gz snapshot and pruned old ones (exit 0). rollback.sh --list live-run listed 8 real data backups and 10 recent git commits.",
+      "liveVerified": true,
+      "notes": "Destructive restore paths (data/ wipe+restore, --code git-checkout) were not exercised live in the DevOps sub-audit beyond what test-restore.cjs already covers, since they require a disposable target."
+    },
+    {
+      "feature": "PM2 process management (ecosystem.config.cjs)",
+      "category": "REAL",
+      "evidence": "docs/current/phase7-9-performance-devops.md — pm2 start ecosystem.config.cjs live-verified both apps reach 'online' with no crash-loop in the observed window; single-entry config confirmed (no EADDRINUSE risk).",
+      "liveVerified": true,
+      "notes": "jarvis-os shows 590 cumulative historical restarts (did not increment during this test run) — flagged by the app's own pm2Observer as HIGH; root cause of the historical accumulation not investigated in this pass."
+    },
+    {
+      "feature": "CI pipeline (.github/workflows/ci.yml)",
+      "category": "REAL",
+      "evidence": "docs/current/phase7-9-performance-devops.md — every command CI actually runs was executed locally and passed: test:runtime 144/144, build:frontend (7.2M output), deploy-script bash -n syntax checks on all 8 scripts.",
+      "liveVerified": true,
+      "notes": "Real GitHub Actions execution not directly triggerable from this environment; local command-for-command proxy is the strongest available substitute and all of it passed."
+    },
+    {
+      "feature": "Docker production build (Dockerfile.production)",
+      "category": "PARTIALLY_REAL",
+      "evidence": "docs/current/phase7-9-performance-devops.md — Docker daemon unavailable in this environment (90s wait, did not come up), so the image was not actually built this run. Static multi-stage review found no defects: cross-stage COPY paths match, non-root user, healthcheck present.",
+      "liveVerified": false,
+      "notes": "Statically correct by inspection but not proven by an actual build in this pass."
+    },
+    {
+      "feature": "Electron desktop shell hardening (contextIsolation/nodeIntegration/sandbox)",
+      "category": "REAL",
+      "evidence": "scripts/electron-smoke-test.cjs live-run: 22/22 checks passed against the actually-loaded electron/main.cjs — contextIsolation:true, nodeIntegration:false, webSecurity not overridden to false, CSP header injection, will-navigate guard, setPermissionRequestHandler all confirmed present in source.",
+      "liveVerified": true,
+      "notes": "Corrects a prior-session error that had cited these properties from the wrong file (electron/main.js, not the actually-loaded main.cjs)."
+    },
+    {
+      "feature": "Electron full GUI launch / workspace load timing",
+      "category": "UNUSED",
+      "evidence": "docs/current/phase7-9-performance-devops.md — a real, bounded launch attempt of electron/main.cjs exited in ~483ms with 'Cannot read properties of undefined (isPackaged)' because the Electron app global isn't initialized in a non-interactive/no-display invocation.",
+      "liveVerified": true,
+      "notes": "Marked UNUSED here in the sense of 'not exercisable in this audit environment', not a code defect — the smoke test (static) is the only available signal; this is an environment limitation of the audit, not a proven app bug."
+    },
+    {
+      "feature": "Rate limiting middleware",
+      "category": "PARTIALLY_REAL",
+      "evidence": "backend/middleware/rateLimiter.js is real (token-bucket style) and applied on 7 of 127 route files: accounts.js, auth.js, browser.js, jarvis.js, odi.js, runtime.js, whatsapp.js.",
+      "liveVerified": false,
+      "notes": "The two highest-risk endpoints for brute-force/spam (login, registration) are covered. Narrow overall coverage (7/127 files) is a real, reportable gap, not a fabricated one."
+    },
+    {
+      "feature": "CSRF protection",
+      "category": "PARTIALLY_REAL",
+      "evidence": "No dedicated CSRF-token middleware exists anywhere in backend/. Auth cookie is sameSite:'strict' (authMiddleware.js:93), which is a real, meaningful (if partial) mitigation against cross-site state-changing requests using the auth cookie.",
+      "liveVerified": false,
+      "notes": "grep hits for 'csrf' in backend/services/{engineeringReasoningEngine,pcsCredentials}.cjs are the security-linter's own detection-rule definitions and OAuth-layer self-audit checks, not application CSRF protection — verified as false leads, not counted as coverage."
+    },
+    {
+      "feature": "XSS protection (frontend)",
+      "category": "REAL",
+      "evidence": "grep -rc dangerouslySetInnerHTML frontend/src --include=*.jsx returns zero non-zero hits — no raw HTML injection sink found in the audited component set.",
+      "liveVerified": false,
+      "notes": null
+    },
+    {
+      "feature": "selfHealingFrontend.cjs applyFix() — path handling + new Function()",
+      "category": "DEAD_CODE",
+      "evidence": "backend/services/selfHealingFrontend.cjs:156-179 — path.join(process.cwd(), record.targetFile) with no traversal sanitization, and a new Function(patched) syntax-guard. grep -rn 'applyFix\\(' backend/ (excluding the definition) returns zero call sites anywhere in the backend.",
+      "liveVerified": false,
+      "notes": "Real path-traversal-shaped and eval-adjacent code pattern, but currently unreachable from any route — reported as dead code with a latent risk noted, not treated as an active production vulnerability. Not fixed: modifying unreferenced code was judged out of scope (no live exposure to hardening)."
+    },
+    {
+      "feature": "SQL injection surface",
+      "category": "REAL",
+      "evidence": "backend/db/sqlite.cjs uses only parameterized/static .prepare() calls (e.g. SELECT COUNT(*) as n FROM tasks) — no string-concatenated queries found. (Also DEAD_CODE per above — unreachable regardless.)",
+      "liveVerified": false,
+      "notes": "Listed separately from the dead-code entry because 'is the query-construction pattern itself safe' is a distinct question from 'is this code reachable' — answer to both happens to be favorable here."
+    }
+  ]
+}

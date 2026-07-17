@@ -101,7 +101,7 @@ function _getStore()    { return require("../../agents/browser/browserWorkflowSt
 
 router.use("/browser-platform", requireAuth);
 
-function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: Browser Registry

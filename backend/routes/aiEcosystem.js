@@ -74,7 +74,7 @@ const analytics  = require("../services/costAnalytics.cjs");
 
 router.use("/ai-ecosystem", requireAuth);
 
-function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {
   try { return billing.checkAccess(_accountId(req)).plan || "trial"; } catch { return "trial"; }
 }

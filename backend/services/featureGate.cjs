@@ -112,7 +112,7 @@ function listEntitlements(plan) {
 function requireFeature(featureId) {
   const billingService = require("./billingService");
   return (req, res, next) => {
-    const accountId = req.user?.accountId || req.user?.id;
+    const accountId = req.user?.sub || req.user?.accountId || req.user?.id;
     if (!accountId) return res.status(401).json({ error: "Not authenticated" });
     const access = billingService.checkAccess(accountId);
     const plan   = access.plan || "trial";

@@ -10,7 +10,7 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireWorkspaceMember } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/workspaceService.cjs");
 
 // All workspace routes require auth
@@ -92,13 +92,30 @@ router.get("/workspace/activity", (req, res) => {
 });
 
 // GET /workspace/:id/members — list members with account info
-router.get("/workspace/:id/members", async (req, res) => {
-  try {
-    const members = await svc.getMembers(req.params.id);
-    res.json({ members });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+// attachWorkspace() resolves req.workspace/req.workspaceRole from
+// query/body/header only, not the :id route param, so forward it into
+// req.body.workspaceId (the field attachWorkspace already reads) before
+// delegating to the existing middleware, then require real membership —
+// previously this route had no membership check at all and would return
+// any workspace's member list (including emails) to any authenticated user.
+// NOTE: req.query is a getter in Express 5 — assigning to it does not
+// persist across middleware, so req.body is used instead (initialized here
+// since express.json() leaves req.body undefined, not {}, on a bodyless GET).
+router.get("/workspace/:id/members",
+  (req, res, next) => {
+    req.body = req.body || {};
+    if (req.params.id && !req.body.workspaceId) req.body.workspaceId = req.params.id;
+    return attachWorkspace(req, res, next);
+  },
+  requireWorkspaceMember,
+  async (req, res) => {
+    try {
+      const members = await svc.getMembers(req.params.id);
+      res.json({ members });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
   }
-});
+);
 
 module.exports = router;

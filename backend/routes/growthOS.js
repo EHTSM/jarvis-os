@@ -160,7 +160,7 @@ router.post("/growth/push/register",             (req, res) => {
   try {
     const { token, platform } = req.body || {};
     if (!token) return res.status(400).json({ error: "token required" });
-    const accountId = req.user?.accountId || req.user?.id || "unknown";
+    const accountId = req.user?.sub || req.user?.accountId || req.user?.id || "unknown";
     _ok(res, g.registerPushToken(accountId, token, platform || "web"));
   } catch (e) { _err(res, e); }
 });

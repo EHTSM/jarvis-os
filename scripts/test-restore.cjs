@@ -42,7 +42,20 @@ async function testRestore() {
     
     // Restore files
     fs.copyFileSync(path.join(snapDir, 'task-queue.json'), path.join(DATA_DIR, 'task-queue.json'));
-    fs.copyFileSync(path.join(snapDir, 'jarvis.db'), path.join(DATA_DIR, 'jarvis.db'));
+    // jarvis.db is only present in the snapshot if safe-backup.cjs found a live
+    // SQLite DB to back up (backend/db/sqlite.cjs is not required anywhere in
+    // the live server path, so a fresh/typical environment has no DB file at
+    // all — that's not a restore failure). The online-backup path writes
+    // jarvis.db; its raw-copy fallback (used when VACUUM INTO fails, e.g. a
+    // better-sqlite3 native ABI mismatch) writes jarvis.db.raw instead.
+    const dbSnapshot = ['jarvis.db', 'jarvis.db.raw']
+        .map(f => path.join(snapDir, f))
+        .find(p => fs.existsSync(p));
+    if (dbSnapshot) {
+        fs.copyFileSync(dbSnapshot, path.join(DATA_DIR, 'jarvis.db'));
+    } else {
+        console.log('[+] No jarvis.db in snapshot — SQLite DB was not present at backup time, skipping.');
+    }
     
     console.log('[+] Restore finished.');
 

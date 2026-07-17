@@ -29,7 +29,7 @@ const creditEngine = require("../services/creditEngine.cjs");
 
 router.use("/launch", requireAuth);
 
-function _account(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _account(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }
 
 // ══════════════════════════════════════════════════════════════════

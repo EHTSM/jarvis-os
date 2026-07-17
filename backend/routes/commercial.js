@@ -59,7 +59,7 @@ const billing  = require("../services/billingService");
 
 router.use("/commercial", requireAuth);
 
-function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {
   try {
     const access = billing.checkAccess(_accountId(req));

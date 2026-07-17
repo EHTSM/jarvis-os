@@ -63,11 +63,14 @@ router.use("/orgs", requireAuth);
 
 // attachOrg() resolves req.org/req.orgRole from the X-Org-Id header, query,
 // or body — it does not read Express route params. Every /orgs/:orgId/* route
-// carries the org id as a URL param, so forward it into req.query.orgId (the
-// param attachOrg already knows how to read) before delegating, unchanged, to
-// the existing middleware.
+// carries the org id as a URL param, so forward it into req.body.orgId (the
+// field attachOrg already knows how to read) before delegating, unchanged, to
+// the existing middleware. NOTE: req.query is a getter in Express 5 —
+// assigning to it does not persist across middleware, so req.body (a plain
+// object set by the JSON body parser) is used instead.
 function _attachOrgFromParam(req, res, next) {
-    if (req.params.orgId && !req.query.orgId) req.query.orgId = req.params.orgId;
+    req.body = req.body || {};
+    if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
     return attachOrg(req, res, next);
 }
 router.use("/orgs/:orgId", _attachOrgFromParam);

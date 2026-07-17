@@ -269,14 +269,14 @@ router.get("/content/keywords/:id",               (req, res) => {
 
 router.get("/content/brand-voice",                (req, res) => {
   try {
-    const accountId = req.query.accountId || req.user?.accountId || "global";
+    const accountId = req.query.accountId || req.user?.sub || req.user?.accountId || "global";
     _ok(res, { brandVoice: g.getBrandVoice(accountId) });
   } catch (e) { _err(res, e); }
 });
 
 router.patch("/content/brand-voice",              (req, res) => {
   try {
-    const accountId = req.body?.accountId || req.user?.accountId || "global";
+    const accountId = req.body?.accountId || req.user?.sub || req.user?.accountId || "global";
     _ok(res, { brandVoice: g.updateBrandVoice(accountId, req.body || {}) });
   } catch (e) { _err(res, e); }
 });
