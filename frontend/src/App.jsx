@@ -110,6 +110,13 @@ const MissionControlV1         = lazy(() => import("./components/MissionControlV
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
 const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
 const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
+// AI Command Center (Module 3) — previously fully built but never wired into
+// nav. operator-os/MissionControl.jsx intentionally excluded: it duplicates
+// the already-wired MissionControlV1.jsx (Module 4's territory).
+const OperatorCommandLayer     = lazy(() => import("./components/operator-os/OperatorCommandLayer.jsx"));
+const ExecutiveLoop            = lazy(() => import("./components/operator-os/ExecutiveLoop.jsx"));
+const IntelligenceOverlay      = lazy(() => import("./components/operator-os/IntelligenceOverlay.jsx"));
+const LiveAgentCollaboration   = lazy(() => import("./components/operator-os/LiveAgentCollaboration.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
 import { usePinnedTabs }        from "./components/WorkspacePersonalization.jsx";
 import Tooltip                  from "./components/Tooltip.jsx";
@@ -160,11 +167,15 @@ const MORE_TABS = [
   { id: "toolfabric", label: "Tool Fabric",        group: "AI & Agents"  },
   { id: "autonomouswf",label:"Auto Workflows",     group: "AI & Agents"  },
   { id: "autonomyscore", label:"Autonomy Score",   group: "AI & Agents"  },
+  { id: "agentcollab", label:"Live Agent Roster",  group: "AI & Agents"  },
   // ── Intelligence
   { id: "intel",      label: "Intelligence",       group: "Intelligence" },
   { id: "predict",    label: "Prediction",         group: "Intelligence" },
   { id: "recommend",  label: "Recommendations",    group: "Intelligence" },
   { id: "guardrails", label: "Guardrails",         group: "Intelligence" },
+  { id: "nlconsole",  label: "Command Console",    group: "Intelligence" },
+  { id: "execloop",   label: "Executive Loop",     group: "Intelligence" },
+  { id: "inteloverlay", label:"Reasoning & Risk",  group: "Intelligence" },
   { id: "sharedmem",  label: "Memory Fabric",      group: "Intelligence" },
   { id: "memoryintel",label:"Memory Intel",        group: "Intelligence" },
   { id: "selfimprove",label:"Self-Improve",        group: "Intelligence" },
@@ -1242,6 +1253,10 @@ function AppInner() {
         {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
         {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
+        {tab === "nlconsole"         && <OperatorCommandLayer />}
+        {tab === "execloop"          && <ExecutiveLoop />}
+        {tab === "inteloverlay"      && <IntelligenceOverlay />}
+        {tab === "agentcollab"       && <LiveAgentCollaboration />}
         {tab === "executivedash"     && <ExecutiveDashboard         onNavigate={setTab} />}
         {tab === "execconnector"     && <ExecutionConnectorCenter   onNavigate={setTab} />}
         {tab === "autonomouswf"      && <WorkflowOSV2               onNavigate={setTab} />}

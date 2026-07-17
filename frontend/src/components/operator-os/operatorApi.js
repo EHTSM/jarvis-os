@@ -32,12 +32,22 @@ export const getTaskChains      = ()     => get("/runtime/chains");
 export const getReplayList      = ()     => get("/runtime/replay");
 
 // ── Agents ───────────────────────────────────────────────────────────
-export const getAgents          = ()     => get("/p18/agents");
-export const getAgentDetail     = (id)   => get(`/p18/agents/${id}`);
+// getAgents/getAgentDetail: migrated off deprecated /p18/agents to the
+// canonical /agents/runtime/registry (see backend/routes/index.js's
+// _deprecate("/p18/", "/runtime/* or /agents/*")). Response shape differs
+// (registry: [] vs agents: []) — normalized here so no consumer changes.
+export const getAgents          = ()     => get("/agents/runtime/registry").then(r => ({ ...r, agents: r?.registry || [] }));
+export const getAgentDetail     = (id)   => get(`/agents/runtime/registry/${id}/status`);
+// No canonical replacement yet for per-agent run history/failures/execute/retry
+// (agentsRuntime.js only exposes registry + health/status + supervisor tick/
+// pause/resume) — left on the still-functional deprecated routes rather than
+// silently dropped or faked. Revisit if/when agentsRuntime.js grows these.
 export const getAgentHistory    = (id)   => get(`/p18/agents/${id}/history`);
 export const getAgentFailures   = ()     => get("/p18/agents/failures");
+// getP20Agents tracks a distinct self-improvement agent roster (phase20.js's
+// "improve" system), not a duplicate of the registry above — no merge intended.
 export const getP20Agents       = ()     => get("/p20/agents");
-export const executeAgent       = (id, input) => post(`/p18/agents/${id}/execute`, { input });
+export const executeAgent       = (id, input) => post(`/agents/runtime/supervisor/${id}/tick`, { input });
 export const retryAgentRun      = (runId)     => post(`/p18/agents/runs/${runId}/retry`);
 
 // ── Task Graph (Mission Engine) ───────────────────────────────────────
@@ -49,8 +59,9 @@ export const executeGraph       = (id)   => post(`/p26/graph/${id}/execute`);
 export const deleteGraph        = (id)   => _fetch(`/p26/graph/${id}`, { method: "DELETE" });
 
 // ── Memory & Intelligence ─────────────────────────────────────────────
-export const getMemoryStats     = ()     => get("/p18/memory/stats");
-export const searchMemory       = (q)    => get("/p18/memory/search", { q });
+// getMemoryStats: migrated off deprecated /p18/memory/stats to the
+// canonical /memory/stats (engineeringMemory.js) — same { stats: {...} } shape.
+export const getMemoryStats     = ()     => get("/memory/stats");
 export const getMemoryFailures  = ()     => get("/p26/memory/failures");
 export const getMemorySuccesses = ()     => get("/p26/memory/successes");
 export const getMemoryDecisions = ()     => get("/p26/memory/decisions");
@@ -69,6 +80,10 @@ export const getRollbackPlan    = (body) => post("/p26/reason/rollback", body);
 // ── Deployments ───────────────────────────────────────────────────────
 export const getDeployHistory   = ()     => get("/p25/deploy/history");
 export const getDeployList      = ()     => get("/p25/deploy");
+// getSystemMetrics: /p25/obs is deprecated in favor of /analytics/*, but
+// analyticsService.cjs has no 1:1 "system metrics" equivalent (closest is
+// getRuntimeCapacity() at /analytics/runtime, a different shape) — left as
+// the still-functional deprecated route rather than guessing at a swap.
 export const getSystemMetrics   = ()     => get("/p25/obs/metrics/system");
 
 // ── Health & Ops ─────────────────────────────────────────────────────
@@ -81,6 +96,11 @@ export const recoverQueue       = ()     => post("/runtime/recover/queue");
 export const recoverGovernor    = ()     => post("/runtime/recover/governor");
 
 // ── Autonomy ─────────────────────────────────────────────────────────
+// No canonical /agents or /runtime replacements exist yet for self-improvement
+// stats, autonomous-cycle stats, or the action audit log — these still work on
+// the deprecated routes (phase18.js/phase20.js remain mounted, only header-
+// flagged). analytics/ai (getAIUtilization) is a related but different concept
+// (AI provider usage) — not a safe swap for autonomy/cycle/action data.
 export const getAutonomyScore   = ()     => get("/p20/improve/stats");
 export const getCycleStats      = ()     => get("/p18/cycles/stats");
 export const getActions         = ()     => get("/p18/actions");

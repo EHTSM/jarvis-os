@@ -50,6 +50,10 @@ const NAV_ACTIONS = [
   { id: "nav-selfimprove",label: "Self-Improve",          icon: "⬡", group: "AI & Intelligence",   tab: "selfimprove"},
   { id: "nav-autonomyscore",label:"Autonomy Score",       icon: "◉", group: "AI & Intelligence",   tab: "autonomyscore"},
   { id: "nav-autonomouswf",label:"Auto Workflows",        icon: "⚡", group: "AI & Intelligence",   tab: "autonomouswf"},
+  { id: "nav-nlconsole",  label: "Command Console",       icon: "◎", group: "AI & Intelligence",   tab: "nlconsole"  },
+  { id: "nav-execloop",   label: "Executive Loop",        icon: "◉", group: "AI & Intelligence",   tab: "execloop"   },
+  { id: "nav-inteloverlay",label:"Reasoning & Risk",      icon: "◈", group: "AI & Intelligence",   tab: "inteloverlay"},
+  { id: "nav-agentcollab",label: "Live Agent Roster",     icon: "⬡", group: "AI & Intelligence",   tab: "agentcollab"},
 
   // Memory & Data
   { id: "nav-sharedmem",  label: "Memory Fabric",         icon: "◻", group: "Memory & Data",       tab: "sharedmem"  },
