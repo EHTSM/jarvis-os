@@ -127,6 +127,25 @@
 .ic-detail-btn--secondary:hover { background: rgba(255,255,255,0.09); }
 .ic-detail-btn--danger:hover    { background: rgba(245,91,91,0.15); }
 
+/* Setup form (Connector Center — Module 5) */
+.ic-setup-select, .ic-setup-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 9px 12px;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.ic-setup-select:focus, .ic-setup-input:focus { border-color: var(--accent); }
+.ic-setup-input { resize: vertical; min-height: 60px; }
+.ic-banner-icon { color: var(--warning); }
+
 /* Toast */
 .ic-toast {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
