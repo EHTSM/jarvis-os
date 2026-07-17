@@ -152,7 +152,7 @@ router.use("/twin", requireAuth);              // gate all /twin/* routes (in-fi
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
 router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
-router.use("/company-factory", requireAuth);   // gate all /company-factory/* routes (in-file requireAuth resolves to no-op due to bad require path)
+router.use("/company-factory", requireAuth);   // gate all /company-factory/* routes
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
 router.use("/workspace-mesh", requireAuth);   // gate all /workspace-mesh/* routes
 router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* registry+coordinator+sync+health+dashboard

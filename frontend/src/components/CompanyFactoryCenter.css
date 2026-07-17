@@ -1,0 +1,122 @@
+/* ── Company Factory Center (Module 6) ───────────────────────────────── */
+
+.cfc-root { gap: 18px; }
+
+.cfc-summary-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.cfc-summary-tile {
+  background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 2px;
+}
+.cfc-summary-val   { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1; }
+.cfc-summary-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-faint); font-weight: 700; }
+
+.cfc-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.cfc-stage-badge {
+  padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid; font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.cfc-risk-badge { font-size: 12px; font-weight: 700; }
+
+.cfc-card-template {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-faint); font-weight: 700;
+}
+.cfc-card-progress-wrap { display: flex; align-items: center; gap: 8px; }
+.cfc-card-progress-track { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.cfc-card-progress-fill  { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width var(--dur-std) var(--ease-out); }
+.cfc-card-progress-pct   { font-size: 11px; font-weight: 700; color: var(--text-faint); flex-shrink: 0; }
+.cfc-card-footer  { display: flex; align-items: center; justify-content: space-between; }
+.cfc-card-readiness { font-size: 11.5px; color: var(--text-faint); font-weight: 600; }
+
+/* Pipeline visualization */
+.cfc-pipeline { display: flex; align-items: center; gap: 0; overflow-x: auto; padding: 4px 0 8px; }
+.cfc-pipeline-node { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 64px; flex-shrink: 0; }
+.cfc-pipeline-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.14);
+}
+.cfc-pipeline-node--done .cfc-pipeline-dot { background: var(--accent2); border-color: var(--accent2); }
+.cfc-pipeline-node--current .cfc-pipeline-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px rgba(124,111,255,0.18); }
+.cfc-pipeline-label { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; text-align: center; }
+.cfc-pipeline-node--current .cfc-pipeline-label { color: var(--accent); }
+.cfc-pipeline-line { flex: 1; height: 2px; min-width: 16px; background: rgba(255,255,255,0.08); margin-bottom: 17px; }
+.cfc-pipeline-line--done { background: var(--accent2); }
+
+.cfc-detail-badges { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cfc-detail-readiness { font-size: 12px; color: var(--text-faint); font-weight: 600; }
+
+.cfc-gates-list { display: flex; flex-direction: column; gap: 6px; }
+.cfc-gate-row { display: flex; align-items: center; gap: 8px; }
+.cfc-gate-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.14); flex-shrink: 0; }
+.cfc-gate-dot--passed { background: var(--success); }
+.cfc-gate-name { font-size: 12.5px; color: var(--text-dim); flex: 1; text-transform: capitalize; }
+.cfc-gate-pass-btn {
+  padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700;
+  background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.24); color: var(--accent);
+  cursor: pointer; font-family: inherit;
+}
+.cfc-gate-pass-btn:hover { background: rgba(124,111,255,0.18); }
+.cfc-gate-pass-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cfc-risks-list { display: flex; flex-direction: column; gap: 8px; }
+.cfc-risk-row { display: flex; align-items: flex-start; gap: 8px; }
+.cfc-risk-sev {
+  font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 2px 7px; border-radius: var(--radius-pill);
+  flex-shrink: 0; margin-top: 1px;
+}
+.cfc-risk-sev--critical { background: rgba(245,91,91,0.14); color: var(--danger); }
+.cfc-risk-sev--high     { background: rgba(245,91,91,0.10); color: var(--danger); }
+.cfc-risk-sev--medium   { background: rgba(240,180,41,0.10); color: var(--warning); }
+.cfc-risk-sev--low      { background: rgba(255,255,255,0.06); color: var(--text-faint); }
+.cfc-risk-name       { display: block; font-size: 12.5px; color: var(--text); font-weight: 700; }
+.cfc-risk-mitigation { display: block; font-size: 11.5px; color: var(--text-faint); margin-top: 1px; }
+
+.cfc-roadmap-list { display: flex; flex-direction: column; gap: 5px; }
+.cfc-roadmap-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 4px 0; }
+.cfc-roadmap-phase  { flex: 1; color: var(--text-dim); font-weight: 600; text-transform: capitalize; }
+.cfc-roadmap-weeks  { color: var(--text-faint); font-size: 11px; }
+.cfc-roadmap-status { font-size: 10.5px; text-transform: uppercase; font-weight: 700; color: var(--text-faint); }
+.cfc-roadmap-row--in_progress .cfc-roadmap-status { color: var(--accent2); }
+.cfc-roadmap-row--done .cfc-roadmap-status        { color: var(--success); }
+
+.cfc-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
+.cfc-kpi-tile { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); }
+.cfc-kpi-val   { font-size: 15px; font-weight: 800; color: var(--text); }
+.cfc-kpi-label { font-size: 10px; color: var(--text-faint); text-transform: capitalize; }
+
+.cfc-field-label { font-size: 11.5px; font-weight: 700; color: var(--text-dim); margin: 4px 0 -2px; }
+.cfc-error { font-size: 12.5px; color: var(--danger); margin: 0; }
+
+.cfc-modal-overlay {
+  position: fixed; inset: 0; background: rgba(6,8,14,0.65); backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center; z-index: 300; padding: 20px;
+}
+.cfc-modal {
+  background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; width: 100%; max-width: 440px; max-height: 88vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 6px;
+  animation: fade-up var(--dur-enter) var(--ease-spring) both;
+}
+.cfc-modal-header { display: flex; align-items: center; justify-content: space-between; }
+.cfc-modal-title { font-size: 16px; font-weight: 800; color: var(--text); margin: 0; }
+.cfc-modal-sub   { font-size: 12.5px; color: var(--text-faint); margin: 0 0 6px; }
+
+.cfc-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  padding: 56px 20px; text-align: center; border: 1px dashed var(--border); border-radius: var(--radius);
+}
+.cfc-empty-title { font-size: 15px; font-weight: 800; color: var(--text); margin: 0; }
+.cfc-empty-sub   { font-size: 13px; color: var(--text-faint); margin: 0 0 6px; max-width: 360px; }
+
+.cfc-skeleton {
+  height: 20px; border-radius: var(--radius-sm); background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+  background-size: 200% 100%; animation: cfc-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes cfc-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+@media (max-width: 720px) {
+  .cfc-summary-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cfc-card-progress-fill, .cfc-modal, .cfc-skeleton { transition: none; animation: none; }
+}

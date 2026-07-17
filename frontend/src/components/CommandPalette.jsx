@@ -74,6 +74,7 @@ const NAV_ACTIONS = [
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
 
   // Enterprise
+  { id: "nav-companies",  label: "Companies",             icon: "◈", group: "Enterprise",          tab: "companies"  },
   { id: "nav-business",   label: "Business OS",           icon: "◉", group: "Enterprise",          tab: "business"   },
   { id: "nav-team",       label: "Team",                  icon: "◈", group: "Enterprise",          tab: "team"       },
   { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations"},

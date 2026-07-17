@@ -67,6 +67,7 @@ const OperationsCenter         = lazy(() => import("./components/OperationsCente
 const AgentCollaborationCenter = lazy(() => import("./components/AgentCollaborationCenter.jsx"));
 const ToolFabricCenter         = lazy(() => import("./components/ToolFabricCenter.jsx"));
 const AutonomousCompanyCenter  = lazy(() => import("./components/AutonomousCompanyCenter.jsx"));
+const CompanyFactoryCenter     = lazy(() => import("./components/CompanyFactoryCenter.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
 const DataOwnershipCenter      = lazy(() => import("./components/DataOwnershipCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
@@ -197,6 +198,7 @@ const MORE_TABS = [
   { id: "launch",     label: "Launch",             group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
   // ── Enterprise & Platform
+  { id: "companies",  label: "Companies",          group: "Enterprise"   },
   { id: "business",   label: "Business OS",        group: "Enterprise"   },
   { id: "team",       label: "Team",               group: "Enterprise"   },
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
@@ -1235,6 +1237,7 @@ function AppInner() {
         {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
         {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
         {tab === "autonomy"      && <AutonomousCompanyCenter     onNavigate={setTab} />}
+        {tab === "companies"     && <CompanyFactoryCenter />}
         {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
         {tab === "dataowner"         && <DataOwnershipCenter        onNavigate={setTab} />}
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
