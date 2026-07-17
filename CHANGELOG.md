@@ -1,5 +1,31 @@
 # Ooplix Changelog
 
+## [1.0.0-rc8] — 2026-07-17 — Release Candidate 8
+
+Root-caused and fixed the "Install dependencies" hang from rc6/rc7 (was
+previously only bounded with a CI timeout, not fixed). `postinstall` ran
+`electron-builder install-app-deps`, which rebuilds native modules
+(node-pty, better-sqlite3) against Electron's ABI via node-gyp — and
+node-pty's rebuild stalls indefinitely fetching Electron's header tarball,
+reproducibly, only on GitHub-hosted runners (all 3 OSes, ~1s locally).
+
+Traced electron-builder's packager.js: `--publish always` (the very next
+CI step) already rebuilds native modules itself via its built-in
+`npmRebuild` option, which defaults to `true` and is not overridden
+anywhere in this repo's config. So node-pty was being rebuilt twice —
+once in postinstall (hangs on CI), once during actual packaging (the one
+that matters for the shipped app). Removed the `postinstall` script
+entirely; electron-builder's packaging-time rebuild is unaffected and
+still produces correctly-rebuilt native modules in the final artifact.
+
+Verified node-pty's only runtime caller (electron/main.cjs pty-create
+handler) was already fully optional — require() wrapped in try/catch,
+every IPC handler null-checks it, frontend TerminalPanel.jsx already
+handles the "unavailable" response — so this fix doesn't change behavior
+if a rebuild ever does fail, only removes a redundant, hang-prone one.
+
+Local verification: `npm ci` now completes in ~10s (was 5+ hours).
+
 ## [1.0.0-rc7] — 2026-07-17 — Release Candidate 7
 
 Fixes the release CI pipeline (continued): v1.0.0-rc6's desktop builds got
