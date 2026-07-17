@@ -102,7 +102,12 @@ const AgentOSV2                = lazy(() => import("./components/AgentOSV2.jsx")
 const MemoryOSV2               = lazy(() => import("./components/MemoryOSV2.jsx"));
 const WorkflowOSV2             = lazy(() => import("./components/WorkflowOSV2.jsx"));
 const DeveloperCopilotV2       = lazy(() => import("./components/DeveloperCopilotV2.jsx"));
-const GrowthOSV2               = lazy(() => import("./components/GrowthOSV2.jsx"));
+// GrowthOS/ContentSEO/DistributionOS (Module 9) — real, backend-wired G1/G2/G3
+// marketing suites. Replace the removed GrowthOSV2, a fake localStorage-only
+// wrapper that never called /growth, /content, or /distrib.
+const GrowthOS                 = lazy(() => import("./components/GrowthOS.jsx"));
+const ContentSEO               = lazy(() => import("./components/ContentSEO.jsx"));
+const DistributionOS           = lazy(() => import("./components/DistributionOS.jsx"));
 const PersonalOS               = lazy(() => import("./components/PersonalOS.jsx"));
 const BusinessOS               = lazy(() => import("./components/BusinessOS.jsx"));
 const DeveloperOS              = lazy(() => import("./components/DeveloperOS.jsx"));
@@ -191,13 +196,10 @@ const MORE_TABS = [
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth"       },
-  { id: "seo",        label: "SEO",                group: "Growth"       },
-  { id: "content",    label: "Content",            group: "Growth"       },
-  { id: "social",     label: "Social",             group: "Growth"       },
-  { id: "email",      label: "Email",              group: "Growth"       },
-  { id: "referral",   label: "Referral",           group: "Growth"       },
+  { id: "growth",     label: "Growth",             group: "Growth"       },
+  { id: "contentseo", label: "Content & SEO",      group: "Growth"       },
+  { id: "distribution",label:"Distribution",       group: "Growth"       },
   { id: "partners",   label: "Partners",           group: "Growth"       },
-  { id: "launch",     label: "Launch",             group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
   // ── Enterprise & Platform
   { id: "business",   label: "CRM",                group: "Enterprise"   },
@@ -1200,13 +1202,10 @@ function AppInner() {
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
         {tab === "creative"  && <CreativeStudio />}
-        {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} initialTab="seo"      />}
-        {tab === "content"   && <GrowthOSV2 onNavigate={setTab} initialTab="content"   />}
-        {tab === "social"    && <GrowthOSV2 onNavigate={setTab} initialTab="social"    />}
-        {tab === "email"     && <GrowthOSV2 onNavigate={setTab} initialTab="email"     />}
-        {tab === "referral"  && <GrowthOSV2 onNavigate={setTab} initialTab="referral"  />}
+        {tab === "growth"       && <GrowthOS />}
+        {tab === "contentseo"   && <ContentSEO />}
+        {tab === "distribution" && <DistributionOS />}
         {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
-        {tab === "launch"    && <GrowthOSV2 onNavigate={setTab} initialTab="launch"    />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}

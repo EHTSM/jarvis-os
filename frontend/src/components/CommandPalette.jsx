@@ -65,13 +65,10 @@ const NAV_ACTIONS = [
 
   // Growth & Revenue
   { id: "nav-creative",   label: "Creative Studio",       icon: "✦", group: "Growth & Revenue",    tab: "creative"   },
-  { id: "nav-seo",        label: "SEO",                   icon: "◇", group: "Growth & Revenue",    tab: "seo"        },
-  { id: "nav-content",    label: "Content",               icon: "◈", group: "Growth & Revenue",    tab: "content"    },
-  { id: "nav-social",     label: "Social",                icon: "◉", group: "Growth & Revenue",    tab: "social"     },
-  { id: "nav-email",      label: "Email",                 icon: "◻", group: "Growth & Revenue",    tab: "email"      },
-  { id: "nav-referral",   label: "Referral",              icon: "◇", group: "Growth & Revenue",    tab: "referral"   },
+  { id: "nav-growth",     label: "Growth",                icon: "◇", group: "Growth & Revenue",    tab: "growth"     },
+  { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" },
+  { id: "nav-distribution",label:"Distribution",          icon: "◉", group: "Growth & Revenue",    tab: "distribution"},
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
-  { id: "nav-launch",     label: "Launch",                icon: "⚡", group: "Growth & Revenue",    tab: "launch"     },
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
 
   // Enterprise
