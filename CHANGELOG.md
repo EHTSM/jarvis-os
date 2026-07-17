@@ -1,5 +1,27 @@
 # Ooplix Changelog
 
+## [1.0.0-rc7] — 2026-07-17 — Release Candidate 7
+
+Fixes the release CI pipeline (continued): v1.0.0-rc6's desktop builds got
+further than any previous attempt — no more lockfile or node-gyp-version
+errors — but "Install dependencies" then hung for 5+ hours on all three
+platforms simultaneously with no failure, timeout, or output. Log evidence
+(macOS run) shows the last line printed was `preparing moduleName=node-pty
+arch=arm64` from `@electron/rebuild`, then silence — `better-sqlite3`'s
+rebuild in the same step completed in under a second just before it, so
+the stall is specific to node-pty's rebuild-for-Electron-ABI step, most
+likely an unbounded network fetch inside node-gyp (no verified root cause
+found; this is a known gap in node-gyp's own HTTP client, not something
+introduced by this repo's changes). Retried once identically — same hang,
+same step, confirming it's reproducible, not a one-off blip.
+
+Did not attempt to patch node-gyp's fetch behavior itself (out of scope,
+unverified root cause). Instead added `timeout-minutes: 30` to the desktop
+job and `timeout-minutes: 15` to its "Install dependencies" step, so a
+future hang fails within a bounded window instead of silently consuming
+hours, and can be retried automatically/promptly. v1.0.0-rc6 is left in
+place as a record of this attempt.
+
 ## [1.0.0-rc6] — 2026-07-17 — Release Candidate 6
 
 Fixes the release CI pipeline (continued): v1.0.0-rc5's node-gyp@^10.3.1 pin
