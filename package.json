@@ -45,7 +45,6 @@
     "dist:all": "npm run build:frontend && electron-builder --mac --win --linux --publish never",
     "dist:release": "npm run build:frontend && electron-builder --publish always",
     "rebuild": "electron-rebuild -f -w node-pty,better-sqlite3",
-    "postinstall": "electron-builder install-app-deps || exit 0",
     "electron:smoke": "node scripts/electron-smoke-test.cjs"
   },
   "build": {
