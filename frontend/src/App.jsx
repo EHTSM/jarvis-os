@@ -111,6 +111,7 @@ const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashbo
 const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
 const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
+import { usePinnedTabs }        from "./components/WorkspacePersonalization.jsx";
 import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
@@ -195,6 +196,13 @@ const MORE_TABS = [
   { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
 ];
 
+// ── Tab metadata lookup — powers breadcrumbs + recent pages ─────────
+// Single source of truth: TABS ∪ MORE_TABS. No separate label registry to drift.
+const _TAB_META = new Map([...TABS, ...MORE_TABS].map(t => [t.id, t]));
+function tabMeta(id) {
+  return _TAB_META.get(id) || { id, label: id, group: null };
+}
+
 // ── Context detection ─────────────────────────────────────────────
 // desktop=1 query param → Electron shell; skip landing + onboarding
 // app.* hostname         → SaaS web app;  skip marketing landing page
@@ -231,7 +239,7 @@ function _loadProfile() {
 }
 
 // ── More ▾ dropdown with live search + grouped sections ──────────────────────
-function MoreMenu({ currentTab, onSelect }) {
+function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
   const [query,   setQuery]   = React.useState('');
   const [cursor,  setCursor]  = React.useState(0);
   const inputRef  = React.useRef(null);
@@ -244,6 +252,11 @@ function MoreMenu({ currentTab, onSelect }) {
     const q = query.trim().toLowerCase();
     return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q)) : MORE_TABS;
   }, [query]);
+
+  const pinnedItems = React.useMemo(
+    () => MORE_TABS.filter(m => pinned?.includes(m.id)),
+    [pinned]
+  );
 
   // Build grouped structure for display
   const grouped = React.useMemo(() => {
@@ -261,6 +274,30 @@ function MoreMenu({ currentTab, onSelect }) {
     const item = listRef.current?.querySelectorAll('.tab-more-item')[idx];
     item?.scrollIntoView({ block: 'nearest' });
   }, []);
+
+  const renderItem = (m, idx, { hideGroup = false } = {}) => (
+    <button
+      key={m.id}
+      className={`tab-more-item${currentTab === m.id ? " active" : ""}${idx === cursor ? " focused" : ""}`}
+      role="menuitem"
+      aria-current={currentTab === m.id ? "page" : undefined}
+      onMouseEnter={() => idx >= 0 && setCursor(idx)}
+      onClick={() => onSelect(m.id)}
+      onContextMenu={(e) => { e.preventDefault(); onTogglePin?.(m.id); }}
+      title="Right-click to pin/unpin"
+    >
+      <span className="tab-more-item-label">{m.label}</span>
+      {m.group && !hideGroup && <span className="tab-more-item-group">{m.group}</span>}
+      <span
+        className={`tab-more-item-pin${pinned?.includes(m.id) ? " tab-more-item-pin--active" : ""}`}
+        role="button"
+        aria-label={pinned?.includes(m.id) ? `Unpin ${m.label}` : `Pin ${m.label}`}
+        onClick={(e) => { e.stopPropagation(); onTogglePin?.(m.id); }}
+      >
+        {pinned?.includes(m.id) ? "📌" : "📍"}
+      </span>
+    </button>
+  );
 
   return (
     <div className="tab-more-menu" role="menu">
@@ -295,45 +332,111 @@ function MoreMenu({ currentTab, onSelect }) {
         {filtered.length === 0 && (
           <div className="tab-more-empty">No modules match "{query}"</div>
         )}
+        {!query.trim() && pinnedItems.length > 0 && (
+          <div className="tab-more-group tab-more-group--pinned">
+            <div className="tab-more-group-label">📌 Pinned</div>
+            {pinnedItems.map((m) => renderItem(m, -1, { hideGroup: true }))}
+          </div>
+        )}
         {query.trim() ? (
           // Flat list when searching
-          filtered.map((m, i) => (
-            <button
-              key={m.id}
-              className={`tab-more-item${currentTab === m.id ? " active" : ""}${i === cursor ? " focused" : ""}`}
-              role="menuitem"
-              aria-current={currentTab === m.id ? "page" : undefined}
-              onMouseEnter={() => setCursor(i)}
-              onClick={() => onSelect(m.id)}
-            >
-              {m.label}
-              {m.group && <span className="tab-more-item-group">{m.group}</span>}
-            </button>
-          ))
+          filtered.map((m, i) => renderItem(m, i))
         ) : (
           // Grouped sections when not searching
           Object.entries(grouped).map(([group, items]) => (
             <div key={group} className="tab-more-group">
               <div className="tab-more-group-label">{group}</div>
-              {items.map((m) => {
-                const flatIdx = filtered.indexOf(m);
-                return (
-                  <button
-                    key={m.id}
-                    className={`tab-more-item${currentTab === m.id ? " active" : ""}${flatIdx === cursor ? " focused" : ""}`}
-                    role="menuitem"
-                    aria-current={currentTab === m.id ? "page" : undefined}
-                    onMouseEnter={() => setCursor(flatIdx)}
-                    onClick={() => onSelect(m.id)}
-                  >
-                    {m.label}
-                  </button>
-                );
-              })}
+              {items.map((m) => renderItem(m, filtered.indexOf(m), { hideGroup: true }))}
             </div>
           ))
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Breadcrumbs — Home / Group / Current page, driven by tabMeta() ──
+function Breadcrumbs({ tabId, onNavigate }) {
+  const meta = tabMeta(tabId);
+  if (tabId === "home") return null; // no breadcrumb needed on the landing tab itself
+
+  return (
+    <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <button className="breadcrumb-item breadcrumb-item--link" onClick={() => onNavigate("home")}>
+        Dashboard
+      </button>
+      {meta.group && (
+        <>
+          <span className="breadcrumb-sep" aria-hidden="true">›</span>
+          <span className="breadcrumb-item breadcrumb-item--group">{meta.group}</span>
+        </>
+      )}
+      <span className="breadcrumb-sep" aria-hidden="true">›</span>
+      <span className="breadcrumb-item breadcrumb-item--current" aria-current="page">{meta.label}</span>
+    </nav>
+  );
+}
+
+// ── Recent Pages — reads the same tabHistory ref the back/forward arrows use ──
+function RecentPagesMenu({ historyRef, currentTab, onSelect }) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  // Most-recent-first, de-duplicated, excluding the current tab, capped to 8
+  const recent = React.useMemo(() => {
+    if (!open) return [];
+    const seen = new Set([currentTab]);
+    const out = [];
+    for (let i = historyRef.current.length - 1; i >= 0 && out.length < 8; i--) {
+      const id = historyRef.current[i];
+      if (seen.has(id)) continue;
+      seen.add(id);
+      out.push(id);
+    }
+    return out;
+  }, [open, currentTab, historyRef]);
+
+  return (
+    <div className="recent-pages" ref={ref}>
+      <Tooltip label="Recent pages" placement="bottom">
+        <button
+          className="topbar-nav-arrow"
+          onClick={() => setOpen(o => !o)}
+          aria-haspopup="true"
+          aria-expanded={open}
+          aria-label="Recent pages"
+        >⏱</button>
+      </Tooltip>
+      {open && (
+        <div className="recent-pages-dropdown">
+          <div className="recent-pages-header">Recent Pages</div>
+          {recent.length === 0 ? (
+            <div className="tab-more-empty">No recent pages yet</div>
+          ) : (
+            recent.map(id => {
+              const meta = tabMeta(id);
+              return (
+                <button
+                  key={id}
+                  className="tab-more-item"
+                  role="menuitem"
+                  onClick={() => { onSelect(id); setOpen(false); }}
+                >
+                  <span className="tab-more-item-label">{meta.label}</span>
+                  {meta.group && <span className="tab-more-item-group">{meta.group}</span>}
+                </button>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -432,6 +535,7 @@ function AppInner() {
   }, []);
   const [moreOpen,    setMoreOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const { pinned: pinnedTabIds, toggle: togglePinnedTab } = usePinnedTabs();
   const [chatModel,   setChatModel]   = useState(() => {
     try { return localStorage.getItem("ooplix_chat_model") || "auto"; } catch { return "auto"; }
   });
@@ -883,6 +987,8 @@ function AppInner() {
                     <MoreMenu
                       currentTab={tab}
                       onSelect={(id) => { setTab(id); setMoreOpen(false); }}
+                      pinned={pinnedTabIds}
+                      onTogglePin={togglePinnedTab}
                     />
                   )}
                 </div>
@@ -932,6 +1038,7 @@ function AppInner() {
               aria-label="Go forward"
             >›</button>
           </Tooltip>
+          <RecentPagesMenu historyRef={tabHistory} currentTab={tab} onSelect={setTab} />
           {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
               <Tooltip label="Resume all executions" placement="bottom">
@@ -974,6 +1081,8 @@ function AppInner() {
           </div>
         </div>
       </header>
+
+      <Breadcrumbs tabId={tab} onNavigate={setTab} />
 
       {/* Trial conversion banner — shown to trialing/expired users */}
       {!_IS_DESKTOP && billing?.status !== "active" && (

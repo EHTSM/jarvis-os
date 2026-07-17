@@ -24,6 +24,9 @@ const NAV_ACTIONS = [
   { id: "nav-orchestrator",label:"Orchestrator",          icon: "◎", group: "Runtime & Ops",       tab: "orchestrator"},
   { id: "nav-taskrouter", label: "Task Router",           icon: "◇", group: "Runtime & Ops",       tab: "taskrouter" },
   { id: "nav-agents",     label: "Agents",                icon: "⬡", group: "Runtime & Ops",       tab: "agents"     },
+  { id: "nav-agentruntime",label:"Agent Runtime",         icon: "⬡", group: "Runtime & Ops",       tab: "agentruntime"},
+  { id: "nav-globalactivity",label:"Global Activity",     icon: "◻", group: "Runtime & Ops",       tab: "globalactivity"},
+  { id: "nav-systemhealth",label:"System Health",         icon: "◈", group: "Runtime & Ops",       tab: "systemhealth"},
   { id: "nav-collab",     label: "Collaboration",         icon: "◈", group: "Runtime & Ops",       tab: "collab"     },
   { id: "nav-registry",   label: "Registry",              icon: "◻", group: "Runtime & Ops",       tab: "registry"   },
   { id: "nav-toolfabric", label: "Tool Fabric",           icon: "⚡", group: "Runtime & Ops",       tab: "toolfabric" },
@@ -64,10 +67,6 @@ const NAV_ACTIONS = [
   { id: "nav-referral",   label: "Referral",              icon: "◇", group: "Growth & Revenue",    tab: "referral"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
   { id: "nav-launch",     label: "Launch",                icon: "⚡", group: "Growth & Revenue",    tab: "launch"     },
-  { id: "nav-automation", label: "Browser Automation",    icon: "⬡", group: "Growth & Revenue",    tab: "automation" },
-  { id: "nav-creative",   label: "Creative Studio",       icon: "◈", group: "Growth & Revenue",    tab: "creative"   },
-  { id: "nav-fop",        label: "Founder Journal",       icon: "◇", group: "Growth & Revenue",    tab: "fop"        },
-  { id: "nav-growth",     label: "Growth OS",             icon: "⬢", group: "Growth & Revenue",    tab: "growth"     },
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
 
   // Enterprise
@@ -83,6 +82,7 @@ const NAV_ACTIONS = [
   { id: "nav-billing",    label: "Billing",               icon: "◇", group: "Settings",            tab: "billing"    },
   { id: "nav-help",       label: "Help & Guides",         icon: "◎", group: "Settings",            tab: "help"       },
   { id: "nav-reports",    label: "Reports",               icon: "◻", group: "Settings",            tab: "reports"    },
+  { id: "nav-betachecklist",label:"Beta Checklist",       icon: "◇", group: "Settings",            tab: "betachecklist"},
 ];
 
 const QUICK_ACTIONS = [
