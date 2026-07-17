@@ -302,3 +302,54 @@ export async function getBusinessStats() {
     return await _fetch("/business/stats");
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// ── Customers (mission-layer entities, distinct from CRM Contacts) ──
+
+export async function getCustomers({ status } = {}) {
+  try {
+    const qs = status ? `?status=${encodeURIComponent(status)}` : "";
+    return await _fetch(`/business/customers${qs}`);
+  } catch (err) { return { success: false, error: err.message, missions: [] }; }
+}
+
+export async function createCustomer(payload = {}) {
+  try {
+    return await _fetch("/business/customers", { method: "POST", body: JSON.stringify(payload) });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+// ── Intelligence / AI Suggestions ────────────────────────────────────
+
+export async function getBusinessRecommendations({ status, limit = 50 } = {}) {
+  try {
+    const q = new URLSearchParams();
+    if (status) q.set("status", status);
+    if (limit) q.set("limit", String(limit));
+    const qs = q.toString();
+    return await _fetch(`/business/intelligence/recommendations${qs ? "?" + qs : ""}`);
+  } catch (err) { return { success: false, error: err.message, recommendations: [] }; }
+}
+
+export async function acceptBusinessRecommendation(recId, opts = {}) {
+  try {
+    return await _fetch(`/business/intelligence/recommendations/${encodeURIComponent(recId)}/accept`, {
+      method: "POST", body: JSON.stringify(opts),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function dismissBusinessRecommendation(recId) {
+  try {
+    return await _fetch(`/business/intelligence/recommendations/${encodeURIComponent(recId)}/dismiss`, { method: "POST" });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function getBusinessIntelligenceHealth() {
+  try { return await _fetch("/business/intelligence/health"); }
+  catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function scanBusinessIntelligence(dryRun = true) {
+  try { return await _fetch(`/business/intelligence/scan${dryRun ? "?dryRun=1" : ""}`); }
+  catch (err) { return { success: false, error: err.message }; }
+}

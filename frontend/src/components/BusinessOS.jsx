@@ -7,6 +7,8 @@ import {
   getOpportunities, createOpportunity, updateOpportunity, advanceOppStage, closeWon, closeLost,
   getCampaigns, createCampaign, updateCampaign, recordCampaignEvent, completeCampaign,
   getRevenue, recordRevenue, getRevenueStats,
+  getCustomers, createCustomer,
+  getBusinessRecommendations, acceptBusinessRecommendation, dismissBusinessRecommendation,
 } from "../businessApi";
 import "./BusinessOS.css";
 
@@ -39,13 +41,15 @@ const LEAD_STATUS_COLOR = { new: "var(--accent)", contacted: "var(--accent2)", q
 
 // ── Sub-nav ───────────────────────────────────────────────────────
 const VIEWS = [
-  { id: "dashboard",     label: "Overview"    },
-  { id: "leads",         label: "Leads"       },
-  { id: "contacts",      label: "Contacts"    },
-  { id: "opportunities", label: "Pipeline"    },
-  { id: "campaigns",     label: "Campaigns"   },
-  { id: "revenue",       label: "Revenue"     },
-  { id: "reasoning",     label: "Reasoning"   },
+  { id: "dashboard",     label: "Overview"      },
+  { id: "leads",         label: "Leads"         },
+  { id: "contacts",      label: "Contacts"      },
+  { id: "opportunities", label: "Pipeline"      },
+  { id: "customers",     label: "Customers"     },
+  { id: "campaigns",     label: "Campaigns"     },
+  { id: "revenue",       label: "Revenue"       },
+  { id: "suggestions",   label: "AI Suggestions"},
+  { id: "reasoning",     label: "Reasoning"     },
 ];
 
 // ── Shared UI atoms ───────────────────────────────────────────────
@@ -614,6 +618,127 @@ function OpportunitiesView({ onToast }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// CUSTOMERS VIEW — mission-layer entities (customer success plays),
+// distinct from CRM Contacts. Each "customer" is a tracked Mission
+// Runtime record, not a bds row — no PATCH/DELETE, only create + list.
+// ═══════════════════════════════════════════════════════════════════
+
+const EMPTY_CUSTOMER = { name: "", phone: "", email: "", plan: "", status: "active", action: "" };
+const CUSTOMER_STATUS_COLOR = { active: "var(--success)", at_risk: "var(--danger)", churned: "var(--text-dim)" };
+
+function CustomersView({ onToast }) {
+  const [missions, setMissions] = useState(null);
+  const [loading,  setLoading]  = useState(true);
+  const [filter,   setFilter]   = useState("all");
+  const [form,     setForm]     = useState(EMPTY_CUSTOMER);
+  const [saving,   setSaving]   = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const nameRef = useRef(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const r = await getCustomers({ status: filter === "all" ? undefined : filter });
+    setMissions(r.missions ?? (Array.isArray(r) ? r : []));
+    setLoading(false);
+  }, [filter]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const setF = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const openNew = () => {
+    setForm(EMPTY_CUSTOMER); setShowForm(true);
+    setTimeout(() => nameRef.current?.focus(), 50);
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim() && !form.phone.trim() && !form.email.trim()) { onToast?.("error", "Name, phone, or email is required"); return; }
+    setSaving(true);
+    const r = await createCustomer(form);
+    if (r.success === false) onToast?.("error", r.error || "Save failed");
+    else { onToast?.("success", "Customer success mission created"); setShowForm(false); load(); }
+    setSaving(false);
+  };
+
+  return (
+    <div className="bos-section">
+      <div className="bos-section-header">
+        <h3 className="bos-section-title">Customers</h3>
+        <button className="bos-btn primary" onClick={openNew}>+ New Customer Play</button>
+      </div>
+      <p className="bos-text-dim" style={{ marginBottom: 12 }}>
+        Customer success plays run as tracked missions — health checks, retention actions, and at-risk escalation, separate from the Contacts directory.
+      </p>
+
+      <div className="bos-filter-row">
+        {["all","active","at_risk","churned"].map(f => (
+          <button key={f} className={`bos-filter-btn ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>
+            {f === "at_risk" ? "At Risk" : f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {showForm && (
+        <div className="bos-form-card">
+          <div className="bos-form-row">
+            <input ref={nameRef} className="bos-input" placeholder="Customer name" value={form.name} onChange={e => setF("name", e.target.value)} />
+            <input className="bos-input" placeholder="Plan" value={form.plan} onChange={e => setF("plan", e.target.value)} />
+          </div>
+          <div className="bos-form-row">
+            <input className="bos-input" placeholder="Phone" value={form.phone} onChange={e => setF("phone", e.target.value)} />
+            <input className="bos-input" placeholder="Email" value={form.email} onChange={e => setF("email", e.target.value)} />
+          </div>
+          <div className="bos-form-row">
+            <select className="bos-select" value={form.status} onChange={e => setF("status", e.target.value)}>
+              {["active","at_risk","churned"].map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <input className="bos-input" placeholder="Action (e.g. Retain, Onboard, Renew)" value={form.action} onChange={e => setF("action", e.target.value)} />
+          </div>
+          <div className="bos-form-actions">
+            <button className="bos-btn primary" onClick={handleSave} disabled={saving}>{saving ? "Creating…" : "Create Play"}</button>
+            <button className="bos-btn outline" onClick={() => setShowForm(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {loading ? <Skeleton /> : !missions?.length ? (
+        <Empty title={`No ${filter === "all" ? "" : filter.replace("_"," ")} customer plays`} sub="Create a customer success play above." />
+      ) : (
+        <div className="bos-opp-list">
+          {missions.map(m => {
+            const meta = m.metadata || {};
+            return (
+              <div key={m.id || m.missionId} className="bos-opp-card">
+                <div className="bos-opp-card-top">
+                  <div className="bos-opp-card-left">
+                    <span className="bos-opp-card-title">{m.objective}</span>
+                    {meta.plan && <span className="bos-opp-card-company">{meta.plan}</span>}
+                  </div>
+                  <div className="bos-opp-card-right">
+                    <Badge label={meta.status || "active"} color={CUSTOMER_STATUS_COLOR[meta.status] || "var(--text-dim)"} />
+                  </div>
+                </div>
+                <div className="bos-opp-card-meta">
+                  <span className="bos-opp-prob">Priority: {m.priority}</span>
+                  <span className="bos-opp-age">{_timeAgo(m.createdAt)}</span>
+                </div>
+                {m.subtasks?.length > 0 && (
+                  <div className="bos-camp-metrics" style={{ marginTop: 8 }}>
+                    {m.subtasks.map((s, i) => (
+                      <div key={i} className="bos-highlight-row"><span className="bos-highlight-dot" /><span>{s.description}</span></div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // CAMPAIGNS VIEW
 // ═══════════════════════════════════════════════════════════════════
 
@@ -891,6 +1016,99 @@ function RevenueView({ onToast }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// AI SUGGESTIONS VIEW — business.js /intelligence/recommendations,
+// generated by the continuous learning engine from lead/deal/customer/
+// campaign signals (Phase B3). Distinct from the graph Reasoning view
+// below, which reasons over the engineering knowledge graph, not CRM data.
+// ═══════════════════════════════════════════════════════════════════
+
+const REC_PRIORITY_LABEL = { 1: "Critical", 2: "High", 3: "Medium", 4: "Low" };
+const REC_PRIORITY_COLOR = { 1: "var(--danger)", 2: "var(--warning)", 3: "var(--accent2)", 4: "var(--text-dim)" };
+
+function SuggestionsView({ onToast }) {
+  const [recs,    setRecs]    = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [filter,  setFilter]  = useState("open");
+  const [busyId,  setBusyId]  = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const r = await getBusinessRecommendations({ status: filter === "all" ? undefined : filter, limit: 50 });
+    setRecs(r.recommendations ?? (Array.isArray(r) ? r : []));
+    setLoading(false);
+  }, [filter]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleAccept = async (recId) => {
+    setBusyId(recId);
+    const r = await acceptBusinessRecommendation(recId, { createMission: true });
+    setBusyId(null);
+    if (r.success === false) onToast?.("error", r.error || "Could not accept");
+    else { onToast?.("success", "Accepted — mission created"); load(); }
+  };
+
+  const handleDismiss = async (recId) => {
+    setBusyId(recId);
+    const r = await dismissBusinessRecommendation(recId);
+    setBusyId(null);
+    if (r.success === false) onToast?.("error", r.error || "Could not dismiss");
+    else { onToast?.("success", "Dismissed"); load(); }
+  };
+
+  return (
+    <div className="bos-section">
+      <div className="bos-section-header">
+        <h3 className="bos-section-title">AI Suggestions</h3>
+        <button className="bos-btn outline" onClick={load}>Refresh</button>
+      </div>
+      <p className="bos-text-dim" style={{ marginBottom: 12 }}>
+        Recommendations from the shared continuous learning engine — currently system-wide (engineering, ops, and business
+        signals together), not yet filtered to CRM-only activity.
+      </p>
+
+      <div className="bos-filter-row">
+        {["open","accepted","dismissed","all"].map(f => (
+          <button key={f} className={`bos-filter-btn ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {loading ? <Skeleton /> : !recs?.length ? (
+        <Empty title={`No ${filter === "all" ? "" : filter} suggestions`} sub="Suggestions appear here as the learning engine analyzes CRM activity." />
+      ) : (
+        <div className="bos-opp-list">
+          {recs.map(r => (
+            <div key={r.recId} className="bos-opp-card">
+              <div className="bos-opp-card-top">
+                <div className="bos-opp-card-left">
+                  <span className="bos-opp-card-title">{r.title}</span>
+                </div>
+                <div className="bos-opp-card-right">
+                  <Badge label={REC_PRIORITY_LABEL[r.priority] || `P${r.priority}`} color={REC_PRIORITY_COLOR[r.priority] || "var(--text-dim)"} />
+                </div>
+              </div>
+              {r.detail && <p className="bos-text-dim" style={{ margin: "6px 0" }}>{r.detail}</p>}
+              <div className="bos-opp-card-meta">
+                <span className="bos-opp-age">{_timeAgo(r.createdAt)}</span>
+              </div>
+              {r.status === "open" && (
+                <div className="bos-opp-card-actions">
+                  <button className="bos-btn success bos-btn--xs" onClick={() => handleAccept(r.recId)} disabled={busyId === r.recId}>Accept → Mission</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleDismiss(r.recId)} disabled={busyId === r.recId}>Dismiss</button>
+                </div>
+              )}
+              {r.status !== "open" && <Badge label={r.status} color={r.status === "accepted" ? "var(--success)" : "var(--text-dim)"} />}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // REASONING VIEW (Q2)
 // ═══════════════════════════════════════════════════════════════════
 
@@ -1014,8 +1232,10 @@ export default function BusinessOS({ onToast }) {
         {view === "leads"         && <LeadsView         onToast={onToast} />}
         {view === "contacts"      && <ContactsView      onToast={onToast} />}
         {view === "opportunities" && <OpportunitiesView onToast={onToast} />}
+        {view === "customers"     && <CustomersView     onToast={onToast} />}
         {view === "campaigns"     && <CampaignsView     onToast={onToast} />}
         {view === "revenue"       && <RevenueView       onToast={onToast} />}
+        {view === "suggestions"   && <SuggestionsView   onToast={onToast} />}
         {view === "reasoning"     && <ReasoningView     />}
       </div>
     </div>

@@ -110,6 +110,7 @@ function _buildMission(data) {
         objective:   (data.objective || "").trim(),
         status:      "planned",
         priority:    data.priority || "medium",
+        metadata:    (data.metadata && typeof data.metadata === "object") ? data.metadata : {},
         createdAt:   now,
         updatedAt:   now,
         completedAt: null,

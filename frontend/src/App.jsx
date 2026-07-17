@@ -200,8 +200,8 @@ const MORE_TABS = [
   { id: "launch",     label: "Launch",             group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
   // ── Enterprise & Platform
+  { id: "business",   label: "CRM",                group: "Enterprise"   },
   { id: "companies",  label: "Companies",          group: "Enterprise"   },
-  { id: "business",   label: "Business OS",        group: "Enterprise"   },
   { id: "team",       label: "Team",               group: "Enterprise"   },
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },

@@ -195,7 +195,7 @@ function _createRecord(opts) {
     const {
         goal, priority = "medium", originDecisionId = null,
         requiresApproval = false, skipCapabilities = [],
-        rollbackPlan = null,
+        rollbackPlan = null, metadata = null,
     } = opts;
 
     if (!goal?.trim()) throw new Error("missionOrchestrator: goal is required");
@@ -207,6 +207,7 @@ function _createRecord(opts) {
     // Create the authoritative mission in missionMemory
     const memPriority = ["low", "medium", "high", "critical"].includes(priority) ? priority : "medium";
     const memMission  = mem.createMission({
+        metadata,
         objective: goal.trim(),
         priority:  memPriority,
         subtasks:  [],   // stages added below
