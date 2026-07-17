@@ -37,7 +37,12 @@ const axios   = require("axios");
 // ── Packages ──────────────────────────────────────────────────────
 let autoUpdater, Store;
 try { autoUpdater = require("electron-updater").autoUpdater; } catch { autoUpdater = null; }
-try { Store = require("electron-store"); } catch { Store = null; }
+try {
+    const electronStoreModule = require("electron-store");
+    Store = electronStoreModule && electronStoreModule.__esModule
+        ? electronStoreModule.default
+        : electronStoreModule;
+} catch { Store = null; }
 
 // ── Dev detection ─────────────────────────────────────────────────
 const _appStartTs = Date.now();
