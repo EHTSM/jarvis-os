@@ -1,5 +1,16 @@
 # Ooplix Changelog
 
+## [1.0.0-rc6] — 2026-07-17 — Release Candidate 6
+
+Fixes the release CI pipeline (continued): v1.0.0-rc5's node-gyp@^10.3.1 pin
+got past the macOS distutils failure but Windows still failed — node-gyp's
+`find-visualstudio.js` maps VS major-version numbers to release years
+(15→2017, 16→2019, 17→2022), and windows-latest now ships VS "18" (2026),
+which node-gyp@10.3.1 doesn't recognize ("unknown version 'undefined'").
+Confirmed via bisection that VS2026 (major 18) support was added between
+node-gyp 12.0.0 and 12.4.0. Bumped the `overrides` pin to `^12.4.0`.
+v1.0.0-rc5 is left in place as a record of this attempt.
+
 ## [1.0.0-rc5] — 2026-07-17 — Release Candidate 5
 
 Fixes the release CI pipeline (continued): v1.0.0-rc4 got "Package Server
