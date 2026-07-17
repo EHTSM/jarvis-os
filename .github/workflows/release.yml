@@ -217,7 +217,7 @@ jobs:
             **VPS (recommended):**
             ```bash
             # Download and extract
-            wget https://github.com/EHTSM/jarvis-os/releases/download/${{ github.ref_name }}/ooplix-server-v${{ github.ref_name }}.tar.gz
+            wget https://github.com/EHTSM/jarvis-os/releases/download/${{ github.ref_name }}/ooplix-server-${{ github.ref_name }}.tar.gz
             tar -xzf ooplix-server-v*.tar.gz
             cd ooplix-server-v*
 

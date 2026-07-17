@@ -421,7 +421,7 @@ async function connectRazorpay() {
 
   // Razorpay API v1 — Basic Auth with key:secret
   const auth = Buffer.from(`${key}:${secret}`).toString("base64");
-  const r    = await _probe("https://api.razorpay.com/v1/payment-links?count=1",
+  const r    = await _probe("https://api.razorpay.com/v1/payment_links?count=1",
     { Authorization: `Basic ${auth}`, "Content-Type": "application/json" });
   const webhookOk = !!whs;
   return _record("pay:razorpay", "D", "Razorpay",

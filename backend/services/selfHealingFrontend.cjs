@@ -18,6 +18,18 @@ const fs   = require("fs");
 const path = require("path");
 const ai   = require("./aiService");
 
+const ROOT = path.resolve(__dirname, "../..");
+
+// Resolves a caller-supplied relative path against ROOT and rejects any
+// result that escapes it (e.g. "../../../etc/passwd") — targetFile ultimately
+// originates from a client request body (POST /odi/heal), so it must not be
+// trusted to stay inside the project tree.
+function _safeResolve(targetFile) {
+  const absPath = path.resolve(ROOT, targetFile);
+  if (absPath !== ROOT && !absPath.startsWith(ROOT + path.sep)) return null;
+  return absPath;
+}
+
 const HEAL_DIR = path.join(__dirname, "../../data/odi/self-healing");
 function _ensureDir() { if (!fs.existsSync(HEAL_DIR)) fs.mkdirSync(HEAL_DIR, { recursive: true }); }
 function _getSession() { try { return require("../../agents/browser/browserSession.cjs"); } catch { return null; } }
@@ -112,8 +124,9 @@ function locateComponent(error, domSnapshot) {
 // ── Fix generator ──────────────────────────────────────────────────────────────
 
 async function generateFix(error, location, targetFile) {
-  const sourceCode = targetFile && require("fs").existsSync(path.join(process.cwd(), targetFile))
-    ? fs.readFileSync(path.join(process.cwd(), targetFile), "utf8").slice(0, 3000)
+  const safePath = targetFile && _safeResolve(targetFile);
+  const sourceCode = safePath && fs.existsSync(safePath)
+    ? fs.readFileSync(safePath, "utf8").slice(0, 3000)
     : "[source not accessible]";
 
   const prompt = `You are a React/JavaScript debugging assistant.
@@ -155,7 +168,8 @@ Generate a minimal fix. Return JSON only:
 
 function applyFix(record) {
   if (!record.fix?.patchSpecs?.length) return { ok: false, error: "No patch specs to apply" };
-  const absPath = path.join(process.cwd(), record.targetFile);
+  const absPath = _safeResolve(record.targetFile);
+  if (!absPath) return { ok: false, error: `targetFile escapes project root: ${record.targetFile}` };
   if (!fs.existsSync(absPath)) return { ok: false, error: `File not found: ${record.targetFile}` };
 
   const original = fs.readFileSync(absPath, "utf8");
@@ -180,7 +194,8 @@ function applyFix(record) {
 
 function rollbackFix(record) {
   if (!record.originalContent) return { ok: false, error: "No original content stored" };
-  const absPath = path.join(process.cwd(), record.targetFile);
+  const absPath = _safeResolve(record.targetFile);
+  if (!absPath) return { ok: false, error: `targetFile escapes project root: ${record.targetFile}` };
   fs.writeFileSync(absPath, record.originalContent, "utf8");
   record.rolledBack = true;
   return { ok: true, message: "Rolled back" };

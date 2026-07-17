@@ -27,14 +27,12 @@ const NAV_ACTIONS = [
   { id: "nav-collab",     label: "Collaboration",         icon: "◈", group: "Runtime & Ops",       tab: "collab"     },
   { id: "nav-registry",   label: "Registry",              icon: "◻", group: "Runtime & Ops",       tab: "registry"   },
   { id: "nav-toolfabric", label: "Tool Fabric",           icon: "⚡", group: "Runtime & Ops",       tab: "toolfabric" },
-  { id: "nav-autonomy",   label: "Autonomous Coordination",icon:"◎", group: "Runtime & Ops",       tab: "autonomy"   },
 
   // Engineering
   { id: "nav-engineering",label: "Engineering",           icon: "◈", group: "Engineering",         tab: "engineering"},
   { id: "nav-workspace",  label: "Eng Workspace",         icon: "◇", group: "Engineering",         tab: "workspace"  },
   { id: "nav-copilot",    label: "Copilot",               icon: "◎", group: "Engineering",         tab: "copilot"    },
   { id: "nav-devops",     label: "DevOps",                icon: "⬡", group: "Engineering",         tab: "devops"     },
-  { id: "nav-developer",  label: "Developer OS",          icon: "◈", group: "Engineering",         tab: "developer"  },
   { id: "nav-agentactions",label:"Agent Actions",         icon: "⚡", group: "Engineering",         tab: "agentactions"},
   { id: "nav-execconnector",label:"Exec Connectors",      icon: "◇", group: "Engineering",         tab: "execconnector"},
   { id: "nav-agentfactory",label:"Agent Factory",         icon: "◉", group: "Engineering",         tab: "agentfactory"},
@@ -51,10 +49,7 @@ const NAV_ACTIONS = [
   { id: "nav-autonomouswf",label:"Auto Workflows",        icon: "⚡", group: "AI & Intelligence",   tab: "autonomouswf"},
 
   // Memory & Data
-  { id: "nav-memory",     label: "Memory",                icon: "◈", group: "Memory & Data",       tab: "memory"     },
-  { id: "nav-knowledge",  label: "Knowledge Base",        icon: "◇", group: "Memory & Data",       tab: "knowledge"  },
   { id: "nav-sharedmem",  label: "Memory Fabric",         icon: "◻", group: "Memory & Data",       tab: "sharedmem"  },
-  { id: "nav-dataowner",  label: "Data",                  icon: "◉", group: "Memory & Data",       tab: "dataowner"  },
 
   // Executive
   { id: "nav-mission",    label: "Mission Control",       icon: "◎", group: "Executive",           tab: "mission"    },
@@ -73,23 +68,14 @@ const NAV_ACTIONS = [
   { id: "nav-creative",   label: "Creative Studio",       icon: "◈", group: "Growth & Revenue",    tab: "creative"   },
   { id: "nav-fop",        label: "Founder Journal",       icon: "◇", group: "Growth & Revenue",    tab: "fop"        },
   { id: "nav-growth",     label: "Growth OS",             icon: "⬢", group: "Growth & Revenue",    tab: "growth"     },
-  { id: "nav-autorevenue",label: "Auto Revenue",          icon: "✦", group: "Growth & Revenue",    tab: "autorevenue"},
-  { id: "nav-automarketing",label:"Auto Marketing",       icon: "◎", group: "Growth & Revenue",    tab: "automarketing"},
-  { id: "nav-autosupport",label: "Auto Support",          icon: "⬡", group: "Growth & Revenue",    tab: "autosupport"},
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
 
   // Enterprise
   { id: "nav-business",   label: "Business OS",           icon: "◉", group: "Enterprise",          tab: "business"   },
-  { id: "nav-enterprise", label: "Enterprise OS",         icon: "◎", group: "Enterprise",          tab: "enterprise" },
-  { id: "nav-personal",   label: "Personal OS",           icon: "◇", group: "Enterprise",          tab: "personal"   },
   { id: "nav-team",       label: "Team",                  icon: "◈", group: "Enterprise",          tab: "team"       },
-  { id: "nav-ecrm",       label: "Enterprise CRM",        icon: "◻", group: "Enterprise",          tab: "ecrm"       },
   { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations"},
-  { id: "nav-mobile",     label: "Mobile",                icon: "◇", group: "Enterprise",          tab: "mobile"     },
   { id: "nav-marketplace",label: "Marketplace",           icon: "◈", group: "Enterprise",          tab: "marketplace"},
-  { id: "nav-community",  label: "Community",             icon: "◉", group: "Enterprise",          tab: "community"  },
   { id: "nav-trust",      label: "Trust & Compliance",    icon: "✦", group: "Enterprise",          tab: "trustcompliance"},
-  { id: "nav-recovery",   label: "Disaster Recovery",     icon: "◎", group: "Enterprise",          tab: "disasterrecovery"},
   { id: "nav-supportos",  label: "Support OS",            icon: "◻", group: "Enterprise",          tab: "supportos"  },
 
   // Settings

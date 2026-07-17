@@ -62,6 +62,7 @@ router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/pl
 router.use("/mission", requireAuth);   // gate all /mission/* routes
 router.use("/missions", requireAuth);  // gate all /missions/* routes
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
+router.use("/agents", requireAuth);    // gate all /agents/* routes (agents.js has no in-file guard; barrel comment claimed one that never existed)
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
 router.use(require("./agentsRuntime")); // /agents/runtime/supervisor — Phase I4 long-running agent runtime
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
@@ -143,10 +144,15 @@ router.use(require("./platformOrg"));           // Level Ω:  /platform/status /
 router.use(require("./postOmega"));             // POST-Ω:   /pomena/status /pomena/review /pomena/audit /pomena/dashboard
 router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible/*
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
+router.use("/approval", requireAuth);          // gate all /approval/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
+router.use("/computer", requireAuth);          // gate all /computer/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run
+router.use("/twin", requireAuth);              // gate all /twin/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
+router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
+router.use("/company-factory", requireAuth);   // gate all /company-factory/* routes (in-file requireAuth resolves to no-op due to bad require path)
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
 router.use("/workspace-mesh", requireAuth);   // gate all /workspace-mesh/* routes
 router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* registry+coordinator+sync+health+dashboard
