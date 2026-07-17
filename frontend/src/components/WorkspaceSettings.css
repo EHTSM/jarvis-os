@@ -100,6 +100,16 @@
   padding: 4px 12px; background: rgba(124,111,255,0.10); border: 1px solid rgba(124,111,255,0.22);
   border-radius: var(--radius-pill); color: var(--accent); font-size: 12.5px; font-weight: 700;
 }
+.ws-badge--dim {
+  background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.10); color: var(--text-faint);
+}
+
+/* Inline text-link button (renders like a hyperlink inside a paragraph) */
+.ws-inline-link {
+  background: none; border: none; padding: 0; margin: 0; font: inherit;
+  color: var(--accent); text-decoration: underline; cursor: pointer;
+}
+.ws-inline-link:hover { color: var(--accent-hover, var(--accent)); }
 
 /* Team shortcut */
 .ws-team-shortcut {
