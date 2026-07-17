@@ -15,6 +15,12 @@ import {
   dispatchTask,
 } from "../runtimeApi";
 import {
+  getRevenueDashboard,
+  getConnectorHealth,
+  getDeploymentActive,
+  getDeploymentStats,
+} from "../founderHomeApi";
+import {
   FadeUp,
   StaggerList,
   StaggerItem,
@@ -1083,6 +1089,193 @@ function QueueOverview({ opsData }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: RevenuePulse — MRR/ARR/subscriptions from /revenue/dashboard.
+// operator-only endpoint — 403 for non-operator roles renders nothing (not an error).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function RevenuePulse({ onNavigate }) {
+  const [data, setData] = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const r = await getRevenueDashboard();
+      if (cancelled) return;
+      if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+      if (r?.ok !== false) setData(r.dashboard);
+    };
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, []);
+
+  if (forbidden) return null;
+
+  if (!data) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading revenue…</div>
+  );
+
+  const fmtINR = (n) => `₹${Math.round(n || 0).toLocaleString('en-IN')}`;
+  const items = [
+    { label: 'MRR',        value: fmtINR(data.mrr),   color: '#52d68a' },
+    { label: 'ARR',        value: fmtINR(data.arr),   color: '#4ecdc4' },
+    { label: 'Paid',       value: data.paidCount ?? '—',  color: '#7c6fff' },
+    { label: 'Trials',     value: data.trialCount ?? '—', color: '#f0b429' },
+    { label: 'Churn',      value: `${data.churnRate ?? 0}%`, color: (data.churnRate ?? 0) > 5 ? '#f55b5b' : '#8994b0' },
+    { label: 'Avg LTV',    value: fmtINR(data.ltv),  color: '#5dc8f5' },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        {items.map(item => (
+          <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '7px 8px', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: item.color, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{item.value}</div>
+            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
+          </div>
+        ))}
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('billing')}>
+          Full revenue center →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: ConnectorHealthPulse — secret/credential health from /vault/health.
+// operator-only endpoint — 403 for non-operator roles renders nothing (not an error).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ConnectorHealthPulse({ onNavigate }) {
+  const [health, setHealth] = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const r = await getConnectorHealth();
+      if (cancelled) return;
+      if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+      if (r?.ok !== false) setHealth(r);
+    };
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, []);
+
+  if (forbidden) return null;
+
+  if (!health) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading connector health…</div>
+  );
+
+  const score    = health.score ?? 100;
+  const scoreColor = score >= 90 ? '#52d68a' : score >= 70 ? '#f0b429' : '#f55b5b';
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+        <div style={{ fontSize: 22, fontWeight: 800, color: scoreColor, fontFamily: 'monospace' }}>{score}</div>
+        <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>
+          Vault health score<br />
+          <span className="mono-sm">{health.totalSecrets ?? 0} credentials tracked</span>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+        <div style={{ background: 'rgba(82,214,138,0.08)', border: '1px solid rgba(82,214,138,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#52d68a', fontFamily: 'monospace' }}>{health.ok ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>OK</div>
+        </div>
+        <div style={{ background: 'rgba(240,180,41,0.08)', border: '1px solid rgba(240,180,41,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#f0b429', fontFamily: 'monospace' }}>{health.expiring ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Expiring</div>
+        </div>
+        <div style={{ background: 'rgba(245,91,91,0.08)', border: '1px solid rgba(245,91,91,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#f55b5b', fontFamily: 'monospace' }}>{health.overdue ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Overdue</div>
+        </div>
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('integrations')}>
+          Connector Center →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: DeploymentPulse — active deploys + stats from /deployment/*.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function DeploymentPulse({ onNavigate }) {
+  const [active, setActive] = useState([]);
+  const [stats, setStats]   = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const [a, s] = await Promise.all([getDeploymentActive(), getDeploymentStats()]);
+      if (cancelled) return;
+      if (a?.status === 401 || s?.status === 401) { setForbidden(true); return; }
+      if (a?.ok !== false) setActive(a.deployments || []);
+      if (s?.ok !== false) setStats(s.stats || null);
+    };
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 20000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, []);
+
+  if (forbidden) return null;
+
+  if (!stats) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading deployments…</div>
+  );
+
+  return (
+    <div>
+      {active.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 8 }}>
+          {active.slice(0, 4).map((d, i) => (
+            <div key={d.id || i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <PulseDot status="running" size={6} />
+              <span style={{ flex: 1, fontSize: 11, color: 'var(--text)' }}>{d.target || d.id}</span>
+              <span style={{ fontSize: 9, color: 'var(--text-dim)' }}>{d.stage || d.status}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ fontSize: 11, color: '#52d68a', textAlign: 'center', padding: '4px 0 8px' }}>No active deployments</div>
+      )}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#52d68a', fontFamily: 'monospace' }}>{stats.completed ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Completed</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#f55b5b', fontFamily: 'monospace' }}>{stats.failed ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Failed</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#f0b429', fontFamily: 'monospace' }}>{stats.rolledBack ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Rolled Back</div>
+        </div>
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('reliability')}>
+          System health →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // J6: ProviderHealth — AI provider status from /p27/ai/providers.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1391,6 +1584,42 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
             <span className="cmd-qa-label">{label}</span>
           </button>
         ))}
+      </motion.div>
+
+      {/* ── Founder KPI strip: Revenue / Connector Health / Deployment ── */}
+      <motion.div
+        className="cmd-founder-strip"
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...transition.enter, delay: 0.11 }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, padding: '0 16px 12px' }}
+      >
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Revenue</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <RevenuePulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Connector Health</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <ConnectorHealthPulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Deployment Status</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <DeploymentPulse onNavigate={onNavigate} />
+          </div>
+        </section>
       </motion.div>
 
       {/* ── 3-column cockpit layout ───────────────────────────────── */}
