@@ -30,6 +30,7 @@ const _eo  = () => _try(() => require("./enterpriseOrg.cjs"));
 const _xo  = () => _try(() => require("./executiveOrg.cjs"));
 const _cle = () => _try(() => require("./continuousLearningEngine.cjs"));
 const _eme = () => _try(() => require("./engineeringMemoryEngine.cjs"));
+const _org = () => _try(() => require("./organizationService.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `lc_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -57,15 +58,42 @@ const STAGE_MISSIONS = {
   maintenance: ["technical_debt_reduction","sla_monitoring","user_feedback_loop","quarterly_review"],
 };
 
+// In-memory id → company index, rebuilt whenever the backing file changes on
+// disk (mtime check). Company records are durable business data — unlike
+// transitions/runs they are never evicted — so at scale (100s-1000s of
+// companies) the O(n) Array.find() on every read/gate-pass/KPI-update becomes
+// the real bottleneck. This index turns those into O(1) lookups without
+// changing the on-disk format.
+let _cache = null;      // { data, mtimeMs }
+let _indexByFile = null; // Map<id, company> built from the last loaded data
+
 function _load() {
-  try { return JSON.parse(fs.readFileSync(DATA, "utf8")); }
-  catch { return { companies: [], transitions: [], stats: { totalCompanies: 0, launched: 0, scaled: 0 }, updatedAt: null }; }
+  let stat;
+  try { stat = fs.statSync(DATA); } catch { stat = null; }
+  if (_cache && stat && _cache.mtimeMs === stat.mtimeMs) return _cache.data;
+
+  let data;
+  try { data = JSON.parse(fs.readFileSync(DATA, "utf8")); }
+  catch { data = { companies: [], transitions: [], stats: { totalCompanies: 0, launched: 0, scaled: 0 }, updatedAt: null }; }
+
+  _cache = { data, mtimeMs: stat ? stat.mtimeMs : null };
+  _indexByFile = new Map(data.companies.map(c => [c.id, c]));
+  return data;
 }
+
+function _findCompany(d, id) {
+  if (_indexByFile && d === _cache?.data) return _indexByFile.get(id) || null;
+  return d.companies.find(c => c.id === id) || null;
+}
+
 function _save(d) {
   fs.mkdirSync(path.dirname(DATA), { recursive: true });
   if (d.transitions.length > 500) d.transitions = d.transitions.slice(-500);
   d.updatedAt = _ts();
   fs.writeFileSync(DATA, JSON.stringify(d, null, 2));
+  const stat = fs.statSync(DATA);
+  _cache = { data: d, mtimeMs: stat.mtimeMs };
+  _indexByFile = new Map(d.companies.map(c => [c.id, c]));
 }
 
 // ── Registration in platform layer ────────────────────────────────────────────
@@ -97,8 +125,9 @@ function _registerInPlatform(companyRecord) {
 
 // ── Company creation ──────────────────────────────────────────────────────────
 
-function createCompany({ blueprintId, workspaceId, name, templateId } = {}) {
+function createCompany({ blueprintId, workspaceId, name, templateId, creatorAccountId } = {}) {
   if (!blueprintId && !name) return { ok: false, error: "blueprintId or name required" };
+  if (!creatorAccountId) return { ok: false, error: "creatorAccountId is required" };
 
   const blueprint = blueprintId ? _cbe()?.getBlueprint?.(blueprintId) : null;
   const workspace = workspaceId ? _cwb()?.getWorkspace?.(workspaceId) : null;
@@ -106,9 +135,32 @@ function createCompany({ blueprintId, workspaceId, name, templateId } = {}) {
   const id = _id();
   const companyName = name || blueprint?.name || "New Company";
 
+  // Every company gets a real backing organization — this is the single
+  // source of truth every org-scoped system (CRM, Billing, Connectors, AI,
+  // Assets, Vault, Memory, Budgets, Workspaces) resolves through via orgId.
+  // No parallel company-scoped storage or permission system is created here.
+  let orgId = null;
+  let orgSlugSuffix = 0;
+  while (true) {
+    const attemptName = orgSlugSuffix === 0 ? companyName : `${companyName} (${id})`;
+    try {
+      const org = _org()?.createOrg?.({ name: attemptName, description: `Backing organization for company ${companyName}`, plan: "free" }, creatorAccountId);
+      orgId = org?.id || null;
+      break;
+    } catch (e) {
+      // Slug collision (duplicate company name) — retry once with a
+      // disambiguated name derived from the company id, then give up.
+      if (e?.status === 409 && orgSlugSuffix === 0) { orgSlugSuffix = 1; continue; }
+      return { ok: false, error: "organization provisioning failed: " + e.message };
+    }
+  }
+  if (!orgId) return { ok: false, error: "organization provisioning failed" };
+
   const company = {
     id,
     name:        companyName,
+    orgId,
+    creatorAccountId,
     blueprintId: blueprintId || null,
     workspaceId: workspaceId || null,
     templateId:  templateId || blueprint?.templateId || "saas",
@@ -141,7 +193,7 @@ function createCompany({ blueprintId, workspaceId, name, templateId } = {}) {
 
 async function advanceStage(companyId, { force = false } = {}) {
   const d = _load();
-  const company = d.companies.find(c => c.id === companyId);
+  const company = _findCompany(d, companyId);
   if (!company) return { ok: false, error: "company not found" };
 
   const currentIdx = STAGES.indexOf(company.stage);
@@ -200,7 +252,7 @@ async function advanceStage(companyId, { force = false } = {}) {
 
 function passGate(companyId, gate, { evidence = "" } = {}) {
   const d = _load();
-  const company = d.companies.find(c => c.id === companyId);
+  const company = _findCompany(d, companyId);
   if (!company) return { ok: false, error: "company not found" };
   company.gates[gate] = { passed: true, passedAt: _ts(), evidence };
   company.updatedAt   = _ts();
@@ -210,7 +262,7 @@ function passGate(companyId, gate, { evidence = "" } = {}) {
 
 function getReadinessForStage(companyId, targetStage) {
   const d = _load();
-  const company = d.companies.find(c => c.id === companyId);
+  const company = _findCompany(d, companyId);
   if (!company) return { ok: false, error: "company not found" };
   const gates   = STAGE_GATES[targetStage] || [];
   const passed  = gates.filter(g => company.gates[g]?.passed);
@@ -225,19 +277,20 @@ function getReadinessForStage(companyId, targetStage) {
 // ── Queries ───────────────────────────────────────────────────────────────────
 
 function getCompany(id) {
-  return _load().companies.find(c => c.id === id) || null;
+  return _findCompany(_load(), id);
 }
 
-function listCompanies({ stage, templateId, limit = 50 } = {}) {
+function listCompanies({ stage, templateId, orgId, limit = 50 } = {}) {
   let list = _load().companies;
   if (stage)      list = list.filter(c => c.stage === stage);
   if (templateId) list = list.filter(c => c.templateId === templateId);
+  if (orgId)      list = list.filter(c => c.orgId === orgId);
   return { ok: true, companies: list.slice(-limit) };
 }
 
 function updateKPIs(companyId, kpiUpdates) {
   const d = _load();
-  const company = d.companies.find(c => c.id === companyId);
+  const company = _findCompany(d, companyId);
   if (!company) return { ok: false, error: "company not found" };
   Object.assign(company.kpis, kpiUpdates);
   company.updatedAt = _ts();

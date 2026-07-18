@@ -31,7 +31,7 @@ router.post("/company-factory/create", requireAuth, async (req, res) => {
   const { idea, name, templateId, founder, skipApproval } = req.body || {};
   if (!idea && !name) return res.status(400).json({ ok: false, error: "idea or name required" });
   try {
-    const result = await _cf()?.createCompany?.({ idea, name, templateId, founder, skipApproval });
+    const result = await _cf()?.createCompany?.({ idea, name, templateId, founder, skipApproval, creatorAccountId: req.user.sub });
     res.json(result || { ok: false });
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });

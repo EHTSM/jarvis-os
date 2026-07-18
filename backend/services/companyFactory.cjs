@@ -137,9 +137,11 @@ async function createCompany({
   name,           // Optional explicit company name
   templateId,     // Optional explicit template override
   founder = "founder",
+  creatorAccountId, // Real authenticated accountId — becomes org_owner of the backing org
   skipApproval = false,
 } = {}) {
   if (!idea && !name) return { ok: false, error: "idea or name required" };
+  if (!creatorAccountId) return { ok: false, error: "creatorAccountId is required" };
 
   const runId   = _id();
   const started = Date.now();
@@ -205,10 +207,11 @@ async function createCompany({
   // ─ Step 10: Register in platform ─────────────────────────────────────────
   _step("register");
 
-  // ─ Step 11: Create lifecycle record ──────────────────────────────────────
-  const lcResult = _cle_e()?.createCompany?.({ blueprintId: blueprint.id, workspaceId: workspace.id, name: companyName, templateId: template.id });
+  // ─ Step 11: Create lifecycle record (provisions the backing organization) ─
+  const lcResult = _cle_e()?.createCompany?.({ blueprintId: blueprint.id, workspaceId: workspace.id, name: companyName, templateId: template.id, creatorAccountId });
+  if (!lcResult?.ok) return { ok: false, error: "lifecycle/org provisioning failed: " + lcResult?.error, timeline };
   const company  = lcResult?.company;
-  _step("lifecycle", { companyId: company?.id, stage: company?.stage });
+  _step("lifecycle", { companyId: company?.id, stage: company?.stage, orgId: company?.orgId });
 
   // ─ Step 12: Pass initial gates for planning stage ─────────────────────────
   if (company?.id) {
@@ -240,6 +243,7 @@ async function createCompany({
   const run = {
     id:           runId,
     companyId:    company?.id,
+    orgId:        company?.orgId,
     companyName,
     templateId:   template.id,
     blueprintId:  blueprint.id,
@@ -264,6 +268,8 @@ async function createCompany({
   return {
     ok: true,
     companyId:    company?.id,
+    orgId:        company?.orgId,
+    company,
     companyName,
     templateId:   template.id,
     templateName: template.name,
