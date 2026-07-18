@@ -21,6 +21,8 @@ const _bs   = () => _try(() => require("../services/brandStudio.cjs"));
 const _cal  = () => _try(() => require("../services/creativeAssetLibrary.cjs"));
 const _store = () => _try(() => require("../services/storageService.cjs"));
 const _bds  = () => _try(() => require("../services/businessDataService.cjs"));
+const _aiOrch = () => _try(() => require("../services/aiOrchestrator.cjs"));
+const _mem  = () => _try(() => require("../services/semanticMemorySearch.cjs"));
 
 // Resolves company → its backing orgId, and asserts the requesting account has
 // the given permission (default update_org) on that org — every company-scoped
@@ -360,6 +362,64 @@ router.get("/company-factory/companies/:id/crm/revenue/stats", requireAuth, (req
   if (!company) return;
   const { dateFrom, dateTo, currency } = req.query;
   res.json({ ok: true, orgId: company.orgId, stats: _bds()?.getRevenueStats?.({ dateFrom, dateTo, currency, orgId: company.orgId }) || null });
+});
+
+// ── Company AI (org-scoped via aiOrchestrator.cjs) ────────────────────────────
+// aiOrchestrator.execute/executeStream already accept orgId for budget
+// enforcement (orgBudgets.cjs) and usage attribution (usageMetering.cjs) — no
+// new AI routing, provider, or billing logic is introduced here.
+
+router.post("/company-factory/companies/:id/ai/execute", requireAuth, async (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "create_mission");
+  if (!company) return;
+  const { messages, capability, intent, userPref, model, maxTokens, temperature, tools, noCache } = req.body || {};
+  if (!Array.isArray(messages) || !messages.length) {
+    return res.status(400).json({ ok: false, error: "messages (array) required" });
+  }
+  try {
+    const result = await _aiOrch()?.execute?.(messages, {
+      capability, intent, userPref, model, maxTokens, temperature, tools, noCache,
+      accountId: req.user.sub, orgId: company.orgId,
+    });
+    res.json({ ok: true, orgId: company.orgId, ...result });
+  } catch (e) {
+    res.status(e.status || 500).json({ ok: false, error: e.message, code: e.code });
+  }
+});
+
+router.get("/company-factory/companies/:id/ai/health", requireAuth, async (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { provider } = req.query;
+  res.json({ ok: true, orgId: company.orgId, health: await _aiOrch()?.getProviderHealth?.(provider) || null });
+});
+
+// ── Company Memory (org-scoped via semanticMemorySearch.cjs) ─────────────────
+// semanticMemorySearch.cjs already supports partitioned recall via a
+// projectId tag ("project:<id>") + filtered semanticSearch/crossProjectSearch
+// — company.orgId is used as that partition key so each company gets its own
+// memory slice without any new storage or a parallel tagging scheme.
+
+router.post("/company-factory/companies/:id/memory", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "create_mission");
+  if (!company) return;
+  const { type, data, key, importance, confidence, tags } = req.body || {};
+  if (!type || !data) return res.status(400).json({ ok: false, error: "type and data required" });
+  try {
+    const result = _mem()?.saveTypedMemory?.(type, data, { key, importance, confidence, tags, projectId: company.orgId });
+    res.json({ ok: true, orgId: company.orgId, memory: result });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.get("/company-factory/companies/:id/memory/search", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { q, type, minScore, limit } = req.query;
+  if (!q) return res.status(400).json({ ok: false, error: "q (query) required" });
+  const result = _mem()?.semanticSearch?.(q, { type, minScore: minScore ? +minScore : undefined, limit: limit ? +limit : undefined, projectId: company.orgId });
+  res.json({ ok: true, orgId: company.orgId, ...result });
 });
 
 module.exports = router;
