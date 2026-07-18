@@ -20,6 +20,7 @@ const _org  = () => _try(() => require("../services/organizationService.cjs"));
 const _bs   = () => _try(() => require("../services/brandStudio.cjs"));
 const _cal  = () => _try(() => require("../services/creativeAssetLibrary.cjs"));
 const _store = () => _try(() => require("../services/storageService.cjs"));
+const _bds  = () => _try(() => require("../services/businessDataService.cjs"));
 
 // Resolves company → its backing orgId, and asserts the requesting account has
 // the given permission (default update_org) on that org — every company-scoped
@@ -286,6 +287,79 @@ router.delete("/company-factory/companies/:id/assets/:assetId", requireAuth, (re
   }
   const deleted = _cal()?.deleteAsset?.(req.params.assetId);
   res.json({ ok: !!deleted });
+});
+
+// ── Company CRM + Marketing (org-scoped via businessDataService.cjs) ─────────
+// Thin convenience proxy — every entity already lives in businessDataService.cjs
+// fully orgId-scoped (see /business/* routes); these routes just resolve
+// company.orgId and gate through the org's own RBAC so callers don't need to
+// know/attach an X-Org-Id header themselves. No new CRM storage or logic.
+
+router.get("/company-factory/companies/:id/crm/dashboard", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  res.json({ ok: true, orgId: company.orgId, dashboard: _bds()?.getDashboard?.(company.orgId) || null });
+});
+
+router.get("/company-factory/companies/:id/crm/leads", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { status, source, assignee, minScore, limit } = req.query;
+  res.json({ ok: true, orgId: company.orgId, ...(_bds()?.listLeads?.({ status, source, assignee, minScore, limit: limit ? +limit : 50, orgId: company.orgId }) || {}) });
+});
+
+router.post("/company-factory/companies/:id/crm/leads", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "create_mission");
+  if (!company) return;
+  try {
+    const lead = _bds()?.createLead?.({ ...req.body, orgId: company.orgId });
+    res.json({ ok: true, orgId: company.orgId, lead });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.get("/company-factory/companies/:id/crm/opportunities", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { stage, assignee, minValue, limit } = req.query;
+  res.json({ ok: true, orgId: company.orgId, ...(_bds()?.listOpportunities?.({ stage, assignee, minValue, limit: limit ? +limit : 50, orgId: company.orgId }) || {}) });
+});
+
+router.post("/company-factory/companies/:id/crm/opportunities", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "create_mission");
+  if (!company) return;
+  try {
+    const opp = _bds()?.createOpportunity?.({ ...req.body, orgId: company.orgId });
+    res.json({ ok: true, orgId: company.orgId, opportunity: opp });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.get("/company-factory/companies/:id/marketing/campaigns", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { status, channel, limit } = req.query;
+  res.json({ ok: true, orgId: company.orgId, ...(_bds()?.listCampaigns?.({ status, channel, limit: limit ? +limit : 20, orgId: company.orgId }) || {}) });
+});
+
+router.post("/company-factory/companies/:id/marketing/campaigns", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "create_mission");
+  if (!company) return;
+  try {
+    const campaign = _bds()?.createCampaign?.({ ...req.body, orgId: company.orgId });
+    res.json({ ok: true, orgId: company.orgId, campaign });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.get("/company-factory/companies/:id/crm/revenue/stats", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_missions");
+  if (!company) return;
+  const { dateFrom, dateTo, currency } = req.query;
+  res.json({ ok: true, orgId: company.orgId, stats: _bds()?.getRevenueStats?.({ dateFrom, dateTo, currency, orgId: company.orgId }) || null });
 });
 
 module.exports = router;
