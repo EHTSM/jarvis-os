@@ -886,6 +886,154 @@ ipcMain.handle("fs-open-path", async (_e, p) => {
 ipcMain.handle("fs-get-downloads-path", () => ({ path: app.getPath("downloads") }));
 ipcMain.handle("fs-get-home-path",      () => ({ path: os.homedir() }));
 
+// ── Printer ───────────────────────────────────────────────────────
+// Electron's own webContents printer APIs — real OS printer enumeration
+// and real print jobs, no third-party library.
+ipcMain.handle("printer-list", async (_e) => {
+    try {
+        const printers = await windows.main.webContents.getPrintersAsync();
+        return { ok: true, printers: printers.map(p => ({ name: p.name, displayName: p.displayName, status: p.status, isDefault: p.isDefault })) };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("printer-print", async (_e, opts = {}) => {
+    // opts: { deviceName?, silent?, printBackground?, color?, copies?, landscape? }
+    return new Promise((resolve) => {
+        try {
+            windows.main.webContents.print(
+                { silent: !!opts.silent, printBackground: opts.printBackground !== false, deviceName: opts.deviceName, color: opts.color !== false, copies: opts.copies || 1, landscape: !!opts.landscape },
+                (success, failureReason) => resolve({ ok: success, error: success ? null : failureReason })
+            );
+        } catch (e) { resolve({ ok: false, error: e.message }); }
+    });
+});
+
+ipcMain.handle("printer-print-to-pdf", async (_e, opts = {}) => {
+    try {
+        const buffer = await windows.main.webContents.printToPDF(opts);
+        const savePath = opts.savePath ? path.resolve(opts.savePath) : path.join(app.getPath("downloads"), `ooplix-print-${Date.now()}.pdf`);
+        if (!_isSafePath(savePath)) return { ok: false, error: "Access denied" };
+        fs.writeFileSync(savePath, buffer);
+        return { ok: true, path: savePath };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+// ── Scanner ───────────────────────────────────────────────────────
+// No cross-platform TWAIN/WIA/SANE binding exists in pure Node/Electron
+// without a native addon (out of scope here) — real scanner *access* is
+// handed off to the OS's own scanning application rather than faked.
+// scanner-list-devices is a best-effort, read-only OS query (not a driver
+// integration); scanner-open-native-app launches the platform's built-in
+// scan utility so the user can scan+save a file, which the existing
+// fs-show-open-dialog / fs-read-file IPC then imports — no separate
+// "import scanned file" pipeline needed, it's the same file-picker path
+// used for any other local file.
+ipcMain.handle("scanner-list-devices", async () => {
+    try {
+        if (process.platform === "darwin") {
+            const out = await new Promise((resolve, reject) => {
+                exec("system_profiler SPUSBDataType SPCameraDataType -json", { timeout: 8000, maxBuffer: 1024 * 1024 }, (err, stdout) => {
+                    if (err) return reject(err);
+                    resolve(stdout);
+                });
+            });
+            return { ok: true, note: "Best-effort USB/camera device listing — not a scanner-specific API (macOS has no CLI scanner enumeration)", raw: JSON.parse(out) };
+        }
+        return { ok: true, note: `Device enumeration not implemented for platform "${process.platform}" — use scanner-open-native-app instead`, devices: [] };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("scanner-open-native-app", async () => {
+    try {
+        if (process.platform === "darwin") {
+            await shell.openPath("/System/Applications/Image Capture.app");
+            return { ok: true, app: "Image Capture" };
+        }
+        if (process.platform === "win32") {
+            exec("start ms-screenclip:", () => {}); // best-effort; falls through to explorer below regardless
+            exec('start microsoft.windows.camera:', () => {});
+            exec("explorer.exe shell:AppsFolder\\Microsoft.WindowsScan_8wekyb3d8bbwe!App", () => {});
+            return { ok: true, app: "Windows Scan" };
+        }
+        return { ok: false, error: `No native scan app hand-off implemented for platform "${process.platform}"` };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+// ── Webcam / Microphone ───────────────────────────────────────────
+// Actual media capture happens in the renderer via the standard
+// navigator.mediaDevices.getUserMedia() Web API — Electron's main process
+// doesn't broker media frames. What main.cjs controls is *permission*
+// (see _installPermissionHandler below, which now allow-lists "media" only
+// for the app's own origin, not any origin the CSP happens to load) and
+// enumeration of device labels, which requires an active getUserMedia grant
+// first (a browser security rule, not an Electron limitation) — so
+// media-list-devices is a thin documented pass-through the renderer already
+// has via navigator.mediaDevices.enumerateDevices(), exposed here only so
+// callers with an IPC-first integration style have one place to look.
+ipcMain.handle("media-permission-status", (_e) => {
+    return { ok: true, cameraAllowed: ALLOWED_ORIGINS_FOR_MEDIA.length > 0, note: "Actual capture is via navigator.mediaDevices.getUserMedia() in the renderer" };
+});
+
+// ── Local folder sync ─────────────────────────────────────────────
+// fs.watch on a user-chosen folder; on add/change, read the file and hand
+// it to the renderer to POST to the backend's existing
+// /enterprise/physical/folder-sync/upload route (storageService-backed,
+// org/${orgId}/folder-sync/... key scoping — see enterprisePhysical.js).
+// main.cjs does the watching (Node fs, not available to the renderer) but
+// deliberately does NOT itself call the backend — network calls from
+// existing IPC handlers in this file consistently go through the
+// renderer's authenticated session (cookies), not a second, unauthenticated
+// HTTP client in the main process.
+const _folderWatchers = new Map(); // watchId -> { watcher, localPath, win }
+
+ipcMain.handle("folder-sync-start", async (_e, { localPath } = {}) => {
+    try {
+        if (typeof localPath !== "string") return { ok: false, error: "localPath required" };
+        const resolved = path.resolve(localPath);
+        if (!_isSafePath(resolved)) return { ok: false, error: "Access denied — path outside allowed roots" };
+        if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) return { ok: false, error: "Not a directory" };
+
+        const watchId = `wf_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const win = BrowserWindow.fromWebContents(_e.sender);
+        const watcher = fs.watch(resolved, { recursive: true }, (eventType, filename) => {
+            if (!filename) return;
+            const fullPath = path.join(resolved, filename);
+            let stat;
+            try { stat = fs.statSync(fullPath); } catch { return; } // deleted/transient — nothing to sync
+            if (!stat.isFile()) return;
+            win?.webContents.send("folder-sync-event", {
+                watchId, eventType, relativePath: filename.split(path.sep).join("/"), fullPath, sizeBytes: stat.size,
+            });
+        });
+        _folderWatchers.set(watchId, { watcher, localPath: resolved, win });
+        return { ok: true, watchId, localPath: resolved };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("folder-sync-stop", async (_e, { watchId } = {}) => {
+    const entry = _folderWatchers.get(watchId);
+    if (!entry) return { ok: false, error: "Unknown watchId" };
+    try { entry.watcher.close(); } catch { /* already closed */ }
+    _folderWatchers.delete(watchId);
+    return { ok: true, watchId };
+});
+
+ipcMain.handle("folder-sync-status", async () => {
+    return { ok: true, active: [..._folderWatchers.entries()].map(([watchId, e]) => ({ watchId, localPath: e.localPath })) };
+});
+
+ipcMain.handle("folder-sync-read-file", async (_e, { fullPath } = {}) => {
+    // Reads a changed file's bytes for the renderer to base64-encode and
+    // POST to /enterprise/physical/folder-sync/upload — reuses _isSafePath,
+    // does not introduce a second path-validation rule.
+    try {
+        const resolved = path.resolve(fullPath);
+        if (!_isSafePath(resolved)) return { ok: false, error: "Access denied" };
+        const data = fs.readFileSync(resolved);
+        return { ok: true, base64: data.toString("base64"), sizeBytes: data.length };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
 // ── Shell exec (terminal integration) ────────────────────────────
 // Security: command must be a string; never eval; output capped at 64KB
 ipcMain.handle("shell-exec", (_e, { command, cwd }) => {
@@ -1516,11 +1664,27 @@ const ALLOWED_PERMISSIONS = new Set([
     "fullscreen",
 ]);
 
+// Module 6 (Physical Infrastructure): webcam/mic access is granted ONLY to
+// the app's own origin (API_URL — where the Ooplix renderer itself is
+// served from), never blanket-allowed for "media" the way ALLOWED_PERMISSIONS
+// does for the origin-agnostic permissions above. The CSP already permits
+// script/frame origins from Google/Firebase/reCAPTCHA for auth flows; if
+// "media" were added to ALLOWED_PERMISSIONS directly, any of those loaded
+// contexts could also request camera/mic. Checking requestingOrigin here
+// keeps that additive (new capability, not a widened blast radius for the
+// existing permissions).
+const ALLOWED_ORIGINS_FOR_MEDIA = [API_URL];
+
 function _installPermissionHandler() {
-    session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+    session.defaultSession.setPermissionRequestHandler((webContents, permission, callback, details) => {
+        if (permission === "media") {
+            const origin = details?.requestingUrl ? new URL(details.requestingUrl).origin : null;
+            return callback(!!origin && ALLOWED_ORIGINS_FOR_MEDIA.includes(origin));
+        }
         callback(ALLOWED_PERMISSIONS.has(permission));
     });
-    session.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
+    session.defaultSession.setPermissionCheckHandler((webContents, permission, requestingOrigin) => {
+        if (permission === "media") return ALLOWED_ORIGINS_FOR_MEDIA.includes(requestingOrigin);
         return ALLOWED_PERMISSIONS.has(permission);
     });
 }

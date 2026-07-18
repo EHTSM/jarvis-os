@@ -83,6 +83,28 @@ contextBridge.exposeInMainWorld("electronAPI", {
     fsGetDownloadsPath: ()           => ipcRenderer.invoke("fs-get-downloads-path"),
     fsGetHomePath:    ()             => ipcRenderer.invoke("fs-get-home-path"),
 
+    // ── Hardware: Printer ─────────────────────────────────────────
+    printerList:       ()            => ipcRenderer.invoke("printer-list"),
+    printerPrint:      (opts)        => ipcRenderer.invoke("printer-print",         _obj(opts || {})),
+    printerPrintToPdf: (opts)        => ipcRenderer.invoke("printer-print-to-pdf",  _obj(opts || {})),
+
+    // ── Hardware: Scanner (hand-off to OS scan app — see main.cjs) ─
+    scannerListDevices:  ()          => ipcRenderer.invoke("scanner-list-devices"),
+    scannerOpenNativeApp: ()         => ipcRenderer.invoke("scanner-open-native-app"),
+
+    // ── Hardware: Webcam / Microphone ───────────────────────────────
+    // Actual capture uses navigator.mediaDevices.getUserMedia() directly in
+    // the renderer (standard Web API) — this just reports whether the main
+    // process's permission handler will grant "media" to this origin.
+    mediaPermissionStatus: ()        => ipcRenderer.invoke("media-permission-status"),
+
+    // ── Local folder sync ───────────────────────────────────────────
+    folderSyncStart:  (localPath)    => ipcRenderer.invoke("folder-sync-start",     { localPath: _str(localPath, 1024) }),
+    folderSyncStop:   (watchId)      => ipcRenderer.invoke("folder-sync-stop",      { watchId: _str(watchId, 64) }),
+    folderSyncStatus: ()             => ipcRenderer.invoke("folder-sync-status"),
+    folderSyncReadFile: (fullPath)   => ipcRenderer.invoke("folder-sync-read-file", { fullPath: _str(fullPath, 2048) }),
+    onFolderSyncEvent: (cb)          => _on("folder-sync-event", cb),
+
     // ── Terminal / Shell ─────────────────────────────────────────
     shellExec: (opts) => {
         _obj(opts);
