@@ -5,6 +5,7 @@ import { getBillingStatus } from "./billingApi";
 import { checkHealth, getStats, getOpsData } from "./telemetryApi";
 import { sendMessage } from "./api";
 import { emergencyStop, emergencyResume } from "./runtimeApi";
+import { _fetch } from "./_client";
 // ── Eagerly-loaded: critical path + shell UI ────────────────────────────────
 import TrialBanner        from "./components/TrialBanner.jsx";
 import UpgradeModal       from "./components/UpgradeModal.jsx";
@@ -17,6 +18,7 @@ import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
 import ResetPasswordPage  from "./components/auth/ResetPasswordPage.jsx";
 import VerifyEmailPage    from "./components/auth/VerifyEmailPage.jsx";
+import AcceptInvitePage   from "./components/auth/AcceptInvitePage.jsx";
 import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
@@ -243,6 +245,7 @@ function _initialScreen() {
     const path = window.location.pathname;
     if (path === "/reset-password") return "reset-password";
     if (path === "/verify-email")   return "verify-email";
+    if (path === "/accept-invite")  return "accept-invite";
   } catch { /* SSR-safe no-op */ }
 
   // Electron desktop: go straight to cockpit — no marketing screens
@@ -820,8 +823,22 @@ function AppInner() {
     }]);
     track.trialStarted();
     localStorage.setItem("jarvis_just_onboarded", "1");
+    _consumePendingInvite();
     setScreen("app");
     setTab("home");
+  };
+
+  // Consumes a workspace-invite token stashed by the accept-invite screen
+  // before the user was routed to signup/login (see screen === "accept-invite"
+  // above) — fires once, after the user has a real session, so the invite
+  // link's promise ("click this to join") is actually kept regardless of
+  // whether the user needed to sign up or just log in first.
+  const _consumePendingInvite = () => {
+    let token = null;
+    try { token = sessionStorage.getItem("jarvis_pending_invite_token"); } catch { return; }
+    if (!token) return;
+    try { sessionStorage.removeItem("jarvis_pending_invite_token"); } catch { /* no-op */ }
+    _fetch("/workspace/accept-invite", { method: "POST", body: JSON.stringify({ token }) }).catch(() => {});
   };
 
   // ── First-launch hint (dismissible, shown once after onboarding) ──
@@ -876,6 +893,27 @@ function AppInner() {
       </div>
     );
   }
+  if (screen === "accept-invite") {
+    // Stash the token before leaving this screen for signup/login — those
+    // flows clear the URL's query string, so the token would otherwise be
+    // lost and the user would land in the app without ever having joined
+    // the workspace they clicked the invite link for.
+    const stashInviteToken = () => {
+      try {
+        const t = new URLSearchParams(window.location.search).get("token");
+        if (t) sessionStorage.setItem("jarvis_pending_invite_token", t);
+      } catch { /* no-op */ }
+    };
+    return (
+      <div className="app-auth-gate">
+        <AcceptInvitePage
+          onDone={() => { window.history.replaceState({}, "", "/"); setScreen(user ? "app" : "login"); }}
+          onSignup={() => { stashInviteToken(); window.history.replaceState({}, "", "/"); setScreen("signup"); }}
+          onLogin={() => { stashInviteToken(); window.history.replaceState({}, "", "/"); setScreen("login"); }}
+        />
+      </div>
+    );
+  }
 
   // ── Forgot password screen ────────────────────────────────────────────────
   if (screen === "forgot") {
@@ -891,7 +929,7 @@ function AppInner() {
     return (
       <div className="app-auth-gate">
         <LoginPage
-          onSuccess={() => setScreen("app")}
+          onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
           onSignup={() => setScreen("signup")}
           onForgot={() => setScreen("forgot")}
         />
@@ -916,7 +954,7 @@ function AppInner() {
       return (
         <div className="app-auth-gate">
           <LoginPage
-            onSuccess={() => setScreen("app")}
+            onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
             onSignup={() => setScreen("signup")}
             onForgot={() => setScreen("forgot")}
           />
@@ -927,7 +965,7 @@ function AppInner() {
     return (
       <div className="app-auth-gate">
         <SignupPage
-          onSuccess={() => setScreen("app")}
+          onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
           onLogin={() => setScreen("login")}
         />
       </div>

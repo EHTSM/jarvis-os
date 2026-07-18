@@ -357,11 +357,130 @@ function GrantsPanel({ orgId, isOwner, onToast }) {
   );
 }
 
+// ── Invite team (Module 4) ──────────────────────────────────────────────
+// Workspace-based email invites (workspaceService.createInvitation), distinct
+// from the org "Members" tab above which requires already knowing the
+// invitee's accountId. This is the actual "invite a teammate who doesn't have
+// an account yet" flow — they get an emailed link, sign up/log in, and land
+// as a workspace member.
+const WS_ROLES = ["Admin", "Operator", "Developer", "Viewer"];
+
+function InviteTeamPanel({ onToast }) {
+  const [workspaceId, setWorkspaceId] = useState(null);
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [members, setMembers] = useState(null);
+  const [pending, setPending] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showInvite, setShowInvite] = useState(false);
+  const [form, setForm] = useState({ email: "", role: "Operator" });
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const wsList = await _fetch("/workspace").catch(() => ({ workspaces: [] }));
+    const activeId = wsList.activeWorkspaceId || wsList.workspaces?.[0]?.id;
+    if (!activeId) { setLoading(false); return; }
+    setWorkspaceId(activeId);
+    const active = wsList.workspaces?.find(w => w.id === activeId);
+    setWorkspaceName(active?.name || "");
+    setPending((active?.invitations || []).filter(i => !i.usedAt));
+
+    const memRes = await _fetch(`/workspace/${activeId}/members`).catch(() => ({ members: [] }));
+    setMembers(memRes.members || []);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleInvite = async () => {
+    if (!form.email.trim()) { onToast?.("error", "Email is required"); return; }
+    setBusy(true);
+    const r = await _fetch("/workspace/invite", {
+      method: "POST",
+      body: JSON.stringify({ workspaceId, email: form.email.trim(), role: form.role }),
+    }).catch(e => ({ error: e.message }));
+    setBusy(false);
+    if (r.error) { onToast?.("error", r.error); return; }
+    onToast?.("success", r.emailSent ? "Invite sent" : "Invite created (email delivery unavailable — share the link manually)");
+    setForm({ email: "", role: "Operator" });
+    setShowInvite(false);
+    load();
+  };
+
+  const handleRemove = async (accountId) => {
+    const r = await _fetch(`/workspace/${workspaceId}/members/${accountId}`, { method: "DELETE" }).catch(e => ({ error: e.message }));
+    if (r.error) onToast?.("error", r.error);
+    else { onToast?.("success", "Member removed"); load(); }
+  };
+
+  if (loading) return <div className="oac-loading">Loading team…</div>;
+
+  if (!workspaceId) {
+    return <Empty title="No workspace yet" sub="A workspace is created automatically with your organization." />;
+  }
+
+  return (
+    <div className="oac-section">
+      <div className="oac-section-header">
+        <h3 className="oac-section-title">{workspaceName || "Team"}</h3>
+        <button className="oac-btn primary" onClick={() => setShowInvite(s => !s)}>{showInvite ? "Cancel" : "+ Invite teammate"}</button>
+      </div>
+
+      {showInvite && (
+        <div className="oac-form-card">
+          <input className="oac-input" type="email" placeholder="teammate@company.com"
+            value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+          <select className="oac-select" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}>
+            {WS_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+          <button className="oac-btn primary" onClick={handleInvite} disabled={busy}>{busy ? "Sending…" : "Send invite"}</button>
+        </div>
+      )}
+
+      {!members?.length ? <Empty title="No teammates yet" sub="Invite a teammate to collaborate in this workspace." /> : (
+        <table className="oac-table">
+          <thead><tr><th>Account</th><th>Role</th><th></th></tr></thead>
+          <tbody>
+            {members.map(m => (
+              <tr key={m.accountId}>
+                <td className="oac-td-name">{m.email || m.name || m.accountId}</td>
+                <td><Badge label={m.role} color={m.role === "Owner" ? "var(--warning)" : "var(--text-dim)"} /></td>
+                <td className="oac-td-actions">
+                  {m.role !== "Owner" && <button className="oac-icon-btn danger" title="Remove" onClick={() => handleRemove(m.accountId)}>🗑</button>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {pending.length > 0 && (
+        <>
+          <h3 className="oac-section-title" style={{ marginTop: 8 }}>Pending invites</h3>
+          <table className="oac-table">
+            <thead><tr><th>Email</th><th>Role</th><th>Expires</th></tr></thead>
+            <tbody>
+              {pending.map((inv, i) => (
+                <tr key={i}>
+                  <td className="oac-td-name">{inv.email}</td>
+                  <td className="oac-td-dim">{inv.role}</td>
+                  <td className="oac-td-dim">{new Date(inv.expiresAt).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ── Root ──────────────────────────────────────────────────────────────
 
 const VIEWS = [
   { id: "overview",    label: "Overview"    },
-  { id: "members",     label: "Members"     },
+  { id: "invite",      label: "Invite Team" },
+  { id: "members",     label: "Roles"       },
   { id: "departments", label: "Departments" },
   { id: "grants",      label: "Cross-org access" },
 ];
@@ -426,6 +545,7 @@ export default function OrgAdminCenter({ onToast }) {
 
       <div className="oac-content">
         {view === "overview"    && <OverviewPanel org={orgDetail} myRole={primary.orgRole} onToast={onToast} onReload={handleOverviewReload} />}
+        {view === "invite"      && <InviteTeamPanel onToast={onToast} />}
         {view === "members"     && <MembersPanel orgId={orgId} myRole={primary.orgRole} canManage={canManage} onToast={onToast} />}
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
         {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}

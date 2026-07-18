@@ -1,21 +1,51 @@
 "use strict";
 /**
  * K1 — Workspace routes
- * GET    /workspace              — list workspaces for current user
- * POST   /workspace              — create workspace
- * PATCH  /workspace/:id          — update workspace
- * POST   /workspace/invite       — invite member (email + role)
- * POST   /workspace/switch       — switch active workspace
- * GET    /workspace/activity     — activity log for active/requested workspace
+ * GET    /workspace                        — list workspaces for current user
+ * POST   /workspace                        — create workspace
+ * PATCH  /workspace/:id                    — update workspace
+ * POST   /workspace/invite                 — invite member (email + role), emails the link
+ * GET    /invite-preview/:token            — public: preview an invite before accepting
+ * POST   /workspace/accept-invite          — consume a token, join the workspace
+ * DELETE /workspace/:id/members/:accountId — remove a member
+ * POST   /workspace/switch                 — switch active workspace
+ * GET    /workspace/activity               — activity log for active/requested workspace
+ * GET    /workspace/:id/members            — list members with account info
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace, requireWorkspaceMember } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/workspaceService.cjs");
 
+// GET /invite-preview/:token — preview an invitation before accepting.
+// Deliberately public (no requireAuth, no /workspace prefix) — the invitee
+// may not have an account or session yet when they first open the emailed
+// link, and needs to see "You've been invited to join <workspace>" before
+// being asked to sign up or log in.
+router.get("/invite-preview/:token", (req, res) => {
+  const info = svc.getInvitationByToken(req.params.token);
+  if (!info) return res.status(404).json({ error: "Invitation not found" });
+  res.json({ invitation: info });
+});
+
 // All workspace routes require auth
 router.use("/workspace", requireAuth);
 router.use(attachWorkspace);
+
+// POST /workspace/accept-invite — consume a token, join the workspace.
+// Requires auth: the invitee must be logged in (or have just registered) —
+// acceptInvitation needs a real accountId to add as a member.
+router.post("/workspace/accept-invite", (req, res) => {
+  try {
+    const { token } = req.body || {};
+    if (!token) return res.status(400).json({ error: "token required" });
+    const result = svc.acceptInvitation(token, req.user.sub);
+    res.json({ success: true, ...result });
+  } catch (e) {
+    const status = e.message.includes("expired") || e.message.includes("Invalid") ? 400 : 500;
+    res.status(status).json({ error: e.message });
+  }
+});
 
 // GET /workspace — list workspaces the caller is a member of
 router.get("/workspace", (req, res) => {
@@ -51,19 +81,54 @@ router.patch("/workspace/:id", (req, res) => {
   }
 });
 
-// POST /workspace/invite — invite a member by email
+// POST /workspace/invite — invite a member by email. Creates the token
+// record (must succeed for the invite to exist) then best-effort emails it —
+// createInvitation previously returned the raw token to the caller with no
+// delivery mechanism at all, so an invited teammate had no way to receive it.
 router.post("/workspace/invite", async (req, res) => {
   try {
     const { workspaceId, email, role } = req.body;
     const wsId = workspaceId || req.workspace?.id;
     if (!wsId) return res.status(400).json({ error: "workspaceId required" });
+    if (!email) return res.status(400).json({ error: "email required" });
     const inv = svc.createInvitation(wsId, { email, role }, req.user.sub);
-    res.json({ invitation: inv });
+
+    let inviterName = req.user.email || req.user.sub;
+    try {
+      const acctSvc = require("../services/accountService");
+      const inviter = acctSvc.getById(req.user.sub);
+      if (inviter?.name) inviterName = inviter.name;
+    } catch { /* non-fatal */ }
+
+    const delivery = svc.sendInvitationEmail({
+      email: inv.email, token: inv.token, role: inv.role,
+      workspaceName: inv.workspaceName, invitedByName: inviterName,
+    });
+
+    res.json({ invitation: { email: inv.email, role: inv.role, expiresAt: inv.expiresAt }, emailSent: delivery.sent });
   } catch (e) {
     const status = e.message.includes("Insufficient") ? 403 : 400;
     res.status(status).json({ error: e.message });
   }
 });
+
+// DELETE /workspace/:id/members/:accountId — remove a member
+router.delete("/workspace/:id/members/:accountId",
+  (req, res, next) => {
+    req.body = req.body || {};
+    if (req.params.id && !req.body.workspaceId) req.body.workspaceId = req.params.id;
+    return attachWorkspace(req, res, next);
+  },
+  (req, res) => {
+    try {
+      const result = svc.removeMember(req.params.id, req.params.accountId, req.user.sub);
+      res.json({ success: true, ...result });
+    } catch (e) {
+      const status = e.message.includes("Insufficient") ? 403 : e.message.includes("not found") ? 404 : 400;
+      res.status(status).json({ error: e.message });
+    }
+  }
+);
 
 // POST /workspace/switch — switch active workspace
 router.post("/workspace/switch", (req, res) => {

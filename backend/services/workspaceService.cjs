@@ -205,7 +205,34 @@ function createInvitation(workspaceId, { email, role = "Operator" }, requestingA
   ws.invitations.push(inv);
   _logActivity(ws, requestingAccountId, "invitation_created", `${email} as ${role}`);
   _writeAll(all);
-  return { token, email, role, expiresAt: inv.expiresAt };
+  return { token, email, role, expiresAt: inv.expiresAt, workspaceName: ws.name };
+}
+
+/**
+ * Email the invite link. Separate from createInvitation so the token/record
+ * creation (the part that must succeed for the invite to be real) never fails
+ * because of an email provider hiccup — mirrors betaReadiness.sendEmailVerification's
+ * split between token generation and best-effort delivery.
+ */
+function sendInvitationEmail({ email, token, role, workspaceName, invitedByName }) {
+  let emailSvc = null;
+  try { emailSvc = require("./emailService.cjs"); } catch { return { sent: false, reason: "emailService unavailable" }; }
+
+  const base = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
+  const link = `${base}/accept-invite?token=${token}`;
+  try {
+    emailSvc.sendEmail({
+      to: email,
+      subject: `${invitedByName || "Someone"} invited you to join ${workspaceName || "a workspace"} on Ooplix`,
+      html: `<p>You've been invited to join <strong>${workspaceName || "a workspace"}</strong> as <strong>${role}</strong>.</p>
+<p><a href="${link}">Accept invitation</a></p>
+<p>This invitation expires in 7 days. If you don't have an Ooplix account yet, you'll be asked to create one.</p>`,
+      text: `You've been invited to join ${workspaceName || "a workspace"} as ${role}. Accept: ${link}`,
+    });
+    return { sent: true, link };
+  } catch (e) {
+    return { sent: false, reason: e.message, link };
+  }
 }
 
 /**
@@ -230,6 +257,53 @@ function acceptInvitation(token, accountId) {
     return { workspaceId: ws.id, role: inv.role };
   }
   throw new Error("Invalid or expired invitation token");
+}
+
+/**
+ * Look up a pending invitation by token without consuming it — used to show
+ * the invitee "You've been invited to join <workspace> as <role>" before
+ * they've logged in/registered, since acceptInvitation requires an accountId
+ * (the invitee may not have an account yet).
+ */
+function getInvitationByToken(token) {
+  const all = _readAll();
+  for (const ws of Object.values(all)) {
+    const inv = (ws.invitations || []).find(i => i.token === token);
+    if (!inv) continue;
+    return {
+      workspaceId: ws.id,
+      workspaceName: ws.name,
+      email: inv.email,
+      role: inv.role,
+      expired: inv.expiresAt < Date.now(),
+      used: !!inv.usedAt,
+    };
+  }
+  return null;
+}
+
+/**
+ * Remove a member from a workspace. Requires Admin+ (same bar as inviting).
+ * The workspace's last Owner cannot be removed — mirrors organizationService's
+ * addMember/removeMember guard against leaving an ownerless org.
+ */
+function removeMember(workspaceId, targetAccountId, requestingAccountId) {
+  const all = _ensureDefault();
+  const ws = all[workspaceId];
+  if (!ws) throw new Error("Workspace not found");
+  const requester = ws.members.find(m => m.accountId === requestingAccountId);
+  if (!requester || !_roleAtLeast(requester.role, "Admin")) throw new Error("Insufficient role");
+
+  const target = ws.members.find(m => m.accountId === targetAccountId);
+  if (!target) throw new Error("Member not found");
+  if (target.role === "Owner" && ws.members.filter(m => m.role === "Owner").length <= 1) {
+    throw new Error("Cannot remove the last Owner");
+  }
+
+  ws.members = ws.members.filter(m => m.accountId !== targetAccountId);
+  _logActivity(ws, requestingAccountId, "member_removed", targetAccountId);
+  _writeAll(all);
+  return { removed: true, workspaceId, accountId: targetAccountId };
 }
 
 /**
@@ -299,7 +373,10 @@ module.exports = {
   updateWorkspace,
   switchWorkspace,
   createInvitation,
+  sendInvitationEmail,
+  getInvitationByToken,
   acceptInvitation,
+  removeMember,
   getMembers,
   getActivity,
   getMemberRole,
