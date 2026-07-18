@@ -10,10 +10,16 @@
  */
 
 const router          = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const g               = require("../services/revenueOS.cjs");
 
-router.use("/revenue", requireAuth);
+// Platform-wide founder financial data (aggregate MRR/ARR/churn across every
+// customer) — operator-only. Previously gated by requireAuth alone, so any
+// signed-up customer could read the whole platform's revenue numbers; the
+// CommandCenter.jsx comment claiming this was already 403'd for non-operators
+// was aspirational, not enforced. Regular customers get their OWN billing via
+// GET /billing/status (backend/routes/billing.js), which is correctly account-scoped.
+router.use("/revenue", requireAuth, operatorOnly);
 
 function _ok(res, data)           { res.json({ ok: true, ...data }); }
 function _err(res, e, code = 500) { res.status(code).json({ error: e.message || e }); }

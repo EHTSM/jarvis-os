@@ -5,7 +5,7 @@ const automation   = require("../services/automationService");
 const controller   = require("../controllers/jarvisController");
 const errTracker   = require("../utils/errorTracker");
 const memTracker   = require("../utils/memoryTracker");
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit   = require("../middleware/operatorAudit");
 
 // Open probes — intentionally unauthenticated:
@@ -40,11 +40,14 @@ router.get("/health",     (req, res) => {
 router.get("/test",       (req, res) => res.json({ status: "OK", timestamp: new Date().toISOString() }));
 router.get("/api/status", (req, res) => res.json({ status: "JARVIS running", version: "3.0", port: process.env.PORT || 5050 }));
 
-// Gate: ops-specific routes require a valid operator session.
+// Gate: ops-specific routes require a valid operator session (platform-wide
+// founder data — CRM lead stats, revenue, system metrics — not scoped to any
+// one account, so a regular customer must never reach these; previously only
+// requireAuth was applied here, which any signed-up customer satisfies).
 // Path-scoped to avoid intercepting SPA/unmatched paths that pass through this router.
 // Note: /dashboard/revenue is the only dashboard sub-path here; /dashboard alone would
 // prefix-match any React Router client route named /dashboard, so we scope to /dashboard/revenue.
-router.use(["/stats", "/dashboard/revenue", "/metrics", "/ops", "/runtime/reboot", "/workflow"], requireAuth, operatorAudit);
+router.use(["/stats", "/dashboard/revenue", "/metrics", "/ops", "/runtime/reboot", "/workflow"], requireAuth, operatorOnly, operatorAudit);
 
 router.get("/stats", (req, res) => {
     const s = crm.getStats();

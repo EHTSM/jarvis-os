@@ -13,6 +13,7 @@ const router   = require("express").Router();
 const accounts = require("../services/accountService");
 const billing  = require("../services/billingService");
 const auditLog = require("../utils/auditLog.cjs");
+const logger   = require("../utils/logger");
 const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
 
@@ -29,6 +30,12 @@ const _ws   = () => { try { return require("../services/workspaceService.cjs"); 
 // email's local part. Both are non-fatal: a signup should never fail just
 // because org/workspace provisioning hit an error — the account already
 // exists and the user can create these manually from the app.
+//
+// organizationService.createOrg rejects duplicate slugs (409) — a real
+// collision case, since "<name>'s Organization" is common for shared first
+// names (e.g. two different "Priya"s signing up). On a 409 specifically,
+// retry once with the account id appended so the customer still gets an org
+// rather than silently landing with none.
 function _provisionOrgAndWorkspace(account, orgName) {
   const displayName = (orgName || "").trim() || (account.name ? `${account.name}'s Organization` : `${account.email.split("@")[0]}'s Organization`);
   const result = { orgId: null, workspaceId: null };
@@ -38,7 +45,18 @@ function _provisionOrgAndWorkspace(account, orgName) {
     try {
       const created = org.createOrg({ name: displayName }, account.id);
       result.orgId = created.id;
-    } catch (e) { auditLog.recordAuth?.({ action: "org_provision_failed", operator: account.id, method: e.message }); }
+    } catch (e) {
+      if (e.status === 409) {
+        try {
+          const retried = org.createOrg({ name: `${displayName} (${account.id.slice(0, 6)})` }, account.id);
+          result.orgId = retried.id;
+        } catch (e2) {
+          logger.warn(`[Register] org provisioning failed for ${account.id} after retry: ${e2.message}`);
+        }
+      } else {
+        logger.warn(`[Register] org provisioning failed for ${account.id}: ${e.message}`);
+      }
+    }
   }
 
   const ws = _ws();
@@ -47,7 +65,9 @@ function _provisionOrgAndWorkspace(account, orgName) {
       const created = ws.createWorkspace({ name: displayName, creatorAccountId: account.id });
       result.workspaceId = created.id;
       ws.switchWorkspace(created.id, account.id);
-    } catch (e) { auditLog.recordAuth?.({ action: "workspace_provision_failed", operator: account.id, method: e.message }); }
+    } catch (e) {
+      logger.warn(`[Register] workspace provisioning failed for ${account.id}: ${e.message}`);
+    }
   }
 
   return result;

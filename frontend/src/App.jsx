@@ -20,6 +20,7 @@ import VerifyEmailPage    from "./components/auth/VerifyEmailPage.jsx";
 import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
+import CustomerDashboard  from "./components/CustomerDashboard.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
 // Non-critical paths — lazy-split from main bundle
 const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
@@ -1183,7 +1184,7 @@ function AppInner() {
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
         {tab === "workflowautomation" && <WorkflowAutomationCenter />}
         {tab === "analyticscenter" && <AnalyticsCenter />}
-        {tab === "home"     && (
+        {tab === "home" && user?.role === "operator" && (
           <CommandCenter
             stats={stats}
             opsData={opsData}
@@ -1196,6 +1197,9 @@ function AppInner() {
               if (ops.value) setOpsData(ops.value);
             }}
           />
+        )}
+        {tab === "home" && user?.role !== "operator" && (
+          <CustomerDashboard onNavigate={setTab} />
         )}
         {tab === "chat" && (
           <Chat

@@ -14,6 +14,7 @@ router.get("/billing/status", requireAuth, (req, res) => {
   const accountId = req.user.sub || req.user.id || "operator";
   const record    = billing.getRecord(accountId);
   const access    = billing.checkAccess(accountId);
+  const quota     = billing.checkUsageQuota(accountId);
 
   res.json({
     success:     true,
@@ -26,6 +27,7 @@ router.get("/billing/status", requireAuth, (req, res) => {
     trialEnd:    record.trialEnd,
     activatedAt: record.activatedAt,
     prices:      billing.PLAN_PRICES,
+    usage:       { used: quota.used, limit: quota.limit, remaining: quota.remaining },
   });
 });
 

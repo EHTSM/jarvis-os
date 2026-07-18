@@ -18,7 +18,7 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 function _dc() { return require("../services/deploymentCoordinator.cjs"); }
 let _lastBenchReport = null;
@@ -26,7 +26,12 @@ let _lastBenchReport = null;
 function _ok(res, data)     { res.json({ ok: true, ...data }); }
 function _err(res, e, code) { res.status(code || 500).json({ ok: false, error: e?.message || String(e) }); }
 
-router.use("/deployment", requireAuth);
+// Infrastructure deployment orchestration for the platform itself (runs
+// production deployments/rollbacks/benchmarks) — operator-only. Not scoped
+// to any account/org, so any signed-up customer previously satisfying just
+// requireAuth could read active deployments/stats, or worse, trigger a real
+// production deployment or rollback via POST /deployment/run.
+router.use("/deployment", requireAuth, operatorOnly);
 
 // ── Specific routes BEFORE /:id ──────────────────────────────────────────────
 
