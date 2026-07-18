@@ -55,6 +55,7 @@ const TeamWorkspace            = lazy(() => import("./components/TeamWorkspace.j
 const WorkspaceSettings        = lazy(() => import("./components/WorkspaceSettings.jsx"));
 const KnowledgeCenter          = lazy(() => import("./components/KnowledgeCenter.jsx"));
 const IntegrationCenter        = lazy(() => import("./components/IntegrationCenter.jsx"));
+const ConnectorSetupWizard     = lazy(() => import("./components/ConnectorSetupWizard.jsx"));
 const EngineeringCenter        = lazy(() => import("./components/EngineeringCenter.jsx"));
 const EngineeringWorkspace     = lazy(() => import("./components/EngineeringWorkspace.jsx"));
 const IntelligencePanel        = lazy(() => import("./components/IntelligencePanel.jsx"));
@@ -1310,7 +1311,8 @@ function AppInner() {
         {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}
         {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
         {tab === "memory"        && <MemoryOSV2          onNavigate={setTab} />}
-        {tab === "integrations"  && <IntegrationCenter  onNavigate={setTab} />}
+        {tab === "integrations" && user?.role === "operator" && <IntegrationCenter  onNavigate={setTab} />}
+        {tab === "integrations" && user?.role !== "operator" && <ConnectorSetupWizard onToast={addToast} />}
         {tab === "agents"        && <AgentOSV2               onNavigate={setTab} online={online} />}
         {tab === "copilot"       && <DeveloperCopilotV2 onNavigate={setTab} />}
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}

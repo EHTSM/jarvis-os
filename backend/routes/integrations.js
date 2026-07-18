@@ -10,12 +10,19 @@
  */
 
 const router      = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _ic  = () => _try(() => require("../services/integrationConnectors.cjs"));
 
-router.use("/integrations", requireAuth);
+// Platform-wide founder connector status (whether the founder's own Razorpay/
+// WhatsApp/AI keys are configured, failure counts, reconnect controls) —
+// operator-only, same class of gap fixed for /revenue, /stats, and
+// /deployment: this was only requireAuth-gated, so any signed-up customer
+// could read it, and POST /integrations/:id/connect could reconnect the
+// founder's own shared infrastructure credentials. Customers get their own,
+// org-scoped connectors via /my-connectors/* (myConnectors.js) instead.
+router.use("/integrations", requireAuth, operatorOnly);
 
 // ── Full scan ─────────────────────────────────────────────────────────────────
 // POST so it can be triggered on demand without browser caching issues

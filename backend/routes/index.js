@@ -121,6 +121,7 @@ router.use(require("./pcsCredentials")); // /credentials/* — PCS-1: Email/AI/O
 router.use(require("./pcs2ExternalPlatforms")); // /ext/* — PCS-2: Meta/Google/Microsoft/Git/Productivity/Design/Commerce/Automation audit
 router.use(require("./integrations")); // /integrations/* — Production Mission 3: unified A-L connector connect/health/status/reconnect/rotate
 router.use(require("./founderVault")); // /vault/* — Production Mission 3.1: Founder Identity & Secret Vault (57 connectors, 12 cred types, env manager)
+router.use(require("./myConnectors")); // /my-connectors/* — Public SaaS Mission 7: customer-facing, org-scoped connector setup (WhatsApp/Razorpay/Stripe/SMTP), backed by secretVault's org-scoping
 router.use(require("./dop1")); // /dop/* — DOP-1: Production Infrastructure Validation (10 modules: VPS/Nginx/SSL/DNS/Domains/Deploy/Backup/Monitor/Security/Stress)
 router.use(require("./dop2")); // /dop2/* — DOP-2: Real Production Deployment (10 phases: Connect/Deps/Repo/Env/Nginx/SSL/PM2/Health/Smoke/Reports)
 router.use(require("./plan-management")); // /plan/* — current plan, upgrade
