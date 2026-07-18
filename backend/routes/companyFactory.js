@@ -23,6 +23,8 @@ const _store = () => _try(() => require("../services/storageService.cjs"));
 const _bds  = () => _try(() => require("../services/businessDataService.cjs"));
 const _aiOrch = () => _try(() => require("../services/aiOrchestrator.cjs"));
 const _mem  = () => _try(() => require("../services/semanticMemorySearch.cjs"));
+const _budgets = () => _try(() => require("../services/orgBudgets.cjs"));
+const _vault = () => _try(() => require("../services/secretVault.cjs"));
 
 // Resolves company → its backing orgId, and asserts the requesting account has
 // the given permission (default update_org) on that org — every company-scoped
@@ -420,6 +422,82 @@ router.get("/company-factory/companies/:id/memory/search", requireAuth, (req, re
   if (!q) return res.status(400).json({ ok: false, error: "q (query) required" });
   const result = _mem()?.semanticSearch?.(q, { type, minScore: minScore ? +minScore : undefined, limit: limit ? +limit : undefined, projectId: company.orgId });
   res.json({ ok: true, orgId: company.orgId, ...result });
+});
+
+// ── Company Billing (org-scoped via orgBudgets.cjs + organizationService.cjs) ─
+// AI spend caps already live in orgBudgets.cjs keyed by orgId; per-seat
+// subscription overview already lives in organizationService.getOrgBillingOverview
+// (which self-gates on "manage_billing"). No new billing storage or logic.
+
+router.get("/company-factory/companies/:id/billing/budget", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_analytics");
+  if (!company) return;
+  res.json({ ok: true, orgId: company.orgId, budget: _budgets()?.getOrgBudget?.(company.orgId) || null });
+});
+
+router.patch("/company-factory/companies/:id/billing/budget", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "manage_billing");
+  if (!company) return;
+  const { monthlyCapUsd, monthlyRequestCap, alertThresholdPct } = req.body || {};
+  try {
+    const budget = _budgets()?.setOrgBudget?.(company.orgId, { monthlyCapUsd, monthlyRequestCap, alertThresholdPct });
+    res.json({ ok: true, orgId: company.orgId, budget });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.get("/company-factory/companies/:id/billing/overview", requireAuth, (req, res) => {
+  const company = _cle_e()?.getCompany?.(req.params.id);
+  if (!company) return res.status(404).json({ ok: false, error: "company not found" });
+  if (!company.orgId) return res.status(409).json({ ok: false, error: "company has no linked organization" });
+  try {
+    const overview = _org()?.getOrgBillingOverview?.(company.orgId, req.user.sub);
+    res.json({ ok: true, orgId: company.orgId, overview });
+  } catch (e) {
+    res.status(e.status || 500).json({ ok: false, error: e.message });
+  }
+});
+
+// ── Company Connectors (org-scoped via secretVault.cjs) ───────────────────────
+// secretVault.cjs already supports full per-org credential storage/rotation/
+// validation for all 57 production connectors — no new credential storage,
+// and secret VALUES are never returned over this API (listSecrets/
+// validateSecret already redact them at the service layer).
+
+router.get("/company-factory/companies/:id/connectors", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_analytics");
+  if (!company) return;
+  const { connectorId, type, phase } = req.query;
+  const secrets = _vault()?.listSecrets?.({ connectorId, type, phase, orgId: company.orgId }) || [];
+  res.json({ ok: true, orgId: company.orgId, connectors: secrets });
+});
+
+router.post("/company-factory/companies/:id/connectors/:connectorId/:type", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "manage_billing");
+  if (!company) return;
+  const { value, meta } = req.body || {};
+  if (!value) return res.status(400).json({ ok: false, error: "value required" });
+  try {
+    const record = _vault()?.storeSecret?.(req.params.connectorId, req.params.type, value, meta || {}, company.orgId);
+    res.json({ ok: true, orgId: company.orgId, connector: record });
+  } catch (e) {
+    res.status(400).json({ ok: false, error: e.message });
+  }
+});
+
+router.post("/company-factory/companies/:id/connectors/:connectorId/:type/validate", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_analytics");
+  if (!company) return;
+  const result = _vault()?.validateSecret?.(req.params.connectorId, req.params.type, company.orgId);
+  res.json({ ok: true, orgId: company.orgId, validation: result });
+});
+
+router.delete("/company-factory/companies/:id/connectors/:connectorId/:type", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "manage_billing");
+  if (!company) return;
+  const deleted = _vault()?.deleteSecret?.(req.params.connectorId, req.params.type, company.orgId);
+  res.json({ ok: !!deleted });
 });
 
 module.exports = router;
