@@ -2,39 +2,25 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import "./ReferralEngine.css";
 
-// ── Referral config ───────────────────────────────────────────────────
+// Real reward model, from backend/services/referralEngine.cjs REWARDS —
+// per-invite credits, not milestone tiers. Kept in sync manually since
+// GET /launch/referral returns `rewards` with the same shape at runtime.
 const REFERRAL_REWARDS = [
   {
-    milestone: 1,
-    label:     "First referral",
-    reward:    "1 month free",
-    desc:      "Get 1 month of your current plan free when your first referral signs up.",
-    icon:      "✦",
-    color:     "var(--accent2)",
+    type:  "trial_signup",
+    label: "Friend starts a trial",
+    reward: "+50 credits",
+    desc:  "Credited the moment someone signs up through your link and starts a trial.",
+    icon:  "✦",
+    color: "var(--accent2)",
   },
   {
-    milestone: 3,
-    label:     "3 referrals",
-    reward:    "3 months free",
-    desc:      "Refer 3 operators and get 3 months on us.",
-    icon:      "◉",
-    color:     "var(--accent)",
-  },
-  {
-    milestone: 10,
-    label:     "10 referrals",
-    reward:    "1 year free + Growth plan",
-    desc:      "Reach 10 successful referrals and get a full year of Growth plan at no cost.",
-    icon:      "★",
-    color:     "var(--warning)",
-  },
-  {
-    milestone: 25,
-    label:     "25 referrals",
-    reward:    "Lifetime Growth access",
-    desc:      "25 successful referrals earns you lifetime access to the Growth plan.",
-    icon:      "⬟",
-    color:     "var(--success)",
+    type:  "paid_upgrade",
+    label: "Friend upgrades to paid",
+    reward: "+200 credits + 1 month free",
+    desc:  "Credited when a referred trial converts to a paid plan.",
+    icon:  "★",
+    color: "var(--warning)",
   },
 ];
 
@@ -99,17 +85,23 @@ export default function ReferralEngine({ onNavigate }) {
   const [copiedTpl,   setCopiedTpl]   = useState(null);
   const [dashboard,   setDashboard]   = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [redeeming,   setRedeeming]   = useState(false);
+  const [toast,       setToast]       = useState(null);
 
   const referralCode = dashboard?.code || "—";
-  const referralLink = dashboard?.code
-    ? `https://ooplix.com/?ref=${dashboard.code}`
-    : "https://ooplix.com/?ref=loading…";
+  const referralLink = dashboard?.link || (dashboard?.code
+    ? `https://ooplix.com/signup?ref=${dashboard.code}`
+    : "https://ooplix.com/signup?ref=loading…");
+
+  const loadDashboard = useCallback(() => {
+    _api("/launch/referral").then(r => { if (r.ok) setDashboard(r.dashboard); });
+  }, []);
 
   useEffect(() => {
     track.event("referral_center_viewed");
-    _api("/launch/referral").then(r => { if (r.ok) setDashboard(r.dashboard); });
+    loadDashboard();
     _api("/launch/referral/leaderboard").then(r => { if (r.ok) setLeaderboard(r.leaderboard || []); });
-  }, []);
+  }, [loadDashboard]);
 
   const handleCopyTemplate = (id, text) => {
     navigator.clipboard.writeText(text.replace("{{referral_link}}", referralLink));
@@ -118,8 +110,23 @@ export default function ReferralEngine({ onNavigate }) {
     track.event("referral_template_copied", { channel: id });
   };
 
+  const handleRedeem = async () => {
+    setRedeeming(true);
+    const r = await _post("/launch/referral/redeem", {});
+    setRedeeming(false);
+    if (r.ok) {
+      setToast(`${r.credits} credits redeemed`);
+      track.event("referral_credits_redeemed", { credits: r.credits });
+      loadDashboard();
+    } else {
+      setToast(r.error || "Nothing to redeem yet");
+    }
+    setTimeout(() => setToast(null), 2500);
+  };
+
   return (
     <div className="referral-engine page-enter">
+      {toast && <div className="ref-toast">{toast}</div>}
 
       <div className="ref-header">
         <div>
@@ -127,21 +134,25 @@ export default function ReferralEngine({ onNavigate }) {
           <p className="ref-subtitle">Earn rewards for every operator you bring to Ooplix.</p>
         </div>
         <div className="ref-header-stat">
-          <span className="ref-stat-num">0</span>
+          <span className="ref-stat-num">{dashboard?.invites ?? 0}</span>
           <span className="ref-stat-label">Referrals</span>
         </div>
       </div>
 
-      {/* Progress toward next reward */}
+      {/* Credit balance */}
       <div className="ref-progress-bar-card">
         <div className="ref-pbcard-top">
-          <span className="ref-pbcard-label">Progress to next reward</span>
-          <span className="ref-pbcard-reward">1 referral → 1 month free</span>
+          <span className="ref-pbcard-label">Credits earned</span>
+          <span className="ref-pbcard-reward">{dashboard?.totalEarned ?? 0} total</span>
         </div>
-        <div className="ref-pbcard-track">
-          <div className="ref-pbcard-fill" style={{ width: "0%" }} />
+        <div className="ref-pbcard-count">
+          {dashboard?.trials ?? 0} trial signup{(dashboard?.trials ?? 0) === 1 ? "" : "s"} · {dashboard?.paid ?? 0} paid conversion{(dashboard?.paid ?? 0) === 1 ? "" : "s"}
         </div>
-        <span className="ref-pbcard-count">0 / 1 referrals</span>
+        {(dashboard?.pendingCredits ?? 0) > 0 && (
+          <button className="ref-copy-btn" onClick={handleRedeem} disabled={redeeming} style={{ marginTop: 10 }}>
+            {redeeming ? "Redeeming…" : `Redeem ${dashboard.pendingCredits} pending credits`}
+          </button>
+        )}
       </div>
 
       {/* Tabs */}
@@ -204,27 +215,27 @@ export default function ReferralEngine({ onNavigate }) {
           </div>
         )}
 
-        {/* Rewards tiers */}
+        {/* Reward types */}
         {section === "rewards" && (
           <div className="ref-rewards-list">
-            {REFERRAL_REWARDS.map(r => (
-              <div key={r.milestone} className="ref-reward-card">
-                <span className="ref-reward-icon" style={{ color: r.color }}>{r.icon}</span>
-                <div className="ref-reward-body">
-                  <div className="ref-reward-top">
-                    <span className="ref-reward-milestone">{r.label}</span>
-                    <span className="ref-reward-value" style={{ color: r.color }}>{r.reward}</span>
+            {REFERRAL_REWARDS.map(r => {
+              const earnedCount = r.type === "trial_signup" ? (dashboard?.trials ?? 0) : (dashboard?.paid ?? 0);
+              return (
+                <div key={r.type} className="ref-reward-card">
+                  <span className="ref-reward-icon" style={{ color: r.color }}>{r.icon}</span>
+                  <div className="ref-reward-body">
+                    <div className="ref-reward-top">
+                      <span className="ref-reward-milestone">{r.label}</span>
+                      <span className="ref-reward-value" style={{ color: r.color }}>{r.reward}</span>
+                    </div>
+                    <span className="ref-reward-desc">{r.desc}</span>
                   </div>
-                  <span className="ref-reward-desc">{r.desc}</span>
-                </div>
-                <div className="ref-reward-progress">
-                  <span className="ref-reward-pct">0/{r.milestone}</span>
-                  <div className="ref-reward-track">
-                    <div className="ref-reward-fill" style={{ width: "0%", background: r.color }} />
+                  <div className="ref-reward-progress">
+                    <span className="ref-reward-pct">{earnedCount}× earned</span>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

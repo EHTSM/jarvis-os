@@ -46,7 +46,6 @@ const SuccessCenter            = lazy(() => import("./components/SuccessCenter.j
 const HelpHub                  = lazy(() => import("./components/HelpHub.jsx"));
 const PartnerProgram           = lazy(() => import("./components/PartnerProgram.jsx"));
 const TeamWorkspace            = lazy(() => import("./components/TeamWorkspace.jsx"));
-const EnterpriseCRM            = lazy(() => import("./components/EnterpriseCRM.jsx"));
 const WorkspaceSettings        = lazy(() => import("./components/WorkspaceSettings.jsx"));
 const KnowledgeCenter          = lazy(() => import("./components/KnowledgeCenter.jsx"));
 const IntegrationCenter        = lazy(() => import("./components/IntegrationCenter.jsx"));
@@ -66,23 +65,16 @@ const SharedMemoryCenter       = lazy(() => import("./components/SharedMemoryCen
 const OperationsCenter         = lazy(() => import("./components/OperationsCenter.jsx"));
 const AgentCollaborationCenter = lazy(() => import("./components/AgentCollaborationCenter.jsx"));
 const ToolFabricCenter         = lazy(() => import("./components/ToolFabricCenter.jsx"));
-const AutonomousCompanyCenter  = lazy(() => import("./components/AutonomousCompanyCenter.jsx"));
 const CompanyFactoryCenter     = lazy(() => import("./components/CompanyFactoryCenter.jsx"));
 const CreativeStudio           = lazy(() => import("./components/CreativeStudio.jsx"));
 const WorkflowAutomationCenter = lazy(() => import("./components/WorkflowAutomationCenter.jsx"));
 const AnalyticsCenter          = lazy(() => import("./components/AnalyticsCenter.jsx"));
+const ReferralEngine           = lazy(() => import("./components/ReferralEngine.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
-const DataOwnershipCenter      = lazy(() => import("./components/DataOwnershipCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
 const TrustComplianceCenter    = lazy(() => import("./components/TrustComplianceCenter.jsx"));
-const DisasterRecoveryCenter   = lazy(() => import("./components/DisasterRecoveryCenter.jsx"));
-const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformCenter.jsx"));
-const CommunityCenter          = lazy(() => import("./components/CommunityCenter.jsx"));
 const MarketplaceCenter        = lazy(() => import("./components/MarketplaceCenter.jsx"));
 const AICostCenter             = lazy(() => import("./components/AICostCenter.jsx"));
-const AutonomousRevenueCenter  = lazy(() => import("./components/AutonomousRevenueCenter.jsx"));
-const AutonomousMarketingCenter = lazy(() => import("./components/AutonomousMarketingCenter.jsx"));
-const AutonomousSupportCenter  = lazy(() => import("./components/AutonomousSupportCenter.jsx"));
 const OoplixRunsOoplixCenter   = lazy(() => import("./components/OoplixRunsOoplixCenter.jsx"));
 const AutonomousAgentDashboard = lazy(() => import("./components/AutonomousAgentDashboard.jsx"));
 const AgentFactoryCenter       = lazy(() => import("./components/AgentFactoryCenter.jsx"));
@@ -90,7 +82,6 @@ const MemoryIntelligenceCenter = lazy(() => import("./components/MemoryIntellige
 const SelfImprovementCenter    = lazy(() => import("./components/SelfImprovementCenter.jsx"));
 const JarvisBrainCenter        = lazy(() => import("./components/JarvisBrainCenter.jsx"));
 const ExecutionConnectorCenter = lazy(() => import("./components/ExecutionConnectorCenter.jsx"));
-const AutonomousWorkflowCenter = lazy(() => import("./components/AutonomousWorkflowCenter.jsx"));
 const AgentActionCenter        = lazy(() => import("./components/AgentActionCenter.jsx"));
 const AutonomyScoreCenter      = lazy(() => import("./components/AutonomyScoreCenter.jsx"));
 const GlobalActivityFeed       = lazy(() => import("./components/GlobalActivityFeed.jsx"));
@@ -110,10 +101,7 @@ const DeveloperCopilotV2       = lazy(() => import("./components/DeveloperCopilo
 const GrowthOS                 = lazy(() => import("./components/GrowthOS.jsx"));
 const ContentSEO               = lazy(() => import("./components/ContentSEO.jsx"));
 const DistributionOS           = lazy(() => import("./components/DistributionOS.jsx"));
-const PersonalOS               = lazy(() => import("./components/PersonalOS.jsx"));
 const BusinessOS               = lazy(() => import("./components/BusinessOS.jsx"));
-const DeveloperOS              = lazy(() => import("./components/DeveloperOS.jsx"));
-const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.jsx"));
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
@@ -203,6 +191,7 @@ const MORE_TABS = [
   { id: "growth",     label: "Growth",             group: "Growth"       },
   { id: "contentseo", label: "Content & SEO",      group: "Growth"       },
   { id: "distribution",label:"Distribution",       group: "Growth"       },
+  { id: "referral",   label: "Referral Engine",    group: "Growth"       },
   { id: "partners",   label: "Partners",           group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
   // ── Enterprise & Platform
@@ -1212,15 +1201,12 @@ function AppInner() {
         {tab === "contentseo"   && <ContentSEO />}
         {tab === "distribution" && <DistributionOS />}
         {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
+        {tab === "referral"  && <ReferralEngine onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
-        {tab === "personal"  && <PersonalOS  onToast={addToast} />}
         {tab === "business"  && <BusinessOS  onToast={addToast} />}
-        {tab === "developer" && <DeveloperOS onToast={addToast} />}
-        {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
         {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
-        {tab === "ecrm"      && <EnterpriseCRM onNavigate={setTab} />}
         {tab === "reports"   && <ReportsV2 onNavigate={setTab} online={online} />}
         {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}
         {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
@@ -1244,20 +1230,12 @@ function AppInner() {
         {tab === "operations"    && <OperationsCenter            onNavigate={setTab} />}
         {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
         {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
-        {tab === "autonomy"      && <AutonomousCompanyCenter     onNavigate={setTab} />}
         {tab === "companies"     && <CompanyFactoryCenter />}
         {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
-        {tab === "dataowner"         && <DataOwnershipCenter        onNavigate={setTab} />}
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
-        {tab === "disasterrecovery"  && <DisasterRecoveryCenter     onNavigate={setTab} />}
-        {tab === "mobile"            && <MobilePlatformCenter       onNavigate={setTab} />}
-        {tab === "community"         && <CommunityCenter            onNavigate={setTab} />}
         {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
         {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
-        {tab === "autorevenue"       && <AutonomousRevenueCenter    onNavigate={setTab} />}
-        {tab === "automarketing"     && <AutonomousMarketingCenter  onNavigate={setTab} />}
-        {tab === "autosupport"       && <AutonomousSupportCenter    onNavigate={setTab} />}
         {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
         {tab === "agentruntime"      && <AutonomousAgentDashboard />}
         {tab === "agentfactory"      && <AgentFactoryCenter         onNavigate={setTab} />}

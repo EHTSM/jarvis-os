@@ -70,6 +70,7 @@ const NAV_ACTIONS = [
   { id: "nav-growth",     label: "Growth",                icon: "◇", group: "Growth & Revenue",    tab: "growth"     },
   { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" },
   { id: "nav-distribution",label:"Distribution",          icon: "◉", group: "Growth & Revenue",    tab: "distribution"},
+  { id: "nav-referral",   label: "Referral Engine",       icon: "★", group: "Growth & Revenue",    tab: "referral"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
 
