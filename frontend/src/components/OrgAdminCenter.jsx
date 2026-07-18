@@ -26,10 +26,38 @@ function Empty({ title, sub }) {
 
 // ── Overview ──────────────────────────────────────────────────────────
 
-function OverviewPanel({ org, myRole, onToast }) {
+function OverviewPanel({ org, myRole, onToast, onReload }) {
+  const [busy, setBusy] = useState(false);
   if (!org) return <Empty title="No organization selected" sub="Use the organization switcher in the header to select or create one." />;
+
+  const isArchived = org.status === "archived";
+
+  const handleArchive = async () => {
+    if (!window.confirm(`Archive "${org.name}"? Members will lose access until it's restored. Data is preserved and this can be undone.`)) return;
+    setBusy(true);
+    const r = await _fetch(`/orgs/${org.id}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
+    setBusy(false);
+    if (r.ok === false) onToast?.("error", r.error || "Failed to archive organization");
+    else { onToast?.("success", "Organization archived"); onReload?.(); }
+  };
+
+  const handleRestore = async () => {
+    setBusy(true);
+    const r = await _fetch(`/orgs/${org.id}/restore`, { method: "POST" }).catch(e => ({ ok: false, error: e.message }));
+    setBusy(false);
+    if (r.ok === false) onToast?.("error", r.error || "Failed to restore organization");
+    else { onToast?.("success", "Organization restored"); onReload?.(); }
+  };
+
   return (
     <div className="oac-section">
+      {isArchived && (
+        <div className="oac-empty" style={{ borderColor: "var(--warning)", padding: "16px 20px" }}>
+          <p className="oac-empty-title" style={{ color: "var(--warning)" }}>This organization is archived</p>
+          <p className="oac-empty-sub">Members cannot access it while archived. Restore it to resume normal access.</p>
+          <button className="oac-btn primary" disabled={busy} onClick={handleRestore} style={{ marginTop: 8 }}>Restore organization</button>
+        </div>
+      )}
       <div className="oac-stats-grid">
         <div className="oac-stat-card">
           <span className="oac-stat-val">{org.memberCount ?? 0}</span>
@@ -60,6 +88,17 @@ function OverviewPanel({ org, myRole, onToast }) {
         <div className="oac-meta-row">
           <span className="oac-meta-label">Description</span>
           <span className="oac-meta-val">{org.description}</span>
+        </div>
+      )}
+      {myRole === "org_owner" && !isArchived && (
+        <div className="oac-section" style={{ marginTop: 8 }}>
+          <h3 className="oac-section-title" style={{ color: "var(--danger)" }}>Danger zone</h3>
+          <div className="oac-form-card" style={{ justifyContent: "space-between" }}>
+            <span className="oac-card-desc">Archive this organization. Data is preserved; members lose access until restored.</span>
+            <button className="oac-btn" style={{ borderColor: "var(--danger)", color: "var(--danger)" }} disabled={busy} onClick={handleArchive}>
+              Archive organization
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -251,10 +290,13 @@ export default function OrgAdminCenter({ onToast }) {
   const canManage = primary && ["org_owner", "org_admin"].includes(primary.orgRole);
 
   const [orgDetail, setOrgDetail] = useState(null);
-  useEffect(() => {
+  const loadDetail = useCallback(() => {
     if (!orgId) return;
     _fetch(`/orgs/${orgId}`).then(r => { if (r.ok !== false) setOrgDetail(r.org); }).catch(() => {});
   }, [orgId]);
+  useEffect(() => { loadDetail(); }, [loadDetail]);
+
+  const handleOverviewReload = () => { loadCtx(); loadDetail(); };
 
   if (loading) return <div className="org-admin-center oac-loading">Loading organization…</div>;
 
@@ -288,7 +330,7 @@ export default function OrgAdminCenter({ onToast }) {
       </nav>
 
       <div className="oac-content">
-        {view === "overview"    && <OverviewPanel org={orgDetail} myRole={primary.orgRole} onToast={onToast} />}
+        {view === "overview"    && <OverviewPanel org={orgDetail} myRole={primary.orgRole} onToast={onToast} onReload={handleOverviewReload} />}
         {view === "members"     && <MembersPanel orgId={orgId} myRole={primary.orgRole} canManage={canManage} onToast={onToast} />}
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
       </div>

@@ -16,7 +16,9 @@
  *     GET    /orgs                            — list my orgs
  *     GET    /orgs/:orgId                     — get org
  *     PATCH  /orgs/:orgId                     — update org
- *     DELETE /orgs/:orgId                     — delete org (org_owner only)
+ *     DELETE /orgs/:orgId                     — archive org (soft-delete, org_owner only)
+ *     POST   /orgs/:orgId/restore             — restore an archived org
+ *     POST   /orgs/:orgId/purge               — permanently delete an archived org (requires { confirm: slug })
  *
  *   Members:
  *     GET    /orgs/:orgId/members             — list members
@@ -116,7 +118,10 @@ router.post("/orgs", (req, res) => {
 });
 
 router.get("/orgs", (req, res) => {
-    try { _ok(res, _svc().listOrgs(req.user.sub)); }
+    try {
+        const includeArchived = req.query.includeArchived === "true";
+        _ok(res, _svc().listOrgs(req.user.sub, { includeArchived }));
+    }
     catch (e) { _err(res, e); }
 });
 
@@ -134,9 +139,26 @@ router.patch("/orgs/:orgId", requireOrgPermission("update_org"), (req, res) => {
     } catch (e) { _err(res, e, 400); }
 });
 
+// Soft-delete (archive). This is now the safe default behind DELETE — data and
+// membership are preserved and the org can be restored via POST /orgs/:orgId/restore.
 router.delete("/orgs/:orgId", requireOrgPermission("delete_org"), (req, res) => {
     try {
-        _ok(res, _svc().deleteOrg(req.params.orgId, req.user.sub));
+        _ok(res, _svc().archiveOrg(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.post("/orgs/:orgId/restore", requireOrgPermission("delete_org"), (req, res) => {
+    try {
+        _ok(res, _svc().restoreOrg(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+// Hard delete (irreversible). Requires the org to already be archived and the
+// request body to include { confirm: "<org-slug>" } as an explicit safeguard.
+router.post("/orgs/:orgId/purge", requireOrgPermission("delete_org"), (req, res) => {
+    try {
+        const { confirm } = req.body || {};
+        _ok(res, _svc().purgeOrg(req.params.orgId, req.user.sub, confirm));
     } catch (e) { _err(res, e, 400); }
 });
 

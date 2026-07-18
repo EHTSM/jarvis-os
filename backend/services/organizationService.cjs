@@ -175,6 +175,8 @@ function _sanitize(org) {
         description:  org.description || "",
         slug:         org.slug,
         plan:         org.plan || "free",
+        status:       org.status || "active",
+        archivedAt:   org.archivedAt || null,
         createdAt:    org.createdAt,
         updatedAt:    org.updatedAt,
         memberCount:  (org.members || []).length,
@@ -210,6 +212,7 @@ function createOrg({ name, description = "", plan = "free" }, creatorAccountId) 
         description,
         slug,
         plan,
+        status:      "active",
         createdAt:   new Date().toISOString(),
         updatedAt:   new Date().toISOString(),
         members:     [{ accountId: creatorAccountId, orgRole: "org_owner", joinedAt: new Date().toISOString() }],
@@ -232,11 +235,12 @@ function getOrg(orgId) {
     return { ..._sanitize(org), departments: org.departments, members: org.members };
 }
 
-function listOrgs(accountId) {
+function listOrgs(accountId, { includeArchived = false } = {}) {
     const store = _read();
-    const orgs  = accountId
+    let orgs = accountId
         ? store.orgs.filter(o => o.members?.some(m => m.accountId === accountId))
         : store.orgs;
+    if (!includeArchived) orgs = orgs.filter(o => (o.status || "active") !== "archived");
     return { orgs: orgs.map(_sanitize), total: orgs.length };
 }
 
@@ -254,15 +258,100 @@ function updateOrg(orgId, patch, requestingAccountId) {
     return _sanitize(org);
 }
 
-function deleteOrg(orgId, requestingAccountId) {
+// Best-effort count of records elsewhere tagged with this orgId, so callers see
+// the blast radius before archiving/purging. Never throws — missing services
+// or unreadable stores just yield a 0 for that category.
+function _cascadeCounts(orgId) {
+    const counts = { missions: 0, crmRecords: 0 };
+    try {
+        const mm = _mm();
+        if (mm?.listMissions) {
+            const { missions } = mm.listMissions({ limit: Number.MAX_SAFE_INTEGER });
+            counts.missions = (missions || []).filter(m => m?.metadata?.orgId === orgId).length;
+        }
+    } catch {}
+    try {
+        const bds = require("./businessDataService.cjs");
+        const totals = [
+            bds.listLeads?.({ orgId, limit: 1 })?.total,
+            bds.listContacts?.({ orgId, limit: 1 })?.total,
+            bds.listOpportunities?.({ orgId, limit: 1 })?.total,
+            bds.listCampaigns?.({ orgId, limit: 1 })?.total,
+        ];
+        counts.crmRecords = totals.reduce((sum, n) => sum + (n || 0), 0);
+    } catch {}
+    return counts;
+}
+
+// Soft-delete (default, safe path): flips status to "archived". The org and all
+// its data (CRM records, missions, vault secrets, billing links) remain intact
+// and can be restored. Archived orgs are hidden from listOrgs/resolveContext.
+function archiveOrg(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "delete_org");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (org.status === "archived") return { archived: true, orgId, alreadyArchived: true };
+
+    const cascade = _cascadeCounts(orgId);
+    org.status     = "archived";
+    org.archivedAt = new Date().toISOString();
+    org.archivedBy = requestingAccountId;
+    org.updatedAt  = new Date().toISOString();
+    _write(store);
+
+    try { _le()?.createLesson({ type: "org_archived", title: `Org archived: ${org.name}`, source: "organizationService" }); } catch {}
+    logger.info(`[OrgService] Archived org ${orgId} by ${requestingAccountId} (cascade: ${JSON.stringify(cascade)})`);
+    return { archived: true, orgId, cascade };
+}
+
+function restoreOrg(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "delete_org");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if ((org.status || "active") !== "archived") {
+        throw Object.assign(new Error("Organization is not archived"), { status: 400 });
+    }
+    org.status     = "active";
+    org.restoredAt = new Date().toISOString();
+    org.updatedAt  = new Date().toISOString();
+    _write(store);
+    logger.info(`[OrgService] Restored org ${orgId} by ${requestingAccountId}`);
+    return { restored: true, orgId };
+}
+
+// Hard delete (irreversible). Only permitted on an org that is already archived,
+// and only when the caller supplies a confirmation token equal to the org's slug
+// — a deliberate extra step so this can't be triggered by the same one-click flow
+// as archive. Underlying CRM/mission/vault records are NOT cascade-deleted; they
+// remain orphaned under the (now-freed) orgId, matching this mission's scope of
+// not touching those services' delete paths.
+function purgeOrg(orgId, requestingAccountId, confirmToken) {
     _assertPermission(orgId, requestingAccountId, "delete_org");
     const store = _read();
     const idx   = store.orgs.findIndex(o => o.id === orgId);
     if (idx < 0) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    const org = store.orgs[idx];
+
+    if ((org.status || "active") !== "archived") {
+        throw Object.assign(new Error("Organization must be archived before it can be permanently deleted"), { status: 409 });
+    }
+    if (!confirmToken || confirmToken !== org.slug) {
+        throw Object.assign(new Error("Confirmation token mismatch — pass the organization's slug to confirm permanent deletion"), { status: 400 });
+    }
+
+    const cascade = _cascadeCounts(orgId);
     store.orgs.splice(idx, 1);
     _write(store);
-    logger.info(`[OrgService] Deleted org ${orgId} by ${requestingAccountId}`);
-    return { deleted: true, orgId };
+    logger.info(`[OrgService] Permanently deleted org ${orgId} by ${requestingAccountId} (orphaned records: ${JSON.stringify(cascade)})`);
+    return { deleted: true, orgId, orphaned: cascade };
+}
+
+// Back-compat alias: existing callers of deleteOrg now get the safe (soft-delete)
+// behavior instead of the previous unprotected hard delete.
+function deleteOrg(orgId, requestingAccountId) {
+    return archiveOrg(orgId, requestingAccountId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -634,6 +723,7 @@ function resolveContext(accountId) {
     const result = [];
 
     for (const org of store.orgs) {
+        if ((org.status || "active") === "archived") continue;
         const m = (org.members || []).find(m => m.accountId === accountId);
         if (!m) continue;
 
@@ -697,6 +787,9 @@ module.exports = {
     listOrgs,
     updateOrg,
     deleteOrg,
+    archiveOrg,
+    restoreOrg,
+    purgeOrg,
     // Members
     addMember,
     removeMember,
