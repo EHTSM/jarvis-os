@@ -70,6 +70,7 @@ const CreativeStudio           = lazy(() => import("./components/CreativeStudio.
 const WorkflowAutomationCenter = lazy(() => import("./components/WorkflowAutomationCenter.jsx"));
 const AnalyticsCenter          = lazy(() => import("./components/AnalyticsCenter.jsx"));
 const ReferralEngine           = lazy(() => import("./components/ReferralEngine.jsx"));
+const OrgAdminCenter           = lazy(() => import("./components/OrgAdminCenter.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
 const TrustComplianceCenter    = lazy(() => import("./components/TrustComplianceCenter.jsx"));
@@ -115,6 +116,7 @@ const ExecutiveLoop            = lazy(() => import("./components/operator-os/Exe
 const IntelligenceOverlay      = lazy(() => import("./components/operator-os/IntelligenceOverlay.jsx"));
 const LiveAgentCollaboration   = lazy(() => import("./components/operator-os/LiveAgentCollaboration.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
+import OrgSwitcher              from "./components/OrgSwitcher.jsx";
 import { usePinnedTabs }        from "./components/WorkspacePersonalization.jsx";
 import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
@@ -204,6 +206,7 @@ const MORE_TABS = [
   { id: "supportos",  label: "Support",            group: "Enterprise"   },
   { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
   { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
+  { id: "orgadmin",   label: "Organization",       group: "Enterprise"   },
 ];
 
 // ── Tab metadata lookup — powers breadcrumbs + recent pages ─────────
@@ -1075,6 +1078,7 @@ function AppInner() {
             )
           )}
           <WorkspaceSwitcher onNavigate={setTab} />
+          <OrgSwitcher onNavigate={setTab} />
           <button
             className="palette-trigger"
             onClick={() => setPaletteOpen(true)}
@@ -1235,6 +1239,7 @@ function AppInner() {
         {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
         {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
         {tab === "companies"     && <CompanyFactoryCenter />}
+        {tab === "orgadmin"      && <OrgAdminCenter onToast={addToast} />}
         {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}

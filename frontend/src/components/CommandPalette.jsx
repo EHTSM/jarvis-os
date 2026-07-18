@@ -76,6 +76,7 @@ const NAV_ACTIONS = [
 
   // Enterprise
   { id: "nav-companies",  label: "Companies",             icon: "◈", group: "Enterprise",          tab: "companies"  },
+  { id: "nav-orgadmin",   label: "Organization",          icon: "◈", group: "Enterprise",          tab: "orgadmin"   },
   { id: "nav-business",   label: "CRM",                   icon: "◉", group: "Enterprise",          tab: "business"   },
   { id: "nav-team",       label: "Team",                  icon: "◈", group: "Enterprise",          tab: "team"       },
   { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations"},
