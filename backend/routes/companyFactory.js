@@ -65,6 +65,22 @@ router.post("/company-factory/create", requireAuth, async (req, res) => {
   }
 });
 
+// Clone reuses the source company's templateId to run the exact same
+// creation pipeline again — a fully real, independent company/org/blueprint/
+// workspace, not a copy of records. Requester must be able to see the source
+// company's org (view_members) before it can be used as a clone seed.
+router.post("/company-factory/companies/:id/clone", requireAuth, async (req, res) => {
+  const source = _requireCompanyOrgPermission(req, res, "view_members");
+  if (!source) return;
+  const { name, skipApproval } = req.body || {};
+  try {
+    const result = await _cf()?.cloneCompany?.({ sourceCompanyId: source.id, name, creatorAccountId: req.user.sub, skipApproval });
+    res.json(result || { ok: false });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message });
+  }
+});
+
 router.get("/company-factory/runs", requireAuth, (req, res) => {
   const { templateId, limit } = req.query;
   res.json(_cf()?.listRuns?.({ templateId, limit: limit ? +limit : 50 }) || { ok: false });

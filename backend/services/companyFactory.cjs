@@ -289,6 +289,36 @@ async function createCompany({
   };
 }
 
+// ── Clone ─────────────────────────────────────────────────────────────────────
+// Reuses the exact same 13-step pipeline as createCompany() — a clone is a
+// fresh, fully real company/org/blueprint/workspace, seeded from the source
+// company's templateId (its "recipe"). Company blueprints have no
+// per-company customization beyond templateId today (skills/capabilities/
+// techStack/kpis are 100% template-derived — see companyBlueprintEngine.cjs
+// and its read-only /blueprints/:id/status-only PATCH route), so templateId
+// is the complete, honest definition of "what this company was built from."
+// No new blueprint-generation logic is introduced.
+
+async function cloneCompany({ sourceCompanyId, name, creatorAccountId, skipApproval = false } = {}) {
+  if (!sourceCompanyId) return { ok: false, error: "sourceCompanyId is required" };
+  if (!creatorAccountId) return { ok: false, error: "creatorAccountId is required" };
+
+  const source = _cle_e()?.getCompany?.(sourceCompanyId);
+  if (!source) return { ok: false, error: "source company not found" };
+
+  const cloneName = name || `${source.name} (Clone)`;
+  const result = await createCompany({
+    name: cloneName,
+    templateId: source.templateId,
+    founder: source.creatorAccountId || "founder",
+    creatorAccountId,
+    skipApproval,
+  });
+
+  if (result.ok) result.clonedFrom = sourceCompanyId;
+  return result;
+}
+
 // ── Name extractor ────────────────────────────────────────────────────────────
 
 function _extractName(idea) {
@@ -320,6 +350,7 @@ function getStats() {
 
 module.exports = {
   createCompany,
+  cloneCompany,
   getRun,
   listRuns,
   getStats,
