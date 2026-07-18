@@ -3,6 +3,10 @@ import { upgradePlan, PLANS } from "../billingApi";
 import { track } from "../analytics";
 import "./UpgradeModal.css";
 
+// Lowest to highest tier — used to label a plan change as "Downgrade to X"
+// vs. "Choose X" and to disable the current plan's card.
+const PLAN_ORDER = ["trial", "starter", "growth", "scale"];
+
 // ── Feature comparison table data ────────────────────────────────────
 const COMPARE_ROWS = [
   { label: "Leads",                  trial: "25",        starter: "100",    growth: "1,000",   scale: "Unlimited" },
@@ -18,19 +22,21 @@ const COMPARE_ROWS = [
 ];
 
 // ── Plan card ─────────────────────────────────────────────────────────
-function PlanCard({ plan, selected, onSelect, loading }) {
+function PlanCard({ plan, selected, onSelect, loading, currentPlan }) {
   const isScale = plan.id === "scale";
+  const isCurrent = plan.id === currentPlan;
 
   return (
     <div
-      className={`um-plan${plan.featured ? " um-plan--featured" : ""}${selected === plan.id ? " um-plan--selected" : ""}`}
-      onClick={() => !isScale && onSelect(plan.id)}
+      className={`um-plan${plan.featured ? " um-plan--featured" : ""}${selected === plan.id ? " um-plan--selected" : ""}${isCurrent ? " um-plan--current" : ""}`}
+      onClick={() => !isScale && !isCurrent && onSelect(plan.id)}
       role="button"
       tabIndex={0}
-      onKeyDown={e => e.key === "Enter" && !isScale && onSelect(plan.id)}
+      onKeyDown={e => e.key === "Enter" && !isScale && !isCurrent && onSelect(plan.id)}
       aria-pressed={selected === plan.id}
     >
-      {plan.badge && <div className="um-plan-badge">{plan.badge}</div>}
+      {isCurrent && <div className="um-plan-badge um-plan-badge--current">Current plan</div>}
+      {!isCurrent && plan.badge && <div className="um-plan-badge">{plan.badge}</div>}
       <h3 className="um-plan-name">{plan.name}</h3>
       <p className="um-plan-tagline">{plan.tagline}</p>
       <div className="um-plan-price-row">
@@ -50,7 +56,9 @@ function PlanCard({ plan, selected, onSelect, loading }) {
           </li>
         )}
       </ul>
-      {isScale ? (
+      {isCurrent ? (
+        <button className="um-plan-cta" disabled>Current plan</button>
+      ) : isScale ? (
         <a
           className="um-plan-cta um-plan-cta--contact"
           href="mailto:sales@ooplix.com"
@@ -64,7 +72,11 @@ function PlanCard({ plan, selected, onSelect, loading }) {
           onClick={e => { e.stopPropagation(); onSelect(plan.id); }}
           disabled={loading}
         >
-          {selected === plan.id && loading ? "Processing…" : `Choose ${plan.name}`}
+          {selected === plan.id && loading
+            ? "Processing…"
+            : PLAN_ORDER.indexOf(plan.id) < PLAN_ORDER.indexOf(currentPlan)
+              ? `Downgrade to ${plan.name}`
+              : `Choose ${plan.name}`}
         </button>
       )}
     </div>
@@ -203,6 +215,7 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
               selected={selected}
               onSelect={handleUpgrade}
               loading={loading}
+              currentPlan={billing?.status === "active" ? billing?.plan : null}
             />
           ))}
         </div>

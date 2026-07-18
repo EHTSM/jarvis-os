@@ -249,6 +249,22 @@ async function createRazorpaySubscription(accountId, plan, customerEmail) {
 
   try {
     const rz = new Razorpay({ key_id: key, key_secret: secret });
+
+    // A plan change (upgrade OR downgrade) while an existing Razorpay
+    // subscription is already active must cancel the old one first — this
+    // previously always called subscriptions.create() unconditionally, which
+    // would leave the customer with TWO concurrent Razorpay subscriptions
+    // (and double-billing) on any plan change made after their first upgrade.
+    const existing = getRecord(accountId);
+    if (existing.razorpaySubId && existing.status === "active") {
+      try {
+        await rz.subscriptions.cancel(existing.razorpaySubId, { cancel_at_cycle_end: 0 });
+        logger.info(`[Billing] Cancelled prior Razorpay subscription ${existing.razorpaySubId} for ${accountId} (plan change to ${plan})`);
+      } catch (cancelErr) {
+        logger.warn(`[Billing] Could not cancel prior subscription ${existing.razorpaySubId} for ${accountId}: ${cancelErr.message}`);
+      }
+    }
+
     const sub = await rz.subscriptions.create({
       plan_id:       planId,
       total_count:   120,  // 10 years max — effectively unlimited
