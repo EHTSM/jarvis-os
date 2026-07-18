@@ -77,6 +77,7 @@ router.use(require("./enterpriseScim")); // Enterprise & Physical Integration M2
 router.use(require("./enterpriseAudit")); // Enterprise & Physical Integration M3: /enterprise/audit/:orgId/* search + login/permission/scim/ai/billing history + export (requireAuth + view_audit_log)
 router.use(require("./enterprisePolicy")); // Enterprise & Physical Integration M4: /enterprise/policy/:orgId/* org policy CRUD (requireAuth + manage_policy) + /enterprise/mfa/* per-account TOTP enrollment (requireAuth)
 router.use(require("./enterprisePhysical")); // Enterprise & Physical Integration M6: /enterprise/physical/folder-sync/* — local folder sync uploads into org storage (requireAuth + attachOrg + requireOrgMember)
+router.use(require("./enterpriseMonitoring")); // Enterprise & Physical Integration M7: /enterprise/monitoring/:orgId/* org/connector/AI-usage/background-jobs/queue health + alert center (requireAuth + attachOrg + requireOrgMember)
 router.use(require("./workforce"));    // /workforce/:missionId/plan, /workforce/:missionId/steps/:stepId/*, /workforce/:missionId/approvals/*, /workforce/org/:orgId/workers
 router.use(require("./graph"));        // /graph/stats, /graph/node/:type/:id, /graph/traverse, /graph/related, /graph/impact, /graph/lookup, /graph/edges, /graph/index
 router.use("/collaboration", requireAuth);    // gate all /collaboration/* routes

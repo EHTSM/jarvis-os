@@ -150,19 +150,30 @@ function fire(opts) {
         title, detail = "", severity = "warning",
         source = "manual", category = "general",
         dedupeKey = null,
+        // orgId is optional and additive — omitted entirely, existing
+        // platform-wide alerts (probe()'s system/security/runtime/autonomy
+        // checks) are byte-for-byte unaffected. When present, this alert
+        // belongs to a specific org (Module 7: Enterprise Monitoring's
+        // per-org connector/budget threshold checks) and dedupeKey scoping
+        // below is namespaced by orgId so two orgs breaching the same
+        // threshold don't collide on one alert record.
+        orgId = null,
     } = opts;
     if (!title) throw new Error("title required");
 
+    const scopedDedupeKey = dedupeKey && orgId ? `${orgId}::${dedupeKey}` : dedupeKey;
+
     // Deduplicate: don't re-fire an already-active alert with same dedupeKey
-    if (dedupeKey) {
-        const existing = _alerts.find(a => a.dedupeKey === dedupeKey && a.status === "firing");
+    if (scopedDedupeKey) {
+        const existing = _alerts.find(a => a.dedupeKey === scopedDedupeKey && a.status === "firing");
         if (existing) { existing.lastSeenAt = new Date().toISOString(); existing.count = (existing.count || 1) + 1; _saveAlerts(); return existing; }
     }
 
     const alert = {
         alertId:    _aid(),
         title, detail, severity, source, category,
-        dedupeKey,
+        dedupeKey:  scopedDedupeKey,
+        orgId,
         status:     "firing",
         count:      1,
         firedAt:    new Date().toISOString(),
@@ -292,19 +303,26 @@ function getAlert(alertId) {
     return _alerts.find(a => a.alertId === alertId) || _history.find(a => a.alertId === alertId) || null;
 }
 
-function listAlerts({ status, severity, category, limit = 100, offset = 0 } = {}) {
-    let rows = [..._alerts];
+function listAlerts({ status, severity, category, orgId, limit = 100, offset = 0 } = {}) {
+    // orgId omitted (undefined) = platform-wide view across every org's
+    // alerts plus system-level ones, matching pre-Module-7 behavior exactly.
+    // orgId === null is not the same as omitted: a caller explicitly asking
+    // for null would only match un-scoped system alerts, but no route in
+    // this codebase does that today, so this distinction is currently
+    // theoretical rather than exercised — noted for a future org-only view.
+    const base = orgId !== undefined ? _alerts.filter(a => a.orgId === orgId) : _alerts;
+    let rows = [...base];
     if (status)   rows = rows.filter(a => a.status   === status);
     if (severity) rows = rows.filter(a => a.severity === severity);
     if (category) rows = rows.filter(a => a.category === category);
     rows = rows.sort((a, b) => b.firedAt.localeCompare(a.firedAt));
 
     const stats = {
-        total:    _alerts.length,
-        firing:   _alerts.filter(a => a.status === "firing").length,
-        critical: _alerts.filter(a => a.severity === "critical" && a.status === "firing").length,
-        warning:  _alerts.filter(a => a.severity === "warning"  && a.status === "firing").length,
-        suppressed:_alerts.filter(a => a.status === "suppressed").length,
+        total:    base.length,
+        firing:   base.filter(a => a.status === "firing").length,
+        critical: base.filter(a => a.severity === "critical" && a.status === "firing").length,
+        warning:  base.filter(a => a.severity === "warning"  && a.status === "firing").length,
+        suppressed:base.filter(a => a.status === "suppressed").length,
     };
     return { alerts: rows.slice(offset, offset + limit), total: rows.length, stats };
 }
