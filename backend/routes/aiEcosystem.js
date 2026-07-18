@@ -54,6 +54,14 @@
  *
  * MODULE 10 – Commercial Benchmark (routing viability)
  *   GET  /ai-ecosystem/viability                    — routing viability check
+ *
+ * MODULE 11 – Org/Workspace AI Budgets
+ *   GET  /ai-ecosystem/budgets                       — all org + workspace budgets
+ *   GET  /ai-ecosystem/budgets/org/:orgId            — one org's budget + current spend
+ *   PUT  /ai-ecosystem/budgets/org/:orgId            — set org budget (org_owner only)
+ *   GET  /ai-ecosystem/budgets/workspace/:workspaceId — one workspace's budget + spend
+ *   PUT  /ai-ecosystem/budgets/workspace/:workspaceId — set workspace budget (org_owner only)
+ *   POST /ai-ecosystem/budgets/check                 — check {orgId, workspaceId} against budget
  */
 
 const router = require("express").Router();
@@ -338,6 +346,77 @@ router.post("/ai-ecosystem/policies/filter", (req, res) => {
     if (!Array.isArray(candidates)) return res.status(400).json({ error: "candidates array required" });
     const filtered = policies.filterCandidates(candidates, orgId || "default");
     res.json({ ok: true, original: candidates.length, filtered: filtered.length, candidates: filtered });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 11: Org/Workspace AI Budgets (AI Provider Orchestration mission)
+// Monthly USD/request caps scoped to an org or workspace, enforced against
+// usageMetering's real cost ledger — distinct from enterprisePolicies'
+// per-request cost ceiling above and billingService's per-account plan
+// quota; a real cumulative spend cap neither of those covers.
+// Setting a budget requires org_owner (manage_billing) — reuses
+// organizationService's existing RBAC rather than leaving these open like
+// the policy routes above currently are.
+// ══════════════════════════════════════════════════════════════════
+
+const orgBudgets = require("../services/orgBudgets.cjs");
+const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
+
+router.get("/ai-ecosystem/budgets", (req, res) => {
+  try { res.json({ ok: true, ...orgBudgets.getAllBudgets() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// attachOrg resolves req.org from the X-Org-Id header or req.query/body.orgId
+// only — NOT from an :orgId route param — so it's forwarded into req.body
+// before delegating, same fix as workspace.js's member routes needed.
+function _forwardOrgParam(req, res, next) {
+  req.body = req.body || {};
+  if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
+  return attachOrg(req, res, next);
+}
+
+router.get("/ai-ecosystem/budgets/org/:orgId", _forwardOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
+  try { res.json({ ok: true, budget: orgBudgets.getOrgBudget(req.params.orgId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.put("/ai-ecosystem/budgets/org/:orgId", _forwardOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
+  try {
+    const { monthlyCapUsd, monthlyRequestCap, alertThresholdPct } = req.body || {};
+    const patch = {};
+    if (monthlyCapUsd !== undefined)     patch.monthlyCapUsd = monthlyCapUsd;
+    if (monthlyRequestCap !== undefined) patch.monthlyRequestCap = monthlyRequestCap;
+    if (alertThresholdPct !== undefined) patch.alertThresholdPct = alertThresholdPct;
+    res.json({ ok: true, budget: orgBudgets.setOrgBudget(req.params.orgId, patch) });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/budgets/workspace/:workspaceId", (req, res) => {
+  try { res.json({ ok: true, budget: orgBudgets.getWorkspaceBudget(req.params.workspaceId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Workspace budgets are set by the owning org's owner — the request must
+// still carry an orgId (header/query/body) identifying WHICH org owns this
+// workspace, since workspaceId alone doesn't tell requireOrgPermission which
+// org's RBAC to check against.
+router.put("/ai-ecosystem/budgets/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
+  try {
+    const { monthlyCapUsd, monthlyRequestCap, alertThresholdPct } = req.body || {};
+    const patch = {};
+    if (monthlyCapUsd !== undefined)     patch.monthlyCapUsd = monthlyCapUsd;
+    if (monthlyRequestCap !== undefined) patch.monthlyRequestCap = monthlyRequestCap;
+    if (alertThresholdPct !== undefined) patch.alertThresholdPct = alertThresholdPct;
+    res.json({ ok: true, budget: orgBudgets.setWorkspaceBudget(req.params.workspaceId, patch) });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/budgets/check", (req, res) => {
+  try {
+    const { orgId, workspaceId } = req.body || {};
+    res.json({ ok: true, ...orgBudgets.checkBudget({ orgId, workspaceId }) });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 

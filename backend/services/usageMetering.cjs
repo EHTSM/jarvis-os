@@ -178,7 +178,13 @@ function summary(opts = {}) {
   return {
     totalRequests: events.length,
     totalTokens,
-    totalCostUsd:  parseFloat(totalCostUsd.toFixed(4)),
+    // 6 decimal places (not 4) — matches record()'s own per-event precision.
+    // At 4 places, cheap-provider costs (e.g. 2 Groq requests = $0.000002)
+    // silently round to $0.0000, which previously made orgBudgets.cjs's
+    // budget check always see $0 spend for exactly the providers a
+    // cost-conscious org would actually route to, letting a real cap
+    // requirement pass every check regardless of actual spend.
+    totalCostUsd:  parseFloat(totalCostUsd.toFixed(6)),
     totalCredits,
     errors,
     successRate:   events.length ? (1 - errors / events.length) : 1,
