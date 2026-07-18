@@ -31,11 +31,34 @@ function _readAll() {
 function _writeAll(data) {
   fs.writeFileSync(WORKSPACES_FILE, JSON.stringify(data, null, 2));
 }
-function _readActive() {
-  try { return JSON.parse(fs.readFileSync(ACTIVE_WS_FILE, "utf8")); } catch { return { workspaceId: "default" }; }
+// Per-account map: { [accountId]: { workspaceId, switchedAt } }. Previously a
+// single flat { workspaceId } object with no account key at all — meaning any
+// user's "switch workspace" click silently changed the active workspace for
+// every other concurrent user/request that didn't pass an explicit
+// workspaceId. Migrated to a per-account map; a bare legacy { workspaceId }
+// shape (no accountId) is treated as having no accountId-scoped entries and
+// falls through to "default" for everyone, which is safe (worst case: nobody
+// has a saved preference yet, same as a fresh install).
+function _readActiveMap() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(ACTIVE_WS_FILE, "utf8"));
+    // Legacy shape guard: { workspaceId: "..." } has no accountId keys to read.
+    if (raw && typeof raw.workspaceId === "string") return {};
+    return raw && typeof raw === "object" ? raw : {};
+  } catch { return {}; }
 }
-function _writeActive(obj) {
-  fs.writeFileSync(ACTIVE_WS_FILE, JSON.stringify(obj, null, 2));
+function _writeActiveMap(map) {
+  fs.writeFileSync(ACTIVE_WS_FILE, JSON.stringify(map, null, 2));
+}
+function _readActive(accountId) {
+  const map = _readActiveMap();
+  return (accountId && map[accountId]) || { workspaceId: "default" };
+}
+function _writeActive(accountId, obj) {
+  if (!accountId) return; // no account context — nothing safe to persist
+  const map = _readActiveMap();
+  map[accountId] = obj;
+  _writeActiveMap(map);
 }
 
 // ── Bootstrap default workspace if missing ────────────────────────
@@ -90,10 +113,13 @@ function getWorkspace(workspaceId) {
 }
 
 /**
- * Get the currently active workspace (or default).
+ * Get the currently active workspace for a given account (or default).
+ * accountId is required for a per-account result — omitting it always
+ * resolves to "default" rather than silently reading another user's
+ * selection.
  */
-function getActiveWorkspace() {
-  const { workspaceId } = _readActive();
+function getActiveWorkspace(accountId) {
+  const { workspaceId } = _readActive(accountId);
   return getWorkspace(workspaceId) || getWorkspace("default");
 }
 
@@ -148,7 +174,7 @@ function switchWorkspace(workspaceId, accountId) {
   if (!ws) throw new Error("Workspace not found");
   const member = ws.members.find(m => m.accountId === accountId);
   if (!member) throw new Error("Not a member of this workspace");
-  _writeActive({ workspaceId, switchedAt: Date.now() });
+  _writeActive(accountId, { workspaceId, switchedAt: Date.now() });
   _logActivity(ws, accountId, "workspace_switched", workspaceId);
   _writeAll(all);
   return { workspaceId, workspace: ws };

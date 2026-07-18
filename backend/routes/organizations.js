@@ -46,6 +46,7 @@
  *
  *   Context + RBAC:
  *     GET    /orgs/me/context                 — my org memberships + permissions
+ *     POST   /orgs/switch                     — set my current org (persisted per-account)
  *     GET    /orgs/roles                      — RBAC role definitions
  *     GET    /orgs/actions                    — all defined permission actions
  */
@@ -89,6 +90,17 @@ router.get("/orgs/actions", (req, res) => {
 router.get("/orgs/me/context", (req, res) => {
     try { _ok(res, _svc().resolveContext(req.user.sub)); }
     catch (e) { _err(res, e); }
+});
+
+// ── Switch current org (persisted per-account; drives resolveContext's
+// primaryOrg for future requests that don't pass an explicit X-Org-Id) ───────
+router.post("/orgs/switch", (req, res) => {
+    try {
+        const { orgId } = req.body || {};
+        if (!orgId) return res.status(400).json({ ok: false, error: "orgId required" });
+        const result = _svc().setCurrentOrg(req.user.sub, orgId);
+        _ok(res, { ...result, context: _svc().resolveContext(req.user.sub) });
+    } catch (e) { _err(res, e, 400); }
 });
 
 // ── Org CRUD ──────────────────────────────────────────────────────────────────

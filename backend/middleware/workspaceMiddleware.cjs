@@ -20,9 +20,10 @@ function attachWorkspace(req, res, next) {
   try {
     const accountId = req.user?.sub;
     const svc = _ws();
-    // Use workspaceId from query/body/header, or fall back to active
+    // Use workspaceId from query/body/header, or fall back to this account's
+    // own active-workspace preference (per-account, not a global pointer).
     const requestedId = req.query.workspaceId || req.body?.workspaceId || req.headers["x-workspace-id"];
-    const ws = requestedId ? svc.getWorkspace(requestedId) : svc.getActiveWorkspace();
+    const ws = requestedId ? svc.getWorkspace(requestedId) : svc.getActiveWorkspace(accountId);
     req.workspace = ws;
     req.workspaceRole = accountId && ws ? svc.getMemberRole(ws.id, accountId) : null;
   } catch {

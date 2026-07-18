@@ -69,6 +69,13 @@ const logger = require("../utils/logger");
 // ── Storage ───────────────────────────────────────────────────────────────────
 const DATA_DIR  = path.join(__dirname, "../../data");
 const ORG_FILE  = path.join(DATA_DIR, "organizations.json");
+// Per-account "which org am I currently working in" preference. Deliberately a
+// separate small store, not a field on the org record or the account record —
+// it's neither org data (many accounts, one org) nor identity data (one account,
+// many orgs); it's the N:M join's per-account cursor. Keyed by accountId so two
+// concurrent users never see or affect each other's selection (see CONTEXT_FILE
+// below for the same fix applied to the pre-existing global-pointer bug).
+const CONTEXT_FILE = path.join(DATA_DIR, "org-context.json");
 
 function _read() {
     try { return JSON.parse(fs.readFileSync(ORG_FILE, "utf8")); }
@@ -77,6 +84,15 @@ function _read() {
 function _write(store) {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     fs.writeFileSync(ORG_FILE, JSON.stringify(store, null, 2));
+}
+
+function _readContext() {
+    try { return JSON.parse(fs.readFileSync(CONTEXT_FILE, "utf8")); }
+    catch { return {}; }
+}
+function _writeContext(map) {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(CONTEXT_FILE, JSON.stringify(map, null, 2));
 }
 
 // ── ID helpers ────────────────────────────────────────────────────────────────
@@ -590,7 +606,36 @@ function resolveContext(accountId) {
         });
     }
 
-    return { orgs: result, primaryOrg: result[0] || null };
+    // Prefer the account's persisted "current org" selection over array order,
+    // so which org a request auto-resolves to is a deliberate choice the user
+    // made (via setCurrentOrg / POST /orgs/switch), not an accident of which
+    // org they happened to join first.
+    const preferredOrgId = getCurrentOrg(accountId);
+    const preferred = preferredOrgId ? result.find(r => r.orgId === preferredOrgId) : null;
+
+    return { orgs: result, primaryOrg: preferred || result[0] || null };
+}
+
+// ── Current-org preference (per account, not global — see CONTEXT_FILE) ──────
+
+function getCurrentOrg(accountId) {
+    if (!accountId) return null;
+    const map = _readContext();
+    return map[accountId] || null;
+}
+
+function setCurrentOrg(accountId, orgId) {
+    if (!accountId) throw new Error("accountId required");
+    if (!orgId) throw new Error("orgId required");
+    // Must actually be a member — otherwise this becomes a way to force
+    // resolveContext() to leak org existence/membership status to a non-member.
+    const role = getMemberRole(orgId, accountId);
+    if (!role) throw Object.assign(new Error("Not a member of this organization"), { status: 403 });
+    const map = _readContext();
+    map[accountId] = orgId;
+    _writeContext(map);
+    logger.info(`[OrgService] ${accountId} switched current org to ${orgId}`);
+    return { switched: true, orgId };
 }
 
 module.exports = {
@@ -608,6 +653,8 @@ module.exports = {
     getMemberRole,
     hasPermission,
     resolveContext,
+    getCurrentOrg,
+    setCurrentOrg,
     // Departments
     createDepartment,
     updateDepartment,
