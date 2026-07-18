@@ -54,6 +54,22 @@ async function _assertLocalServerUp(url, label) {
     if (!up) throw new Error(`${label} not reachable at ${hostname}:${p} (not installed/running?)`);
 }
 
+/**
+ * Public reachability probe for local providers (Ollama, LM Studio). Reuses
+ * the exact TCP-probe logic _assertLocalServerUp already uses internally to
+ * fail fast on unreachable local servers — exported so callers building a
+ * provider ranking (aiOrchestrator.cjs) can check reachability BEFORE
+ * ranking a local provider ahead of real, working cloud providers, instead
+ * of finding out only after a wasted retry attempt.
+ */
+async function isLocalServerReachable(url) {
+    try {
+        const { hostname, port, protocol } = new URL(url);
+        const p = port ? parseInt(port, 10) : (protocol === "https:" ? 443 : 80);
+        return await _isPortOpen(hostname, p);
+    } catch { return false; }
+}
+
 // ── Provider endpoints ────────────────────────────────────────────────────────
 const GROQ_URL        = "https://api.groq.com/openai/v1/chat/completions";
 const OPENAI_URL      = "https://api.openai.com/v1/chat/completions";
@@ -902,4 +918,11 @@ async function chatWithTools(messages, tools = [], opts = {}) {
     throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini.");
 }
 
-module.exports = { callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus };
+module.exports = {
+    callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus,
+    // Exported for aiOrchestrator.cjs's availability probing — read-only
+    // accessors, no new behavior; local-server URL builders + reachability
+    // check already existed internally (used by _ollama/_lmstudio's own
+    // fail-fast path), just weren't exposed for callers to probe ahead of time.
+    isLocalServerReachable, ollamaUrl: _ollamaUrl, lmStudioUrl: _lmStudioUrl,
+};
