@@ -15,6 +15,8 @@ import OperatorConsole    from "./components/operator/OperatorConsole.jsx";
 import LoginPage          from "./components/auth/LoginPage.jsx";
 import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
+import ResetPasswordPage  from "./components/auth/ResetPasswordPage.jsx";
+import VerifyEmailPage    from "./components/auth/VerifyEmailPage.jsx";
 import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
@@ -233,6 +235,15 @@ function _isSaasApp() {
 
 // ── Determine initial screen from localStorage ───────────────────
 function _initialScreen() {
+  // Emailed deep links (password reset / email verification) take priority
+  // over every other screen — they carry a one-time token in the query
+  // string and must render regardless of onboarding/auth state.
+  try {
+    const path = window.location.pathname;
+    if (path === "/reset-password") return "reset-password";
+    if (path === "/verify-email")   return "verify-email";
+  } catch { /* SSR-safe no-op */ }
+
   // Electron desktop: go straight to cockpit — no marketing screens
   if (_isDesktopShell()) return "app";
   // SaaS domain (app.ooplix.com): skip public landing, require onboarding if new
@@ -842,6 +853,25 @@ function AppInner() {
           onLogin={() => setScreen("login")}
           onLegal={openLegal}
         />
+      </div>
+    );
+  }
+
+  // ── Emailed deep links (reset-password / verify-email) ────────────────────
+  // These must render before any auth-gate/onboarding check — a signed-out
+  // user clicking an emailed link has no session yet, and a signed-in user
+  // verifying a second email address shouldn't be redirected into the app.
+  if (screen === "reset-password") {
+    return (
+      <div className="app-auth-gate">
+        <ResetPasswordPage onDone={() => { window.history.replaceState({}, "", "/"); setScreen("login"); }} />
+      </div>
+    );
+  }
+  if (screen === "verify-email") {
+    return (
+      <div className="app-auth-gate">
+        <VerifyEmailPage onDone={() => { window.history.replaceState({}, "", "/"); setScreen(user ? "app" : "login"); }} />
       </div>
     );
   }

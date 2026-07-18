@@ -79,3 +79,35 @@ export async function refreshSession() {
     return await _fetch("/auth/refresh", { method: "POST", body: "{}" });
   } catch (err) { return { success: false, error: err.message }; }
 }
+
+// Backend password reset (works for email/password accounts, not just Firebase).
+// Always returns success:true to avoid leaking whether an email is registered.
+export async function requestPasswordReset(email) {
+  try {
+    return await _fetch("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function confirmPasswordReset(token, password) {
+  try {
+    return await _fetch("/auth/reset-password", {
+      method: "POST",
+      body: JSON.stringify({ token, password }),
+    });
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function confirmEmailVerification(token) {
+  try {
+    return await _fetch(`/auth/verify-email?token=${encodeURIComponent(token)}`);
+  } catch (err) { return { success: false, error: err.message }; }
+}
+
+export async function resendVerificationEmail() {
+  try {
+    return await _fetch("/accounts/resend-verification", { method: "POST", body: "{}" });
+  } catch (err) { return { success: false, error: err.message }; }
+}

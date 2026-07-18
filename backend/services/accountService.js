@@ -4,14 +4,16 @@
  *
  * Schema: { [accountId]: Account }
  * Account: {
- *   id:           string (uuid-v4-style, generated on creation)
- *   email:        string (unique, lowercase)
- *   passwordHash: string (scrypt: salt:hash)
- *   name:         string
- *   role:         "operator" | "user"
- *   createdAt:    ISO string
- *   lastLoginAt:  ISO string | null
- *   active:       boolean
+ *   id:              string (uuid-v4-style, generated on creation)
+ *   email:           string (unique, lowercase)
+ *   passwordHash:    string (scrypt: salt:hash)
+ *   name:            string
+ *   role:            "operator" | "user" | "enterprise_admin" | "portfolio_owner"
+ *   createdAt:       ISO string
+ *   lastLoginAt:     ISO string | null
+ *   active:          boolean
+ *   emailVerified:   boolean (default false; set true via betaReadiness.verifyEmail)
+ *   emailVerifiedAt: ISO string | null
  * }
  *
  * Backwards-compatibility: the legacy single-operator password (OPERATOR_PASSWORD_HASH
@@ -98,6 +100,8 @@ function createAccount({ email, password, name = "", role = "user" }) {
     createdAt:    new Date().toISOString(),
     lastLoginAt:  null,
     active:       true,
+    emailVerified:   false,
+    emailVerifiedAt: null,
   };
 
   accounts[id] = account;
@@ -170,13 +174,16 @@ function listAccounts() {
 }
 
 /**
- * Update account fields (name, role). Email/password change has separate flows.
+ * Update account fields. Most callers touch name/role/active; passwordHash is
+ * written directly by password-reset flows (already hashed by the caller —
+ * see betaReadiness.resetPassword), and emailVerified/emailVerifiedAt by the
+ * email-verification flow (see betaReadiness.verifyEmail).
  */
 function updateAccount(id, updates) {
   const accounts = _load();
   if (!accounts[id]) return { success: false, error: "Account not found" };
 
-  const allowed = ["name", "role", "active"];
+  const allowed = ["name", "role", "active", "passwordHash", "emailVerified", "emailVerifiedAt"];
   for (const k of allowed) {
     if (updates[k] !== undefined) accounts[id][k] = updates[k];
   }

@@ -85,7 +85,11 @@ function generateEmailVerificationToken(accountId, email) {
 function sendEmailVerification(accountId, email, name) {
   const token = generateEmailVerificationToken(accountId, email);
   const base  = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
-  const link  = `${base}/auth/verify-email?token=${token}`;
+  // Points at the SPA route (App.jsx reads ?token= and calls the verify-email
+  // API itself), NOT the raw /auth/verify-email API endpoint — that route
+  // returns JSON, not a page, and would be intercepted before the SPA
+  // fallback ever runs (see server.js's routing-order comment).
+  const link  = `${base}/verify-email?token=${token}`;
 
   const emailSvc = _email();
   if (emailSvc) {
@@ -171,7 +175,9 @@ function sendPasswordReset(email) {
   _saveTokens(tokens);
 
   const base = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
-  const link = `${base}/auth/reset-password?token=${token}`;
+  // Points at the SPA route, not the raw API endpoint — see comment in
+  // sendEmailVerification above for why.
+  const link = `${base}/reset-password?token=${token}`;
 
   const emailSvc = _email();
   if (emailSvc) {
@@ -224,8 +230,19 @@ function resetPassword(token, newPassword) {
 
 // ════════════════════════════════════════════════════════════════════════════
 // FIX 3 — Beta User Cap (50 hard limit) + FIX 4 — Invite-Code Gate
+//
+// Public SaaS mission: registration is open self-serve by default (no invite
+// code required). Set OPEN_SIGNUP=false in .env to re-enable the closed-beta
+// invite-code requirement — the cap/invite-code machinery below still runs
+// either way, it's only whether checkBetaGate REQUIRES a code that toggles.
+// An invite code, if supplied, is still validated and marked used even in
+// open mode, so existing invite links/co3 tracking keep working.
 // ════════════════════════════════════════════════════════════════════════════
 const BETA_MAX_USERS = 50;
+
+function isOpenSignup() {
+  return process.env.OPEN_SIGNUP !== "false";
+}
 
 function getBetaStatus() {
   const acctSvc = _accounts();
@@ -234,14 +251,15 @@ function getBetaStatus() {
   const userAccounts = allAccounts.filter(a => a.role !== "operator");
   const state = _loadState();
   const verifiedEmails = state.verifiedEmails || {};
+  const open = isOpenSignup();
 
   return {
-    limit:         BETA_MAX_USERS,
+    limit:         open ? null : BETA_MAX_USERS,
     registered:    userAccounts.length,
-    remaining:     Math.max(0, BETA_MAX_USERS - userAccounts.length),
-    isFull:        userAccounts.length >= BETA_MAX_USERS,
+    remaining:     open ? null : Math.max(0, BETA_MAX_USERS - userAccounts.length),
+    isFull:        open ? false : userAccounts.length >= BETA_MAX_USERS,
     verified:      Object.keys(verifiedEmails).length,
-    inviteRequired: true,
+    inviteRequired: !open,
   };
 }
 
@@ -261,6 +279,8 @@ function checkBetaGate(inviteCode) {
     }
     return { allowed: true, inviteCode };
   }
+
+  if (isOpenSignup()) return { allowed: true };
 
   return { allowed: false, reason: "An invite code is required to join the closed beta." };
 }
@@ -1044,7 +1064,7 @@ module.exports = {
   // FIX 2 — Password reset
   sendPasswordReset, resetPassword,
   // FIX 3+4 — Beta cap + invite gate
-  getBetaStatus, checkBetaGate, markInviteCodeUsed, BETA_MAX_USERS,
+  getBetaStatus, checkBetaGate, markInviteCodeUsed, BETA_MAX_USERS, isOpenSignup,
   // FIX 5 — Diagnostic bundle
   generateDiagnosticBundle,
   // FIX 6 — Retention cohorts

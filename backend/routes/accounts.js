@@ -2,9 +2,11 @@
 /**
  * Account routes — registration, profile, account management.
  *
- * Closed Beta gate (Mission 6): Registration requires a valid invite code
- * and enforces a hard cap of 50 beta users. Email verification is sent on
- * successful registration.
+ * Public SaaS: registration is open self-serve (see betaReadiness.isOpenSignup).
+ * An invite code is still accepted and validated if supplied (keeps existing
+ * co3 invite-code links/tracking working), but is no longer required. Set
+ * OPEN_SIGNUP=false in .env to fall back to the closed-beta invite-code +
+ * 50-user cap gate. Email verification is sent on successful registration.
  */
 
 const router   = require("express").Router();
@@ -76,6 +78,23 @@ router.get("/accounts/me", requireAuth, (req, res) => {
       graceActive: access.graceActive,
     },
   });
+});
+
+// ── POST /accounts/resend-verification ────────────────────────────
+router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60_000), (req, res) => {
+  const accountId = req.user.sub || req.user.id;
+  const account   = accounts.getById(accountId);
+  if (!account) return res.status(404).json({ error: "Account not found" });
+  if (account.emailVerified) return res.json({ success: true, message: "Email already verified." });
+
+  const beta = _beta();
+  if (!beta) return res.status(503).json({ error: "Email service unavailable" });
+  try {
+    beta.sendEmailVerification(account.id, account.email, account.name);
+    res.json({ success: true, message: "Verification email sent." });
+  } catch (e) {
+    res.status(500).json({ error: e.message || "Could not send verification email" });
+  }
 });
 
 // ── PATCH /accounts/me ────────────────────────────────────────────

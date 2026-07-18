@@ -175,8 +175,36 @@ app.use(require("./middleware/requestLogger"));
 // means real asset requests resolve here and never reach those routers.
 const frontendBuild = path.join(__dirname, "../frontend/build");
 const hasFrontendBuild = require("fs").existsSync(frontendBuild);
+const indexHtmlPath = path.join(frontendBuild, "index.html");
+
+// index.html must be re-rendered per request (not served statically) in
+// production: the CSP header above sets a fresh 'nonce-...' on every response,
+// but CRA's build output has no templating step to stamp that nonce onto its
+// <script> tags. Without this, script-src's nonce never matches any script
+// tag in the HTML and the browser blocks every script — the entire SPA fails
+// to load (blank page) for every visitor. We inject the nonce as a `nonce`
+// attribute on every <script> tag at serve time instead.
+let _indexHtmlTemplate = null;
+function _renderIndexHtml(req, res) {
+    if (_indexHtmlTemplate === null) {
+        try { _indexHtmlTemplate = require("fs").readFileSync(indexHtmlPath, "utf8"); }
+        catch { return res.status(500).send("Frontend build not found"); }
+    }
+    const nonce = res.locals.cspNonce;
+    const html = nonce
+        ? _indexHtmlTemplate.replace(/<script(?![^>]*\bnonce=)/g, `<script nonce="${nonce}"`)
+        : _indexHtmlTemplate;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache");
+    res.send(html);
+}
+
 if (hasFrontendBuild) {
-    app.use(express.static(frontendBuild));
+    // index: false — prevents express.static from auto-serving the raw,
+    // un-nonced index.html for "/"; the explicit GET "/" route below (and the
+    // SPA fallback further down) render it dynamically instead.
+    app.use(express.static(frontendBuild, { index: false }));
+    app.get("/", _renderIndexHtml);
     logger.info("Serving frontend build from /frontend/build");
 }
 
@@ -192,7 +220,7 @@ if (hasFrontendBuild) {
     // must be named (e.g. "/*splat"). This previously never executed because
     // `routes` always intercepted requests first; now it's reachable, so the
     // path string must be valid under the current router.
-    app.get("/*splat", (req, res) => res.sendFile(path.join(frontendBuild, "index.html")));
+    app.get("/*splat", _renderIndexHtml);
 }
 
 // ── Global error handler ───────────────────────────────────────────
