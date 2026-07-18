@@ -83,6 +83,7 @@ const SupportCenter            = lazy(() => import("./components/SupportCenter.j
 const TrustComplianceCenter    = lazy(() => import("./components/TrustComplianceCenter.jsx"));
 const MarketplaceCenter        = lazy(() => import("./components/MarketplaceCenter.jsx"));
 const AICostCenter             = lazy(() => import("./components/AICostCenter.jsx"));
+const AIUsageDashboard         = lazy(() => import("./components/AIUsageDashboard.jsx"));
 const OoplixRunsOoplixCenter   = lazy(() => import("./components/OoplixRunsOoplixCenter.jsx"));
 const AutonomousAgentDashboard = lazy(() => import("./components/AutonomousAgentDashboard.jsx"));
 const AgentFactoryCenter       = lazy(() => import("./components/AgentFactoryCenter.jsx"));
@@ -203,6 +204,7 @@ const MORE_TABS = [
   { id: "referral",   label: "Referral Engine",    group: "Growth"       },
   { id: "partners",   label: "Partners",           group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
+  { id: "aiusage",    label: "AI Orchestration",   group: "Growth"       },
   // ── Enterprise & Platform
   { id: "business",   label: "CRM",                group: "Enterprise"   },
   { id: "companies",  label: "Companies",          group: "Enterprise"   },
@@ -1338,6 +1340,7 @@ function AppInner() {
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
         {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
         {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
+        {tab === "aiusage"           && <AIUsageDashboard />}
         {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
         {tab === "agentruntime"      && <AutonomousAgentDashboard />}
         {tab === "agentfactory"      && <AgentFactoryCenter         onNavigate={setTab} />}

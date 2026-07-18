@@ -71,6 +71,15 @@
  *   POST /ai-ecosystem/orchestrator/execute/stream        — same, but Server-Sent Events token-by-token
  *   GET  /ai-ecosystem/orchestrator/cache                 — response cache hit/miss stats
  *   POST /ai-ecosystem/orchestrator/cache/clear           — clear the response cache
+ *
+ * MODULE 13 – Usage Analytics + Prompt History
+ *   GET  /ai-ecosystem/analytics/by-provider         — cost breakdown by provider
+ *   GET  /ai-ecosystem/analytics/by-workspace        — cost breakdown by workspace
+ *   GET  /ai-ecosystem/analytics/by-org              — cost breakdown by org
+ *   GET  /ai-ecosystem/analytics/me                  — caller's own cost report
+ *   GET  /ai-ecosystem/analytics/org/:orgId           — one org's cost + budget report (org_owner only)
+ *   GET  /ai-ecosystem/history/me                     — caller's own recent prompt/response history
+ *   GET  /ai-ecosystem/history/workspace/:workspaceId — a workspace's recent prompt/response history
  */
 
 const router = require("express").Router();
@@ -662,5 +671,59 @@ router.get("/ai-ecosystem/viability", (req, res) => {
 
 // Re-export creditEngine for module 10 reference
 const creditEngine = require("../services/creditEngine.cjs");
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 13: Usage Analytics + Prompt History
+// ══════════════════════════════════════════════════════════════════
+
+const promptHistory = require("../services/promptHistory.cjs");
+
+router.get("/ai-ecosystem/analytics/by-provider", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByProvider(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/by-workspace", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByWorkspace(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/by-org", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByOrg(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/me", (req, res) => {
+  try { res.json({ ok: true, report: analytics.perAccount(_accountId(req), req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Org report requires org membership — cost/budget data is org-sensitive,
+// same authorization bar as the budget routes in MODULE 11.
+router.get("/ai-ecosystem/analytics/org/:orgId",
+  (req, res, next) => { req.body = req.body || {}; if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId; return attachOrg(req, res, next); },
+  requireOrgPermission("manage_billing"),
+  (req, res) => {
+    try { res.json({ ok: true, report: analytics.perOrg(req.params.orgId, req.query || {}) }); }
+    catch (e) { res.status(500).json({ error: e.message }); }
+  }
+);
+
+router.get("/ai-ecosystem/history/me", (req, res) => {
+  try {
+    const { limit, provider, capability, since, fromLedger } = req.query || {};
+    const opts = { accountId: _accountId(req), limit: limit ? parseInt(limit, 10) : 50, provider, capability, since };
+    const entries = fromLedger === "true" ? promptHistory.loadHistory(opts) : promptHistory.query(opts);
+    res.json({ ok: true, entries });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/history/workspace/:workspaceId", (req, res) => {
+  try {
+    const { limit, provider, capability, since } = req.query || {};
+    const entries = promptHistory.query({ workspaceId: req.params.workspaceId, limit: limit ? parseInt(limit, 10) : 50, provider, capability, since });
+    res.json({ ok: true, entries });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 module.exports = router;
