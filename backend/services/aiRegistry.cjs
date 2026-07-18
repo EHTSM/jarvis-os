@@ -148,6 +148,22 @@ const BUILTIN = {
       code: { models: ["local-model"], costPer1k: 0, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.65, latencyClass: "medium" },
     },
   },
+  grok: {
+    id: "grok", name: "Grok (x.ai)", type: "cloud",
+    website: "https://x.ai",
+    capabilities: {
+      chat:      { models: ["grok-2-latest"], costPer1k: 0.002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.87, latencyClass: "medium" },
+      reasoning: { models: ["grok-2-latest"], costPer1k: 0.002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.88, latencyClass: "medium" },
+    },
+  },
+  qwen: {
+    id: "qwen", name: "Qwen (Alibaba DashScope)", type: "cloud",
+    website: "https://dashscope.aliyun.com",
+    capabilities: {
+      chat: { models: ["qwen-plus"], costPer1k: 0.0004, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.83, latencyClass: "fast" },
+      code: { models: ["qwen-plus"], costPer1k: 0.0004, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.82, latencyClass: "fast" },
+    },
+  },
   stability: {
     id: "stability", name: "Stability AI", type: "cloud",
     website: "https://stability.ai",

@@ -122,6 +122,22 @@ const PROVIDERS = {
     base_latency_ms: 1800,
     capabilities: ["chat", "coding/ask", "completion"],
   },
+  grok: {
+    id: "grok", name: "Grok (x.ai)",
+    models: { default: "grok-2-latest", fast: "grok-2-latest" },
+    cost_per_1k: 0.002,
+    base_quality: 0.87,
+    base_latency_ms: 1000,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  qwen: {
+    id: "qwen", name: "Qwen (Alibaba DashScope)",
+    models: { default: "qwen-plus", fast: "qwen-plus" },
+    cost_per_1k: 0.0004,
+    base_quality: 0.83,
+    base_latency_ms: 700,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
 };
 
 // ── Default policy ────────────────────────────────────────────────
@@ -324,6 +340,8 @@ function _detectAvailableKeys() {
   if (process.env.FIREWORKS_API_KEY)  available.push("fireworks");
   if (process.env.COHERE_API_KEY)     available.push("cohere");
   if (process.env.NVIDIA_API_KEY)     available.push("nvidia");
+  if (process.env.GROK_API_KEY)       available.push("grok");
+  if (process.env.DASHSCOPE_API_KEY)  available.push("qwen");
   // Local providers: available whenever the local server is reachable, not
   // gated by an API key. route()'s caller-supplied availableKeys (e.g. from
   // aiOrchestrator, which probes reachability) should be preferred over this

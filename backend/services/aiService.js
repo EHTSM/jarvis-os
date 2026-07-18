@@ -2,7 +2,7 @@
 /**
  * AI Service — multi-provider router with health-based failover.
  *
- * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama","deepseek","together","fireworks","cohere","nvidia","lmstudio"]
+ * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama","deepseek","together","fireworks","cohere","nvidia","lmstudio","grok","qwen"]
  * Each provider is attempted once per call; failures are logged and the next
  * provider is tried. The last failure reason per provider is retained for
  * the /ai/status endpoint.
@@ -24,6 +24,11 @@
  *   - Cohere     (api.cohere.ai/v1)            COHERE_API_KEY
  *   - NVIDIA NIM (integrate.api.nvidia.com/v1) NVIDIA_API_KEY
  *   - LM Studio  (localhost:1234 by default)   LM_STUDIO_URL
+ *
+ * AI Provider Orchestration mission additions (OpenAI-compatible REST):
+ *   - Grok (x.ai)  (api.x.ai/v1)                              GROK_API_KEY
+ *   - Qwen (Alibaba DashScope, compatible-mode endpoint)       DASHSCOPE_API_KEY
+ *     International endpoint by default; set QWEN_REGION=cn for mainland China.
  */
 
 const axios  = require("axios");
@@ -81,6 +86,17 @@ const TOGETHER_URL    = "https://api.together.xyz/v1/chat/completions";
 const FIREWORKS_URL   = "https://api.fireworks.ai/inference/v1/chat/completions";
 const COHERE_URL      = "https://api.cohere.ai/v1/chat";
 const NVIDIA_URL      = "https://integrate.api.nvidia.com/v1/chat/completions";
+const GROK_URL        = "https://api.x.ai/v1/chat/completions";
+// DashScope's "compatible-mode" endpoint speaks the OpenAI chat/completions
+// schema — same wire format as every other OpenAI-compatible adapter below.
+// International vs China endpoint selectable via QWEN_REGION (defaults intl,
+// since DASHSCOPE_API_KEY keys issued outside mainland China only work there).
+function _qwenUrl() {
+    const region = (process.env.QWEN_REGION || "intl").toLowerCase();
+    return region === "cn"
+        ? "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+        : "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions";
+}
 
 function _ollamaUrl()    { return (process.env.OLLAMA_URL    || "http://localhost:11434") + "/api/chat"; }
 function _lmStudioUrl()  { return (process.env.LM_STUDIO_URL || "http://localhost:1234")  + "/v1/chat/completions"; }
@@ -93,6 +109,8 @@ function _togetherModel(){ return process.env.TOGETHER_MODEL  || "meta-llama/Lla
 function _fireworksModel(){ return process.env.FIREWORKS_MODEL || "accounts/fireworks/models/llama-v3-70b-instruct"; }
 function _cohereModel()  { return process.env.COHERE_MODEL    || "command-r-plus"; }
 function _nvidiaModel()  { return process.env.NVIDIA_MODEL    || "meta/llama-3.1-70b-instruct"; }
+function _grokModel()    { return process.env.GROK_MODEL      || "grok-2-latest"; }
+function _qwenModel()    { return process.env.QWEN_MODEL      || "qwen-plus"; }
 function _geminiUrl()    {
     const model  = _geminiModel();
     const apiKey = process.env.GEMINI_API_KEY || "";
@@ -108,7 +126,7 @@ const _state = {
     failCount:        0,
 };
 // Initialise per-provider call counters for all providers
-["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"].forEach(p => { _state.callCount[p] = 0; });
+["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"].forEach(p => { _state.callCount[p] = 0; });
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 let _cachedPrompt = null;
@@ -133,7 +151,7 @@ function _getSystemPrompt() {
 // Respects LLM_PROVIDER env var as the primary; others follow in fixed order.
 function _providerOrder() {
     const preferred = (process.env.LLM_PROVIDER || "").toLowerCase().trim();
-    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
+    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"];
     if (!preferred || !defaults.includes(preferred)) return defaults;
     return [preferred, ...defaults.filter(p => p !== preferred)];
 }
@@ -152,6 +170,8 @@ const TIMEOUTS = {
     cohere:     parseInt(process.env.COHERE_TIMEOUT     || "25000", 10),
     nvidia:     parseInt(process.env.NVIDIA_TIMEOUT     || "30000", 10),
     lmstudio:   parseInt(process.env.LM_STUDIO_TIMEOUT  || "30000", 10),
+    grok:       parseInt(process.env.GROK_TIMEOUT       || "25000", 10),
+    qwen:       parseInt(process.env.QWEN_TIMEOUT       || "25000", 10),
 };
 
 // ── Retry helper (network-class errors only, 1 retry) ────────────────────────
@@ -372,6 +392,34 @@ async function _nvidia(messages, model) {
     });
 }
 
+// ── Grok (x.ai) adapter (OpenAI-compatible) ──────────────────────────────────
+async function _grok(messages, model) {
+    const key = process.env.GROK_API_KEY;
+    if (!key) throw new Error("GROK_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            GROK_URL,
+            { model: model || _grokModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.grok }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── Qwen (Alibaba DashScope) adapter (OpenAI-compatible) ─────────────────────
+async function _qwen(messages, model) {
+    const key = process.env.DASHSCOPE_API_KEY;
+    if (!key) throw new Error("DASHSCOPE_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            _qwenUrl(),
+            { model: model || _qwenModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.qwen }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
 // ── LM Studio adapter (OpenAI-compatible, local) ─────────────────────────────
 async function _lmstudio(messages, model) {
     const url = _lmStudioUrl();
@@ -464,6 +512,22 @@ async function _healthCheck(provider) {
                 await axios.get("https://integrate.api.nvidia.com/v1/models",
                     { headers: { Authorization: `Bearer ${process.env.NVIDIA_API_KEY}` }, timeout: 5000 });
                 return { ok: true };
+            case "grok":
+                if (!process.env.GROK_API_KEY) return { ok: false, reason: "GROK_API_KEY not set" };
+                await axios.get("https://api.x.ai/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.GROK_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "qwen":
+                if (!process.env.DASHSCOPE_API_KEY) return { ok: false, reason: "DASHSCOPE_API_KEY not set" };
+                // DashScope's compatible-mode endpoint doesn't expose GET /models the
+                // same way OpenAI does — probe with a minimal real chat completion
+                // instead (1 max_token, cheapest reasonable liveness check).
+                await axios.post(
+                    _qwenUrl(),
+                    { model: _qwenModel(), messages: [{ role: "user", content: "hi" }], max_tokens: 1 },
+                    { headers: { Authorization: `Bearer ${process.env.DASHSCOPE_API_KEY}`, "Content-Type": "application/json" }, timeout: 6000 }
+                );
+                return { ok: true };
             case "lmstudio": {
                 const lmBase = process.env.LM_STUDIO_URL || "http://localhost:1234";
                 await axios.get(`${lmBase}/v1/models`, { timeout: 3000 });
@@ -513,6 +577,8 @@ async function callAI(prompt, opts = {}) {
                 case "cohere":     reply = await _cohere(messages, model);            break;
                 case "nvidia":     reply = await _nvidia(messages, model);            break;
                 case "lmstudio":   reply = await _lmstudio(messages, model);         break;
+                case "grok":       reply = await _grok(messages, model);             break;
+                case "qwen":       reply = await _qwen(messages, model);             break;
                 default:
                     logger.warn(`AI: unknown provider "${provider}", skipping`);
                     continue;
@@ -565,6 +631,8 @@ async function getAIStatus() {
         cohere:     !!process.env.COHERE_API_KEY,
         nvidia:     !!process.env.NVIDIA_API_KEY,
         lmstudio:   true,   // local — no key required
+        grok:       !!process.env.GROK_API_KEY,
+        qwen:       !!process.env.DASHSCOPE_API_KEY,
     };
 
     // Run health probes in parallel, with 6s cap so /ai/status stays fast
@@ -699,6 +767,8 @@ async function chat(messages, opts = {}) {
                 case "cohere":     text = await _cohere(allMessages, model);           break;
                 case "nvidia":     text = await _nvidia(allMessages, model);           break;
                 case "lmstudio":   text = await _lmstudio(allMessages, model);        break;
+                case "grok":       text = await _grok(allMessages, model);            break;
+                case "qwen":       text = await _qwen(allMessages, model);            break;
                 default:
                     continue;
             }
@@ -736,6 +806,8 @@ function _defaultModel(provider) {
         case "cohere":     return _cohereModel();
         case "nvidia":     return _nvidiaModel();
         case "lmstudio":   return _lmStudioModel();
+        case "grok":       return _grokModel();
+        case "qwen":       return _qwenModel();
         default:           return "unknown";
     }
 }
@@ -748,7 +820,7 @@ function _defaultModel(provider) {
  * @returns {{ [provider]: { available: boolean, hasKey: boolean, lastFailure: string|null, callCount: number } }}
  */
 function getProviderStatus() {
-    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
+    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"];
     const result = {};
 
     for (const p of ALL) {
@@ -766,6 +838,8 @@ function getProviderStatus() {
                 case "cohere":     return !!process.env.COHERE_API_KEY;
                 case "nvidia":     return !!process.env.NVIDIA_API_KEY;
                 case "lmstudio":   return true;   // local, no key needed
+                case "grok":       return !!process.env.GROK_API_KEY;
+                case "qwen":       return !!process.env.DASHSCOPE_API_KEY;
                 default:           return false;
             }
         })();

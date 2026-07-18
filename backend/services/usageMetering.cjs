@@ -49,6 +49,10 @@ const PROVIDER_COSTS = {
   // NVIDIA publishes metered pricing for hosted NIM inference.
   nvidia:      { input: 0,       output: 0        },
   lmstudio:    { input: 0,       output: 0        },
+  // grok-2-latest (x.ai):  $2.00 / $10.00 per 1M tokens (public pricing page)
+  grok:        { input: 0.002,   output: 0.01     },
+  // qwen-plus (Alibaba DashScope, international pricing): ~$0.40 / $1.20 per 1M tokens
+  qwen:        { input: 0.0004,  output: 0.0012   },
 };
 
 const _buffer = [];

@@ -158,6 +158,8 @@ const ENV_MAP = {
   "ai:fireworks::api_key":      "FIREWORKS_API_KEY",
   "ai:cohere::api_key":         "COHERE_API_KEY",
   "ai:nvidia::api_key":         "NVIDIA_API_KEY",
+  "ai:grok::api_key":           "GROK_API_KEY",
+  "ai:qwen::api_key":           "DASHSCOPE_API_KEY",
   // Phase B — Git
   "git:github::personal_access_token": "GITHUB_TOKEN",
   "git:github::oauth_token":    "GITHUB_CLIENT_SECRET",
