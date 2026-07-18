@@ -37,6 +37,7 @@ function _enterprisePolicies() { try { return require("./enterprisePolicies.cjs"
 function _capabilityRouter()   { try { return require("./capabilityRouter.cjs");   } catch { return null; } }
 function _promptHistory()      { try { return require("./promptHistory.cjs");      } catch { return null; } }
 function _budgets()            { try { return require("./orgBudgets.cjs");         } catch { return null; } }
+function _integrationConnectors() { try { return require("./integrationConnectors.cjs"); } catch { return null; } }
 
 // ── Capability detection (reuses capabilityRouter's intent patterns rather
 // than re-implementing regex matching) ───────────────────────────────────
@@ -145,6 +146,50 @@ async function buildFallbackChain(opts = {}) {
 }
 
 /**
+ * Composite health snapshot for one or all providers: live reachability
+ * probe (integrationConnectors.healthAIProvider — real network call, real
+ * measured latency, see Module 4) merged with smartRouter's persisted
+ * historical latency (EMA p50 across real completed requests, recorded by
+ * execute() below on every successful call). Two different signals on
+ * purpose: "can I reach it right now" vs "how fast has it actually been
+ * responding to real chat requests over time."
+ *
+ * @param {string} [providerId]  omit for all 14 providers
+ * @returns {Promise<object|object[]>}
+ */
+async function getProviderHealth(providerId) {
+  const ic = _integrationConnectors();
+  // smartRouter.PROVIDERS, not aiRegistry.getAll() — the registry also
+  // carries non-chat providers (Stability, ElevenLabs, Playwright) that
+  // integrationConnectors has no AI_PROVIDERS entry for; this function is
+  // specifically about the 14 real text/chat adapters aiService.js implements.
+  const ids = providerId ? [providerId] : Object.keys(smartRouter.PROVIDERS);
+  const routerScores = smartRouter.getProviderScores();
+
+  const results = await Promise.all(ids.map(async id => {
+    const historical = routerScores.find(s => s.id === id);
+    let live = { ok: false, latencyMs: null, detail: "integrationConnectors unavailable" };
+    if (ic) {
+      // integrationConnectors uses "anthropic" for Claude — same naming
+      // reconciliation aiOrchestrator/aiService already do elsewhere.
+      const icId = id === "claude" ? "anthropic" : id;
+      live = await ic.healthAIProvider(icId).catch(e => ({ ok: false, latencyMs: null, detail: e.message }));
+    }
+    return {
+      providerId: id,
+      reachable: live.ok,
+      liveLatencyMs: live.latencyMs,
+      liveDetail: live.detail,
+      historicalP50LatencyMs: historical?.latency_p50 ?? null,
+      blocked: historical?.blocked ?? false,
+      qualityScore: historical?.scores?.quality ?? null,
+    };
+  }));
+
+  return providerId ? results[0] : results;
+}
+
+/**
  * Execute a chat request through the orchestrated fallback chain, recording
  * real cost/latency to usageMetering and enforcing budget along the way.
  * This is the ONE function every route (routes/ai.js, routes/jarvis.js)
@@ -248,5 +293,6 @@ module.exports = {
   detectCapability,
   buildFallbackChain,
   execute,
+  getProviderHealth,
   _availableProviders, // exported for tests/inspection only
 };

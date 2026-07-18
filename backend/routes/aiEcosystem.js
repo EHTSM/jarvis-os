@@ -62,6 +62,12 @@
  *   GET  /ai-ecosystem/budgets/workspace/:workspaceId — one workspace's budget + spend
  *   PUT  /ai-ecosystem/budgets/workspace/:workspaceId — set workspace budget (org_owner only)
  *   POST /ai-ecosystem/budgets/check                 — check {orgId, workspaceId} against budget
+ *
+ * MODULE 12 – AI Orchestrator (aiOrchestrator.cjs)
+ *   GET  /ai-ecosystem/orchestrator/health              — composite live+historical health, all providers
+ *   GET  /ai-ecosystem/orchestrator/health/:providerId   — single provider
+ *   POST /ai-ecosystem/orchestrator/chain                — preview the fallback chain for a capability/task
+ *   POST /ai-ecosystem/orchestrator/execute               — run a chat request through the full orchestrated path
  */
 
 const router = require("express").Router();
@@ -418,6 +424,47 @@ router.post("/ai-ecosystem/budgets/check", (req, res) => {
     const { orgId, workspaceId } = req.body || {};
     res.json({ ok: true, ...orgBudgets.checkBudget({ orgId, workspaceId }) });
   } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 12: AI Orchestrator
+// ══════════════════════════════════════════════════════════════════
+
+const orchestrator = require("../services/aiOrchestrator.cjs");
+
+router.get("/ai-ecosystem/orchestrator/health", async (req, res) => {
+  try { res.json({ ok: true, providers: await orchestrator.getProviderHealth() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/orchestrator/health/:providerId", async (req, res) => {
+  try { res.json({ ok: true, health: await orchestrator.getProviderHealth(req.params.providerId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/orchestrator/chain", async (req, res) => {
+  try {
+    const { capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId } = req.body || {};
+    const chain = await orchestrator.buildFallbackChain({ capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId });
+    res.json({ ok: true, ...chain });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, async (req, res) => {
+  try {
+    const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId } = req.body || {};
+    const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
+    if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });
+    const accountId = _accountId(req);
+    const result = await orchestrator.execute(msgs, {
+      capability, task, intent, userPref, prefer, model, maxTokens, temperature,
+      accountId, orgId, workspaceId, missionId,
+    });
+    res.json({ ok: true, ...result });
+  } catch (e) {
+    const status = e.status || 500;
+    res.status(status).json({ error: e.message, code: e.code });
+  }
 });
 
 // ══════════════════════════════════════════════════════════════════

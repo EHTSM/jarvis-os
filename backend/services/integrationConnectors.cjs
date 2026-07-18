@@ -95,28 +95,41 @@ const _localAi  = () => _try(() => require("./localAiRuntime.cjs"));
 const _prov     = () => _try(() => require("./providerManager.cjs"));
 
 // ── HTTP probe helper ─────────────────────────────────────────────────────────
-function _probe(url, headersObj = {}, ms = 6000) {
+// method/body added for probes that need a real POST (e.g. Qwen's DashScope
+// endpoint has no GET /models, so its liveness probe is a minimal real chat
+// completion — same technique aiService.js's own _healthCheck already uses
+// for Qwen). latencyMs is now measured around the whole request/response
+// cycle and returned on every result — healthAIProvider() previously
+// hardcoded latencyMs: null because this function never measured it.
+function _probe(url, headersObj = {}, ms = 6000, method = "GET", body = null) {
   return new Promise(resolve => {
+    const t0 = Date.now();
     try {
       const u   = new URL(url);
       const mod = u.protocol === "http:" ? http : https;
+      const payload = body ? JSON.stringify(body) : null;
       const req = mod.request(
         { hostname: u.hostname, port: u.port || (u.protocol === "https:" ? 443 : 80),
-          path: u.pathname + u.search, method: "GET",
-          headers: { "User-Agent": "ooplix/3.0", ...headersObj } },
+          path: u.pathname + u.search, method,
+          headers: {
+            "User-Agent": "ooplix/3.0", ...headersObj,
+            ...(payload ? { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(payload) } : {}),
+          } },
         res => {
-          let body = "";
-          res.on("data", d => { body += d; });
+          let resBody = "";
+          res.on("data", d => { resBody += d; });
           res.on("end", () => {
-            try { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: JSON.parse(body) }); }
-            catch { resolve({ ok: res.statusCode < 400, status: res.statusCode, body }); }
+            const latencyMs = Date.now() - t0;
+            try { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: JSON.parse(resBody), latencyMs }); }
+            catch { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: resBody, latencyMs }); }
           });
         }
       );
-      req.setTimeout(ms, () => { req.destroy(); resolve({ ok: false, status: 0, error: "timeout" }); });
-      req.on("error", e => resolve({ ok: false, status: 0, error: e.message }));
+      req.setTimeout(ms, () => { req.destroy(); resolve({ ok: false, status: 0, error: "timeout", latencyMs: Date.now() - t0 }); });
+      req.on("error", e => resolve({ ok: false, status: 0, error: e.message, latencyMs: Date.now() - t0 }));
+      if (payload) req.write(payload);
       req.end();
-    } catch (e) { resolve({ ok: false, status: 0, error: e.message }); }
+    } catch (e) { resolve({ ok: false, status: 0, error: e.message, latencyMs: Date.now() - t0 }); }
   });
 }
 
@@ -163,6 +176,8 @@ const AI_PROVIDERS = {
   nvidia:     { label: "NVIDIA NIM",    baseUrl: "https://integrate.api.nvidia.com/v1",    modelsPath: "/models",  envKey: "NVIDIA_API_KEY",      authHeader: k => `Bearer ${k}` },
   ollama:     { label: "Ollama (Local)",baseUrl: null,                                       modelsPath: null,       envKey: null,                  authHeader: null },
   lmstudio:   { label: "LM Studio",     baseUrl: null,                                       modelsPath: null,       envKey: null,                  authHeader: null },
+  grok:       { label: "Grok (x.ai)",   baseUrl: "https://api.x.ai/v1",                     modelsPath: "/models",  envKey: "GROK_API_KEY",        authHeader: k => `Bearer ${k}` },
+  qwen:       { label: "Qwen (DashScope)", baseUrl: null,                                    modelsPath: null,       envKey: "DASHSCOPE_API_KEY",   authHeader: null },
 };
 
 async function connectAIProvider(providerId) {
@@ -195,7 +210,7 @@ async function connectAIProvider(providerId) {
     return _record("ai:gemini", "A", def.label,
       r.ok ? "CONNECTED" : "READY",
       r.ok ? `Gemini API reachable — model: ${model}` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-      creds, r.ok ? { model } : {}
+      creds, { ...(r.ok ? { model } : {}), latencyMs: r.latencyMs }
     );
   }
 
@@ -208,7 +223,28 @@ async function connectAIProvider(providerId) {
     return _record("ai:anthropic", "A", def.label,
       r.ok ? "CONNECTED" : "READY",
       r.ok ? "Anthropic API reachable" : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-      creds
+      creds, { latencyMs: r.latencyMs }
+    );
+  }
+
+  // Qwen (Alibaba DashScope) — no GET /models on the compatible-mode endpoint,
+  // so the liveness probe is a real minimal chat completion instead (same
+  // technique aiService.js's own _healthCheck uses for this provider).
+  if (providerId === "qwen") {
+    const key = _env("DASHSCOPE_API_KEY");
+    const creds = _creds(["DASHSCOPE_API_KEY"]);
+    if (!key) return _record("ai:qwen", "A", def.label, "MISSING", "DASHSCOPE_API_KEY not set", creds);
+    const region = (_env("QWEN_REGION") || "intl").toLowerCase();
+    const url = region === "cn"
+      ? "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+      : "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions";
+    const model = _env("QWEN_MODEL") || "qwen-plus";
+    const r = await _probe(url, { Authorization: `Bearer ${key}` }, 6000, "POST",
+      { model, messages: [{ role: "user", content: "hi" }], max_tokens: 1 });
+    return _record("ai:qwen", "A", def.label,
+      r.ok ? "CONNECTED" : "READY",
+      r.ok ? `Qwen API reachable — model: ${model}` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
+      creds, { ...(r.ok ? { model } : {}), latencyMs: r.latencyMs }
     );
   }
 
@@ -223,23 +259,36 @@ async function connectAIProvider(providerId) {
   return _record(`ai:${providerId}`, "A", def.label,
     r.ok ? "CONNECTED" : "READY",
     r.ok ? `${def.label} API reachable` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-    creds
+    creds, { latencyMs: r.latencyMs }
   );
 }
 
 async function healthAIProvider(providerId) {
-  // For already-connected providers, reuse aiService health check
+  // For already-connected providers, reuse aiService health check. aiService's
+  // own _healthCheck doesn't measure latency either, so latencyMs is timed
+  // here around the call — previously hardcoded to null regardless of which
+  // path ran, meaning /vault/health and the connector dashboard never showed
+  // real AI provider latency at all.
+  const t0 = Date.now();
   const ai = _ai();
-  if (ai && ["groq", "openrouter", "openai", "claude", "gemini", "ollama"].includes(providerId)) {
+  // providerId here is integrationConnectors.cjs's naming ("anthropic"), but
+  // aiService.js's getAIStatus() reports it as "claude" — this array is
+  // checked against integrationConnectors' own ids, so it must list
+  // "anthropic", not "claude" (the previous version listed "claude" here,
+  // which can never equal providerId==="anthropic" — Anthropic health checks
+  // always silently fell through to the slower re-probe fallback below
+  // instead of reusing aiService's already-computed status).
+  if (ai && ["groq", "openrouter", "openai", "anthropic", "gemini", "ollama", "grok", "qwen"].includes(providerId)) {
     const status = await ai.getAIStatus().catch(() => null);
     const prov = status?.providers?.find(p => p.id === (providerId === "anthropic" ? "claude" : providerId));
     if (prov) {
-      return { ok: prov.health?.ok ?? false, latencyMs: null, detail: prov.health?.reason || "ok", provider: providerId };
+      return { ok: prov.health?.ok ?? false, latencyMs: Date.now() - t0, detail: prov.health?.reason || "ok", provider: providerId };
     }
   }
-  // Fallback: re-probe
+  // Fallback: re-probe (connectAIProvider's own probe already measures and
+  // stores latencyMs in metrics — surface that instead of re-timing here).
   const rec = await connectAIProvider(providerId);
-  return { ok: rec.status === "CONNECTED", detail: rec.detail, provider: providerId };
+  return { ok: rec.status === "CONNECTED", detail: rec.detail, latencyMs: rec.metrics?.latencyMs ?? (Date.now() - t0), provider: providerId };
 }
 
 async function scanAllAIProviders() {
