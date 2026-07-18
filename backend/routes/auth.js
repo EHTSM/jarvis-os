@@ -69,6 +69,10 @@ function _handleLogin(req, res) {
       return res.status(500).json({ error: "JWT signing failed — JWT_SECRET not configured" });
     }
     auditLog.recordAuth({ action: "login", operator: result.account.id, method: "email" });
+    // Supplementary org-scoped event (recordAuth's fixed shape has no orgId
+    // field) so Module 3's per-org login history can actually filter by org.
+    const primaryOrgId = _try(() => require("../services/organizationService.cjs").resolveContext(result.account.id).primaryOrg?.orgId);
+    if (primaryOrgId) auditLog.append({ type: "login.password", orgId: primaryOrgId, accountId: result.account.id, method: "password" });
     return res.json({ success: true, role: result.account.role, email: result.account.email });
   }
 

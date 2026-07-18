@@ -65,6 +65,7 @@
 const fs   = require("fs");
 const path = require("path");
 const logger = require("../utils/logger");
+const auditLog = require("../utils/auditLog.cjs");
 
 // ── Storage ───────────────────────────────────────────────────────────────────
 const DATA_DIR  = path.join(__dirname, "../../data");
@@ -226,6 +227,7 @@ function grantOrgAccess(orgId, granteeAccountId, permissions, requestingAccountI
     _writeGrants(grants);
 
     logger.info(`[OrgService] Granted ${granteeAccountId} [${permissions.join(",")}] on org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.grant_created", orgId, actorId: requestingAccountId, targetAccountId: granteeAccountId, permissions });
     return record;
 }
 
@@ -238,6 +240,7 @@ function revokeOrgAccess(orgId, granteeAccountId, requestingAccountId) {
     grants.grants = grants.grants.filter(g => !(g.orgId === orgId && g.granteeAccountId === granteeAccountId));
     _writeGrants(grants);
     logger.info(`[OrgService] Revoked grant for ${granteeAccountId} on org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.grant_revoked", orgId, actorId: requestingAccountId, targetAccountId: granteeAccountId });
     return { revoked: before !== grants.grants.length, orgId, granteeAccountId };
 }
 
@@ -342,6 +345,7 @@ function createOrg({ name, description = "", plan = "free" }, creatorAccountId) 
 
     try { _le()?.createLesson({ type: "org_created", title: `Org created: ${name}`, source: "organizationService" }); } catch {}
     logger.info(`[OrgService] Created org ${org.id}: ${name} (owner: ${creatorAccountId})`);
+    auditLog.append({ type: "permission.org_created", orgId: org.id, actorId: creatorAccountId, orgRole: "org_owner" });
     return { ..._sanitize(org), members: org.members };
 }
 
@@ -426,6 +430,7 @@ function archiveOrg(orgId, requestingAccountId) {
 
     try { _le()?.createLesson({ type: "org_archived", title: `Org archived: ${org.name}`, source: "organizationService" }); } catch {}
     logger.info(`[OrgService] Archived org ${orgId} by ${requestingAccountId} (cascade: ${JSON.stringify(cascade)})`);
+    auditLog.append({ type: "permission.org_archived", orgId, actorId: requestingAccountId, cascade });
     return { archived: true, orgId, cascade };
 }
 
@@ -442,6 +447,7 @@ function restoreOrg(orgId, requestingAccountId) {
     org.updatedAt  = new Date().toISOString();
     _write(store);
     logger.info(`[OrgService] Restored org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.org_restored", orgId, actorId: requestingAccountId });
     return { restored: true, orgId };
 }
 
@@ -469,6 +475,7 @@ function purgeOrg(orgId, requestingAccountId, confirmToken) {
     store.orgs.splice(idx, 1);
     _write(store);
     logger.info(`[OrgService] Permanently deleted org ${orgId} by ${requestingAccountId} (orphaned records: ${JSON.stringify(cascade)})`);
+    auditLog.append({ type: "permission.org_purged", orgId, actorId: requestingAccountId, orphaned: cascade });
     return { deleted: true, orgId, orphaned: cascade };
 }
 
@@ -505,7 +512,9 @@ function listMembers(orgId, { deptId, teamId } = {}) {
 
 function addMember(orgId, { accountId, orgRole = "member", deptId, teamId }, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_members");
-    return _addMemberRecord(orgId, { accountId, orgRole, deptId, teamId });
+    const result = _addMemberRecord(orgId, { accountId, orgRole, deptId, teamId });
+    auditLog.append({ type: "permission.member_added", orgId, actorId: requestingAccountId, targetAccountId: accountId, orgRole, source: "invite" });
+    return result;
 }
 
 // Internal, not permission-gated by design: the caller (e.g. a JIT SSO login)
@@ -544,7 +553,9 @@ function addMemberViaSso(orgId, accountId, orgRole = "member") {
     const org   = _findOrg(store, orgId);
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
     if (org.members.find(m => m.accountId === accountId)) return { added: false, accountId, alreadyMember: true };
-    return _addMemberRecord(orgId, { accountId, orgRole });
+    const result = _addMemberRecord(orgId, { accountId, orgRole });
+    auditLog.append({ type: "permission.member_added", orgId, actorId: "system", targetAccountId: accountId, orgRole, source: "sso_jit" });
+    return result;
 }
 
 function removeMember(orgId, accountId, requestingAccountId) {
@@ -558,6 +569,7 @@ function removeMember(orgId, accountId, requestingAccountId) {
     org.members = org.members.filter(m => m.accountId !== accountId);
     org.updatedAt = new Date().toISOString();
     _write(store);
+    auditLog.append({ type: "permission.member_removed", orgId, actorId: requestingAccountId, targetAccountId: accountId, previousRole: target.orgRole });
     return { removed: true, accountId };
 }
 
@@ -570,9 +582,11 @@ function updateMemberRole(orgId, accountId, newRole, requestingAccountId) {
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
     const m = org.members.find(m => m.accountId === accountId);
     if (!m) throw Object.assign(new Error("Member not found"), { status: 404 });
+    const previousRole = m.orgRole;
     m.orgRole   = newRole;
     org.updatedAt = new Date().toISOString();
     _write(store);
+    auditLog.append({ type: "permission.role_changed", orgId, actorId: requestingAccountId, targetAccountId: accountId, previousRole, newRole });
     return { updated: true, accountId, orgRole: newRole };
 }
 
