@@ -69,6 +69,8 @@
  *   POST /ai-ecosystem/orchestrator/chain                — preview the fallback chain for a capability/task
  *   POST /ai-ecosystem/orchestrator/execute               — run a chat request through the full orchestrated path
  *   POST /ai-ecosystem/orchestrator/execute/stream        — same, but Server-Sent Events token-by-token
+ *   GET  /ai-ecosystem/orchestrator/cache                 — response cache hit/miss stats
+ *   POST /ai-ecosystem/orchestrator/cache/clear           — clear the response cache
  */
 
 const router = require("express").Router();
@@ -453,12 +455,12 @@ router.post("/ai-ecosystem/orchestrator/chain", async (req, res) => {
 
 router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, async (req, res) => {
   try {
-    const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId } = req.body || {};
+    const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId, noCache } = req.body || {};
     const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
     if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });
     const accountId = _accountId(req);
     const result = await orchestrator.execute(msgs, {
-      capability, task, intent, userPref, prefer, model, maxTokens, temperature,
+      capability, task, intent, userPref, prefer, model, maxTokens, temperature, noCache,
       accountId, orgId, workspaceId, missionId,
     });
     res.json({ ok: true, ...result });
@@ -497,6 +499,16 @@ router.post("/ai-ecosystem/orchestrator/execute/stream", billing.requireUsageQuo
     res.write(`event: error\ndata: ${JSON.stringify({ error: e.message, code: e.code })}\n\n`);
     res.end();
   }
+});
+
+router.get("/ai-ecosystem/orchestrator/cache", (req, res) => {
+  try { res.json({ ok: true, ...orchestrator.getCacheStats() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/orchestrator/cache/clear", (req, res) => {
+  try { orchestrator.clearCache(); res.json({ ok: true, cleared: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ══════════════════════════════════════════════════════════════════

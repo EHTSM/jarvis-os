@@ -23,7 +23,8 @@
  *
  * Storage: reuses usageMetering's ledger and billingService's per-account
  * store; adds ONE new store (data/org-budgets.json) for the org/workspace
- * budget caps described in Module 3 — no other new storage.
+ * budget caps described in Module 3 — no other new storage. Response
+ * caching (Module 6) is in-memory only by design — see aiResponseCache.cjs.
  */
 
 const logger        = require("../utils/logger");
@@ -32,6 +33,7 @@ const aiRegistry      = require("./aiRegistry.cjs");
 const smartRouter     = require("./smartRouter.cjs");
 const usageMetering   = require("./usageMetering.cjs");
 const billingService  = require("./billingService");
+const responseCache   = require("./aiResponseCache.cjs");
 
 function _enterprisePolicies() { try { return require("./enterprisePolicies.cjs"); } catch { return null; } }
 function _capabilityRouter()   { try { return require("./capabilityRouter.cjs");   } catch { return null; } }
@@ -203,8 +205,9 @@ async function getProviderHealth(providerId) {
  *   model        string?  force a specific model on the chosen provider
  *   maxTokens, temperature — passed through to aiService
  *   tools        Array?   if present, uses aiService.chatWithTools instead of chat
+ *   noCache      bool?    skip the response cache for this call (default false)
  *
- * @returns {Promise<{text, toolCalls, provider, model, latencyMs, estimatedCostUsd, chain, capability}>}
+ * @returns {Promise<{text, toolCalls, provider, model, latencyMs, estimatedCostUsd, chain, capability, cached?}>}
  */
 async function execute(messages, opts = {}) {
   const { chain, capability, reason } = await buildFallbackChain(opts);
@@ -219,6 +222,20 @@ async function execute(messages, opts = {}) {
       const e = new Error(check.reason || "Budget limit exceeded for this organization/workspace");
       e.status = 429; e.code = "budget_exceeded";
       throw e;
+    }
+  }
+
+  // Response cache — exact-match only, and only for plain chat (never for
+  // tool-calling: a tool call may have real side effects — e.g. a connector
+  // action — replaying a cached tool_calls response without re-executing
+  // those tools, or worse silently skipping their execution, would be wrong
+  // in a way a stale chat answer isn't).
+  const cacheable = !opts.noCache && !(Array.isArray(opts.tools) && opts.tools.length);
+  const primary = chain[0];
+  if (cacheable) {
+    const hit = responseCache.get(primary.providerId, opts.model || primary.model, messages, opts.temperature);
+    if (hit) {
+      return { ...hit, chain: chain.map(c => c.providerId), capability, reason: `${reason}_cache_hit` };
     }
   }
 
@@ -261,11 +278,25 @@ async function execute(messages, opts = {}) {
         } catch (e) { logger.warn(`[aiOrchestrator] prompt history record failed: ${e.message}`); }
       }
 
-      return {
+      const response = {
         text: result.text, toolCalls: result.toolCalls || [], provider: candidate.providerId,
         model: result.model || candidate.model, latencyMs, estimatedCostUsd: event.estimatedCostUsd,
         chain: chain.map(c => c.providerId), capability, reason,
       };
+
+      // Populate the cache with exactly what a repeat of THIS candidate call
+      // would produce — keyed on the candidate actually used (which may not
+      // be `primary` if earlier providers in the chain failed), not the
+      // originally-preferred provider, so a later identical request that
+      // resolves to the same candidate gets a real hit.
+      if (cacheable) {
+        responseCache.set(candidate.providerId, callOpts.model, messages, opts.temperature, {
+          text: response.text, provider: response.provider, model: response.model,
+          latencyMs: response.latencyMs, estimatedCostUsd: response.estimatedCostUsd,
+        });
+      }
+
+      return response;
     } catch (err) {
       const latencyMs = Date.now() - t0;
       errors.push({ providerId: candidate.providerId, error: err.message });
@@ -380,5 +411,7 @@ module.exports = {
   execute,
   executeStream,
   getProviderHealth,
+  getCacheStats: responseCache.stats,
+  clearCache: responseCache.clear,
   _availableProviders, // exported for tests/inspection only
 };
