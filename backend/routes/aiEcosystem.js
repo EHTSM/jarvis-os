@@ -68,6 +68,7 @@
  *   GET  /ai-ecosystem/orchestrator/health/:providerId   — single provider
  *   POST /ai-ecosystem/orchestrator/chain                — preview the fallback chain for a capability/task
  *   POST /ai-ecosystem/orchestrator/execute               — run a chat request through the full orchestrated path
+ *   POST /ai-ecosystem/orchestrator/execute/stream        — same, but Server-Sent Events token-by-token
  */
 
 const router = require("express").Router();
@@ -464,6 +465,37 @@ router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, asy
   } catch (e) {
     const status = e.status || 500;
     res.status(status).json({ error: e.message, code: e.code });
+  }
+});
+
+// POST /ai-ecosystem/orchestrator/execute/stream — Server-Sent Events.
+// Each token delta arrives as its own `data: {...}` frame the moment
+// aiService.streamChat's onChunk fires; a final `event: done` frame carries
+// the same metadata /execute returns (provider, cost, latency) once the
+// stream completes, so a client can render tokens live and still get the
+// same accounting summary as the non-streaming endpoint.
+router.post("/ai-ecosystem/orchestrator/execute/stream", billing.requireUsageQuota, async (req, res) => {
+  const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId } = req.body || {};
+  const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
+  if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  const accountId = _accountId(req);
+  try {
+    const result = await orchestrator.executeStream(
+      msgs,
+      { capability, task, intent, userPref, prefer, model, maxTokens, temperature, accountId, orgId, workspaceId, missionId },
+      (delta) => { res.write(`data: ${JSON.stringify({ delta })}\n\n`); }
+    );
+    res.write(`event: done\ndata: ${JSON.stringify(result)}\n\n`);
+    res.end();
+  } catch (e) {
+    res.write(`event: error\ndata: ${JSON.stringify({ error: e.message, code: e.code })}\n\n`);
+    res.end();
   }
 });
 

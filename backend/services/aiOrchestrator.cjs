@@ -289,10 +289,96 @@ async function execute(messages, opts = {}) {
   throw e;
 }
 
+/**
+ * Streaming counterpart to execute() — same fallback chain, budget check,
+ * and cost/latency/history accounting, but delivers tokens incrementally via
+ * onChunk as they arrive from aiService.streamChat() instead of waiting for
+ * the full response. Only attempts providers aiService.isStreamCapable()
+ * reports as supporting real streaming (see Module 5's STREAM_CAPABLE list) —
+ * a provider in the capability-ranked chain that can't stream is skipped here
+ * rather than silently falling back to a blocking call, since a caller who
+ * asked to stream needs to know if nothing in the chain could actually do it.
+ *
+ * @returns {Promise<{text, provider, model, latencyMs, estimatedCostUsd, chain, capability}>}
+ */
+async function executeStream(messages, opts = {}, onChunk = () => {}) {
+  const { chain, capability, reason } = await buildFallbackChain(opts);
+  const streamableChain = chain.filter(c => aiService.isStreamCapable(c.providerId));
+  if (!streamableChain.length) throw new Error("No streaming-capable AI provider available for this request");
+
+  const budgets = _budgets();
+  if (budgets && (opts.orgId || opts.workspaceId)) {
+    const check = budgets.checkBudget({ orgId: opts.orgId, workspaceId: opts.workspaceId });
+    if (!check.allowed) {
+      const e = new Error(check.reason || "Budget limit exceeded for this organization/workspace");
+      e.status = 429; e.code = "budget_exceeded";
+      throw e;
+    }
+  }
+
+  const errors = [];
+  for (const candidate of streamableChain) {
+    const t0 = Date.now();
+    try {
+      const result = await aiService.streamChat(
+        messages,
+        { provider: candidate.providerId, model: opts.model || candidate.model, maxTokens: opts.maxTokens, temperature: opts.temperature },
+        onChunk
+      );
+      const latencyMs = Date.now() - t0;
+      smartRouter.recordLatency(candidate.providerId, latencyMs);
+
+      const inputChars  = messages.reduce((s, m) => s + (m.content?.length || 0), 0);
+      const outputChars = (result.text || "").length;
+      const inputTokens  = Math.ceil(inputChars / 4);
+      const outputTokens = Math.ceil(outputChars / 4);
+
+      const event = usageMetering.record({
+        accountId: opts.accountId, orgId: opts.orgId, workspaceId: opts.workspaceId, missionId: opts.missionId,
+        provider: candidate.providerId, model: result.model || candidate.model,
+        requestType: "chat_stream", inputTokens, outputTokens, latencyMs, success: true,
+      });
+
+      const history = _promptHistory();
+      if (history) {
+        try {
+          history.record({
+            accountId: opts.accountId, orgId: opts.orgId, workspaceId: opts.workspaceId,
+            capability, provider: candidate.providerId, model: result.model || candidate.model,
+            prompt: messages[messages.length - 1]?.content || "", response: result.text || "",
+            latencyMs, estimatedCostUsd: event.estimatedCostUsd,
+          });
+        } catch (e) { logger.warn(`[aiOrchestrator] prompt history record failed: ${e.message}`); }
+      }
+
+      return {
+        text: result.text, provider: candidate.providerId, model: result.model || candidate.model,
+        latencyMs, estimatedCostUsd: event.estimatedCostUsd, chain: streamableChain.map(c => c.providerId), capability, reason,
+      };
+    } catch (err) {
+      const latencyMs = Date.now() - t0;
+      errors.push({ providerId: candidate.providerId, error: err.message });
+      usageMetering.record({
+        accountId: opts.accountId, orgId: opts.orgId, workspaceId: opts.workspaceId, missionId: opts.missionId,
+        provider: candidate.providerId, requestType: "chat_stream", latencyMs, success: false, errorCode: err.message,
+      });
+      if (err.response?.status === 429 || /429|rate.?limit/i.test(err.message)) {
+        smartRouter.blockProvider(candidate.providerId, 30000);
+      }
+      logger.warn(`[aiOrchestrator] streaming ${candidate.providerId} failed, trying next in chain: ${err.message}`);
+    }
+  }
+
+  const e = new Error(`All streaming-capable providers in fallback chain failed: ${errors.map(e => `${e.providerId} (${e.error})`).join("; ")}`);
+  e.chainErrors = errors;
+  throw e;
+}
+
 module.exports = {
   detectCapability,
   buildFallbackChain,
   execute,
+  executeStream,
   getProviderHealth,
   _availableProviders, // exported for tests/inspection only
 };

@@ -992,6 +992,209 @@ async function chatWithTools(messages, tools = [], opts = {}) {
     throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini.");
 }
 
+// ── Streaming (SSE passthrough) ──────────────────────────────────────────────
+// aiRegistry.cjs already carried a `streamable: true/false` capability flag
+// per provider, but nothing in this file (or anywhere else) ever read it or
+// requested a streamed response — Ollama's adapter explicitly passed
+// `stream: false`, and every other adapter used the default non-streaming
+// response shape. STREAM_CAPABLE below reflects only providers verified here
+// to genuinely support it via a real streaming API (not aiRegistry's
+// per-capability flag, which is broader/aspirational metadata).
+const STREAM_CAPABLE = ["groq", "openrouter", "openai", "deepseek", "together", "fireworks", "nvidia", "grok", "qwen", "claude", "gemini", "ollama"];
+
+function isStreamCapable(provider) { return STREAM_CAPABLE.includes(provider); }
+
+// OpenAI-compatible SSE stream parser — shared by every provider on this wire
+// format (groq/openai/openrouter/deepseek/together/fireworks/nvidia/grok/qwen).
+// Each SSE frame is `data: {...}\n\n`, terminated by `data: [DONE]\n\n`.
+async function _streamOpenAICompatible(url, key, body, timeout, onChunk) {
+    const res = await axios.post(url, { ...body, stream: true }, {
+        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        timeout, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop(); // keep the last (possibly partial) line for the next chunk
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                const payload = trimmed.slice(5).trim();
+                if (payload === "[DONE]") continue;
+                try {
+                    const json = JSON.parse(payload);
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore malformed/keepalive frames */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+// Claude's SSE format differs: named events (content_block_delta etc.), each
+// with its own `data: {...}` payload carrying `delta.text`.
+async function _streamClaude(messages, model, opts, onChunk) {
+    const key = process.env.ANTHROPIC_API_KEY;
+    if (!key) throw new Error("ANTHROPIC_API_KEY not set");
+    const systemMsg = messages.find(m => m.role === "system");
+    const userMsgs  = messages.filter(m => m.role !== "system");
+    const body = {
+        model: model || _claudeModel(), max_tokens: opts.maxTokens || 1024, stream: true,
+        messages: userMsgs.map(m => ({ role: m.role, content: m.content })),
+    };
+    if (systemMsg) body.system = systemMsg.content;
+
+    const res = await axios.post(ANTHROPIC_URL, body, {
+        headers: { "x-api-key": key, "anthropic-version": ANTHROPIC_VER, "Content-Type": "application/json" },
+        timeout: TIMEOUTS.claude, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                try {
+                    const json = JSON.parse(trimmed.slice(5).trim());
+                    const delta = json.delta?.text;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore event-type lines / keepalives */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+// Gemini's streaming endpoint returns a JSON array streamed incrementally
+// (not SSE) — parse candidate text out of each top-level object as it arrives.
+async function _streamGemini(messages, model, opts, onChunk) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) throw new Error("GEMINI_API_KEY not set");
+    const systemMsg = messages.find(m => m.role === "system");
+    const userMsgs  = messages.filter(m => m.role !== "system");
+    const systemPart = systemMsg ? systemMsg.content + "\n\n" : "";
+    const fullPrompt = systemPart + userMsgs.map(m => m.content).join("\n");
+    const chosenModel = model || _geminiModel();
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${chosenModel}:streamGenerateContent?alt=sse&key=${key}`;
+
+    const res = await axios.post(url, { contents: [{ parts: [{ text: fullPrompt }] }] }, {
+        headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.gemini, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                try {
+                    const json = JSON.parse(trimmed.slice(5).trim());
+                    const delta = json.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore malformed frames */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+async function _streamOllama(messages, model, onChunk) {
+    const url = _ollamaUrl();
+    await _assertLocalServerUp(url, "Ollama");
+    const res = await axios.post(url, { model: model || _ollamaModel(), messages, stream: true }, {
+        timeout: TIMEOUTS.ollama, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                try {
+                    const json = JSON.parse(line);
+                    const delta = json.message?.content;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore partial/malformed lines */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+/**
+ * Stream a chat completion, invoking onChunk(deltaText) as tokens arrive.
+ * Resolves with the same shape as chat(): { text, provider, model, latencyMs }.
+ * Falls back through the same provider order as chat()/callAI() — if a
+ * provider fails before producing any chunk, tries the next.
+ *
+ * @param {Array<{role,content}>} messages
+ * @param {object} opts   same as chat() — provider, task, model, maxTokens
+ * @param {(delta: string) => void} onChunk
+ */
+async function streamChat(messages, opts = {}, onChunk = () => {}) {
+    let chosenProvider;
+    if (opts.provider) chosenProvider = opts.provider;
+    else if (opts.task) chosenProvider = routeByCapability(opts.task, opts).provider;
+
+    const model = opts.model || null;
+    const t0 = Date.now();
+    const systemMsg = messages.find(m => m.role === "system");
+    const rest = messages.filter(m => m.role !== "system");
+    const allMessages = systemMsg ? [systemMsg, ...rest] : rest;
+
+    const providers = (chosenProvider ? [chosenProvider] : _providerOrder()).filter(isStreamCapable);
+    if (!providers.length) throw new Error("No streaming-capable provider available in the current provider order");
+
+    for (const p of providers) {
+        try {
+            let text;
+            switch (p) {
+                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "llama-3.3-70b-versatile", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.groq, onChunk); break;
+                case "openrouter": text = await _streamOpenAICompatible(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, { model: model || "anthropic/claude-haiku-4-5", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.openrouter, onChunk); break;
+                case "openai":     text = await _streamOpenAICompatible(OPENAI_URL, process.env.OPENAI_API_KEY, { model: model || "gpt-4o-mini", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.openai, onChunk); break;
+                case "deepseek":   text = await _streamOpenAICompatible(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, { model: model || _deepseekModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.deepseek, onChunk); break;
+                case "together":   text = await _streamOpenAICompatible(TOGETHER_URL, process.env.TOGETHER_API_KEY, { model: model || _togetherModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.together, onChunk); break;
+                case "fireworks":  text = await _streamOpenAICompatible(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, { model: model || _fireworksModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.fireworks, onChunk); break;
+                case "nvidia":     text = await _streamOpenAICompatible(NVIDIA_URL, process.env.NVIDIA_API_KEY, { model: model || _nvidiaModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.nvidia, onChunk); break;
+                case "grok":       text = await _streamOpenAICompatible(GROK_URL, process.env.GROK_API_KEY, { model: model || _grokModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.grok, onChunk); break;
+                case "qwen":       text = await _streamOpenAICompatible(_qwenUrl(), process.env.DASHSCOPE_API_KEY, { model: model || _qwenModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.qwen, onChunk); break;
+                case "claude":     text = await _streamClaude(allMessages, model, opts, onChunk); break;
+                case "gemini":     text = await _streamGemini(allMessages, model, opts, onChunk); break;
+                case "ollama":     text = await _streamOllama(allMessages, model, onChunk); break;
+                default: continue;
+            }
+            if (_state.callCount[p] !== undefined) _state.callCount[p]++;
+            _state.activeProvider = p;
+            _state.lastSuccess = new Date().toISOString();
+            return { text, provider: p, model: model || _defaultModel(p), latencyMs: Date.now() - t0 };
+        } catch (err) {
+            _state.failCount++;
+            _state.lastFailures[p] = { reason: err.message, ts: new Date().toISOString() };
+            logger.warn(`AI streamChat [${p}] failed: ${err.message}`);
+        }
+    }
+
+    throw new Error("All streaming-capable AI providers failed — check your API keys.");
+}
+
 module.exports = {
     callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus,
     // Exported for aiOrchestrator.cjs's availability probing — read-only
@@ -999,4 +1202,13 @@ module.exports = {
     // check already existed internally (used by _ollama/_lmstudio's own
     // fail-fast path), just weren't exposed for callers to probe ahead of time.
     isLocalServerReachable, ollamaUrl: _ollamaUrl, lmStudioUrl: _lmStudioUrl,
+    // Streaming (SSE passthrough) — see STREAM_CAPABLE for exactly which
+    // providers this supports. Cohere and LM Studio are deliberately excluded:
+    // Cohere's streaming wire format differs from every other provider here
+    // (named event_type frames, not OpenAI-style delta chunks) and hasn't been
+    // implemented/verified; LM Studio's local server likely supports the same
+    // OpenAI-compatible stream shape as the cloud providers but hasn't been
+    // verified against a real running instance either — both would need a
+    // real verified implementation before being added, not a guess.
+    streamChat, isStreamCapable,
 };
