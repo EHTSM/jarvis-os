@@ -192,6 +192,61 @@ async function getProviderHealth(providerId) {
 }
 
 /**
+ * Provider recommendations for a capability — ranked list combining
+ * capability fit (aiRegistry's cost/quality/context-window data for that
+ * specific capability) with LIVE reachability (Module 4's real health
+ * probe), so a recommendation never suggests a provider that's currently
+ * unreachable or missing credentials ahead of one that actually works right
+ * now. This is a read-only advisory function — it does not change what
+ * execute() picks, it answers "what would you suggest and why" as its own
+ * question (e.g. for a settings UI helping a user pick a default provider).
+ *
+ * @param {string} capability   e.g. "chat","code","reasoning","vision","embeddings"
+ * @param {object} [opts]
+ *   prefer        "cost"|"quality"|"speed"  (default "cost")
+ *   minQuality    number 0-1
+ *   maxCostPer1k  number
+ *   top           number of recommendations to return (default 5)
+ * @returns {Promise<Array<{providerId, model, costPer1k, quality, reachable, liveDetail, recommended, reason}>>}
+ */
+async function recommend(capability, opts = {}) {
+  const candidates = aiRegistry.getByCapability(capability).map(p => {
+    const cap = p.capabilities[capability];
+    return { providerId: p.id, providerName: p.name, model: cap.models?.[0] || "default",
+             costPer1k: cap.costPer1k, quality: cap.quality, latencyClass: cap.latencyClass,
+             contextWindow: cap.contextWindow, streamable: !!cap.streamable };
+  });
+
+  if (opts.minQuality != null)   { const c = candidates.filter(c => c.quality >= opts.minQuality);   candidates.length = 0; candidates.push(...c); }
+  if (opts.maxCostPer1k != null) { const c = candidates.filter(c => c.costPer1k <= opts.maxCostPer1k); candidates.length = 0; candidates.push(...c); }
+
+  const prefer = opts.prefer || "cost";
+  if (prefer === "quality") candidates.sort((a, b) => b.quality - a.quality);
+  else if (prefer === "speed") { const order = { fast: 0, medium: 1, slow: 2 }; candidates.sort((a, b) => order[a.latencyClass] - order[b.latencyClass]); }
+  else candidates.sort((a, b) => a.costPer1k - b.costPer1k);
+
+  const top = candidates.slice(0, opts.top || 5);
+  const health = await Promise.all(top.map(c => getProviderHealth(c.providerId).catch(() => ({ reachable: false, liveDetail: "probe failed" }))));
+
+  const ranked = top.map((c, i) => ({
+    ...c,
+    reachable: health[i].reachable,
+    liveDetail: health[i].liveDetail,
+  }));
+
+  // Recommend the highest-ranked candidate that's ALSO actually reachable
+  // right now, not just the highest-ranked one on paper.
+  const firstReachable = ranked.find(r => r.reachable);
+  return ranked.map(r => ({
+    ...r,
+    recommended: firstReachable ? r.providerId === firstReachable.providerId : false,
+    reason: !firstReachable ? "no_candidate_currently_reachable"
+      : r.providerId === firstReachable.providerId ? `best_${prefer}_and_reachable`
+      : r.reachable ? `reachable_but_lower_${prefer}_rank` : "not_currently_reachable",
+  }));
+}
+
+/**
  * Execute a chat request through the orchestrated fallback chain, recording
  * real cost/latency to usageMetering and enforcing budget along the way.
  * This is the ONE function every route (routes/ai.js, routes/jarvis.js)
@@ -411,6 +466,7 @@ module.exports = {
   execute,
   executeStream,
   getProviderHealth,
+  recommend,
   getCacheStats: responseCache.stats,
   clearCache: responseCache.clear,
   _availableProviders, // exported for tests/inspection only

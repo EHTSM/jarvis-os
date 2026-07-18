@@ -21,6 +21,7 @@ const parser      = require("../utils/parser");
 const metricsStore = require("../utils/metricsStore");
 const toolAgent   = require("../../agents/toolAgent.cjs");
 const ai          = require("../services/aiService");
+const aiOrchestrator = require("../services/aiOrchestrator.cjs");
 const wa          = require("../services/whatsappService");
 const payment     = require("../services/paymentService");
 const crm         = require("../services/crmService");
@@ -222,7 +223,7 @@ async function _executionPipeline(input, phone = "") {
 // ════════════════════════════════════════════════════════════════
 //  PIPELINE 3 — INTELLIGENCE FLOW
 // ════════════════════════════════════════════════════════════════
-async function _intelligencePipeline(input, history) {
+async function _intelligencePipeline(input, history, ctx = {}) {
     if (_orchestrator?.gateway) {
         try {
             const result = await _orchestrator.gateway("smart", { input });
@@ -242,9 +243,41 @@ async function _intelligencePipeline(input, history) {
             "Be concise and conversational.";
     }
 
-    logger.info(`[AI] callAI (intelligence) — "${input.slice(0, 60)}"`);
-    const reply = await ai.callAI(input, { history, system: systemOverride });
-    return { reply, action: "ai_reply", data: null };
+    // Routed through aiOrchestrator.execute() — the ONLY change here is WHICH
+    // function makes the call; the real HTTP request to whichever provider
+    // gets picked still goes exclusively through aiService.chat(), same as
+    // ai.callAI() always did. This is the actual "AI Chat" tab's traffic
+    // (routes/jarvis.js -> handleJarvis -> here), so wiring it through the
+    // orchestrator means the fallback chain, response cache, budget
+    // enforcement, and prompt history built in this mission's earlier
+    // modules now actually govern real customer usage, not just the
+    // separate /ai-ecosystem/* API surface those modules were verified
+    // against. Falls back to the pre-existing ai.callAI() path if the
+    // orchestrator throws (e.g. no provider available at all), so a bug in
+    // the orchestration layer can't take down the main chat entirely.
+    try {
+        const messages = [...(Array.isArray(history) ? history : []), { role: "user", content: input }];
+        if (systemOverride) messages.unshift({ role: "system", content: systemOverride });
+        const result = await aiOrchestrator.execute(messages, {
+            capability: "chat", accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
+        });
+        return { reply: result.text, action: "ai_reply", data: { provider: result.provider, model: result.model, cached: !!result.cached } };
+    } catch (err) {
+        logger.warn(`[Intel] aiOrchestrator failed, falling back to direct callAI: ${err.message}`);
+        logger.info(`[AI] callAI (intelligence) — "${input.slice(0, 60)}"`);
+        const t0 = Date.now();
+        const reply = await ai.callAI(input, { history, system: systemOverride });
+        // The orchestrator path records usage internally; this fallback
+        // bypasses it entirely, so it must record its own event or the
+        // request silently never counts against the account's quota at all.
+        if (ctx.accountId) {
+            usageMetering.record({
+                accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
+                provider: "jarvis_fallback", requestType: "chat", latencyMs: Date.now() - t0, success: true,
+            });
+        }
+        return { reply, action: "ai_reply", data: null };
+    }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -293,7 +326,10 @@ async function handleJarvis(req, res) {
         let result;
         if      (mode === "sales")     result = await _salesPipeline(input, phone);
         else if (mode === "execution") result = await _executionPipeline(input, phone);
-        else                           result = await _intelligencePipeline(input, history);
+        else                           result = await _intelligencePipeline(input, history, {
+            accountId: req.user?.sub || req.user?.id,
+            orgId: req.org?.id, workspaceId: req.workspace?.id,
+        });
 
         const elapsed = Date.now() - startMs;
         metricsStore.recordLatency(mode, elapsed);
@@ -301,11 +337,17 @@ async function handleJarvis(req, res) {
 
         // Count this request against the account's monthly AI-action quota —
         // this is the main chat pipeline every customer actually uses (see
-        // routes/jarvis.js's requireUsageQuota check, added alongside this),
-        // so it must record usage the same way /ai/chat already does or the
-        // quota shown on the customer dashboard would never move.
+        // routes/jarvis.js's requireUsageQuota check). "intelligence" mode is
+        // recorded ALREADY, with real provider/cost attribution, inside
+        // _intelligencePipeline's aiOrchestrator.execute() call above — adding
+        // a second generic "provider: jarvis" event here for that same
+        // request would double-count it against checkUsageQuota's per-account
+        // monthly limit (which counts every matching event regardless of
+        // provider), silently halving the customer's real usable quota.
+        // Sales/execution modes don't go through the orchestrator, so they
+        // still need this generic fallback recording.
         const accountId = req.user?.sub || req.user?.id;
-        if (accountId) {
+        if (accountId && mode !== "intelligence") {
             usageMetering.record({ accountId, provider: "jarvis", model: mode, requestType: "chat", latencyMs: elapsed, success: true });
         }
 

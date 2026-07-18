@@ -67,6 +67,7 @@
  *   GET  /ai-ecosystem/orchestrator/health              — composite live+historical health, all providers
  *   GET  /ai-ecosystem/orchestrator/health/:providerId   — single provider
  *   POST /ai-ecosystem/orchestrator/chain                — preview the fallback chain for a capability/task
+ *   GET  /ai-ecosystem/orchestrator/recommend/:capability — ranked provider recommendations (capability fit + live health)
  *   POST /ai-ecosystem/orchestrator/execute               — run a chat request through the full orchestrated path
  *   POST /ai-ecosystem/orchestrator/execute/stream        — same, but Server-Sent Events token-by-token
  *   GET  /ai-ecosystem/orchestrator/cache                 — response cache hit/miss stats
@@ -459,6 +460,18 @@ router.post("/ai-ecosystem/orchestrator/chain", async (req, res) => {
     const { capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId } = req.body || {};
     const chain = await orchestrator.buildFallbackChain({ capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId });
     res.json({ ok: true, ...chain });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/orchestrator/recommend/:capability", async (req, res) => {
+  try {
+    const { prefer, minQuality, maxCostPer1k, top } = req.query || {};
+    const recommendations = await orchestrator.recommend(req.params.capability, {
+      prefer, minQuality: minQuality ? parseFloat(minQuality) : undefined,
+      maxCostPer1k: maxCostPer1k ? parseFloat(maxCostPer1k) : undefined,
+      top: top ? parseInt(top, 10) : undefined,
+    });
+    res.json({ ok: true, capability: req.params.capability, recommendations });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
