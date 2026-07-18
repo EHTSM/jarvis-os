@@ -25,6 +25,7 @@ const _aiOrch = () => _try(() => require("../services/aiOrchestrator.cjs"));
 const _mem  = () => _try(() => require("../services/semanticMemorySearch.cjs"));
 const _budgets = () => _try(() => require("../services/orgBudgets.cjs"));
 const _vault = () => _try(() => require("../services/secretVault.cjs"));
+const _usage = () => _try(() => require("../services/usageMetering.cjs"));
 
 // Resolves company → its backing orgId, and asserts the requesting account has
 // the given permission (default update_org) on that org — every company-scoped
@@ -498,6 +499,35 @@ router.delete("/company-factory/companies/:id/connectors/:connectorId/:type", re
   if (!company) return;
   const deleted = _vault()?.deleteSecret?.(req.params.connectorId, req.params.type, company.orgId);
   res.json({ ok: !!deleted });
+});
+
+// ── Company Analytics (composes M1–M5's orgId-scoped systems) ────────────────
+// Pure aggregation, no new storage — pulls lifecycle/blueprint/workspace data
+// from companyDashboard.cjs (existing) and CRM/AI-cost/budget/connector-health
+// from the systems wired in M3/M4/M5, all keyed by the company's orgId.
+
+router.get("/company-factory/companies/:id/analytics", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_analytics");
+  if (!company) return;
+
+  const detail   = _cd()?.getCompanyDetail?.(company.id) || null;
+  const crm      = _bds()?.getDashboard?.(company.orgId) || null;
+  const aiUsage  = _usage()?.summary?.({ orgId: company.orgId, fromLedger: true }) || null;
+  const budget   = _budgets()?.getOrgBudget?.(company.orgId) || null;
+  const connectors = _vault()?.listSecrets?.({ orgId: company.orgId }) || [];
+
+  res.json({
+    ok: true,
+    orgId: company.orgId,
+    lifecycle: detail,
+    crm,
+    ai: { usage: aiUsage, budget },
+    connectors: {
+      total: connectors.length,
+      configured: connectors.map(c => ({ connectorId: c.connectorId, type: c.type, rotationDueAt: c.rotationDueAt })),
+    },
+    generatedAt: new Date().toISOString(),
+  });
 });
 
 module.exports = router;
