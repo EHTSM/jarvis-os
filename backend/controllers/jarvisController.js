@@ -25,6 +25,7 @@ const wa          = require("../services/whatsappService");
 const payment     = require("../services/paymentService");
 const crm         = require("../services/crmService");
 const automation  = require("../services/automationService");
+const usageMetering = require("../services/usageMetering.cjs");
 
 // ── Load agents (graceful — system still works if any fail) ──────
 let SalesAgent, InterestDetector, FollowUpSystem, AutoReplyAgent;
@@ -297,12 +298,27 @@ async function handleJarvis(req, res) {
         const elapsed = Date.now() - startMs;
         metricsStore.recordLatency(mode, elapsed);
         logger.debug(`[Jarvis] ${traceId} done in ${elapsed}ms`);
+
+        // Count this request against the account's monthly AI-action quota —
+        // this is the main chat pipeline every customer actually uses (see
+        // routes/jarvis.js's requireUsageQuota check, added alongside this),
+        // so it must record usage the same way /ai/chat already does or the
+        // quota shown on the customer dashboard would never move.
+        const accountId = req.user?.sub || req.user?.id;
+        if (accountId) {
+            usageMetering.record({ accountId, provider: "jarvis", model: mode, requestType: "chat", latencyMs: elapsed, success: true });
+        }
+
         return _ok(res, { ...result, intent, mode, traceId });
 
     } catch (err) {
         metricsStore.inc("errors");
         errTracker.record("jarvis", err.message, { intent, mode });
         logger.error("[Jarvis] Error:", err.message);
+        const accountId = req.user?.sub || req.user?.id;
+        if (accountId) {
+            usageMetering.record({ accountId, provider: "jarvis", latencyMs: Date.now() - startMs, success: false, errorCode: err.message });
+        }
         return res.status(500).json({
             success: false,
             reply:   "Something went wrong. Please try again.",

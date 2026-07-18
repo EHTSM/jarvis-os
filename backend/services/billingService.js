@@ -167,10 +167,16 @@ function requireUsageQuota(req, res, next) {
   if (!accountId) return next();   // let requireAuth handle missing identity
   const quota = checkUsageQuota(accountId);
   if (!quota.allowed) {
+    // `error` carries the human-readable message — every frontend error path
+    // (_client.js's _fetch, sendMessage's catch) surfaces `.error` as the
+    // displayed message, not `.message`; a previous version put the machine
+    // code ("usage_quota_exceeded") in `.error`, so a customer hitting their
+    // quota saw that raw code as the chat reply instead of a real explanation.
+    // `code` keeps the machine-readable value for any caller that wants it.
     return res.status(429).json({
-      error: "usage_quota_exceeded",
+      code: "usage_quota_exceeded",
+      error: `Monthly AI request limit reached (${quota.used}/${quota.limit}) for the ${quota.plan} plan. Upgrade to keep going.`,
       plan: quota.plan, used: quota.used, limit: quota.limit,
-      message: `Monthly AI request limit reached (${quota.used}/${quota.limit}) for the ${quota.plan} plan.`,
       upgradeUrl: `${process.env.BASE_URL || ""}/pricing`,
     });
   }

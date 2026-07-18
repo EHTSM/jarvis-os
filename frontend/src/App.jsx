@@ -23,6 +23,7 @@ import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
 import CustomerDashboard  from "./components/CustomerDashboard.jsx";
+import CustomerFirstRunWizard, { shouldShowCustomerFirstRun } from "./components/CustomerFirstRunWizard.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
 // Non-critical paths — lazy-split from main bundle
 const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
@@ -850,6 +851,17 @@ function AppInner() {
     setShowFirstLaunchHint(false);
   }, []);
 
+  // ── Customer first-run wizard (Module 6) ──────────────────────────
+  // A real multi-step wizard for regular customers — distinct from the
+  // thin dismissible hint above and from FirstRunSetup.jsx (operator-only,
+  // covers risk levels/dry-run/runtime health, none of which apply here).
+  // Shown once per account (own localStorage key), never for operators.
+  // user is not resolved on first render (authLoading), so this is derived
+  // reactively rather than computed once in a useState initializer.
+  const [firstRunDismissed, setFirstRunDismissed] = useState(false);
+  const showCustomerFirstRun = !authLoading && !!user && user.role !== "operator"
+    && !firstRunDismissed && shouldShowCustomerFirstRun();
+
   // ── Legal page overlay ────────────────────────────────────────────
   // null = no legal page; string = which page is open
   const [legalPage, setLegalPage] = useState(null);
@@ -1185,6 +1197,13 @@ function AppInner() {
         <ConnectBar
           services={opsData?.services || {}}
           onSetupWhatsApp={() => setTab("clients")}
+        />
+      )}
+
+      {showCustomerFirstRun && (
+        <CustomerFirstRunWizard
+          onNavigate={setTab}
+          onComplete={() => setFirstRunDismissed(true)}
         />
       )}
 
