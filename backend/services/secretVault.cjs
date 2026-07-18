@@ -196,6 +196,8 @@ const ENV_MAP = {
   "msg:twilio::api_key":        "TWILIO_AUTH_TOKEN",
   "msg:discord::api_key":       "DISCORD_BOT_TOKEN",
   "msg:slack::oauth_token":     "SLACK_BOT_TOKEN",
+  "msg:teams::oauth_token":     "MICROSOFT_CLIENT_SECRET", // Teams rides the same Graph OAuth app as Microsoft 365
+  "msg:teams::webhook_secret":  "TEAMS_WEBHOOK_URL",
   // Phase G — Auth
   "auth:google::oauth_token":   "GOOGLE_CLIENT_SECRET",
   "auth:github::oauth_token":   "GITHUB_CLIENT_SECRET",
@@ -206,6 +208,8 @@ const ENV_MAP = {
   // Phase H — Productivity
   "prod:dropbox::oauth_token":  "DROPBOX_ACCESS_TOKEN",
   "prod:m365::oauth_token":     "MS_GRAPH_TOKEN",
+  "prod:notion::api_key":       "NOTION_API_KEY",
+  "prod:notion::oauth_token":   "NOTION_CLIENT_SECRET",
   // Phase J — Creative
   "creative:figma::personal_access_token": "FIGMA_ACCESS_TOKEN",
   "creative:canva::api_key":    "CANVA_API_KEY",
@@ -217,6 +221,9 @@ const ENV_MAP = {
   "monitor:sentry::api_key":    "SENTRY_DSN",
   "monitor:datadog::api_key":   "DATADOG_API_KEY",
   "monitor:uptime::api_key":    "UPTIMEROBOT_API_KEY",
+  // Phase M — Project Management
+  "issue:jira::personal_access_token": "JIRA_API_TOKEN",
+  "issue:linear::api_key":      "LINEAR_API_KEY",
 };
 
 // ── Core CRUD ─────────────────────────────────────────────────────────────────

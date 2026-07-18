@@ -737,10 +737,54 @@ async function connectSlack() {
   );
 }
 
+async function connectTeams() {
+  // Microsoft Teams messaging rides the same Microsoft Graph OAuth token as
+  // Microsoft 365 (Phase H) — Teams is a Graph-API surface, not a separate
+  // identity provider, so this reuses connectMicrosoft365's exact token
+  // resolution (oauthIntegrationLayer first, MS_GRAPH_TOKEN/
+  // MICROSOFT_GRAPH_TOKEN env fallback) rather than a second OAuth path.
+  // TEAMS_WEBHOOK_URL (an Incoming Webhook connector URL) is supported as a
+  // send-only fallback for orgs that just want channel notifications
+  // without granting full Graph delegated permissions.
+  const clientId   = _env("MICROSOFT_CLIENT_ID");
+  const webhookUrl = _env("TEAMS_WEBHOOK_URL");
+  const creds      = _creds(["MICROSOFT_CLIENT_ID", "MICROSOFT_CLIENT_SECRET"], ["TEAMS_WEBHOOK_URL"]);
+
+  let token = null;
+  const oauthLayer = _oauth();
+  if (oauthLayer) {
+    try {
+      const conns = oauthLayer.listConnections().filter(c => c.provider === "microsoft");
+      if (conns.length > 0) {
+        const rec = await oauthLayer.getToken("microsoft", conns[0].userId);
+        token = rec?.access_token || null;
+      }
+    } catch { /* fall through */ }
+  }
+  if (!token) token = _env("MS_GRAPH_TOKEN") || _env("MICROSOFT_GRAPH_TOKEN");
+
+  if (!token) {
+    if (webhookUrl) return _record("msg:teams", "F", "Microsoft Teams", "PARTIAL",
+      "Webhook URL set but no Graph token — limited to webhook channel posts only", creds);
+    if (!clientId) return _record("msg:teams", "F", "Microsoft Teams", "READY",
+      "MICROSOFT_CLIENT_ID not set and TEAMS_WEBHOOK_URL not set", creds);
+    return _record("msg:teams", "F", "Microsoft Teams", "PARTIAL",
+      "OAuth app configured — no authorized user yet (waiting for OAuth) and TEAMS_WEBHOOK_URL not set", creds);
+  }
+
+  const r = await _probe("https://graph.microsoft.com/v1.0/me/joinedTeams", { Authorization: `Bearer ${token}` });
+  const teamCount = r.body?.value?.length;
+  return _record("msg:teams", "F", "Microsoft Teams",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated — member of ${teamCount ?? 0} team(s)` : `Token invalid/expired: HTTP ${r.status}`,
+    creds, r.ok ? { teamCount } : {}
+  );
+}
+
 async function scanAllMessagingProviders() {
   return Promise.all([
     connectWhatsApp(), connectTelegram(), connectTwilio(),
-    connectDiscord(), connectSlack()
+    connectDiscord(), connectSlack(), connectTeams()
   ]);
 }
 
@@ -907,8 +951,49 @@ async function connectDropbox() {
   );
 }
 
+async function connectNotion() {
+  // Notion's own OAuth is already registered as a consumer-auth provider
+  // in oauthIntegrationLayer.cjs (Phase G re-exports NOTION_CLIENT_ID/
+  // SECRET/REDIRECT_URI) — this reuses that token store rather than a
+  // second Notion OAuth client. NOTION_API_KEY (an internal integration
+  // token) is the direct-token fallback for orgs that provisioned Notion
+  // access without the OAuth flow.
+  const directToken = _env("NOTION_API_KEY");
+  const clientId     = _env("NOTION_CLIENT_ID");
+  const creds = _creds(["NOTION_API_KEY"], ["NOTION_CLIENT_ID", "NOTION_CLIENT_SECRET"]);
+
+  let token = directToken;
+  if (!token) {
+    const oauthLayer = _oauth();
+    if (oauthLayer) {
+      try {
+        const conns = oauthLayer.listConnections().filter(c => c.provider === "notion");
+        if (conns.length > 0) {
+          const rec = await oauthLayer.getToken("notion", conns[0].userId);
+          token = rec?.access_token || null;
+        }
+      } catch { /* fall through */ }
+    }
+  }
+
+  if (!token) {
+    if (!clientId) return _record("prod:notion", "H", "Notion", "READY",
+      "NOTION_API_KEY not set and NOTION_CLIENT_ID not set", creds);
+    return _record("prod:notion", "H", "Notion", "PARTIAL",
+      "OAuth app configured — no authorized user yet and NOTION_API_KEY not set", creds);
+  }
+
+  const r = await _probe("https://api.notion.com/v1/users/me",
+    { Authorization: `Bearer ${token}`, "Notion-Version": "2022-06-28" });
+  return _record("prod:notion", "H", "Notion",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated as ${r.body?.name || r.body?.bot?.owner?.type || "integration"}` : `Token invalid: HTTP ${r.status}`,
+    creds
+  );
+}
+
 async function scanAllProductivityProviders() {
-  return Promise.all([connectGoogleWorkspace(), connectMicrosoft365(), connectDropbox()]);
+  return Promise.all([connectGoogleWorkspace(), connectMicrosoft365(), connectDropbox(), connectNotion()]);
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1143,6 +1228,58 @@ async function scanAllMonitoringProviders() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// PHASE M — Project Management (Jira / Linear)
+// ══════════════════════════════════════════════════════════════════════════════
+// New phase — none of A-L cover issue-tracker/project-management APIs, so
+// this is a genuinely new category rather than a fit into an existing one.
+// Follows the exact same connect<Name>() -> _record() shape as every other
+// phase; credentials resolve through the same vault-first/_env() chain.
+
+async function connectJira() {
+  // Jira Cloud uses HTTP Basic auth with an API token (not OAuth by
+  // default for server-to-server integrations) — email + token, per
+  // Atlassian's documented API-token auth scheme.
+  const host  = _env("JIRA_HOST");           // e.g. "yourteam.atlassian.net"
+  const email = _env("JIRA_EMAIL");
+  const token = _env("JIRA_API_TOKEN");
+  const creds = _creds(["JIRA_HOST", "JIRA_EMAIL", "JIRA_API_TOKEN"]);
+  if (!host || !email || !token) return _record("issue:jira", "M", "Jira", "READY",
+    "JIRA_HOST, JIRA_EMAIL, and JIRA_API_TOKEN not fully set", creds);
+
+  const auth = Buffer.from(`${email}:${token}`).toString("base64");
+  const r = await _probe(`https://${host}/rest/api/3/myself`, { Authorization: `Basic ${auth}` });
+  return _record("issue:jira", "M", "Jira",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated as ${r.body?.displayName || email} on ${host}` : `Auth failed: HTTP ${r.status}`,
+    creds, r.ok ? { host, displayName: r.body?.displayName } : {}
+  );
+}
+
+async function connectLinear() {
+  // Linear's API is GraphQL-only — a minimal `viewer { id name }` query
+  // doubles as both the liveness probe and the identity check, same role
+  // connectGitHub's REST /user call plays for GitHub.
+  const apiKey = _env("LINEAR_API_KEY");
+  const creds  = _creds(["LINEAR_API_KEY"]);
+  if (!apiKey) return _record("issue:linear", "M", "Linear", "READY", "LINEAR_API_KEY not set", creds);
+
+  const r = await _probe("https://api.linear.app/graphql",
+    { Authorization: apiKey, "Content-Type": "application/json" },
+    6000, "POST", { query: "{ viewer { id name } }" });
+  const viewer = r.body?.data?.viewer;
+  const ok = r.ok && !!viewer;
+  return _record("issue:linear", "M", "Linear",
+    ok ? "CONNECTED" : "PARTIAL",
+    ok ? `Authenticated as ${viewer.name}` : `Auth failed: HTTP ${r.status}${r.body?.errors ? " — " + r.body.errors[0]?.message : ""}`,
+    creds, ok ? { name: viewer.name } : {}
+  );
+}
+
+async function scanAllProjectManagementProviders() {
+  return Promise.all([connectJira(), connectLinear()]);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // UNIVERSAL OPERATIONS — apply to any connector by ID
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -1154,13 +1291,14 @@ async function reconnect(connectorId) {
     "git":      { github: connectGitHub, gitlab: connectGitLab, bitbucket: connectBitbucket },
     "infra":    { hostinger: connectHostinger, cloudflare: connectCloudflare, firebase: connectFirebase, supabase: connectSupabase, aws: connectAWS, r2: connectCloudflareR2 },
     "pay":      { razorpay: connectRazorpay, stripe: connectStripe, paddle: connectPaddle, lemonsqueezy: connectLemonSqueezy },
-    "msg":      { whatsapp: connectWhatsApp, telegram: connectTelegram, twilio: connectTwilio, discord: connectDiscord, slack: connectSlack },
+    "msg":      { whatsapp: connectWhatsApp, telegram: connectTelegram, twilio: connectTwilio, discord: connectDiscord, slack: connectSlack, teams: connectTeams },
     "auth":     { google: connectGoogleAuth, github: connectGitHubAuth, microsoft: connectMicrosoftAuth, linkedin: connectLinkedInAuth, apple: connectAppleAuth, discord: connectDiscordAuth },
-    "prod":     { google_workspace: connectGoogleWorkspace, m365: connectMicrosoft365, dropbox: connectDropbox },
+    "prod":     { google_workspace: connectGoogleWorkspace, m365: connectMicrosoft365, dropbox: connectDropbox, notion: connectNotion },
     "commerce": { shopify: connectShopify, woocommerce: connectWooCommerce, wordpress: connectWordPress },
     "creative": { figma: connectFigma, canva: connectCanva },
     "auto":     { zapier: connectZapier, make: connectMake, n8n: connectN8N },
     "monitor":  { sentry: connectSentry, datadog: connectDatadog, uptime: connectUptimeMonitor },
+    "issue":    { jira: connectJira, linear: connectLinear },
   };
   if (phase === "ai") return connectAIProvider(id);
   const group = fns[phase];
@@ -1253,7 +1391,7 @@ function detectFailures() {
 
 async function runFullScan() {
   const t0 = Date.now();
-  const [ai, git, infra, pay, email, msg, auth, prod, commerce, creative, auto, monitor] = await Promise.all([
+  const [ai, git, infra, pay, email, msg, auth, prod, commerce, creative, auto, monitor, issue] = await Promise.all([
     scanAllAIProviders(),
     scanAllGitProviders(),
     scanAllInfraProviders(),
@@ -1266,9 +1404,10 @@ async function runFullScan() {
     scanAllCreativeProviders(),
     scanAllAutomationProviders(),
     scanAllMonitoringProviders(),
+    scanAllProjectManagementProviders(),
   ]);
 
-  const all     = [...ai, ...git, ...infra, ...pay, ...email, ...msg, ...auth, ...prod, ...commerce, ...creative, ...auto, ...monitor];
+  const all     = [...ai, ...git, ...infra, ...pay, ...email, ...msg, ...auth, ...prod, ...commerce, ...creative, ...auto, ...monitor, ...issue];
   const counts  = { CONNECTED: 0, READY: 0, PARTIAL: 0, MISSING: 0, NOT_APPLICABLE: 0 };
   all.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
 
@@ -1307,18 +1446,20 @@ module.exports = {
   scanAllPaymentProviders, connectEmailProviders, scanAllMessagingProviders,
   scanAllAuthProviders, scanAllProductivityProviders, scanAllCommerceProviders,
   scanAllCreativeProviders, scanAllAutomationProviders, scanAllMonitoringProviders,
+  scanAllProjectManagementProviders,
   // Individual connectors
   connectAIProvider, healthAIProvider,
   connectGitHub, connectGitLab, connectBitbucket,
   connectHostinger, connectCloudflare, connectFirebase, connectSupabase, connectAWS, connectCloudflareR2,
   connectRazorpay, connectStripe, connectPaddle, connectLemonSqueezy,
-  connectWhatsApp, connectTelegram, connectTwilio, connectDiscord, connectSlack,
+  connectWhatsApp, connectTelegram, connectTwilio, connectDiscord, connectSlack, connectTeams,
   connectGoogleAuth, connectGitHubAuth, connectMicrosoftAuth, connectLinkedInAuth, connectAppleAuth, connectDiscordAuth,
-  connectGoogleWorkspace, connectMicrosoft365, connectDropbox,
+  connectGoogleWorkspace, connectMicrosoft365, connectDropbox, connectNotion,
   connectShopify, connectWooCommerce, connectWordPress,
   connectFigma, connectCanva,
   connectZapier, connectMake, connectN8N,
   connectSentry, connectDatadog, connectUptimeMonitor,
+  connectJira, connectLinear,
   // Universal operations
   reconnect, getHealth, getStatus, getAllStatus, getMetrics,
   rotateCredentialsGuide, detectFailures,

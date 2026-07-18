@@ -56,6 +56,26 @@ const PROVIDERS = {
     label: "Email (SMTP)", connectorId: "email:smtp", category: "email",
     fields: [{ key: "smtp_credentials", label: "SMTP Password", type: "password" }],
   },
+  // Enterprise & Physical Integration Mission, Module 5 — connectorId/type
+  // pairs match the ENV_MAP entries just added in secretVault.cjs and the
+  // connect<Name>() functions in integrationConnectors.cjs; nothing new to
+  // wire on the vault side, this just exposes the curated setup form.
+  teams: {
+    label: "Microsoft Teams", connectorId: "msg:teams", category: "messaging",
+    fields: [{ key: "webhook_secret", label: "Incoming Webhook URL", type: "password" }],
+  },
+  notion: {
+    label: "Notion", connectorId: "prod:notion", category: "productivity",
+    fields: [{ key: "api_key", label: "Internal Integration Token", type: "password" }],
+  },
+  jira: {
+    label: "Jira", connectorId: "issue:jira", category: "project_management",
+    fields: [{ key: "personal_access_token", label: "API Token", type: "password" }],
+  },
+  linear: {
+    label: "Linear", connectorId: "issue:linear", category: "project_management",
+    fields: [{ key: "api_key", label: "API Key", type: "password" }],
+  },
 };
 
 router.use("/my-connectors", requireAuth, attachOrg);
@@ -98,6 +118,9 @@ router.post("/my-connectors/:providerId", (req, res) => {
   const validKeys = new Set(def.fields.map(f => f.key));
   const stored = [];
   try {
+    // Enterprise Module 4: connector-restriction policy (allow/deny list by
+    // connectorId) applies here too, not just the Company Factory route.
+    require("../services/policyService.cjs").assertConnectorAllowed(orgId, def.connectorId);
     for (const [key, value] of Object.entries(body)) {
       if (!validKeys.has(key)) continue;
       if (typeof value !== "string" || !value.trim()) continue;

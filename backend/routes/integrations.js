@@ -77,6 +77,7 @@ router.get("/integrations/phases", (req, res) => {
       D: "Payments",       E: "Email",          F: "Messaging",
       G: "Authentication", H: "Productivity",   I: "Commerce",
       J: "Creative",       K: "Automation",     L: "Monitoring",
+      M: "Project Management",
     };
     const phases = {};
     connectors.forEach(c => {
