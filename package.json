@@ -145,6 +145,7 @@
     ]
   },
   "dependencies": {
+    "@authenio/samlify-xsd-schema-validator": "^1.0.5",
     "axios": "^1.16.0",
     "better-sqlite3": "^12.10.0",
     "cheerio": "^1.2.0",
@@ -160,9 +161,11 @@
     "node-pty": "^1.1.0",
     "node-telegram-bot-api": "^0.63.0",
     "openai": "^6.34.0",
+    "openid-client": "^6.8.4",
     "playwright": "^1.60.0",
     "razorpay": "^2.9.6",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "samlify": "^2.13.1"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

@@ -159,6 +159,12 @@ const ACTIONS = {
     // Billing / settings
     manage_billing:      ["org_owner"],
     view_analytics:      ["org_owner", "org_admin", "dept_lead"],
+    // Enterprise — SSO/SCIM/policy control who can even reach this org, so
+    // these are org_owner-only, same bar as delete_org/manage_billing.
+    manage_sso:          ["org_owner"],
+    manage_scim:         ["org_owner"],
+    manage_policy:       ["org_owner"],
+    view_audit_log:      ["org_owner", "org_admin"],
 };
 
 // ── Global (platform-level) roles — Module 6 ───────────────────────────────────
@@ -499,6 +505,17 @@ function listMembers(orgId, { deptId, teamId } = {}) {
 
 function addMember(orgId, { accountId, orgRole = "member", deptId, teamId }, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_members");
+    return _addMemberRecord(orgId, { accountId, orgRole, deptId, teamId });
+}
+
+// Internal, not permission-gated by design: the caller (e.g. a JIT SSO login)
+// is itself the authorization — the org's own manage_sso-gated SSO
+// configuration is what decided this identity should become a member, not
+// the new member's own permissions (which don't exist yet). Never expose
+// this directly on a route; only addMember() (user-driven, gated) and
+// ssoService.cjs's JIT-provisioning path (system-driven, pre-authorized by
+// the org's SSO config) call into org membership mutation.
+function _addMemberRecord(orgId, { accountId, orgRole = "member", deptId, teamId }) {
     if (!ORG_ROLES.includes(orgRole)) throw new Error(`Invalid orgRole: ${orgRole}`);
     if (orgRole === "org_owner") throw new Error("Cannot assign org_owner via addMember — transfer ownership instead");
 
@@ -513,6 +530,21 @@ function addMember(orgId, { accountId, orgRole = "member", deptId, teamId }, req
     _write(store);
     logger.info(`[OrgService] Added member ${accountId} to org ${orgId} as ${orgRole}`);
     return { added: true, accountId, orgRole };
+}
+
+/**
+ * Add a member as a direct, pre-authorized consequence of a successful SSO
+ * login — the org already opted into this via its own manage_sso-gated
+ * config (jitProvisioning: true), so no separate manage_members check
+ * applies here. Idempotent: returns { added: false } instead of throwing if
+ * the account is already a member (a returning SSO user on every login).
+ */
+function addMemberViaSso(orgId, accountId, orgRole = "member") {
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (org.members.find(m => m.accountId === accountId)) return { added: false, accountId, alreadyMember: true };
+    return _addMemberRecord(orgId, { accountId, orgRole });
 }
 
 function removeMember(orgId, accountId, requestingAccountId) {
@@ -910,6 +942,7 @@ module.exports = {
     purgeOrg,
     // Members
     addMember,
+    addMemberViaSso,
     removeMember,
     updateMemberRole,
     listMembers,

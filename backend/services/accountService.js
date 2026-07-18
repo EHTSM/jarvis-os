@@ -14,6 +14,9 @@
  *   active:          boolean
  *   emailVerified:   boolean (default false; set true via betaReadiness.verifyEmail)
  *   emailVerifiedAt: ISO string | null
+ *   ssoProvisioned:  boolean (optional — true for accounts created via createSsoAccount)
+ *   ssoProvider:     string | null (optional — "saml" | "oidc" | "google" | "entra")
+ *   ssoOrgId:        string | null (optional — the org whose SSO connection provisioned this account)
  * }
  *
  * Backwards-compatibility: the legacy single-operator password (OPERATOR_PASSWORD_HASH
@@ -141,6 +144,52 @@ function loginByEmail(email, password) {
 }
 
 /**
+ * Just-in-time provision an account for a federated (SSO) identity that has
+ * no local password — the IdP already authenticated the user, so this is
+ * account-record creation, not a login. Sets a random 32-byte passwordHash
+ * (never handed to the caller, never derivable) so password-based login
+ * stays impossible for this account, and emailVerified: true since the IdP
+ * already vouches for the email. Reuses the same accounts store as
+ * createAccount() — no parallel identity table.
+ */
+function createSsoAccount({ email, name = "", role = "user", ssoProvider, ssoOrgId }) {
+  const normalEmail = (email || "").toLowerCase().trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalEmail)) {
+    return { success: false, error: "Invalid email address" };
+  }
+
+  const accounts = _load();
+  const existing = Object.values(accounts).find(a => a.email === normalEmail);
+  if (existing) return { success: false, error: "An account with this email already exists" };
+
+  const id = _generateId();
+  const account = {
+    id,
+    email:        normalEmail,
+    passwordHash: hashPassword(crypto.randomBytes(32).toString("hex")),
+    name:         name.trim().slice(0, 100) || normalEmail.split("@")[0],
+    role,
+    createdAt:    new Date().toISOString(),
+    lastLoginAt:  null,
+    active:       true,
+    emailVerified:   true,
+    emailVerifiedAt: new Date().toISOString(),
+    ssoProvisioned:  true,
+    ssoProvider:     ssoProvider || null,
+    ssoOrgId:        ssoOrgId || null,
+  };
+
+  accounts[id] = account;
+  _save(accounts);
+
+  try { require("./billingService").createTrial(id); } catch { /* non-critical */ }
+
+  logger.info(`[Account] SSO-provisioned: ${normalEmail} (${id}) via ${ssoProvider || "unknown"}`);
+  const { passwordHash: _, ...safe } = account;
+  return { success: true, account: safe };
+}
+
+/**
  * Get account by ID (no password).
  */
 function getById(id) {
@@ -223,6 +272,7 @@ function bootstrapOperatorAccount() {
 
 module.exports = {
   createAccount,
+  createSsoAccount,
   loginByEmail,
   getById,
   getByEmail,

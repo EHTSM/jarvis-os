@@ -5,6 +5,8 @@ const rateLimiter = require("../middleware/rateLimiter");
 const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
 const auditLog    = require("../utils/auditLog.cjs");
 const accountSvc  = require("../services/accountService");
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _sso = () => _try(() => require("../services/ssoService.cjs"));
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -38,6 +40,21 @@ function _handleLogin(req, res) {
     if (!result.success) {
       return res.status(401).json({ error: result.error || "Invalid email or password" });
     }
+
+    // Organization login policy: an org can require its members to sign in
+    // via its configured SSO connection only. Checked only after a real,
+    // successful password verification (never before) so this can't be used
+    // as an email-enumeration oracle.
+    try {
+      _sso()?.assertPasswordLoginAllowed?.(result.account);
+    } catch (e) {
+      if (e?.code === "sso_required") {
+        auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: "sso_required" });
+        return res.status(403).json({ error: e.message, code: "sso_required", orgId: e.orgId, provider: e.provider });
+      }
+      throw e;
+    }
+
     const jwtPayload = {
       role:  result.account.role || "user",
       sub:   result.account.id,

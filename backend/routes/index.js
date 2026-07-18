@@ -72,6 +72,7 @@ router.use("/engineering", requireAuth); // gate all /engineering/* routes
 router.use(require("./engineering"));   // /engineering/intelligence (J4 engineering risk panel)
 router.use(require("./business"));      // /business/pipeline, /business/missions, /business/leads, /business/deals, /business/marketing/*, /business/customers, /business/operations
 router.use(require("./organizations")); // /orgs, /orgs/:orgId, /orgs/:orgId/departments, /orgs/:orgId/teams, /orgs/:orgId/missions, /orgs/me/context
+router.use(require("./enterpriseSso")); // Enterprise & Physical Integration M1: /enterprise/sso/* — SAML/OIDC/Google/Entra SSO (mixed auth: admin config gated, IdP-facing login routes public by design)
 router.use(require("./workforce"));    // /workforce/:missionId/plan, /workforce/:missionId/steps/:stepId/*, /workforce/:missionId/approvals/*, /workforce/org/:orgId/workers
 router.use(require("./graph"));        // /graph/stats, /graph/node/:type/:id, /graph/traverse, /graph/related, /graph/impact, /graph/lookup, /graph/edges, /graph/index
 router.use("/collaboration", requireAuth);    // gate all /collaboration/* routes
