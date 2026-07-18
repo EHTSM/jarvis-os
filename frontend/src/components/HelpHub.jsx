@@ -82,6 +82,47 @@ const GUIDES = [
     ],
     note: "The Command Palette is the fastest way to navigate — you never need to use the mouse.",
   },
+  {
+    id:      "crm-pipeline",
+    icon:    "◈",
+    title:   "Run your sales pipeline in CRM",
+    time:    "5 min",
+    steps: [
+      { title: "Open CRM",              desc: "More → CRM. This is separate from the Contacts tab — CRM tracks leads, deals, and revenue as structured pipeline records." },
+      { title: "Add a lead",            desc: "Leads tab → New Lead. Set a source and score." },
+      { title: "Qualify it",            desc: "Click the ✓ on a new/contacted lead to mark it qualified." },
+      { title: "Create a deal",         desc: "Pipeline tab → New Deal. Attach a value and move it through stages with Advance →." },
+      { title: "Check AI Suggestions",  desc: "The AI Suggestions tab surfaces recommendations from the learning engine — accept one to spin up a mission." },
+    ],
+    note: "CRM and Contacts are intentionally separate: Contacts is WhatsApp-first lead intake, CRM is structured sales pipeline tracking.",
+  },
+  {
+    id:      "company-factory",
+    icon:    "◎",
+    title:   "Launch a company with Company Factory",
+    time:    "3 min",
+    steps: [
+      { title: "Open Companies",      desc: "More → Companies." },
+      { title: "Click + New company", desc: "Give it a name, or describe the idea and let the template auto-infer." },
+      { title: "Track the pipeline",  desc: "Each company moves through planning → building → testing → launch → growth → scale → maintenance." },
+      { title: "Pass gates to advance", desc: "Open a company and pass each required gate for its current stage, then click Advance." },
+    ],
+    note: "The factory auto-generates a blueprint, workspace, and roadmap for every company you create.",
+  },
+  {
+    id:      "workflow-automation",
+    icon:    "⚡",
+    title:   "Automate a repeated task",
+    time:    "4 min",
+    steps: [
+      { title: "Open Workflow Automation", desc: "More → Workflow Automation." },
+      { title: "Start from a template",    desc: "Trigger Library tab has 5 built-in templates — apply one to create a working rule instantly." },
+      { title: "Or build your own",        desc: "Rule Builder tab → New rule. Choose a trigger (schedule, event, threshold), then an action." },
+      { title: "Test before enabling",     desc: "Use Dry Run to preview the outcome without actually executing anything." },
+      { title: "Watch it run",             desc: "History tab shows every execution with its outcome." },
+    ],
+    note: "Rules can require approval before running — set an approval gate if the action needs a human sign-off.",
+  },
 ];
 
 // ── FAQ ──────────────────────────────────────────────────────────────
@@ -117,6 +158,10 @@ const FAQ = [
   {
     q: "Why am I seeing a 'Backend offline' message?",
     a: "The Ooplix backend server is not reachable. If you're running locally: check that the backend is running (`pm2 list`). If you're on the hosted version: this usually resolves within 30–60 seconds — a health check poll runs every 8 seconds.",
+  },
+  {
+    q: "What's the difference between Contacts and CRM?",
+    a: "Contacts (top navigation) is WhatsApp-first lead intake — add a number, automated follow-ups run immediately. CRM (More → CRM) is structured sales pipeline tracking — leads, deals with stages and values, campaigns, and revenue records. They're separate on purpose and don't share data; use Contacts for fast WhatsApp outreach and CRM for tracking a sales process.",
   },
 ];
 

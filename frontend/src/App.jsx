@@ -1085,10 +1085,14 @@ function AppInner() {
             <span>Search…</span>
             <kbd>⌘K</kbd>
           </button>
-          <div className="topbar-status" title={online ? "Runtime connected" : "Runtime offline"}>
+          <button
+            className="topbar-status"
+            onClick={() => setTab("systemhealth")}
+            title={online ? "Runtime connected — click to view system health" : "Runtime offline — click to view system health"}
+          >
             <span className={`online-dot${online ? "" : " online-dot--offline"}`} />
             <span>{online ? "Live" : "Offline"}</span>
-          </div>
+          </button>
         </div>
       </header>
 
@@ -1205,7 +1209,7 @@ function AppInner() {
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
-        {tab === "business"  && <BusinessOS  onToast={addToast} />}
+        {tab === "business"  && <BusinessOS  onToast={addToast} onNavigate={setTab} />}
         {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
         {tab === "reports"   && <ReportsV2 onNavigate={setTab} online={online} />}
         {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}

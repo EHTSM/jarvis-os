@@ -626,7 +626,7 @@ function OpportunitiesView({ onToast }) {
 const EMPTY_CUSTOMER = { name: "", phone: "", email: "", plan: "", status: "active", action: "" };
 const CUSTOMER_STATUS_COLOR = { active: "var(--success)", at_risk: "var(--danger)", churned: "var(--text-dim)" };
 
-function CustomersView({ onToast }) {
+function CustomersView({ onToast, onNavigate }) {
   const [missions, setMissions] = useState(null);
   const [loading,  setLoading]  = useState(true);
   const [filter,   setFilter]   = useState("all");
@@ -727,6 +727,11 @@ function CustomersView({ onToast }) {
                     {m.subtasks.map((s, i) => (
                       <div key={i} className="bos-highlight-row"><span className="bos-highlight-dot" /><span>{s.description}</span></div>
                     ))}
+                  </div>
+                )}
+                {onNavigate && (
+                  <div className="bos-opp-card-actions">
+                    <button className="bos-btn outline bos-btn--xs" onClick={() => onNavigate('mission')}>Open in Mission Control →</button>
                   </div>
                 )}
               </div>
@@ -1112,7 +1117,7 @@ function SuggestionsView({ onToast }) {
 // REASONING VIEW (Q2)
 // ═══════════════════════════════════════════════════════════════════
 
-function ReasoningView() {
+function ReasoningView({ onNavigate }) {
   const [data, setData]       = useState(null);
   const [recs, setRecs]       = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1169,9 +1174,14 @@ function ReasoningView() {
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Blocked Missions</div>
           {blocked.map((b, i) => (
-            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid #f59e0b' }}>
-              <strong>{b.objective || b.missionId}</strong>
-              {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
+            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid #f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <span>
+                <strong>{b.objective || b.missionId}</strong>
+                {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
+              </span>
+              {onNavigate && (
+                <button className="bos-icon-btn" style={{ flexShrink: 0 }} onClick={() => onNavigate('mission')} title="Open in Mission Control">→</button>
+              )}
             </div>
           ))}
         </div>
@@ -1214,7 +1224,7 @@ function ReasoningView() {
 // ROOT COMPONENT
 // ═══════════════════════════════════════════════════════════════════
 
-export default function BusinessOS({ onToast }) {
+export default function BusinessOS({ onToast, onNavigate }) {
   const [view, setView] = useState("dashboard");
 
   return (
@@ -1232,11 +1242,11 @@ export default function BusinessOS({ onToast }) {
         {view === "leads"         && <LeadsView         onToast={onToast} />}
         {view === "contacts"      && <ContactsView      onToast={onToast} />}
         {view === "opportunities" && <OpportunitiesView onToast={onToast} />}
-        {view === "customers"     && <CustomersView     onToast={onToast} />}
+        {view === "customers"     && <CustomersView     onToast={onToast} onNavigate={onNavigate} />}
         {view === "campaigns"     && <CampaignsView     onToast={onToast} />}
         {view === "revenue"       && <RevenueView       onToast={onToast} />}
         {view === "suggestions"   && <SuggestionsView   onToast={onToast} />}
-        {view === "reasoning"     && <ReasoningView     />}
+        {view === "reasoning"     && <ReasoningView     onNavigate={onNavigate} />}
       </div>
     </div>
   );

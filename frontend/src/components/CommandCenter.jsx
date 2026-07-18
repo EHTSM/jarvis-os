@@ -734,7 +734,7 @@ function ApprovalQueue({ onNavigate }) {
             {count}
           </motion.span>
         )}
-        {count > 3 && (
+        {count > 0 && (
           <button className="cmd-panel-link" onClick={() => onNavigate?.("recommend")}>
             View all →
           </button>
@@ -1267,8 +1267,8 @@ function DeploymentPulse({ onNavigate }) {
         </div>
       </div>
       {onNavigate && (
-        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('reliability')}>
-          System health →
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('devops')}>
+          Deployments →
         </button>
       )}
     </div>
@@ -1568,12 +1568,12 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         transition={{ ...transition.enter, delay: 0.09 }}
       >
         {[
-          { icon: "✦", label: "New Mission",  tab: "execution"    },
-          { icon: "◎", label: "AI Chat",      tab: "jarvisbrain"  },
-          { icon: "⌥", label: "Analytics",    tab: "analytics"    },
-          { icon: "⬡", label: "Automation",   tab: "autonomouswf" },
-          { icon: "◈", label: "Contacts",     tab: "crm"          },
-          { icon: "₹", label: "Payments",     tab: "billing"      },
+          { icon: "✦", label: "New Mission",  tab: "mission"          },
+          { icon: "◎", label: "AI Chat",      tab: "jarvisbrain"      },
+          { icon: "⌥", label: "Analytics",    tab: "analyticscenter"  },
+          { icon: "⬡", label: "Automation",   tab: "workflowautomation" },
+          { icon: "◈", label: "CRM",          tab: "business"         },
+          { icon: "₹", label: "Payments",     tab: "payments"         },
         ].map(({ icon, label, tab }) => (
           <button
             key={tab}

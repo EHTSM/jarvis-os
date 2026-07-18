@@ -125,7 +125,12 @@
 .topbar-traffic-safe { width: 72px; flex-shrink: 0; -webkit-app-region: no-drag; }
 .topbar-logo { display: flex; align-items: center; gap: 9px; cursor: default; flex-shrink: 0; }
 .topbar-logo-text { font-size: 14px; font-weight: 700; letter-spacing: -0.025em; color: rgba(255,255,255,0.92); line-height: 1; }
-.topbar-status { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.30); letter-spacing: 0.02em; padding: 0 4px; }
+.topbar-status {
+  display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.30);
+  letter-spacing: 0.02em; padding: 0 4px; background: none; border: none; font-family: inherit; cursor: pointer;
+  transition: color var(--dur-fast, 0.12s) var(--ease-out, ease);
+}
+.topbar-status:hover { color: rgba(255,255,255,0.55); }
 .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
 /* Back / forward navigation arrows */
