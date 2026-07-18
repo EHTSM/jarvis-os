@@ -102,7 +102,24 @@ function _appendHistory(entry) {
 }
 
 function _ts()  { return new Date().toISOString(); }
-function _vkey(connectorId, type) { return `${connectorId}::${type}`; }
+
+// GLOBAL_ORG is the implicit tenant for every pre-multi-tenant install and
+// for any caller that doesn't pass an orgId. Its key format
+// (`connectorId::type`) is unchanged from before org-scoping existed, so
+// every credential already in data/vault.json today stays reachable with
+// zero migration. Only a real, non-default orgId gets the `orgId::` prefix —
+// this makes org isolation strictly additive: existing single-tenant
+// deployments and already-configured connectors are byte-for-byte
+// unaffected.
+const GLOBAL_ORG = "global";
+function _vkey(connectorId, type, orgId = GLOBAL_ORG) {
+  return orgId && orgId !== GLOBAL_ORG ? `${orgId}::${connectorId}::${type}` : `${connectorId}::${type}`;
+}
+// Recover the orgId a stored key belongs to, for filtering/iteration.
+function _keyOrg(vaultKey) {
+  const parts = vaultKey.split("::");
+  return parts.length === 3 ? parts[0] : GLOBAL_ORG;
+}
 
 // ── Credential type definitions ───────────────────────────────────────────────
 const CRED_TYPES = new Set([
@@ -201,18 +218,19 @@ const ENV_MAP = {
 };
 
 // ── Core CRUD ─────────────────────────────────────────────────────────────────
-function storeSecret(connectorId, type, value, meta = {}) {
+function storeSecret(connectorId, type, value, meta = {}, orgId = GLOBAL_ORG) {
   if (!CRED_TYPES.has(type)) throw new Error(`Unknown credential type: ${type}. Supported: ${[...CRED_TYPES].join(", ")}`);
   if (typeof value !== "string" || !value) throw new Error("Secret value must be a non-empty string");
   if (value.length > 32768) throw new Error("Secret value exceeds maximum length (32KB)");
 
   const vault  = _load();
-  const vk     = _vkey(connectorId, type);
+  const vk     = _vkey(connectorId, type, orgId);
   const existing = vault.secrets[vk];
 
   vault.secrets[vk] = {
     connectorId,
     type,
+    orgId,
     encrypted: _encrypt(value),
     storedAt:  existing?.storedAt || _ts(),
     updatedAt: _ts(),
@@ -225,21 +243,21 @@ function storeSecret(connectorId, type, value, meta = {}) {
   };
 
   _save(vault);
-  _appendHistory({ event: "stored", connectorId, type, version: vault.secrets[vk].version });
+  _appendHistory({ event: "stored", connectorId, type, orgId, version: vault.secrets[vk].version });
   return _publicRecord(vault.secrets[vk]);
 }
 
-function getSecret(connectorId, type) {
+function getSecret(connectorId, type, orgId = GLOBAL_ORG) {
   const vault = _load();
   if (type) {
-    const rec = vault.secrets[_vkey(connectorId, type)];
+    const rec = vault.secrets[_vkey(connectorId, type, orgId)];
     if (!rec) return null;
     try { return _decrypt(rec.encrypted); }
     catch { return null; }
   }
-  // Return all types for this connector
+  // Return all types for this connector, scoped to this org
   return Object.values(vault.secrets)
-    .filter(r => r.connectorId === connectorId)
+    .filter(r => r.connectorId === connectorId && (r.orgId || GLOBAL_ORG) === orgId)
     .map(r => {
       try { return { ...r, value: _decrypt(r.encrypted), encrypted: undefined }; }
       catch { return { ...r, value: null, decryptError: true, encrypted: undefined }; }
@@ -252,6 +270,9 @@ function listSecrets(filter = {}) {
   const records = all.filter(r => {
     if (filter.connectorId && r.connectorId !== filter.connectorId) return false;
     if (filter.type        && r.type        !== filter.type)        return false;
+    // orgId filter is opt-in: omitting it lists across all orgs (operator/
+    // admin view), matching pre-multi-tenant behavior exactly.
+    if (filter.orgId       && (r.orgId || GLOBAL_ORG) !== filter.orgId) return false;
     if (filter.phase) {
       const [ph] = r.connectorId.split(":");
       const phaseMap = { A: "ai", B: "git", C: "infra", D: "pay", E: "email", F: "msg", G: "auth", H: "prod", I: "commerce", J: "creative", K: "auto", L: "monitor" };
@@ -262,24 +283,24 @@ function listSecrets(filter = {}) {
   return records.map(_publicRecord);
 }
 
-function deleteSecret(connectorId, type) {
+function deleteSecret(connectorId, type, orgId = GLOBAL_ORG) {
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   if (!vault.secrets[vk]) return false;
   delete vault.secrets[vk];
   _save(vault);
-  _appendHistory({ event: "deleted", connectorId, type });
+  _appendHistory({ event: "deleted", connectorId, type, orgId });
   return true;
 }
 
-function rotateSecret(connectorId, type, newValue) {
+function rotateSecret(connectorId, type, newValue, orgId = GLOBAL_ORG) {
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   const existing = vault.secrets[vk];
   if (!existing) throw new Error(`No vault entry found for ${connectorId}::${type}`);
 
   // Keep old encrypted value in history before overwriting
-  _appendHistory({ event: "rotated", connectorId, type, oldVersion: existing.version });
+  _appendHistory({ event: "rotated", connectorId, type, orgId, oldVersion: existing.version });
 
   existing.encrypted       = _encrypt(newValue);
   existing.updatedAt       = _ts();
@@ -288,14 +309,14 @@ function rotateSecret(connectorId, type, newValue) {
   existing.version        += 1;
 
   _save(vault);
-  _appendHistory({ event: "rotation_complete", connectorId, type, newVersion: existing.version });
+  _appendHistory({ event: "rotation_complete", connectorId, type, orgId, newVersion: existing.version });
   return _publicRecord(existing);
 }
 
 // ── Resolve: vault first, then env var ───────────────────────────────────────
-function resolveEnvKey(connectorId, type) {
+function resolveEnvKey(connectorId, type, orgId = GLOBAL_ORG) {
   // 1. Vault
-  const fromVault = getSecret(connectorId, type);
+  const fromVault = getSecret(connectorId, type, orgId);
   if (fromVault) return fromVault;
   // 2. Env var fallback
   const envKey = ENV_MAP[`${connectorId}::${type}`];
@@ -304,8 +325,8 @@ function resolveEnvKey(connectorId, type) {
 }
 
 // Look up all secrets for a connector (vault + env vars combined)
-function resolveAll(connectorId) {
-  const vaultEntries = getSecret(connectorId) || [];
+function resolveAll(connectorId, orgId = GLOBAL_ORG) {
+  const vaultEntries = getSecret(connectorId, undefined, orgId) || [];
   const envEntries   = Object.entries(ENV_MAP)
     .filter(([k]) => k.startsWith(`${connectorId}::`) && !vaultEntries.find(v => `${v.connectorId}::${v.type}` === k))
     .map(([k, envKey]) => ({
@@ -322,9 +343,9 @@ function resolveAll(connectorId) {
 }
 
 // ── Validation ────────────────────────────────────────────────────────────────
-function validateSecret(connectorId, type) {
+function validateSecret(connectorId, type, orgId = GLOBAL_ORG) {
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   const rec   = vault.secrets[vk];
 
   if (!rec) {
@@ -566,6 +587,7 @@ function _publicRecord(r) {
   return {
     connectorId:     r.connectorId,
     type:            r.type,
+    orgId:           r.orgId || GLOBAL_ORG,
     storedAt:        r.storedAt,
     updatedAt:       r.updatedAt,
     rotationDueAt:   r.rotationDueAt,
@@ -656,4 +678,5 @@ module.exports = {
   exportVault, importVault, getDashboard, resolveEnvKey, resolveAll,
   getCredentialTypes, CRED_TYPES, ENV_MAP,
   prepareRotationCandidate, applyStagedRotation, listStagedRotations, AUTO_ROTATABLE_TYPES,
+  GLOBAL_ORG,
 };

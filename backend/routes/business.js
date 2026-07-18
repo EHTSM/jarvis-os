@@ -73,7 +73,15 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 const logger = require("../utils/logger");
+
+// Non-blocking: resolves req.org from X-Org-Id header (or the account's
+// persisted current-org preference) when present, but never rejects a
+// request that has none — CRM data isolation here is opt-in per
+// businessDataService.cjs's design (see Module 2 commit), so an install
+// with no orgs configured yet behaves exactly as before.
+router.use("/business", attachOrg);
 
 function _bds()  { try { return require("../services/businessDataService.cjs");  } catch { return null; } }
 function _bem()  { try { return require("../services/businessEntityModel.cjs");  } catch { return null; } }
@@ -101,7 +109,7 @@ router.get("/business/dashboard", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.getDashboard());
+        _ok(res, bds.getDashboard(req.org?.id));
     } catch (e) { _err(res, e); }
 });
 
@@ -110,7 +118,7 @@ router.get("/business/pipeline", requireAuth, (req, res) => {
         const bds = _bds();
         const bem = _bem();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const pipeline = bds.getPipelineSummary();
+        const pipeline = bds.getPipelineSummary(req.org?.id);
         const bizMissions = bem?.getPipelineSummary?.() || {};
         const rules = bem?.getBusinessRules?.() || [];
         _ok(res, { pipeline, bizMissions, ruleCount: rules.length });
@@ -155,7 +163,7 @@ router.get("/business/summary/daily", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.getDailySummary());
+        _ok(res, bds.getDailySummary(req.org?.id));
     } catch (e) { _err(res, e); }
 });
 
@@ -163,7 +171,7 @@ router.get("/business/summary/weekly", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.getWeeklySummary());
+        _ok(res, bds.getWeeklySummary(req.org?.id));
     } catch (e) { _err(res, e); }
 });
 
@@ -171,8 +179,8 @@ router.get("/business/stats", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const dash = bds.getDashboard();
-        const rev  = bds.getRevenueStats({});
+        const dash = bds.getDashboard(req.org?.id);
+        const rev  = bds.getRevenueStats({ orgId: req.org?.id });
         _ok(res, { ...dash, revenue: rev });
     } catch (e) { _err(res, e); }
 });
@@ -183,7 +191,7 @@ router.get("/business/search", requireAuth, (req, res) => {
         const q     = req.query.q || "";
         const limit = req.query.limit ? parseInt(req.query.limit, 10) : 20;
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.globalSearch(q, limit));
+        _ok(res, bds.globalSearch(q, limit, req.org?.id));
     } catch (e) { _err(res, e); }
 });
 
@@ -229,7 +237,7 @@ router.get("/business/leads", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { status, source, assignee, minScore, limit } = req.query;
-        const result = bds.listLeads({ status, source, assignee, minScore, limit: limit ? parseInt(limit, 10) : 50 });
+        const result = bds.listLeads({ status, source, assignee, minScore, limit: limit ? parseInt(limit, 10) : 50, orgId: req.org?.id });
         _ok(res, { leads: result.items, total: result.total });
     } catch (e) { _err(res, e); }
 });
@@ -238,7 +246,7 @@ router.get("/business/leads/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const lead = bds.getLead(req.params.id);
+        const lead = bds.getLead(req.params.id, req.org?.id);
         if (!lead) return res.status(404).json({ success: false, error: "Lead not found" });
         _ok(res, { lead });
     } catch (e) { _err(res, e); }
@@ -248,7 +256,7 @@ router.post("/business/leads", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const lead = bds.createLead(req.body);
+        const lead = bds.createLead({ ...req.body, orgId: req.body?.orgId || req.org?.id });
         _ok(res, { lead });
     } catch (e) { _err(res, e, 400); }
 });
@@ -257,7 +265,7 @@ router.patch("/business/leads/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const lead = bds.updateLead(req.params.id, req.body);
+        const lead = bds.updateLead(req.params.id, req.body, req.org?.id);
         _ok(res, { lead });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -266,7 +274,7 @@ router.delete("/business/leads/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.deleteLead(req.params.id));
+        _ok(res, bds.deleteLead(req.params.id, req.org?.id));
     } catch (e) { _err(res, e, 404); }
 });
 
@@ -274,7 +282,7 @@ router.post("/business/leads/:id/qualify", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const lead = bds.qualifyLead(req.params.id, req.body);
+        const lead = bds.qualifyLead(req.params.id, req.body, req.org?.id);
         _ok(res, { lead });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -284,7 +292,7 @@ router.post("/business/leads/:id/disqualify", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { reason } = req.body;
-        const lead = bds.disqualifyLead(req.params.id, reason);
+        const lead = bds.disqualifyLead(req.params.id, reason, req.org?.id);
         _ok(res, { lead });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -329,7 +337,7 @@ router.get("/business/contacts", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { company, search, limit } = req.query;
-        const result = bds.listContacts({ company, search, limit: limit ? parseInt(limit, 10) : 50 });
+        const result = bds.listContacts({ company, search, limit: limit ? parseInt(limit, 10) : 50, orgId: req.org?.id });
         _ok(res, { contacts: result.items, total: result.total });
     } catch (e) { _err(res, e); }
 });
@@ -338,7 +346,7 @@ router.get("/business/contacts/:id", requireAuth, (req, res) => {
     try {
         const bds     = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const contact = bds.getContact(req.params.id);
+        const contact = bds.getContact(req.params.id, req.org?.id);
         if (!contact) return res.status(404).json({ success: false, error: "Contact not found" });
         _ok(res, { contact });
     } catch (e) { _err(res, e); }
@@ -348,7 +356,7 @@ router.post("/business/contacts", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const contact = bds.createContact(req.body);
+        const contact = bds.createContact({ ...req.body, orgId: req.body?.orgId || req.org?.id });
         _ok(res, { contact });
     } catch (e) { _err(res, e, 400); }
 });
@@ -357,7 +365,7 @@ router.patch("/business/contacts/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const contact = bds.updateContact(req.params.id, req.body);
+        const contact = bds.updateContact(req.params.id, req.body, req.org?.id);
         _ok(res, { contact });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -366,7 +374,7 @@ router.delete("/business/contacts/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        _ok(res, bds.deleteContact(req.params.id));
+        _ok(res, bds.deleteContact(req.params.id, req.org?.id));
     } catch (e) { _err(res, e, 404); }
 });
 
@@ -377,7 +385,7 @@ router.get("/business/opportunities", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { stage, assignee, minValue, limit } = req.query;
-        const result = bds.listOpportunities({ stage, assignee, minValue, limit: limit ? parseInt(limit, 10) : 50 });
+        const result = bds.listOpportunities({ stage, assignee, minValue, limit: limit ? parseInt(limit, 10) : 50, orgId: req.org?.id });
         _ok(res, { opportunities: result.items, total: result.total });
     } catch (e) { _err(res, e); }
 });
@@ -386,7 +394,7 @@ router.get("/business/opportunities/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const opp = bds.getOpportunity(req.params.id);
+        const opp = bds.getOpportunity(req.params.id, req.org?.id);
         if (!opp) return res.status(404).json({ success: false, error: "Opportunity not found" });
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e); }
@@ -396,7 +404,7 @@ router.post("/business/opportunities", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const opp = bds.createOpportunity(req.body);
+        const opp = bds.createOpportunity({ ...req.body, orgId: req.body?.orgId || req.org?.id });
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e, 400); }
 });
@@ -405,7 +413,7 @@ router.patch("/business/opportunities/:id", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const opp = bds.updateOpportunity(req.params.id, req.body);
+        const opp = bds.updateOpportunity(req.params.id, req.body, req.org?.id);
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -416,7 +424,7 @@ router.post("/business/opportunities/:id/advance", requireAuth, (req, res) => {
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { stage } = req.body;
         if (!stage) return res.status(400).json({ success: false, error: "stage required" });
-        const opp = bds.advanceStage(req.params.id, stage);
+        const opp = bds.advanceStage(req.params.id, stage, req.org?.id);
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -425,7 +433,7 @@ router.post("/business/opportunities/:id/close-won", requireAuth, (req, res) => 
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const opp = bds.closeWon(req.params.id, req.body);
+        const opp = bds.closeWon(req.params.id, req.body, req.org?.id);
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -435,7 +443,7 @@ router.post("/business/opportunities/:id/close-lost", requireAuth, (req, res) =>
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { reason } = req.body;
-        const opp = bds.closeLost(req.params.id, reason);
+        const opp = bds.closeLost(req.params.id, reason, req.org?.id);
         _ok(res, { opportunity: opp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -447,7 +455,7 @@ router.get("/business/campaigns", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { status, channel, limit } = req.query;
-        const result = bds.listCampaigns({ status, channel, limit: limit ? parseInt(limit, 10) : 20 });
+        const result = bds.listCampaigns({ status, channel, limit: limit ? parseInt(limit, 10) : 20, orgId: req.org?.id });
         _ok(res, { campaigns: result.items, total: result.total });
     } catch (e) { _err(res, e); }
 });
@@ -456,7 +464,7 @@ router.get("/business/campaigns/:id", requireAuth, (req, res) => {
     try {
         const bds  = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const camp = bds.getCampaign(req.params.id);
+        const camp = bds.getCampaign(req.params.id, req.org?.id);
         if (!camp) return res.status(404).json({ success: false, error: "Campaign not found" });
         _ok(res, { campaign: camp });
     } catch (e) { _err(res, e); }
@@ -466,7 +474,7 @@ router.post("/business/campaigns", requireAuth, (req, res) => {
     try {
         const bds  = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const camp = bds.createCampaign(req.body);
+        const camp = bds.createCampaign({ ...req.body, orgId: req.body?.orgId || req.org?.id });
         _ok(res, { campaign: camp });
     } catch (e) { _err(res, e, 400); }
 });
@@ -475,7 +483,7 @@ router.patch("/business/campaigns/:id", requireAuth, (req, res) => {
     try {
         const bds  = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const camp = bds.updateCampaign(req.params.id, req.body);
+        const camp = bds.updateCampaign(req.params.id, req.body, req.org?.id);
         _ok(res, { campaign: camp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -484,7 +492,7 @@ router.post("/business/campaigns/:id/event", requireAuth, (req, res) => {
     try {
         const bds  = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const camp = bds.recordCampaignEvent(req.params.id, req.body);
+        const camp = bds.recordCampaignEvent(req.params.id, req.body, req.org?.id);
         _ok(res, { campaign: camp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -493,7 +501,7 @@ router.post("/business/campaigns/:id/complete", requireAuth, (req, res) => {
     try {
         const bds  = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const camp = bds.completeCampaign(req.params.id, req.body);
+        const camp = bds.completeCampaign(req.params.id, req.body, req.org?.id);
         _ok(res, { campaign: camp });
     } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
 });
@@ -505,7 +513,7 @@ router.get("/business/revenue", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { type, dateFrom, dateTo, oppId, limit } = req.query;
-        const result = bds.listRevenue({ type, dateFrom, dateTo, oppId, limit: limit ? parseInt(limit, 10) : 50 });
+        const result = bds.listRevenue({ type, dateFrom, dateTo, oppId, limit: limit ? parseInt(limit, 10) : 50, orgId: req.org?.id });
         _ok(res, { revenue: result.items, total: result.total });
     } catch (e) { _err(res, e); }
 });
@@ -514,7 +522,7 @@ router.post("/business/revenue", requireAuth, (req, res) => {
     try {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
-        const rev = bds.recordRevenue(req.body);
+        const rev = bds.recordRevenue({ ...req.body, orgId: req.body?.orgId || req.org?.id });
         _ok(res, { revenue: rev });
     } catch (e) { _err(res, e, 400); }
 });
@@ -524,7 +532,7 @@ router.get("/business/revenue/stats", requireAuth, (req, res) => {
         const bds = _bds();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const { dateFrom, dateTo, currency } = req.query;
-        _ok(res, bds.getRevenueStats({ dateFrom, dateTo, currency }));
+        _ok(res, bds.getRevenueStats({ dateFrom, dateTo, currency, orgId: req.org?.id }));
     } catch (e) { _err(res, e); }
 });
 
