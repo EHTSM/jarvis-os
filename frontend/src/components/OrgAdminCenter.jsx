@@ -263,12 +263,107 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
   );
 }
 
+// ── Cross-org grants (Module 6) ─────────────────────────────────────────
+// Lets an org_owner give another account (not a member) a fixed set of
+// permissions on this org — e.g. an agency or portfolio-owner account that
+// needs visibility into a client org without joining it.
+
+const GRANTABLE_ACTIONS = ["view_missions", "view_members", "view_departments", "view_teams", "view_analytics"];
+
+function GrantsPanel({ orgId, isOwner, onToast }) {
+  const [grants, setGrants] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
+  const [form, setForm] = useState({ granteeAccountId: "", permissions: ["view_missions"] });
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const r = await _fetch(`/orgs/${orgId}/grants`).catch(() => ({ ok: false }));
+    setLoading(false);
+    if (r.ok !== false) setGrants(r.grants || []);
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  if (!isOwner) return <Empty title="Owner access required" sub="Only the organization owner can manage cross-org grants." />;
+
+  const togglePermission = (perm) => {
+    setForm(f => ({
+      ...f,
+      permissions: f.permissions.includes(perm) ? f.permissions.filter(p => p !== perm) : [...f.permissions, perm],
+    }));
+  };
+
+  const handleAdd = async () => {
+    if (!form.granteeAccountId.trim()) { onToast?.("error", "Account ID is required"); return; }
+    if (!form.permissions.length) { onToast?.("error", "Select at least one permission"); return; }
+    setBusy(true);
+    const r = await _fetch(`/orgs/${orgId}/grants`, { method: "POST", body: JSON.stringify(form) }).catch(e => ({ ok: false, error: e.message }));
+    setBusy(false);
+    if (r.ok === false) onToast?.("error", r.error || "Failed to create grant");
+    else { onToast?.("success", "Access granted"); setShowAdd(false); setForm({ granteeAccountId: "", permissions: ["view_missions"] }); load(); }
+  };
+
+  const handleRevoke = async (accountId) => {
+    const r = await _fetch(`/orgs/${orgId}/grants/${accountId}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
+    if (r.ok === false) onToast?.("error", r.error || "Failed to revoke access");
+    else { onToast?.("success", "Access revoked"); load(); }
+  };
+
+  if (loading) return <div className="oac-loading">Loading grants…</div>;
+
+  return (
+    <div className="oac-section">
+      <div className="oac-section-header">
+        <h3 className="oac-section-title">Cross-org access</h3>
+        <button className="oac-btn primary" onClick={() => setShowAdd(s => !s)}>{showAdd ? "Cancel" : "+ Grant access"}</button>
+      </div>
+      <p className="oac-card-desc">Give another account limited access to this organization without adding them as a member.</p>
+
+      {showAdd && (
+        <div className="oac-form-card" style={{ flexDirection: "column", alignItems: "stretch", gap: 10 }}>
+          <input className="oac-input" placeholder="Account ID" value={form.granteeAccountId} onChange={e => setForm(f => ({ ...f, granteeAccountId: e.target.value }))} />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {GRANTABLE_ACTIONS.map(perm => (
+              <label key={perm} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, color: "var(--text-dim)" }}>
+                <input type="checkbox" checked={form.permissions.includes(perm)} onChange={() => togglePermission(perm)} />
+                {perm.replace("view_", "").replace("_", " ")}
+              </label>
+            ))}
+          </div>
+          <button className="oac-btn primary" onClick={handleAdd} disabled={busy} style={{ alignSelf: "flex-start" }}>{busy ? "Granting…" : "Grant access"}</button>
+        </div>
+      )}
+
+      {!grants?.length ? <Empty title="No grants" sub="No external accounts have cross-org access to this organization." /> : (
+        <table className="oac-table">
+          <thead><tr><th>Account</th><th>Permissions</th><th>Granted</th><th></th></tr></thead>
+          <tbody>
+            {grants.map(g => (
+              <tr key={g.id}>
+                <td className="oac-td-name">{g.granteeAccountId}</td>
+                <td className="oac-td-dim">{(g.permissions || []).map(p => p.replace("view_", "")).join(", ")}</td>
+                <td className="oac-td-dim">{g.grantedAt ? new Date(g.grantedAt).toLocaleDateString() : "—"}</td>
+                <td className="oac-td-actions">
+                  <button className="oac-icon-btn danger" title="Revoke" onClick={() => handleRevoke(g.granteeAccountId)}>🗑</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
 // ── Root ──────────────────────────────────────────────────────────────
 
 const VIEWS = [
   { id: "overview",    label: "Overview"    },
   { id: "members",     label: "Members"     },
   { id: "departments", label: "Departments" },
+  { id: "grants",      label: "Cross-org access" },
 ];
 
 export default function OrgAdminCenter({ onToast }) {
@@ -333,6 +428,7 @@ export default function OrgAdminCenter({ onToast }) {
         {view === "overview"    && <OverviewPanel org={orgDetail} myRole={primary.orgRole} onToast={onToast} onReload={handleOverviewReload} />}
         {view === "members"     && <MembersPanel orgId={orgId} myRole={primary.orgRole} canManage={canManage} onToast={onToast} />}
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
+        {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}
       </div>
     </div>
   );

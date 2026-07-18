@@ -50,6 +50,12 @@
  *   state is created/modified here; see getOrgBillingOverview):
  *     GET    /orgs/:orgId/billing             — per-member plan/status/usage
  *
+ *   Cross-org grants (org_owner or global enterprise_admin only):
+ *     GET    /orgs/me/grants                  — orgs granted to me
+ *     GET    /orgs/:orgId/grants              — list this org's grants
+ *     POST   /orgs/:orgId/grants              — grant { granteeAccountId, permissions[] }
+ *     DELETE /orgs/:orgId/grants/:accountId   — revoke a grant
+ *
  *   Context + RBAC:
  *     GET    /orgs/me/context                 — my org memberships + permissions
  *     POST   /orgs/switch                     — set my current org (persisted per-account)
@@ -294,5 +300,49 @@ router.get("/orgs/:orgId/billing", requireOrgPermission("manage_billing"), (req,
         _ok(res, _svc().getOrgBillingOverview(req.params.orgId, req.user.sub));
     } catch (e) { _err(res, e); }
 });
+
+// ── Cross-org grants (Module 6) ───────────────────────────────────────────────
+// Lets an org_owner (or a global enterprise_admin) give another account a fixed
+// set of permissions on this org without adding them as a member. Authorization
+// itself is enforced inside grantOrgAccess/revokeOrgAccess (org_owner-or-admin
+// check), not by route middleware, since a grantee calling GET on an org they
+// don't own must still be blocked — requireOrgMember already allows that org's
+// own grantees through for read paths, so the mutating routes below re-check.
+//
+// /orgs/me/grants must be registered before /orgs/:orgId/grants — otherwise
+// Express would match "me" as :orgId.
+router.get("/orgs/me/grants", (req, res) => {
+    try { _ok(res, { grants: _svc().listGrantsForAccount(req.user.sub) }); }
+    catch (e) { _err(res, e); }
+});
+
+router.get("/orgs/:orgId/grants", requireOrgMember, (req, res) => {
+    try {
+        _assertOrgOwnerOrAdmin(req);
+        _ok(res, { grants: _svc().listOrgGrants(req.params.orgId) });
+    } catch (e) { _err(res, e, 403); }
+});
+
+router.post("/orgs/:orgId/grants", requireOrgMember, (req, res) => {
+    try {
+        const { granteeAccountId, permissions } = req.body || {};
+        if (!granteeAccountId) return res.status(400).json({ ok: false, error: "granteeAccountId required" });
+        _ok(res, _svc().grantOrgAccess(req.params.orgId, granteeAccountId, permissions, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.delete("/orgs/:orgId/grants/:accountId", requireOrgMember, (req, res) => {
+    try {
+        _ok(res, _svc().revokeOrgAccess(req.params.orgId, req.params.accountId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+function _assertOrgOwnerOrAdmin(req) {
+    const accountId = req.user.sub;
+    if (_svc().isEnterpriseAdmin(accountId)) return;
+    if (!_svc().hasPermission(req.params.orgId, accountId, "delete_org")) {
+        throw Object.assign(new Error("Forbidden — requires org owner or enterprise admin"), { status: 403 });
+    }
+}
 
 module.exports = router;

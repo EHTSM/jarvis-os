@@ -42,9 +42,16 @@ function attachOrg(req, res, next) {
 }
 
 function requireOrgMember(req, res, next) {
-    if (!req.org)     return res.status(404).json({ error: "Organization not found or not specified" });
-    if (!req.orgRole) return res.status(403).json({ error: "Not a member of this organization" });
-    next();
+    if (!req.org) return res.status(404).json({ error: "Organization not found or not specified" });
+    if (req.orgRole) return next();
+    // Not a member — but a cross-org grant or global enterprise_admin role
+    // (Module 6) also counts as legitimate access to this org.
+    const accountId = req.user?.sub;
+    const svc = _svc();
+    if (accountId && (svc.isEnterpriseAdmin(accountId) || svc.listGrantsForAccount(accountId).some(g => g.orgId === req.org.id))) {
+        return next();
+    }
+    return res.status(403).json({ error: "Not a member of this organization" });
 }
 
 function requireOrgPermission(action) {

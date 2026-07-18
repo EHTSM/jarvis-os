@@ -76,6 +76,13 @@ const ORG_FILE  = path.join(DATA_DIR, "organizations.json");
 // concurrent users never see or affect each other's selection (see CONTEXT_FILE
 // below for the same fix applied to the pre-existing global-pointer bug).
 const CONTEXT_FILE = path.join(DATA_DIR, "org-context.json");
+// Explicit cross-org access grants (Module 6). A grant lets one account act
+// within an org it is NOT a member of, without joining the org's member list
+// or department/team hierarchy — e.g. an agency account viewing a client org's
+// missions. Distinct from org membership on purpose: grants are narrower
+// (a fixed permission list, optionally time-boxed) and don't show up in
+// listMembers/org headcount.
+const GRANTS_FILE = path.join(DATA_DIR, "org-grants.json");
 
 function _read() {
     try { return JSON.parse(fs.readFileSync(ORG_FILE, "utf8")); }
@@ -95,6 +102,15 @@ function _writeContext(map) {
     fs.writeFileSync(CONTEXT_FILE, JSON.stringify(map, null, 2));
 }
 
+function _readGrants() {
+    try { return JSON.parse(fs.readFileSync(GRANTS_FILE, "utf8")); }
+    catch { return { grants: [] }; }
+}
+function _writeGrants(store) {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(GRANTS_FILE, JSON.stringify(store, null, 2));
+}
+
 // ── ID helpers ────────────────────────────────────────────────────────────────
 let _seq = 0;
 function _id(prefix) { return `${prefix}_${Date.now()}_${(++_seq).toString(36)}`; }
@@ -104,6 +120,7 @@ function _mm()      { try { return require("./missionMemory.cjs");           } c
 function _le()      { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
 function _alert()   { try { return require("./operationsAlertingLayer.cjs");  } catch { return null; } }
 function _billing() { try { return require("./billingService.js");           } catch { return null; } }
+function _accounts() { try { return require("./accountService.js");          } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RBAC MODEL
@@ -144,12 +161,107 @@ const ACTIONS = {
     view_analytics:      ["org_owner", "org_admin", "dept_lead"],
 };
 
+// ── Global (platform-level) roles — Module 6 ───────────────────────────────────
+// Distinct from ORG_ROLES: these are account-level, not org-membership-level,
+// and stored on the account record itself (accountService's free-form `role`
+// field), not inside any org. Recognized values beyond the pre-existing
+// "operator"/"user":
+//   enterprise_admin — full implicit access to every org and every action, for
+//                      platform operations. Never needs a grant.
+//   portfolio_owner  — no implicit access by itself; it's the conventional
+//                      label for accounts that hold cross-org grants (below).
+//                      Kept as an account role (rather than just "anyone with
+//                      a grant") so the UI/reporting can identify these users.
+const GLOBAL_ROLES = ["enterprise_admin", "portfolio_owner"];
+
+function _globalRole(accountId) {
+    if (!accountId) return null;
+    try {
+        const acc = _accounts()?.getById(accountId);
+        return (acc && GLOBAL_ROLES.includes(acc.role)) ? acc.role : null;
+    } catch { return null; }
+}
+
+function isEnterpriseAdmin(accountId) {
+    return _globalRole(accountId) === "enterprise_admin";
+}
+
+// ── Cross-org grants — Module 6 ─────────────────────────────────────────────────
+// A grant gives one account a fixed set of ACTIONS-keys within one org, without
+// making them a member (they won't appear in listMembers, headcount, or team
+// rosters). Used for cross-org access like a portfolio owner or agency account
+// viewing/managing a client org they don't belong to.
+function grantOrgAccess(orgId, granteeAccountId, permissions, requestingAccountId) {
+    if (!orgId) throw new Error("orgId required");
+    if (!granteeAccountId) throw new Error("granteeAccountId required");
+    if (!Array.isArray(permissions) || !permissions.length) throw new Error("permissions must be a non-empty array");
+    const unknown = permissions.filter(p => !ACTIONS[p]);
+    if (unknown.length) throw new Error(`Unknown permission(s): ${unknown.join(", ")}`);
+
+    // Only an org_owner of the target org, or a global enterprise_admin, may grant access to it.
+    if (!isEnterpriseAdmin(requestingAccountId)) {
+        _assertPermission(orgId, requestingAccountId, "delete_org"); // org_owner-only action, reused as the "owns this org" check
+    }
+    const store = _read();
+    if (!_findOrg(store, orgId)) throw Object.assign(new Error("Organization not found"), { status: 404 });
+
+    const grants = _readGrants();
+    const existing = grants.grants.find(g => g.orgId === orgId && g.granteeAccountId === granteeAccountId);
+    const record = existing || {
+        id:        _id("grant"),
+        orgId,
+        granteeAccountId,
+        grantedBy: requestingAccountId,
+        grantedAt: new Date().toISOString(),
+    };
+    record.permissions = permissions;
+    record.updatedAt   = new Date().toISOString();
+    if (!existing) grants.grants.push(record);
+    _writeGrants(grants);
+
+    logger.info(`[OrgService] Granted ${granteeAccountId} [${permissions.join(",")}] on org ${orgId} by ${requestingAccountId}`);
+    return record;
+}
+
+function revokeOrgAccess(orgId, granteeAccountId, requestingAccountId) {
+    if (!isEnterpriseAdmin(requestingAccountId)) {
+        _assertPermission(orgId, requestingAccountId, "delete_org");
+    }
+    const grants = _readGrants();
+    const before  = grants.grants.length;
+    grants.grants = grants.grants.filter(g => !(g.orgId === orgId && g.granteeAccountId === granteeAccountId));
+    _writeGrants(grants);
+    logger.info(`[OrgService] Revoked grant for ${granteeAccountId} on org ${orgId} by ${requestingAccountId}`);
+    return { revoked: before !== grants.grants.length, orgId, granteeAccountId };
+}
+
+function listOrgGrants(orgId) {
+    const grants = _readGrants();
+    return grants.grants.filter(g => g.orgId === orgId);
+}
+
+function listGrantsForAccount(accountId) {
+    const grants = _readGrants();
+    return grants.grants.filter(g => g.granteeAccountId === accountId);
+}
+
+function _grantedPermissions(orgId, accountId) {
+    if (!orgId || !accountId) return [];
+    const grants = _readGrants();
+    const g = grants.grants.find(x => x.orgId === orgId && x.granteeAccountId === accountId);
+    if (!g) return [];
+    if (g.expiresAt && new Date(g.expiresAt).getTime() < Date.now()) return [];
+    return g.permissions || [];
+}
+
 function hasPermission(orgId, accountId, action) {
+    if (isEnterpriseAdmin(accountId)) return true;
     const role = getMemberRole(orgId, accountId);
-    if (!role) return false;
-    const allowed = ACTIONS[action];
-    if (!allowed) return false;
-    return allowed.includes(role);
+    if (role) {
+        const allowed = ACTIONS[action];
+        if (allowed && allowed.includes(role)) return true;
+    }
+    return _grantedPermissions(orgId, accountId).includes(action);
 }
 
 function _assertPermission(orgId, accountId, action) {
@@ -237,9 +349,15 @@ function getOrg(orgId) {
 
 function listOrgs(accountId, { includeArchived = false } = {}) {
     const store = _read();
-    let orgs = accountId
-        ? store.orgs.filter(o => o.members?.some(m => m.accountId === accountId))
-        : store.orgs;
+    let orgs;
+    if (!accountId) {
+        orgs = store.orgs;
+    } else if (isEnterpriseAdmin(accountId)) {
+        orgs = store.orgs; // platform-wide visibility
+    } else {
+        const grantedOrgIds = new Set(listGrantsForAccount(accountId).map(g => g.orgId));
+        orgs = store.orgs.filter(o => o.members?.some(m => m.accountId === accountId) || grantedOrgIds.has(o.id));
+    }
     if (!includeArchived) orgs = orgs.filter(o => (o.status || "active") !== "archived");
     return { orgs: orgs.map(_sanitize), total: orgs.length };
 }
@@ -818,8 +936,15 @@ module.exports = {
     assertMissionOwnership,
     // Billing (read-only overview — see comment above getOrgBillingOverview)
     getOrgBillingOverview,
+    // Cross-org grants + global roles (Module 6)
+    isEnterpriseAdmin,
+    grantOrgAccess,
+    revokeOrgAccess,
+    listOrgGrants,
+    listGrantsForAccount,
     // RBAC constants
     ORG_ROLES,
     ROLE_HIERARCHY,
     ACTIONS,
+    GLOBAL_ROLES,
 };
