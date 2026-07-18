@@ -52,6 +52,76 @@ router.get("/company-factory/dashboard", requireAuth, (req, res) =>
 router.get("/company-factory/stats", requireAuth, (req, res) =>
   res.json({ ok: true, stats: _cf()?.getStats?.() || {} }));
 
+// ── Shared Founder Dashboard (composes M1–M6 across every org the requester
+// belongs to or has been granted access to) ───────────────────────────────────
+// organizationService.listOrgs(accountId) already returns exactly that set
+// (own memberships + cross-org grants + full visibility for enterprise_admin)
+// — no new membership/grant model. Every org maps to at most one company
+// (1:1 since M1), so this is pure read-side composition, no new storage.
+
+router.get("/company-factory/founder/dashboard", requireAuth, (req, res) => {
+  const accountId = req.user.sub;
+  const { orgs } = _org()?.listOrgs?.(accountId) || { orgs: [] };
+
+  const portfolio = orgs.map(o => {
+    const company = _cle_e()?.listCompanies?.({ orgId: o.id, limit: 1 })?.companies?.[0] || null;
+    if (!company) return null;
+    const aiUsage = _usage()?.summary?.({ orgId: o.id, fromLedger: true }) || null;
+    const crm     = _bds()?.getDashboard?.(o.id) || null;
+    return {
+      orgId:        o.id,
+      companyId:    company.id,
+      name:         company.name,
+      templateId:   company.templateId,
+      stage:        company.stage,
+      readiness:    company.readinessScore,
+      riskScore:    (company.risks || []).filter(r => r.severity === "critical").length * 40
+                  + (company.risks || []).filter(r => r.severity === "high").length * 20
+                  + (company.risks || []).filter(r => r.severity === "medium").length * 10,
+      pipelineValue: crm?.opportunities?.pipelineValue || 0,
+      aiCostUsd:     aiUsage?.totalCostUsd || 0,
+      createdAt:     company.createdAt,
+      launchedAt:    company.launchedAt,
+    };
+  }).filter(Boolean);
+
+  const byStage = {};
+  for (const p of portfolio) byStage[p.stage] = (byStage[p.stage] || 0) + 1;
+
+  const crossCompanyInsights = [];
+  const stuckInPlanning = portfolio.filter(p => p.stage === "planning");
+  if (stuckInPlanning.length >= 2) {
+    crossCompanyInsights.push({
+      type: "stage_bottleneck",
+      severity: "medium",
+      message: `${stuckInPlanning.length} companies are still in the planning stage`,
+      companyIds: stuckInPlanning.map(p => p.companyId),
+    });
+  }
+  const highRisk = portfolio.filter(p => p.riskScore >= 60);
+  if (highRisk.length > 0) {
+    crossCompanyInsights.push({
+      type: "high_risk_concentration",
+      severity: "high",
+      message: `${highRisk.length} companies have a risk score of 60 or above`,
+      companyIds: highRisk.map(p => p.companyId),
+    });
+  }
+
+  res.json({
+    ok: true,
+    portfolio: {
+      totalCompanies:   portfolio.length,
+      totalPipelineValue: portfolio.reduce((s, p) => s + p.pipelineValue, 0),
+      totalAiCostUsd:     parseFloat(portfolio.reduce((s, p) => s + p.aiCostUsd, 0).toFixed(6)),
+      byStage,
+      companies: portfolio.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    },
+    crossCompanyInsights,
+    generatedAt: new Date().toISOString(),
+  });
+});
+
 // ── Company Factory — Core pipeline ──────────────────────────────────────────
 
 router.post("/company-factory/create", requireAuth, async (req, res) => {
