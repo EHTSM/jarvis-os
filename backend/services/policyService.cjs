@@ -14,9 +14,29 @@
  *     mfa:totp, credential type jwt_secret — a per-account shared secret,
  *     structurally the same trust model as any other vault credential),
  *     scoped by accountId-as-orgId-slot (see _mfaSecretKey) since a TOTP
- *     secret belongs to the account, not the org.
- *   - otpauth for real RFC 4226/6238 TOTP generation/verification — no
- *     hand-rolled HMAC time-step math.
+ *     secret belongs to the account, not the org. secretVault encrypts
+ *     every value AES-256-GCM at rest (key = SHA-256(JWT_SECRET)) before it
+ *     ever touches disk — TOTP secrets and recovery-code hashes get that
+ *     encryption for free, no separate crypto path added here.
+ *   - otpauth for real RFC 4226/6238 TOTP generation/verification (otpauth
+ *     internally uses crypto.timingSafeEqual for its digit comparison, so
+ *     TOTP verification is already constant-time) — no hand-rolled HMAC
+ *     time-step math. Standard otpauth:// URI output means any RFC-6238
+ *     authenticator app can enroll: Google Authenticator, Microsoft
+ *     Authenticator, Authy, 1Password, Bitwarden all consume the same URI
+ *     format — there is no app-specific integration surface to build.
+ *   - Recovery codes: 10 single-use codes generated at enrollment, only
+ *     their SHA-256 hashes are ever persisted (via secretVault, so also
+ *     AES-256-GCM encrypted at rest), compared with crypto.timingSafeEqual.
+ *   - Replay protection: the TOTP time-step consumed by the last accepted
+ *     code is recorded per account (data/mfa-replay-state.json) and a
+ *     repeat of that same step is rejected even though otpauth's ±1-step
+ *     drift window would otherwise still consider it valid — this is the
+ *     standard RFC 6238 "reject reuse within the same/adjacent step"
+ *     mitigation, not a new session or auth mechanism.
+ *   - Rate limiting reuses the existing per-IP rateLimiter middleware
+ *     (backend/middleware/rateLimiter.js) on the MFA enroll/verify routes
+ *     and the mfaToken-bearing login path — no second limiter implemented.
  *   - Session timeout is enforced by ssoService/auth.js passing a
  *     policy-derived `exp` into the existing signJWT()/jarvis_auth cookie —
  *     no second session store, no new cookie.
@@ -33,15 +53,23 @@
  *
  * Storage: data/org-policies.json — non-secret policy config, keyed by
  * orgId. One policy document per org (all fields optional/defaulted).
+ * data/mfa-replay-state.json — last-consumed TOTP step per account, purely
+ * a replay guard, holds no secret material.
  */
 
 const fs   = require("fs");
 const path = require("path");
+const crypto  = require("crypto");
 const otpauth = require("otpauth");
 const logger = require("../utils/logger");
 const auditLog = require("../utils/auditLog.cjs");
 
 const DATA = path.join(__dirname, "../../data/org-policies.json");
+const REPLAY_DATA = path.join(__dirname, "../../data/mfa-replay-state.json");
+
+const TOTP_PERIOD_SECONDS = 30;   // RFC 6238 standard step size
+const TOTP_DRIFT_WINDOW   = 1;    // ±1 step (±30s) — configurable via policy.mfa.clockDriftSteps
+const RECOVERY_CODE_COUNT = 10;
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _org = () => _try(() => require("./organizationService.cjs"));
@@ -51,7 +79,7 @@ function _ts() { return new Date().toISOString(); }
 
 const DEFAULT_POLICY = {
   password: { minLength: 8, requireUppercase: false, requireNumber: false, requireSymbol: false },
-  mfa: { required: false },
+  mfa: { required: false, clockDriftSteps: TOTP_DRIFT_WINDOW },
   sessionTimeoutSeconds: null,       // null = use authMiddleware's default TOKEN_EXPIRY
   allowedProviders: null,            // null = all providers allowed; array restricts to specific ones ("password","saml","oidc","google","entra")
   connectorRestrictions: { allow: null, deny: [] }, // allow: null = all allowed except deny[]; allow: [...] = allowlist only
@@ -121,31 +149,152 @@ function assertPasswordMeetsPolicy(orgId, password) {
   return true;
 }
 
-// ── MFA (TOTP) ───────────────────────────────────────────────────────────────
+// ── MFA (TOTP + recovery codes + replay protection) ──────────────────────────
 // Secret is per-account (an account can belong to multiple orgs, but has one
 // TOTP enrollment), stored via secretVault under a fixed pseudo-org key so it
-// reuses the vault's existing encryption/rotation machinery rather than a new
-// credential store. mfa:totp is a new connector id in the same family as
-// sso:*/scim:directory from Modules 1/2.
+// reuses the vault's existing AES-256-GCM encryption/rotation machinery
+// rather than a new credential store. mfa:totp / mfa:recovery are new
+// connector ids in the same family as sso:*/scim:directory from Modules 1/2.
 
 function _mfaVaultOrgId(accountId) { return `account:${accountId}`; }
 
+function _sha256Hex(value) { return crypto.createHash("sha256").update(value, "utf8").digest("hex"); }
+
+/** Constant-time compare of two hex strings of potentially different length
+ * (timingSafeEqual throws on length mismatch, which itself leaks length —
+ * hashes here are always fixed 64-hex-char SHA-256 digests, but a caller
+ * passing a malformed/truncated candidate must not get a fast-path reject). */
+function _constantTimeEqual(a, b) {
+  const bufA = Buffer.from(String(a), "utf8");
+  const bufB = Buffer.from(String(b), "utf8");
+  if (bufA.length !== bufB.length) {
+    // Compare against a same-length dummy so the false branch still does a
+    // full timingSafeEqual — avoids a length-dependent early return.
+    crypto.timingSafeEqual(bufA, bufA);
+    return false;
+  }
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
+function _totpFor(accountId, base32Secret) {
+  return new otpauth.TOTP({
+    issuer: "Ooplix", label: accountId, secret: otpauth.Secret.fromBase32(base32Secret),
+    period: TOTP_PERIOD_SECONDS,
+  });
+}
+
+// ── Replay-protection state: last accepted TOTP time-step per account ───────
+
+function _loadReplayState() {
+  try { return JSON.parse(fs.readFileSync(REPLAY_DATA, "utf8")); }
+  catch { return { lastStep: {} }; }
+}
+function _saveReplayState(d) {
+  fs.mkdirSync(path.dirname(REPLAY_DATA), { recursive: true });
+  const tmp = REPLAY_DATA + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(d, null, 2));
+  fs.renameSync(tmp, REPLAY_DATA);
+}
+
+/** RFC 6238 replay mitigation: a code is only valid for the time-step(s) it
+ * was generated for; once any step has been accepted, presenting a code
+ * that resolves to that same step again (or any step <= it) is rejected,
+ * even though it would otherwise still fall inside the drift window. */
+function _checkAndConsumeStep(accountId, step) {
+  const d = _loadReplayState();
+  const last = d.lastStep[accountId];
+  if (last !== undefined && step <= last) return false;
+  d.lastStep[accountId] = step;
+  _saveReplayState(d);
+  return true;
+}
+
+function _currentStep() { return Math.floor(Date.now() / 1000 / TOTP_PERIOD_SECONDS); }
+
+// ── Recovery codes ────────────────────────────────────────────────────────────
+
+function _generateRecoveryCodes() {
+  const codes = [];
+  for (let i = 0; i < RECOVERY_CODE_COUNT; i++) {
+    // 5 bytes -> 10 hex chars, formatted xxxxx-xxxxx for readability.
+    const raw = crypto.randomBytes(5).toString("hex");
+    codes.push(`${raw.slice(0, 5)}-${raw.slice(5, 10)}`);
+  }
+  return codes;
+}
+
+function _storeRecoveryCodes(accountId, codes) {
+  const records = codes.map(c => ({ hash: _sha256Hex(c), usedAt: null }));
+  _vault()?.storeSecret?.("mfa:recovery", "jwt_secret", JSON.stringify(records), { label: "MFA recovery codes" }, _mfaVaultOrgId(accountId));
+}
+
+function _loadRecoveryCodes(accountId) {
+  const stored = _vault()?.getSecret?.("mfa:recovery", "jwt_secret", _mfaVaultOrgId(accountId));
+  if (!stored) return [];
+  try { return JSON.parse(stored); } catch { return []; }
+}
+
+/** Consumes one recovery code if it matches an unused stored hash.
+ * Constant-time compare against every stored hash (not short-circuited on
+ * first match position) so response timing doesn't leak which slot matched. */
+function _consumeRecoveryCode(accountId, code) {
+  const records = _loadRecoveryCodes(accountId);
+  if (!records.length) return false;
+  const candidateHash = _sha256Hex(String(code).trim().toLowerCase());
+  let matchedIdx = -1;
+  for (let i = 0; i < records.length; i++) {
+    if (records[i].usedAt) continue;
+    if (_constantTimeEqual(candidateHash, records[i].hash)) matchedIdx = i;
+  }
+  if (matchedIdx === -1) return false;
+  records[matchedIdx].usedAt = _ts();
+  _vault()?.storeSecret?.("mfa:recovery", "jwt_secret", JSON.stringify(records), { label: "MFA recovery codes" }, _mfaVaultOrgId(accountId));
+  return true;
+}
+
+function getRecoveryCodeStatus(accountId) {
+  const records = _loadRecoveryCodes(accountId);
+  return { total: records.length, remaining: records.filter(r => !r.usedAt).length };
+}
+
+function regenerateRecoveryCodes(accountId, requestingAccountId) {
+  if (accountId !== requestingAccountId) throw Object.assign(new Error("Can only regenerate your own recovery codes"), { status: 403 });
+  if (!isMfaEnrolled(accountId)) throw Object.assign(new Error("MFA is not enrolled for this account"), { status: 400 });
+  const codes = _generateRecoveryCodes();
+  _storeRecoveryCodes(accountId, codes);
+  auditLog.append({ type: "policy.mfa_recovery_codes_regenerated", accountId, ts: _ts() });
+  return { codes }; // returned once, in cleartext, at generation time only — never again
+}
+
+// ── Enrollment ────────────────────────────────────────────────────────────────
+
 function enrollMfa(accountId) {
   const secret = new otpauth.Secret({ size: 20 });
-  const totp = new otpauth.TOTP({ issuer: "Ooplix", label: accountId, secret });
+  const totp = new otpauth.TOTP({ issuer: "Ooplix", label: accountId, secret, period: TOTP_PERIOD_SECONDS });
   _vault()?.storeSecret?.("mfa:totp", "jwt_secret", secret.base32, { label: "TOTP secret" }, _mfaVaultOrgId(accountId));
   auditLog.append({ type: "policy.mfa_enrolled", accountId, ts: _ts() });
   return { secret: secret.base32, uri: totp.toString() };
 }
 
+/** Completes enrollment: verifies the first real code from the app, then
+ * (and only then) issues recovery codes — issuing codes before a verified
+ * enrollment would hand out recovery codes for a secret the user may not
+ * have actually scanned correctly. */
 function verifyMfaEnrollment(accountId, token) {
   const stored = _vault()?.getSecret?.("mfa:totp", "jwt_secret", _mfaVaultOrgId(accountId));
   if (!stored) throw Object.assign(new Error("No MFA enrollment in progress for this account"), { status: 404 });
-  const totp = new otpauth.TOTP({ issuer: "Ooplix", label: accountId, secret: otpauth.Secret.fromBase32(stored) });
-  const delta = totp.validate({ token, window: 1 });
+  const totp = _totpFor(accountId, stored);
+  const delta = totp.validate({ token, window: TOTP_DRIFT_WINDOW });
   if (delta === null) throw Object.assign(new Error("Invalid verification code"), { status: 400 });
+
+  // Record this step as consumed immediately so the same enrollment code
+  // can't also be replayed as the first login-time code.
+  _checkAndConsumeStep(accountId, _currentStep() + delta);
+
+  const codes = _generateRecoveryCodes();
+  _storeRecoveryCodes(accountId, codes);
   auditLog.append({ type: "policy.mfa_verified", accountId, ts: _ts() });
-  return { ok: true };
+  return { ok: true, recoveryCodes: codes }; // cleartext once, at enrollment only
 }
 
 function isMfaEnrolled(accountId) {
@@ -155,20 +304,36 @@ function isMfaEnrolled(accountId) {
 function disableMfa(accountId, requestingAccountId) {
   if (accountId !== requestingAccountId) throw Object.assign(new Error("Can only disable your own MFA enrollment"), { status: 403 });
   const deleted = _vault()?.deleteSecret?.("mfa:totp", "jwt_secret", _mfaVaultOrgId(accountId));
+  _vault()?.deleteSecret?.("mfa:recovery", "jwt_secret", _mfaVaultOrgId(accountId));
+  const d = _loadReplayState();
+  delete d.lastStep[accountId];
+  _saveReplayState(d);
   auditLog.append({ type: "policy.mfa_disabled", accountId, ts: _ts() });
   return { ok: true, deleted: !!deleted };
 }
 
-/** Verify a login-time TOTP code against the account's enrolled secret. */
-function verifyMfaCode(accountId, token) {
+/** Verify a login-time TOTP code against the account's enrolled secret,
+ * with replay protection (the resolved time-step is rejected if already
+ * consumed) and a recovery-code fallback path. driftSteps is read from the
+ * org's policy (default ±1 step / ±30s) so it's configurable, not fixed. */
+function verifyMfaCode(accountId, token, driftSteps = TOTP_DRIFT_WINDOW) {
   const stored = _vault()?.getSecret?.("mfa:totp", "jwt_secret", _mfaVaultOrgId(accountId));
   if (!stored) return false;
-  const totp = new otpauth.TOTP({ issuer: "Ooplix", label: accountId, secret: otpauth.Secret.fromBase32(stored) });
-  return totp.validate({ token, window: 1 }) !== null;
+
+  const totp = _totpFor(accountId, stored);
+  const delta = totp.validate({ token, window: driftSteps });
+  if (delta !== null) {
+    const step = _currentStep() + delta;
+    return _checkAndConsumeStep(accountId, step);
+  }
+
+  // Not a valid/fresh TOTP code — try it as a one-time recovery code.
+  return _consumeRecoveryCode(accountId, token);
 }
 
-/** Throws sso_mfa_required-style errors mirroring ssoService's error shape,
- * consulted by auth.js's login handler after real password verification. */
+/** Throws mfa_*-coded errors, consulted by auth.js's login handler after
+ * real password verification (never before — same ordering rationale as
+ * the SSO login-policy check it sits alongside). */
 function assertMfaSatisfied(orgId, account, providedToken) {
   const { mfa } = getPolicy(orgId);
   if (!mfa.required) return;
@@ -182,8 +347,8 @@ function assertMfaSatisfied(orgId, account, providedToken) {
     err.status = 401; err.code = "mfa_code_required";
     throw err;
   }
-  if (!verifyMfaCode(account.id, providedToken)) {
-    const err = new Error("Invalid multi-factor authentication code");
+  if (!verifyMfaCode(account.id, providedToken, mfa.clockDriftSteps)) {
+    const err = new Error("Invalid or already-used multi-factor authentication code");
     err.status = 401; err.code = "mfa_code_invalid";
     throw err;
   }
@@ -257,6 +422,8 @@ module.exports = {
   disableMfa,
   verifyMfaCode,
   assertMfaSatisfied,
+  getRecoveryCodeStatus,
+  regenerateRecoveryCodes,
   getSessionTimeoutSeconds,
   assertProviderAllowed,
   assertConnectorAllowed,
