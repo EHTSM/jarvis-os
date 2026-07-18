@@ -75,6 +75,7 @@ router.use(require("./organizations")); // /orgs, /orgs/:orgId, /orgs/:orgId/dep
 router.use(require("./enterpriseSso")); // Enterprise & Physical Integration M1: /enterprise/sso/* — SAML/OIDC/Google/Entra SSO (mixed auth: admin config gated, IdP-facing login routes public by design)
 router.use(require("./enterpriseScim")); // Enterprise & Physical Integration M2: /enterprise/scim/:orgId/v2/* SCIM protocol (per-org bearer auth) + /enterprise/scim/:orgId/token admin (requireAuth)
 router.use(require("./enterpriseAudit")); // Enterprise & Physical Integration M3: /enterprise/audit/:orgId/* search + login/permission/scim/ai/billing history + export (requireAuth + view_audit_log)
+router.use(require("./enterprisePolicy")); // Enterprise & Physical Integration M4: /enterprise/policy/:orgId/* org policy CRUD (requireAuth + manage_policy) + /enterprise/mfa/* per-account TOTP enrollment (requireAuth)
 router.use(require("./workforce"));    // /workforce/:missionId/plan, /workforce/:missionId/steps/:stepId/*, /workforce/:missionId/approvals/*, /workforce/org/:orgId/workers
 router.use(require("./graph"));        // /graph/stats, /graph/node/:type/:id, /graph/traverse, /graph/related, /graph/impact, /graph/lookup, /graph/edges, /graph/index
 router.use("/collaboration", requireAuth);    // gate all /collaboration/* routes

@@ -214,6 +214,22 @@ function resetPassword(token, newPassword) {
   const acctSvc = _accounts();
   if (!acctSvc) return { ok: false, error: "accountService unavailable" };
 
+  // Enterprise password policy (Module 4): enforced here rather than in
+  // accountService.createAccount, which has no org context at signup time —
+  // a reset always has a real accountId to resolve the account's primary org
+  // (if any) and check its policy against.
+  try {
+    const org = require("./organizationService.cjs");
+    const policy = require("./policyService.cjs");
+    const primaryOrgId = org.resolveContext(entry.accountId)?.primaryOrg?.orgId;
+    if (primaryOrgId) policy.assertPasswordMeetsPolicy(primaryOrgId, newPassword);
+  } catch (e) {
+    if (e?.message?.startsWith("Password must")) return { ok: false, error: e.message };
+    // organizationService/policyService unavailable — fail open on the
+    // enterprise policy check specifically (not on the reset itself), same
+    // as every other _try()-wrapped optional integration in this codebase.
+  }
+
   const result = acctSvc.updateAccount(entry.accountId, {
     passwordHash: acctSvc.hashPassword ? acctSvc.hashPassword(newPassword)
       : require("crypto").scryptSync(newPassword, "ooplix-salt", 64).toString("hex"),

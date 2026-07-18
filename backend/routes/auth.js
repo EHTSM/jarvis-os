@@ -7,6 +7,12 @@ const auditLog    = require("../utils/auditLog.cjs");
 const accountSvc  = require("../services/accountService");
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _sso = () => _try(() => require("../services/ssoService.cjs"));
+const _policy = () => _try(() => require("../services/policyService.cjs"));
+const _orgSvc = () => _try(() => require("../services/organizationService.cjs"));
+
+function _resolvePrimaryOrgId(accountId) {
+  return _try(() => _orgSvc()?.resolveContext?.(accountId)?.primaryOrg?.orgId) || null;
+}
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -41,6 +47,8 @@ function _handleLogin(req, res) {
       return res.status(401).json({ error: result.error || "Invalid email or password" });
     }
 
+    const primaryOrgId = _resolvePrimaryOrgId(result.account.id);
+
     // Organization login policy: an org can require its members to sign in
     // via its configured SSO connection only. Checked only after a real,
     // successful password verification (never before) so this can't be used
@@ -55,23 +63,51 @@ function _handleLogin(req, res) {
       throw e;
     }
 
+    // Allowed-providers policy: an org can restrict login to a specific set
+    // of providers (e.g. only "saml", excluding plain "password").
+    if (primaryOrgId) {
+      try {
+        _policy()?.assertProviderAllowed?.(primaryOrgId, "password");
+      } catch (e) {
+        if (e?.code === "provider_not_allowed") {
+          auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: "provider_not_allowed" });
+          return res.status(403).json({ error: e.message, code: e.code });
+        }
+        throw e;
+      }
+    }
+
+    // MFA enforcement: if the org requires it, a valid TOTP code must be
+    // provided in the same request (mfaToken) or enrollment/entry is denied.
+    if (primaryOrgId) {
+      try {
+        _policy()?.assertMfaSatisfied?.(primaryOrgId, result.account, req.body?.mfaToken);
+      } catch (e) {
+        if (e?.code) {
+          auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: e.code });
+          return res.status(e.status || 403).json({ error: e.message, code: e.code });
+        }
+        throw e;
+      }
+    }
+
+    const sessionSeconds = primaryOrgId ? _policy()?.getSessionTimeoutSeconds?.(primaryOrgId, TOKEN_EXPIRY) || TOKEN_EXPIRY : TOKEN_EXPIRY;
     const jwtPayload = {
       role:  result.account.role || "user",
       sub:   result.account.id,
       email: result.account.email,
       iat:   Math.floor(Date.now() / 1000),
-      exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+      exp:   Math.floor(Date.now() / 1000) + sessionSeconds,
     };
     try {
       const token = signJWT(jwtPayload);
-      res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+      res.cookie(COOKIE_NAME, token, { ...COOKIE_OPTS, maxAge: sessionSeconds * 1000 });
     } catch (e) {
       return res.status(500).json({ error: "JWT signing failed — JWT_SECRET not configured" });
     }
     auditLog.recordAuth({ action: "login", operator: result.account.id, method: "email" });
     // Supplementary org-scoped event (recordAuth's fixed shape has no orgId
     // field) so Module 3's per-org login history can actually filter by org.
-    const primaryOrgId = _try(() => require("../services/organizationService.cjs").resolveContext(result.account.id).primaryOrg?.orgId);
     if (primaryOrgId) auditLog.append({ type: "login.password", orgId: primaryOrgId, accountId: result.account.id, method: "password" });
     return res.json({ success: true, role: result.account.role, email: result.account.email });
   }

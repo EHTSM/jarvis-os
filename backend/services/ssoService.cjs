@@ -388,6 +388,17 @@ async function handleOidcCallback(orgId, currentUrl) {
 // ── Shared: account resolution + org login-policy enforcement ─────────────
 
 function _resolveOrProvisionAccount(orgId, config, email, name, provider) {
+  // Module 4 allowed-providers policy: an org can restrict itself to a
+  // subset of providers (e.g. "saml" only, denying oidc/google/entra too).
+  try {
+    require("./policyService.cjs").assertProviderAllowed(orgId, provider);
+  } catch (e) {
+    if (e?.code === "provider_not_allowed") {
+      auditLog.append({ type: "sso.login_denied", orgId, email, provider, reason: "provider_not_allowed", ts: _ts() });
+    }
+    throw e;
+  }
+
   if (config.allowedDomains?.length) {
     const domain = email.split("@")[1];
     if (!config.allowedDomains.includes(domain)) {

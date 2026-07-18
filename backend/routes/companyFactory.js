@@ -566,10 +566,15 @@ router.post("/company-factory/companies/:id/connectors/:connectorId/:type", requ
   const { value, meta } = req.body || {};
   if (!value) return res.status(400).json({ ok: false, error: "value required" });
   try {
+    // Enterprise Module 4: connector-restriction policy (allow/deny list by
+    // connectorId, e.g. "msg:slack") — checked before the secret is stored.
+    // Deliberately NOT wrapped in _try — a policy violation must reach the
+    // catch block below and reject the request, not be silently swallowed.
+    require("../services/policyService.cjs").assertConnectorAllowed(company.orgId, req.params.connectorId);
     const record = _vault()?.storeSecret?.(req.params.connectorId, req.params.type, value, meta || {}, company.orgId);
     res.json({ ok: true, orgId: company.orgId, connector: record });
   } catch (e) {
-    res.status(400).json({ ok: false, error: e.message });
+    res.status(e.status || 400).json({ ok: false, error: e.message });
   }
 });
 
