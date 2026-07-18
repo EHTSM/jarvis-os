@@ -44,6 +44,10 @@
  *     GET    /orgs/:orgId/missions            — list org missions
  *     GET    /orgs/:orgId/missions/:missionId/ownership — verify ownership
  *
+ *   Billing (read-only aggregation over billingService.js — no billing
+ *   state is created/modified here; see getOrgBillingOverview):
+ *     GET    /orgs/:orgId/billing             — per-member plan/status/usage
+ *
  *   Context + RBAC:
  *     GET    /orgs/me/context                 — my org memberships + permissions
  *     POST   /orgs/switch                     — set my current org (persisted per-account)
@@ -259,6 +263,14 @@ router.get("/orgs/:orgId/missions/:missionId/ownership", requireOrgMember, (req,
     try {
         _ok(res, _svc().assertMissionOwnership(req.params.missionId, req.user.sub, req.params.orgId));
     } catch (e) { _err(res, e, 403); }
+});
+
+// ── Billing overview (read-only — see organizationService.getOrgBillingOverview
+// for why billingService.js itself is untouched) ─────────────────────────────
+router.get("/orgs/:orgId/billing", requireOrgPermission("manage_billing"), (req, res) => {
+    try {
+        _ok(res, _svc().getOrgBillingOverview(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e); }
 });
 
 module.exports = router;

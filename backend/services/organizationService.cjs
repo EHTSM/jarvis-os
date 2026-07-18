@@ -100,9 +100,10 @@ let _seq = 0;
 function _id(prefix) { return `${prefix}_${Date.now()}_${(++_seq).toString(36)}`; }
 
 // ── Lazy loaders ──────────────────────────────────────────────────────────────
-function _mm()    { try { return require("./missionMemory.cjs");           } catch { return null; } }
-function _le()    { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
-function _alert() { try { return require("./operationsAlertingLayer.cjs");  } catch { return null; } }
+function _mm()      { try { return require("./missionMemory.cjs");           } catch { return null; } }
+function _le()      { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
+function _alert()   { try { return require("./operationsAlertingLayer.cjs");  } catch { return null; } }
+function _billing() { try { return require("./billingService.js");           } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RBAC MODEL
@@ -573,6 +574,57 @@ function assertMissionOwnership(missionId, accountId, orgId) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// BILLING OVERVIEW — read-only aggregation across an org's members.
+//
+// billingService.js has no org concept and is NOT modified by this function —
+// every member's subscription (trial/paid/cancelled, Razorpay sub id, quota
+// usage) remains fully independent; who gets charged and how access is gated
+// (checkAccess()) is completely unchanged. This is purely a reporting lens
+// for an org_owner/org_admin to see their team's billing state in one place,
+// the same way listOrgMissions() is a lens over missionMemory.cjs without
+// duplicating mission storage. No new billing state is created or written.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getOrgBillingOverview(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "manage_billing");
+    const billing = _billing();
+    if (!billing) throw new Error("billingService unavailable");
+
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+
+    const members = (org.members || []).map(m => {
+        const record = billing.getRecord(m.accountId);
+        const quota  = billing.checkUsageQuota(m.accountId);
+        return {
+            accountId: m.accountId,
+            orgRole:   m.orgRole,
+            plan:      record.plan,
+            status:    record.status,
+            trialEnd:  record.trialEnd,
+            usage:     { used: quota.used, limit: quota.limit, remaining: quota.remaining },
+        };
+    });
+
+    const byPlan   = {};
+    const byStatus = {};
+    for (const m of members) {
+        byPlan[m.plan]     = (byPlan[m.plan]     || 0) + 1;
+        byStatus[m.status] = (byStatus[m.status] || 0) + 1;
+    }
+
+    return {
+        orgId,
+        orgName:     org.name,
+        memberCount: members.length,
+        byPlan,
+        byStatus,
+        members,
+    };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CONTEXT RESOLVER — given accountId, resolve all orgs/depts/teams they're in
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -671,6 +723,8 @@ module.exports = {
     createMissionForOrg,
     listOrgMissions,
     assertMissionOwnership,
+    // Billing (read-only overview — see comment above getOrgBillingOverview)
+    getOrgBillingOverview,
     // RBAC constants
     ORG_ROLES,
     ROLE_HIERARCHY,
