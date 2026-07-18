@@ -166,6 +166,9 @@ const ACTIONS = {
     manage_scim:         ["org_owner"],
     manage_policy:       ["org_owner"],
     view_audit_log:      ["org_owner", "org_admin"],
+    // V5 Global AI Organization Platform — using the org's AI is a normal
+    // member capability (same bar as create_mission), not admin-only.
+    use_ai:              ["org_owner", "org_admin", "dept_lead", "team_lead", "member"],
 };
 
 // ── Global (platform-level) roles — Module 6 ───────────────────────────────────
