@@ -18,49 +18,88 @@ const rateLimiter = require("../middleware/rateLimiter");
 
 // Lazy-load betaReadiness to avoid circular-require at startup
 const _beta = () => { try { return require("../services/betaReadiness.cjs"); } catch { return null; } };
+const _org  = () => { try { return require("../services/organizationService.cjs"); } catch { return null; } };
+const _ws   = () => { try { return require("../services/workspaceService.cjs"); } catch { return null; } };
 
-// ── POST /accounts/register ───────────────────────────────────────
-// Closed-beta registration — requires inviteCode, enforces 50-user cap,
-// sends email verification on success.
-router.post("/accounts/register",
-  rateLimiter(5, 15 * 60_000), // 5 registrations per 15 min per IP
-  (req, res) => {
-    const { email, password, name, inviteCode } = req.body || {};
-    if (!email || !password) {
-      return res.status(400).json({ error: "email and password are required" });
-    }
+// Every new customer needs a real organization + workspace to land in — signup
+// previously created only the account + trial billing record, leaving the
+// entire org/workspace/RBAC layer (built in prior missions) disconnected from
+// new users. orgName is optional (the onboarding wizard collects business
+// *type*, not a company name); falls back to "<name>'s Organization" or the
+// email's local part. Both are non-fatal: a signup should never fail just
+// because org/workspace provisioning hit an error — the account already
+// exists and the user can create these manually from the app.
+function _provisionOrgAndWorkspace(account, orgName) {
+  const displayName = (orgName || "").trim() || (account.name ? `${account.name}'s Organization` : `${account.email.split("@")[0]}'s Organization`);
+  const result = { orgId: null, workspaceId: null };
 
-    // Beta gate: invite code required + hard cap of 50 users
-    const beta = _beta();
-    if (beta) {
-      const gate = beta.checkBetaGate(inviteCode);
-      if (!gate.allowed) {
-        return res.status(403).json({ error: gate.reason });
-      }
-    }
-
-    const result = accounts.createAccount({ email, password, name, role: "user" });
-    if (!result.success) {
-      return res.status(409).json({ error: result.error });
-    }
-
-    // Mark invite code as used
-    if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
-
-    // Send email verification
-    if (beta) {
-      try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
-      catch { /* non-fatal */ }
-    }
-
-    auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
-    res.status(201).json({
-      success: true,
-      account: result.account,
-      message: "Account created. Check your email to verify your address.",
-    });
+  const org = _org();
+  if (org) {
+    try {
+      const created = org.createOrg({ name: displayName }, account.id);
+      result.orgId = created.id;
+    } catch (e) { auditLog.recordAuth?.({ action: "org_provision_failed", operator: account.id, method: e.message }); }
   }
-);
+
+  const ws = _ws();
+  if (ws) {
+    try {
+      const created = ws.createWorkspace({ name: displayName, creatorAccountId: account.id });
+      result.workspaceId = created.id;
+      ws.switchWorkspace(created.id, account.id);
+    } catch (e) { auditLog.recordAuth?.({ action: "workspace_provision_failed", operator: account.id, method: e.message }); }
+  }
+
+  return result;
+}
+
+// ── POST /accounts/register (+ /api/accounts/register alias below) ────────
+// Public self-serve registration — sends email verification, provisions a
+// starter organization + workspace, on success.
+const _registerRL = rateLimiter(5, 15 * 60_000); // 5 registrations per 15 min per IP
+
+function _handleRegister(req, res) {
+  const { email, password, name, inviteCode, orgName } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password are required" });
+  }
+
+  // Beta gate: invite code required + hard cap of 50 users (only enforced
+  // when OPEN_SIGNUP=false; see betaReadiness.isOpenSignup)
+  const beta = _beta();
+  if (beta) {
+    const gate = beta.checkBetaGate(inviteCode);
+    if (!gate.allowed) {
+      return res.status(403).json({ error: gate.reason });
+    }
+  }
+
+  const result = accounts.createAccount({ email, password, name, role: "user" });
+  if (!result.success) {
+    return res.status(409).json({ error: result.error });
+  }
+
+  // Mark invite code as used
+  if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
+
+  // Send email verification
+  if (beta) {
+    try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
+    catch { /* non-fatal */ }
+  }
+
+  const provisioned = _provisionOrgAndWorkspace(result.account, orgName);
+
+  auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
+  res.status(201).json({
+    success: true,
+    account: result.account,
+    org: provisioned,
+    message: "Account created. Check your email to verify your address.",
+  });
+}
+
+router.post("/accounts/register", _registerRL, _handleRegister);
 
 // ── GET /accounts/me ──────────────────────────────────────────────
 router.get("/accounts/me", requireAuth, (req, res) => {
@@ -118,39 +157,6 @@ router.get("/accounts", requireAuth, (req, res) => {
 });
 
 // ── /api/* aliases — respond before ops.js requireAuth gate ─────────────────
-const _registerRL = rateLimiter(5, 15 * 60_000);
-
-function _handleRegister(req, res) {
-  const { email, password, name, inviteCode } = req.body || {};
-  if (!email || !password) {
-    return res.status(400).json({ error: "email and password are required" });
-  }
-
-  const beta = _beta();
-  if (beta) {
-    const gate = beta.checkBetaGate(inviteCode);
-    if (!gate.allowed) return res.status(403).json({ error: gate.reason });
-  }
-
-  const result = accounts.createAccount({ email, password, name, role: "user" });
-  if (!result.success) {
-    return res.status(409).json({ error: result.error });
-  }
-
-  if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
-  if (beta) {
-    try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
-    catch { /* non-fatal */ }
-  }
-
-  auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
-  res.status(201).json({
-    success: true,
-    account: result.account,
-    message: "Account created. Check your email to verify your address.",
-  });
-}
-
 router.post("/api/accounts/register", _registerRL, _handleRegister);
 
 router.get("/api/accounts/me", requireAuth, (req, res) => {
