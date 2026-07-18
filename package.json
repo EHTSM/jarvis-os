@@ -165,7 +165,9 @@
     "playwright": "^1.60.0",
     "razorpay": "^2.9.6",
     "rss-parser": "^3.13.0",
-    "samlify": "^2.13.1"
+    "samlify": "^2.13.1",
+    "scimmy": "^1.3.5",
+    "scimmy-routers": "^1.3.2"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

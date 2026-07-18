@@ -576,6 +576,43 @@ function updateMemberRole(orgId, accountId, newRole, requestingAccountId) {
     return { updated: true, accountId, orgRole: newRole };
 }
 
+/**
+ * Set (or clear, with deptId: null) a member's department assignment.
+ * Mirrors updateMemberRole's shape exactly. Added for SCIM group-sync
+ * (Module 2): an IdP-driven group membership push maps onto this same
+ * deptId field addMember already writes at invite time — no new
+ * membership/grouping model.
+ */
+function updateMemberDepartment(orgId, accountId, deptId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "manage_members");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (deptId && !_findDept(org, deptId)) throw Object.assign(new Error("Department not found"), { status: 404 });
+    const m = org.members.find(m => m.accountId === accountId);
+    if (!m) throw Object.assign(new Error("Member not found"), { status: 404 });
+    m.deptId = deptId || null;
+    org.updatedAt = new Date().toISOString();
+    _write(store);
+    return { updated: true, accountId, deptId: m.deptId };
+}
+
+// Internal, not permission-gated — same rationale as _addMemberRecord/
+// addMemberViaSso: a SCIM group-membership PATCH from the org's own
+// manage_scim-gated directory connection is itself the authorization.
+function updateMemberDepartmentViaScim(orgId, accountId, deptId) {
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (deptId && !_findDept(org, deptId)) throw Object.assign(new Error("Department not found"), { status: 404 });
+    const m = org.members.find(m => m.accountId === accountId);
+    if (!m) return { updated: false, accountId, reason: "not_a_member" };
+    m.deptId = deptId || null;
+    org.updatedAt = new Date().toISOString();
+    _write(store);
+    return { updated: true, accountId, deptId: m.deptId };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // DEPARTMENTS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -945,6 +982,8 @@ module.exports = {
     addMemberViaSso,
     removeMember,
     updateMemberRole,
+    updateMemberDepartment,
+    updateMemberDepartmentViaScim,
     listMembers,
     getMemberRole,
     hasPermission,
