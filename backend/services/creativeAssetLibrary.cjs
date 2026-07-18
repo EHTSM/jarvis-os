@@ -66,6 +66,7 @@ function storeAsset(opts = {}) {
     tags:        opts.tags        || [],
     folder:      opts.folder      || "uncategorized",
     accountId:   opts.accountId   || null,
+    orgId:       opts.orgId       || null,
     jobId:       opts.jobId       || null,
     brandKitId:  opts.brandKitId  || null,
     metadata:    opts.metadata    || {},
@@ -80,7 +81,7 @@ function storeAsset(opts = {}) {
   idx.assets[id] = {
     id, type: asset.type, prompt: asset.prompt, provider: asset.provider,
     capability: asset.capability, tags: asset.tags, folder: asset.folder,
-    accountId: asset.accountId, createdAt: asset.createdAt, favorite: false,
+    accountId: asset.accountId, orgId: asset.orgId, createdAt: asset.createdAt, favorite: false,
     jobId: asset.jobId,
   };
 
@@ -115,6 +116,7 @@ function listAssets(opts = {}) {
   if (opts.type)       list = list.filter(a => a.type === opts.type);
   if (opts.folder)     list = list.filter(a => a.folder === opts.folder);
   if (opts.accountId)  list = list.filter(a => a.accountId === opts.accountId);
+  if (opts.orgId)      list = list.filter(a => a.orgId === opts.orgId);
   if (opts.favorite)   list = list.filter(a => a.favorite);
   if (opts.capability) list = list.filter(a => a.capability === opts.capability);
   if (opts.tag)        list = list.filter(a => (a.tags || []).includes(opts.tag));
