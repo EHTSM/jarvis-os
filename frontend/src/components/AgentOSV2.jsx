@@ -32,46 +32,6 @@ function _fmtTime(isoStr) {
   return new Date(isoStr).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
-// ── Seed data (used when live API returns nothing) ─────────────────────────────
-
-const SEED_AGENTS = [
-  {
-    id: "ag_seo", name: "SEO Agent", type: "marketing", icon: "⌕",
-    color: "var(--accent2, #4ecdc4)", status: "active",
-    description: "Monitors keyword rankings, generates meta content, audits on-page SEO.",
-    capabilities: ["Keyword research", "Meta generation", "Rank tracking", "Backlink analysis"],
-    model: "claude-sonnet-4-6", runsToday: 14, totalRuns: 892, errorRate: "0.0%", lastRun: "12 min ago",
-  },
-  {
-    id: "ag_support", name: "Support Agent", type: "support", icon: "◎",
-    color: "var(--success, #52d68a)", status: "active",
-    description: "Triages tickets, drafts responses from knowledge base, escalates critical issues.",
-    capabilities: ["Query triage", "Response drafting", "Escalation logic", "FAQ generation"],
-    model: "claude-haiku-4-5-20251001", runsToday: 31, totalRuns: 2104, errorRate: "1.2%", lastRun: "3 min ago",
-  },
-  {
-    id: "ag_marketing", name: "Marketing Agent", type: "marketing", icon: "◉",
-    color: "var(--warning, #f0b429)", status: "idle",
-    description: "Drafts email campaigns, social posts, ad copy, and landing page content.",
-    capabilities: ["Email drafting", "Social copy", "Ad copy", "Campaign scheduling"],
-    model: "claude-sonnet-4-6", runsToday: 8, totalRuns: 540, errorRate: "0.2%", lastRun: "34 min ago",
-  },
-  {
-    id: "ag_content", name: "Content Agent", type: "content", icon: "◈",
-    color: "var(--accent, #7c6fff)", status: "idle",
-    description: "Writes blog posts, docs, case studies, newsletters. Enforces brand voice.",
-    capabilities: ["Blog writing", "Documentation", "Newsletter drafting", "Brand voice"],
-    model: "claude-sonnet-4-6", runsToday: 3, totalRuns: 210, errorRate: "0.0%", lastRun: "2h ago",
-  },
-  {
-    id: "ag_sales", name: "Sales Agent", type: "sales", icon: "◇",
-    color: "#da552f", status: "idle",
-    description: "Qualifies leads, drafts outreach sequences, tracks pipeline movement.",
-    capabilities: ["Lead qualification", "Outreach drafting", "Pipeline tracking", "Deal summaries"],
-    model: "claude-sonnet-4-6", runsToday: 1, totalRuns: 78, errorRate: "0.0%", lastRun: "4h ago",
-  },
-];
-
 const ROLE_TEMPLATES = [
   { id: "analyst",   label: "Data Analyst",    icon: "◉", description: "Analyzes data, generates reports, spots trends." },
   { id: "writer",    label: "Content Writer",  icon: "◈", description: "Writes content across formats and maintains brand voice." },
@@ -85,13 +45,6 @@ const CAPABILITY_OPTIONS = [
   "Web search", "Read CRM", "Write CRM", "Send WhatsApp", "Read analytics",
   "Write documents", "Read knowledge base", "Execute code", "Post to social",
   "Generate images", "Send email", "Read calendar", "Schedule tasks",
-];
-
-const COLLAB_EVENTS_SEED = [
-  { id: 1, from: "SEO Agent",       to: "Content Agent",   type: "handoff", msg: "Keyword cluster ready — pass to content pipeline",   ts: Date.now() - 180_000 },
-  { id: 2, from: "Content Agent",   to: "Marketing Agent", type: "trigger", msg: "Blog post published — trigger distribution campaign", ts: Date.now() - 120_000 },
-  { id: 3, from: "Support Agent",   to: null,              type: "alert",   msg: "High-priority ticket escalated to human review",       ts: Date.now() - 60_000  },
-  { id: 4, from: "Marketing Agent", to: null,              type: "done",    msg: "Email campaign dispatched to 142 contacts",           ts: Date.now() - 30_000  },
 ];
 
 const AI_PROMPTS = [
@@ -138,20 +91,6 @@ function StatusChip({ status }) {
 
 function Skel({ w, h }) {
   return <div className="av2-skeleton" style={{ width: w || "100%", height: h || 14, borderRadius: 6 }} />;
-}
-
-// ── Coming Soon Banner ─────────────────────────────────────────────────────────
-
-function ComingSoon({ title, sub }) {
-  return (
-    <div className="av2-coming-soon">
-      <span className="av2-coming-icon">◎</span>
-      <div>
-        <p className="av2-coming-title">{title} <span className="csb-beta-badge">BETA</span></p>
-        <p className="av2-coming-sub">{sub}</p>
-      </div>
-    </div>
-  );
 }
 
 // ── Agent Card ─────────────────────────────────────────────────────────────────
@@ -358,12 +297,17 @@ function TabRegistry({ agents, onNavigate, onRun, running, onView }) {
 
   const types    = ["all", ...new Set(agents.map(a => a.type))];
   const statuses = ["all", "active", "idle", "paused", "error"];
+  const hasFilter = !!search || typeF !== "all" || statusF !== "all";
 
   const filtered = useMemo(() => agents.filter(a => {
     const q = search.toLowerCase();
     const matchQ = !q || a.name.toLowerCase().includes(q) || a.description.toLowerCase().includes(q) || a.type.includes(q);
     return matchQ && (typeF === "all" || a.type === typeF) && (statusF === "all" || a.status === statusF);
   }), [agents, search, typeF, statusF]);
+
+  if (agents.length === 0) {
+    return <EmptyState variant="agents" onNavigate={onNavigate} />;
+  }
 
   return (
     <div className="av2-tab-content">
@@ -389,8 +333,8 @@ function TabRegistry({ agents, onNavigate, onRun, running, onView }) {
         {filtered.length === 0 ? (
           <div className="av2-empty">
             <div className="av2-empty-icon">◎</div>
-            <p className="av2-empty-title">No agents match your search</p>
-            <button className="av2-btn av2-btn--ghost" onClick={() => { setSearch(""); setTypeF("all"); setStatusF("all"); }}>Clear filters</button>
+            <p className="av2-empty-title">{hasFilter ? "No agents match your search" : "No agents registered"}</p>
+            {hasFilter && <button className="av2-btn av2-btn--ghost" onClick={() => { setSearch(""); setTypeF("all"); setStatusF("all"); }}>Clear filters</button>}
           </div>
         ) : filtered.map(a => (
           <AgentCard key={a.id} agent={a} onView={onView} onRun={onRun} running={running} />
@@ -599,38 +543,17 @@ function TabFactory({ onAgentCreated, toast }) {
 // TAB: COLLABORATION
 // ──────────────────────────────────────────────────────────────────────────────
 
-const EVENT_TYPE_META = {
-  handoff:  { icon: "→", color: "var(--accent2)" },
-  trigger:  { icon: "⚡", color: "var(--warning)" },
-  alert:    { icon: "⚠", color: "var(--danger)"  },
-  done:     { icon: "✓", color: "var(--success)"  },
-};
+// Real per-agent execution events, not agent-to-agent "handoffs" — the
+// backend has no handoff/trigger/alert taxonomy, only pass/fail task runs
+// (executionHistory.cjs). Colored by outcome instead of a fabricated type.
+function _eventMeta(entry) {
+  if (entry.success === false) return { icon: "⚠", color: "var(--danger)" };
+  return { icon: "✓", color: "var(--success)" };
+}
 
-function TabCollaboration({ agents }) {
-  const [events, setEvents] = useState(COLLAB_EVENTS_SEED);
-
-  // Simulate live feed (add a new event every 15s from active agents)
-  useEffect(() => {
-    const activeAgents = agents.filter(a => a.status === "active");
-    if (!activeAgents.length) return;
-    const id = setInterval(() => {
-      const a = activeAgents[Math.floor(Math.random() * activeAgents.length)];
-      setEvents(prev => [
-        {
-          id: Date.now(),
-          from: a.name,
-          to: null,
-          type: "done",
-          msg: `Completed scheduled task (${a.runsToday ?? 0} runs today)`,
-          ts: Date.now(),
-        },
-        ...prev.slice(0, 29),
-      ]);
-    }, 15_000);
-    return () => clearInterval(id);
-  }, [agents]);
-
+function TabCollaboration({ agents, history }) {
   const activeCount = agents.filter(a => a.status === "active").length;
+  const events = history || [];
 
   return (
     <div className="av2-tab-content">
@@ -638,45 +561,57 @@ function TabCollaboration({ agents }) {
       <div className="av2-collab-header">
         <div className="av2-collab-session">
           <span className="av2-session-dot dot--ok dot--live" />
-          <span className="av2-session-label">Active session · {activeCount} agents online</span>
+          <span className="av2-session-label">{activeCount} agent{activeCount === 1 ? "" : "s"} online</span>
         </div>
       </div>
 
       {/* Agent mesh */}
-      <div className="av2-collab-mesh">
-        {agents.slice(0, 5).map((a, i) => (
-          <div key={a.id} className="av2-mesh-node" style={{ '--node-color': a.color }}>
-            <span className="av2-mesh-icon" style={{ color: a.color }}>{a.icon}</span>
-            <span className="av2-mesh-name">{a.name.replace(" Agent", "")}</span>
-            <StatusChip status={a.status} />
-          </div>
-        ))}
-      </div>
+      {agents.length > 0 && (
+        <div className="av2-collab-mesh">
+          {agents.slice(0, 5).map((a, i) => (
+            <div key={a.id} className="av2-mesh-node" style={{ '--node-color': a.color }}>
+              <span className="av2-mesh-icon" style={{ color: a.color }}>{a.icon}</span>
+              <span className="av2-mesh-name">{a.name.replace(" Agent", "")}</span>
+              <StatusChip status={a.status} />
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* Event stream */}
+      {/* Event stream — real task execution history, newest first */}
       <div className="av2-collab-stream">
         <div className="av2-stream-header">
           <h3 className="av2-stream-title">Event Stream</h3>
           <span className="av2-stream-count">{events.length} events</span>
         </div>
-        <div className="av2-stream-list">
-          {events.map(e => {
-            const meta = EVENT_TYPE_META[e.type] || EVENT_TYPE_META.done;
-            return (
-              <div key={e.id} className="av2-stream-row">
-                <span className="av2-stream-icon" style={{ color: meta.color }}>{meta.icon}</span>
-                <div className="av2-stream-body">
-                  <div className="av2-stream-agents">
-                    <span className="av2-stream-from">{e.from}</span>
-                    {e.to && <><span className="av2-stream-arrow">→</span><span className="av2-stream-to">{e.to}</span></>}
+        {events.length === 0 ? (
+          <div className="av2-empty">
+            <div className="av2-empty-icon">◎</div>
+            <p className="av2-empty-title">No execution events yet</p>
+            <p className="av2-empty-sub">Runs from any agent will appear here as they execute.</p>
+          </div>
+        ) : (
+          <div className="av2-stream-list">
+            {events.map((e, i) => {
+              const meta = _eventMeta(e);
+              return (
+                <div key={e.taskId || i} className="av2-stream-row">
+                  <span className="av2-stream-icon" style={{ color: meta.color }}>{meta.icon}</span>
+                  <div className="av2-stream-body">
+                    <div className="av2-stream-agents">
+                      <span className="av2-stream-from">{e.agentId}</span>
+                    </div>
+                    <p className="av2-stream-msg">
+                      {e.success === false ? (e.error || `${e.taskType} failed`) : `${e.taskType} completed`}
+                      {e.durationMs ? ` · ${e.durationMs}ms` : ""}
+                    </p>
                   </div>
-                  <p className="av2-stream-msg">{e.msg}</p>
+                  <span className="av2-stream-ts">{_timeAgo(new Date(e.ts).toISOString())}</span>
                 </div>
-                <span className="av2-stream-ts">{_timeAgo(new Date(e.ts).toISOString())}</span>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -957,7 +892,12 @@ const AGENTS_KEY = "av2_agent_registry";
 
 export default function AgentOSV2({ onNavigate, online = false }) {
   const [activeTab,  setActiveTab]  = useState("center");
-  const [agents,     setAgents]     = useState(() => _load(AGENTS_KEY, SEED_AGENTS));
+  // Previously seeded with 5 fabricated agents (SEED_AGENTS) that persisted
+  // to localStorage forever if the account genuinely had none configured —
+  // a new account could never tell the difference between "no agents yet"
+  // and "5 real agents". Starts empty; refresh() below sets real data (or
+  // a real empty array) from the live API on mount.
+  const [agents,     setAgents]     = useState(() => _load(AGENTS_KEY, []));
   const [opsData,    setOpsData]    = useState(null);
   const [stats,      setStats]      = useState(null);
   const [history,    setHistory]    = useState([]);
@@ -980,9 +920,17 @@ export default function AgentOSV2({ onNavigate, online = false }) {
       ]);
       setOpsData(ops);
       setStats(st);
-      if (Array.isArray(hist)) setHistory(hist);
+      // getRuntimeHistory() resolves the real /runtime/history response
+      // shape { success, entries }, not a bare array — the previous
+      // Array.isArray(hist) check always failed, so `history` state was
+      // silently stuck at [] forever.
+      if (Array.isArray(hist?.entries)) setHistory(hist.entries);
       const live = agentRes?.agents;
-      if (Array.isArray(live) && live.length > 0) {
+      if (Array.isArray(live)) {
+        // Persist whatever the account actually has, including a real
+        // empty array — previously an empty live response left the
+        // localStorage-seeded fake agents in place forever, with no way
+        // to tell they weren't real.
         setAgents(live);
         _save(AGENTS_KEY, live);
       }
@@ -1054,7 +1002,7 @@ export default function AgentOSV2({ onNavigate, online = false }) {
       {activeTab === "registry" && <TabRegistry  agents={agents} onRun={handleRun} running={runningId} onView={setDrawer} onNavigate={onNavigate} />}
       {activeTab === "running"  && <TabRunning   agents={agents} opsData={opsData} history={history} onRun={handleRun} running={runningId} />}
       {activeTab === "factory"  && <TabFactory   onAgentCreated={() => refresh()} toast={toast} />}
-      {activeTab === "collab"   && <TabCollaboration agents={agents} />}
+      {activeTab === "collab"   && <TabCollaboration agents={agents} history={history} />}
       {activeTab === "intel"    && <TabIntelligence online={online} />}
       {activeTab === "actions"  && <TabActions    opsData={opsData} online={online} history={history} toast={toast} />}
 

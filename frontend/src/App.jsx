@@ -25,6 +25,7 @@ import CommandCenter      from "./components/CommandCenter.jsx";
 import CustomerDashboard  from "./components/CustomerDashboard.jsx";
 import CustomerFirstRunWizard, { shouldShowCustomerFirstRun } from "./components/CustomerFirstRunWizard.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
+import ThemeToggle, { initTheme } from "./components/ThemeToggle.jsx";
 // Non-critical paths — lazy-split from main bundle
 const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
 const WelcomeFlow        = lazy(() => import("./components/WelcomeFlow.jsx"));
@@ -187,6 +188,8 @@ const MORE_TABS = [
   { id: "inteloverlay", label:"Reasoning & Risk",  group: "Intelligence" },
   { id: "sharedmem",  label: "Memory Fabric",      group: "Intelligence" },
   { id: "memoryintel",label:"Memory Intel",        group: "Intelligence" },
+  { id: "memory",     label: "Memory OS",          group: "Intelligence" },
+  { id: "knowledge",  label: "Knowledge Base",     group: "Intelligence" },
   { id: "selfimprove",label:"Self-Improve",        group: "Intelligence" },
   { id: "jarvisbrain",label:"Jarvis Brain",        group: "Intelligence" },
   // ── Engineering
@@ -513,6 +516,11 @@ function TabSkeleton() {
 export default function App() {
   return <AuthProvider><AppInner /></AuthProvider>;
 }
+
+// Applied at module load (before first paint), same pattern as
+// _isDesktopShell()/_isSaasApp() below — avoids a dark→light flash that a
+// useEffect-based apply would cause.
+initTheme();
 
 const _IS_DESKTOP = _isDesktopShell();
 const _IS_SAAS    = _isSaasApp();
@@ -1163,6 +1171,7 @@ function AppInner() {
           )}
           <WorkspaceSwitcher onNavigate={setTab} />
           <OrgSwitcher onNavigate={setTab} />
+          <ThemeToggle compact />
           <button
             className="palette-trigger"
             onClick={() => setPaletteOpen(true)}

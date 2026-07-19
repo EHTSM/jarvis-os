@@ -28,7 +28,19 @@ function ProviderCard({ provider, onSave, onRemove, onToast }) {
 
   return (
     <div className={`csw-card${provider.connected ? " csw-card--connected" : ""}`}>
-      <div className="csw-card-header" onClick={() => setExpanded(e => !e)}>
+      <div
+        className="csw-card-header"
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        onClick={() => setExpanded(e => !e)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setExpanded(x => !x);
+          }
+        }}
+      >
         <span className="csw-card-icon">{CATEGORY_ICON[provider.category] || "🔌"}</span>
         <div className="csw-card-info">
           <span className="csw-card-name">{provider.label}</span>

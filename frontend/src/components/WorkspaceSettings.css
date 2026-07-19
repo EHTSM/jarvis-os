@@ -254,6 +254,12 @@
 /* ── K2 Enterprise Security Panels ─────────────────────────────── */
 .k2-loading { color: var(--text-dim); font-size: 13px; padding: 24px 0; }
 .k2-empty   { color: var(--text-faint); font-size: 13px; padding: 16px 0; }
+.k2-error   { color: var(--error); font-size: 13px; padding: 16px 0; display: flex; align-items: center; gap: 10px; }
+.k2-error-retry {
+  background: transparent; border: 1px solid var(--error); color: var(--error);
+  border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.k2-error-retry:hover { background: rgba(245, 91, 91, 0.1); }
 
 /* Security Score */
 .k2-score-card {

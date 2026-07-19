@@ -1,8 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 
 // ── K6 Analytics helpers ──────────────────────────────────────────
 const GRADE_COLOR = { A: "#52d68a", B: "var(--accent)", C: "var(--warning)", D: "var(--error)" };
+
+// Shared fetch-state hook: a real fetch failure (network error, 4xx/5xx from
+// _fetch) is tracked as a distinct `error` state, never silently discarded
+// into the empty-data branch. Was previously `.catch(() => {})` per-panel,
+// which made "no data" and "backend unreachable" look identical to the user.
+function useAnalyticsFetch(path) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    _fetch(path)
+      .then(r => { if (!cancelled) setData(r); })
+      .catch(e => { if (!cancelled) setError(e.message || "Failed to load"); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [path, retryToken]);
+
+  const retry = useCallback(() => setRetryToken(t => t + 1), []);
+  return { data, loading, error, retry };
+}
+
+function K6ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
 
 function K6Stat({ label, value, sub, color }) {
   return (
@@ -20,12 +54,9 @@ function K6Section({ title }) {
 
 // ── K6 — Executive Analytics Panel ───────────────────────────────
 function ExecutivePanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/executive").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/executive");
   if (loading) return <div className="k2-loading">Loading executive analytics…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">No data available.</div>;
   const { kpis, topErrors, byIntent, latency } = data;
   return (
@@ -71,12 +102,9 @@ function ExecutivePanel() {
 
 // ── K6 — Workspace Health Panel ───────────────────────────────────
 function WorkspaceHealthPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/workspace").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/workspace");
   if (loading) return <div className="k2-loading">Loading workspace health…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">No data available.</div>;
   const { security, governance, members, quotas } = data;
   return (
@@ -104,12 +132,9 @@ function WorkspaceHealthPanel() {
 
 // ── K6 — Automation ROI Panel ─────────────────────────────────────
 function AutomationROIPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/automation").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/automation");
   if (loading) return <div className="k2-loading">Loading automation analytics…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">No data available.</div>;
   const { rules, execution, roi, topRules } = data;
   return (
@@ -143,12 +168,9 @@ function AutomationROIPanel() {
 
 // ── K6 — AI Provider Utilization Panel ───────────────────────────
 function AIUtilizationPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/ai").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/ai");
   if (loading) return <div className="k2-loading">Loading AI utilization…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">No data available.</div>;
   const { providers, totalCalls, requestsTotal } = data;
   return (
@@ -176,12 +198,9 @@ function AIUtilizationPanel() {
 
 // ── K6 — Runtime Capacity Panel ───────────────────────────────────
 function RuntimeCapacityPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/runtime").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/runtime");
   if (loading) return <div className="k2-loading">Loading runtime capacity…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">No data available.</div>;
   const { process: proc, taskQueue, graphs, agents, missions } = data;
   return (
@@ -229,12 +248,9 @@ function RuntimeCapacityPanel() {
 
 // ── K6 — Enterprise Reports Panel ────────────────────────────────
 function EnterpriseReportsPanel() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _fetch("/analytics/reports").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+  const { data, loading, error, retry } = useAnalyticsFetch("/analytics/reports");
   if (loading) return <div className="k2-loading">Generating enterprise report…</div>;
+  if (error)   return <K6ErrorState error={error} onRetry={retry} />;
   if (!data)   return <div className="k2-empty">Report unavailable.</div>;
 
   const ts = data.generatedAt ? new Date(data.generatedAt).toLocaleString() : "—";

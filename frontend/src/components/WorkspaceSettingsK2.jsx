@@ -18,6 +18,18 @@ function _timeAgo(ts) {
   return `${Math.floor(s/86400)}d ago`;
 }
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function K2ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ── K2 — Security Score ───────────────────────────────────────────
 function SecurityScore({ score, grade, factors }) {
   if (!score) return null;
@@ -49,13 +61,16 @@ function SecurityScore({ score, grade, factors }) {
 function SessionsPanel() {
   const [sessions, setSessions] = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [toast,    setToast]    = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/security/sessions").then(d => setSessions(d.sessions || [])).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/security/sessions").then(d => setSessions(d.sessions || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   async function revoke(id) {
     try {
@@ -66,6 +81,7 @@ function SessionsPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading sessions…</div>;
+  if (error) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   return (
     <div className="k2-list">
       {toast && <div className="tw-toast">{toast}</div>}
@@ -90,13 +106,16 @@ function SessionsPanel() {
 function DevicesPanel() {
   const [devices,  setDevices]  = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [toast,    setToast]    = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/security/devices").then(d => setDevices(d.devices || [])).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/security/devices").then(d => setDevices(d.devices || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   async function trust(id) {
     try {
@@ -115,6 +134,7 @@ function DevicesPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading devices…</div>;
+  if (error) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   return (
     <div className="k2-list">
       {toast && <div className="tw-toast">{toast}</div>}
@@ -140,10 +160,13 @@ function DevicesPanel() {
 function AuditPanel() {
   const [log,     setLog]     = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/security/audit?limit=100").then(d => setLog(d.audit || [])).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/security/audit?limit=100").then(d => setLog(d.audit || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   const ACTION_COLOR = {
     "session":  "var(--accent)",
@@ -158,6 +181,7 @@ function AuditPanel() {
   };
 
   if (loading) return <div className="k2-loading">Loading audit log…</div>;
+  if (error) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   return (
     <div className="k2-audit-list">
       {log.length === 0 && <div className="k2-empty">No audit events yet.</div>}
@@ -180,6 +204,7 @@ const TOKEN_SCOPES = ["read:all", "write:missions", "write:agents", "admin:works
 function TokensPanel() {
   const [tokens,     setTokens]     = useState([]);
   const [loading,    setLoading]    = useState(true);
+  const [error,      setError]      = useState(null);
   const [creating,   setCreating]   = useState(false);
   const [newName,    setNewName]    = useState("");
   const [newType,    setNewType]    = useState("pat");
@@ -191,7 +216,8 @@ function TokensPanel() {
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(() => {
-    _fetch("/security/tokens").then(d => setTokens(d.tokens || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/security/tokens").then(d => setTokens(d.tokens || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -216,6 +242,7 @@ function TokensPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading tokens…</div>;
+  if (error) return <K2ErrorState error={error} onRetry={load} />;
   return (
     <div className="k2-tokens-panel">
       {toast && <div className="tw-toast">{toast}</div>}
@@ -294,14 +321,17 @@ function PoliciesPanel() {
   const [score,    setScore]    = useState(null);
   const [saving,   setSaving]   = useState(false);
   const [toast,    setToast]    = useState(null);
+  const [error,    setError]    = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
+    setError(null);
     _fetch("/security/policies")
       .then(d => { setPolicies(d.policies); setScore(d.score); })
-      .catch(() => {});
-  }, []);
+      .catch(e => setError(e.message || "Failed to load"));
+  }, [retryToken]);
 
   async function save() {
     setSaving(true);
@@ -313,6 +343,7 @@ function PoliciesPanel() {
     setSaving(false);
   }
 
+  if (error && !policies) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!policies) return <div className="k2-loading">Loading policies…</div>;
   return (
     <div className="k2-policies-panel">

@@ -6,6 +6,18 @@ import { FieldRow } from "./WorkspaceSettingsShared";
 const STATUS_COLOR = { active: "#52d68a", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
 const STATUS_LABEL = { active: "Active", invited: "Invited", suspended: "Suspended", archived: "Archived" };
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function K3ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function QuotaBar({ label, used, limit }) {
   const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
   const color = pct >= 90 ? "var(--error)" : pct >= 70 ? "var(--warning)" : "#52d68a";
@@ -193,6 +205,7 @@ function TeamDirectoryPanel() {
 function DepartmentsPanel() {
   const [depts,   setDepts]   = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [creating,setCreating]= useState(false);
@@ -201,7 +214,8 @@ function DepartmentsPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(() => {
-    _fetch("/admin/departments").then(r => setDepts(r.departments || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/admin/departments").then(r => setDepts(r.departments || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -221,6 +235,7 @@ function DepartmentsPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading departments…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k3-dept-panel">
@@ -263,12 +278,15 @@ function OrgProfilePanel() {
   const [profile, setProfile] = useState(null);
   const [saving,  setSaving]  = useState(false);
   const [toast,   setToast]   = useState(null);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/admin/profile").then(r => setProfile(r.profile)).catch(() => {});
-  }, []);
+    setError(null);
+    _fetch("/admin/profile").then(r => setProfile(r.profile)).catch(e => setError(e.message || "Failed to load"));
+  }, [retryToken]);
 
   async function save() {
     setSaving(true);
@@ -279,6 +297,7 @@ function OrgProfilePanel() {
     setSaving(false);
   }
 
+  if (error && !profile) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!profile) return <div className="k2-loading">Loading profile…</div>;
 
   const fields = [
@@ -314,12 +333,16 @@ function OrgProfilePanel() {
 function StatisticsPanel() {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/admin/statistics").then(r => setStats(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/admin/statistics").then(r => setStats(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading statistics…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!stats)  return <div className="k2-empty">Statistics unavailable.</div>;
 
   const cards = [
@@ -349,12 +372,16 @@ function StatisticsPanel() {
 function QuotasPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/admin/quotas").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/admin/quotas").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading quotas…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">Quota data unavailable.</div>;
 
   const { usage } = data;

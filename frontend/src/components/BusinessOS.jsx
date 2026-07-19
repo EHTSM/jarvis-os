@@ -66,6 +66,18 @@ function Empty({ title, sub }) {
   return <div className="bos-empty"><p className="bos-empty-title">{title}</p><p className="bos-empty-sub">{sub}</p></div>;
 }
 
+// A real fetch failure is tracked as a distinct error state instead of
+// falling through to the "no records yet" empty state.
+function BosError({ error, onRetry }) {
+  return (
+    <div className="bos-error">
+      <p className="bos-error-title">Couldn't load this data</p>
+      <p className="bos-error-sub">{error}</p>
+      <button className="bos-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // DASHBOARD VIEW
 // ═══════════════════════════════════════════════════════════════════
@@ -75,23 +87,30 @@ function DashboardView({ onToast }) {
   const [daily,   setDaily]   = useState(null);
   const [weekly,  setWeekly]  = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [d, s, w] = await Promise.all([
-      getBusinessDashboard(),
-      getBusinessDailySummary(),
-      getBusinessWeeklySummary(),
-    ]);
-    if (d.success !== false) setDash(d);
-    if (s.success !== false) setDaily(s);
-    if (w.success !== false) setWeekly(w);
+    try {
+      const [d, s, w] = await Promise.all([
+        getBusinessDashboard(),
+        getBusinessDailySummary(),
+        getBusinessWeeklySummary(),
+      ]);
+      if (d.success !== false) setDash(d);
+      if (s.success !== false) setDaily(s);
+      if (w.success !== false) setWeekly(w);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load business overview");
+    }
     setLoading(false);
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
   if (loading) return <Skeleton />;
+  if (error) return <BosError error={error} onRetry={load} />;
 
   return (
     <div className="bos-section">
@@ -224,6 +243,7 @@ const EMPTY_LEAD = { name: "", email: "", phone: "", company: "", source: "inbou
 function LeadsView({ onToast }) {
   const [leads,    setLeads]   = useState(null);
   const [loading,  setLoading] = useState(true);
+  const [error,    setError]   = useState(null);
   const [filter,   setFilter]  = useState("new");
   const [form,     setForm]    = useState(EMPTY_LEAD);
   const [editing,  setEditing] = useState(null);
@@ -233,8 +253,13 @@ function LeadsView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getLeadsV5({ status: filter === "all" ? undefined : filter, limit: 100 });
-    setLeads(r.leads ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getLeadsV5({ status: filter === "all" ? undefined : filter, limit: 100 });
+      setLeads(r.leads ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load leads");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -323,7 +348,9 @@ function LeadsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !leads?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !leads?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter} leads`} sub="Create your first lead above." />
       ) : (
         <table className="bos-table">
@@ -474,6 +501,7 @@ const EMPTY_OPP = { title: "", value: "", currency: "USD", stage: "prospect", co
 function OpportunitiesView({ onToast }) {
   const [opps,    setOpps]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [filter,  setFilter]  = useState("all");
   const [form,    setForm]    = useState(EMPTY_OPP);
   const [editing, setEditing] = useState(null);
@@ -483,8 +511,13 @@ function OpportunitiesView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getOpportunities({ stage: filter === "all" ? undefined : filter, limit: 100 });
-    setOpps(r.opportunities ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getOpportunities({ stage: filter === "all" ? undefined : filter, limit: 100 });
+      setOpps(r.opportunities ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load pipeline");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -576,7 +609,9 @@ function OpportunitiesView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !opps?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !opps?.length ? (
         <Empty title="No deals" sub="Create your first opportunity above." />
       ) : (
         <div className="bos-opp-list">
@@ -629,6 +664,7 @@ const CUSTOMER_STATUS_COLOR = { active: "var(--success)", at_risk: "var(--danger
 function CustomersView({ onToast, onNavigate }) {
   const [missions, setMissions] = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [filter,   setFilter]   = useState("all");
   const [form,     setForm]     = useState(EMPTY_CUSTOMER);
   const [saving,   setSaving]   = useState(false);
@@ -637,8 +673,13 @@ function CustomersView({ onToast, onNavigate }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getCustomers({ status: filter === "all" ? undefined : filter });
-    setMissions(r.missions ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getCustomers({ status: filter === "all" ? undefined : filter });
+      setMissions(r.missions ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load customers");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -701,7 +742,9 @@ function CustomersView({ onToast, onNavigate }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !missions?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !missions?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter.replace("_"," ")} customer plays`} sub="Create a customer success play above." />
       ) : (
         <div className="bos-opp-list">
@@ -754,6 +797,7 @@ const STATUS_COLOR = { draft: "var(--text-dim)", active: "var(--success)", pause
 function CampaignsView({ onToast }) {
   const [camps,   setCamps]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [filter,  setFilter]  = useState("all");
   const [form,    setForm]    = useState(EMPTY_CAMP);
   const [editing, setEditing] = useState(null);
@@ -763,8 +807,13 @@ function CampaignsView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getCampaigns({ status: filter === "all" ? undefined : filter, limit: 50 });
-    setCamps(r.campaigns ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getCampaigns({ status: filter === "all" ? undefined : filter, limit: 50 });
+      setCamps(r.campaigns ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load campaigns");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -844,7 +893,9 @@ function CampaignsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !camps?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !camps?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter} campaigns`} sub="Create your first campaign above." />
       ) : (
         <div className="bos-camp-list">
@@ -897,6 +948,7 @@ function RevenueView({ onToast }) {
   const [records,  setRecords]  = useState(null);
   const [stats,    setStats]    = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [typeFilter,setType]    = useState("all");
   const [form,     setForm]     = useState(EMPTY_REV);
   const [saving,   setSaving]   = useState(false);
@@ -904,12 +956,17 @@ function RevenueView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [r, s] = await Promise.all([
-      getRevenue({ type: typeFilter === "all" ? undefined : typeFilter, limit: 50 }),
-      getRevenueStats({}),
-    ]);
-    setRecords(r.revenue ?? (Array.isArray(r) ? r : []));
-    if (s.success !== false) setStats(s);
+    try {
+      const [r, s] = await Promise.all([
+        getRevenue({ type: typeFilter === "all" ? undefined : typeFilter, limit: 50 }),
+        getRevenueStats({}),
+      ]);
+      setRecords(r.revenue ?? (Array.isArray(r) ? r : []));
+      if (s.success !== false) setStats(s);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load revenue");
+    }
     setLoading(false);
   }, [typeFilter]);
 
@@ -998,7 +1055,9 @@ function RevenueView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !records?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !records?.length ? (
         <Empty title={`No ${typeFilter === "all" ? "" : typeFilter} revenue`} sub="Record your first transaction above." />
       ) : (
         <table className="bos-table">
@@ -1033,13 +1092,19 @@ const REC_PRIORITY_COLOR = { 1: "var(--danger)", 2: "var(--warning)", 3: "var(--
 function SuggestionsView({ onToast }) {
   const [recs,    setRecs]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [filter,  setFilter]  = useState("open");
   const [busyId,  setBusyId]  = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getBusinessRecommendations({ status: filter === "all" ? undefined : filter, limit: 50 });
-    setRecs(r.recommendations ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getBusinessRecommendations({ status: filter === "all" ? undefined : filter, limit: 50 });
+      setRecs(r.recommendations ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load suggestions");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -1080,7 +1145,9 @@ function SuggestionsView({ onToast }) {
         ))}
       </div>
 
-      {loading ? <Skeleton /> : !recs?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !recs?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter} suggestions`} sub="Suggestions appear here as the learning engine analyzes CRM activity." />
       ) : (
         <div className="bos-opp-list">

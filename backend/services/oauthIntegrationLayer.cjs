@@ -299,7 +299,7 @@ async function handleCallback(provider, code, state) {
     try {
         const headers = provider === "github"
             ? { Authorization: `token ${tokenData.access_token}`, "User-Agent": "jarvis-os" }
-            : { Authorization: `Bearer ${tokenData.access_token}` };
+            : { Authorization: `Bearer ${tokenData.access_token}`, "User-Agent": "jarvis-os" };
         const ur = await _get(cfg.userUrl, headers);
         tokenData.userInfo = ur.body;
     } catch { /* non-critical */ }
@@ -348,7 +348,7 @@ async function revokeToken(provider, userId) {
             if (provider === "google") {
                 await _post(`${cfg.revokeUrl}?token=${encodeURIComponent(token.access_token)}`, {}, "");
             } else if (provider === "slack") {
-                await _post(cfg.revokeUrl, { Authorization: `Bearer ${token.access_token}` }, "");
+                await _post(cfg.revokeUrl, { Authorization: `Bearer ${token.access_token}` }, `token=${encodeURIComponent(token.access_token)}`);
             }
         }
     } catch (e) { logger.warn(`[OAuth] Remote revoke failed for ${provider}: ${e.message}`); }

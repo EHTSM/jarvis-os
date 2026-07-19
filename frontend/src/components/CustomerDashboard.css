@@ -67,6 +67,18 @@
   background: rgba(78,205,196,0.10); border: 1px solid rgba(78,205,196,0.24); color: var(--accent2); cursor: pointer;
 }
 
+/* Distinct error state — a rejected fetch is not the same as "no data yet" */
+.cd-error {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  padding: 28px 16px; text-align: center;
+}
+.cd-error-title { font-size: 13.5px; font-weight: 700; color: var(--danger, #f55b5b); margin: 0; }
+.cd-error-sub   { font-size: 12px; color: var(--text-faint); margin: 0 0 6px; max-width: 260px; }
+.cd-error-retry {
+  padding: 7px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700;
+  background: rgba(245,91,91,0.10); border: 1px solid rgba(245,91,91,0.24); color: var(--danger, #f55b5b); cursor: pointer;
+}
+
 @media (max-width: 720px) {
   .customer-dashboard { padding: 18px 16px 36px; }
 }

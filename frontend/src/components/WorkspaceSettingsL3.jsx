@@ -15,17 +15,30 @@ const EXT_STATE_COLOR = {
   installed: "var(--text-dim)",
 };
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function L3ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function ExtRuntimePanel() {
   const [exts,    setExts]    = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [busy,    setBusy]    = useState(null);
   const [detail,  setDetail]  = useState(null);
   const [loadForm, setLoadForm] = useState(false);
   const [loadOpts, setLoadOpts] = useState({ extId: "", hooks: "", subscriptions: "", restartPolicy: "on_crash" });
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/extensions/runtime").then(r => setExts(r.extensions || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/extensions/runtime").then(r => setExts(r.extensions || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
 
@@ -54,6 +67,7 @@ function ExtRuntimePanel() {
   };
 
   if (loading) return <div className="k2-loading">Loading extension runtime…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l3-panel">
@@ -152,10 +166,14 @@ function ExtRuntimePanel() {
 function ExtMetricsPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/metrics").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/metrics").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading metrics…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No metrics available.</div>;
   const { extensions, hooks, subs, crashes, restarts, eventBus } = data;
   return (
@@ -204,10 +222,14 @@ function ExtMetricsPanel() {
 function ExtHooksPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/hooks").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/hooks").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading hooks…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No hooks registered.</div>;
   return (
     <div className="l3-panel">
@@ -234,10 +256,14 @@ function ExtHooksPanel() {
 function ExtQuotasPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/quotas").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/quotas").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading quotas…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No quota data.</div>;
   const quotas = data.quotas || [];
   return (

@@ -92,6 +92,17 @@ const STATE_LABEL = {
   idle:     "IDLE",
 };
 
+// A rejected fetch is a real backend failure — it must never render identically
+// to "no data yet." Shared distinct error state for CommandCenter panels.
+function CmdPanelError({ error, onRetry }) {
+  return (
+    <div className="cmd-panel-error">
+      <span className="cmd-panel-error-text">Couldn't load this data{error ? ` — ${error}` : ""}.</span>
+      <button className="cmd-panel-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // HealthPulseBar
 // Always-visible system state strip — one animated pill per service.
@@ -255,6 +266,7 @@ function ExecRow({ item, isNew }) {
 function MissionFeed({ opsData, online }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [newIds,  setNewIds]  = useState(new Set());
   const prevIds = useRef(new Set());
 
@@ -264,8 +276,17 @@ function MissionFeed({ opsData, online }) {
       getUnifiedQueue(),
     ]);
 
-    const histItems  = hist.value?.history  || hist.value?.items  || hist.value  || [];
-    const queueItems = queue.value?.queue   || queue.value?.items || queue.value || [];
+    // Both calls failing means the feed genuinely can't load — a rejected
+    // promise must not be silently treated as "no missions yet."
+    if (hist.status === "rejected" && queue.status === "rejected") {
+      setError(hist.reason?.message || queue.reason?.message || "Failed to load mission feed");
+      setLoading(false);
+      return;
+    }
+    setError(null);
+
+    const histItems  = hist.status  === "fulfilled" ? (hist.value?.history  || hist.value?.items  || hist.value  || []) : [];
+    const queueItems = queue.status === "fulfilled" ? (queue.value?.queue   || queue.value?.items || queue.value || []) : [];
 
     const seen = new Set();
     const merged = [
@@ -336,6 +357,10 @@ function MissionFeed({ opsData, online }) {
         ))}
       </div>
     );
+  }
+
+  if (error) {
+    return <CmdPanelError error={error} onRetry={load} />;
   }
 
   if (allItems.length === 0) {
@@ -420,18 +445,25 @@ function AgentCard({ agent }) {
 function ActiveAgents({ opsData }) {
   const [agents,  setAgents]  = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
-    const res = await getUnifiedQueue();
-    const raw = res?.queue || res?.items || res?.running || res || [];
-    const active = (Array.isArray(raw) ? raw : [])
-      .filter(a => {
-        const s = (a.status || a.state || "").toLowerCase();
-        return s === "running" || s === "active" || s === "thinking" || s === "llm";
-      })
-      .slice(0, 8);
-    setAgents(active);
-    setLoading(false);
+    try {
+      const res = await getUnifiedQueue();
+      const raw = res?.queue || res?.items || res?.running || res || [];
+      const active = (Array.isArray(raw) ? raw : [])
+        .filter(a => {
+          const s = (a.status || a.state || "").toLowerCase();
+          return s === "running" || s === "active" || s === "thinking" || s === "llm";
+        })
+        .slice(0, 8);
+      setAgents(active);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load agents");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -463,6 +495,10 @@ function ActiveAgents({ opsData }) {
         ))}
       </div>
     );
+  }
+
+  if (error) {
+    return <CmdPanelError error={error} onRetry={load} />;
   }
 
   if (displayed.length === 0) {
@@ -695,13 +731,20 @@ function ApprovalCard({ item, onDecide }) {
 function ApprovalQueue({ onNavigate }) {
   const [items,   setItems]   = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [decided, setDecided] = useState(new Set());
 
   const load = useCallback(async () => {
-    const res = await getApprovalQueue();
-    const raw = res?.queue || res?.items || res?.approvals || res || [];
-    setItems(Array.isArray(raw) ? raw : []);
-    setLoading(false);
+    try {
+      const res = await getApprovalQueue();
+      const raw = res?.queue || res?.items || res?.approvals || res || [];
+      setItems(Array.isArray(raw) ? raw : []);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load approvals");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -747,6 +790,8 @@ function ApprovalQueue({ onNavigate }) {
             <div key={i} className="skeleton skeleton--card" style={{ height: 100, marginBottom: 8, borderRadius: 10 }} />
           ))}
         </div>
+      ) : error ? (
+        <CmdPanelError error={error} onRetry={load} />
       ) : pending.length === 0 ? (
         <div className="cmd-approval-empty">
           <span className="cmd-approval-empty-icon">✓</span>
@@ -996,6 +1041,7 @@ const LC_STAGE_COLORS = {
 function MissionTimelineStrip() {
   const [missions, setMissions] = useState([]);
   const [stages,   setStages]   = useState({});
+  const [error,    setError]    = useState(null);
 
   const load = useCallback(async () => {
     try {
@@ -1003,8 +1049,10 @@ function MissionTimelineStrip() {
       const list = res.missions || res.data || (Array.isArray(res) ? res : []);
       const active = list.filter(m => m.status === 'running' || m.status === 'active' || m.status === 'planned').slice(0, 6);
       setMissions(active);
+      setError(null);
 
-      // Fetch lifecycle stage for each active mission
+      // Fetch lifecycle stage for each active mission (secondary enrichment —
+      // a single stage lookup failing shouldn't block the mission list itself)
       const stageMap = {};
       await Promise.allSettled(
         active.map(m =>
@@ -1015,7 +1063,11 @@ function MissionTimelineStrip() {
         )
       );
       setStages(stageMap);
-    } catch {}
+    } catch (e) {
+      // The mission list itself failed to load — this is a real backend error,
+      // not "no active missions."
+      setError(e.message || "Failed to load mission timeline");
+    }
   }, []);
 
   useEffect(() => {
@@ -1023,6 +1075,8 @@ function MissionTimelineStrip() {
     const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
   }, [load]);
+
+  if (error) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!missions.length) return (
     <div style={{ color: 'var(--text-dim)', fontSize: 11, padding: '10px 0', textAlign: 'center' }}>No active missions</div>
@@ -1096,21 +1150,27 @@ function QueueOverview({ opsData }) {
 function RevenuePulse({ onNavigate }) {
   const [data, setData] = useState(null);
   const [forbidden, setForbidden] = useState(false);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getRevenueDashboard();
+    if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+    if (r?.ok !== false) { setData(r.dashboard); setError(null); }
+    else { setError(r.error || "Failed to load revenue data"); }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
-    const load = async () => {
-      const r = await getRevenueDashboard();
-      if (cancelled) return;
-      if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
-      if (r?.ok !== false) setData(r.dashboard);
-    };
-    load();
-    const t = setInterval(() => { if (!document.hidden) load(); }, 60000);
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
     return () => { cancelled = true; clearInterval(t); };
-  }, []);
+  }, [load]);
 
   if (forbidden) return null;
+
+  // A genuine fetch failure must say so distinctly — not claim to still be loading.
+  if (error && !data) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!data) return (
     <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading revenue…</div>
@@ -1153,21 +1213,27 @@ function RevenuePulse({ onNavigate }) {
 function ConnectorHealthPulse({ onNavigate }) {
   const [health, setHealth] = useState(null);
   const [forbidden, setForbidden] = useState(false);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getConnectorHealth();
+    if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+    if (r?.ok !== false) { setHealth(r); setError(null); }
+    else { setError(r.error || "Failed to load connector health"); }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
-    const load = async () => {
-      const r = await getConnectorHealth();
-      if (cancelled) return;
-      if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
-      if (r?.ok !== false) setHealth(r);
-    };
-    load();
-    const t = setInterval(() => { if (!document.hidden) load(); }, 60000);
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
     return () => { cancelled = true; clearInterval(t); };
-  }, []);
+  }, [load]);
 
   if (forbidden) return null;
+
+  // A genuine fetch failure must say so distinctly — not claim to still be loading.
+  if (error && !health) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!health) return (
     <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading connector health…</div>

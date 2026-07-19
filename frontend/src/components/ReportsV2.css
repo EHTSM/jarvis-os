@@ -45,38 +45,30 @@
 .rv2-export-btn:disabled { opacity: .35; cursor: not-allowed; }
 .rv2-refresh-btn:hover { background: rgba(255,255,255,.04); color: var(--text, #dde2ec); }
 
-/* Coming soon banner */
-.rv2-coming-soon {
+/* Distinct error state — a rejected/failed fetch batch is not the same as "loading" */
+.rv2-error-banner {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: rgba(124,111,255,.06);
-  border: 1px solid rgba(124,111,255,.16);
+  background: rgba(245,91,91,.07);
+  border: 1px solid rgba(245,91,91,.22);
   border-radius: 10px;
 }
-.rv2-coming-icon { font-size: 16px; color: var(--accent, #7c6fff); flex-shrink: 0; margin-top: 2px; }
-.rv2-coming-title { margin: 0; font-size: 13px; font-weight: 600; color: var(--accent, #7c6fff); }
-.rv2-coming-sub { margin: 3px 0 0; font-size: 12px; color: var(--text-faint, #4a5470); }
-
-/* Period tabs */
-.rv2-period-tabs { display: flex; gap: 4px; }
-.rv2-period-tab {
+.rv2-error-icon { font-size: 16px; color: var(--danger, #f55b5b); flex-shrink: 0; }
+.rv2-error-title { margin: 0; font-size: 13px; font-weight: 600; color: var(--danger, #f55b5b); }
+.rv2-error-sub { margin: 3px 0 0; font-size: 12px; color: var(--text-faint, #4a5470); }
+.rv2-error-retry {
+  margin-left: auto;
   padding: 6px 14px;
-  border-radius: 9999px;
-  border: 1px solid var(--border, rgba(255,255,255,.08));
-  background: transparent;
-  color: var(--text-dim, #8994b0);
+  border-radius: var(--radius-sm, 6px);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
+  background: rgba(245,91,91,.10);
+  border: 1px solid rgba(245,91,91,.24);
+  color: var(--danger, #f55b5b);
   cursor: pointer;
-  transition: all .15s;
-}
-.rv2-period-tab:hover { background: rgba(255,255,255,.04); color: var(--text, #dde2ec); }
-.rv2-period-tab--active {
-  background: rgba(124,111,255,.15);
-  border-color: rgba(124,111,255,.4);
-  color: var(--accent, #7c6fff);
+  flex-shrink: 0;
 }
 
 /* KPI row */

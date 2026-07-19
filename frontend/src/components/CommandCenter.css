@@ -506,6 +506,35 @@
   line-height: 1.5;
 }
 
+/* Distinct error state — a rejected fetch is not the same as "no data yet" */
+.cmd-panel-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 16px;
+  text-align: center;
+}
+.cmd-panel-error-text {
+  font-size: 12px;
+  color: var(--danger, #f55b5b);
+  line-height: 1.5;
+}
+.cmd-panel-error-retry {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.cmd-panel-error-retry:hover {
+  background: rgba(255,255,255,0.10);
+}
+
 /* ── Active Agents Grid ─────────────────────────────────────────────────────── */
 .cmd-agent-grid {
   display: grid;

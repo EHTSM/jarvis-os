@@ -242,20 +242,6 @@ function SystemPerf({ opsData, metrics, loading }) {
   );
 }
 
-// ── Coming Soon Banner ─────────────────────────────────────────────────────────
-
-function ComingSoon({ feature }) {
-  return (
-    <div className="rv2-coming-soon">
-      <span className="rv2-coming-icon">◎</span>
-      <div>
-        <p className="rv2-coming-title">{feature} — Coming Soon</p>
-        <p className="rv2-coming-sub">Export, scheduling, and team sharing are under development. Current data is available below.</p>
-      </div>
-    </div>
-  );
-}
-
 // ── Service Health Row ─────────────────────────────────────────────────────────
 
 function ServiceHealth({ opsData, online, loading }) {
@@ -291,7 +277,7 @@ export default function ReportsV2({ online = false, onNavigate }) {
   const [metrics,   setMetrics]   = useState(null);
   const [leads,     setLeads]     = useState(null);
   const [loading,   setLoading]   = useState(true);
-  const [period,    setPeriod]    = useState("week");
+  const [error,     setError]     = useState(null);
   const [exporting, setExporting] = useState(false);
 
   const refresh = useCallback(async () => {
@@ -304,8 +290,18 @@ export default function ReportsV2({ online = false, onNavigate }) {
       setOpsData(ops);
       setMetrics(met);
       setLeads(Array.isArray(leds) ? leds : []);
-    } catch {}
-    finally { setLoading(false); }
+      // getStats/getOpsData/getMetrics each swallow their own fetch errors and
+      // resolve to null rather than rejecting — a real backend outage looks
+      // like every one of them coming back null at once. Surface that as a
+      // distinct error instead of silently rendering "—" everywhere forever.
+      if (st == null && ops == null && met == null) {
+        setError("Backend unavailable — reports data could not be loaded.");
+      } else {
+        setError(null);
+      }
+    } catch (e) {
+      setError(e.message || "Failed to load reports data");
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -366,22 +362,17 @@ export default function ReportsV2({ online = false, onNavigate }) {
         </div>
       </div>
 
-
-
-      {/* Period selector */}
-      <div className="rv2-period-tabs">
-        {[
-          { id: "week",  label: "This Week" },
-          { id: "month", label: "This Month" },
-          { id: "all",   label: "All Time" },
-        ].map(p => (
-          <button
-            key={p.id}
-            className={`rv2-period-tab${period === p.id ? " rv2-period-tab--active" : ""}`}
-            onClick={() => setPeriod(p.id)}
-          >{p.label}</button>
-        ))}
-      </div>
+      {/* Distinct error state — a real backend outage, not "still loading" */}
+      {error && (
+        <div className="rv2-error-banner">
+          <span className="rv2-error-icon">⚠</span>
+          <div>
+            <p className="rv2-error-title">Couldn't load reports</p>
+            <p className="rv2-error-sub">{error}</p>
+          </div>
+          <button className="rv2-error-retry" onClick={refresh}>Retry</button>
+        </div>
+      )}
 
       {/* KPI Cards */}
       <div className="rv2-kpi-row">

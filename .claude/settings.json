@@ -518,7 +518,8 @@
       "Bash(node tests/stress/07-ecosystem-stress-test.cjs)",
       "Bash(node -e \"const c = require\\('./agents/runtime/executionChainPlanner.cjs'\\); console.log\\(Object.keys\\(c\\)\\)\")",
       "Bash(grep -n \"return$\\\\|return \\(<\\\\|return \\(<>\" frontend/src/components/operator/OperatorConsole.jsx)",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('deps:', list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)[:20]\\); print\\('scripts:', list\\(d.get\\('scripts',{}\\).keys\\(\\)\\)\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('deps:', list\\(d.get\\('dependencies',{}\\).keys\\(\\)\\)[:20]\\); print\\('scripts:', list\\(d.get\\('scripts',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(kill 71166 78990)"
     ],
     "additionalDirectories": [
       "/Users/ehtsm/jarvis-os/agents/runtime/recovery"

@@ -232,6 +232,17 @@
 }
 .tw-empty-cta:hover { background: rgba(124,111,255,0.18); }
 
+/* Loading / error states — same convention as WorkspaceSettings.css's
+   k2-loading/k2-error, duplicated here since this file doesn't import
+   that stylesheet. */
+.k2-loading { color: var(--text-dim); font-size: 13px; padding: 24px 0; }
+.k2-error   { color: var(--error); font-size: 13px; padding: 16px 0; display: flex; align-items: center; gap: 10px; }
+.k2-error-retry {
+  background: transparent; border: 1px solid var(--error); color: var(--error);
+  border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.k2-error-retry:hover { background: rgba(245, 91, 91, 0.1); }
+
 /* Toast */
 .tw-toast {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);

@@ -131,6 +131,103 @@
   --type-micro:   0.6875rem;
 }
 
+/* ── Light theme ──────────────────────────────────────────────────────────
+   Overrides only the tokens whose values are dark-canvas-specific (surface
+   colors, borders, text, shadows). Brand/semantic hues, spacing, radius,
+   motion, and type scale are shared across both themes unchanged — this is
+   a token swap, not a redesign, so every component that already consumes
+   var(--x) needs no changes to support this.
+   Activated by `[data-theme="light"]` on <html> (explicit user choice,
+   persisted) or by prefers-color-scheme when no explicit choice was made
+   (see ThemeToggle.jsx). ───────────────────────────────────────────────── */
+:root[data-theme="light"] {
+  --bg:              #f4f5f8;
+  --surface:         rgba(255, 255, 255, 0.92);
+  --surface2:        rgba(255, 255, 255, 0.68);
+  --surface-hover:   rgba(255, 255, 255, 0.98);
+  --surface-base:    rgba(255, 255, 255, 0.96);
+  --surface-raised:  rgba(255, 255, 255, 0.99);
+  --surface-float:   rgba(255, 255, 255, 1);
+
+  --border:        rgba(20, 24, 38, 0.10);
+  --border-hover:   rgba(78, 205, 196, 0.32);
+  --border-strong: rgba(20, 24, 38, 0.16);
+
+  --accent-glow:   rgba(124, 111, 255, 0.10);
+  --accent2-glow:  rgba(78, 205, 196, 0.08);
+
+  --success-muted: rgba(30, 148, 90, 0.10);
+  --warning-muted: rgba(180, 128, 6, 0.10);
+  --danger-muted:  rgba(214, 58, 58, 0.10);
+  --info-muted:    rgba(30, 130, 180, 0.10);
+  --success-border: rgba(30, 148, 90, 0.24);
+  --warning-border: rgba(180, 128, 6, 0.24);
+  --danger-border:  rgba(214, 58, 58, 0.24);
+  --info-border:    rgba(30, 130, 180, 0.24);
+
+  --text:          #1a1f2e;
+  --text-dim:      #565f78;
+  --text-faint:    #8990a8;
+
+  --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
+  --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
+  --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);
+  --shadow-lg:     0 20px 60px rgba(20, 24, 38, 0.11);
+  --shadow-xl:     0 32px 80px rgba(20, 24, 38, 0.13);
+  --shadow-glow:   0 0 0 1px rgba(78, 205, 196, 0.16),
+                   0 8px 32px rgba(20, 24, 38, 0.08);
+
+  --shadow-inner:        inset 0 1px 0 rgba(20, 24, 38, 0.04);
+  --surface-glass:       rgba(20, 24, 38, 0.025);
+  --surface-glass-hover: rgba(20, 24, 38, 0.045);
+  --border-subtle:       rgba(20, 24, 38, 0.05);
+  --gradient-card:       linear-gradient(160deg, rgba(124,111,255,0.05) 0%, rgba(78,205,196,0.025) 100%);
+  --gradient-hero:       linear-gradient(135deg, rgba(124,111,255,0.08) 0%, transparent 60%);
+}
+
+/* Prefers-color-scheme fallback — only applies when no explicit choice has
+   been persisted (ThemeToggle.jsx sets data-theme="dark" explicitly once a
+   user picks a mode, which always wins over this media query). */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg:              #f4f5f8;
+    --surface:         rgba(255, 255, 255, 0.92);
+    --surface2:        rgba(255, 255, 255, 0.68);
+    --surface-hover:   rgba(255, 255, 255, 0.98);
+    --surface-base:    rgba(255, 255, 255, 0.96);
+    --surface-raised:  rgba(255, 255, 255, 0.99);
+    --surface-float:   rgba(255, 255, 255, 1);
+    --border:        rgba(20, 24, 38, 0.10);
+    --border-hover:   rgba(78, 205, 196, 0.32);
+    --border-strong: rgba(20, 24, 38, 0.16);
+    --accent-glow:   rgba(124, 111, 255, 0.10);
+    --accent2-glow:  rgba(78, 205, 196, 0.08);
+    --success-muted: rgba(30, 148, 90, 0.10);
+    --warning-muted: rgba(180, 128, 6, 0.10);
+    --danger-muted:  rgba(214, 58, 58, 0.10);
+    --info-muted:    rgba(30, 130, 180, 0.10);
+    --success-border: rgba(30, 148, 90, 0.24);
+    --warning-border: rgba(180, 128, 6, 0.24);
+    --danger-border:  rgba(214, 58, 58, 0.24);
+    --info-border:    rgba(30, 130, 180, 0.24);
+    --text:          #1a1f2e;
+    --text-dim:      #565f78;
+    --text-faint:    #8990a8;
+    --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
+    --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
+    --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);
+    --shadow-lg:     0 20px 60px rgba(20, 24, 38, 0.11);
+    --shadow-xl:     0 32px 80px rgba(20, 24, 38, 0.13);
+    --shadow-glow:   0 0 0 1px rgba(78, 205, 196, 0.16), 0 8px 32px rgba(20, 24, 38, 0.08);
+    --shadow-inner:        inset 0 1px 0 rgba(20, 24, 38, 0.04);
+    --surface-glass:       rgba(20, 24, 38, 0.025);
+    --surface-glass-hover: rgba(20, 24, 38, 0.045);
+    --border-subtle:       rgba(20, 24, 38, 0.05);
+    --gradient-card:       linear-gradient(160deg, rgba(124,111,255,0.05) 0%, rgba(78,205,196,0.025) 100%);
+    --gradient-hero:       linear-gradient(135deg, rgba(124,111,255,0.08) 0%, transparent 60%);
+  }
+}
+
 /* ── Reset ────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { min-height: 100%; }
@@ -151,6 +248,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+/* The dark vignette's 3rd gradient stop is a near-black wash — dropped in
+   light mode (explicit choice, or OS preference when no explicit choice
+   has been made) so the canvas doesn't muddy. */
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(ellipse 90% 44% at 8% -4%,   rgba(124, 111, 255, 0.06) 0%, transparent 58%),
+    radial-gradient(ellipse 64% 54% at 92% 108%,  rgba(78, 205, 196, 0.05) 0%, transparent 58%),
+    var(--bg);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) body {
+    background:
+      radial-gradient(ellipse 90% 44% at 8% -4%,   rgba(124, 111, 255, 0.06) 0%, transparent 58%),
+      radial-gradient(ellipse 64% 54% at 92% 108%,  rgba(78, 205, 196, 0.05) 0%, transparent 58%),
+      var(--bg);
+  }
+}
 
 /* ── Elements ─────────────────────────────────────────────────────────── */
 button  { cursor: pointer; border: none; outline: none; font-family: inherit; }
@@ -170,6 +284,14 @@ a { color: inherit; text-decoration: none; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+:root[data-theme="light"] * { scrollbar-color: rgba(20,24,38,0.16) transparent; }
+:root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(20,24,38,0.16); }
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(20,24,38,0.26); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) * { scrollbar-color: rgba(20,24,38,0.16) transparent; }
+  :root:not([data-theme]) ::-webkit-scrollbar-thumb { background: rgba(20,24,38,0.16); }
+  :root:not([data-theme]) ::-webkit-scrollbar-thumb:hover { background: rgba(20,24,38,0.26); }
+}
 
 /* ── Selection ─────────────────────────────────────────────────────────── */
 ::selection {
@@ -243,6 +365,26 @@ a { color: inherit; text-decoration: none; }
   background-size: 800px 100%;
   animation: skeleton-sweep 1.6s ease-in-out infinite;
   border-radius: var(--radius-sm);
+}
+:root[data-theme="light"] .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(20,24,38,0.05) 25%,
+    rgba(20,24,38,0.10) 50%,
+    rgba(20,24,38,0.05) 75%
+  );
+  background-size: 800px 100%;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(20,24,38,0.05) 25%,
+      rgba(20,24,38,0.10) 50%,
+      rgba(20,24,38,0.05) 75%
+    );
+    background-size: 800px 100%;
+  }
 }
 .skeleton--text  { height: 12px; border-radius: 4px; }
 .skeleton--title { height: 18px; border-radius: 4px; }
@@ -459,6 +601,26 @@ a { color: inherit; text-decoration: none; }
   );
   background-size: 1200px 100%;
   animation: shimmer 1.8s ease-in-out infinite;
+}
+:root[data-theme="light"] .shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(20,24,38,0.035) 0%,
+    rgba(20,24,38,0.08) 50%,
+    rgba(20,24,38,0.035) 100%
+  );
+  background-size: 1200px 100%;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(20,24,38,0.035) 0%,
+      rgba(20,24,38,0.08) 50%,
+      rgba(20,24,38,0.035) 100%
+    );
+    background-size: 1200px 100%;
+  }
 }
 
 /* Hover glow — subtle accent glow on interactive cards */

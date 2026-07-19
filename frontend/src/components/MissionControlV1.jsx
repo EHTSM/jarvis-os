@@ -141,7 +141,19 @@ function ApprovalQueuePanel() {
             const isBusy     = busyId === item.id;
             return (
               <div key={item.id} className="mc-approval-item">
-                <div className="mc-approval-row" onClick={() => setExpanded(isExpanded ? null : item.id)}>
+                <div
+                  className="mc-approval-row"
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isExpanded}
+                  onClick={() => setExpanded(isExpanded ? null : item.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setExpanded(isExpanded ? null : item.id);
+                    }
+                  }}
+                >
                   <span className="mc-approval-risk" style={{ background: riskColor + '22', color: riskColor, borderColor: riskColor + '55' }}>
                     {item.risk || 'medium'}
                   </span>
@@ -713,6 +725,11 @@ export default function MissionControlV1({ onNavigate }) {
   const [resumePending, setResumePending] = useState(false);
   const [actionMsg, setActionMsg] = useState(null);
   const [stopConfirm, setStopConfirm]   = useState(false);
+  // Tracks which underlying fetches actually failed — a rejected promise must
+  // not render identically to real data ("—" from a failure looks the same as
+  // "—" from an empty/absent value otherwise, and every MetricCard used to
+  // hardcode status="ok" regardless of whether its own source succeeded).
+  const [failed, setFailed] = useState({});
 
   const load = useCallback(async () => {
     try {
@@ -738,6 +755,19 @@ export default function MissionControlV1({ onNavigate }) {
       if (cy.status === "fulfilled")   setCycles(cy.value);
       if (au.status === "fulfilled")   setAutonomy(au.value);
       if (bl.status === "fulfilled")   setBilling(bl.value);
+
+      setFailed({
+        health:   h.status === "rejected",
+        ops:      o.status === "rejected",
+        stats:    s.status === "rejected",
+        runtime:  rt.status === "rejected",
+        history:  hist.status === "rejected",
+        agents:   ag.status === "rejected",
+        memStat:  ms.status === "rejected",
+        cycles:   cy.status === "rejected",
+        autonomy: au.status === "rejected",
+        billing:  bl.status === "rejected",
+      });
     } finally {
       setLoading(false);
       setLastRefresh(new Date());
@@ -886,8 +916,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="₹"
           label="Revenue"
           value={revenue != null ? `₹${Number(revenue).toLocaleString("en-IN")}` : "—"}
-          sub={msgToday != null ? `${msgToday} msgs today` : null}
-          status="ok"
+          sub={failed.stats ? "Failed to load" : msgToday != null ? `${msgToday} msgs today` : null}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("payments")}
         />
 
@@ -896,8 +926,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="👥"
           label="Leads"
           value={leadsCount != null ? leadsCount.toLocaleString() : "—"}
-          sub="CRM pipeline"
-          status="ok"
+          sub={failed.stats ? "Failed to load" : "CRM pipeline"}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("clients")}
         />
 
@@ -906,8 +936,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🤖"
           label="Active Agents"
           value={activeAgents != null ? `${activeAgents}${totalAgents != null ? ` / ${totalAgents}` : ""}` : "—"}
-          sub="running now"
-          status={activeAgents === 0 ? "warn" : "ok"}
+          sub={failed.agents ? "Failed to load" : "running now"}
+          status={failed.agents ? "err" : activeAgents === 0 ? "warn" : "ok"}
           onClick={() => nav("agents")}
         />
 
@@ -916,8 +946,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🧠"
           label="Memory Health"
           value={memNodes != null ? `${memNodes} nodes` : "—"}
-          sub={memHealth ? memHealth.toUpperCase() : null}
-          status={memHealth === "ok" || memHealth == null ? "ok" : "warn"}
+          sub={failed.memStat ? "Failed to load" : memHealth ? memHealth.toUpperCase() : null}
+          status={failed.memStat ? "err" : (memHealth === "ok" || memHealth == null ? "ok" : "warn")}
           onClick={() => nav("memory")}
         />
 
@@ -926,8 +956,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="⚙️"
           label="Workflow Health"
           value={wfRuns != null ? `${wfRuns} runs` : "—"}
-          sub={wfActive != null ? `${wfActive} active` : null}
-          status={wfActive === 0 && wfRuns === 0 ? "warn" : "ok"}
+          sub={failed.cycles ? "Failed to load" : wfActive != null ? `${wfActive} active` : null}
+          status={failed.cycles ? "err" : (wfActive === 0 && wfRuns === 0 ? "warn" : "ok")}
           onClick={() => nav("autonomouswf")}
         />
 
@@ -935,8 +965,9 @@ export default function MissionControlV1({ onNavigate }) {
         <MetricCard
           icon="✦"
           label="AI Providers"
-          value={health?.services?.ai ? "Online" : health ? "Offline" : "—"}
-          status={health?.services?.ai ? "ok" : health ? "err" : "ok"}
+          value={failed.health ? "—" : health?.services?.ai ? "Online" : health ? "Offline" : "—"}
+          sub={failed.health ? "Failed to load" : null}
+          status={failed.health ? "err" : health?.services?.ai ? "ok" : health ? "err" : "ok"}
           onClick={() => nav("aicost")}
         >
           {health?.services && (
@@ -954,8 +985,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="💾"
           label="System Health"
           value={heap != null ? `${heap} MB heap` : sysStatus !== "unknown" ? sysStatus : "—"}
-          sub={queueCts.pending != null ? `${queueCts.pending} pending / ${queueCts.running || 0} running` : null}
-          status={sysStatus === "ok" ? "ok" : sysStatus === "degraded" ? "warn" : "err"}
+          sub={failed.ops && failed.health ? "Failed to load" : queueCts.pending != null ? `${queueCts.pending} pending / ${queueCts.running || 0} running` : null}
+          status={(failed.ops && failed.health) ? "err" : (sysStatus === "ok" ? "ok" : sysStatus === "degraded" ? "warn" : "err")}
           onClick={() => nav("operations")}
         />
 
@@ -964,8 +995,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="⚡"
           label="Autonomy Score"
           value={autoScore != null ? `${autoScore}%` : "—"}
-          sub="self-operation index"
-          status={autoScore != null ? (autoScore >= 70 ? "ok" : autoScore >= 40 ? "warn" : "err") : "ok"}
+          sub={failed.autonomy ? "Failed to load" : "self-operation index"}
+          status={failed.autonomy ? "err" : autoScore != null ? (autoScore >= 70 ? "ok" : autoScore >= 40 ? "warn" : "err") : "ok"}
           onClick={() => nav("autonomyscore")}
         >
           {autoScore != null && (
@@ -980,8 +1011,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🚀"
           label="Deployment"
           value={billingStatus ? billingStatus.toUpperCase() : "—"}
-          sub={billingDays != null ? `${billingDays}d left · ${billingPlan}` : billingPlan}
-          status={billingStatus === "active" ? "ok" : billingStatus === "trial" ? "warn" : "err"}
+          sub={failed.billing ? "Failed to load" : billingDays != null ? `${billingDays}d left · ${billingPlan}` : billingPlan}
+          status={failed.billing ? "err" : billingStatus === "active" ? "ok" : billingStatus === "trial" ? "warn" : "err"}
           onClick={() => nav("billing")}
         />
 
@@ -990,8 +1021,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="📈"
           label="Growth Metrics"
           value={leadsCount != null && revenue != null ? "Live" : "—"}
-          sub={leadsCount != null ? `${leadsCount} leads · ₹${Number(revenue || 0).toLocaleString("en-IN")} rev` : null}
-          status="ok"
+          sub={failed.stats ? "Failed to load" : leadsCount != null ? `${leadsCount} leads · ₹${Number(revenue || 0).toLocaleString("en-IN")} rev` : null}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("seo")}
         />
 
@@ -1042,6 +1073,8 @@ export default function MissionControlV1({ onNavigate }) {
               );
             })}
           </div>
+        ) : failed.history ? (
+          <p className="mc-empty" style={{ color: '#f87171' }}>Couldn't load recent activity — backend request failed.</p>
         ) : (
           <p className="mc-empty">No recent activity</p>
         )}

@@ -176,7 +176,7 @@ function LinkGenerator({ leads, onLinkCreated }) {
         {(form.name || form.phone) && (
           <div className="pv2-prefill-row">
             <span className="pv2-prefill-tag">{form.name} · {form.phone}</span>
-            <button className="pv2-prefill-clear" onClick={() => setForm(f => ({ ...f, name: "", phone: "" }))}>✕</button>
+            <button className="pv2-prefill-clear" aria-label="Clear selected customer" onClick={() => setForm(f => ({ ...f, name: "", phone: "" }))}>✕</button>
           </div>
         )}
 

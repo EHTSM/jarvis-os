@@ -732,10 +732,10 @@ export default function ExecutiveDashboard({ onNavigate }) {
             <div
               key={m.id ?? m.objective}
               className="ed-mission-row"
-              onClick={() => onNavigate && onNavigate("missionMemory")}
+              onClick={() => onNavigate && onNavigate("mission")}
               role="button"
               tabIndex={0}
-              onKeyDown={e => e.key === "Enter" && onNavigate && onNavigate("missionMemory")}
+              onKeyDown={e => e.key === "Enter" && onNavigate && onNavigate("mission")}
               title={m.objective}
             >
               <div className="ed-mission-obj">{m.objective}</div>

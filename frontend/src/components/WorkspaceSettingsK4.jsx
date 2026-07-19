@@ -16,6 +16,18 @@ function _govFmtDate(ts) {
   return new Date(ts).toLocaleDateString();
 }
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function K4ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ── K4 — Policy Library Panel ─────────────────────────────────────
 function PolicyLibraryPanel() {
   const [policies,  setPolicies]  = useState([]);
@@ -145,12 +157,15 @@ function CompliancePanel() {
   const [compliance, setCompliance] = useState(null);
   const [saving,     setSaving]     = useState(false);
   const [toast,      setToast]      = useState(null);
+  const [error,      setError]      = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/governance/compliance").then(r => setCompliance(r.compliance)).catch(() => {});
-  }, []);
+    setError(null);
+    _fetch("/governance/compliance").then(r => setCompliance(r.compliance)).catch(e => setError(e.message || "Failed to load"));
+  }, [retryToken]);
 
   function toggleFramework(fw) {
     setCompliance(c => {
@@ -168,6 +183,7 @@ function CompliancePanel() {
     setSaving(false);
   }
 
+  if (error && !compliance) return <K4ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!compliance) return <div className="k2-loading">Loading compliance profile…</div>;
 
   return (
@@ -230,11 +246,13 @@ function RiskMatrixPanel() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [toast,   setToast]   = useState(null);
+  const [error,   setError]   = useState(null);
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(() => {
-    _fetch("/governance/risk").then(r => setMatrix(r.riskMatrix || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/governance/risk").then(r => setMatrix(r.riskMatrix || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -250,6 +268,7 @@ function RiskMatrixPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading risk matrix…</div>;
+  if (error) return <K4ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k4-risk-panel">
@@ -311,12 +330,16 @@ function RiskMatrixPanel() {
 function GovernanceOverviewPanel() {
   const [report,  setReport]  = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/governance/reports").then(r => setReport(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/governance/reports").then(r => setReport(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading governance overview…</div>;
+  if (error) return <K4ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!report)  return <div className="k2-empty">No governance data.</div>;
 
   const { policies, compliance, risk } = report;
@@ -375,14 +398,16 @@ function GovernanceOverviewPanel() {
 function GovReportsPanel() {
   const [report,  setReport]  = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
 
   const load = useCallback(() => {
-    setLoading(true);
-    _fetch("/governance/reports").then(r => setReport(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/governance/reports").then(r => setReport(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
   if (loading) return <div className="k2-loading">Generating report…</div>;
+  if (error) return <K4ErrorState error={error} onRetry={load} />;
   if (!report)  return <div className="k2-empty">Report unavailable.</div>;
 
   const { policies, audit, members, activity } = report;

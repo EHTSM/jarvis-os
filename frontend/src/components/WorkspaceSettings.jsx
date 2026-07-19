@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
 import { getSettingsStatus, saveWhatsAppCredentials } from "../settingsApi";
+import { getAllIntegrations } from "../connectorApi";
+import ThemeToggle from "./ThemeToggle.jsx";
 import { _fetch } from "../_client";
 import "./WorkspaceSettings.css";
 import { Toggle, FieldRow } from "./WorkspaceSettingsShared";
@@ -34,13 +36,17 @@ function _applyBranding(brand) {
 }
 
 // ── Integration definitions ───────────────────────────────────────────
+// connectorId maps to the real integrationConnectors.cjs registry (checked
+// via getAllIntegrations()) — everything except WhatsApp used to hardcode
+// a fake status here (Razorpay always "Connected", the rest always "Not
+// connected") regardless of what was actually configured.
 const INTEGRATIONS = [
   {
     id:      "whatsapp",
     name:    "WhatsApp Business",
     icon:    "◉",
     color:   "#25d366",
-    status:  "check",
+    connectorId: null, // has its own dedicated real status check below (settingsStatus.whatsapp)
     desc:    "Automated follow-up sequences and outbound messaging.",
     setup:   "Connected via QR scan. Re-scan in Contacts tab to refresh session.",
   },
@@ -49,7 +55,7 @@ const INTEGRATIONS = [
     name:    "Razorpay",
     icon:    "◈",
     color:   "#3395ff",
-    status:  "check",
+    connectorId: "pay:razorpay",
     desc:    "Payment link generation and collection tracking.",
     setup:   "API key configured. Update in Contacts → Payment tab.",
   },
@@ -58,7 +64,7 @@ const INTEGRATIONS = [
     name:    "Gmail / Google Workspace",
     icon:    "✉",
     color:   "#ea4335",
-    status:  "disconnected",
+    connectorId: "prod:google_workspace",
     desc:    "Send emails and sync contacts from Google Contacts.",
     setup:   "Connect via OAuth. Requires Google account.",
   },
@@ -67,7 +73,7 @@ const INTEGRATIONS = [
     name:    "Slack",
     icon:    "◇",
     color:   "#4a154b",
-    status:  "disconnected",
+    connectorId: "msg:slack",
     desc:    "Post activity alerts and pipeline updates to a Slack channel.",
     setup:   "Add the Ooplix app to your Slack workspace.",
   },
@@ -76,7 +82,7 @@ const INTEGRATIONS = [
     name:    "Zapier",
     icon:    "⬟",
     color:   "#ff4a00",
-    status:  "disconnected",
+    connectorId: "auto:zapier",
     desc:    "Connect Ooplix to 5,000+ apps via Zapier webhooks.",
     setup:   "Use the Ooplix webhook URL in your Zap trigger.",
   },
@@ -85,7 +91,7 @@ const INTEGRATIONS = [
     name:    "Stripe",
     icon:    "◎",
     color:   "#635bff",
-    status:  "disconnected",
+    connectorId: "pay:stripe",
     desc:    "Accept international payments and subscriptions.",
     setup:   "Enter Stripe publishable key in billing settings.",
   },
@@ -111,12 +117,18 @@ export default function WorkspaceSettings({ onNavigate }) {
   }));
   const [toast,         setToast]        = useState(null);
   const [settingsStatus, setSettingsStatus] = useState(null);
+  const [connectorStatus, setConnectorStatus] = useState({}); // connectorId -> real status record
   const [waForm,        setWaForm]        = useState({ token: "", phoneId: "", verifyToken: "", apiVersion: "v18.0" });
   const [waSaving,      setWaSaving]      = useState(false);
 
   useEffect(() => {
     track.event("workspace_settings_viewed");
     getSettingsStatus().then(s => { if (s && !s.error) setSettingsStatus(s); });
+    getAllIntegrations().then(r => {
+      if (r?.ok && Array.isArray(r.connectors)) {
+        setConnectorStatus(Object.fromEntries(r.connectors.map(c => [c.id, c])));
+      }
+    });
   }, []);
 
   useEffect(() => { _applyBranding(brand); }, [brand]);
@@ -149,12 +161,11 @@ export default function WorkspaceSettings({ onNavigate }) {
 
   const handleIntegrationAction = (integ) => {
     if (integ.id === "whatsapp") return; // handled by dedicated form below
-    if (integ.status === "check") {
-      showToast(`${integ.name} is connected`);
-    } else {
-      showToast(`${integ.name} setup: ${integ.setup}`);
-    }
-    track.event("integration_action", { id: integ.id, status: integ.status });
+    // Real connect/manage flow already lives in the Connector Center
+    // (IntegrationCenter.jsx) — this used to only pop a toast with setup
+    // instructions and never actually connect anything.
+    track.event("integration_action", { id: integ.id, connectorId: integ.connectorId });
+    onNavigate?.("integrations");
   };
 
   const handleSaveWhatsApp = useCallback(async () => {
@@ -256,6 +267,9 @@ export default function WorkspaceSettings({ onNavigate }) {
                 and logo are saved for later use but nothing in the app displays them yet.
               </p>
               <div className="ws-fields">
+                <FieldRow label="Theme" hint="Light or dark appearance for the whole app">
+                  <ThemeToggle />
+                </FieldRow>
                 <FieldRow label="Workspace name" hint="Applied to the browser tab title, live">
                   <input className="ws-input" value={brand.workspaceName}
                     onChange={e => setBrand(b => ({ ...b, workspaceName: e.target.value }))}
@@ -752,7 +766,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                 {INTEGRATIONS.map(integ => {
                   const liveConnected = integ.id === "whatsapp"
                     ? settingsStatus?.whatsapp?.configured
-                    : integ.status === "check";
+                    : connectorStatus[integ.connectorId]?.status === "CONNECTED";
                   return (
                     <div key={integ.id} className={`ws-integ-card${liveConnected ? " ws-integ-card--connected" : ""}`}>
                       <span className="ws-integ-icon" style={{ color: integ.color }}>{integ.icon}</span>

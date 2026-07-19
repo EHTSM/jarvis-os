@@ -159,6 +159,19 @@
 .palette-trigger:hover { border-color: rgba(255,255,255,0.16); color: rgba(255,255,255,0.70); background: rgba(255,255,255,0.07); }
 .palette-trigger kbd { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.30); }
 
+/* Theme toggle — built on the token system (var(--x)) rather than this
+   file's raw rgba(255,255,255,...) convention, so it's the one topbar
+   control that actually looks correct in light mode. The rest of the
+   topbar is hardcoded-dark and out of scope for this minimal pass. */
+.theme-toggle-btn {
+  display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--surface-glass); color: var(--text-dim);
+  font-size: 12px; cursor: pointer; font-family: var(--font-sans, inherit);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.theme-toggle-btn:hover { border-color: var(--border-hover); color: var(--text); background: var(--surface-glass-hover); }
+.theme-toggle-btn--compact { padding: 5px 8px; }
+
 /* ── Header — OS chrome ───────────────────────────────────────────────── */
 .app-header {
   display: flex;

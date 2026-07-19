@@ -4,6 +4,18 @@ import { _fetch } from "../_client";
 // ── L2 Marketplace Panels ─────────────────────────────────────────
 const STAR_COLOR = "#f5a623";
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function L2ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function StarRating({ rating }) {
   const full  = Math.floor(rating);
   const half  = rating - full >= 0.5 ? 1 : 0;
@@ -181,21 +193,24 @@ function MarketplaceCatalogPanel() {
   const [cats,      setCats]      = useState([]);
   const [activeCat, setActiveCat] = useState("all");
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
   const [detail,    setDetail]    = useState(null);
 
   const reload = useCallback(() => {
+    setLoading(true); setError(null);
     const url = activeCat && activeCat !== "all" ? `/marketplace/catalog?category=${activeCat}` : "/marketplace/catalog";
-    _fetch(url).then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    _fetch(url).then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, [activeCat]);
 
   useEffect(() => {
     _fetch("/marketplace/categories").then(r => setCats(r.categories || [])).catch(() => {});
   }, []);
-  useEffect(() => { setLoading(true); reload(); }, [reload]);
+  useEffect(() => { reload(); }, [reload]);
 
   const { installing, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading marketplace…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">
@@ -225,16 +240,18 @@ function MarketplaceCatalogPanel() {
 function MarketplaceFeaturedPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/marketplace/featured").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/marketplace/featured").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
   const { installing, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading featured plugins…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
   return (
     <div className="l2-panel">
       <div className="l2-grid">
@@ -252,12 +269,13 @@ function MarketplaceSearchPanel() {
   const [query,   setQuery]   = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const doSearch = useCallback(() => {
-    if (!query.trim()) { setResults(null); return; }
-    setLoading(true);
-    _fetch(`/marketplace/search?q=${encodeURIComponent(query)}`).then(r => setResults(r)).catch(() => setResults(null)).finally(() => setLoading(false));
+    if (!query.trim()) { setResults(null); setError(null); return; }
+    setLoading(true); setError(null);
+    _fetch(`/marketplace/search?q=${encodeURIComponent(query)}`).then(r => setResults(r)).catch(e => { setResults(null); setError(e.message || "Search failed"); }).finally(() => setLoading(false));
   }, [query]);
 
   useEffect(() => {
@@ -272,7 +290,8 @@ function MarketplaceSearchPanel() {
       <input className="k2-form-input" placeholder="Search by name, capability, tag, author…"
         value={query} onChange={e => setQuery(e.target.value)} autoFocus />
       {loading && <div className="k2-loading">Searching…</div>}
-      {!loading && results && results.total === 0 && <div className="k2-empty">No results for "{query}".</div>}
+      {!loading && error && <L2ErrorState error={error} onRetry={doSearch} />}
+      {!loading && !error && results && results.total === 0 && <div className="k2-empty">No results for "{query}".</div>}
       {!loading && results?.plugins?.length > 0 && (
         <>
           <div className="l2-search-meta">{results.total} result{results.total !== 1 ? "s" : ""} for "{results.query}"</div>
@@ -293,16 +312,18 @@ function MarketplaceSearchPanel() {
 function MarketplaceRecsPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/marketplace/recommendations").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/marketplace/recommendations").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
   const { installing, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Computing recommendations…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">

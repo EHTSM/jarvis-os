@@ -23,6 +23,18 @@ function _planLabel(plan) {
   }
 }
 
+// A rejected fetch is a real backend failure — it must not render identically
+// to "no data yet."
+function CdErrorState({ error, onRetry }) {
+  return (
+    <div className="cd-error">
+      <span className="cd-error-title">Couldn't load this data</span>
+      <p className="cd-error-sub">{error}</p>
+      <button className="cd-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function StatCard({ label, value, sub, accent }) {
   return (
     <div className="cd-stat-card">
@@ -54,7 +66,18 @@ function QuickActions({ onNavigate }) {
   );
 }
 
-function PipelineSnapshot({ dashboard, onNavigate }) {
+function PipelineSnapshot({ dashboard, error, onRetry, onNavigate }) {
+  if (error) {
+    return (
+      <div className="cd-panel">
+        <div className="cd-panel-header">
+          <h3 className="cd-panel-title">Your pipeline</h3>
+        </div>
+        <CdErrorState error={error} onRetry={onRetry} />
+      </div>
+    );
+  }
+
   const hasData = dashboard && (dashboard.leads.total > 0 || dashboard.opportunities.total > 0 || dashboard.revenue.count > 0);
 
   if (!hasData) {
@@ -89,7 +112,16 @@ function PipelineSnapshot({ dashboard, onNavigate }) {
   );
 }
 
-function OrgPanel({ org, onNavigate }) {
+function OrgPanel({ org, error, onRetry, onNavigate }) {
+  if (error) {
+    return (
+      <div className="cd-panel">
+        <div className="cd-panel-header"><h3 className="cd-panel-title">Your organization</h3></div>
+        <CdErrorState error={error} onRetry={onRetry} />
+      </div>
+    );
+  }
+
   if (!org) {
     return (
       <div className="cd-panel">
@@ -122,6 +154,8 @@ export default function CustomerDashboard({ onNavigate }) {
   const [org,       setOrg]       = useState(null);
   const [loading,   setLoading]   = useState(true);
   const [name,      setName]      = useState("");
+  const [dashError, setDashError] = useState(null);
+  const [orgError,  setOrgError]  = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -132,8 +166,26 @@ export default function CustomerDashboard({ onNavigate }) {
       _fetch("/accounts/me"),
     ]);
     if (billingRes.status === "fulfilled" && billingRes.value?.success !== false) setBilling(billingRes.value);
-    if (dashRes.status === "fulfilled" && dashRes.value?.ok !== false) setDashboard(dashRes.value.dashboard || dashRes.value);
-    if (ctxRes.status === "fulfilled" && ctxRes.value?.ok !== false) setOrg(ctxRes.value.primaryOrg || null);
+
+    // A rejected promise or an explicit ok:false is a real backend failure —
+    // surface it distinctly instead of silently falling through to the
+    // "no leads/deals yet" / "no organization yet" empty states.
+    if (dashRes.status === "fulfilled" && dashRes.value?.ok !== false) {
+      setDashboard(dashRes.value.dashboard || dashRes.value);
+      setDashError(null);
+    } else {
+      setDashboard(null);
+      setDashError(dashRes.status === "rejected" ? (dashRes.reason?.message || "Failed to load pipeline") : (dashRes.value?.error || "Failed to load pipeline"));
+    }
+
+    if (ctxRes.status === "fulfilled" && ctxRes.value?.ok !== false) {
+      setOrg(ctxRes.value.primaryOrg || null);
+      setOrgError(null);
+    } else {
+      setOrg(null);
+      setOrgError(ctxRes.status === "rejected" ? (ctxRes.reason?.message || "Failed to load organization") : (ctxRes.value?.error || "Failed to load organization"));
+    }
+
     if (meRes.status === "fulfilled" && meRes.value?.account?.name) setName(meRes.value.account.name.split(" ")[0]);
     setLoading(false);
   }, []);
@@ -166,8 +218,8 @@ export default function CustomerDashboard({ onNavigate }) {
       <QuickActions onNavigate={onNavigate} />
 
       <div className="cd-panel-grid">
-        <OrgPanel org={org} onNavigate={onNavigate} />
-        <PipelineSnapshot dashboard={dashboard} onNavigate={onNavigate} />
+        <OrgPanel org={org} error={orgError} onRetry={load} onNavigate={onNavigate} />
+        <PipelineSnapshot dashboard={dashboard} error={dashError} onRetry={load} onNavigate={onNavigate} />
       </div>
     </div>
   );
