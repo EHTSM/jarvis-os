@@ -207,5 +207,6 @@ router.use(require("./productionDeployment"));    // PM-7: /pm7/* live productio
 router.use(require("./orgAiBrain"));               // V5 M1: /org-ai/:orgId/* org-scoped AI ask/ask-stream/recommend/history/usage/provider-health (requireAuth, permission-gated via organizationService directly)
 router.use(require("./orgKnowledgeGraph"));         // V5 M2: /org-graph/:orgId/* org-scoped knowledge graph index/query/impact (requireAuth, permission-gated via organizationService directly)
 router.use(require("./orgAgents"));                 // V5 M3: /org-agents/:orgId/* org-scoped agent list/run/history over the real agentExecutionEngine + agentRegistry (requireAuth, permission-gated via organizationService directly)
+router.use(require("./crossOrgCollaboration"));     // V5 M4: /cross-org/* mutual-consent company-to-company sharing over organizationService.grantOrgAccess (requireAuth, org_owner-gated via organizationService directly)
 
 module.exports = router;
