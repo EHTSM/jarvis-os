@@ -210,5 +210,6 @@ router.use(require("./orgAgents"));                 // V5 M3: /org-agents/:orgId
 router.use(require("./crossOrgCollaboration"));     // V5 M4: /cross-org/* mutual-consent company-to-company sharing over organizationService.grantOrgAccess (requireAuth, org_owner-gated via organizationService directly)
 router.use(require("./orgAiWorkspace"));            // V5 M5: /org-workspace/:orgId/* composed dashboard over M1-M4 + automationService (requireAuth, permission-gated via organizationService directly)
 router.use(require("./orgExecutiveIntelligence")); // V5 M6: /org-executive/:orgId/* insights/recommendations/forecast/summary composed from real org-scoped data (requireAuth, permission-gated via organizationService directly)
+router.use(require("./orgAutomationCenter"));       // V5 M7: /org-automation/:orgId/* workflows/scheduled-jobs/triggers/connectors/AI-execution unified over automationService + orgAutomationScheduler + orgAiBrain (requireAuth, permission-gated via organizationService directly)
 
 module.exports = router;

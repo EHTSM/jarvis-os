@@ -827,6 +827,20 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── V5 Module 7: Organization Automation Center — real cron dispatcher
+    // for automationService's existing "schedule" trigger type, plus the
+    // event-bus subscription that lets an automation rule trigger a real
+    // org-scoped AI call via orgAiBrain ────────────────────────────────
+    try {
+        const orgScheduler = require("./services/orgAutomationScheduler.cjs");
+        const schedResult = orgScheduler.start();
+        const orgAutoCenter = require("./services/orgAutomationCenter.cjs");
+        const aiWireResult = orgAutoCenter.startAiWiring();
+        logger.info(`[OrgAutomationCenter] scheduler=${schedResult.skipped ? "skipped(test mode)" : "started"} aiWiring=${aiWireResult.ok ? "started" : "failed"}`);
+    } catch (autoCenterErr) {
+        logger.warn("[OrgAutomationCenter] failed to start (non-fatal):", autoCenterErr.message);
+    }
+
     // ── Phase I4: Autonomous Execution Runtime ────────────────────────────
     try {
         const execRT = require("./services/autonomousExecutionRuntime.cjs");
