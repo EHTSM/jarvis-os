@@ -205,5 +205,6 @@ router.use(require("./rc3"));                     // RC-3: /rc3/* 7-day stabilit
 router.use(require("./rc4"));                     // RC-4: /rc4/* final launch certification, 8-area, Go/No-Go
 router.use(require("./productionDeployment"));    // PM-7: /pm7/* live production deployment tracking
 router.use(require("./orgAiBrain"));               // V5 M1: /org-ai/:orgId/* org-scoped AI ask/ask-stream/recommend/history/usage/provider-health (requireAuth, permission-gated via organizationService directly)
+router.use(require("./orgKnowledgeGraph"));         // V5 M2: /org-graph/:orgId/* org-scoped knowledge graph index/query/impact (requireAuth, permission-gated via organizationService directly)
 
 module.exports = router;
