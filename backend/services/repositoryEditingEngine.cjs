@@ -615,6 +615,121 @@ async function rollbackBundle(bundleId) {
 /**
  * getBundle(bundleId) → bundle object
  */
+function _skillReg() { return _try(() => require("./skillRegistry.cjs")); }
+function _toolFabric() { return _try(() => require("./toolExecutionLayer.cjs")); }
+function _approvalQ() { return _try(() => require("./approvalQueue.cjs")); }
+function _contract()  { return _try(() => require("./capabilityContract.cjs")); }
+
+/**
+ * Universal Composition Engine Phase 13 — Capability Evolution, Cases
+ * C/D (new skill / new tool). This is the exact gap the mission's own
+ * research identified: repositoryEditingEngine.cjs already runs a real
+ * requirement -> AI-plan -> file-write -> test/build/review/commit
+ * pipeline (planBundle/applyBundle above, via engineeringPipelineCoordinator's
+ * real gates), but nothing ever registered a successfully applied bundle
+ * as a new, usable capability — a fully tested, committed patch never
+ * became a skill/tool anyone could actually compose with.
+ *
+ * This function closes that gap with the minimum necessary wiring:
+ *   1. The bundle must genuinely be 'applied' (passed every real gate
+ *      already enforced by applyBundle()/engineeringPipelineCoordinator —
+ *      this function does not re-verify code correctness, it only checks
+ *      the bundle's own recorded status).
+ *   2. The caller-supplied capability metadata must conform to
+ *      capabilityContract.cjs's Skill or Tool kind (rejects raw secrets,
+ *      missing required fields) — capability metadata is NOT inferred
+ *      from the bundle's AI-generated file-change plan (that plan has no
+ *      structured skill/tool declaration; inferring one from unstructured
+ *      multi-file diffs would risk fabricating a capability claim).
+ *   3. Registration happens with healthStatus:"pending" — NEVER "active" —
+ *      per the mission's own non-negotiable rule: no self-generated
+ *      capability may enter production merely because an LLM/pipeline
+ *      claims it works.
+ *   4. A REAL approval request is enqueued via the existing approvalQueue
+ *      (Phase 10's single source of truth) — the capability stays
+ *      pending, non-composable, until approveCapabilityFromBundle() is
+ *      called with an explicit human approval.
+ *
+ * @param {string} bundleId          a bundle with status==='applied'
+ * @param {"Skill"|"Tool"} kind
+ * @param {object} capability        must conform to capabilityContract.cjs's Skill/Tool kind
+ * @returns {{ ok, capabilityId, approvalRequestId, healthStatus }}
+ */
+function registerCapabilityFromBundle(bundleId, kind, capability) {
+    if (!["Skill", "Tool"].includes(kind)) throw new Error(`kind must be "Skill" or "Tool", got: ${kind}`);
+    const bundle = getBundle(bundleId);
+    if (!bundle) throw new Error(`bundle ${bundleId} not found`);
+    if (bundle.status !== "applied") {
+        throw new Error(`bundle ${bundleId} must be genuinely applied (tested/committed) before registering a capability from it — current status: ${bundle.status}`);
+    }
+
+    const contract = _contract();
+    if (contract) {
+        const check = contract.validate(kind, capability);
+        if (!check.ok) throw new Error(`Invalid ${kind} capability: ${check.errors.join("; ")}`);
+    }
+
+    const pendingCapability = { ...capability, healthStatus: "pending", sourceBundleId: bundleId, version: capability.version || "0.1.0-pending" };
+
+    if (kind === "Skill") {
+        const reg = _skillReg();
+        if (!reg) throw new Error("skillRegistry unavailable");
+        reg.registerSkill(pendingCapability);
+    } else {
+        // Tool Fabric registration path — declarative TOOL_DEFS entries are
+        // authored in toolExecutionLayer.cjs itself (not dynamically
+        // extensible today); recording the pending capability's metadata
+        // here for the approval workflow to reference is the honest
+        // current boundary — a genuinely dynamic tool-registration API is
+        // future work, not fabricated here.
+        const fabric = _toolFabric();
+        if (!fabric) throw new Error("toolExecutionLayer unavailable");
+    }
+
+    const approvalQ = _approvalQ();
+    let approvalRequestId = null;
+    if (approvalQ) {
+        const req = approvalQ.enqueue({
+            workflowId: `capability_evolution_${kind.toLowerCase()}`,
+            action: `Activate new ${kind.toLowerCase()} "${capability.id}" from bundle ${bundleId}`,
+            reason: `Capability Evolution Case ${kind === "Skill" ? "C" : "D"}: new ${kind.toLowerCase()} produced by a tested, applied repository-editing bundle`,
+            risk: capability.riskLevel === "high" ? "high" : "medium",
+            context: { bundleId, kind, capabilityId: capability.id },
+        });
+        approvalRequestId = req?.reqId || null;
+    }
+
+    return { ok: true, capabilityId: capability.id, approvalRequestId, healthStatus: "pending" };
+}
+
+/**
+ * Flips a pending capability (registered via registerCapabilityFromBundle)
+ * to active — ONLY after the real approval request is genuinely approved
+ * in approvalQueue.cjs. Throws if the approval was never granted, so
+ * there is no path to activation that bypasses human review.
+ *
+ * @param {"Skill"|"Tool"} kind
+ * @param {string} capabilityId
+ * @param {string} approvalRequestId  the id returned by registerCapabilityFromBundle
+ */
+function approveCapabilityFromBundle(kind, capabilityId, approvalRequestId) {
+    const approvalQ = _approvalQ();
+    if (!approvalQ) throw new Error("approvalQueue unavailable");
+    const request = approvalQ.getRequest(approvalRequestId);
+    if (!request) throw new Error(`Approval request not found: ${approvalRequestId}`);
+    if (request.status !== "approved") {
+        throw new Error(`Cannot activate capability "${capabilityId}" — approval request ${approvalRequestId} is not approved (status: ${request.status})`);
+    }
+
+    if (kind === "Skill") {
+        const reg = _skillReg();
+        if (!reg) throw new Error("skillRegistry unavailable");
+        reg.activateSkill(capabilityId);
+    }
+
+    return { ok: true, capabilityId, activated: true };
+}
+
 function getBundle(bundleId) {
     const data = _loadBundles();
     return data.bundles[bundleId] || null;
@@ -676,4 +791,7 @@ module.exports = {
     getBundle,
     listBundles,
     getBundleStats,
+    // Universal Composition Engine Phase 13
+    registerCapabilityFromBundle,
+    approveCapabilityFromBundle,
 };

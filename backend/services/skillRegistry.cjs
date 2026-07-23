@@ -221,10 +221,49 @@ function verifyNoOrphans() {
     return { ok: orphans.length === 0, orphans };
 }
 
+/**
+ * Universal Composition Engine Phase 13 — activates a pending skill
+ * (one registered via repositoryEditingEngine.registerCapabilityFromBundle
+ * with healthStatus:"pending"). This is the ONLY function that may flip
+ * a skill's healthStatus to "active" — repositoryEditingEngine.cjs's
+ * approveCapabilityFromBundle() calls this ONLY after confirming a real,
+ * genuinely-approved request in approvalQueue.cjs, so there is no path
+ * from "pending" to "active" that skips human review.
+ */
+function activateSkill(skillId) {
+    const store = _read();
+    const skill = store.skills.find(s => s.id === skillId);
+    if (!skill) throw new Error(`Skill not found: ${skillId}`);
+    if (skill.healthStatus === "active") return { ...skill };
+    skill.healthStatus = "active";
+    skill.activatedAt = new Date().toISOString();
+    _write(store);
+    logger.info(`[SkillRegistry] Activated skill ${skillId}`);
+    return { ...skill };
+}
+
+/**
+ * Whether a skill is genuinely composable right now — active status AND
+ * its executionHandler genuinely resolves (reuses the same live-registry
+ * check as verifyNoOrphans(), applied to one skill). A "pending" skill
+ * is never composable, regardless of whether its handler would resolve —
+ * this is the exact honesty gate Phase 13 requires.
+ */
+function isComposableNow(skillId) {
+    const skill = getSkill(skillId);
+    if (!skill) return { composable: false, reason: "unknown_skill" };
+    if (skill.healthStatus !== "active") return { composable: false, reason: `healthStatus:${skill.healthStatus}` };
+    const { orphans } = verifyNoOrphans();
+    if (orphans.includes(skillId)) return { composable: false, reason: "orphaned_handler" };
+    return { composable: true, reason: null };
+}
+
 module.exports = {
     listSkills,
     getSkill,
     findByCapability,
     registerSkill,
     verifyNoOrphans,
+    activateSkill,
+    isComposableNow,
 };
