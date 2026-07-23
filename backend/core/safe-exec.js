@@ -27,7 +27,7 @@ const MAX_OUTPUT      = 128_000;  // 128KB per stream
 // the caller must sanitize arguments. CWD is restricted to PROJECT_ROOT.
 const ALLOWLIST = new Set([
     "echo", "printf", "ls", "cat", "head", "tail", "grep", "find",
-    "pwd", "whoami", "uname", "date", "which", "env", "printenv",
+    "pwd", "whoami", "uname", "hostname", "date", "which", "env", "printenv",
     "wc", "sort", "uniq", "tr", "cut", "diff", "stat",
     "basename", "dirname", "realpath", "test", "true", "false",
     "node", "npm", "npx",

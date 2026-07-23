@@ -379,15 +379,27 @@ async function handleWhatsAppWebhook(req, res) {
     const _waStart = Date.now();
 
     try {
-        // Log every raw POST so we can distinguish: (A) Meta not sending vs (B) parse failure
-        logger.info(`[WA-RAW] POST body: ${JSON.stringify(req.body).slice(0, 500)}`);
+        // req.body is NOT reliable here: backend/middleware/rawBody.js drains
+        // the request stream for this route (for HMAC signature verification
+        // in backend/routes/whatsapp.js), which starves express.json() of any
+        // bytes to parse — req.body ends up {} regardless of what Meta sent.
+        // Parse req.rawBody directly instead, the same way the Razorpay
+        // webhook handler already does (backend/controllers/webhookController.js
+        // handleRazorpayWebhook, which has the identical rawBody-vs-json.body
+        // conflict on its own routes and already works around it this way).
+        let parsedBody = null;
+        try { parsedBody = req.rawBody ? JSON.parse(req.rawBody) : req.body; }
+        catch { parsedBody = req.body; }
 
-        const msg = wa.parseIncomingMessage(req.body);
+        // Log every raw POST so we can distinguish: (A) Meta not sending vs (B) parse failure
+        logger.info(`[WA-RAW] POST body: ${JSON.stringify(parsedBody).slice(0, 500)}`);
+
+        const msg = wa.parseIncomingMessage(parsedBody);
         if (!msg) {
             // Status updates (delivery/read receipts) land here — log them so we know Meta is connected
-            const statuses = req.body?.entry?.[0]?.changes?.[0]?.value?.statuses;
+            const statuses = parsedBody?.entry?.[0]?.changes?.[0]?.value?.statuses;
             if (statuses) logger.info(`[WA-STATUS] ${JSON.stringify(statuses[0]).slice(0, 200)}`);
-            else logger.warn(`[WA-PARSE] No message extracted — body: ${JSON.stringify(req.body).slice(0, 300)}`);
+            else logger.warn(`[WA-PARSE] No message extracted — body: ${JSON.stringify(parsedBody).slice(0, 300)}`);
             return;
         }
         if (!msg.text) {

@@ -28,6 +28,33 @@ function _verifyWhatsAppSignature(rawBody, header) {
     return crypto.timingSafeEqual(incoming, expected);
 }
 
+// ── Replay protection ──────────────────────────────────────────────
+// Meta's webhook delivery is at-least-once — the same message.id can
+// legitimately arrive more than once on retry, but a captured-and-replayed
+// request must not be reprocessed (double CRM writes, double AI replies).
+// Reuses the same bounded Map+TTL dedup pattern already used for runtime
+// dispatch idempotency (backend/routes/runtime.js _dedupCache) — no new
+// dedup mechanism, no external store.
+const _seenMessageIds = new Map(); // messageId -> firstSeenTs
+const REPLAY_TTL_MS = 24 * 60 * 60 * 1000; // Meta retries webhooks for up to 24h
+setInterval(() => {
+    const cutoff = Date.now() - REPLAY_TTL_MS;
+    for (const [id, ts] of _seenMessageIds) {
+        if (ts < cutoff) _seenMessageIds.delete(id);
+    }
+}, 60 * 60 * 1000).unref();
+
+function _extractMessageId(body) {
+    return body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.id || null;
+}
+
+function _isReplay(messageId) {
+    if (!messageId) return false; // no id to key on (e.g. status callbacks) — can't dedup, let through
+    if (_seenMessageIds.has(messageId)) return true;
+    _seenMessageIds.set(messageId, Date.now());
+    return false;
+}
+
 // Webhook verification (GET) — Meta sends this to confirm the endpoint.
 router.get("/whatsapp/webhook", (req, res) => {
     const check = wa.verifyWebhook(req.query);
@@ -44,7 +71,19 @@ router.post(
         const body   = req.rawBody || "";
         if (!_verifyWhatsAppSignature(body, sig)) {
             console.warn("[WA] Webhook HMAC mismatch — rejected");
-            return res.sendStatus(403);
+            return res.status(401).json({ error: "Invalid webhook signature" });
+        }
+        // req.body is not reliable here — see handleWhatsAppWebhook's comment
+        // in backend/controllers/jarvisController.js for why (rawBody.js
+        // drains the stream before express.json() can parse it for this
+        // route). Parse req.rawBody the same way.
+        let parsedBody = null;
+        try { parsedBody = req.rawBody ? JSON.parse(req.rawBody) : req.body; }
+        catch { parsedBody = req.body; }
+        const messageId = _extractMessageId(parsedBody);
+        if (_isReplay(messageId)) {
+            console.warn(`[WA] Replay detected for message ${messageId} — rejected`);
+            return res.status(400).json({ error: "Replay detected" });
         }
         next();
     },
