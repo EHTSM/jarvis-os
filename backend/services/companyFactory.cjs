@@ -51,6 +51,7 @@ const _fwr = () => _try(() => require("./founderWorkRegistry.cjs"));
 const _vault = () => _try(() => require("./secretVault.cjs"));
 const _deptReg = () => _try(() => require("./departmentTemplateRegistry.cjs"));
 const _agentRegistry = () => _try(() => require("../../agents/runtime/agentRegistry.cjs"));
+const _org = () => _try(() => require("./organizationService.cjs"));
 
 function _ts()  { return new Date().toISOString(); }
 function _id()  { return `cf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -243,6 +244,36 @@ async function createCompany({
   if (!lcResult?.ok) return { ok: false, error: "lifecycle/org provisioning failed: " + lcResult?.error, timeline };
   const company  = lcResult?.company;
   _step("lifecycle", { companyId: company?.id, stage: company?.stage, orgId: company?.orgId });
+
+  // ─ Step 11a: Instantiate composed departments as real org department records ─
+  // Uses the existing, unmodified organizationService.createDepartment() API
+  // — no new department data model. Only creates a real department record
+  // for families that are genuinely composable right now (skips
+  // requiresNewCapability:true families — creating a department record
+  // for a family with zero working agent/skill behind it would be an
+  // empty label, not real capability; see departmentTemplateRegistry.cjs
+  // Phase 3). creatorAccountId is the org owner (real org_owner role,
+  // assigned at org creation — see organizationService.createOrg()),
+  // so this call passes the same real permission check any operator
+  // action would.
+  const createdDepartments = [];
+  if (company?.orgId) {
+    for (const dept of composedDepartments) {
+      if (!dept.composable) continue;
+      try {
+        const rec = _org()?.createDepartment?.(
+          company.orgId,
+          { name: dept.label, description: `Auto-composed from template "${template.id}" (${dept.templateKey})`, leadAccountId: creatorAccountId },
+          creatorAccountId
+        );
+        if (rec) createdDepartments.push({ id: rec.id, key: dept.templateKey, label: dept.label });
+      } catch (e) {
+        // Non-fatal — a single department creation failure (e.g. duplicate
+        // name on a re-run) does not block company creation.
+      }
+    }
+  }
+  _step("departments_created", { count: createdDepartments.length, departments: createdDepartments });
 
   // ─ Step 11b: Connector readiness (report only — never auto-connect) ──────
   // No connector can be attached automatically: every connector requires a

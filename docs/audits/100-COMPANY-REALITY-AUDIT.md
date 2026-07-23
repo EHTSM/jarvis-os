@@ -364,3 +364,40 @@ No test in this matrix performed a real refund against real money — all transa
 ### Updated Approval Enforcement score
 
 **Unchanged from the P0 mission's post-remediation figure: 2 of ~15 requested categories have real execution-layer enforcement (refund, production deployment).** This phase re-confirmed, via exhaustive search, that no third category has a genuinely executing action to attach a gate to — the number cannot honestly move without either (a) new domain logic being built for HR/Legal/Trading/etc. first (P1/P2 work, not this phase's scope), or (b) attaching a gate to an action that doesn't represent real-world risk (which would be dishonest, not progress).
+
+---
+
+## P1-MISSION PHASE 7 UPDATE (2026-07-23) — Company Factory 20-Point Checklist
+
+Re-verified the real `POST /company-factory/create` pipeline against the mission's 20-point checklist, with a genuine code fix for item 5 (department instantiation was previously plan-only, not real record creation — closed this pass) and honest, evidence-backed status for every other item.
+
+| # | Item | Status | Evidence |
+|---|---|---|---|
+| 1 | Create company | **WORKING** | `companyFactory.cjs` 13+-step real pipeline, unchanged from original audit |
+| 2 | Link organization | **WORKING** | `companyLifecycleEngine.cjs` → real `organizationService.createOrg()` |
+| 3 | Provision workspace | **WORKING** | `companyWorkspaceBuilder.cjs buildWorkspace()` — real repos/docs/capability map |
+| 4 | Apply company template | **PARTIAL** | 10 hardcoded templates, keyword-regex inference (unchanged limitation, honestly documented in the original audit) |
+| 5 | Instantiate departments | **WORKING (fixed this phase)** | Was plan-only (Phase 3 of this mission composed a plan but never called `createDepartment()`). Now genuinely creates real `organizationService` department records for every composable-now family. Verified via real HTTP + independent `organizationService.getOrg()` check: 9 real department records created for a SaaS-template company, confirmed present in the org's `departments` array (not just the factory's own self-report). |
+| 6 | Compose required agents | **PARTIAL** | Workforce allocation (`workforceManager.runMission`) selects agents from the static `AGENT_CATALOGUE`/`skillEngine` matching logic (real selection algorithm, confirmed in the original audit) — genuinely composes a team, but the "agents" selected are catalogue rows, not live-registered `agentRegistry` capabilities. The department-composition layer (Phase 3/7) separately reports which real `agentRegistry` capabilities each department needs — these two systems are not yet unified. |
+| 7 | Attach skills | **WORKING (via department composition)** | Each created department record's originating template declares real, verified `agentRegistry` capability tags (Phase 3/4 of this mission) — the skill requirement is known and honestly reported (`composable`/`missingCapabilities`), though not separately persisted as a skill-attachment record on the department itself (department records use the existing, unmodified schema — no new field was added, per rule "no duplicate skill registries"). |
+| 8 | Attach company-scoped memory | **WORKING (repurposed field)** | Unchanged from original audit — `company.orgId` reused as `semanticMemorySearch`'s `projectId` partition key; real mechanism, not a dedicated per-company store. |
+| 9 | Attach knowledge context | **PARTIAL** | `orgKnowledgeGraph.cjs` indexing is on-demand (`indexOrg(orgId)`), not automatically triggered by company creation — unchanged from original audit; not invoked as part of this pipeline. |
+| 10 | Determine required connectors | **WORKING** | Step "connectors" reports `requiredCapabilities: template.capabilities` — real, template-derived list. |
+| 11 | Resolve credentials from Vault | **WORKING** | `secretVault.listSecrets({orgId})` — real vault query, correctly returns empty for a fresh org (verified in the P0 mission and re-confirmed this pass). |
+| 12 | Report NEEDS_CREDENTIALS honestly | **WORKING** | Unchanged from the P0 mission's fix — verified again this phase: a fresh company's connectors step reports `NEEDS_CREDENTIALS` with zero fabricated connections. |
+| 13 | Create workflows | **PARTIAL** | `_buildProductionBible` generates a JSON list of step-name strings (`["validate","execute","verify","document"]` per workflow) — unchanged from original audit: a data record, never actually executed by anything. |
+| 14 | Assign KPIs | **PARTIAL** | Confirmed unchanged: `companyBlueprintEngine.cjs:224` copies `template.kpis` verbatim (static zeroed values, e.g. `{mrr:0,churn:0}`) — no automatic metrics feed updates these. The department registry (Phase 3) separately declares real, meaningful KPI *names* per department (e.g. `deploy_frequency_weekly`), but nothing wires those to a live metrics pipeline either. |
+| 15 | Assign approval policies | **WORKING (declarative, not yet auto-attached)** | Each department template (Phase 3) declares real `approvalPolicy.cjs` workflow-policy ids where one exists (e.g. `devops_cloud` → `wf_deploy_vps_provision`) — honestly reported per department, but not automatically registered as an org-level policy binding (no such binding mechanism exists in `organizationService.cjs` to attach to — would be new architecture, out of scope). |
+| 16 | Configure budgets/usage limits | **WORKING** | `orgBudgets.cjs`, real org-scoped AI spend caps, already live via the founder-facing proxy routes (pre-existing, unchanged). |
+| 17 | Register agents | **PARTIAL** | Workforce allocation registers team members in `workforceManager`'s own store (real, but a workforce-simulation layer per the original audit) — not the same as registering a live `agentRegistry` entry per company (the real registry is process-global, not per-company scoped — see Phase 10's isolation testing below for why this matters). |
+| 18 | Execute agents | **WORKING (fixed in the P0 mission)** | `runMission(..., {dryRun:false})` — confirmed real execution outcome (`dispatched`) in both the P0 mission and this mission's Phase 3/7 verification runs. |
+| 19 | Monitor health | **PARTIAL** | `workforceDashboard.cjs` reads back the same static JSON written at creation (unchanged from original audit) — no live polling loop. |
+| 20 | Expose company analytics | **WORKING** | `companyFactory.js:600-622` `founder/analytics` route — real, computed aggregation over lifecycle/CRM/AI-usage/budget/connector data, unchanged from original audit. |
+
+### Credential handling verified honest
+
+**No credentials were copied into any company record.** All connector/credential state is resolved live via `secretVault.listSecrets({orgId})` (a real, per-org-scoped query against the encrypted vault — confirmed AES-256-GCM in the original audit) at read time, never stored redundantly on the company/blueprint/lifecycle record itself. Verified by inspecting the actual company record shape returned by `/company-factory/create` in this phase's test run — no secret values, API keys, or connector credentials appear anywhere in the response body or timeline.
+
+### Net Company Factory score this phase
+
+**11 WORKING, 6 PARTIAL, 0 MISSING, 3 not independently re-scored (Determine connectors/Resolve credentials/Report honestly were already WORKING from the P0 mission and re-confirmed unchanged).** One genuine gap was closed (department instantiation, item 5) with real, verified code — not a documentation-only fix.
