@@ -239,19 +239,39 @@ router.get("/company-factory/workspaces/blueprint/:blueprintId", requireAuth, (r
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
 
+// Universal Composition Engine — Completion Gaps Phase 5 (Frontend
+// org/company scoping). Both routes below previously had NO
+// authorization at all: listCompanies() returned every company across
+// EVERY org regardless of caller, and getCompany(id)/getCompanyDetail(id)
+// were pure id-lookups with no ownership check — a real cross-tenant
+// IDOR (any authenticated account could view any other org's company
+// by id, or the full company list, by guessing/enumerating). Fixed by
+// resolving the caller's own authorized org set SERVER-SIDE (via
+// organizationService.listOrgs(accountId) — the same real function
+// already used correctly by /company-factory/founder/dashboard above)
+// and never trusting a frontend-supplied orgId/companyId without that
+// check.
 router.get("/company-factory/companies", requireAuth, (req, res) => {
   const { stage, templateId, limit } = req.query;
-  res.json(_cle_e()?.listCompanies?.({ stage, templateId, limit: limit ? +limit : 50 }) || { ok: false });
+  const accountId = req.user.sub;
+  const { orgs } = _org()?.listOrgs?.(accountId) || { orgs: [] };
+  const authorizedOrgIds = new Set(orgs.map(o => o.id));
+  const all = _cle_e()?.listCompanies?.({ stage, templateId, limit: limit ? +limit * 10 : 500 })?.companies || [];
+  const scoped = all.filter(c => c.orgId && authorizedOrgIds.has(c.orgId)).slice(-(limit ? +limit : 50));
+  res.json({ ok: true, companies: scoped });
 });
 
 router.get("/company-factory/companies/:id", requireAuth, (req, res) => {
-  const c = _cle_e()?.getCompany?.(req.params.id);
-  if (!c) return res.status(404).json({ ok: false, error: "company not found" });
-  res.json({ ok: true, company: c });
+  const company = _requireCompanyOrgPermission(req, res, "view_members");
+  if (!company) return;
+  res.json({ ok: true, company });
 });
 
-router.get("/company-factory/companies/:id/detail", requireAuth, (req, res) =>
-  res.json(_cd()?.getCompanyDetail?.(req.params.id) || { ok: false }));
+router.get("/company-factory/companies/:id/detail", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_members");
+  if (!company) return;
+  res.json(_cd()?.getCompanyDetail?.(company.id) || { ok: false });
+});
 
 router.post("/company-factory/companies/:id/advance", requireAuth, async (req, res) => {
   const { force } = req.body || {};
