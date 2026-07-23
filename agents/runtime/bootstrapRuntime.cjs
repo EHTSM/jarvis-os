@@ -229,6 +229,117 @@ try {
     logger.warn("[Bootstrap] AI agent skipped:", err.message);
 }
 
+// ── Recovered agents (100-COMPANY reality audit Phase 4 remediation) ──
+// The following agents/*.cjs files under agents/business, agents/content,
+// and agents/internet had real, working implementations but were never
+// reachable from the running server (agents/business/index.cjs and
+// agents/content/index.cjs — the only thing that ever required them — both
+// throw at require-time due to missing agents/crm.cjs, agents/paymentAgent.cjs,
+// and agents/core/groqClient.cjs dependencies elsewhere in those same
+// directories; see 100-COMPANY-GAP-LIST.md P1 #8). Each file below was
+// individually verified to require() cleanly and already exposes a
+// run(task) handler matching this registry's contract — wired directly,
+// not through the broken barrels, and not through the separate
+// agents/multi/agentManager.cjs parallel registry (which duplicates this
+// one and was left alone — see REALITY-AUDIT Part 3).
+
+// ── Business: analytics / revenue / subscription (self-contained, no
+// broken cross-file requires) ─────────────────────────────────────────
+try {
+    const analytics = require("../business/analyticsAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_analytics", capabilities: ["analytics"], maxConcurrent: 3,
+        handler: async (task) => analytics.run(task),
+    });
+    logger.info("[Bootstrap] business_analytics agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_analytics agent skipped:", err.message); }
+
+try {
+    const revenue = require("../business/revenueAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_revenue", capabilities: ["revenue"], maxConcurrent: 3,
+        handler: async (task) => revenue.run(task),
+    });
+    logger.info("[Bootstrap] business_revenue agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_revenue agent skipped:", err.message); }
+
+try {
+    const subscription = require("../business/subscriptionAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_subscription", capabilities: ["subscription"], maxConcurrent: 3,
+        handler: async (task) => subscription.run(task),
+    });
+    logger.info("[Bootstrap] business_subscription agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_subscription agent skipped:", err.message); }
+
+// ── Content: scheduler / voice cloning (self-contained) ────────────────
+try {
+    const scheduler = require("../content/contentScheduler.cjs");
+    orchestrator.registerAgent({
+        id: "content_scheduler", capabilities: ["content_scheduling"], maxConcurrent: 3,
+        handler: async (task) => scheduler.run(task),
+    });
+    logger.info("[Bootstrap] content_scheduler agent registered");
+} catch (err) { logger.warn("[Bootstrap] content_scheduler agent skipped:", err.message); }
+
+try {
+    const voice = require("../content/voiceCloningAgent.cjs");
+    orchestrator.registerAgent({
+        id: "content_voice", capabilities: ["audio", "voice"], maxConcurrent: 2,
+        handler: async (task) => voice.run(task),
+    });
+    logger.info("[Bootstrap] content_voice agent registered");
+} catch (err) { logger.warn("[Bootstrap] content_voice agent skipped:", err.message); }
+
+// ── Internet: real public-API research/intelligence agents ─────────────
+// All ten expose run(task) already; capabilities named after the audited
+// MISSING/UNWIRED roles they cover (SEO/Social Media/Research/Knowledge/
+// Quant/Market Intelligence — REALITY-AUDIT Part 3).
+// Each agent's first capability is a unique tag so taskRouter.cjs's
+// TASK_TYPE_MAP can deterministically address one specific agent —
+// findForCapability() has no tie-breaker beyond load, so agents sharing a
+// tag (e.g. multiple "research" agents) would be indistinguishable from a
+// task-type mapping's perspective. The broader shared tags (research,
+// market_intelligence, geospatial) remain for dashboard/discovery grouping.
+const INTERNET_AGENTS = [
+    { file: "webScraperAgent.cjs",         id: "internet_web_scraper",       capabilities: ["web_scraping", "research"] },
+    { file: "browserAutomationAgent.cjs",  id: "internet_browser_automation", capabilities: ["browser_automation", "research"] },
+    { file: "apiFetcherAgent.cjs",         id: "internet_api_fetcher",       capabilities: ["api_fetch", "integration"] },
+    { file: "newsAggregatorAgent.cjs",     id: "internet_news",             capabilities: ["news", "research"] },
+    { file: "socialMediaAgent.cjs",        id: "internet_social_media",     capabilities: ["social_media", "research"] },
+    { file: "trendAnalyzerAgent.cjs",      id: "internet_trend_analyzer",   capabilities: ["trend_analysis", "market_intelligence", "research"] },
+    { file: "competitorTrackerAgent.cjs",  id: "internet_competitor_tracker", capabilities: ["competitor_tracking", "market_intelligence", "research"] },
+    { file: "marketIntelligenceAgent.cjs", id: "internet_market_intelligence", capabilities: ["market_intelligence_report", "market_intelligence", "quant"] },
+    { file: "locationAgent.cjs",           id: "internet_location",         capabilities: ["location_lookup", "geospatial"] },
+    { file: "weatherAgent.cjs",            id: "internet_weather",          capabilities: ["weather", "geospatial"] },
+];
+for (const { file, id, capabilities } of INTERNET_AGENTS) {
+    try {
+        const agent = require(`../internet/${file}`);
+        orchestrator.registerAgent({ id, capabilities, maxConcurrent: 3, handler: async (task) => agent.run(task) });
+        logger.info(`[Bootstrap] ${id} agent registered`);
+    } catch (err) {
+        logger.warn(`[Bootstrap] ${id} agent skipped:`, err.message);
+    }
+}
+
+// ── System health — real os-module metrics, no run(task) contract in the
+// source file, so a small task-type adapter is used (same pattern as the
+// filesystem agent above) ───────────────────────────────────────────────
+try {
+    const systemHealth = require("../system/systemHealth.cjs");
+    orchestrator.registerAgent({
+        id: "system_health", capabilities: ["system_health", "monitoring"], maxConcurrent: 3,
+        handler: async (task) => {
+            const type = task.type || "health";
+            if (type === "memory")     return { success: true, type: "system_health", data: systemHealth.memory() };
+            if (type === "is_healthy") return { success: true, type: "system_health", data: systemHealth.isHealthy() };
+            return { success: true, type: "system_health", data: systemHealth.health() };
+        },
+    });
+    logger.info("[Bootstrap] system_health agent registered");
+} catch (err) { logger.warn("[Bootstrap] system_health agent skipped:", err.message); }
+
 const _registry = require("./agentRegistry.cjs");
 const _registered = _registry.listAll().map(a => `${a.id}[${a.capabilities.join(",")}]`);
 logger.info("[Bootstrap] Runtime agent registration complete — " + _registered.join(" | "));

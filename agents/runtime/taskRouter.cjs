@@ -69,6 +69,34 @@ const TASK_TYPE_MAP = {
 
     // ── Voice ──────────────────────────────────────────────────────
     voice:          "voice",
+
+    // ── Recovered agents (100-COMPANY reality audit Phase 4) ────────
+    // Each maps to the unique primary capability tag registered in
+    // bootstrapRuntime.cjs so findForCapability() reaches one specific
+    // agent, not an arbitrary one among agents sharing a broader tag.
+    // Task-type strings match each agent's own run(task) switch exactly
+    // (verified against source — several of these agents don't switch on
+    // task.type at all and act on payload/input regardless of type).
+    get_analytics:        "analytics",
+    track_event:          "analytics",
+    show_revenue:         "revenue",
+    revenue_per_user:     "revenue",
+    subscribe:            "subscription",
+    check_subscription:   "subscription",
+    schedule_post:        "content_scheduling",
+    list_scheduled:       "content_scheduling",
+    list_voices:          "audio",
+    web_scrape:           "web_scraping",
+    browser_screenshot:   "browser_automation",
+    api_fetch:            "api_fetch",
+    news_search:          "news",
+    social_search:        "social_media",
+    trend_analysis:       "trend_analysis",
+    competitor_track:     "competitor_tracking",
+    market_report:        "market_intelligence_report",
+    location_lookup:      "location_lookup",
+    get_weather:          "weather",
+    system_health_check:  "system_health",
 };
 
 /** Resolve a task type to a capability string. Falls back to "ai". */
