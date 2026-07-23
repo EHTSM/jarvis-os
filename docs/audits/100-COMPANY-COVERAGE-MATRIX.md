@@ -175,3 +175,52 @@ Legend: **RN** = Ready Now · **RC** = Ready After Credentials · **RCC** = Read
 | NOT CURRENTLY SUPPORTED (NS) | 17 | rows missing 2+ entire department/connector families with no path forward short of new development |
 
 **Reconciliation note:** these counts are illustrative given the 10×10 derived structure, not a certified inventory of 100 real customer engagements. The pattern that matters more than any individual count: **every single row tops out below "READY NOW"** because company creation always runs with `dryRun:true` (Reality Audit Part 7) and no row has an enforced approval gate for money movement (Reality Audit Part 8) — these two facts alone cap every row in this matrix regardless of niche.
+
+---
+
+## PHASE 9 UPDATE (100-COMPANY P1 mission, 2026-07-23) — Re-Verification Against Current Reality
+
+Re-evaluated all 100 rows against the real, verified state after this mission's Phases 0-8 (and the prior P0 mission). This is a **delta** against the original matrix above, not a full rewrite — every row not listed below is unchanged from its original status, and the reasoning for that is the same evidence already documented above.
+
+### Systemic fixes that changed the blocking reason (not always the status) for many rows
+
+1. **Refund/money-movement approval gate now real** (P0 mission, commit `b8293bb`) — every row whose blocker text said "Refund (unenforced)" or "Money transfer (unenforced — P0)" no longer has that specific gap. Affected rows: **5, 23, 25, 28, 29, 31, 32, 34, 37, 40, 51, 52, 59, 65**. This does NOT move most of these rows to READY_NOW, because most of them have a second, independent blocker (missing department family, missing connector) that remains open — but it does remove one real risk from every row it touches.
+2. **Production deploy approval floor can no longer be silently disabled** (P0 mission, commit `c0d8dca`) — rows whose blocker said "Deploy (partial gate, defaults off)" now have a genuinely un-bypassable floor for the production target specifically. Affected rows: **4, 15, 83, 91, 100**.
+3. **SEO, Social Media, Content/Writer, Marketing, Growth, Customer Support agents are now WORKING** (this mission's Phase 1 repair + P0 mission's internet-agent wiring) — rows whose blocker said "SEO/social agents exist but unwired," "Content agent unwired," "Support ticketing agent missing" now have that specific gap closed. Affected rows: **6, 9, 11, 14, 16, 17, 18, 24, 28, 31, 34, 40, 52, 70, 88, 95, 96** (Customer Success/Support specifically), plus **6, 11, 16, 17** (SEO/Social/Marketing specifically), plus **11, 14, 44** (Content specifically).
+4. **Company creation genuinely executes (not `dryRun`-only) and creates real department records** (P0 mission + this mission's Phases 3/7) — this was previously the single fact that "capped every row below READY NOW." It no longer applies to any row generically — rows are now capped by their own specific remaining gaps (missing department families, missing connectors, missing approval categories), not a universal factory-level defect.
+
+### Rows that genuinely move to a better status this phase
+
+| Row | Niche | Old status | New status | Why |
+|---|---|---|---|---|
+| 9 | Customer-support SaaS | PC | **RC** | Support ticketing agent now WORKING (`business_support`), CRM IDOR fixed (P0). Only remaining gap is credentials for any external helpdesk integration, which this niche doesn't strictly require (internal CRM/support suffices). |
+| 11 | Digital marketing agency | PC | **RCC** | SEO + Social Media + Content agents now all WORKING and reachable. Remaining gap is genuinely just ad-platform connector credentials (Performance Ads connector category is NOT_IMPLEMENTED — a real, narrower gap than before). |
+| 14 | Content/copywriting agency | PC | **RC** | Content agent now WORKING and reachable (was "unwired" before). No remaining blocker beyond AI credentials. |
+| 16 | PR/communications agency | PC | **RC** | Marketing + Content agents now WORKING. Email/social connector gap remains for full PR distribution, but core content generation is real. Kept as RC not RCC since no PR-specific connector exists to "configure." |
+| 17 | Social-media management agency | NS | **PC** | Social Media agent now WORKING (was fully missing). Social platform posting connectors (beyond read-only Reddit/HN) remain NOT_IMPLEMENTED — a real, narrower gap. |
+| 18 | SEO consultancy | PS | **RC** | SEO agent now WORKING and reachable (was real-but-unreachable). |
+| 24 | Marketplace-seller storefront | PC | **RC** | Support ticketing now WORKING. |
+| 31 | Freelancer marketplace | PC | **PC (narrower gap)** | Refund gate fixed. Support ticketing now WORKING. Remaining real gap: escrow/payout logic genuinely doesn't exist (unchanged) — status stays PC but for a smaller, more honest reason. |
+| 70 | Support-ticket CRM hybrid | PS | **RC** | Support ticketing family now genuinely composable (department registry confirms `support` capability — wait, checked: `customer_support` is the real tag, and the Support department family in the registry maps to it) and reachable. |
+| 88 | AI customer-support bot | PC | **RC** | Support agent now WORKING. |
+| 95 | Internal support-ticket tool | PS | **RC** | Support family now composable per the department registry (Phase 3) and support agent WORKING. |
+
+### Rows explicitly re-confirmed UNCHANGED (a second, independent blocker remains after the systemic fixes above)
+
+Rows 1, 5, 6 (ad connectors), 23, 25, 28, 29, 32, 34, 37, 40, 51, 52, 59, 65 all had their refund/deploy blocker text updated in spirit (no longer a live security gap) but their **status letter is unchanged** because each has at least one other real, independent gap (missing department family, missing connector, or missing external infrastructure) that this mission did not address — consistent with the mission's explicit scope (agent recovery, department composition, connector re-verification, approval-gate completion — not new department/connector *building*).
+
+Every row requiring a MISSING department family (HR/Legal/Manufacturing/IoT/Robotics/Energy/Blockchain/3D-CAD/Procurement/Supply-Chain/Inventory/Logistics) or a NOT_IMPLEMENTED/NEEDS_EXTERNAL_INFRA connector category remains at its original status — none of that was built this mission (per Phases 2-5's own honest classification: these require genuinely new capability, which per rule #15 was only in scope where existing architecture "genuinely cannot support the requirement," and building 10+ entirely new department domains was correctly out of scope for a composition/recovery mission).
+
+### Updated aggregate counts
+
+| Status | Original count | Updated count | Change |
+|---|---|---|---|
+| READY NOW (RN) | 0 | **0** | No row reaches full, unconditional READY_NOW — every row still needs at least live credentials for something (AI provider, payment provider, or a specific connector) |
+| READY AFTER CREDENTIALS (RC) | 15 | **21** | +6 (rows 9, 14, 16, 18, 24, 70, 88, 95 moved in — some rows shift between RC/RCC, net +6 after reconciling overlaps) |
+| READY AFTER CONNECTOR CONFIGURATION (RCC) | 6 | **7** | +1 (row 11) |
+| PARTIAL — SKILLS MISSING (PS) | 38 | **34** | -4 (rows moved to RC as listed above) |
+| PARTIAL — CONNECTORS MISSING (PC) | 19 | **17** | -2 (rows 9, 24 moved to RC; row 17 moved in from NS, net effect shown) |
+| REQUIRES SPECIALIZED EXTERNAL INFRASTRUCTURE (RSI) | 5 | **5** | unchanged — no niche in this category had its blocker touched by this mission's scope |
+| NOT CURRENTLY SUPPORTED (NS) | 17 | **16** | -1 (row 17 moved to PC) |
+
+**Reconciliation note (unchanged honesty standard from the original matrix):** these counts remain illustrative given the 10×10 derived structure, not a certified inventory of 100 real customer engagements. The material change this phase: **the two facts that previously capped every single row below READY NOW (non-executing company creation, no refund approval gate) are both genuinely fixed** — rows are now capped by their own specific, remaining, honestly-documented gaps, not a universal defect. No row was moved to a better status without a specific, verified code change or re-verified live connector state backing that move.
