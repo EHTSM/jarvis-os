@@ -32,6 +32,18 @@ function _getLegacy() {
     return _legacyExecutor;
 }
 
+// Lazy-load the agent instance registry (Universal Composition Engine
+// Phase 4). Additive only — when a task carries no orgId, or no instance
+// is registered for that org+capability, dispatch behaves exactly as
+// before this existed.
+let _instReg_ = null;
+function _instReg() {
+    if (!_instReg_) {
+        try { _instReg_ = require("../../backend/services/agentInstanceRegistry.cjs"); } catch { _instReg_ = null; }
+    }
+    return _instReg_;
+}
+
 function _backoffMs(attempt) {
     return Math.min(BASE_BACKOFF * Math.pow(2, attempt), MAX_BACKOFF);
 }
@@ -67,6 +79,31 @@ async function executeTask(task, options = {}) {
     const capability = router.resolveCapability(task.type);
     let   lastError  = null;
 
+    // Agent Factory instance overlay (Universal Composition Engine Phase 4):
+    // if this task is scoped to an org, look up whether that org has a
+    // configured AgentInstance for this capability and merge its
+    // config/memoryScope/credentialRefs/permissions into ctx. No task.orgId
+    // or no matching instance -> ctx is unchanged, identical to pre-Phase-4
+    // behavior.
+    let instanceCtx = ctx;
+    if (task.orgId) {
+        const inst = _instReg()?.findForOrgAndArchetype?.(task.orgId, capability);
+        if (inst) {
+            instanceCtx = {
+                ...ctx,
+                agentInstanceId: inst.id,
+                companyId: inst.companyId,
+                departmentId: inst.departmentId,
+                goals: inst.config.goals,
+                policies: inst.config.policies,
+                memoryScopeId: inst.config.memoryScopeId,
+                kpiTargets: inst.config.kpiTargets,
+                credentialRefs: inst.credentialRefs,
+                agentPermissions: inst.permissions,
+            };
+        }
+    }
+
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         if (attempt > 0) {
             await _sleep(_backoffMs(attempt - 1));
@@ -84,7 +121,7 @@ async function executeTask(task, options = {}) {
         if (agent) {
             agent.acquireSlot();
             // Provide a way for the handler to signal liveness
-            const extendedCtx = { ...ctx, heartbeat: () => agent.heartbeat() };
+            const extendedCtx = { ...instanceCtx, heartbeat: () => agent.heartbeat() };
             const t0 = Date.now();
             try {
                 const result = await _withTimeout(
@@ -119,7 +156,7 @@ async function executeTask(task, options = {}) {
                 const t0 = Date.now();
                 try {
                     const result = await _withTimeout(
-                        legacy.execute(task, ctx),
+                        legacy.execute(task, instanceCtx),
                         timeoutMs,
                         `legacy/${task.type}`
                     );
