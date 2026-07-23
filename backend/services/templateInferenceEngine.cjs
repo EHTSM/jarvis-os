@@ -77,10 +77,18 @@ const DIMENSION_RULES = [
     // template's own capabilities[] (listing_management/search/matching/
     // escrow), not a fabricated one.
     { test: (i) => i.businessModel === "real_estate" || i.productsServices?.some(p => /propert|listing|rental/i.test(p)), tags: ["listing_management", "search", "matching", "escrow"] },
-    // Regulated / compliance dimensions
-    { test: (i) => i.regulated === true, tags: ["audit_log", "hipaa_compliance"] },
+    // Regulated / compliance dimensions. audit_log is a genuinely generic
+    // regulated-industry signal (departmentTemplateRegistry.cjs's
+    // audit_log tag maps to legal_compliance/security regardless of
+    // sub-industry). hipaa_compliance is health-specific and must NOT be
+    // added for every regulated business — a real bug this phase's own
+    // unknown-niche testing caught: a crypto exchange (regulated:true, no
+    // health signal) was spuriously matching the "healthcare" base
+    // template purely because the generic regulated rule added
+    // hipaa_compliance unconditionally.
+    { test: (i) => i.regulated === true, tags: ["audit_log"] },
     { test: (i) => i.regulated === true && i.niche?.match(/health|medical|clinic|patient|pharma/i), tags: ["hipaa_compliance"] },
-    { test: (i) => i.regulated === true && i.niche?.match(/financ|bank|invest|trading|lending/i), tags: ["audit_log", "modules_finance"] },
+    { test: (i) => i.regulated === true && i.niche?.match(/financ|bank|invest|trading|lending|crypto|currency/i), tags: ["audit_log", "modules_finance"] },
     // Technology / infrastructure dimensions
     { test: (i) => i.technologyRequirements?.includes("ci_cd") || i.technologyRequirements?.includes("devops"), tags: ["ci_cd", "monitoring"] },
     { test: (i) => i.technologyRequirements?.includes("ai") || i.technologyRequirements?.includes("ml"), tags: [] }, // handled via base-template union below
@@ -224,7 +232,26 @@ function _deriveDepartmentKeys(matchedTemplateIds, dimensionTags) {
         for (const key of deptReg?.deriveDepartmentsForTemplate?.(tpl) || []) keys.add(key);
     }
 
-    // Dimension-only tags with no base-template capabilities[] equivalent.
+    // Dimension tags ALWAYS get run through the REAL, existing
+    // departmentTemplateRegistry.deriveDepartmentsForTemplate() too — not
+    // just the base templates matched above. This reuses its own real
+    // CAPABILITY_TO_DEPARTMENTS map (crm/billing/inventory/logistics/
+    // hipaa_compliance/audit_log/modules_finance/etc. already handled
+    // there) so a dimension tag with no genuinely matched base template
+    // (e.g. "modules_finance"/"audit_log" for a fintech niche whose
+    // businessModel doesn't map to any of the 10 base templates) still
+    // resolves to a real department, instead of silently contributing
+    // nothing and letting the company fall through as a near-empty,
+    // falsely COMPOSABLE_NOW "executive-only" composition. This is the
+    // exact fix for a genuine bug this phase's own testing caught: a
+    // "Weather-derivatives trading desk" niche with zero matched base
+    // templates was incorrectly reported COMPOSABLE_NOW before this fix.
+    for (const key of deptReg?.deriveDepartmentsForTemplate?.({ teamTypes: [], capabilities: dimensionTags }) || []) keys.add(key);
+
+    // A few dimension tags this phase newly introduces
+    // (physical_product/iot_hardware) have no equivalent in
+    // departmentTemplateRegistry.cjs's own CAPABILITY_TO_DEPARTMENTS map
+    // at all — this local mapping covers exactly those, additively.
     for (const tag of dimensionTags) {
         for (const key of DIMENSION_CAPABILITY_TO_DEPARTMENTS[tag] || []) keys.add(key);
     }
@@ -325,11 +352,22 @@ function analyzeCompanyDefinition(input = {}) {
     // NEEDS_CONNECTOR > NEEDS_CREDENTIALS > COMPOSABLE_NOW.
     let status;
     const nonInfraGaps = gapDepts.filter(d => !externalInfrastructureRequirements.includes(d.label));
+    // Safety guard: zero genuinely matched base template AND nothing beyond
+    // the trivial always-present "executive" department is NOT sufficient
+    // composition evidence for COMPOSABLE_NOW — a niche whose only signal
+    // was a dimension tag that happened to resolve one thin department
+    // must not be reported as fully composable. Real bug this guard fixes:
+    // a fintech niche with dimension tags (modules_finance/audit_log) but
+    // no matched base template previously fell through to a false
+    // COMPOSABLE_NOW off the executive department alone.
+    const onlyTrivialComposition = matchedTemplateIds.length === 0 && departmentKeys.every(k => k === "executive");
     if (composableDepts.length === 0 && gapDepts.length > 0) {
         status = "UNSUPPORTED";
     } else if (requiresExternalInfra) {
         status = "NEEDS_EXTERNAL_INFRA";
     } else if (nonInfraGaps.length > 0) {
+        status = "NEEDS_CAPABILITY";
+    } else if (onlyTrivialComposition) {
         status = "NEEDS_CAPABILITY";
     } else if (missingConnectors.some(c => c.status === "NOT_IMPLEMENTED")) {
         status = "NEEDS_CONNECTOR";
@@ -351,8 +389,14 @@ function analyzeCompanyDefinition(input = {}) {
         requiredConnectors,
         approvalRequirements,
         externalInfrastructureRequirements,
-        capabilityGap: (missingDepartments.length > 0 || missingConnectors.length > 0)
-            ? { missingDepartments, missingConnectors: missingConnectors.map(c => `${c.connectorId} (${c.status})`), missingExternalInfra: externalInfrastructureRequirements }
+        capabilityGap: (missingDepartments.length > 0 || missingConnectors.length > 0 || onlyTrivialComposition)
+            ? {
+                missingDepartments: onlyTrivialComposition
+                    ? [...missingDepartments, "no genuinely matched business template — only the trivial executive department resolved from dimension tags alone"]
+                    : missingDepartments,
+                missingConnectors: missingConnectors.map(c => `${c.connectorId} (${c.status})`),
+                missingExternalInfra: externalInfrastructureRequirements,
+              }
             : null,
     };
 }

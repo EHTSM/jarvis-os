@@ -236,12 +236,14 @@ Ran all 100 original company definitions (extracted verbatim from the "Niche" co
 | Status | Count |
 |---|---|
 | COMPOSABLE_NOW | 0 |
-| NEEDS_CREDENTIALS | 62 |
+| NEEDS_CREDENTIALS | 61 |
 | NEEDS_CONNECTOR | 0 |
-| NEEDS_CAPABILITY | 22 |
+| NEEDS_CAPABILITY | 23 |
 | NEEDS_EXTERNAL_INFRA | 16 |
 | UNSUPPORTED | 0 |
 | CAPABILITY_GAP | 0 |
+
+(Revised after two further engine bugs were caught by Phase 4's unknown-niche testing and fixed — see "Real bugs found" below; 4 companies, #39/#63/#86/#93, moved status/template after the fix, all genuine corrections of a spurious healthcare-template match, not regressions.)
 
 **COMPOSABLE_NOW: 0** is itself an honest, expected finding — it matches the prior mission's own connector audit (42/65 connectors `NEEDS_CREDENTIALS` in this dev environment; no niche can be fully credential-ready without live provider keys this environment doesn't have).
 
@@ -259,5 +261,10 @@ Confirmed via a direct check across all 100 results: no company matched ONLY the
 
 1. `templateInferenceEngine.cjs`'s `modelToTemplate` map (structured `businessModel` → base template) was initially missing `ai_product`, `internal_tool`, `education`, and `healthcare` — real base templates that exist in `businessTemplateEngine.cjs` but had no structured-field entry point. Companies like "AI writing assistant" (#81) and "AI customer-support bot" (#88) genuinely matched via keyword pattern but the businessModel path alone would have missed them. Fixed by adding the 4 missing mappings.
 2. The batch-classification script (`scratchpad/run-100-company-inference.cjs`, test-harness logic — not part of the production engine) initially lacked keyword coverage for "certification/testing," "assessment/grading," "wellness/fitness/coaching," "video-lecture," and "research-publication" phrasing, causing 5 genuinely-supportable niches to report a harness-level `CAPABILITY_GAP` that was NOT a real engine defect (the underlying `education`/`healthcare` templates already exist and are real) — fixed by extending the harness classifier's keyword coverage. This is documented as a harness fix, not an engine fix, to keep the distinction honest.
+
+### Two further real engine bugs found and fixed via Phase 4's unknown-niche testing (20+ niches genuinely outside the original 100)
+
+3. `templateInferenceEngine.cjs`'s generic `regulated:true` dimension rule unconditionally added the `hipaa_compliance` capability tag to EVERY regulated business, not just health-shaped ones — causing "Crypto custody/exchange" (a genuinely unrelated regulated business) to spuriously match the `healthcare` base template. Fixed by scoping `hipaa_compliance` to a niche-keyword-gated rule only; the generic regulated rule now only adds the genuinely industry-agnostic `audit_log` tag. This retroactively corrected 4 of the original 100 companies (#39 Peer-to-peer lending marketplace, #63 Insurance-agent CRM, #86 AI trading/quant signal product, #93 Internal finance/expense tool) that had been spuriously matching `healthcare` for the same reason — none of these are health-shaped businesses.
+4. A niche with dimension tags but ZERO genuinely matched base template (e.g. "Weather-derivatives trading desk" — `fintech` businessModel wasn't in the `modelToTemplate` map, and its dimension tags alone didn't overlap enough with any base template) fell through to a near-empty, "executive department only" composition and was falsely reported `COMPOSABLE_NOW`. Fixed two ways: (a) dimension tags now always run through `departmentTemplateRegistry.deriveDepartmentsForTemplate()`'s own real `CAPABILITY_TO_DEPARTMENTS` map (reused, not duplicated) so tags like `modules_finance`/`audit_log` resolve to real departments even with zero matched base template; (b) added an explicit safety guard — zero matched base templates plus only the trivial `executive` department resolved is never reported `COMPOSABLE_NOW`, always at least `NEEDS_CAPABILITY` with an honest gap reason.
 
 Full per-company results (matched templates, department counts, status) are committed at `docs/audits/original-100-companies.json` (input dataset) and reproducible via `tests/runtime/original-100-inference.test.cjs` (real regression test) or `scratchpad/run-100-company-inference.cjs` (full verbose per-company report, ephemeral).
