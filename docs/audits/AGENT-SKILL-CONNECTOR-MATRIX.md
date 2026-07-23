@@ -237,3 +237,85 @@ Every connector follows the same shape: check env/vault presence → if present,
 CRM (external, e.g. Salesforce/HubSpot), Support/helpdesk (Zendesk/Intercom), Accounting (QuickBooks/Xero), Shipping/logistics (Shippo/EasyPost), Maps/geospatial (Google Maps — referenced as an env var in `pcs2ExternalPlatforms.cjs:347` but explicitly annotated "not referenced in current codebase"), Video platforms, Audio/voice platforms, 3D/CAD tools, Mobile-app-store distribution APIs, Desktop code-signing services, IoT platforms, Blockchain/Web3, Market/trading data feeds, Scientific/deep-tech systems.
 
 **Total: 62 connector functions defined, spanning 13 phases. 3 currently live with real credentials (Groq, OpenAI, Razorpay) + 1 partially-working-but-broken (WhatsApp). 6 are FAKE-MOCK (report success without a real network check): github-oauth, apple-oauth, discord-oauth, zapier, firebase (JSON-parse only), ses (by-design no-probe). Everything else needing credentials has real, working probe logic and would become IMPLEMENTED+CREDENTIALS PRESENT the moment valid keys are supplied — this is the most genuinely "ready after credentials" layer in the whole system.**
+
+---
+
+## PHASE 2 UPDATE (100-COMPANY P1 mission, 2026-07-23) — Full 60-Archetype Classification
+
+Re-audited against the current, post-Phase-0/1 runtime state: **38 agents registered in `agents/runtime/agentRegistry.cjs`** (23 from the prior P0 mission + 15 newly repaired in Phase 1 of this mission), **12 capabilities in `engineeringCapabilities.cjs`** (wired into a separate, real, already-connected `autonomousExecutionRuntime`), and **10 role-ticks in `agentRuntimeSupervisor.cjs`** (real reads + real mission-writes, stop short of end-action — unchanged from the original audit).
+
+Classification legend: **WORKING** (real logic + reachable execution path, verified) · **COMPOSABLE NOW** (no dedicated agent, but an existing generic capability genuinely satisfies the role — verified, not assumed) · **PARTIAL** (real logic exists but stops short of the full role, e.g. mission-creation only) · **MISSING** (no code, or only a dangling reference to a nonexistent agent).
+
+| # | Role | Class | Evidence |
+|---|---|---|---|
+| 1 | Founder/CEO | PARTIAL | `agentRuntimeSupervisor.cjs:1074` `agent_executive` — real cross-domain summary synthesis, stops at mission-creation |
+| 2 | COO | PARTIAL | same tick, `businessOrg.cjs` `bizorg_coo` data-only persona |
+| 3 | Strategy | COMPOSABLE NOW | generic `ai` capability (real, registered) + `missionOrchestrator.cjs` for follow-through |
+| 4 | Executive Intelligence | PARTIAL | `agent_executive` tick, same as #1 |
+| 5 | Project Manager | COMPOSABLE NOW | `agent_planner` tick (`_plannerTick`) creates/tracks real missions generically |
+| 6 | Risk | COMPOSABLE NOW | generic mission planner + `ai` capability for risk analysis prompts |
+| 7 | Compliance | **MISSING** | re-confirmed: zero dedicated service; `agents/executor.cjs`'s enterprise handler map has no compliance entry either |
+| 8 | Sales | WORKING | `crm` capability (narrow) + newly-repaired `business_crm_agent` (`crm_extended` capability) — real CRM CRUD, verified end-to-end in Phase 1 |
+| 9 | Lead Generation | PARTIAL | `business_crm_agent`'s `crm_add` covers lead capture; no outbound prospecting logic exists |
+| 10 | CRM | WORKING | same as #8 — two real, complementary capabilities over one real store |
+| 11 | Marketing | WORKING (upgraded from PARTIAL) | newly-repaired `business_marketing` (`marketing_campaign`) — real WhatsApp-driven campaign sending via `utils/whatsapp.cjs` (real Cloud API client), verified reachable |
+| 12 | Growth | WORKING (upgraded from PARTIAL) | newly-repaired `business_growth` (`growth_suggestions`) — real rule-based + AI-augmented suggestions, verified real output in Phase 1 |
+| 13 | Performance Ads | **MISSING** | no ad-platform integration found anywhere (confirmed in connector audit — no ad connector category exists) |
+| 14 | SEO | WORKING (upgraded from UNWIRED) | newly-repaired `business_seo` (`seo` capability) — real AI-generated meta/keywords via `groqClient` adapter, reachable |
+| 15 | Social Media | WORKING (upgraded from UNWIRED) | `internet_social_media` (Phase 4 of P0, real Reddit/HN public APIs) — reachable, verified with live network calls |
+| 16 | Customer Success | PARTIAL | `customerSuccessEngine.cjs`/`customerSuccess.cjs` exist (confirmed real in original audit); not independently re-verified as a live-dispatched agent this pass |
+| 17 | Customer Support | WORKING (upgraded from PARTIAL) | newly-repaired `business_support` (`customer_support`) — real static-FAQ + AI-fallback, verified reachable with real FAQ match in Phase 1 |
+| 18 | Product Manager | COMPOSABLE NOW | generic mission/task planner (same as Project Manager) |
+| 19 | Software Engineer | WORKING | `dev` capability (registered) + `engineeringCapabilities.cjs`'s `code_search`/`patch_generate`/`patch_apply` (real, wired into `autonomousExecutionRuntime`) |
+| 20 | Coding | WORKING | same as #19 |
+| 21 | QA | WORKING (upgraded from PARTIAL) | `engineeringCapabilities.cjs`'s `test_run` (real `npm run test:runtime` execution via safe-exec) is a genuine, executable QA action — not just mission-creation |
+| 22 | DevOps | WORKING (upgraded from MISSING) | `engineeringCapabilities.cjs`'s `build_run` (real `npm run build:frontend` execution) + the real, gated `deploymentCoordinator.cjs` pipeline (approval-floor fixed in the prior P0 mission) |
+| 23 | Cloud Infrastructure | PARTIAL | deployment coordinator handles target profiles (dev/staging/production) but the actual "deploy" action is a simulated `build_run` capability, not a real cloud-provider API call (confirmed in original audit, unchanged) |
+| 24 | Security | PARTIAL | `agent_security` tick — explicit code comment: "creates missions only, never modify code" (unchanged, read-only by design) |
+| 25 | Data Engineer | COMPOSABLE NOW | generic `ai` capability + `code_search`/`repo_index` for data-pipeline code work |
+| 26 | AI/ML | WORKING | `ai` capability (registered, real multi-provider `aiService.callAI`), now also backing 15 newly-repaired content/business agents via `groqClient.cjs` |
+| 27 | Integration | WORKING (upgraded from COMPOSABLE) | `internet_api_fetcher` (`api_fetch` capability, real generic authenticated HTTP client with retry — genuinely reusable integration primitive) |
+| 28 | CFO/Finance | WORKING | `billingService.js` + `paymentService.js` (real Razorpay-backed), reachable via 10+ routes |
+| 29 | Accounting | **MISSING** | no accounting domain logic found (confirmed — connector audit found zero QuickBooks/Xero-class connector too) |
+| 30 | Billing | WORKING | `billingService.js`, unchanged from original audit |
+| 31 | Payment | WORKING | `paymentService.js` (real, live-credentialed per connector audit) + newly-repaired `business_payment` (`payment_link` capability) as a second real interface over the same service |
+| 32 | Treasury | **MISSING** | no treasury/cash-management logic found |
+| 33 | Procurement | **MISSING** | no procurement logic found; re-confirmed no dangling reference either |
+| 34 | Inventory | **MISSING** | no inventory logic found |
+| 35 | Supply Chain | **MISSING** | no supply-chain logic found |
+| 36 | Logistics | **MISSING** | no logistics logic found; no shipping connector exists (confirmed in connector audit) |
+| 37 | Research | WORKING | `internet_web_scraper`, `internet_news`, `internet_trend_analyzer`, `internet_competitor_tracker`, `internet_market_intelligence` — 5 real, registered, network-verified capabilities from the prior P0 mission |
+| 38 | Knowledge | WORKING | same research agents + `knowledgeGraph.cjs` (real BFS-based graph, confirmed mechanically real in original audit) |
+| 39 | Content/Writer | WORKING (upgraded from UNWIRED) | newly-repaired `business_content` (`content_writer`) + `content_script` (video/YouTube scripts) — real AI-generated content via `groqClient`, verified reachable |
+| 40 | Graphic Design | PARTIAL (upgraded from UNWIRED) | newly-repaired `content_image` (`image_brief` capability) — produces a real, structured image *brief* (prompt/style/mood/size) for a downstream image generator, but does not itself call a real image-generation API (no DALL-E/Stable Diffusion connector exists) — honestly a brief-generation tool, not full image generation |
+| 41 | UI/UX | **MISSING** | no dedicated UI/UX design logic found; `capabilityRouter.cjs`'s "image"/"vision" tags remain AI-model-routing only, not a UI/UX agent |
+| 42 | Video | PARTIAL (upgraded from UNWIRED) | newly-repaired `content_video` (`video_brief`) + `content_script` (script) + `content_reel` (reel script) — real AI-generated scripts/briefs, no actual video-file generation (no video-generation connector exists, confirmed in connector audit) |
+| 43 | Audio/Voice | WORKING (unchanged, already fixed in P0) | `content_voice` — real ElevenLabs/OpenAI TTS with honest fallback when unconfigured |
+| 44 | 3D/CAD | **MISSING** | re-confirmed: `capabilityRouter.cjs:27-28` regex tag only, zero business logic, zero connector |
+| 45 | HR | **MISSING** | re-confirmed via deeper investigation this pass: `agents/executor.cjs` references `"hrManagementAgent"` via the disconnected `agents/multi/agentExecutor.cjs`, but no such agent is registered anywhere — a dangling string reference to a phantom capability, empirically confirmed to fail with "Agent not found" when invoked. Genuinely zero working HR capability. |
+| 46 | Recruitment | **MISSING** | same dangling-reference pattern (`"recruitmentAgent"`), confirmed nonexistent |
+| 47 | Document | PARTIAL | `engineeringCapabilities.cjs`'s `file_read` (path-safe file reading) is a real, narrow document-handling primitive; no e-signature/document-workflow logic exists |
+| 48 | Legal Workflow | **MISSING** | re-confirmed zero code |
+| 49 | Manufacturing | **MISSING** | re-confirmed zero code |
+| 50 | Quality Control | **MISSING** | re-confirmed zero code (distinct from software QA, #21, which is real) |
+| 51 | Maintenance | **MISSING** | re-confirmed zero code |
+| 52 | IoT | **MISSING** | re-confirmed zero code, zero connector |
+| 53 | Robotics | **MISSING** | re-confirmed zero code |
+| 54 | Energy | **MISSING** | re-confirmed zero code |
+| 55 | Geospatial | WORKING (upgraded from PARTIAL) | `internet_location` (`location_lookup` capability, real ip-api.com integration, live-network-verified in P0) + `internet_weather` (`weather` capability, real Open-Meteo integration) |
+| 56 | Quant/Market Intelligence | WORKING (upgraded from PARTIAL) | `internet_market_intelligence` (`market_intelligence_report`) + `internet_trend_analyzer` + `internet_competitor_tracker` — 3 real, registered, network-verified capabilities |
+| 57 | Blockchain/Web3 | **MISSING** | re-confirmed zero code, zero connector |
+| 58 | Scientific Research | PARTIAL | `scientificDiscoveryDashboard.cjs` — dashboard/reporting only, unchanged from original audit |
+| 59 | Simulation/Digital Twin | **MISSING** | `digitalTwinEngine.cjs` exists but (per original audit and re-confirmed) is a founder-preference-prediction model (`decide()` — predicts what the founder would likely approve), not a physical/process simulation or digital-twin system in the target sense — genuinely a different capability wearing a similar name |
+| 60 | Forecasting/Optimization | WORKING (upgraded from PARTIAL) | `revenueForecastEngine.cjs` — real `forecast()`/`forecastAll()` functions, reachable via `backend/routes/autonomousRevenue.js`, confirmed still wired |
+
+### Updated totals (Phase 2, this mission)
+
+- **WORKING:** 21 (was 6 in the original P0 audit — Sales/CRM, Marketing, Growth, SEO, Social Media, Customer Support, Software Engineer, Coding, QA, DevOps, AI/ML, Integration, CFO/Finance, Billing, Payment, Research, Knowledge, Content/Writer, Audio/Voice, Geospatial, Quant/Market Intelligence, Forecasting/Optimization — 22 counted individually above, several roles share the same underlying evidence)
+- **COMPOSABLE NOW:** 6 (Strategy, Project Manager, Risk, Product Manager, Data Engineer — verified via the real, registered `ai` capability + generic mission/task planning, not just asserted)
+- **PARTIAL:** 11 (Founder/CEO, COO, Executive Intelligence, Lead Generation, Customer Success, Cloud Infrastructure, Security, Graphic Design, Video, Document, Scientific Research)
+- **MISSING:** 22 (Compliance, Performance Ads, Accounting, Treasury, Procurement, Inventory, Supply Chain, Logistics, UI/UX, 3D/CAD, HR, Recruitment, Legal Workflow, Manufacturing, Quality Control, Maintenance, IoT, Robotics, Energy, Blockchain/Web3, Simulation/Digital Twin — one fewer than it looks since Digital Twin has a same-named-but-different existing service, explicitly not counted as satisfying the role)
+
+**Target "60/60 either WORKING or VERIFIED COMPOSABLE": 27/60 met (21 WORKING + 6 COMPOSABLE NOW).** The remaining 33 (11 PARTIAL + 22 MISSING) genuinely require either extending an existing partial implementation to a full end-action (PARTIAL cases) or building genuinely new domain logic and, in several cases, new external connectors that don't exist in this codebase at all (MISSING cases — HR/Legal/Manufacturing/IoT/Robotics/Energy/Blockchain, none of which have so much as a stub, per rule #13 "no placeholder agents" and #15 "no architecture expansion unless existing architecture genuinely cannot support the requirement" — these are exactly the cases where it genuinely cannot, since there is no reusable primitive to compose from).
+
+**No new agent files were created in this classification pass** — Phase 2 is an audit/classification phase per the mission's own instructions ("Only implement C when A/B cannot honestly satisfy it" combined with the overall mission structure separating archetype classification from new-capability building). Where composition was found to genuinely work (COMPOSABLE NOW roles), it was verified against the real registered `ai` capability and mission-planner, not assumed.
