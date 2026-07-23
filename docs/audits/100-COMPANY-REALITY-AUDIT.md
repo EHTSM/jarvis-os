@@ -492,3 +492,32 @@ No frontend surface exists for directly invoking `business_crm_agent`, `business
 ### Notable discovery, unrelated to this mission's scope but found during verification
 
 While building the Playwright test for the department-UI fix, discovered a **pre-existing dev-environment configuration gap**: any `POST` request with a JSON body made from the React dev server (port 3000) through its CRA proxy to the backend (port 5050) fails with a CORS rejection (`Unhandled error: CORS: origin 'http://localhost:5050' not allowed`) — even for completely unmodified, pre-existing routes (confirmed by testing the untouched `/business/leads` POST route, which fails identically). `GET` requests through the same proxy work correctly (confirmed via this phase's own passing tests and the P0 mission's `/business/leads` GET test). Root cause appears to be a CRA dev-proxy/CORS-preflight interaction, not a code defect — `.env`'s `ALLOWED_ORIGINS` doesn't include `http://localhost:3000`, and modifying that allowlist was not attempted here since it's a security-relevant configuration change outside this phase's scope (frontend maturity for this mission's specific new capability, not general dev-environment repair). **This does not affect real users** — the built/deployed frontend is served same-origin from the same server as the API in production (confirmed in the original audit's Electron/production topology findings), so this CORS path only exists in the separate `npm run frontend` dev-server workflow. Flagging this for a future dev-tooling fix, not fixing it here.
+
+---
+
+## P1-MISSION PHASE 12 UPDATE (2026-07-23) — Full Regression + Security Verification
+
+Ran the mission's required minimum suite against the fully-committed state of all Phases 0-11, on a freshly restarted real server:
+
+| Suite | Result |
+|---|---|
+| `npm run test:runtime` (8 runtime test files) | **144/144 pass** |
+| `tests/security/08-v5-production-validation.cjs` | **25/25 pass** |
+| `tests/integration/07-production-hardening.test.cjs` | **87/87 pass** |
+| `tests/security/05-injection-security.cjs` | **103/103 pass** |
+| `tests/security/07-mfa-security.cjs` | **31/31 pass** |
+| `tests/runtime/self-healing-pipeline.test.cjs` | **51/51 pass** |
+| `tests/security/06-whatsapp-webhook-security.cjs` (fixed in Phase 0) | **6/6 pass** |
+| All 10 `tests/workflows/*.test.cjs` files | **143/143 pass combined** |
+| `tests/runtime/post-omega-p4.test.cjs` (Approval Engine) | **67/67 pass** |
+| `tests/runtime/p11-customer-org.test.cjs` (tenant/company isolation) | **76/76 pass** |
+| This mission's own verification scripts (Phases 1, 3, 5-7) re-run | **65+ individual assertions, 0 failures observed across all completed runs** |
+| `tests/integration/14-rc3.test.cjs` | **Fails — pre-existing, unrelated** `version.json`/`package.json` version-freeze mismatch, confirmed identical to the P0 mission's own Phase 0 finding (re-confirmed via the same evidence: the failure is about version-string drift, not any code path touched by either mission) |
+
+**Total: 733+ individual test assertions passed across all required suites, zero regressions introduced by any of the 12 completed phases of this mission.** The one known-failing suite (`14-rc3.test.cjs`) fails for a reason entirely unrelated to and pre-dating both this mission and the prior P0 mission.
+
+**Real local HTTP verification:** every phase in this mission (0, 1, 3, 5, 6, 7, 9, 10, 11) included at least one live HTTP verification against a running `backend/server.js` instance using real accounts, real signed JWTs, and (where applicable — Phase 10, 11) real Playwright browser sessions. No phase relied solely on unit-level mocking to claim a fix works.
+
+**Negative authorization cases tested:** cross-org CRM access (Phase 10, re-confirming the P0 mission's IDOR fix at 17-company scale), cross-account billing access (Phase 10), wrong-account approval-request execution (Phase 6), replay of already-terminal approval requests (Phase 6), production-deploy approval-floor bypass attempts (re-confirmed still closed, carried over from the P0 mission).
+
+**No production money movement or destructive external action was performed at any point in this mission** — every refund/payment test used `creditEngine.cjs`'s internal JSON-backed ledger (confirmed non-real-money in both this mission and the P0 mission), and no real Razorpay/Stripe/provider API was ever called with intent to complete a transaction (only read-only reachability probes in Phase 5's connector re-verification).
