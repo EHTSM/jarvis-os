@@ -16,6 +16,7 @@ const _cwb   = () => _try(() => require("./companyWorkspaceBuilder.cjs"));
 const _wm    = () => _try(() => require("./workforceManager.cjs"));
 const _pe    = () => _try(() => require("./performanceEngine.cjs"));
 const _bte   = () => _try(() => require("./businessTemplateEngine.cjs"));
+const _org   = () => _try(() => require("./organizationService.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 
@@ -137,11 +138,18 @@ function getCompanyDetail(companyId) {
   if (!company) return { ok: false, error: "company not found" };
   const blueprint = company.blueprintId ? _cbe()?.getBlueprint?.(company.blueprintId) : null;
   const workspace = company.workspaceId ? _cwb()?.getWorkspace?.(company.workspaceId) : null;
+  // Departments: real org department records (100-COMPANY P1 mission Phase 7 —
+  // companyFactory.cjs now genuinely instantiates these via the existing,
+  // unmodified organizationService.createDepartment() API). Reused here via
+  // the existing organizationService.getOrg() read path — no new storage.
+  const org = company.orgId ? _org()?.getOrg?.(company.orgId) : null;
+  const departments = (org?.departments || []).map(d => ({ id: d.id, name: d.name, description: d.description }));
   return {
     ok: true,
     company,
     blueprint: blueprint ? { id: blueprint.id, name: blueprint.name, templateId: blueprint.templateId, skills: blueprint.skills, techStack: blueprint.techStack } : null,
     workspace: workspace ? { id: workspace.id, readinessScore: workspace.readinessScore, repos: workspace.repositories?.repositories?.length, missions: workspace.registeredMissions?.length } : null,
+    departments,
     riskScore:   _companyRiskScore(company),
     progress:    _calcProgress(company),
   };

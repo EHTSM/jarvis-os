@@ -466,3 +466,29 @@ All 17 test companies' organizations were archived (soft-deleted) via the existi
 ### Scale boundary this test actually establishes
 
 This test verified **17 real companies with real isolation** — it did **not** attempt 100, per the mission's explicit instruction ("Do not jump to 100 yet"). The architectural ceiling noted in the original audit (single Node process, flat-JSON whole-file I/O, no locking on most stores) was not re-tested for load/concurrency at this phase — that remains an explicitly separate, unaddressed concern (see the Scale-Blockers section in this mission's final scorecard, Phase 13).
+
+---
+
+## P1-MISSION PHASE 11 UPDATE (2026-07-23) — Frontend Maturity for This Mission's New Capability
+
+Checked frontend exposure specifically for the two backend capabilities completed in this mission: department composition/instantiation (Phase 3/7) and the 15 newly-recovered agents (Phase 1).
+
+### Department data — found FRONTEND_UNWIRED, fixed this phase
+
+`CompanyFactoryCenter.jsx`'s `CompanyDetail` component (a real, otherwise well-built detail view showing Blueprint/Workspace/Gates/Risks/Roadmap/KPIs) had no Departments section, and its `onCreated` callback discarded the full company-creation response (including the new `departments_composed`/`departments_created` timeline data) entirely — classified **FRONTEND_UNWIRED**.
+
+Traced the root cause one level deeper: `getCompanyDetail()` (`companyDashboard.cjs`, a real, pre-existing, unmodified aggregation function) never included department data in its response shape at all — so even the existing detail route couldn't have shown departments without a small backend addition first.
+
+**Fixed both layers, reusing only existing APIs:**
+- `companyDashboard.cjs`'s `getCompanyDetail()` now includes a real `departments` array, sourced via `organizationService.getOrg(company.orgId).departments` — the exact same real department records created in Phase 7. No new storage, no new field on any existing record.
+- `CompanyFactoryCenter.jsx`'s `CompanyDetail` component now renders a "Departments (N)" section listing each department's real name, using the same existing CSS classes already used for the Roadmap section (no new styling framework).
+
+**Verified via real HTTP (Node, no browser) + real Playwright browser session (GET request, not subject to the CORS/preflight issue described below):** a freshly created company's `/detail` route now returns 9 real department names, and a real Chromium browser session fetching the same route through the CRA dev proxy receives identical data.
+
+### 15 newly-recovered agents (Phase 1) — BACKEND_ONLY, unchanged this phase
+
+No frontend surface exists for directly invoking `business_crm_agent`, `business_marketing`, `business_payment`, `business_growth`, `business_seo`, `business_content`, `business_support`, or the 8 content-generation agents by name — these are reachable only via the real runtime dispatch path (`executeTask`), which has no dedicated UI beyond the existing, generic `/runtime/dispatch` NL-command interface (unchanged, pre-existing). Building a dedicated UI surface for each of these 15 would be new frontend development, not "wiring existing UI" — correctly out of scope for this phase per the mission's own instruction to wire existing UI, not redesign the application.
+
+### Notable discovery, unrelated to this mission's scope but found during verification
+
+While building the Playwright test for the department-UI fix, discovered a **pre-existing dev-environment configuration gap**: any `POST` request with a JSON body made from the React dev server (port 3000) through its CRA proxy to the backend (port 5050) fails with a CORS rejection (`Unhandled error: CORS: origin 'http://localhost:5050' not allowed`) — even for completely unmodified, pre-existing routes (confirmed by testing the untouched `/business/leads` POST route, which fails identically). `GET` requests through the same proxy work correctly (confirmed via this phase's own passing tests and the P0 mission's `/business/leads` GET test). Root cause appears to be a CRA dev-proxy/CORS-preflight interaction, not a code defect — `.env`'s `ALLOWED_ORIGINS` doesn't include `http://localhost:3000`, and modifying that allowlist was not attempted here since it's a security-relevant configuration change outside this phase's scope (frontend maturity for this mission's specific new capability, not general dev-environment repair). **This does not affect real users** — the built/deployed frontend is served same-origin from the same server as the API in production (confirmed in the original audit's Electron/production topology findings), so this CORS path only exists in the separate `npm run frontend` dev-server workflow. Flagging this for a future dev-tooling fix, not fixing it here.

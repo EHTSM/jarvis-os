@@ -204,6 +204,19 @@ function CompanyDetail({ companyId, stages, gateDefs, onClose, onChanged }) {
         </div>
       )}
 
+      {detail.departments?.length > 0 && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Departments ({detail.departments.length})</p>
+          <div className="cfc-roadmap-list">
+            {detail.departments.map(d => (
+              <div key={d.id} className="cfc-roadmap-row">
+                <span className="cfc-roadmap-phase">{d.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="ic-detail-section">
         <p className="ic-detail-label">Gates for next stage{stages[stages.indexOf(c.stage) + 1] ? ` (${stages[stages.indexOf(c.stage) + 1]})` : ""}</p>
         {nextStageGates.length === 0 && <p className="ic-detail-sub">No further gates — final stage reached.</p>}
