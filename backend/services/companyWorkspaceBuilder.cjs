@@ -121,14 +121,21 @@ async function _allocateWorkforce(blueprint, workspaceId) {
   const missions = blueprint.missions.slice(0, 4); // allocate first 4 setup missions
   const results  = [];
   for (const m of missions) {
+    // Real execution (not dryRun): these mission titles ("set up dev
+    // environment", "create repositories", "generate architecture doc",
+    // "build auth system") never match _inferWorkflowId's deploy/security
+    // patterns, so runMission's real path safely falls back to the bounded
+    // engorg dispatch simulation (claims existing internal work items, no
+    // external side effects) rather than triggering a gated executeWorkflow
+    // run. See 100-COMPANY-GAP-LIST.md P0 #3 / REALITY-AUDIT Part 7.
     const r = await _try(() => _wm()?.runMission?.({
       title:          m.title,
       domain:         m.domain,
       priority:       m.priority,
       requiredSkills: blueprint.skills.slice(0, 3),
-      dryRun:         true, // dry-run during workspace creation
+      dryRun:         false,
     }));
-    results.push({ mission: m.title, teamType: r?.teamType, agents: r?.teamSize, ok: r?.ok });
+    results.push({ mission: m.title, teamType: r?.teamType, agents: r?.teamSize, ok: r?.ok, executionOutcome: r?.execution?.outcome || null });
   }
   return results;
 }

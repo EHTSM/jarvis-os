@@ -48,6 +48,7 @@ const _ae  = () => _try(() => require("./approvalEngine.cjs"));
 const _cle = () => _try(() => require("./continuousLearningEngine.cjs"));
 const _eme = () => _try(() => require("./engineeringMemoryEngine.cjs"));
 const _fwr = () => _try(() => require("./founderWorkRegistry.cjs"));
+const _vault = () => _try(() => require("./secretVault.cjs"));
 
 function _ts()  { return new Date().toISOString(); }
 function _id()  { return `cf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -190,15 +191,25 @@ async function createCompany({
   _step("workspace", { workspaceId: workspace.id, repos: workspace.repositories?.repositories?.length, missions: workspace.registeredMissions?.length, readiness: workspace.readinessScore });
 
   // ─ Step 8: Workforce allocation ──────────────────────────────────────────
+  // Real execution (not dryRun): runMission's non-dryRun path calls the
+  // existing autonomousExecutionEngine.executeWorkflow() when a workflow ID
+  // can be inferred from the mission title/domain — which already enforces
+  // Class B founder-approval pause and Class C hard-block (see
+  // autonomousExecutionEngine.cjs) — or otherwise falls back to a bounded
+  // engorg dispatch simulation. Nothing here bypasses the existing approval
+  // architecture; see 100-COMPANY-GAP-LIST.md P0 #3 / REALITY-AUDIT Part 7.
   const wfResult = await _try(() => _wm()?.runMission?.({
     title:          `Staff ${companyName} core team`,
     domain:         template.id,
     priority:       "high",
     requiredSkills: template.skills.slice(0, 5),
     teamType:       template.teamTypes[0],
-    dryRun:         true,
+    dryRun:         false,
   }));
-  _step("workforce", { teamType: wfResult?.teamType, agents: wfResult?.teamSize, coverage: wfResult?.team?.skillCoverage });
+  // runMission's non-dryRun return shape is { ok, ...missionRecord } — team
+  // isn't nested (unlike the dryRun shape), skillCoverage is top-level. See
+  // workforceManager.cjs runMission() missionRecord construction.
+  _step("workforce", { teamType: wfResult?.teamType, agents: wfResult?.teamSize, coverage: wfResult?.skillCoverage, executionOutcome: wfResult?.execution?.outcome || null });
 
   // ─ Step 9: Production checklist ─────────────────────────────────────────
   const checklist = _buildChecklist(blueprint);
@@ -213,11 +224,21 @@ async function createCompany({
   const company  = lcResult?.company;
   _step("lifecycle", { companyId: company?.id, stage: company?.stage, orgId: company?.orgId });
 
+  // ─ Step 11b: Connector readiness (report only — never auto-connect) ──────
+  // No connector can be attached automatically: every connector requires a
+  // real credential value (secretVault.storeSecret), and none exist yet for
+  // a brand-new org. Per REALITY-AUDIT Part 7 / GAP-LIST P0 #3, this step
+  // exists so the company record honestly reflects NEEDS_CREDENTIALS instead
+  // of silently omitting connector state or fabricating a connected one.
+  const configuredSecrets = _vault()?.listSecrets?.({ orgId: company?.orgId }) || [];
+  const connectorStatus   = configuredSecrets.length > 0 ? "PARTIALLY_CONFIGURED" : "NEEDS_CREDENTIALS";
+  _step("connectors", { orgId: company?.orgId, requiredCapabilities: template.capabilities, configuredConnectorIds: configuredSecrets.map(s => s.connectorId), status: connectorStatus });
+
   // ─ Step 12: Pass initial gates for planning stage ─────────────────────────
   if (company?.id) {
     _cle_e()?.passGate?.(company.id, "blueprint_approved",  { evidence: "Blueprint auto-generated" });
     _cle_e()?.passGate?.(company.id, "workspace_ready",     { evidence: "Workspace auto-built" });
-    _cle_e()?.passGate?.(company.id, "team_allocated",      { evidence: "Workforce dry-run complete" });
+    _cle_e()?.passGate?.(company.id, "team_allocated",      { evidence: `Workforce mission executed (team=${wfResult?.teamSize ?? 0}, outcome=${wfResult?.execution?.outcome || "unknown"})` });
   }
 
   // ─ Step 13: Learn + record ───────────────────────────────────────────────
