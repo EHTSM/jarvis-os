@@ -1367,6 +1367,78 @@ async function getHealth(connectorId) {
   };
 }
 
+// ── Universal Composition Engine Phase 7: richer status vocabulary ────────
+// The connector runtime's real, unchanged status vocabulary is
+// CONNECTED | READY | PARTIAL | MISSING | NOT_APPLICABLE (see _record()
+// above — 177+ existing call sites, never renamed for the reasons
+// documented in AGENT-SKILL-CONNECTOR-MATRIX.md Phase 5). This is an
+// additive DERIVED mapping onto the mission's requested richer vocabulary
+// (NOT_CONFIGURED/NEEDS_CREDENTIALS/CONFIGURED_UNVERIFIED/VERIFYING/
+// CONNECTED_VERIFIED/DEGRADED/AUTH_FAILED/UNREACHABLE) for composition-
+// engine consumers — it derives from the SAME real probe/credential data
+// already recorded, never hand-authored per connector, so none of the 62
+// existing connector functions needed to change.
+function _mapLegacyStatus(rec) {
+  if (!rec) return "NOT_CONFIGURED";
+  const missing = rec.credentials?.missing || [];
+  if (rec.status === "CONNECTED") return "CONNECTED_VERIFIED";
+  if (rec.status === "PARTIAL") {
+    // Credentials present but the live probe failed — distinguish a real
+    // network/auth failure (AUTH_FAILED/UNREACHABLE) from a by-design
+    // partial check using the same lastError text the real probe recorded.
+    const err = (rec.lastError || rec.detail || "").toLowerCase();
+    if (err.includes("401") || err.includes("403") || err.includes("unauthorized") || err.includes("auth")) return "AUTH_FAILED";
+    if (err.includes("timeout") || err.includes("econnrefused") || err.includes("enotfound")) return "UNREACHABLE";
+    return "CONFIGURED_UNVERIFIED";
+  }
+  if (rec.status === "READY") return missing.length > 0 ? "NEEDS_CREDENTIALS" : "CONFIGURED_UNVERIFIED";
+  if (rec.status === "MISSING") return "NOT_IMPLEMENTED";
+  if (rec.status === "NOT_APPLICABLE") return "NOT_CONFIGURED";
+  return "NOT_CONFIGURED";
+}
+
+// Real capabilities/scopes per connector — declarative metadata only
+// (what actions each connector's real functions above actually perform),
+// not new execution logic. Connectors not listed here have no declared
+// capability metadata yet (returns an empty array, never fabricated).
+const CONNECTOR_CAPABILITIES = {
+  "git:github":       { capabilities: ["read_repo", "list_issues", "create_issue", "create_pr"], scopes: ["repo"] },
+  "pay:razorpay":      { capabilities: ["create_payment_link", "list_payment_links"], scopes: ["payments"] },
+  "pay:stripe":        { capabilities: ["create_checkout_session", "list_charges"], scopes: ["payments"] },
+  "msg:whatsapp":      { capabilities: ["send_message", "receive_webhook"], scopes: ["messaging"] },
+  "msg:telegram":      { capabilities: ["send_message", "get_updates"], scopes: ["messaging"] },
+  "msg:slack":         { capabilities: ["post_message", "read_channel"], scopes: ["messaging"] },
+  "auth:github":       { capabilities: ["oauth_login"], scopes: ["auth"] },
+  "auth:google":       { capabilities: ["oauth_login"], scopes: ["auth"] },
+};
+
+function getConnectorCapabilities(connectorId) {
+  return CONNECTOR_CAPABILITIES[connectorId] || { capabilities: [], scopes: [] };
+}
+
+/**
+ * Returns a connector's status using the composition-engine's richer
+ * vocabulary, derived from the same real record getStatus() returns.
+ */
+function getCompositionStatus(connectorId) {
+  const rec = getStatus(connectorId);
+  const caps = getConnectorCapabilities(connectorId);
+  return {
+    connectorId,
+    status: _mapLegacyStatus(rec),
+    legacyStatus: rec?.status || "NOT_APPLICABLE",
+    capabilities: caps.capabilities,
+    scopes: caps.scopes,
+    lastCheck: rec?.lastCheck || null,
+    lastError: rec?.lastError || null,
+  };
+}
+
+function getAllCompositionStatus() {
+  const state = _load();
+  return Object.keys(state.connectors).map(id => getCompositionStatus(id));
+}
+
 function getStatus(connectorId) {
   const state = _load();
   return state.connectors[connectorId] || null;
@@ -1509,4 +1581,8 @@ module.exports = {
   rotateCredentialsGuide, detectFailures,
   // Full scan
   runFullScan, getScanSummary,
+  // Universal Composition Engine Phase 7 — richer status vocabulary,
+  // derived from the same real records above (additive, no connector
+  // function above was modified)
+  getCompositionStatus, getAllCompositionStatus, getConnectorCapabilities,
 };
