@@ -5,7 +5,8 @@
  * GET  /commercial/credits/status          — credit balance for current user
  * POST /commercial/credits/consume         — consume credits (internal)
  * POST /commercial/credits/topup           — add premium credits
- * POST /commercial/credits/refund          — refund a transaction
+ * POST /commercial/credits/refund          — request approval to refund a transaction (does not execute immediately)
+ * POST /commercial/credits/refund/:reqId/execute — execute a refund after approval
  * POST /commercial/credits/byok            — enable/disable BYOK
  * POST /commercial/credits/local           — enable/disable local mode
  * GET  /commercial/credits/ledger          — transaction history
@@ -56,6 +57,7 @@ const gates    = require("../services/featureGate.cjs");
 const providers= require("../services/providerManager.cjs");
 const analytics= require("../services/costAnalytics.cjs");
 const billing  = require("../services/billingService");
+const approvalQueue = require("../services/approvalQueue.cjs");
 
 router.use("/commercial", requireAuth);
 
@@ -104,11 +106,62 @@ router.post("/commercial/credits/topup", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Refunds move real value and are irreversible once credited, so this route
+// no longer executes the refund immediately — it enqueues an approval
+// request via the existing approvalQueue (reused as-is; see
+// approvalPolicy.cjs wf_refund_credit) and returns the pending request.
+// The refund only actually runs from the /execute route below, and only
+// once that request's status is "approved" or "auto_approved".
+// See 100-COMPANY-GAP-LIST.md P0 #2 / 100-COMPANY-REALITY-AUDIT.md Part 8.
 router.post("/commercial/credits/refund", (req, res) => {
   try {
     const { txId, reason } = req.body || {};
-    const tx = credits.refund(_accountId(req), txId, { reason });
+    if (!txId) return res.status(400).json({ error: "txId required" });
+    const accountId = _accountId(req);
+    const original = credits.getRecord(accountId, _plan(req)).transactions?.find(t => t.id === txId);
+    if (!original) return res.status(404).json({ error: "transaction_not_found" });
+
+    const result = approvalQueue.enqueue({
+      workflowId:  "wf_refund_credit",
+      action:      `Refund credit transaction ${txId} for account ${accountId}`,
+      reason:      reason || "customer_request",
+      approvalType: "PAYMENT_CONFIRM",
+      expectedOutcome: `${Math.abs(original.amount)} ${original.creditType} credits restored to account ${accountId}`,
+      rollbackPlan: "No rollback needed if rejected — no funds move until approved.",
+      confidence:  0,
+      context:     { accountId, txId, reason: reason || "customer_request" },
+      triggeredBy: `account:${accountId}`,
+    });
+
+    res.status(202).json({
+      ok: true,
+      status: result.autoApproved ? "auto_approved" : "pending_approval",
+      reqId: result.reqId,
+      request: result.request,
+      message: result.autoApproved
+        ? "Refund approved automatically by policy — call /commercial/credits/refund/:reqId/execute to complete it."
+        : "Refund requires approval before it will execute. Approve via POST /approval/approve/:reqId, then call /commercial/credits/refund/:reqId/execute.",
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/commercial/credits/refund/:reqId/execute", (req, res) => {
+  try {
+    const accountId = _accountId(req);
+    const reqRecord = approvalQueue.getRequest(req.params.reqId);
+    if (!reqRecord) return res.status(404).json({ error: "approval_request_not_found" });
+    if (reqRecord.context?.accountId !== accountId) return res.status(403).json({ error: "forbidden" });
+    if (reqRecord.status !== "approved" && reqRecord.status !== "auto_approved") {
+      return res.status(409).json({ error: "not_approved", status: reqRecord.status });
+    }
+    if (reqRecord.resumedAt) {
+      return res.status(409).json({ error: "already_executed", executedAt: reqRecord.resumedAt });
+    }
+
+    const tx = credits.refund(reqRecord.context.accountId, reqRecord.context.txId, { reason: reqRecord.context.reason });
     if (!tx) return res.status(404).json({ error: "transaction_not_found" });
+
+    approvalQueue.markResumed(req.params.reqId);
     res.json({ ok: true, tx });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

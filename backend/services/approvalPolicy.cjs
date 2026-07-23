@@ -78,6 +78,12 @@ const WORKFLOW_POLICY = {
   wf_mkt_social_post:         { type: APPROVAL_TYPE.CONTENT_APPROVE,  risk: RISK.MEDIUM,  tier: "FOUNDER",  ttlMs: 86400000, autoApproveThreshold: null },
   wf_mkt_blog_post:           { type: APPROVAL_TYPE.CONTENT_APPROVE,  risk: RISK.LOW,     tier: "FOUNDER",  ttlMs: 172800000,autoApproveThreshold: null },
   wf_mkt_email_campaign:      { type: APPROVAL_TYPE.CONTENT_APPROVE,  risk: RISK.MEDIUM,  tier: "FOUNDER",  ttlMs: 86400000, autoApproveThreshold: null },
+
+  // Money movement — refunds are irreversible and directly move value, so
+  // no autoApproveThreshold (never auto-approved regardless of confidence).
+  // See 100-COMPANY-GAP-LIST.md P0 #2 / 100-COMPANY-REALITY-AUDIT.md Part 8.
+  wf_refund_credit:           { type: APPROVAL_TYPE.PAYMENT_CONFIRM,  risk: RISK.HIGH,    tier: "FOUNDER",  ttlMs: 86400000, autoApproveThreshold: null },
+  wf_refund_finance:          { type: APPROVAL_TYPE.PAYMENT_CONFIRM,  risk: RISK.HIGH,    tier: "FOUNDER",  ttlMs: 86400000, autoApproveThreshold: null },
 };
 
 // ── Deploy checklist items (all DEPLOY_CONFIRM, low-medium risk) ──────────────
