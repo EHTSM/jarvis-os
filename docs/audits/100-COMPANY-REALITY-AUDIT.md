@@ -521,3 +521,75 @@ Ran the mission's required minimum suite against the fully-committed state of al
 **Negative authorization cases tested:** cross-org CRM access (Phase 10, re-confirming the P0 mission's IDOR fix at 17-company scale), cross-account billing access (Phase 10), wrong-account approval-request execution (Phase 6), replay of already-terminal approval requests (Phase 6), production-deploy approval-floor bypass attempts (re-confirmed still closed, carried over from the P0 mission).
 
 **No production money movement or destructive external action was performed at any point in this mission** — every refund/payment test used `creditEngine.cjs`'s internal JSON-backed ledger (confirmed non-real-money in both this mission and the P0 mission), and no real Razorpay/Stripe/provider API was ever called with intent to complete a transaction (only read-only reachability probes in Phase 5's connector re-verification).
+
+---
+
+## P1-MISSION PHASE 13 — FINAL SCORECARD (2026-07-23)
+
+### BEFORE (start of this P1 mission, i.e. after the prior P0 mission) → AFTER (end of this mission)
+
+| Metric | Before | After |
+|---|---|---|
+| Company Factory | ~78% | **~85%** — genuinely instantiates departments now (Phase 7); still capped by the same honestly-documented limitations (10 hardcoded templates, static KPIs, non-executing workflow records, on-demand-only knowledge-graph indexing) |
+| Department Composition | 18/32 families covered (ad hoc, agent-persona based) | **22/33 families genuinely composable** via a real, verified composition layer (Phase 3) that checks the live agent registry, not a hardcoded claim; 11/33 honestly require new capability that doesn't exist |
+| Agent Archetypes | 8/60 working | **21/60 WORKING + 6/60 COMPOSABLE NOW (verified) = 27/60 meeting the "working or verified composable" bar** (Phase 2) |
+| Executable Skills | 23 registered capabilities (P0 mission end-state) | **58/~90 deduplicated, runtime-verified executable skills** (Phase 4) — 46 in `agentRegistry` + 12 in `engineeringCapabilities`, zero string overlap |
+| Connector Families | 3/62 with live credentials (P0 mission's live state at the time) | **3/62 CONNECTED_VERIFIED (re-probed fresh this mission — 2 of the original 3 have since had their dev-env credentials expire, a real environmental fact, not a regression), 51/62 NEEDS_CREDENTIALS with real working probe logic, 4 fake-CONNECTED bugs from before the P0 mission remain fixed** |
+| Genuinely Verified Connectors | 3 (original audit) | **3 (this mission, freshly re-probed — same count, different specific providers due to credential expiry, not a regression)** |
+| Approval Enforcement | 2/~15 categories (refund, deploy — both fixed in the P0 mission) | **2/~15 categories, unchanged** — Phase 6 exhaustively confirmed no third category has a genuinely executing action to attach a real gate to; no fabricated gates were added |
+| Autonomous Agent Composition | ~30% (P0 mission's estimate — selection logic real, execution unblocked from `dryRun`) | **Meaningfully deeper**: department composition now checks live registry state and creates real records (Phase 3/7), workforce allocation genuinely executes (unchanged from P0), verified at 17-company scale with zero cross-company leakage (Phase 10) |
+| New Skill Creation | 0% (confirmed absent) | **0%, re-confirmed** (Phase 8) — no fabricated skill-generation pipeline was built to create the appearance of this capability |
+| Frontend Exposure | ~80% of sampled surfaces genuinely wired (original audit's sampling) | **Company Factory's department view closed from FRONTEND_UNWIRED to VISIBLE_WORKING this mission** (Phase 11); the 15 newly-recovered agents remain correctly BACKEND_ONLY (no new UI surfaces were fabricated for them) |
+| Multi-company Readiness | 1 company verified in isolation (P0 mission) | **17 real companies verified simultaneously, full negative isolation confirmed across CRM/memory/vault/departments/billing** (Phase 10) — a substantial, real increase in verified scale, still well short of 100 and with the underlying architectural ceiling (see Scale Blockers below) untouched |
+| 100-company Coverage | 0 READY_NOW; ~15 READY_AFTER_CREDENTIALS; ~6 READY_AFTER_CONNECTOR_CONFIGURATION; ~38 PARTIAL-skills; ~19 PARTIAL-connectors; 5 RSI; 17 NS | **0 READY_NOW; 21 READY_AFTER_CREDENTIALS; 7 READY_AFTER_CONNECTOR_CONFIGURATION; 34 PARTIAL-skills; 17 PARTIAL-connectors; 5 RSI (unchanged); 16 NS** — a genuine, row-by-row-justified improvement in ~11 of the 100 illustrative rows (Phase 9), driven specifically by the newly-recovered Marketing/Growth/SEO/Social Media/Content/Customer Support agents and the closed refund/deploy security gaps |
+
+### READY_NOW / READY_AFTER_CREDENTIALS / READY_AFTER_EXTERNAL_INFRA / PARTIAL / UNSUPPORTED counts (100-row illustrative matrix)
+
+| Status | Count |
+|---|---|
+| READY_NOW | 0 |
+| READY_AFTER_CREDENTIALS | 21 |
+| READY_AFTER_CONNECTOR_CONFIGURATION | 7 |
+| PARTIAL (skills or connectors missing) | 51 (34 skills + 17 connectors) |
+| REQUIRES_SPECIALIZED_EXTERNAL_INFRASTRUCTURE | 5 |
+| NOT_SUPPORTED | 16 |
+
+**No row reaches unconditional READY_NOW** — every row still needs at minimum a live, valid credential for at least one provider (AI, payment, or a specific SaaS connector). This is an honest architectural fact, not a gap this mission could or should close by fabricating credentials.
+
+---
+
+## SCALE-BLOCKERS SECTION (factual inventory for the next dedicated scale mission)
+
+Per the mission's explicit instruction, this section is a factual inventory only — no scaling architecture was redesigned, and no claim of "100k or millions-user" readiness is made or implied anywhere in this document.
+
+| Area | Current reality | Evidence |
+|---|---|---|
+| **Single-process state** | `ecosystem.config.cjs` hard-pins `instances: 1` with an explicit code comment: in-process singletons (taskQueue, learningSystem, contextEngine) "are NOT cluster-safe. Never set instances > 1." Unchanged by this mission. | Original audit, re-confirmed unchanged |
+| **File-backed/stateful services** | The overwhelming majority of persistence is flat JSON files under `data/`, read/written via whole-file `fs.readFileSync`/`writeFileSync` per operation (e.g. `organizations.json` holds ALL orgs in one file/array; `dead-letter.json`, `approval-queue.json`, `integration-connectors.json`, etc. — same pattern). Most writes are non-atomic (only `taskQueue.cjs` uses atomic rename). This mission's Phase 10 created 17 real companies without incident, but did not stress-test concurrent writes to the same shared files. | Original audit; Phase 10 of this mission (functional correctness verified, concurrency NOT stress-tested) |
+| **Queues** | Real `node-cron` scheduling exists (`automationService.js`) with a same-tier overlap guard, but this is cron-tick-triggered inline execution on the main event loop — not a job queue with worker pools, backpressure, or horizontal scaling. `agents/taskQueue.cjs` has a real, atomic-write JSON queue plus a passive `better-sqlite3` shadow-write (confirmed non-authoritative — JSON remains the source of truth even when SQLite is present). | Original audit, unchanged |
+| **Scheduler** | Single-process `node-cron` instances — no distributed scheduler, no leader election, no protection against duplicate execution if ever run with `instances > 1` (explicitly forbidden by the codebase's own comment above). | Original audit, unchanged |
+| **Event bus** | Confirmed in the original audit: zero `EventEmitter`-based pub/sub exists anywhere in `backend/`. `runtimeEventBus.cjs` (used in this mission's own test scripts, e.g. `bus.reset()` in `tests/workflows/07-execution-engine-stress.test.cjs`) is real but in-process only — no cross-process or cross-instance event delivery mechanism exists. | Original audit; confirmed via this mission's Phase 0 test investigation |
+| **Cache** | No dedicated caching layer (Redis, Memcached, or similar) was found anywhere in the codebase. `aiResponseCache.cjs` exists (an in-process AI-response cache) but is process-local, lost on restart, and not shared across any hypothetical multiple instances. | Original audit, unchanged |
+| **Database** | `better-sqlite3` is a declared dependency with a real schema module (`backend/db/sqlite.cjs`, its own comment: "Optimized for local single-operator use"), but is used by exactly one caller (`agents/taskQueue.cjs`) as a passive shadow-write — JSON files remain authoritative everywhere else. No real relational or document database (Postgres, MongoDB, etc.) is used for primary storage anywhere in this codebase. | Original audit, unchanged |
+| **Sessions** | Auth uses a stateless signed JWT in an httpOnly cookie (`backend/middleware/authMiddleware.js`) — genuinely stateless and horizontally-scalable in principle, since no server-side session store is required. This is one of the few areas that is NOT a scale blocker as currently designed. | Verified this mission (Phase 0/1/10's real JWT usage across dozens of test accounts) |
+| **WebSockets/SSE** | `agents/runtime/runtimeStream.cjs` provides a real SSE stream (`GET /runtime/stream`) for live runtime status — single-process, in-memory connection list, no fan-out mechanism for multiple server instances. | Original audit reference (`routes/index.js` mounts `runtimeStream.cjs`); not independently re-verified this mission |
+| **Rate limiting** | Real, in-process rate limiting exists (`backend/middleware/rateLimiter.js`, used e.g. for the WhatsApp webhook route fixed in this mission's Phase 0) — implemented as an in-memory counter, meaning limits reset per-process and are not shared/coordinated across multiple instances if ever run with `instances > 1`. | Confirmed in Phase 0 of this mission (`rateLimiter(300, 60_000, "wa-webhook")` call site) |
+| **AI budgets** | Real, per-org spend tracking exists (`orgBudgets.cjs`, confirmed genuinely enforced — not cosmetic — in the original audit and re-confirmed reachable in this mission's Phase 7 checklist). Budget state is file-backed, subject to the same non-atomic-write concurrency risk as other JSON stores under concurrent load from multiple orgs. | Original audit; Phase 7 of this mission |
+| **Connector health** | Real, per-connector health-check state exists (`data/integration-connectors.json`) but is a single shared file for the entire process (not per-org), and health checks are triggered on-demand/on-scan rather than continuously monitored. Phase 5 of this mission re-probed all 62 connectors live and found real state — this mechanism works correctly for its current single-process design, but was not tested under concurrent multi-org connector scanning. | Phase 5 of this mission |
+| **Background workers** | No dedicated worker-process pool exists — all "background" work (autonomous loops, scheduled ticks, agent execution) runs inline within the single main Node process, sharing its event loop with the HTTP server. Real concurrency limiting exists per-agent (`maxConcurrent` on each `AgentRecord` in `agentRegistry.cjs`) but this bounds concurrent *tasks*, not process/CPU isolation. | Original audit; confirmed unchanged via this mission's agent-registry work (Phases 1-2) |
+
+**This inventory is the factual starting point for a dedicated scale mission** — it does not recommend a specific architecture, does not estimate capacity, and does not claim any number of companies/users this system could support beyond what was actually tested (17 companies, functionally verified, not load-tested for concurrency).
+
+---
+
+## EXTERNAL CREDENTIAL / INFRASTRUCTURE BLOCKERS (from this mission)
+
+- **Credentials genuinely needed for broader coverage** (real probe logic already exists and works — confirmed in Phase 5): `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, `TOGETHER_API_KEY`, `FIREWORKS_API_KEY`, `COHERE_API_KEY`, `NVIDIA_API_KEY`, `GROK_API_KEY`, `DASHSCOPE_API_KEY` (AI providers); `GITHUB_TOKEN`, `GITLAB_TOKEN`/`GITLAB_ACCESS_TOKEN`, `BITBUCKET_APP_PASSWORD` (git); `HOSTINGER_API_KEY`, `CLOUDFLARE_API_TOKEN`, `FIREBASE_SERVICE_ACCOUNT`, `SUPABASE_ANON_KEY`/`SERVICE_KEY`, `AWS_ACCESS_KEY_ID`/`SECRET_ACCESS_KEY`, R2 credentials (infra); `STRIPE_SECRET_KEY`, `PADDLE_API_KEY`, `LEMONSQUEEZY_API_KEY` (payments beyond Razorpay); `RESEND_API_KEY`/`SENDGRID_API_KEY`/`MAILGUN_API_KEY`/`POSTMARK_API_KEY`/`BREVO_API_KEY` (email beyond the already-working send-side integrations); `TWILIO_AUTH_TOKEN`, `SLACK_BOT_TOKEN`, `MICROSOFT_GRAPH_TOKEN` (messaging beyond WhatsApp/Telegram); `GOOGLE_CLIENT_SECRET`, `MICROSOFT_CLIENT_SECRET`, `LINKEDIN_CLIENT_SECRET` (OAuth beyond what's configured); Shopify/WooCommerce/WordPress store credentials; `FIGMA_ACCESS_TOKEN`/`CANVA_API_KEY`; `N8N_API_KEY`/`MAKE_API_KEY`; `DATADOG_API_KEY`/`SENTRY_AUTH_TOKEN`/`UPTIMEROBOT_API_KEY`; `JIRA_API_TOKEN`.
+- **The dev environment's own `OPENAI_API_KEY` and `RAZORPAY_KEY_ID`/`RAZORPAY_KEY_SECRET` have expired/been revoked since the original audit** (confirmed via live re-probe in Phase 5) — these need rotation, not new provisioning, to restore the previously-verified CONNECTED_VERIFIED state.
+- **External infrastructure genuinely required, not just credentials** (no connector or domain logic exists at all — confirmed unchanged in Phases 2-5): video/audio rendering compute, 3D/CAD tooling, IoT device platforms, blockchain/Web3 nodes, regulated market/trading data feeds, scientific/deep-tech research infrastructure, and any HR/Legal/Manufacturing/Procurement/Supply-Chain/Inventory/Logistics domain system (none of these have a single line of working code anywhere in this repository).
+
+---
+
+## NEXT RECOMMENDED MISSION
+
+Given everything verified and left honestly unaddressed across both the P0 and this P1 mission, the highest-leverage next mission is: **"100-Company P2: Missing Department & Connector Domain Build-Out"** — targeted, one-domain-at-a-time construction of the 11 department families confirmed to genuinely require new capability (starting with the highest-value/lowest-effort ones: HR/Recruitment and Legal/Compliance, both pure-software domains with no external-infrastructure dependency, unlike Manufacturing/IoT/Energy/Blockchain which require real external systems this project has never integrated with) — each new department family should be built using the exact same pattern this mission established (a real service + real registered `agentRegistry` capability + a `departmentTemplateRegistry.cjs` entry marked `composable:true` once genuinely wired, verified via real HTTP against a running server, never a placeholder). A dedicated scale mission (load-testing the flat-JSON/single-process architecture at realistic concurrent-company levels, informed by the Scale-Blockers inventory above) should follow only after domain coverage genuinely justifies testing beyond the 17-company scale already verified.
