@@ -401,3 +401,32 @@ Re-verified the real `POST /company-factory/create` pipeline against the mission
 ### Net Company Factory score this phase
 
 **11 WORKING, 6 PARTIAL, 0 MISSING, 3 not independently re-scored (Determine connectors/Resolve credentials/Report honestly were already WORKING from the P0 mission and re-confirmed unchanged).** One genuine gap was closed (department instantiation, item 5) with real, verified code — not a documentation-only fix.
+
+---
+
+## P1-MISSION PHASE 8 UPDATE (2026-07-23) — Autonomous Composition vs. New-Skill-Creation Boundary
+
+Re-verified the explicit boundary the mission requires be kept separate: **(A) composing agents/departments from existing skills** vs. **(B) autonomously creating genuinely new executable skills**. This boundary is unchanged by every fix in Phases 0-7 of this mission.
+
+### (A) Autonomous composition — WORKING, expanded this mission
+
+Given a company definition (niche/idea/name), the real, verified pipeline now does genuinely more than at the start of this mission:
+- Infers a template from a 10-keyword regex ladder over 10 hardcoded templates (`businessTemplateEngine.cjs`, unchanged limitation, honestly documented)
+- Derives a real set of department families from that template's own `teamTypes`/`capabilities` data (Phase 3, `departmentTemplateRegistry.cjs`)
+- Checks each department's required capabilities against the REAL, LIVE `agentRegistry` — not a hardcoded assumption (Phase 3's `isComposableNow()`, re-verified in Phase 7 via real HTTP + independent `organizationService.getOrg()` check)
+- Actually creates real department records for every composable family (Phase 7 fix)
+- Actually executes a real (non-`dryRun`) workforce-allocation mission (fixed in the P0 mission, re-verified this mission)
+- Reports connector/credential state honestly (`NEEDS_CREDENTIALS`, never fabricated — P0 mission fix, re-verified in Phase 5's live re-probe)
+
+This is genuine, verified composition — real code makes real decisions from real template data and real live registry state, and produces real, independently-checkable side effects (department records, dispatched executions).
+
+### (B) New executable skill creation — confirmed absent, unchanged
+
+Re-searched for any dynamic code-generation pipeline (`eval(`, `new Function(` with executed — not just syntax-checked — output, or a generated-file `require()` pattern) across the entire codebase, including this mission's own 17 new/modified files (Phases 0-7):
+
+- `codeReviewEngine.cjs` and `productionInfra.cjs`: both only *flag* `eval()`/`new Function()` usage as a code-quality violation to warn against — they do not themselves execute dynamically generated code.
+- `selfHealingFrontend.cjs:189`: uses `new Function()` purely as a syntax-checker for a frontend patch string (confirms the patch parses as valid JS) — the result is never executed, never persisted, never registered as a new skill.
+- `engineeringCapabilities.cjs`'s `patch_generate`/`patch_apply` capabilities (the closest real candidates to "new skill creation" in the entire codebase): `_patchGenerate` only records a patch *intent* in memory (`status: "patch_intent_recorded"`) for a human or a separate AI-driven process to act on later — it does not generate, validate, test, or register any new code itself. `_patchApply` only verifies that changes are already staged in git (`status: "patch_verified_staged"`) — it does not itself create or apply anything new.
+- None of the 15 agents repaired in Phase 1, the department template registry built in Phase 3, or any other file touched by this mission introduces a dynamic code-generation, validation, security-check, test, registration, or rollback pipeline for genuinely new skills.
+
+**Conclusion, unchanged from the original audit: JARVIS-OS cannot currently generate a genuinely new executable skill and register it into the running system through any real, existing engineering runtime.** Composition (A) is real and was meaningfully expanded this mission. Autonomous new-skill creation (B) does not exist, and — per the mission's own explicit instruction — no fake claim of this capability is made here, and no fabricated "skill generation" pipeline was built to create the appearance of it.
