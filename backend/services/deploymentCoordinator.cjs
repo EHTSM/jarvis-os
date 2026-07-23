@@ -189,6 +189,18 @@ function _buildRun(spec, opts = {}) {
     const now = new Date().toISOString();
     const deployId = _did();
 
+    // requireApproval is a FLOOR set by the target profile, not a default a
+    // caller can lower — the production profile's requireApproval:true
+    // ("always requires operator sign-off", line ~144) previously could be
+    // silently overridden to false via spec.requireApproval/opts.
+    // requireApproval from POST /deployment/run's req.body, defeating the
+    // one real execution-layer approval gate in the system. Callers may
+    // still raise the bar (require approval on dev/staging too) but can
+    // never lower it below what the target profile mandates. See
+    // 100-COMPANY-GAP-LIST.md P0 #2 / REALITY-AUDIT Part 8.
+    const requestedRequireApproval = spec.requireApproval ?? opts.requireApproval;
+    const requireApproval = targetProfile.requireApproval || !!requestedRequireApproval;
+
     return {
         deployId,
         goal:           spec.goal || `Deploy to ${targetProfile.label}`,
@@ -201,9 +213,8 @@ function _buildRun(spec, opts = {}) {
 
         status:          "pending",
         // _preApproved allows benchmark to pre-authorize without a separate API call
-        approvalStatus:  (spec._preApproved) ? "approved"
-                       : (opts.requireApproval ?? targetProfile.requireApproval) ? "pending" : "auto_approved",
-        requireApproval: spec.requireApproval ?? opts.requireApproval ?? targetProfile.requireApproval,
+        approvalStatus:  (spec._preApproved) ? "approved" : (requireApproval ? "pending" : "auto_approved"),
+        requireApproval,
         rollbackOnFail:  spec.rollbackOnFail  ?? opts.rollbackOnFail  ?? targetProfile.rollbackOnFail,
         healthThreshold: spec.healthThreshold ?? opts.healthThreshold ?? targetProfile.healthThreshold,
         verifyTimeoutMs: spec.verifyTimeoutMs ?? opts.verifyTimeoutMs ?? targetProfile.verifyTimeoutMs,
