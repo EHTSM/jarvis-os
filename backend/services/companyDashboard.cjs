@@ -143,7 +143,7 @@ function getCompanyDetail(companyId) {
   // unmodified organizationService.createDepartment() API). Reused here via
   // the existing organizationService.getOrg() read path — no new storage.
   const org = company.orgId ? _org()?.getOrg?.(company.orgId) : null;
-  const departments = (org?.departments || []).map(d => ({ id: d.id, name: d.name, description: d.description }));
+  const departments = (org?.departments || []).map(d => ({ id: d.id, name: d.name, description: d.description, composition: d.composition || null }));
   return {
     ok: true,
     company,

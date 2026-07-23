@@ -263,7 +263,25 @@ async function createCompany({
       try {
         const rec = _org()?.createDepartment?.(
           company.orgId,
-          { name: dept.label, description: `Auto-composed from template "${template.id}" (${dept.templateKey})`, leadAccountId: creatorAccountId },
+          {
+            name: dept.label,
+            description: `Auto-composed from template "${template.id}" (${dept.templateKey})`,
+            leadAccountId: creatorAccountId,
+            // Persist the real composed metadata (skills/connectors/
+            // permissions/approvalPolicies/kpis/composable status) onto
+            // the department record instead of discarding it after this
+            // step — Universal Composition Engine Phase 3 fix.
+            composition: {
+              templateKey: dept.templateKey,
+              skills: dept.skills || [],
+              connectors: dept.connectors || [],
+              permissions: dept.permissions || [],
+              approvalPolicies: dept.approvalPolicies || [],
+              kpis: dept.kpis || [],
+              composable: dept.composable,
+              missingCapabilities: dept.missingCapabilities || [],
+            },
+          },
           creatorAccountId
         );
         if (rec) createdDepartments.push({ id: rec.id, key: dept.templateKey, label: dept.label });

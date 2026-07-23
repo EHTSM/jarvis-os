@@ -60,3 +60,7 @@ tests/legacy/
 key.properties
 ooplix-release.keystore
 *.keystore
+
+# Ephemeral verification scripts — never part of the codebase, one-off
+# real-service verification scripts written during missions.
+scratchpad/

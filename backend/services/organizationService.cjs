@@ -634,7 +634,7 @@ function updateMemberDepartmentViaScim(orgId, accountId, deptId) {
 // DEPARTMENTS
 // ─────────────────────────────────────────────────────────────────────────────
 
-function createDepartment(orgId, { name, description = "", leadAccountId }, requestingAccountId) {
+function createDepartment(orgId, { name, description = "", leadAccountId, composition = null }, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_departments");
     if (!name?.trim()) throw new Error("Department name is required");
 
@@ -650,6 +650,13 @@ function createDepartment(orgId, { name, description = "", leadAccountId }, requ
         createdAt:     new Date().toISOString(),
         updatedAt:     new Date().toISOString(),
         teams:         [],
+        // Additive, optional — Universal Composition Engine Phase 3. The
+        // real skills/connectors/permissions/approvalPolicies/kpis a
+        // department was composed from (departmentTemplateRegistry.cjs),
+        // persisted so it's queryable later instead of discarded after
+        // creation. Null when a department is created without a template
+        // (e.g. manually via the UI) — existing callers are unaffected.
+        composition:   composition || null,
     };
     if (!org.departments) org.departments = [];
     org.departments.push(dept);
