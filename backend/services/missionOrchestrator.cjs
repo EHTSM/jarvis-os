@@ -139,6 +139,31 @@ function _emit(eventType, missionId, payload = {}) {
     try { _getBus()?.emit(eventType, { missionId, ...payload, _source: "orchestrator" }); } catch { /* non-fatal */ }
 }
 
+// ── Universal Composition Engine Phase 9: workflow node types ─────────────
+// Additive stage classification — every stage already produced by
+// _planStages() below defaults to "AgentAction" (its pre-Phase-9
+// behavior, unchanged). New composition-engine callers (createManual()'s
+// opts.stages, see below) may declare a richer nodeType so a single
+// engine can express Approval/Wait/HumanTask/Verification stages without
+// a second workflow engine. NODE_TYPES lists every type the mission asks
+// for; only Approval/Wait/HumanTask need genuinely new stage-status
+// handling (block dependents until externally resolved) — Parallel and
+// Retry are already real, existing behavior (_getReadyStages() dispatches
+// every ready stage in parallel; _stageFailed() already retries with
+// backoff up to maxRetries), and Fallback/Condition reuse the same
+// mechanisms rather than inventing new ones.
+const NODE_TYPES = new Set([
+    "Trigger", "Condition", "AgentAction", "SkillExecution", "ToolExecution",
+    "ConnectorAction", "Approval", "Wait", "Retry", "Fallback", "Parallel",
+    "HumanTask", "Verification", "Completion",
+]);
+
+// Stage statuses that block dependents until something OUTSIDE _advance()
+// resolves them (an approval decision, a wait-condition met, a human
+// completing a task) — distinct from "pending" (blocked only by deps)
+// and "running" (dispatched to autonomousLoop, resolves on its own).
+const BLOCKING_STATUSES = new Set(["awaiting_approval", "waiting_condition", "awaiting_human"]);
+
 // ── Stage: build execution stage descriptors from a goal ──────────────────
 /**
  * Decompose a mission goal into ordered stages with dependency declarations.
@@ -146,7 +171,8 @@ function _emit(eventType, missionId, payload = {}) {
  * Reuses agentRegistry.findForCapability for assignment.
  *
  * Returns stages[] where each stage has:
- *   id, description, capability, assignedAgent, dependsOn[], status, loopTaskId, retries, maxRetries
+ *   id, description, capability, nodeType, assignedAgent, dependsOn[],
+ *   status, loopTaskId, retries, maxRetries
  */
 function _planStages(goal, priority, opts = {}) {
     const reg = _getReg();
@@ -175,6 +201,7 @@ function _planStages(goal, priority, opts = {}) {
             index:         stgIdx,
             description:   p.descFn(goal),
             capability:    p.capability,
+            nodeType:      "AgentAction",
             assignedAgent: agent?.id || null,
             dependsOn:     p.dependsOn.filter(d => d < stgIdx).map(d => stages[d]?.id).filter(Boolean),
             status:        "pending",
@@ -187,6 +214,37 @@ function _planStages(goal, priority, opts = {}) {
             error:         null,
         });
     }
+
+    // Append any explicitly-declared extra stages (e.g. an Approval or
+    // HumanTask node a caller wants inserted into this mission's graph) —
+    // additive only; the 5-stage pipeline above is unaffected when no
+    // extraStages are passed.
+    for (const extra of opts.extraStages || []) {
+        const nodeType = NODE_TYPES.has(extra.nodeType) ? extra.nodeType : "AgentAction";
+        stages.push({
+            id:            _stid(),
+            index:         stages.length,
+            description:   extra.description || `${nodeType} stage`,
+            capability:    extra.capability || null,
+            nodeType,
+            assignedAgent: null,
+            dependsOn:     (extra.dependsOn || []).map(idOrIdx =>
+                typeof idOrIdx === "number" ? stages[idOrIdx]?.id : idOrIdx
+            ).filter(Boolean),
+            status:        "pending",
+            loopTaskId:    null,
+            retries:       0,
+            maxRetries:    extra.maxRetries ?? 2,
+            startedAt:     null,
+            completedAt:   null,
+            output:        null,
+            error:         null,
+            approvalPolicy: extra.approvalPolicy || null,   // Approval nodes: policy/workflowId to evaluate
+            waitCondition:  extra.waitCondition || null,    // Wait nodes: description of what's being waited on
+            humanTaskInfo:  extra.humanTaskInfo || null,    // HumanTask nodes: assignee/instructions
+        });
+    }
+
     return stages;
 }
 
@@ -194,7 +252,7 @@ function _planStages(goal, priority, opts = {}) {
 function _createRecord(opts) {
     const {
         goal, priority = "medium", originDecisionId = null,
-        requiresApproval = false, skipCapabilities = [],
+        requiresApproval = false, skipCapabilities = [], extraStages = [],
         rollbackPlan = null, metadata = null,
     } = opts;
 
@@ -213,7 +271,7 @@ function _createRecord(opts) {
         subtasks:  [],   // stages added below
     });
 
-    const stages = _planStages(goal.trim(), priority, { skipCapabilities });
+    const stages = _planStages(goal.trim(), priority, { skipCapabilities, extraStages });
 
     // Register each stage as a missionMemory subtask for unified visibility
     for (const stg of stages) {
@@ -351,6 +409,36 @@ async function _advance(missionId) {
 
     // Dispatch each ready stage to autonomousLoop (parallel where no dependency)
     for (const stg of readyStages) {
+        // Approval/Wait/HumanTask nodes do not dispatch to autonomousLoop —
+        // they transition to a distinct BLOCKING status and stay there
+        // until resolveBlockingStage() is called externally (an approval
+        // decision, a wait-condition check, a human completing the task).
+        if (stg.nodeType === "Approval") {
+            stg.status    = "awaiting_approval";
+            stg.startedAt = new Date().toISOString();
+            rec.currentStage = stg.id;
+            rec.updatedAt    = new Date().toISOString();
+            _emit("orchestrator:stage:awaiting_approval", missionId, { stageId: stg.id, approvalPolicy: stg.approvalPolicy });
+            _requestApprovalForStage(missionId, stg);
+            continue;
+        }
+        if (stg.nodeType === "Wait") {
+            stg.status    = "waiting_condition";
+            stg.startedAt = new Date().toISOString();
+            rec.currentStage = stg.id;
+            rec.updatedAt    = new Date().toISOString();
+            _emit("orchestrator:stage:waiting_condition", missionId, { stageId: stg.id, waitCondition: stg.waitCondition });
+            continue;
+        }
+        if (stg.nodeType === "HumanTask") {
+            stg.status    = "awaiting_human";
+            stg.startedAt = new Date().toISOString();
+            rec.currentStage = stg.id;
+            rec.updatedAt    = new Date().toISOString();
+            _emit("orchestrator:stage:awaiting_human", missionId, { stageId: stg.id, humanTaskInfo: stg.humanTaskInfo });
+            continue;
+        }
+
         stg.status    = "running";
         stg.startedAt = new Date().toISOString();
         rec.currentStage = stg.id;
@@ -381,6 +469,15 @@ async function _advance(missionId) {
             stg.error  = err.message;
             logger.warn(`[Orchestrator] Stage dispatch failed ${stg.id}: ${err.message}`);
         }
+    }
+
+    // If every ready stage this round was Approval/Wait/HumanTask (blocking),
+    // nothing was actually dispatched to autonomousLoop — the mission has no
+    // active work in flight and must reflect that as "waiting", not
+    // "executing", until resolveBlockingStage() unblocks something.
+    const anyRunning = rec.stages.some(s => s.status === "running");
+    if (!anyRunning && rec.stages.some(s => BLOCKING_STATUSES.has(s.status))) {
+        _transition(missionId, "waiting");
     }
 
     _saveOrch();
@@ -490,6 +587,62 @@ function _getReadyStages(rec) {
         s.status === "pending" &&
         (s.dependsOn || []).every(dep => completedIds.has(dep))
     );
+}
+
+// ── Approval node wiring (Phase 10) — evaluates policy BEFORE the stage's
+// action would execute, via the existing approvalEngine/approvalQueue
+// (single source of truth, unchanged). Non-fatal: if the approval engine
+// can't be reached, the stage stays in awaiting_approval — it never
+// silently proceeds, which would defeat the point of an Approval node.
+function _getApprovalQueue() { try { return require("./approvalQueue.cjs"); } catch { return null; } }
+
+function _requestApprovalForStage(missionId, stg) {
+    try {
+        const queue = _getApprovalQueue();
+        if (!queue) return;
+        const req = queue.enqueue({
+            workflowId: stg.approvalPolicy?.workflowId || `orchestrator_stage_${stg.id}`,
+            action:     stg.description,
+            reason:     stg.description,
+            risk:       stg.approvalPolicy?.risk || "medium",
+            context:    { missionId, stageId: stg.id, capability: stg.capability },
+            triggeredBy: "missionOrchestrator",
+        });
+        stg.approvalRequestId = req?.reqId || req?.request?.id || null;
+    } catch (err) {
+        logger.warn(`[Orchestrator] approval request failed for stage ${stg.id}: ${err.message}`);
+    }
+}
+
+/**
+ * Resolve a stage that is blocked on something external to the engine:
+ * an Approval decision, a Wait condition, or a HumanTask completion.
+ * Approving/meeting-condition/completing unblocks the stage (marks it
+ * completed and advances dependents); rejecting fails it (respecting the
+ * stage's own retry budget, same as any other stage failure).
+ *
+ * @param {string} missionId
+ * @param {string} stageId
+ * @param {{ outcome: "approved"|"rejected"|"met"|"done", output?, reason? }} resolution
+ */
+function resolveBlockingStage(missionId, stageId, resolution = {}) {
+    const rec = _live.get(missionId);
+    if (!rec) throw new Error(`Mission not found in orchestrator: ${missionId}`);
+    const stg = rec.stages.find(s => s.id === stageId);
+    if (!stg) throw new Error(`Stage not found: ${stageId}`);
+    if (!BLOCKING_STATUSES.has(stg.status)) {
+        throw new Error(`Stage ${stageId} is not in a blocking status (current: ${stg.status})`);
+    }
+
+    const { outcome, output = null, reason = null } = resolution;
+    if (["approved", "met", "done"].includes(outcome)) {
+        _stageComplete(missionId, stg, output);
+    } else if (outcome === "rejected") {
+        _stageFailed(missionId, stg, reason || `Stage ${stageId} rejected`);
+    } else {
+        throw new Error(`Unknown resolution outcome: ${outcome}`);
+    }
+    return { ...stg };
 }
 
 // ── Mission terminal transitions ──────────────────────────────────────────
@@ -697,4 +850,8 @@ function getStatistics() {
     };
 }
 
-module.exports = { start, stop, createFromDecision, createManual, pause, resume, cancel, getMission, listMissions, getStatistics };
+module.exports = {
+    start, stop, createFromDecision, createManual, pause, resume, cancel, getMission, listMissions, getStatistics,
+    // Universal Composition Engine Phase 9/10 additions
+    resolveBlockingStage, NODE_TYPES,
+};
