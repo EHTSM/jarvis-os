@@ -31,6 +31,18 @@ class AgentRecord {
         // Lifetime stats
         this.stats = { success: 0, failure: 0, totalMs: 0 };
         this.lastActivity = Date.now();
+
+        // Universal Composition Engine Phase 12 (Learning Loop) — an
+        // additive, operational-learning-only tie-breaking nudge. Neutral
+        // (0) by default, meaning zero behavior change from before this
+        // field existed. Only ever set via
+        // continuousLearningEngine.applyLearningRecord() after an
+        // explicit human approval — never written by any automatic
+        // process on its own. Range [-1, 1]; findForCapability() below
+        // uses it only to break ties among otherwise-equal-load agents,
+        // never to override circuit-breaker/availability/capability
+        // matching.
+        this.preferenceWeight = 0;
     }
 
     /** Returns true if this agent can accept a new task right now. */
@@ -88,6 +100,7 @@ class AgentRecord {
             active:       this._active,
             maxConcurrent: this.maxConcurrent,
             lastActivity:  this.lastActivity,
+            preferenceWeight: this.preferenceWeight,
             stats: {
                 ...this.stats,
                 successRate:   total ? this.stats.success / total : 1,
@@ -121,7 +134,13 @@ function findForCapability(capability) {
         // Prefer lower active concurrency, then lower failure rate
         const bestLoad = best._active / best.maxConcurrent;
         const candLoad = agent._active / agent.maxConcurrent;
-        if (candLoad < bestLoad) best = agent;
+        if (candLoad < bestLoad) { best = agent; continue; }
+        // Universal Composition Engine Phase 12: only consults
+        // preferenceWeight when load is otherwise EQUAL — this can never
+        // override a genuinely lower-loaded agent, only break a tie.
+        // Both weights default to 0 (neutral), so this branch is a no-op
+        // unless a human-approved learning record has adjusted one of them.
+        if (candLoad === bestLoad && agent.preferenceWeight > best.preferenceWeight) { best = agent; }
     }
     return best;
 }
@@ -130,4 +149,19 @@ function listAll() {
     return [..._registry.values()].map(a => a.toJSON());
 }
 
-module.exports = { register, get, findForCapability, listAll, AgentRecord };
+/**
+ * Universal Composition Engine Phase 12 — sets an agent's tie-breaking
+ * preferenceWeight. Never called automatically by this module; the only
+ * intended caller is continuousLearningEngine.applyLearningRecord(),
+ * itself gated on explicit human approval. Clamped to [-1, 1] so a
+ * misconfigured caller cannot make preferenceWeight dominate over
+ * genuine load-balancing.
+ */
+function setPreferenceWeight(id, weight) {
+    const agent = _registry.get(id);
+    if (!agent) throw new Error(`Unknown agent: ${id}`);
+    agent.preferenceWeight = Math.max(-1, Math.min(1, weight));
+    return agent.preferenceWeight;
+}
+
+module.exports = { register, get, findForCapability, listAll, setPreferenceWeight, AgentRecord };

@@ -252,6 +252,57 @@ function getLessons({ type, severity, source, limit = 100, offset = 0 } = {}) {
     return { lessons: rows.slice(offset, offset + limit), total: rows.length };
 }
 
+// ── Universal Composition Engine Phase 12: approval-gated write-back ──────
+// This engine's analysis (runFullAnalysis/analyzeFailures/analyzeSuccesses)
+// is genuine, but every lesson's `applied` field is created false and
+// nothing previously ever flipped it — a real, confirmed write-only gap
+// (25+ read-side consumers only ever display lessons, never change
+// behavior from them). This closes that gap with exactly ONE narrow,
+// human-approval-gated write-back: nudging agentRegistry's tie-breaking
+// preferenceWeight. It deliberately does NOT rewrite taskRouter.cjs's
+// static TASK_TYPE_MAP, does NOT modify any source file, and does NOT
+// self-apply without an explicit approvedBy — this is OPERATIONAL
+// learning only. Code/architecture evolution is a fundamentally
+// different, separately-gated concern (Phase 13, Capability Evolution).
+function _agentReg() { try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; } }
+
+/**
+ * Apply a lesson's recommendation as an operational weight nudge. Only
+ * ever flips `applied:true` after this function is called with an
+ * explicit approvedBy — there is no code path that sets applied:true
+ * any other way (confirmed: grep for "applied: true"/"applied:true"
+ * anywhere else in this file returns nothing).
+ *
+ * @param {string} lessonId
+ * @param {{ agentId: string, weightDelta: number }} action  the operational nudge to apply
+ * @param {string} approvedBy  required — who approved this application
+ */
+function applyLearningRecord(lessonId, action, approvedBy) {
+    if (!approvedBy) throw new Error("applyLearningRecord requires an explicit approvedBy — no self-applied learning");
+    const lesson = _lessons.find(l => l.lessonId === lessonId);
+    if (!lesson) throw new Error(`Lesson not found: ${lessonId}`);
+    if (lesson.applied) throw new Error(`Lesson ${lessonId} was already applied`);
+    if (!action?.agentId || typeof action?.weightDelta !== "number") {
+        throw new Error("action requires { agentId, weightDelta }");
+    }
+
+    const reg = _agentReg();
+    if (!reg) throw new Error("agentRegistry unavailable — cannot apply learning record");
+    const agentRecord = reg.get(action.agentId);
+    if (!agentRecord) throw new Error(`Unknown agent: ${action.agentId}`);
+
+    const newWeight = reg.setPreferenceWeight(action.agentId, agentRecord.preferenceWeight + action.weightDelta);
+
+    lesson.applied     = true;
+    lesson.appliedAt   = new Date().toISOString();
+    lesson.appliedBy   = approvedBy;
+    lesson.appliedAction = { agentId: action.agentId, weightDelta: action.weightDelta, resultingWeight: newWeight };
+    _saveLessons();
+
+    logger.info(`[LearningEngine] Applied lesson ${lessonId} — ${action.agentId} preferenceWeight -> ${newWeight} (approved by ${approvedBy})`);
+    return { ...lesson };
+}
+
 // ── Recommendations ──────────────────────────────────────────────────────
 function _upsertRecommendation(rec) {
     const existing = _recs.findIndex(r => r.title === rec.title);
@@ -350,4 +401,8 @@ function startAutoAnalysis() {
     setInterval(_run, AUTO_ANALYSIS_INTERVAL_MS).unref();
 }
 
-module.exports = { analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis };
+module.exports = {
+    analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis,
+    // Universal Composition Engine Phase 12
+    applyLearningRecord,
+};
