@@ -329,3 +329,38 @@ None open from the original `100-COMPANY-GAP-LIST.md` P0 list. All 6 P0 items (#
 ### Remaining P1 (unchanged — explicitly not started per STOP CONDITION)
 
 All P1 items from the gap list beyond agent recovery remain open: ~28 missing agent archetypes with no code at all (Compliance, HR, Legal, Procurement, Supply Chain, Manufacturing, IoT, etc.), 14 of 32 department families with zero code, connector categories entirely absent (external CRM, support/helpdesk, accounting, shipping, maps, video/audio platforms, 3D/CAD, mobile/desktop distribution, blockchain, trading data, scientific systems), the remaining ~12 unenforced approval categories, `infra:firebase`'s and `email:ses`'s connector-truthfulness issues (a narrower, separately-scoped 5th/6th finding not covered by the approved Phase 6 fix), and the single-process/flat-file scale ceiling. None of this was attempted — per the mission's explicit STOP CONDITION, P1 new-capability expansion was not begun.
+
+---
+
+## P1-MISSION PHASE 6 UPDATE (2026-07-23) — Approval Policy Completion
+
+Re-audited all 15 approval categories against currently-executing actions only (per the mission's explicit rule: "only wire policies to actions that actually execute today... do not fabricate execution paths" for future/nonexistent actions).
+
+**Searched for any genuinely-executing action in each of the remaining 13 unenforced categories (refund and production deployment were already fixed in the P0 mission):**
+
+- **Money transfer** — no distinct "transfer" action exists beyond refund (already gated).
+- **Pricing change** — searched for any admin-facing plan/price-editing route; found none. `PLAN_QUOTAS` in `billingService.js` is a hardcoded constant with no route to edit it. `billing/upgrade` is customer self-service (choosing an existing plan), not a company changing what it charges — not the same risk category. **No gate added — no real action exists to gate.**
+- **Large purchase** — no purchasing/procurement action exists anywhere (confirmed, matches original audit).
+- **Contract signature, legal filing, tax filing/payment** — re-confirmed zero code of any kind.
+- **Privileged security change** — the `agent_security` supervisor tick is explicitly read-only by design (creates missions only, never modifies code, per its own code comment) — there is no privileged security *action* to gate, only a read-only monitor.
+- **Public publishing** — found one real, currently-executing candidate: `POST /content/articles/:id/publish` (`backend/routes/contentSEO.js`, `contentSEOEngine.cjs publishArticle()`). Traced its actual effect: it only flips an internal JSON `status` field to `"published"` — no external CMS/blog/website is actually called (no publishing connector exists). This is internal state, not a genuinely irreversible real-world publishing action. **No gate added** — gating an internal status flag would be theater, not real safety enforcement, and would violate rule #12 ("no mock production success") by implying a stronger real-world action than what the code does.
+- **Hiring/firing, medical/clinical action, live financial trading, blockchain signing/transfer, physical/safety-critical action** — re-confirmed zero executing code of any kind (matches original audit and Phase 2's HR/Legal/Blockchain findings this mission).
+
+**Conclusion: of the 15 requested categories, exactly 2 have real, currently-executing actions in this codebase — refund and production deployment — and both already have real, execution-layer approval gates (fixed in the P0 mission, commits `b8293bb` and `c0d8dca`). The other 13 categories have no genuinely executing action to gate; adding approval-engine wiring to any of them would be attaching a real safety mechanism to either nothing, or (in the "public publishing" case) to an internal state flag that doesn't represent the real-world risk the category names — exactly the "fabricated execution path" the mission explicitly prohibits.**
+
+### Full required test matrix — verified against the real approval engine
+
+Exercised `approvalQueue.cjs` (the real, existing engine — no parallel approval system built) directly, using the real refund workflow (`wf_refund_credit`) and real internal credit-ledger transactions (no real money moved, matching the P0 mission's own verification standard):
+
+- **pending** — `enqueue()` genuinely creates a `status:"pending"` record (verified)
+- **approved** — `approve()` genuinely transitions to `status:"approved"`, records `approvedBy`/`approvedAt` (verified)
+- **rejected** — `reject()` genuinely transitions to `status:"rejected"`; rejecting an already-rejected request is refused with `{ok:false, error:"status is rejected"}` (verified)
+- **expired** — backdating a real persisted request's `expiresAt` and running the real `expireStale()` sweep genuinely catches and transitions it to `status:"expired"` (verified)
+- **wrong-user / wrong-account** — every request's `context.accountId` is bound at creation time to the real requesting account; `commercial.js`'s `/execute` route independently re-checks `reqRecord.context?.accountId !== accountId` before allowing execution, returning 403 for a mismatched account (verified in the P0 mission's own commit `b8293bb`, re-confirmed still present)
+- **replay** — approving (or executing) an already-approved/already-executed request is refused, not silently reprocessed: `approve()` returns `{ok:false, error:"status is approved"}` on a second call; `/execute`'s own `resumedAt` check independently returns `already_executed` (verified in both this pass and the P0 mission)
+
+No test in this matrix performed a real refund against real money — all transactions are internal, JSON-backed `creditEngine.cjs` ledger entries, and no real payment provider (Razorpay) was called.
+
+### Updated Approval Enforcement score
+
+**Unchanged from the P0 mission's post-remediation figure: 2 of ~15 requested categories have real execution-layer enforcement (refund, production deployment).** This phase re-confirmed, via exhaustive search, that no third category has a genuinely executing action to attach a gate to — the number cannot honestly move without either (a) new domain logic being built for HR/Legal/Trading/etc. first (P1/P2 work, not this phase's scope), or (b) attaching a gate to an action that doesn't represent real-world risk (which would be dishonest, not progress).
