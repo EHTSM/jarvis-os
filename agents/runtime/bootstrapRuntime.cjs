@@ -291,6 +291,100 @@ try {
     logger.info("[Bootstrap] content_voice agent registered");
 } catch (err) { logger.warn("[Bootstrap] content_voice agent skipped:", err.message); }
 
+// ── Repaired agents (100-COMPANY P1 mission Phase 1) ────────────────────
+// These 15 files previously failed to even require() (missing
+// agents/crm.cjs, agents/paymentAgent.cjs, agents/core/groqClient.cjs —
+// none existed anywhere in the repo). Fixed by creating agents/crm.cjs
+// (re-export of the real backend/services/crmService.js), agents/
+// paymentAgent.cjs (thin class adapter over the real backend/services/
+// paymentService.js), and agents/core/groqClient.cjs (thin chat()/
+// parseJson() adapter over the real, multi-provider backend/services/
+// aiService.js) — no new AI provider, CRM store, or payment processor was
+// created; each is a compatibility shim over already-existing, already-
+// wired services. See 100-COMPANY-GAP-LIST.md P1 #8 (remaining half).
+try {
+    const crmAgent = require("../business/crmAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_crm_agent", capabilities: ["crm_extended"], maxConcurrent: 5,
+        handler: async (task) => crmAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_crm_agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_crm_agent skipped:", err.message); }
+
+try {
+    const marketingAgent = require("../business/marketingAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_marketing", capabilities: ["marketing_campaign"], maxConcurrent: 2,
+        handler: async (task) => marketingAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_marketing agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_marketing agent skipped:", err.message); }
+
+try {
+    const paymentAgent = require("../business/paymentAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_payment", capabilities: ["payment_link"], maxConcurrent: 3,
+        handler: async (task) => paymentAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_payment agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_payment agent skipped:", err.message); }
+
+try {
+    const growthAgent = require("../business/growthAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_growth", capabilities: ["growth_suggestions"], maxConcurrent: 2,
+        handler: async (task) => growthAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_growth agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_growth agent skipped:", err.message); }
+
+try {
+    const seoAgent = require("../business/seoAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_seo", capabilities: ["seo"], maxConcurrent: 3,
+        handler: async (task) => seoAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_seo agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_seo agent skipped:", err.message); }
+
+try {
+    const contentAgent = require("../business/contentAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_content", capabilities: ["content_writer"], maxConcurrent: 3,
+        handler: async (task) => contentAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_content agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_content agent skipped:", err.message); }
+
+try {
+    const supportAgent = require("../business/supportAgent.cjs");
+    orchestrator.registerAgent({
+        id: "business_support", capabilities: ["customer_support"], maxConcurrent: 5,
+        handler: async (task) => supportAgent.run(task),
+    });
+    logger.info("[Bootstrap] business_support agent registered");
+} catch (err) { logger.warn("[Bootstrap] business_support agent skipped:", err.message); }
+
+const REPAIRED_CONTENT_AGENTS = [
+    { file: "captionGeneratorAgent.cjs", id: "content_caption",   capabilities: ["caption_generation"] },
+    { file: "hashtagGeneratorAgent.cjs", id: "content_hashtag",   capabilities: ["hashtag_generation"] },
+    { file: "imageGeneratorAgent.cjs",   id: "content_image",     capabilities: ["image_brief"] },
+    { file: "podcastGeneratorAgent.cjs", id: "content_podcast",   capabilities: ["podcast_script"] },
+    { file: "reelGeneratorAgent.cjs",    id: "content_reel",      capabilities: ["reel_script"] },
+    { file: "scriptWriterAgent.cjs",     id: "content_script",    capabilities: ["video_script"] },
+    { file: "thumbnailAgent.cjs",        id: "content_thumbnail", capabilities: ["thumbnail_brief"] },
+    { file: "videoGeneratorAgent.cjs",   id: "content_video",     capabilities: ["video_brief"] },
+];
+for (const { file, id, capabilities } of REPAIRED_CONTENT_AGENTS) {
+    try {
+        const agent = require(`../content/${file}`);
+        orchestrator.registerAgent({ id, capabilities, maxConcurrent: 3, handler: async (task) => agent.run(task) });
+        logger.info(`[Bootstrap] ${id} agent registered`);
+    } catch (err) {
+        logger.warn(`[Bootstrap] ${id} agent skipped:`, err.message);
+    }
+}
+
 // ── Internet: real public-API research/intelligence agents ─────────────
 // All ten expose run(task) already; capabilities named after the audited
 // MISSING/UNWIRED roles they cover (SEO/Social Media/Research/Knowledge/

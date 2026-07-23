@@ -97,6 +97,38 @@ const TASK_TYPE_MAP = {
     location_lookup:      "location_lookup",
     get_weather:          "weather",
     system_health_check:  "system_health",
+
+    // ── Repaired agents (100-COMPANY P1 mission Phase 1) ────────────
+    // crmAgent.cjs's own aliases (add_lead/get_leads/update_lead/etc.)
+    // are deliberately NOT mapped here — those exact strings already
+    // route to the original, narrower "crm" capability above
+    // (bootstrapRuntime.cjs "crm" agent: get_leads/note/reminder only).
+    // Using crmAgent.cjs's OWN distinct alias set (crm_add/crm_leads/
+    // crm_update/crm_stats) avoids silently shadowing that mapping while
+    // still giving real task-type access to the broader crmAgent.cjs
+    // surface (status filtering, update validation, stats).
+    crm_add:              "crm_extended",
+    crm_leads:            "crm_extended",
+    crm_update:           "crm_extended",
+    crm_stats:            "crm_extended",
+    send_campaign:        "marketing_campaign",
+    broadcast:            "marketing_campaign",
+    create_payment_link:  "payment_link",
+    payment_status:       "payment_link",
+    growth_suggestions:   "growth_suggestions",
+    seo_generate:         "seo",
+    seo_keywords:         "seo",
+    content_generate:     "content_writer",
+    support_help:         "customer_support",
+    list_faqs:            "customer_support",
+    caption_generate:     "caption_generation",
+    hashtag_generate:     "hashtag_generation",
+    image_brief:          "image_brief",
+    podcast_script:       "podcast_script",
+    reel_script:          "reel_script",
+    video_script:         "video_script",
+    thumbnail_brief:      "thumbnail_brief",
+    video_brief:          "video_brief",
 };
 
 /** Resolve a task type to a capability string. Falls back to "ai". */
