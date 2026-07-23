@@ -10,22 +10,26 @@
  * proving the registration/approval logic genuinely reads real bundle
  * state rather than being tested against a mock.
  */
-const { describe, it, before, after } = require("node:test");
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// skillRegistry.cjs is first required. See the identical comment in
+// agent-instance-registry.test.cjs.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
+const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const BUNDLES_FILE = path.join(__dirname, "../../data/acp6-bundles.json");
-const SKILLS_FILE  = path.join(__dirname, "../../data/skills.json");
-let _bundlesBackup = null, _skillsBackup = null;
+// acp6-bundles.json is repositoryEditingEngine.cjs's own store — no
+// other concurrent test file touches it, but it's isolated here too
+// (unique filename per test process) for the same reason, and because
+// this file's tests genuinely mutate it.
+const BUNDLES_FILE = path.join(__dirname, `../../data/acp6-bundles.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+const SKILLS_FILE  = path.join(__dirname, `../../data/skills.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 
-before(() => {
-    try { _bundlesBackup = fs.readFileSync(BUNDLES_FILE, "utf8"); } catch { _bundlesBackup = null; }
-    try { _skillsBackup = fs.readFileSync(SKILLS_FILE, "utf8"); } catch { _skillsBackup = null; }
-});
 after(() => {
-    if (_bundlesBackup !== null) fs.writeFileSync(BUNDLES_FILE, _bundlesBackup); else { try { fs.unlinkSync(BUNDLES_FILE); } catch {} }
-    if (_skillsBackup !== null) fs.writeFileSync(SKILLS_FILE, _skillsBackup); else { try { fs.unlinkSync(SKILLS_FILE); } catch {} }
+    try { fs.unlinkSync(BUNDLES_FILE); } catch {}
+    try { fs.unlinkSync(SKILLS_FILE); } catch {}
 });
 
 const repoEditEngine = require("../../backend/services/repositoryEditingEngine.cjs");

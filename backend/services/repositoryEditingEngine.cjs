@@ -20,7 +20,11 @@ const crypto = require("crypto");
 const { execSync, spawnSync } = require("child_process");
 
 const DATA_DIR     = path.join(__dirname, "../../data");
-const BUNDLES_FILE = path.join(DATA_DIR, "acp6-bundles.json");
+// Phase 7 (test fixture concurrency reliability) — see the identical
+// comment in agentInstanceRegistry.cjs. Unset means the real, unchanged path.
+const BUNDLES_FILE = path.join(DATA_DIR, process.env.JARVIS_TEST_DATA_SUFFIX
+    ? `acp6-bundles.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`
+    : "acp6-bundles.json");
 
 const CODE_EXTS = [".js", ".cjs", ".mjs", ".jsx", ".ts", ".tsx", ".py", ".go", ".md", ".json"];
 const SKIP_DIRS = new Set(["node_modules", ".git", "_archive", "dist", "build", "coverage", "out", ".next"]);

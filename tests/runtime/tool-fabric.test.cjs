@@ -1,18 +1,21 @@
 "use strict";
-const { describe, it, before, after } = require("node:test");
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// toolExecutionLayer.cjs is first required. See the identical comment
+// in agent-instance-registry.test.cjs.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
+const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const PERM_FILE = path.join(__dirname, "../../data/tool-permissions.json");
-let _permBackup = null;
+const PERM_FILE = path.join(__dirname, `../../data/tool-permissions.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+const USAGE_FILE = path.join(__dirname, `../../data/tool-usage.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+const FAILURE_FILE = path.join(__dirname, `../../data/tool-failures.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 
-before(() => {
-    try { _permBackup = fs.readFileSync(PERM_FILE, "utf8"); } catch { _permBackup = null; }
-});
+// Uniquely isolated to this test process — cleanup only, no backup needed.
 after(() => {
-    if (_permBackup !== null) fs.writeFileSync(PERM_FILE, _permBackup);
-    else { try { fs.unlinkSync(PERM_FILE); } catch {} }
+    for (const f of [PERM_FILE, USAGE_FILE, FAILURE_FILE]) { try { fs.unlinkSync(f); } catch {} }
 });
 
 const tel = require("../../backend/services/toolExecutionLayer.cjs");

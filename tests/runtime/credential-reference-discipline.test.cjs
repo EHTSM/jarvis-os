@@ -14,6 +14,14 @@
  * value — end to end, from real vault storage through to an agent
  * instance's resolved ctx at dispatch time.
  */
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// agentInstanceRegistry.cjs is first required. See the identical
+// comment in agent-instance-registry.test.cjs. (vault.json is not
+// currently shared with any other concurrent test file, so it keeps its
+// existing backup/restore pattern — only agent-instances.json, a
+// confirmed race file, needs isolation here.)
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
@@ -26,12 +34,11 @@ const path = require("path");
 require("dotenv").config();
 
 const VAULT_FILE = path.join(__dirname, "../../data/vault.json");
-const INST_FILE  = path.join(__dirname, "../../data/agent-instances.json");
+const INST_FILE  = path.join(__dirname, `../../data/agent-instances.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 let _vaultBackup = null;
 
 before(() => {
     try { _vaultBackup = fs.readFileSync(VAULT_FILE, "utf8"); } catch { _vaultBackup = null; }
-    try { fs.unlinkSync(INST_FILE); } catch {}
 });
 after(() => {
     if (_vaultBackup !== null) fs.writeFileSync(VAULT_FILE, _vaultBackup);

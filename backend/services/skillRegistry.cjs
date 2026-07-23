@@ -36,7 +36,12 @@ const path = require("path");
 const logger = require("../utils/logger");
 
 const DATA_DIR    = path.join(__dirname, "../../data");
-const SKILLS_FILE = path.join(DATA_DIR, "skills.json");
+// Phase 7 (test fixture concurrency reliability) — see the identical
+// comment in agentInstanceRegistry.cjs. JARVIS_TEST_DATA_SUFFIX isolates
+// this file per test process; unset means the real, unchanged path.
+const SKILLS_FILE = path.join(DATA_DIR, process.env.JARVIS_TEST_DATA_SUFFIX
+    ? `skills.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`
+    : "skills.json");
 
 function _contract() { try { return require("./capabilityContract.cjs"); } catch { return null; } }
 function _agentRegistry() { try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; } }

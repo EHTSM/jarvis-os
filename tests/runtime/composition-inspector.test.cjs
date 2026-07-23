@@ -7,8 +7,19 @@
  * fake status. Backend remains the source of truth; this test proves
  * that source of truth is real.
  */
-const { describe, it, before } = require("node:test");
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// skillRegistry.cjs (required transitively by companyDashboard.cjs) is
+// first required. See the identical comment in
+// agent-instance-registry.test.cjs.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
+const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("fs");
+const path = require("path");
+
+const SKILLS_FILE = path.join(__dirname, `../../data/skills.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+after(() => { try { fs.unlinkSync(SKILLS_FILE); } catch {} });
 
 describe("companyDashboard.getCompanyComposition()", () => {
     before(() => { require("../../agents/runtime/bootstrapRuntime.cjs"); });

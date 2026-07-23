@@ -31,9 +31,13 @@ const logger = require("../utils/logger");
 const auditLog = require("../utils/auditLog.cjs");
 const execLog  = require("../utils/execLog.cjs");
 
-const USAGE_FILE   = path.join(__dirname, "../../data/tool-usage.json");
-const PERM_FILE    = path.join(__dirname, "../../data/tool-permissions.json");
-const FAILURE_FILE = path.join(__dirname, "../../data/tool-failures.json");
+// Phase 7 (test fixture concurrency reliability) — see the identical
+// comment in agentInstanceRegistry.cjs. JARVIS_TEST_DATA_SUFFIX isolates
+// these 3 files per test process; unset means the real, unchanged paths.
+const _testSuffix = process.env.JARVIS_TEST_DATA_SUFFIX ? `.${process.env.JARVIS_TEST_DATA_SUFFIX}` : "";
+const USAGE_FILE   = path.join(__dirname, `../../data/tool-usage${_testSuffix}.json`);
+const PERM_FILE    = path.join(__dirname, `../../data/tool-permissions${_testSuffix}.json`);
+const FAILURE_FILE = path.join(__dirname, `../../data/tool-failures${_testSuffix}.json`);
 
 // ── Persistence helpers ──────────────────────────────────────────────────
 function _rj(file, fb) {

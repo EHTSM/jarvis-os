@@ -30,7 +30,22 @@ const path = require("path");
 const logger = require("../utils/logger");
 
 const DATA_DIR  = path.join(__dirname, "../../data");
-const INST_FILE = path.join(DATA_DIR, "agent-instances.json");
+// Universal Composition Engine — Completion Gaps Phase 7 (test fixture
+// concurrency reliability): tests/runtime/*.test.cjs files run as
+// separate processes (Node's default test-isolation=process) but
+// several of them share this ONE file with no locking — concurrent
+// writes race and clobber each other, causing intermittent failures
+// (confirmed and diagnosed in an earlier phase of this mission).
+// JARVIS_TEST_DATA_SUFFIX gives each test process its own isolated file
+// (e.g. "agent-instances.test-abc123.json") instead of the shared
+// production path — unset (the default, real server/dev usage) means
+// zero behavior change. This is preferred over forcing sequential test
+// execution (which would hide the race rather than fix it) or a
+// file-locking mechanism (architectural expansion this phase's own
+// rule discourages when a simpler fix exists).
+const INST_FILE = path.join(DATA_DIR, process.env.JARVIS_TEST_DATA_SUFFIX
+    ? `agent-instances.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`
+    : "agent-instances.json");
 
 function _contract() { try { return require("./capabilityContract.cjs"); } catch { return null; } }
 

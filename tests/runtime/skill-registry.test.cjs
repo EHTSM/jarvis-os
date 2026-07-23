@@ -1,19 +1,18 @@
 "use strict";
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// skillRegistry.cjs is first required. See the identical comment in
+// agent-instance-registry.test.cjs.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const DATA_FILE = path.join(__dirname, "../../data/skills.json");
-let _backup = null;
+const DATA_FILE = path.join(__dirname, `../../data/skills.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 
-before(() => {
-    try { _backup = fs.readFileSync(DATA_FILE, "utf8"); } catch { _backup = null; }
-});
-after(() => {
-    if (_backup !== null) fs.writeFileSync(DATA_FILE, _backup);
-    else { try { fs.unlinkSync(DATA_FILE); } catch {} }
-});
+// Uniquely isolated to this test process — cleanup only, no backup needed.
+after(() => { try { fs.unlinkSync(DATA_FILE); } catch {} });
 
 const skillRegistry = require("../../backend/services/skillRegistry.cjs");
 

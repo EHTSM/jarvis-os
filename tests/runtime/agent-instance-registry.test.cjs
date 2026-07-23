@@ -1,22 +1,25 @@
 "use strict";
-const { describe, it, before, after } = require("node:test");
+// Universal Composition Engine — Completion Gaps Phase 7 (test fixture
+// concurrency reliability): this MUST be set before agentInstanceRegistry
+// .cjs (or anything that transitively requires it) is first required —
+// gives this test file's process its own isolated
+// data/agent-instances.<suffix>.json instead of racing other test files
+// that share the plain data/agent-instances.json. Real, previously
+// confirmed bug: concurrent test-file processes writing the same
+// unlocked JSON file clobbered each other's data, causing intermittent
+// failures unrelated to any actual logic defect.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
+const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const DATA_FILE = path.join(__dirname, "../../data/agent-instances.json");
-let _backup = null;
+const DATA_FILE = path.join(__dirname, `../../data/agent-instances.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 
-// Snapshot/restore wraps the WHOLE file (both describe blocks below write
-// to data/agent-instances.json), so production data is never corrupted and
-// no test-run leftovers accumulate across runs.
-before(() => {
-    try { _backup = fs.readFileSync(DATA_FILE, "utf8"); } catch { _backup = null; }
-});
-after(() => {
-    if (_backup !== null) fs.writeFileSync(DATA_FILE, _backup);
-    else { try { fs.unlinkSync(DATA_FILE); } catch {} }
-});
+// This file is uniquely isolated to this test process — no other test
+// file can ever touch it, so no backup/restore is needed, only cleanup.
+after(() => { try { fs.unlinkSync(DATA_FILE); } catch {} });
 
 describe("agentInstanceRegistry", () => {
     const instReg = require("../../backend/services/agentInstanceRegistry.cjs");

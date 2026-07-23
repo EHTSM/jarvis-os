@@ -13,22 +13,24 @@
  * Every step is asserted against REAL state (real registries, real
  * files), not mocked — following the mission's own evidence-only rule.
  */
-const { describe, it, before, after } = require("node:test");
+// Phase 7 (test fixture concurrency reliability) — must be set before
+// agentInstanceRegistry.cjs/skillRegistry.cjs/toolExecutionLayer.cjs are
+// first required. See the identical comment in
+// agent-instance-registry.test.cjs.
+process.env.JARVIS_TEST_DATA_SUFFIX = `test-${process.pid}-${Date.now()}`;
+
+const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const INST_FILE = path.join(__dirname, "../../data/agent-instances.json");
-const TOOL_PERM_FILE = path.join(__dirname, "../../data/tool-permissions.json");
-let _instBackup = null, _permBackup = null;
+const INST_FILE = path.join(__dirname, `../../data/agent-instances.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+const TOOL_PERM_FILE = path.join(__dirname, `../../data/tool-permissions.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
+const SKILLS_FILE = path.join(__dirname, `../../data/skills.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`);
 
-before(() => {
-    try { _instBackup = fs.readFileSync(INST_FILE, "utf8"); } catch { _instBackup = null; }
-    try { _permBackup = fs.readFileSync(TOOL_PERM_FILE, "utf8"); } catch { _permBackup = null; }
-});
+// All 3 files are uniquely isolated to this test process — cleanup only.
 after(() => {
-    if (_instBackup !== null) fs.writeFileSync(INST_FILE, _instBackup); else { try { fs.unlinkSync(INST_FILE); } catch {} }
-    if (_permBackup !== null) fs.writeFileSync(TOOL_PERM_FILE, _permBackup); else { try { fs.unlinkSync(TOOL_PERM_FILE); } catch {} }
+    for (const f of [INST_FILE, TOOL_PERM_FILE, SKILLS_FILE]) { try { fs.unlinkSync(f); } catch {} }
 });
 
 const executionEngine = require("../../agents/runtime/executionEngine.cjs");
