@@ -430,3 +430,39 @@ Re-searched for any dynamic code-generation pipeline (`eval(`, `new Function(` w
 - None of the 15 agents repaired in Phase 1, the department template registry built in Phase 3, or any other file touched by this mission introduces a dynamic code-generation, validation, security-check, test, registration, or rollback pipeline for genuinely new skills.
 
 **Conclusion, unchanged from the original audit: JARVIS-OS cannot currently generate a genuinely new executable skill and register it into the running system through any real, existing engineering runtime.** Composition (A) is real and was meaningfully expanded this mission. Autonomous new-skill creation (B) does not exist, and — per the mission's own explicit instruction — no fake claim of this capability is made here, and no fabricated "skill generation" pipeline was built to create the appearance of it.
+
+---
+
+## P1-MISSION PHASE 10 UPDATE (2026-07-23) — Multi-Company Reality Test
+
+Created **17 real companies through the real Company Factory** (`POST /company-factory/create`, the exact same production endpoint used throughout this mission — no test-only shortcut) at three scale checkpoints (1, 5, 17), each with its own fresh real account and real signed JWT.
+
+### Scale results
+
+| Scale | Result |
+|---|---|
+| 1 company | Real org created; 9 real department records genuinely instantiated (Phase 7 fix) |
+| 5 companies | All 5 orgs confirmed genuinely unique (`Set` of orgIds has 5 members) |
+| 17 companies | All 17 orgs confirmed genuinely unique; all 17 company-creation pipelines completed successfully with no failures |
+
+### Negative isolation tests (Company A vs. Company B, both real, freshly created)
+
+| Test | Result | Evidence |
+|---|---|---|
+| CRM read isolation | **PASS** | Company B's real HTTP request to read Company A's lead by id returns 404 (P0 mission's IDOR fix holds under real multi-company load, not just synthetic 2-org tests) |
+| CRM data isolation (service level) | **PASS** | `businessDataService.listLeads({orgId})` for each company returns only its own leads — zero cross-contamination confirmed directly against the real store, not just via the route layer |
+| Route-level qualify-by-phone isolation | **PASS** | Company B's real HTTP request to qualify Company A's lead by phone returns 404 — re-confirms the exact IDOR class the P0 mission fixed |
+| Vault/secrets isolation | **PASS** | A real secret stored for Company A (`secretVault.storeSecret`) is completely invisible to Company B's `listSecrets({orgId})` call (returns 0, not partially redacted — fully absent) |
+| Department isolation | **PASS** | Company A and Company B's department record ids have zero overlap (each company's departments are genuinely separate records, not shared references) |
+| Billing isolation | **PASS** | Company A's owner can read its own real billing overview; Company B's owner attempting to read Company A's billing overview is **denied by a real permission check** (`Forbidden — requires permission: manage_billing`) — this is enforced by `organizationService.cjs`'s existing, unmodified `_assertPermission` gate, not a new mechanism |
+| Dashboard scoping | **PASS** | Both companies can access their own real dashboard independently |
+
+**No cross-company access succeeded in any test.** Every isolation boundary tested (CRM, memory/data store, vault/secrets, departments, billing) held under real multi-company load — not just the 2-org synthetic tests from the P0 mission, but genuinely at 17-company scale with real, independently-created companies.
+
+### Cleanup
+
+All 17 test companies' organizations were archived (soft-deleted) via the existing, unmodified `organizationService.archiveOrg(orgId, requestingAccountId)` API — confirmed via direct inspection of `data/organizations.json`: all 17 `VerifyP10 Co*` orgs have `status: "archived"`. Archived orgs are excluded from normal `listOrgs()` results by default (`includeArchived` defaults to `false`), so no test data pollutes production-facing org listings going forward. A hard delete was deliberately not used — `archiveOrg` is the existing, safe, reversible cleanup primitive this codebase already provides, consistent with the mission's "no destructive external actions" instruction.
+
+### Scale boundary this test actually establishes
+
+This test verified **17 real companies with real isolation** — it did **not** attempt 100, per the mission's explicit instruction ("Do not jump to 100 yet"). The architectural ceiling noted in the original audit (single Node process, flat-JSON whole-file I/O, no locking on most stores) was not re-tested for load/concurrency at this phase — that remains an explicitly separate, unaddressed concern (see the Scale-Blockers section in this mission's final scorecard, Phase 13).
