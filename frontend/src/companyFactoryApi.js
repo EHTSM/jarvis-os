@@ -53,6 +53,15 @@ export async function getCompanyDetail(id) {
   catch (err) { return { ok: false, error: err.message, status: err.status }; }
 }
 
+// Composition Inspector (Universal Composition Engine — Completion Gaps
+// Phase 6): departments/skills/connectors/credentials/approval
+// policies/capability gaps — real backend state, org-scoped
+// authorization enforced server-side (Phase 5's fix applies here too).
+export async function getCompanyComposition(id) {
+  try { return await _fetch(`/company-factory/companies/${encodeURIComponent(id)}/composition`); }
+  catch (err) { return { ok: false, error: err.message, status: err.status }; }
+}
+
 export async function advanceCompanyStage(id, force = false) {
   try {
     return await _fetch(`/company-factory/companies/${encodeURIComponent(id)}/advance`, {

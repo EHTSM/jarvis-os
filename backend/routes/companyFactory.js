@@ -273,6 +273,18 @@ router.get("/company-factory/companies/:id/detail", requireAuth, (req, res) => {
   res.json(_cd()?.getCompanyDetail?.(company.id) || { ok: false });
 });
 
+// Composition Inspector (Universal Composition Engine — Completion Gaps
+// Phase 6): real backend-driven view of a company's full composition —
+// departments, skills, tools/connectors, credential readiness, approval
+// policies, capability gaps. Same org-scoped authorization as every
+// other company-detail route above (Phase 5's fix) — never trusts a
+// frontend-supplied id without the real permission check.
+router.get("/company-factory/companies/:id/composition", requireAuth, (req, res) => {
+  const company = _requireCompanyOrgPermission(req, res, "view_members");
+  if (!company) return;
+  res.json(_cd()?.getCompanyComposition?.(company.id) || { ok: false });
+});
+
 router.post("/company-factory/companies/:id/advance", requireAuth, async (req, res) => {
   const { force } = req.body || {};
   try {

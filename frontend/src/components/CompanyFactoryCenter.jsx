@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { track } from "../analytics";
 import {
   getFactoryDashboard, getFactoryStats, createCompany, listTemplates,
-  listCompanies, getCompanyDetail, advanceCompanyStage, passCompanyGate,
+  listCompanies, getCompanyDetail, getCompanyComposition, advanceCompanyStage, passCompanyGate,
   getLifecycleStages,
 } from "../companyFactoryApi";
 import "./IntegrationCenter.css";
@@ -121,6 +121,7 @@ function CreateCompanyModal({ templates, onClose, onCreated }) {
 
 function CompanyDetail({ companyId, stages, gateDefs, onClose, onChanged }) {
   const [detail, setDetail] = useState(null);
+  const [composition, setComposition] = useState(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState(null);
@@ -132,7 +133,17 @@ function CompanyDetail({ companyId, stages, gateDefs, onClose, onChanged }) {
     if (res?.ok !== false) setDetail(res);
   }, [companyId]);
 
-  useEffect(() => { load(); }, [load]);
+  // Composition Inspector (Universal Composition Engine — Completion
+  // Gaps Phase 6): fetched alongside detail, keyed by the same
+  // companyId dependency — switching the active company (companyId
+  // change) refreshes both, matching the mission's requirement that
+  // active-company switches refresh composition state correctly.
+  const loadComposition = useCallback(async () => {
+    const res = await getCompanyComposition(companyId);
+    if (res?.ok !== false) setComposition(res);
+  }, [companyId]);
+
+  useEffect(() => { load(); loadComposition(); }, [load, loadComposition]);
 
   const advance = useCallback(async () => {
     setBusy(true);
@@ -215,6 +226,77 @@ function CompanyDetail({ companyId, stages, gateDefs, onClose, onChanged }) {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Composition Inspector (Phase 6) — real backend-driven visibility
+          into skills/connectors/credentials/approval policies/capability
+          gaps. Backend remains the source of truth: every value below is
+          exactly what /company-factory/companies/:id/composition returned,
+          no client-side fabrication. */}
+      {composition && (
+        <>
+          {composition.skills?.length > 0 && (
+            <div className="ic-detail-section">
+              <p className="ic-detail-label">Skills ({composition.skills.filter(s => s.resolved).length}/{composition.skills.length} resolved)</p>
+              <div className="cfc-roadmap-list">
+                {composition.skills.map(s => (
+                  <div key={s.id} className="cfc-roadmap-row">
+                    <span className="cfc-roadmap-phase">{s.name}</span>
+                    {!s.resolved && <span className="cfc-risk-badge" style={{ color: "var(--warning)" }}>unresolved</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {composition.connectors?.length > 0 && (
+            <div className="ic-detail-section">
+              <p className="ic-detail-label">Connectors ({composition.connectors.length})</p>
+              <div className="cfc-roadmap-list">
+                {composition.connectors.map(c => (
+                  <div key={c.connectorId} className="cfc-roadmap-row">
+                    <span className="cfc-roadmap-phase">{c.connectorId}</span>
+                    <span className="cfc-risk-badge" style={{
+                      color: c.status === "CONNECTED_VERIFIED" ? "var(--success)"
+                        : ["AUTH_FAILED", "UNREACHABLE"].includes(c.status) ? "var(--danger)"
+                        : "var(--warning)",
+                    }}>{c.status}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="ic-detail-section">
+            <p className="ic-detail-label">Credential Readiness</p>
+            <p className="ic-detail-sub">
+              {composition.credentials?.length > 0
+                ? `${composition.credentials.length} credential(s) configured`
+                : "No credentials configured yet"}
+            </p>
+          </div>
+
+          {composition.approvalPolicies?.length > 0 && (
+            <div className="ic-detail-section">
+              <p className="ic-detail-label">Approval Policies ({composition.approvalPolicies.length})</p>
+              <p className="ic-detail-sub">{composition.approvalPolicies.join(", ")}</p>
+            </div>
+          )}
+
+          {composition.capabilityStatus && (
+            <div className="ic-detail-section">
+              <p className="ic-detail-label">Capability Status</p>
+              <span className="cfc-risk-badge" style={{
+                color: composition.capabilityStatus === "COMPOSABLE_NOW" ? "var(--success)"
+                  : ["UNSUPPORTED", "CAPABILITY_GAP"].includes(composition.capabilityStatus) ? "var(--danger)"
+                  : "var(--warning)",
+              }}>{composition.capabilityStatus}</span>
+              {composition.capabilityGap?.missingDepartments?.length > 0 && (
+                <p className="ic-detail-sub">Missing: {composition.capabilityGap.missingDepartments.join(", ")}</p>
+              )}
+            </div>
+          )}
+        </>
       )}
 
       <div className="ic-detail-section">
