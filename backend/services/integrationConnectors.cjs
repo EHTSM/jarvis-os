@@ -813,8 +813,17 @@ async function connectGitHubAuth() {
   const creds        = _creds(["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET"], ["GITHUB_REDIRECT_URI"]);
   if (!clientId || !clientSecret) return _record("auth:github", "G", "GitHub OAuth", "READY",
     "GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET not set", creds);
-  return _record("auth:github", "G", "GitHub OAuth", "CONNECTED",
-    `GitHub OAuth app configured — client: ${clientId}`, creds);
+  // GitHub's OAuth endpoints (authorize, device/code) do not validate
+  // client_id server-side without a live user consent redirect — both a
+  // real and a fabricated client_id return the same HTTP status from every
+  // unauthenticated endpoint GitHub exposes. There is no genuine way to
+  // verify this credential without a real OAuth flow, so this reports
+  // PARTIAL (configured, unverified) rather than fabricating a CONNECTED
+  // status the way this connector previously did from env-var presence
+  // alone. See 100-COMPANY-GAP-LIST.md P0 #6.
+  return _record("auth:github", "G", "GitHub OAuth", "PARTIAL",
+    `GitHub OAuth app configured (client: ${clientId}) but unverifiable without a live consent redirect — GitHub exposes no unauthenticated endpoint that distinguishes a valid client_id from an invalid one`,
+    creds);
 }
 
 async function connectMicrosoftAuth() {
@@ -856,16 +865,39 @@ async function connectAppleAuth() {
   const creds    = _creds(["APPLE_TEAM_ID", "APPLE_CLIENT_ID", "APPLE_KEY_ID", "APPLE_PRIVATE_KEY"]);
   if (!teamId || !clientId || !keyId) return _record("auth:apple", "G", "Apple Sign In", "READY",
     "APPLE_TEAM_ID, APPLE_CLIENT_ID, APPLE_KEY_ID not set", creds);
-  return _record("auth:apple", "G", "Apple Sign In", "CONNECTED",
-    `Apple Sign In configured — team: ${teamId}, client: ${clientId}`, creds);
+  // Apple publishes a real OIDC discovery document — same verification
+  // depth as the Google/Microsoft/LinkedIn auth checks above, instead of
+  // reporting CONNECTED from env-var presence alone (previous behavior;
+  // see 100-COMPANY-GAP-LIST.md P0 #6). This confirms Apple's Sign-In
+  // infrastructure is reachable, not that this specific client_id/key is
+  // registered — full verification requires a live consent flow.
+  const r = await _probe("https://appleid.apple.com/.well-known/openid-configuration");
+  return _record("auth:apple", "G", "Apple Sign In",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Apple Sign In configured — team: ${teamId}, client: ${clientId}`
+         : `Apple discovery endpoint unreachable: HTTP ${r.status || r.error}`,
+    creds);
 }
 
 async function connectDiscordAuth() {
   const clientId  = _env("DISCORD_CLIENT_ID");
   const creds     = _creds(["DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET"], ["DISCORD_REDIRECT_URI"]);
   if (!clientId) return _record("auth:discord", "G", "Discord OAuth", "READY", "DISCORD_CLIENT_ID not set", creds);
-  return _record("auth:discord", "G", "Discord OAuth", "CONNECTED",
-    `Discord OAuth configured — client: ${clientId}`, creds);
+  // Discord's authorize endpoint genuinely discriminates (empirically
+  // verified): a well-formed numeric client_id returns HTTP 302
+  // (redirect to consent), a malformed one returns HTTP 400 — unlike
+  // GitHub's equivalent endpoints, which return the same status
+  // regardless. This is real verification, not env-var-presence-only
+  // (previous behavior; see 100-COMPANY-GAP-LIST.md P0 #6).
+  const r = await _probe(
+    `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(clientId)}&response_type=code&redirect_uri=${encodeURIComponent(_env("DISCORD_REDIRECT_URI") || "https://example.com")}&scope=identify`
+  );
+  const verified = r.status === 302;
+  return _record("auth:discord", "G", "Discord OAuth",
+    verified ? "CONNECTED" : "PARTIAL",
+    verified ? `Discord OAuth configured — client: ${clientId}`
+             : `Discord rejected client_id format: HTTP ${r.status || r.error}`,
+    creds);
 }
 
 async function scanAllAuthProviders() {
@@ -1104,11 +1136,23 @@ async function connectZapier() {
   const creds      = _creds(["ZAPIER_WEBHOOK_URL"]);
   if (!webhookUrl) return _record("auto:zapier", "K", "Zapier", "READY",
     "ZAPIER_WEBHOOK_URL not set — create a Catch Hook Zap and paste the URL", creds);
-  // Zapier webhooks are fire-and-forget; validate URL format only
-  const isValid = webhookUrl.startsWith("https://hooks.zapier.com/");
+  const isValidFormat = webhookUrl.startsWith("https://hooks.zapier.com/");
+  if (!isValidFormat) return _record("auto:zapier", "K", "Zapier", "PARTIAL",
+    `Webhook URL format unexpected: ${webhookUrl}`, creds);
+  // Zapier catch-hooks accept any well-formed /hooks/catch/{id}/{hook}/ path
+  // with HTTP 200 whether or not that specific hook is real/active — this
+  // is a genuine Zapier platform limitation (fire-and-forget by design), so
+  // a network call cannot fully confirm the Zap is live, only that the
+  // path is well-formed and the domain is reachable. This still catches
+  // real failures a format check alone misses (typos in the numeric
+  // segments return HTTP 404), so it is real network verification, not a
+  // fabricated CONNECTED from format-checking alone (previous behavior;
+  // see 100-COMPANY-GAP-LIST.md P0 #6).
+  const r = await _probe(webhookUrl, {}, 6000, "POST", { ping: true, source: "jarvis-connector-healthcheck" });
   return _record("auto:zapier", "K", "Zapier",
-    isValid ? "CONNECTED" : "PARTIAL",
-    isValid ? `Zapier webhook configured: ${webhookUrl.slice(0, 60)}…` : `Webhook URL format unexpected: ${webhookUrl}`,
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Zapier webhook reachable: ${webhookUrl.slice(0, 60)}… (note: Zapier cannot confirm the Zap is active, only that the endpoint responds)`
+         : `Zapier webhook unreachable: HTTP ${r.status || r.error}`,
     creds
   );
 }
