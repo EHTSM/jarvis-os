@@ -160,3 +160,62 @@ This mission does not claim to prove companies #101-200+ scale. The architecture
 2. Backend route filtering (`orgId` query param support in `phase18.js`/`phase19.js` and siblings) + frontend context-threading across the 7 named components — the actual Phase 16 work, scoped as its own mission since it's a multi-tenancy retrofit, not composition-engine wiring.
 
 A secondary, lower-priority mission: a testing-infrastructure hardening pass for the shared-JSON-file race and the `odi-x-v1.test.cjs` hang found during this work.
+
+---
+
+## COMPLETION GAPS UPDATE (this session) — Phases 1-8 closed
+
+This update closes exactly the gaps §10 above named as the next recommended mission, plus the two Phase 2/16 gaps flagged as explicitly not executed in the original report. 8 commits, `08e928c`..`717f6de`.
+
+### 1. Blueprint Contract Validation (was: not executed)
+`capabilityContract.cjs` gained `validateBlueprint()` — validates the full composed blueprint (Company + Departments/Agents/Skills/Tools/Connectors/CredentialRequirements/Workflows/Permissions/ApprovalPolicies/MemoryScope/KnowledgeScope/KPIs/Budget) plus 6 reference-chain checks (department→agent, department→skill, agent→skill, skill→tool, tool→connector, connector→credentialRequirement, action→approvalPolicy). Wired into `companyFactory.cjs` as a new Step 7c — a structurally invalid blueprint now genuinely rejects company creation. Found and fixed a real gap this surfaced: `departmentTemplateRegistry.cjs`'s "executive" template referenced 2 skill names (`strategy`, `executive_summary`) never registered in `skillRegistry.cjs` — added both. Skill count: 58 → **60**.
+
+### 2. Template Inference Engine (was: silent SaaS fallback, only 3/10 niches matched)
+New `templateInferenceEngine.cjs` — ~20 structural dimension rules (not per-niche strings) mapping a structured company definition to capability tags, unioned across every genuinely-matched base template, fed into the existing `departmentTemplateRegistry.deriveDepartmentsForTemplate()`. Returns a genuine `CAPABILITY_GAP` (with exact missing pieces) when nothing resolves, instead of defaulting to "saas". Two real bugs found and fixed during development: a naive tag-overlap rule spuriously matched unrelated templates via generic cross-cutting tags (crm/billing/reporting); a generic `regulated:true` rule spuriously added health-specific `hipaa_compliance` to every regulated business (crypto exchanges, etc.).
+
+### 3. Original 100-Company Inference Test
+All 100 original niches run through the new engine (`docs/audits/original-100-companies.json`, `tests/runtime/original-100-inference.test.cjs`). **Result: 100/100 correctly classified, 0 CAPABILITY_GAP, 0 silent SaaS fallback** — see the corrected status table below. 26/100 companies genuinely combine 2+ base templates.
+
+### 4. Unknown Niche Test
+22 temporary niches genuinely outside the original 100 (space/quantum/drone/carbon-credit/neurotech/cannabis/firearms/crypto/aerospace/deep-sea-mining/vertical-farming/nuclear/podcast/NFT/livestream/funeral-home/pet-grooming/ride-hailing/warehouse-robotics/genomics/weather-derivatives/submarine-cable). All resolve honestly — reusable capabilities recognized where applicable (podcast/NFT/ride-hailing correctly reuse `marketplace`), missing capabilities identified honestly (drone delivery/deep-sea mining/warehouse robotics never claim false `COMPOSABLE_NOW`), no capability fabricated to pass tests (verified structurally — the engine exports only one read-only function).
+
+### 5. Frontend Org/Company Scoping — real cross-tenant IDOR found and fixed
+`GET /company-factory/companies` (list), `GET /company-factory/companies/:id`, and `.../detail` had **zero authorization** — `companyLifecycleEngine.getCompany(id)`/`companyDashboard.getCompanyDetail(id)` are pure id-lookups with no ownership check. Any authenticated account could view any other org's company by guessing/enumerating an id; the list route returned every company across every org. Fixed via the existing `_requireCompanyOrgPermission()`/`organizationService.hasPermission()`/`listOrgs()` mechanisms (no new permission model). Verified with a real, live-server HTTP test: two independent orgs, Org A denied (403) access to Org B's company/detail in both directions, list never leaks cross-org, own-org access preserved.
+
+### 6. Composition Inspector UI
+`companyDashboard.getCompanyComposition()` (new) + `GET /company-factory/companies/:id/composition` (new, same auth as #5) aggregate real backend state — Departments/Skills (resolved against the real Skill Registry)/Connectors (real status)/Credential readiness (real vault state, never a value)/Approval policies/Capability gaps (re-derived via the Phase 2 engine). Frontend: extended `CompanyFactoryCenter.jsx`'s existing `CompanyDetail` component with new `ic-detail-section` blocks (same design pattern as the existing Departments section) — no redesign, no mock cards. Verified via unit tests, real HTTP, and real Playwright browser session.
+
+### 7. Test Fixture Concurrency Reliability
+Fixed the confirmed shared-JSON race (§5 of the original report): 3 services (`skillRegistry.cjs`, `agentInstanceRegistry.cjs`, `toolExecutionLayer.cjs`) now resolve their data file path through an optional `JARVIS_TEST_DATA_SUFFIX` env var — unset (real usage) is unchanged; 8 test files set a unique per-process suffix, giving each genuinely isolated fixtures instead of forcing sequential execution (which the mission explicitly disallowed as a "fix"). Verified via 3+ consecutive full-suite runs (298 tests each, 0 failures) plus a dedicated test spawning two real concurrent child processes proving zero cross-contamination.
+
+### 8. Final Verification
+393 tests (full `tests/runtime/*` + `tests/workflows/*` composition-relevant suite) + 25 (V5 tenant-isolation/RBAC) + 103 (injection security) + 31 (MFA security) + 6 (webhook security) = **558 tests passing**, real HTTP runtime throughout, real Playwright browser verification.
+
+### Corrected 100-Company status distribution
+
+| Status | Count |
+|---|---|
+| COMPOSABLE_NOW | 0 (honest — 42/65 connectors still `NEEDS_CREDENTIALS` in this dev environment) |
+| NEEDS_CREDENTIALS | 61 |
+| NEEDS_CONNECTOR | 0 |
+| NEEDS_CAPABILITY | 23 |
+| NEEDS_EXTERNAL_INFRA | 16 |
+| UNSUPPORTED | 0 |
+| **CAPABILITY_GAP** | **0** (was the core problem this update fixes) |
+
+### Updated exact counts
+
+Agent archetypes: 38 (unchanged) · Skills: 60 (was 58) · Tools: 9 (unchanged) · Connectors: 65 recorded (unchanged) · Department templates: 33, of which 22 composable now / 11 genuinely `requiresNewCapability` (HR, Legal/Compliance, Procurement, Supply Chain, Inventory/Warehouse, Logistics, 3D/CAD, Manufacturing, IoT/Robotics, Energy/Infrastructure — unchanged from the original report, honestly still unbuilt).
+
+### Explicit answers (mission's required questions)
+
+1. **Does any niche still silently fall back to SaaS?** No — verified directly across the original 100 (0 residual over-fallback cases) and the 22 unknown niches (0 cases). A niche with no genuine signal now returns `CAPABILITY_GAP`, never a defaulted template.
+2. **Can Company #101 with an unknown niche be analyzed without hardcoding it?** Yes — the 22-niche unknown test proves this: genuinely novel niches (space, quantum) either honestly gap or reuse an existing template via structural dimension signals, never a per-niche hardcoded rule.
+3. **Can JARVIS tell exactly which reusable capability is missing?** Yes — `capabilityGap.missingDepartments`/`missingConnectors`/`missingExternalInfra` name the exact missing pieces, sourced from the real, live department/connector registries, never guessed.
+4. **Can it compose a specialized agent from existing skills/tools without a new agent file?** Unchanged from the original report — yes for a per-company configured instance of an existing archetype (`agentInstanceRegistry`); no for a genuinely new archetype (still requires a new handler file, a deliberate design boundary, not a gap).
+5. **Are frontend company/org boundaries enforced server-side?** Yes, now — this was a real, previously-unenforced gap (§5 above), fixed and verified with a live-server cross-org HTTP test in both directions.
+
+### Remaining, honestly out of scope for this update
+- `founderVault.js`'s plaintext-reveal route and `secretVault.cjs`'s convention-only org-scoping — unchanged, still flagged, not fixed (security-sensitive vault-internals work, a separate concern).
+- The `odi-x-v1.test.cjs` hang and a rare (~1/14 observed) `missionMemory.cjs`/`missions.json` write race — both pre-existing, both outside this update's 3-file scope, both documented for a future testing-hardening pass.
+- 11/33 department families and ~13/15 approval categories genuinely have no real code — unchanged, honestly still `requiresNewCapability`/ungated, not fabricated.
