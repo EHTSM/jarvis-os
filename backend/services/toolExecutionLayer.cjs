@@ -148,6 +148,24 @@ const TOOL_DEFS = {
         envKey: null,   // local — no env key required
         baseUrl: process.env.OLLAMA_URL || "http://localhost:11434",
     },
+    // Universal Composition Engine Phase 6 (Tool Fabric): wraps the
+    // existing backend/core/safe-exec.js allowlisted OS-command execution
+    // primitive as a first-class tool, instead of the 4+ separate ad hoc
+    // wrappers previously scattered across agents/terminalAgent.cjs,
+    // agents/runtime/adapters/terminalExecutionAdapter.cjs, and
+    // engineeringCapabilities.cjs's own local _exec helper. Does not
+    // replace safe-exec.js's allowlist/validation — this is a single,
+    // shared entry point in front of it. High risk by construction (raw
+    // OS command execution): denied by default, exactly like every other
+    // high-risk action here.
+    "system:exec": {
+        name: "System Exec (safe-exec)", icon: "🖥️", type: "system",
+        actions: {
+            run: { rateLimit: 30, risk: "high" },
+        },
+        envKey: null,
+        baseUrl: null,
+    },
 };
 
 // Default permissions: low-risk read actions allowed; write/delete require explicit grant
@@ -167,6 +185,60 @@ function _getPerms(toolId) {
         _savePerms();
     }
     return _perms[toolId];
+}
+
+// ── Org/agent-scoped permission overlay (Universal Composition Engine
+// Phase 6). Additive: the existing _perms map above stays the platform-
+// wide default exactly as before (unchanged for any caller that doesn't
+// pass a scope). A scoped grant, when present, takes precedence over the
+// global default for that (orgId, agentInstanceId) pair — this is what
+// lets an AgentInstance (agentInstanceRegistry.cjs) get only the tools
+// its own company/org has been granted, rather than every agent
+// inheriting the same platform-wide toggle. ─────────────────────────────
+function _scopeKey(orgId, agentInstanceId) {
+    return `${orgId || "*"}::${agentInstanceId || "*"}`;
+}
+
+function _getScopedPerm(toolId, action, orgId, agentInstanceId) {
+    if (!orgId && !agentInstanceId) return undefined; // no scope requested
+    const scoped = _perms.__scoped?.[toolId]?.[_scopeKey(orgId, agentInstanceId)];
+    return scoped ? scoped[action] : undefined;
+}
+
+/**
+ * Grant/deny a tool action for a specific org/agent instance, without
+ * touching the platform-wide default. Pass agentInstanceId:null to scope
+ * to the whole org.
+ */
+function setScopedPermission(toolId, action, allowed, { orgId, agentInstanceId } = {}) {
+    if (!TOOL_DEFS[toolId]) throw new Error(`Unknown tool: ${toolId}`);
+    if (!orgId) throw new Error("orgId is required for a scoped permission");
+    if (!_perms.__scoped) _perms.__scoped = {};
+    if (!_perms.__scoped[toolId]) _perms.__scoped[toolId] = {};
+    const key = _scopeKey(orgId, agentInstanceId);
+    if (!_perms.__scoped[toolId][key]) _perms.__scoped[toolId][key] = {};
+    _perms.__scoped[toolId][key][action] = !!allowed;
+    _savePerms();
+    auditLog.append({ type: "scoped_permission_change", toolId, action, allowed, orgId, agentInstanceId: agentInstanceId || null });
+}
+
+/**
+ * Resolves whether (orgId, agentInstanceId) may perform toolId.action.
+ * Precedence: agent-instance-specific grant > org-wide grant > platform
+ * default (_getPerms). Returns a boolean, never throws for an unknown
+ * scope — absence of a scoped grant simply falls through to the default.
+ */
+function resolvePermission(toolId, action, { orgId, agentInstanceId } = {}) {
+    if (!TOOL_DEFS[toolId]) return false;
+    if (agentInstanceId) {
+        const instanceGrant = _getScopedPerm(toolId, action, orgId, agentInstanceId);
+        if (instanceGrant !== undefined) return instanceGrant;
+    }
+    if (orgId) {
+        const orgGrant = _getScopedPerm(toolId, action, orgId, null);
+        if (orgGrant !== undefined) return orgGrant;
+    }
+    return !!_getPerms(toolId)[action];
 }
 
 // ── Rate limiter (in-memory, per tool+action, per-minute) ────────────────
@@ -317,6 +389,15 @@ async function _runAdapter(toolId, action, params) {
             case "gmail":
                 return { success: false, output: null, error: `not_configured: ${toolId} requires OAuth token — set ${TOOL_DEFS[toolId].envKey}` };
 
+            // ── System Exec (wraps backend/core/safe-exec.js) ─────────────
+            case "system:exec": {
+                if (action !== "run") return { success: false, output: null, error: `unsupported system:exec action: ${action}` };
+                const safeExec = require("../core/safe-exec.js");
+                const result = await safeExec.run(params.cmd, params.args || [], { cwd: params.cwd, timeoutMs: params.timeoutMs });
+                if (result.blocked) return { success: false, output: null, error: `blocked: ${result.reason}` };
+                return { success: result.exitCode === 0, output: result.stdout || result.stderr, error: result.exitCode !== 0 ? (result.stderr || `exit code ${result.exitCode}`) : null };
+            }
+
             default:
                 return { success: false, output: null, error: `unknown tool: ${toolId}` };
         }
@@ -355,12 +436,16 @@ async function execute(toolId, action, params = {}, opts = {}) {
     if (!TOOL_DEFS[toolId]) return { callId, success: false, error: `Unknown tool: ${toolId}`, durationMs: 0 };
     if (!TOOL_DEFS[toolId].actions[action]) return { callId, success: false, error: `Unknown action: ${toolId}.${action}`, durationMs: 0 };
 
-    // Permission check
-    const perms = _getPerms(toolId);
-    if (perms[action] === false) {
-        const rec = { callId, toolId, action, success: false, error: "permission_denied", startedAt, durationMs: 0, params: _sanitizeParams(params) };
+    // Permission check — org/agent-instance scoped grant takes precedence
+    // over the platform-wide default when opts.orgId/opts.agentInstanceId
+    // are provided (Phase 6); unscoped callers behave exactly as before.
+    const allowed = (opts.orgId || opts.agentInstanceId)
+        ? resolvePermission(toolId, action, { orgId: opts.orgId, agentInstanceId: opts.agentInstanceId })
+        : _getPerms(toolId)[action] !== false;
+    if (!allowed) {
+        const rec = { callId, toolId, action, success: false, error: "permission_denied", startedAt, durationMs: 0, params: _sanitizeParams(params), orgId: opts.orgId || null, agentInstanceId: opts.agentInstanceId || null };
         _usage.push(rec); _saveUsage();
-        auditLog.append({ type: "tool_denied", callId, toolId, action });
+        auditLog.append({ type: "tool_denied", callId, toolId, action, orgId: opts.orgId || null, agentInstanceId: opts.agentInstanceId || null });
         return { callId, success: false, error: `permission_denied: ${toolId}.${action} is not allowed`, durationMs: 0 };
     }
 
@@ -481,4 +566,8 @@ function toolStatus() {
     return out;
 }
 
-module.exports = { execute, getPermissions, setPermission, getUsage, getFailures, listTools, toolStatus };
+module.exports = {
+    execute, getPermissions, setPermission, getUsage, getFailures, listTools, toolStatus,
+    // Phase 6 additions (org/agent-scoped permission overlay)
+    setScopedPermission, resolvePermission,
+};
