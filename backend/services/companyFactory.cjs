@@ -49,6 +49,8 @@ const _cle = () => _try(() => require("./continuousLearningEngine.cjs"));
 const _eme = () => _try(() => require("./engineeringMemoryEngine.cjs"));
 const _fwr = () => _try(() => require("./founderWorkRegistry.cjs"));
 const _vault = () => _try(() => require("./secretVault.cjs"));
+const _deptReg = () => _try(() => require("./departmentTemplateRegistry.cjs"));
+const _agentRegistry = () => _try(() => require("../../agents/runtime/agentRegistry.cjs"));
 
 function _ts()  { return new Date().toISOString(); }
 function _id()  { return `cf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -189,6 +191,24 @@ async function createCompany({
   if (!wsResult?.ok) return { ok: false, error: "workspace build failed: " + wsResult?.error, timeline };
   const workspace = wsResult.workspace;
   _step("workspace", { workspaceId: workspace.id, repos: workspace.repositories?.repositories?.length, missions: workspace.registeredMissions?.length, readiness: workspace.readinessScore });
+
+  // ─ Step 7b: Compose departments from the matched template ────────────────
+  // Uses departmentTemplateRegistry.cjs (100-COMPANY P1 mission Phase 3) —
+  // derives the department set a template genuinely implies from its own
+  // teamTypes/capabilities, then reports each department's real
+  // composability against the live agent registry. No department record
+  // is created here (organizationService.createDepartment() requires an
+  // authenticated requestingAccountId and happens after the org exists at
+  // step 11) — this step produces the composed plan that a later step or
+  // caller can use to actually create departments via the existing,
+  // unmodified organizationService API.
+  const composedDepartments = _try(() => _deptReg()?.composeDepartmentsForTemplate?.(template, _agentRegistry())) || [];
+  _step("departments_composed", {
+    count: composedDepartments.length,
+    composableNow: composedDepartments.filter(d => d.composable).length,
+    requiresNewCapability: composedDepartments.filter(d => d.requiresNewCapability).length,
+    departments: composedDepartments.map(d => ({ key: d.templateKey, label: d.label, composable: d.composable })),
+  });
 
   // ─ Step 8: Workforce allocation ──────────────────────────────────────────
   // Real execution (not dryRun): runMission's non-dryRun path calls the
