@@ -51,6 +51,15 @@ function _engCaps() { try { return require("./engineeringCapabilities.cjs"); } c
 const SEED_SKILLS = [
     // ── agentRegistry.cjs capabilities (46) ──────────────────────────────
     { id: "ai",                         name: "AI Generation",            category: "executive",  riskLevel: "low",    executionHandler: "ai",                         source: "agentRegistry" },
+    // strategy/executive_summary: departmentTemplateRegistry.cjs's "executive"
+    // and "strategy" department templates reference these as skill tags —
+    // both are genuinely backed by the real "ai" capability handler
+    // (the executive template's own requiredCapabilities:["ai"] proves
+    // this), they just never got their own skillRegistry seed entry until
+    // Universal Composition Engine Phase 1 (Blueprint Contract Validation)
+    // surfaced the reference-integrity gap via a real end-to-end test.
+    { id: "strategy",                   name: "Strategic Planning",        category: "executive",  riskLevel: "low",    executionHandler: "ai",                         source: "agentRegistry" },
+    { id: "executive_summary",          name: "Executive Summary Generation", category: "executive", riskLevel: "low", executionHandler: "ai",                         source: "agentRegistry" },
     { id: "intelligence",               name: "AI Intelligence",          category: "ai",          riskLevel: "low",    executionHandler: "intelligence",               source: "agentRegistry" },
     { id: "analytics",                  name: "Business Analytics",       category: "data",        riskLevel: "low",    executionHandler: "analytics",                  source: "agentRegistry" },
     { id: "revenue",                    name: "Revenue Tracking",         category: "finance",     riskLevel: "medium", executionHandler: "revenue",                    source: "agentRegistry" },

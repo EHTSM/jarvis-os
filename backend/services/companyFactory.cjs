@@ -52,6 +52,8 @@ const _vault = () => _try(() => require("./secretVault.cjs"));
 const _deptReg = () => _try(() => require("./departmentTemplateRegistry.cjs"));
 const _agentRegistry = () => _try(() => require("../../agents/runtime/agentRegistry.cjs"));
 const _org = () => _try(() => require("./organizationService.cjs"));
+const _contract = () => _try(() => require("./capabilityContract.cjs"));
+const _skillReg = () => _try(() => require("./skillRegistry.cjs"));
 
 function _ts()  { return new Date().toISOString(); }
 function _id()  { return `cf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -134,6 +136,57 @@ function _buildChecklist(blueprint) {
   return [...base, ...(specific[blueprint.templateId] || [])];
 }
 
+// ── Blueprint Contract Validation (Universal Composition Engine —
+// Completion Gaps, Phase 1) ──────────────────────────────────────────────
+// Assembles a real, honest composition blueprint from the SAME composed
+// department/skill data already produced by departmentTemplateRegistry.cjs
+// and skillRegistry.cjs (no new schema, no fabricated entities), then
+// validates the whole thing against capabilityContract.cjs's
+// validateBlueprint(). A structurally invalid blueprint is REJECTED
+// (createCompany returns ok:false) rather than silently proceeding —
+// this is the enforcement point Phase 2 of the original mission left
+// unbuilt.
+function _assembleBlueprintForContract(company, template, composedDepartments) {
+  const contract = _contract();
+  const skillReg = _skillReg();
+  if (!contract) return null;
+
+  const companyEntity = { id: company?.id || "pending", name: company?.name || "unknown", niche: template?.id || "unknown" };
+
+  // Departments — real composed data, each carrying its own real skill
+  // name strings (department.skills, already the true output of
+  // departmentTemplateRegistry.composeDepartment()).
+  const departments = composedDepartments.map((d, i) => ({
+    id: `dept_${i}_${d.templateKey}`,
+    templateKey: d.templateKey,
+    label: d.label,
+    skillIds: d.skills || [],
+  }));
+
+  // Skills — resolve each unique skill name referenced by any department
+  // against the REAL skill registry. A skill name with no real registry
+  // entry is honestly reported as a missing skill (never fabricated) by
+  // simply not being included — the reference-chain check below will
+  // then correctly flag any department that references it as a
+  // reference-integrity failure, surfacing the gap rather than hiding it.
+  const uniqueSkillNames = [...new Set(departments.flatMap(d => d.skillIds))];
+  const skills = [];
+  for (const skillName of uniqueSkillNames) {
+    const real = skillReg?.getSkill?.(skillName);
+    if (real) skills.push({ id: real.id, name: real.name, category: real.category, riskLevel: real.riskLevel, executionHandler: real.executionHandler, version: real.version });
+  }
+
+  return { company: companyEntity, departments, skills };
+}
+
+function _validateCompanyBlueprint(company, template, composedDepartments) {
+  const contract = _contract();
+  if (!contract?.validateBlueprint) return { ok: true, errors: [], skipped: true };
+  const blueprint = _assembleBlueprintForContract(company, template, composedDepartments);
+  if (!blueprint) return { ok: true, errors: [], skipped: true };
+  return contract.validateBlueprint(blueprint);
+}
+
 // ── Main pipeline ─────────────────────────────────────────────────────────────
 
 async function createCompany({
@@ -210,6 +263,21 @@ async function createCompany({
     requiresNewCapability: composedDepartments.filter(d => d.requiresNewCapability).length,
     departments: composedDepartments.map(d => ({ key: d.templateKey, label: d.label, composable: d.composable })),
   });
+
+  // ─ Step 7c: Blueprint Contract Validation (Universal Composition Engine
+  // Completion Gaps, Phase 1) ────────────────────────────────────────────
+  // Validates the composed blueprint (Company + Departments + Skills, and
+  // the department->skill reference chain) against capabilityContract.cjs
+  // BEFORE any org/department records are created. A structurally invalid
+  // blueprint (missing required fields, a raw secret smuggled in, or a
+  // department referencing a skill that doesn't genuinely exist in the
+  // real skill registry) rejects the run here rather than silently
+  // proceeding to create a company with broken composition.
+  const blueprintValidation = _validateCompanyBlueprint({ id: blueprint.id, name: companyName }, template, composedDepartments);
+  _step("blueprint_validated", { ok: blueprintValidation.ok, errorCount: blueprintValidation.errors.length, errors: blueprintValidation.errors.slice(0, 20) });
+  if (!blueprintValidation.ok) {
+    return { ok: false, error: "blueprint failed contract validation: " + blueprintValidation.errors.join("; "), timeline };
+  }
 
   // ─ Step 8: Workforce allocation ──────────────────────────────────────────
   // Real execution (not dryRun): runMission's non-dryRun path calls the
@@ -444,4 +512,7 @@ module.exports = {
   getRun,
   listRuns,
   getStats,
+  // Universal Composition Engine — Completion Gaps, Phase 1
+  validateCompanyBlueprint: _validateCompanyBlueprint,
+  assembleBlueprintForContract: _assembleBlueprintForContract,
 };

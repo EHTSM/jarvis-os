@@ -19,10 +19,10 @@ const skillRegistry = require("../../backend/services/skillRegistry.cjs");
 
 describe("skillRegistry", () => {
 
-    describe("seed data — the deduplicated 58-skill inventory", () => {
-        it("seeds exactly 58 skills on first read (46 agentRegistry + 12 engineeringCapabilities)", () => {
+    describe("seed data — the deduplicated skill inventory", () => {
+        it("seeds exactly 60 skills on first read (46 agentRegistry + 12 engineeringCapabilities + 2 department-template skill tags added in Phase 1 blueprint-validation)", () => {
             const skills = skillRegistry.listSkills();
-            assert.equal(skills.length, 58);
+            assert.equal(skills.length, 60);
         });
         it("every seeded skill has a non-empty executionHandler", () => {
             for (const s of skillRegistry.listSkills()) {
