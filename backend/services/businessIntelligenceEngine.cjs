@@ -423,31 +423,39 @@ function _runRules(entities, entityType, opts = {}) {
 // PUBLIC SCAN METHODS
 // ─────────────────────────────────────────────────────────────────────────────
 
+// All scan* functions accept an optional orgId in opts (threaded from the
+// caller's req.org.id — see backend/routes/business.js /business/intelligence/*
+// routes) and pass it through to businessDataService's existing orgId-scoped
+// reads. Omitting orgId preserves the prior (pre-scoping) global-scan
+// behavior for internal/background callers that intentionally scan across
+// all orgs (e.g. a portfolio-wide health job) — see
+// 100-COMPANY-REALITY-AUDIT.md Part 6 for why this was previously unscoped
+// even when called from a per-request route.
 function scanLeads(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const leads = bds.listLeads({ limit: 500 }).items;
+    const leads = bds.listLeads({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(leads, "lead", opts);
 }
 
 function scanDeals(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const deals = bds.listOpportunities({ limit: 500 }).items;
+    const deals = bds.listOpportunities({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(deals, "deal", opts);
 }
 
 function scanCustomers(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const customers = bds.listContacts({ limit: 500 }).items;
+    const customers = bds.listContacts({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(customers, "customer", opts);
 }
 
 function scanCampaigns(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const campaigns = bds.listCampaigns({ limit: 200 }).items;
+    const campaigns = bds.listCampaigns({ limit: 200, orgId: opts.orgId || null }).items;
     return _runRules(campaigns, "campaign", opts);
 }
 
@@ -455,14 +463,15 @@ function scanCampaigns(opts = {}) {
 // HEALTH METRICS
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getHealthMetrics() {
+function getHealthMetrics(opts = {}) {
     const bds = _bds();
     if (!bds) return { error: "businessDataService unavailable" };
+    const orgId = opts.orgId || null;
 
-    const leads   = bds.listLeads({ limit: 1000 }).items;
-    const deals   = bds.listOpportunities({ limit: 1000 }).items;
-    const camps   = bds.listCampaigns({ limit: 200 }).items;
-    const rev     = bds.listRevenue({ limit: 1000 }).items;
+    const leads   = bds.listLeads({ limit: 1000, orgId }).items;
+    const deals   = bds.listOpportunities({ limit: 1000, orgId }).items;
+    const camps   = bds.listCampaigns({ limit: 200, orgId }).items;
+    const rev     = bds.listRevenue({ limit: 1000, orgId }).items;
 
     // Lead health
     const leadNew       = leads.filter(l => l.status === "new");
@@ -552,7 +561,7 @@ function scan(opts = {}) {
     const allSignals  = [...leadResult.signals, ...dealResult.signals, ...custResult.signals, ...campResult.signals];
     const allMissions = [...leadResult.missions, ...dealResult.missions, ...custResult.missions, ...campResult.missions];
 
-    const health = getHealthMetrics();
+    const health = getHealthMetrics(opts);
 
     const completedAt = new Date().toISOString();
 
