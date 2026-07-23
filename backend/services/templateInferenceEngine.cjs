@@ -169,6 +169,10 @@ function _matchBaseTemplates(input) {
         saas: "saas", subscription: "saas", agency: "agency", services: "agency",
         ecommerce: "ecommerce", retail: "ecommerce", marketplace: "marketplace",
         two_sided: "marketplace", erp: "erp", crm: "crm",
+        ai_product: "ai_product", ai: "ai_product",
+        internal_tool: "internal_tool", internal: "internal_tool",
+        education: "education", edtech: "education",
+        healthcare: "healthcare", health: "healthcare", medical: "healthcare",
     };
     if (input.businessModel && modelToTemplate[input.businessModel]) {
         matchedTemplateIds.add(modelToTemplate[input.businessModel]);
