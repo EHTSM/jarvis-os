@@ -139,10 +139,47 @@ function deactivate(instanceId) {
     return { ok: true };
 }
 
+const MAX_OBSERVATIONS_PER_INSTANCE = 200;
+
+/**
+ * Universal Composition Engine Phase 11 — the "update memory/KPI" step
+ * of the Execution Runtime chain. Appends a bounded execution
+ * observation onto the instance's own record (distinct from
+ * executionHistory.cjs's global, agent-wide log — this is the
+ * per-company, per-instance view a future Learning Loop / Capability
+ * Evolution consumer can read without scanning the entire global
+ * history). Non-fatal: a missing instance is a no-op, never throws,
+ * since this is telemetry, not a required step in the dispatch path.
+ *
+ * @param {string} instanceId
+ * @param {{ success: boolean, durationMs?: number, taskType?: string, error?: string|null }} observation
+ */
+function recordObservation(instanceId, observation = {}) {
+    if (!instanceId) return { ok: false, error: "instanceId required" };
+    const store = _read();
+    const inst = (store.instances || []).find(i => i.id === instanceId);
+    if (!inst) return { ok: false, error: "instance not found" };
+
+    if (!inst.observations) inst.observations = [];
+    inst.observations.push({
+        ts: new Date().toISOString(),
+        success: !!observation.success,
+        durationMs: observation.durationMs || 0,
+        taskType: observation.taskType || null,
+        error: observation.error || null,
+    });
+    if (inst.observations.length > MAX_OBSERVATIONS_PER_INSTANCE) {
+        inst.observations = inst.observations.slice(-MAX_OBSERVATIONS_PER_INSTANCE);
+    }
+    _write(store);
+    return { ok: true };
+}
+
 module.exports = {
     register,
     findForOrgAndArchetype,
     listForCompany,
     listForOrg,
     deactivate,
+    recordObservation,
 };

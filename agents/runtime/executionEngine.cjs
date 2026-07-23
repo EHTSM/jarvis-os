@@ -44,6 +44,17 @@ function _instReg() {
     return _instReg_;
 }
 
+// Universal Composition Engine Phase 11 — the remaining lookups in the
+// Goal->Plan->...->Execute->Verify->Telemetry->Memory/KPI chain. Every
+// accessor below follows the same lazy try/catch convention as _instReg()
+// and _getLegacy() above; every lookup is skip-safe (module unreachable
+// or task not org-scoped -> behaves exactly as pre-Phase-11 dispatch).
+function _skillReg()  { try { return require("../../backend/services/skillRegistry.cjs");       } catch { return null; } }
+function _toolFabric() { try { return require("../../backend/services/toolExecutionLayer.cjs");  } catch { return null; } }
+function _connReg()   { try { return require("../../backend/services/integrationConnectors.cjs"); } catch { return null; } }
+function _approvalQ() { try { return require("../../backend/services/approvalQueue.cjs");        } catch { return null; } }
+function _obsEngine()  { try { return require("../../backend/services/observabilityEngine.cjs"); } catch { return null; } }
+
 function _backoffMs(attempt) {
     return Math.min(BASE_BACKOFF * Math.pow(2, attempt), MAX_BACKOFF);
 }
@@ -59,6 +70,26 @@ function _withTimeout(promise, ms, label) {
             setTimeout(() => reject(new Error(`Timeout: ${label} exceeded ${ms}ms`)), ms).unref()
         ),
     ]);
+}
+
+// Universal Composition Engine Phase 11 — steps 8 (emit telemetry) and 9
+// (update memory/KPI). Called once per terminal outcome (success or final
+// failure), not per retry attempt. Non-fatal by design: telemetry/memory
+// recording must never be the reason a task's own success/failure result
+// changes.
+function _emitTelemetryAndMemory(task, { success, durationMs, error, agentInstanceId }) {
+    try {
+        _obsEngine()?.recordMetric?.("execution.task.completed", 1, {
+            taskType: task.type, success: !!success, orgId: task.orgId || null,
+        });
+    } catch { /* non-fatal */ }
+    if (task.orgId && agentInstanceId) {
+        try {
+            _instReg()?.recordObservation?.(agentInstanceId, {
+                success: !!success, durationMs: durationMs || 0, taskType: task.type, error: error || null,
+            });
+        } catch { /* non-fatal */ }
+    }
 }
 
 /**
@@ -104,6 +135,71 @@ async function executeTask(task, options = {}) {
         }
     }
 
+    // Skill/Tool/Connector/Approval resolution (Universal Composition
+    // Engine Phase 11) — only meaningful for org-scoped tasks with a
+    // registered skill for this capability; a task with no orgId or no
+    // matching skill entry skips this entirely (identical to pre-Phase-11
+    // dispatch). Never blocks execution on a lookup failure — these are
+    // additive checks, not new hard gates, except the approval gate
+    // itself, which is the one genuine block this phase introduces.
+    const skill = _skillReg()?.getSkill?.(capability) || null;
+    if (task.orgId && skill) {
+        // Tool permission check: if the skill declares required tools,
+        // confirm this org/instance is genuinely granted each one via the
+        // Tool Fabric's scoped permission resolver (Phase 6) — denies
+        // execution rather than silently proceeding when a tool is missing.
+        const fabric = _toolFabric();
+        if (fabric && Array.isArray(skill.requiredTools) && skill.requiredTools.length > 0) {
+            for (const toolId of skill.requiredTools) {
+                const allowed = fabric.resolvePermission?.(toolId, "run", { orgId: task.orgId, agentInstanceId: instanceCtx.agentInstanceId });
+                if (allowed === false) {
+                    const msg = `permission_denied: org ${task.orgId} is not granted tool "${toolId}" required by skill "${skill.id}"`;
+                    logger.warn(`[ExecEngine] ${msg}`);
+                    return { success: false, result: null, agentId: null, durationMs: 0, attempts: 1, error: msg };
+                }
+            }
+        }
+
+        // Connector health check: if the skill declares optional
+        // connectors, surface their real composition status into ctx so
+        // the handler can make an informed choice — never blocks
+        // execution (these are optional by declaration), only informs.
+        const connReg = _connReg();
+        if (connReg && Array.isArray(skill.optionalConnectors) && skill.optionalConnectors.length > 0) {
+            instanceCtx.connectorStatus = Object.fromEntries(
+                skill.optionalConnectors.map(id => [id, connReg.getCompositionStatus?.(id)?.status || "NOT_CONFIGURED"])
+            );
+        }
+
+        // Approval gate: a high-risk skill for an org-scoped task must be
+        // approved before executing (Phase 10's Approval/Safety wiring,
+        // reusing the same real approvalQueue as missionOrchestrator.cjs's
+        // Approval node — single source of truth, no duplicate gate logic).
+        // options.approved lets an already-approved re-dispatch (e.g. after
+        // an operator approves via the real queue) skip re-requesting.
+        if (skill.riskLevel === "high" && !options.approved) {
+            const approvalQ = _approvalQ();
+            if (approvalQ) {
+                try {
+                    const req = approvalQ.enqueue({
+                        workflowId: `skill_${skill.id}`,
+                        action: `Execute high-risk skill "${skill.id}" for org ${task.orgId}`,
+                        reason: `Capability "${capability}" is classified riskLevel:high`,
+                        risk: "high",
+                        context: { orgId: task.orgId, taskId, capability },
+                    });
+                    if (!req.autoApproved) {
+                        const msg = `approval_required: skill "${skill.id}" requires approval before execution (request ${req.reqId})`;
+                        logger.warn(`[ExecEngine] ${msg}`);
+                        return { success: false, result: null, agentId: null, durationMs: 0, attempts: 1, error: msg, approvalRequestId: req.reqId };
+                    }
+                } catch (err) {
+                    logger.warn(`[ExecEngine] approval request failed for skill ${skill.id}: ${err.message}`);
+                }
+            }
+        }
+    }
+
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         if (attempt > 0) {
             await _sleep(_backoffMs(attempt - 1));
@@ -137,6 +233,7 @@ async function executeTask(task, options = {}) {
                     input:  task.input || task.label || "",
                     output: result?.message || result?.result || "",
                 });
+                _emitTelemetryAndMemory(task, { success: true, durationMs, agentInstanceId: instanceCtx.agentInstanceId });
                 return { success: true, result, agentId: agent.id, durationMs, attempts: attempt + 1, error: null };
             } catch (err) {
                 agent.recordFailure();
@@ -212,6 +309,7 @@ async function executeTask(task, options = {}) {
     try {
         dlq.push({ taskId, taskType: task.type, input: task.input || task.label || "", error: finalError, attempts: maxRetries, agentId: null });
     } catch { /* non-critical */ }
+    _emitTelemetryAndMemory(task, { success: false, error: finalError, agentInstanceId: instanceCtx.agentInstanceId });
     return { success: false, result: null, agentId: null, durationMs: 0, attempts: maxRetries, error: finalError };
 }
 
