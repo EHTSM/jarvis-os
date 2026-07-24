@@ -14,6 +14,7 @@
 
 const router         = require("express").Router();
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const rateLimiter    = require("../middleware/rateLimiter");
 
 const _try    = fn => { try { return fn(); } catch { return null; } };
 const _vault  = () => _try(() => require("../services/secretVault.cjs"));
@@ -102,7 +103,11 @@ router.get("/vault/secrets/:connectorId/:type", (req, res) => {
 // this" guard against accidental automated calls, but the actual
 // accountability now comes from the audit log, not the header.
 // Only use this to inject into process.env or pass to connectors programmatically.
-router.get("/vault/secrets/:connectorId/:type/value", (req, res) => {
+// Rate-limited (10/min per IP) — a genuine second factor beyond the
+// client-settable confirm header: even a valid operator session cannot
+// script bulk plaintext extraction from this route (Vault Security
+// Hardening — Mandatory Proof 3).
+router.get("/vault/secrets/:connectorId/:type/value", rateLimiter(10, 60_000, "vault-reveal"), (req, res) => {
   try {
     const v = _vault();
     if (!v) return res.status(503).json({ ok: false, error: "secretVault unavailable" });

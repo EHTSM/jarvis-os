@@ -22,7 +22,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachOrg } = require("../middleware/orgMiddleware.cjs");
+const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
 
 function _vault() { try { return require("../services/secretVault.cjs"); } catch { return null; } }
 
@@ -78,7 +78,14 @@ const PROVIDERS = {
   },
 };
 
-router.use("/my-connectors", requireAuth, attachOrg);
+// attachOrg alone does NOT block cross-tenant access — it resolves req.org
+// from a CLIENT-SUPPLIED X-Org-Id header/body field with no ownership
+// check (see orgMiddleware.cjs's own docstring: "Does NOT block requests
+// — use requireOrgMember() for enforcement"). Every route below was
+// missing that enforcement (Vault Security Hardening finding: a genuine
+// cross-tenant IDOR — any authenticated user could pass another org's ID
+// and store/list/delete/validate that org's connector credentials).
+router.use("/my-connectors", requireAuth, attachOrg, requireOrgMember);
 
 // GET /my-connectors — status of every curated provider for the caller's org
 router.get("/my-connectors", (req, res) => {

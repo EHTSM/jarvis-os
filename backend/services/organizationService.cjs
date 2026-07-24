@@ -64,6 +64,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const logger = require("../utils/logger");
 const auditLog = require("../utils/auditLog.cjs");
 
@@ -89,9 +90,25 @@ function _read() {
     try { return JSON.parse(fs.readFileSync(ORG_FILE, "utf8")); }
     catch { return { orgs: [] }; }
 }
+// Vault Security Hardening: a direct writeFileSync(ORG_FILE, ...) here was a
+// genuine read-modify-write race — two concurrent createOrg()/addMember()
+// calls each read the same pre-write snapshot, then the second writer's
+// write silently clobbers the first's, losing an org or membership record
+// entirely (confirmed via a real test failure this session: a freshly
+// created org's owner got a 403 from secretVault.cjs's org-check because a
+// concurrent second createOrg() call had overwritten the file before the
+// first org was ever durably persisted). Atomic tmp-write + rename with a
+// unique-per-call tmp name (same pattern applied to secretVault.cjs's
+// _save() this session) doesn't eliminate the underlying lost-update race
+// for two writes based on the same stale read, but DOES eliminate file
+// corruption/truncation and the ENOENT crash class — genuinely fixing
+// this properly (a real lock or a single-writer queue) is a larger
+// architectural change out of this mission's scope.
 function _write(store) {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.writeFileSync(ORG_FILE, JSON.stringify(store, null, 2));
+    const tmp = `${ORG_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(store, null, 2));
+    fs.renameSync(tmp, ORG_FILE);
 }
 
 function _readContext() {

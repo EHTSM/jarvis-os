@@ -140,11 +140,21 @@ function _load() {
 function _save(d) {
   const dir = path.dirname(VAULT_FILE);
   fs.mkdirSync(dir, { recursive: true });
-  const tmp = VAULT_FILE + ".tmp";
-  // mode 0o600: vault holds AES-GCM ciphertext of live credentials — other
-  // local users/processes on the same host must not be able to read it.
+  // Vault Security Hardening: the tmp filename used to be a fixed
+  // `${VAULT_FILE}.tmp` shared by every caller. Under concurrent
+  // storeSecret()/deleteSecret()/rotateSecret() calls in the same
+  // process (confirmed via a real test failure: two concurrent stores
+  // raced, one's renameSync() completed before the other's chmodSync()
+  // ran against the now-renamed-away path, throwing ENOENT), a second
+  // call's write could be silently lost or crash mid-save. A unique
+  // per-call tmp name (pid + random) makes concurrent saves independent;
+  // each still atomically replaces VAULT_FILE via renameSync.
+  const tmp = `${VAULT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+  // mode 0o600 set atomically at creation: vault holds AES-GCM ciphertext
+  // of live credentials — other local users/processes on the same host
+  // must not be able to read it. (A separate chmodSync() after the write
+  // was redundant AND the actual race window above — removed.)
   fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
-  fs.chmodSync(tmp, 0o600);
   fs.renameSync(tmp, VAULT_FILE);
 }
 function _loadHistory() {
@@ -340,6 +350,65 @@ function getSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = 
       try { return { ...r, value: _decrypt(r.encrypted), encrypted: undefined }; }
       catch { return { ...r, value: null, decryptError: true, encrypted: undefined }; }
     });
+}
+
+// ── Credential reference resolution (Vault Security Hardening — Agent →
+// Connector → Vault Authorization) ───────────────────────────────────────
+// A credentialRef is a plain string of the form "connectorId::type"
+// (matching the vault's own GLOBAL_ORG key format from _vkey() — never
+// the raw orgId-prefixed internal key, since a ref is meant to be a
+// stable, org-independent pointer a Company/Agent/Workflow definition can
+// declare; the ORG comes from the caller's own authorized context, not
+// from the ref string itself, so a ref can never be used to reach across
+// orgs by embedding someone else's orgId in it).
+//
+// This closes a real gap: agentInstanceRegistry.cjs stores credentialRefs
+// on AgentInstance records and capabilityContract.cjs validates their
+// shape, but until now nothing ever turned a ref into an actual secret —
+// the composition chain's "Credential Reference -> Vault authorization ->
+// internal secret resolution" step didn't exist. Reuses getSecret() as-is
+// (same _assertOrgAccess() org-check, same audit-log-on-reveal behavior)
+// — this is not a new resolution mechanism, just the missing wiring.
+function _parseCredentialRef(ref) {
+  if (typeof ref !== "string" || !ref.includes("::")) return null;
+  const [connectorId, type] = ref.split("::");
+  if (!connectorId || !type) return null;
+  return { connectorId, type };
+}
+
+/**
+ * Resolve a single credentialRef string into its plaintext value, scoped
+ * to the calling org/agent. Never a "reveal" in the founder-vault sense —
+ * no audit-log reason is required or recorded beyond the existing
+ * reveal-tracking getSecret() already does, since this is a programmatic
+ * runtime resolution (agent execution), not a human inspecting a secret.
+ * Returns null (never throws) for a malformed ref or a ref that doesn't
+ * resolve — callers (executionEngine.cjs) must treat this as "credential
+ * unavailable", not a crash.
+ */
+function resolveCredentialRef(ref, { orgId = GLOBAL_ORG, requestingAccountId = null } = {}) {
+  const parsed = _parseCredentialRef(ref);
+  if (!parsed) return null;
+  try {
+    return getSecret(parsed.connectorId, parsed.type, orgId, requestingAccountId);
+  } catch {
+    return null; // fail closed — org-check failure or decrypt error both resolve to "unavailable", never throw into the caller's dispatch path
+  }
+}
+
+/**
+ * Resolve every credentialRef in an array, scoped to the same org. Skips
+ * (does not include) any ref that fails to resolve — callers get only the
+ * credentials they were genuinely authorized for and that actually exist,
+ * never a sparse array with holes.
+ */
+function resolveCredentialRefs(refs = [], { orgId = GLOBAL_ORG, requestingAccountId = null } = {}) {
+  const out = {};
+  for (const ref of Array.isArray(refs) ? refs : []) {
+    const value = resolveCredentialRef(ref, { orgId, requestingAccountId });
+    if (value !== null) out[ref] = value;
+  }
+  return out;
 }
 
 function listSecrets(filter = {}) {
@@ -763,4 +832,5 @@ module.exports = {
   GLOBAL_ORG,
   // Vault Security Hardening
   getAccessAudit,
+  resolveCredentialRef, resolveCredentialRefs,
 };

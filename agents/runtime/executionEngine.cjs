@@ -54,6 +54,7 @@ function _toolFabric() { try { return require("../../backend/services/toolExecut
 function _connReg()   { try { return require("../../backend/services/integrationConnectors.cjs"); } catch { return null; } }
 function _approvalQ() { try { return require("../../backend/services/approvalQueue.cjs");        } catch { return null; } }
 function _obsEngine()  { try { return require("../../backend/services/observabilityEngine.cjs"); } catch { return null; } }
+function _vault()      { try { return require("../../backend/services/secretVault.cjs");         } catch { return null; } }
 
 function _backoffMs(attempt) {
     return Math.min(BASE_BACKOFF * Math.pow(2, attempt), MAX_BACKOFF);
@@ -132,6 +133,20 @@ async function executeTask(task, options = {}) {
                 credentialRefs: inst.credentialRefs,
                 agentPermissions: inst.permissions,
             };
+            // Vault Security Hardening — Agent -> Connector -> Vault
+            // Authorization: resolve each declared credentialRef into its
+            // actual value, scoped to THIS task's own orgId (never a
+            // caller-supplied org — task.orgId is the only org identity
+            // an agent handler's ctx is ever built from). The handler
+            // receives ctx.resolvedCredentials (a ref->value map for refs
+            // it was genuinely authorized for), never raw vault access —
+            // it cannot call secretVault.cjs itself to fetch anything
+            // else. A ref that fails org authorization or doesn't exist
+            // is simply absent from the map (fail closed, never throws).
+            if (Array.isArray(inst.credentialRefs) && inst.credentialRefs.length > 0) {
+                const vault = _vault();
+                instanceCtx.resolvedCredentials = vault?.resolveCredentialRefs?.(inst.credentialRefs, { orgId: task.orgId }) || {};
+            }
         }
     }
 
@@ -164,10 +179,28 @@ async function executeTask(task, options = {}) {
         // connectors, surface their real composition status into ctx so
         // the handler can make an informed choice — never blocks
         // execution (these are optional by declaration), only informs.
+        //
+        // integrationConnectors.cjs's own probe/health state
+        // (getCompositionStatus) is platform-wide by design (it answers
+        // "is this connector's API reachable", not "does THIS org have
+        // credentials for it") — redesigning it into a per-org probe
+        // system is out of this mission's scope. What genuinely matters
+        // for an org-scoped task is whether THIS org has its own vault
+        // credential configured (Vault Security Hardening): overridden to
+        // NEEDS_CREDENTIALS whenever the org has no org-scoped secret for
+        // that connector, even if the platform-wide probe elsewhere shows
+        // CONNECTED_VERIFIED for a DIFFERENT org's or the founder's own
+        // credential — an org must never be told a connector is ready
+        // because someone else's secret happens to exist.
         const connReg = _connReg();
+        const vaultForConn = _vault();
         if (connReg && Array.isArray(skill.optionalConnectors) && skill.optionalConnectors.length > 0) {
             instanceCtx.connectorStatus = Object.fromEntries(
-                skill.optionalConnectors.map(id => [id, connReg.getCompositionStatus?.(id)?.status || "NOT_CONFIGURED"])
+                skill.optionalConnectors.map(id => {
+                    const platformStatus = connReg.getCompositionStatus?.(id)?.status || "NOT_CONFIGURED";
+                    const orgHasCredential = vaultForConn?.listSecrets?.({ connectorId: id, orgId: task.orgId })?.length > 0;
+                    return [id, orgHasCredential ? platformStatus : "NEEDS_CREDENTIALS"];
+                })
             );
         }
 
