@@ -41,6 +41,68 @@ const crypto = require("crypto");
 
 const VAULT_FILE   = path.join(__dirname, "../../data/vault.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/vault-history.json");
+const AUDIT_FILE    = path.join(__dirname, "../../data/vault-access-audit.json");
+
+function _try(fn) { try { return fn(); } catch { return null; } }
+function _orgService() { return _try(() => require("./organizationService.cjs")); }
+
+// ── Org-scoping enforcement (Vault Security Hardening) ───────────────────────
+// Prior state: every function below accepted an orgId parameter purely as a
+// storage-key component (_vkey()) — nothing verified the CALLER was actually
+// authorized for that org. A caller that (accidentally or maliciously) passed
+// a different orgId string could transparently read/write/rotate/delete that
+// other org's secret. This closes that gap additively: when a caller passes
+// a requestingAccountId, the org membership is genuinely verified via the
+// real organizationService.hasPermission() (no new permission model) before
+// the vault operation proceeds. Existing call sites that don't pass
+// requestingAccountId (there are several — internal service-to-service calls
+// that already resolved authorization at a higher layer, e.g.
+// companyFactory.js's routes, which call organizationService's own
+// _requireCompanyOrgPermission() before ever reaching the vault) are
+// completely unaffected — this is opt-in stricter checking, not a breaking
+// change to every caller.
+//
+// GLOBAL_ORG is exempt from this check — it is the founder/operator-only
+// vault partition (founderVault.js's routes, gated by operatorOnly
+// middleware upstream), not a multi-tenant org a regular account could ever
+// legitimately claim membership in.
+function _assertOrgAccess(orgId, requestingAccountId, action) {
+  if (!requestingAccountId) return; // opt-in: no accountId passed = no check (backward compatible)
+  if (!orgId || orgId === GLOBAL_ORG) return; // founder/operator vault partition — gated upstream, not per-org
+  const org = _orgService();
+  if (!org) return; // organizationService unavailable — fail open only in a genuinely broken install, matching this file's existing _try()-everywhere convention
+  if (!org.hasPermission(orgId, requestingAccountId, action)) {
+    const err = new Error(`Forbidden — account is not authorized for org ${orgId}`);
+    err.status = 403;
+    throw err;
+  }
+}
+
+// ── Vault access audit log (Vault Security Hardening) ────────────────────────
+// Separate from _appendHistory() (which records store/rotate/delete events
+// keyed by connectorId — an operational log). This is a security audit
+// trail specifically for plaintext reveals: who saw which secret's raw
+// value, when, and why. Append-only, capped, mode 0600 like every other
+// vault file.
+function _loadAudit() {
+  try { return JSON.parse(fs.readFileSync(AUDIT_FILE, "utf8")); } catch { return []; }
+}
+function _appendAudit(entry) {
+  const a = _loadAudit();
+  a.unshift({ ...entry, ts: new Date().toISOString() });
+  const trimmed = a.slice(0, 1000);
+  try {
+    const dir = path.dirname(AUDIT_FILE);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(AUDIT_FILE, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.chmodSync(AUDIT_FILE, 0o600);
+  } catch { /* non-fatal — audit logging must never block the underlying operation */ }
+}
+function getAccessAudit({ connectorId, limit = 200 } = {}) {
+  const all = _loadAudit();
+  const filtered = connectorId ? all.filter(e => e.connectorId === connectorId) : all;
+  return filtered.slice(0, limit);
+}
 
 // ── Encryption (AES-256-GCM, key from JWT_SECRET) ────────────────────────────
 function _key() {
@@ -227,10 +289,11 @@ const ENV_MAP = {
 };
 
 // ── Core CRUD ─────────────────────────────────────────────────────────────────
-function storeSecret(connectorId, type, value, meta = {}, orgId = GLOBAL_ORG) {
+function storeSecret(connectorId, type, value, meta = {}, orgId = GLOBAL_ORG, requestingAccountId = null) {
   if (!CRED_TYPES.has(type)) throw new Error(`Unknown credential type: ${type}. Supported: ${[...CRED_TYPES].join(", ")}`);
   if (typeof value !== "string" || !value) throw new Error("Secret value must be a non-empty string");
   if (value.length > 32768) throw new Error("Secret value exceeds maximum length (32KB)");
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
 
   const vault  = _load();
   const vk     = _vkey(connectorId, type, orgId);
@@ -256,15 +319,21 @@ function storeSecret(connectorId, type, value, meta = {}, orgId = GLOBAL_ORG) {
   return _publicRecord(vault.secrets[vk]);
 }
 
-function getSecret(connectorId, type, orgId = GLOBAL_ORG) {
+function getSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null, opts = {}) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
   if (type) {
     const rec = vault.secrets[_vkey(connectorId, type, orgId)];
     if (!rec) return null;
-    try { return _decrypt(rec.encrypted); }
+    try {
+      const value = _decrypt(rec.encrypted);
+      if (requestingAccountId) _appendAudit({ event: "reveal", connectorId, type, orgId, accountId: requestingAccountId, reason: opts.reason || null });
+      return value;
+    }
     catch { return null; }
   }
   // Return all types for this connector, scoped to this org
+  if (requestingAccountId) _appendAudit({ event: "reveal_all", connectorId, orgId, accountId: requestingAccountId, reason: opts.reason || null });
   return Object.values(vault.secrets)
     .filter(r => r.connectorId === connectorId && (r.orgId || GLOBAL_ORG) === orgId)
     .map(r => {
@@ -274,6 +343,7 @@ function getSecret(connectorId, type, orgId = GLOBAL_ORG) {
 }
 
 function listSecrets(filter = {}) {
+  _assertOrgAccess(filter.orgId, filter.requestingAccountId, "view_analytics");
   const vault   = _load();
   const all     = Object.values(vault.secrets);
   const records = all.filter(r => {
@@ -292,7 +362,8 @@ function listSecrets(filter = {}) {
   return records.map(_publicRecord);
 }
 
-function deleteSecret(connectorId, type, orgId = GLOBAL_ORG) {
+function deleteSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
   const vk    = _vkey(connectorId, type, orgId);
   if (!vault.secrets[vk]) return false;
@@ -302,7 +373,8 @@ function deleteSecret(connectorId, type, orgId = GLOBAL_ORG) {
   return true;
 }
 
-function rotateSecret(connectorId, type, newValue, orgId = GLOBAL_ORG) {
+function rotateSecret(connectorId, type, newValue, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
   const vk    = _vkey(connectorId, type, orgId);
   const existing = vault.secrets[vk];
@@ -352,7 +424,8 @@ function resolveAll(connectorId, orgId = GLOBAL_ORG) {
 }
 
 // ── Validation ────────────────────────────────────────────────────────────────
-function validateSecret(connectorId, type, orgId = GLOBAL_ORG) {
+function validateSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "view_analytics");
   const vault = _load();
   const vk    = _vkey(connectorId, type, orgId);
   const rec   = vault.secrets[vk];
@@ -688,4 +761,6 @@ module.exports = {
   getCredentialTypes, CRED_TYPES, ENV_MAP,
   prepareRotationCandidate, applyStagedRotation, listStagedRotations, AUTO_ROTATABLE_TYPES,
   GLOBAL_ORG,
+  // Vault Security Hardening
+  getAccessAudit,
 };

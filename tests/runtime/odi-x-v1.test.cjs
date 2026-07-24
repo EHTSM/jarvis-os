@@ -702,6 +702,10 @@ async function main() {
   console.log(`  Passed: ${passed}`);
   console.log(`  Failed: ${failed}`);
   console.log(`  Total:  ${passed + failed}`);
+  // runEvolutionCycle() launches a real Playwright browser via
+  // agents/browser/browserSession.cjs — close it so this file's Node
+  // process actually exits instead of hanging on the open browser handle.
+  try { await require("../../agents/browser/browserSession.cjs").shutdown(); } catch {}
   if (failed > 0) process.exit(1);
 }
 

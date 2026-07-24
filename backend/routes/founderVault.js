@@ -93,8 +93,14 @@ router.get("/vault/secrets/:connectorId/:type", (req, res) => {
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
 
-// ── Retrieve plaintext value (requires confirmation header) ───────────────────
+// ── Retrieve plaintext value (requires confirmation header + a reason) ────────
 // Header: X-Vault-Confirm: reveal
+// Body/query: reason (string) — required, recorded in the vault access
+// audit trail (Vault Security Hardening) alongside who revealed what and
+// when. The confirmation header alone was never a real second factor
+// (any caller can set it themselves) — it stays as a "did you mean to do
+// this" guard against accidental automated calls, but the actual
+// accountability now comes from the audit log, not the header.
 // Only use this to inject into process.env or pass to connectors programmatically.
 router.get("/vault/secrets/:connectorId/:type/value", (req, res) => {
   try {
@@ -103,11 +109,26 @@ router.get("/vault/secrets/:connectorId/:type/value", (req, res) => {
     if (req.headers["x-vault-confirm"] !== "reveal") {
       return res.status(403).json({ ok: false, error: "Set header X-Vault-Confirm: reveal to retrieve plaintext value" });
     }
+    const reason = req.query.reason || req.body?.reason;
+    if (!reason || !String(reason).trim()) {
+      return res.status(400).json({ ok: false, error: "reason (query param or body field) is required and is recorded in the vault access audit log" });
+    }
     const connectorId = decodeURIComponent(req.params.connectorId);
     const type        = decodeURIComponent(req.params.type);
-    const value = v.getSecret(connectorId, type);
+    const value = v.getSecret(connectorId, type, v.GLOBAL_ORG, req.user.sub, { reason: String(reason).trim() });
     if (value === null) return res.status(404).json({ ok: false, error: "Secret not found or decrypt failed" });
     res.json({ ok: true, connectorId, type, value });
+  } catch (e) { res.status(e.status || 500).json({ ok: false, error: e.message }); }
+});
+
+// ── Vault access audit trail (Vault Security Hardening) ───────────────────────
+router.get("/vault/access-audit", (req, res) => {
+  try {
+    const v = _vault();
+    if (!v) return res.status(503).json({ ok: false, error: "secretVault unavailable" });
+    const { connectorId, limit } = req.query;
+    const audit = v.getAccessAudit({ connectorId, limit: limit ? +limit : undefined });
+    res.json({ ok: true, count: audit.length, audit });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
 

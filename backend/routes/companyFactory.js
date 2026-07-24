@@ -588,7 +588,7 @@ router.get("/company-factory/companies/:id/connectors", requireAuth, (req, res) 
   const company = _requireCompanyOrgPermission(req, res, "view_analytics");
   if (!company) return;
   const { connectorId, type, phase } = req.query;
-  const secrets = _vault()?.listSecrets?.({ connectorId, type, phase, orgId: company.orgId }) || [];
+  const secrets = _vault()?.listSecrets?.({ connectorId, type, phase, orgId: company.orgId, requestingAccountId: req.user.sub }) || [];
   res.json({ ok: true, orgId: company.orgId, connectors: secrets });
 });
 
@@ -603,7 +603,7 @@ router.post("/company-factory/companies/:id/connectors/:connectorId/:type", requ
     // Deliberately NOT wrapped in _try — a policy violation must reach the
     // catch block below and reject the request, not be silently swallowed.
     require("../services/policyService.cjs").assertConnectorAllowed(company.orgId, req.params.connectorId);
-    const record = _vault()?.storeSecret?.(req.params.connectorId, req.params.type, value, meta || {}, company.orgId);
+    const record = _vault()?.storeSecret?.(req.params.connectorId, req.params.type, value, meta || {}, company.orgId, req.user.sub);
     res.json({ ok: true, orgId: company.orgId, connector: record });
   } catch (e) {
     res.status(e.status || 400).json({ ok: false, error: e.message });
@@ -613,14 +613,14 @@ router.post("/company-factory/companies/:id/connectors/:connectorId/:type", requ
 router.post("/company-factory/companies/:id/connectors/:connectorId/:type/validate", requireAuth, (req, res) => {
   const company = _requireCompanyOrgPermission(req, res, "view_analytics");
   if (!company) return;
-  const result = _vault()?.validateSecret?.(req.params.connectorId, req.params.type, company.orgId);
+  const result = _vault()?.validateSecret?.(req.params.connectorId, req.params.type, company.orgId, req.user.sub);
   res.json({ ok: true, orgId: company.orgId, validation: result });
 });
 
 router.delete("/company-factory/companies/:id/connectors/:connectorId/:type", requireAuth, (req, res) => {
   const company = _requireCompanyOrgPermission(req, res, "manage_billing");
   if (!company) return;
-  const deleted = _vault()?.deleteSecret?.(req.params.connectorId, req.params.type, company.orgId);
+  const deleted = _vault()?.deleteSecret?.(req.params.connectorId, req.params.type, company.orgId, req.user.sub);
   res.json({ ok: !!deleted });
 });
 
@@ -637,7 +637,7 @@ router.get("/company-factory/companies/:id/analytics", requireAuth, (req, res) =
   const crm      = _bds()?.getDashboard?.(company.orgId) || null;
   const aiUsage  = _usage()?.summary?.({ orgId: company.orgId, fromLedger: true }) || null;
   const budget   = _budgets()?.getOrgBudget?.(company.orgId) || null;
-  const connectors = _vault()?.listSecrets?.({ orgId: company.orgId }) || [];
+  const connectors = _vault()?.listSecrets?.({ orgId: company.orgId, requestingAccountId: req.user.sub }) || [];
 
   res.json({
     ok: true,
