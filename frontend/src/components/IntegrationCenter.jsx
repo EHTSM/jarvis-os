@@ -169,13 +169,16 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
   const [history, setHistory] = useState(null);
   const [metrics, setMetrics] = useState(null);
   const [storedType, setStoredType] = useState(null); // the actual credential type on file, if any
+  const [storedRecord, setStoredRecord] = useState(null); // full record (rotationDueAt/lastValidatedAt/lastFailure) — metadata only, never a value
   const isOAuth = OAUTH_CONNECTORS.has(connectorId);
 
   const refetchStoredState = useCallback(() => {
     if (!canManageVault) return;
     getVaultHistory(connectorId).then(r => setHistory(r.ok !== false ? r.history : null));
     getVaultSecrets({ connectorId }).then(r => {
-      setStoredType(r.ok !== false && r.secrets?.[0] ? r.secrets[0].type : null);
+      const rec = r.ok !== false ? r.secrets?.[0] : null;
+      setStoredType(rec ? rec.type : null);
+      setStoredRecord(rec || null);
     });
   }, [connectorId, canManageVault]);
 
@@ -183,6 +186,7 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
     setAdding(false);
     setMetrics(null);
     setStoredType(null);
+    setStoredRecord(null);
     refetchStoredState();
     if (HEALTH_PROBE_PHASES.has(_phaseOf(connectorId))) {
       checkIntegrationHealth(connectorId).then(r => setMetrics(r.ok !== false ? r : null)).catch(() => {});
@@ -283,6 +287,26 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
         <div className="ic-detail-section">
           <p className="ic-detail-label">Health</p>
           <p className="ic-detail-sub">Live health checks aren't wired up for {_phaseLabel(connectorId)} connectors yet — credential status only.</p>
+        </div>
+      )}
+
+      {canManageVault && storedRecord && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Credential status</p>
+          <p className="ic-detail-sub">
+            Last verified: {storedRecord.lastValidatedAt ? new Date(storedRecord.lastValidatedAt).toLocaleString() : "never"}
+          </p>
+          {storedRecord.rotationDueAt && (
+            <p className="ic-detail-sub">
+              Rotation due: {new Date(storedRecord.rotationDueAt).toLocaleDateString()}
+              {new Date(storedRecord.rotationDueAt) < new Date() && <span style={{ color: '#f55b5b', marginLeft: 6 }}>⚠ overdue</span>}
+            </p>
+          )}
+          {storedRecord.lastFailure?.reason && (
+            <p className="ic-detail-sub" style={{ color: '#f55b5b' }}>
+              Last failure: {storedRecord.lastFailure.reason} ({storedRecord.lastFailure.ts ? new Date(storedRecord.lastFailure.ts).toLocaleString() : ""})
+            </p>
+          )}
         </div>
       )}
 

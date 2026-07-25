@@ -1345,6 +1345,17 @@ async function reconnect(connectorId) {
     "issue":    { jira: connectJira, linear: connectLinear },
   };
   if (phase === "ai") return connectAIProvider(id);
+  // 100-Company Credential Activation mission — real gap found: the
+  // "email" phase was entirely absent from this routing map, even though
+  // connectEmailProviders() is a real, existing function — reconnect()
+  // (and getHealth(), which calls it) threw "Unknown connector" for
+  // every email:* id. connectEmailProviders() probes ALL configured
+  // email providers together in one real call (it has no per-provider
+  // entry point — that's its actual, honest granularity, not something
+  // to fake here), so every email:* connectorId routes to it; its own
+  // internal _record() calls already persist the correct per-provider
+  // (email:resend / email:sendgrid / etc.) status.
+  if (phase === "email") { await connectEmailProviders(); return getStatus(connectorId); }
   const group = fns[phase];
   if (!group || !group[id]) throw new Error(`Unknown connector: ${connectorId}`);
   return group[id]();
@@ -1387,7 +1398,17 @@ function _mapLegacyStatus(rec) {
     // network/auth failure (AUTH_FAILED/UNREACHABLE) from a by-design
     // partial check using the same lastError text the real probe recorded.
     const err = (rec.lastError || rec.detail || "").toLowerCase();
-    if (err.includes("401") || err.includes("403") || err.includes("unauthorized") || err.includes("auth")) return "AUTH_FAILED";
+    // 100-Company Credential Activation mission — real bug found: a bare
+    // `err.includes("auth")` substring check false-positives on the word
+    // "OAuth" itself (e.g. auth:github's genuine, honest "OAuth app
+    // configured... but unverifiable without a live consent redirect"
+    // detail message contains "OAuth", misclassifying a
+    // structurally-fine-but-unverifiable config as AUTH_FAILED — which
+    // implies a rejected credential, not merely an unverifiable one).
+    // Requires a real auth-failure signal (unauthorized/auth failed/
+    // authentication failed/invalid credential/invalid key/invalid
+    // token) instead of the bare substring.
+    if (err.includes("401") || err.includes("403") || err.includes("unauthorized") || /\bauth(entication)?\s+(failed|error|rejected)\b|\binvalid\s+(credential|key|token)\b/.test(err)) return "AUTH_FAILED";
     if (err.includes("timeout") || err.includes("econnrefused") || err.includes("enotfound")) return "UNREACHABLE";
     return "CONFIGURED_UNVERIFIED";
   }

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(ps -p 16501 -o pid,lstart)",
+      "Bash(kill 16501)",
+      "Bash(node scratchpad/verify-capability-buildout-composition-ui.cjs)",
+      "Bash(echo \"started PID $!\")",
+      "Bash(kill -0 87989)",
+      "Bash(git restore *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git stash *)",
+      "Bash(ps -p 87256 -o pid,etime)",
+      "Bash(ps -p 3542 -o pid)",
+      "Bash(kill 3542)",
+      "Bash(node -e \"require\\('@babel/core'\\)\")",
+      "Bash(npx --no-install babel frontend/src/components/IntegrationCenter.jsx --presets @babel/preset-react)"
+    ]
+  }
+}
