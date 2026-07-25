@@ -13,7 +13,15 @@ const INTENT_RULES = [
     { intent: "crm",        patterns: [/\blead[s]?\b/, /\bclient[s]?\b/, /\bcrm\b/, /get leads/, /find leads?/, /find clients?/, /show leads?/] },
     { intent: "search",     patterns: [/\bsearch\b/, /\bfind\b/, /look up/, /\bwhat is\b/, /\bwho is\b/] },
     { intent: "open_app",   patterns: [/open\s+\w/, /launch\s+\w/, /start\s+\w/] },
-    { intent: "open_url",   patterns: [/youtube|github|google|stackoverflow|chatgpt|instagram|linkedin|twitter|whatsapp web/] },
+    // Requires an actual command verb (open/go to/launch/visit) immediately
+    // before the site name — a bare substring match on these words (the
+    // prior pattern) misfires on any unrelated text that merely CONTAINS
+    // one of these strings, e.g. an internal error message like
+    // "GITHUB_TOKEN not set" was being misclassified as "open github.com"
+    // (a real bug: the autonomous self-healing loop feeds free-text error
+    // messages through this same parser, and "GITHUB_TOKEN" contains the
+    // substring "github").
+    { intent: "open_url",   patterns: [/\b(open|go to|goto|launch|visit|navigate to)\s+(the\s+)?(youtube|github|google|stackoverflow|chatgpt|instagram|linkedin|twitter|whatsapp web)\b/] },
     { intent: "desktop",    patterns: [/^type\s+/, /^press\s+(enter|space|tab|esc|escape|key)/, /^copy$/, /^paste$/, /^select all$/, /click/, /move mouse/] },
     { intent: "schedule",   patterns: [/remind\b/, /\btimer\b/, /set alarm/, /schedule\b/, /\bat \d/] },
     { intent: "note",       patterns: [/^note\s+/, /^write\s+/, /save note/, /take note/] },
@@ -124,9 +132,20 @@ function parseCommand(input) {
     }
 
     // ── URL shortcuts (open google, open youtube, etc.) ───────────
-    for (const [key, url] of Object.entries(URL_MAP)) {
-        if (lower.includes(key)) {
-            return { type: "open_url", intent, url, label: `Opening ${key}`, action: "open_browser", voiceReply: `Opening ${key}` };
+    // Gated on intent === "open_url" (detectIntent()'s own command-verb-
+    // aware pattern) instead of a bare `lower.includes(key)` substring
+    // check — the substring check used to fire on ANY text merely
+    // containing one of these words, e.g. an internal error message like
+    // "GITHUB_TOKEN not set" (which contains "github") was being
+    // misclassified as "open github.com" and dispatched to a real
+    // browser open. This is exactly the same class of bug already fixed
+    // in detectIntent()'s INTENT_RULES; this was a second, independent
+    // copy of it inside parseCommand() itself.
+    if (intent === "open_url") {
+        for (const [key, url] of Object.entries(URL_MAP)) {
+            if (lower.includes(key)) {
+                return { type: "open_url", intent, url, label: `Opening ${key}`, action: "open_browser", voiceReply: `Opening ${key}` };
+            }
         }
     }
 
