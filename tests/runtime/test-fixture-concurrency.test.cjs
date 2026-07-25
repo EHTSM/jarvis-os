@@ -60,6 +60,14 @@ describe("Test Fixture Concurrency Reliability (Phase 7)", () => {
         const fileA = path.join(__dirname, `../../data/skills.${suffixA}.json`);
         const fileB = path.join(__dirname, `../../data/skills.${suffixB}.json`);
 
+        // Derived from the live registry, not hardcoded — SEED_SKILLS grows over
+        // time (e.g. the 100-Company Missing Capability Build-Out mission added
+        // 17 new skills, 60 -> 77), so a fixed expected count goes stale on
+        // every such change. What this test actually proves is isolation
+        // (seed + exactly 1 own registration, no cross-process bleed), not a
+        // specific absolute count.
+        const seedCount = require(path.join(__dirname, "../../backend/services/skillRegistry.cjs")).listSkills().length;
+
         try {
             // Run genuinely concurrently — Promise.all, not sequential awaits.
             const [resultA, resultB] = await Promise.all([
@@ -67,9 +75,9 @@ describe("Test Fixture Concurrency Reliability (Phase 7)", () => {
                 runIsolatedChild(suffixB, `concur-skill-b-${stamp}`),
             ]);
 
-            // Each process's own file has exactly 61 skills (60 seed + its 1 own registration) — not corrupted, not merged with the other's.
-            assert.equal(resultA.count, 61, "process A's skill count should be 60 seed + 1 own registration, unaffected by process B");
-            assert.equal(resultB.count, 61, "process B's skill count should be 60 seed + 1 own registration, unaffected by process A");
+            // Each process's own file has exactly seedCount+1 skills (seed + its 1 own registration) — not corrupted, not merged with the other's.
+            assert.equal(resultA.count, seedCount + 1, "process A's skill count should be seed + 1 own registration, unaffected by process B");
+            assert.equal(resultB.count, seedCount + 1, "process B's skill count should be seed + 1 own registration, unaffected by process A");
             assert.equal(resultA.hasOwnSkill, true);
             assert.equal(resultB.hasOwnSkill, true);
 

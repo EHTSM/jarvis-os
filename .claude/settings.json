@@ -14,7 +14,8 @@
       "Bash(ps -p 3542 -o pid)",
       "Bash(kill 3542)",
       "Bash(node -e \"require\\('@babel/core'\\)\")",
-      "Bash(npx --no-install babel frontend/src/components/IntegrationCenter.jsx --presets @babel/preset-react)"
+      "Bash(npx --no-install babel frontend/src/components/IntegrationCenter.jsx --presets @babel/preset-react)",
+      "Bash(echo \"started as $!\")"
     ]
   }
 }
