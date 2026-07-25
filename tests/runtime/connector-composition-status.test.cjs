@@ -6,12 +6,21 @@ const conn = require("../../backend/services/integrationConnectors.cjs");
 describe("integrationConnectors — Phase 7 composition status vocabulary", () => {
 
     describe("getCompositionStatus() — derived, not hand-authored per connector", () => {
-        it("maps a real MISSING-status connector to NOT_IMPLEMENTED", () => {
+        it("maps a MISSING-status connector to NEEDS_CREDENTIALS when a real adapter exists and only the credential is absent (100-Company Missing Capability Build-Out, Phase 5: fixed a real bug — ai:deepseek/anthropic/gemini/etc. have genuine adapters, real base URLs, real probe calls; MISSING there only ever meant 'API key env var not set', the same situation git:github's READY status already correctly maps to NEEDS_CREDENTIALS for)", () => {
             const all = conn.getAllStatus();
-            const missing = all.find(c => c.status === "MISSING");
-            if (missing) {
-                const composed = conn.getCompositionStatus(missing.id);
-                assert.equal(composed.status, "NOT_IMPLEMENTED");
+            const missingWithRealCreds = all.find(c => c.status === "MISSING" && (c.credentials?.required?.length || 0) > 0);
+            if (missingWithRealCreds) {
+                const composed = conn.getCompositionStatus(missingWithRealCreds.id);
+                assert.equal(composed.status, "NEEDS_CREDENTIALS", `${missingWithRealCreds.id} has a real required credential — must be NEEDS_CREDENTIALS, not a false NOT_IMPLEMENTED`);
+                assert.equal(composed.legacyStatus, "MISSING");
+            }
+        });
+        it("maps a MISSING-status connector to NOT_IMPLEMENTED only when it has no real adapter at all (empty required-credentials array — e.g. ai:stability/ai:elevenlabs, which have zero adapter code, confirmed by direct source read)", () => {
+            const all = conn.getAllStatus();
+            const missingNoAdapter = all.find(c => c.status === "MISSING" && (c.credentials?.required?.length || 0) === 0);
+            if (missingNoAdapter) {
+                const composed = conn.getCompositionStatus(missingNoAdapter.id);
+                assert.equal(composed.status, "NOT_IMPLEMENTED", `${missingNoAdapter.id} has no real adapter/credential requirement — genuinely NOT_IMPLEMENTED`);
                 assert.equal(composed.legacyStatus, "MISSING");
             }
         });

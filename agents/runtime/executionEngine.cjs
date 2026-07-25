@@ -117,9 +117,21 @@ async function executeTask(task, options = {}) {
     // config/memoryScope/credentialRefs/permissions into ctx. No task.orgId
     // or no matching instance -> ctx is unchanged, identical to pre-Phase-4
     // behavior.
+    //
+    // 100-Company Missing Capability Build-Out: prefer an instance
+    // registered under the raw task.type (a skill's own id, e.g.
+    // "employment_action_review") over one registered under the
+    // resolved, often-collapsed capability (e.g. "ai") — otherwise every
+    // skill sharing the generic ai agent would collide onto ONE shared
+    // instance per org (an HR AgentInstance and a Legal AgentInstance for
+    // the same org would both resolve to archetypeId "ai" and the second
+    // registration would just be unreachable). Falls back to the
+    // capability-keyed lookup for skills whose id already IS their own
+    // dedicated capability (e.g. "crm") — fully backward compatible.
     let instanceCtx = ctx;
     if (task.orgId) {
-        const inst = _instReg()?.findForOrgAndArchetype?.(task.orgId, capability);
+        const inst = _instReg()?.findForOrgAndArchetype?.(task.orgId, task.type)
+            || _instReg()?.findForOrgAndArchetype?.(task.orgId, capability);
         if (inst) {
             instanceCtx = {
                 ...ctx,
@@ -157,7 +169,25 @@ async function executeTask(task, options = {}) {
     // dispatch). Never blocks execution on a lookup failure — these are
     // additive checks, not new hard gates, except the approval gate
     // itself, which is the one genuine block this phase introduces.
-    const skill = _skillReg()?.getSkill?.(capability) || null;
+    // 100-Company Missing Capability Build-Out — real bug fixed here: many
+    // skills (strategy/executive_summary and every new HR/Legal/
+    // Procurement/Inventory/Logistics skill this mission adds) share the
+    // generic executionHandler:"ai" — resolveCapability() correctly maps
+    // their task.type to capability "ai" for AGENT dispatch (there is no
+    // dedicated agent per skill, by design — the whole point of reusing
+    // the generic ai agent). But getSkill(capability) using that SAME
+    // resolved "ai" string only ever finds the generic "ai" skill entry
+    // itself, never the specific skill actually being invoked — silently
+    // making every such skill's own riskLevel/requiredTools/
+    // optionalConnectors invisible to the tool-permission check, connector-
+    // health check, and (most importantly) the approval gate below. Fix:
+    // look up the skill by task.type FIRST (a skill's own id, e.g.
+    // "employment_action_review") since that's the caller's actual
+    // intent; fall back to the resolved capability only when no skill is
+    // registered under task.type directly (preserves existing behavior
+    // for every skill whose id already equals its own dedicated agent
+    // capability, e.g. "crm"/"seo"/"content_writer").
+    const skill = _skillReg()?.getSkill?.(task.type) || _skillReg()?.getSkill?.(capability) || null;
     if (task.orgId && skill) {
         // Tool permission check: if the skill declares required tools,
         // confirm this org/instance is genuinely granted each one via the

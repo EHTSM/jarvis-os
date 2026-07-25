@@ -1392,7 +1392,25 @@ function _mapLegacyStatus(rec) {
     return "CONFIGURED_UNVERIFIED";
   }
   if (rec.status === "READY") return missing.length > 0 ? "NEEDS_CREDENTIALS" : "CONFIGURED_UNVERIFIED";
-  if (rec.status === "MISSING") return "NOT_IMPLEMENTED";
+  // "MISSING" is used for two genuinely different situations that this
+  // mapping previously conflated (100-Company Missing Capability Build-
+  // Out, Phase 5 connector audit — confirmed by direct code read):
+  //   1. A real adapter exists (real base URL, real auth header
+  //      construction, real probe call) but its required credential env
+  //      var isn't set — e.g. ai:deepseek/ai:anthropic/ai:gemini/ai:qwen
+  //      and the other AI-provider probes at integrationConnectors.cjs's
+  //      `if (!key) return _record(..., "MISSING", ...)` lines. This is
+  //      genuinely NEEDS_CREDENTIALS (the same status "READY" already
+  //      gets for git:github's identical "token not set" case) — the
+  //      credentials.required array is non-empty precisely when this is
+  //      the situation.
+  //   2. No real adapter/service module exists at all (infra:aws/infra:r2
+  //      when storageService is unavailable, monitor:sentry when
+  //      sentryService is unavailable, or a genuinely unknown providerId)
+  //      — these call _creds([]) with an EMPTY required array, since
+  //      there is no credential to even ask for. This case correctly
+  //      stays NOT_IMPLEMENTED.
+  if (rec.status === "MISSING") return (rec.credentials?.required?.length > 0) ? "NEEDS_CREDENTIALS" : "NOT_IMPLEMENTED";
   if (rec.status === "NOT_APPLICABLE") return "NOT_CONFIGURED";
   return "NOT_CONFIGURED";
 }

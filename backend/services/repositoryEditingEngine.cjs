@@ -660,7 +660,7 @@ function _contract()  { return _try(() => require("./capabilityContract.cjs")); 
  * @returns {{ ok, capabilityId, approvalRequestId, healthStatus }}
  */
 function registerCapabilityFromBundle(bundleId, kind, capability) {
-    if (!["Skill", "Tool"].includes(kind)) throw new Error(`kind must be "Skill" or "Tool", got: ${kind}`);
+    if (!["Skill", "Tool", "Connector"].includes(kind)) throw new Error(`kind must be "Skill", "Tool", or "Connector", got: ${kind}`);
     const bundle = getBundle(bundleId);
     if (!bundle) throw new Error(`bundle ${bundleId} not found`);
     if (bundle.status !== "applied") {
@@ -679,7 +679,7 @@ function registerCapabilityFromBundle(bundleId, kind, capability) {
         const reg = _skillReg();
         if (!reg) throw new Error("skillRegistry unavailable");
         reg.registerSkill(pendingCapability);
-    } else {
+    } else if (kind === "Tool") {
         // Tool Fabric registration path — declarative TOOL_DEFS entries are
         // authored in toolExecutionLayer.cjs itself (not dynamically
         // extensible today); recording the pending capability's metadata
@@ -688,15 +688,28 @@ function registerCapabilityFromBundle(bundleId, kind, capability) {
         // future work, not fabricated here.
         const fabric = _toolFabric();
         if (!fabric) throw new Error("toolExecutionLayer unavailable");
+    } else {
+        // 100-Company Missing Capability Build-Out, Phase 10 — Case E
+        // (new connector), the one case the prior mission's Reality
+        // Report flagged as having "no new code or test proving it".
+        // integrationConnectors.cjs's 65 connector functions are, like
+        // Tool Fabric's TOOL_DEFS, authored directly in source (not
+        // dynamically registerable today) — recording the pending
+        // connector's metadata here for the approval workflow to
+        // reference is the same honest boundary as the Tool case above,
+        // not a fabricated dynamic-connector-registration API.
+        const connReg = _try(() => require("./integrationConnectors.cjs"));
+        if (!connReg) throw new Error("integrationConnectors unavailable");
     }
 
     const approvalQ = _approvalQ();
     let approvalRequestId = null;
     if (approvalQ) {
+        const CASE_LETTER = { Skill: "C", Tool: "D", Connector: "E" };
         const req = approvalQ.enqueue({
             workflowId: `capability_evolution_${kind.toLowerCase()}`,
             action: `Activate new ${kind.toLowerCase()} "${capability.id}" from bundle ${bundleId}`,
-            reason: `Capability Evolution Case ${kind === "Skill" ? "C" : "D"}: new ${kind.toLowerCase()} produced by a tested, applied repository-editing bundle`,
+            reason: `Capability Evolution Case ${CASE_LETTER[kind]}: new ${kind.toLowerCase()} produced by a tested, applied repository-editing bundle`,
             risk: capability.riskLevel === "high" ? "high" : "medium",
             context: { bundleId, kind, capabilityId: capability.id },
         });
@@ -712,7 +725,7 @@ function registerCapabilityFromBundle(bundleId, kind, capability) {
  * in approvalQueue.cjs. Throws if the approval was never granted, so
  * there is no path to activation that bypasses human review.
  *
- * @param {"Skill"|"Tool"} kind
+ * @param {"Skill"|"Tool"|"Connector"} kind
  * @param {string} capabilityId
  * @param {string} approvalRequestId  the id returned by registerCapabilityFromBundle
  */
@@ -730,8 +743,15 @@ function approveCapabilityFromBundle(kind, capabilityId, approvalRequestId) {
         if (!reg) throw new Error("skillRegistry unavailable");
         reg.activateSkill(capabilityId);
     }
+    // Tool/Connector: no dynamic in-registry "activate" step exists (both
+    // TOOL_DEFS and integrationConnectors.cjs's connector functions are
+    // source-authored, not dynamically registerable today) — the real,
+    // honest effect of approval for these two kinds is unblocking the
+    // human-reviewed go-ahead to wire the already-tested/committed bundle
+    // into the relevant source file by hand, exactly matching the Tool
+    // case's pre-existing, unchanged behavior from the prior mission.
 
-    return { ok: true, capabilityId, activated: true };
+    return { ok: true, capabilityId, activated: kind === "Skill" };
 }
 
 function getBundle(bundleId) {

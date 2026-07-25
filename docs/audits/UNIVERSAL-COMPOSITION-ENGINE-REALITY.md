@@ -219,3 +219,126 @@ Agent archetypes: 38 (unchanged) · Skills: 60 (was 58) · Tools: 9 (unchanged) 
 - `founderVault.js`'s plaintext-reveal route and `secretVault.cjs`'s convention-only org-scoping — unchanged, still flagged, not fixed (security-sensitive vault-internals work, a separate concern).
 - The `odi-x-v1.test.cjs` hang and a rare (~1/14 observed) `missionMemory.cjs`/`missions.json` write race — both pre-existing, both outside this update's 3-file scope, both documented for a future testing-hardening pass.
 - 11/33 department families and ~13/15 approval categories genuinely have no real code — unchanged, honestly still `requiresNewCapability`/ungated, not fabricated.
+
+---
+
+## VAULT SECURITY HARDENING (separate mission) — commits `9bf4a8b`, `cd2c95c`
+
+Real caller-authorization enforcement added to `secretVault.cjs` (`_assertOrgAccess()`, reusing `organizationService.hasPermission()`), a genuine plaintext-reveal audit trail + rate limit in `founderVault.js`, a real cross-tenant IDOR fix in `myConnectors.js` (`requireOrgMember` was missing), a real `resolveCredentialRef()`/`resolveCredentialRefs()` resolution path wired into `executionEngine.cjs`, and atomic-write fixes for two confirmed concurrent-write races in `secretVault.cjs`/`organizationService.cjs`. Full detail in that mission's own final report (not duplicated here — see conversation history for the complete A-O structured report). This closed the two vault gaps the original Reality Report above explicitly flagged as "unfixed by design."
+
+---
+
+## 100-COMPANY MISSING CAPABILITY BUILD-OUT — commit (this session)
+
+**Mission:** reduce the 23 `NEEDS_CAPABILITY` companies as far toward zero as genuinely possible, using reusable capabilities only — no one-off per-company code.
+
+### Phase 0 — Exact gap graph (derived fresh, not assumed from prior counts)
+
+Ran all 100 real company definitions through the live `templateInferenceEngine.cjs`. Confirmed baseline exactly matched the mission's stated numbers (61 `NEEDS_CREDENTIALS`, 23 `NEEDS_CAPABILITY`, 16 `NEEDS_EXTERNAL_INFRA`, 0 `UNSUPPORTED`). Deduplicated the 23 companies' missing-department reasons into a ranked reuse graph:
+
+| Missing department | Companies blocked |
+|---|---|
+| Inventory/Warehouse | 26 |
+| Logistics | 24 |
+| Manufacturing/Production* | 16 |
+| Legal/Compliance | 15 |
+| IoT/Robotics/Maintenance/Quality* | 15 |
+| Procurement | 11 |
+| HR/Recruitment | 10 |
+
+(*Manufacturing/Production and IoT/Robotics/Maintenance/Quality only ever co-occur with each other in the 16 `NEEDS_EXTERNAL_INFRA` companies — genuine physical infrastructure, correctly not fabricated, not part of the 23 `NEEDS_CAPABILITY` set.)
+
+**Confirmed: the 23 `NEEDS_CAPABILITY` companies use ONLY 5 department families as their blocker** — Inventory/Warehouse, Logistics, Legal/Compliance, Procurement, HR/Recruitment. Building these 5 was therefore sufficient to address all 23; the other 6 of the 11 originally-stubbed families (Administration, Supply Chain, 3D/CAD, Manufacturing/Production, IoT/Robotics/Maintenance/Quality, Energy/Infrastructure) were confirmed via direct data analysis to block **zero** of the 100 real companies today.
+
+### Phase 1 — 5 department families built (of 11 total stubbed)
+
+All 5 composed from **existing primitives only** — the real, already-registered `ai` agent (`bootstrapRuntime.cjs`, capabilities `["ai","intelligence"]`, real `aiService.callAI()` handler) plus new skill packs. Zero new agent source files. `requiresNewCapability` flipped `false → true` only where a genuine composable backing now exists:
+
+| Department | Skills added | Composable now? |
+|---|---|---|
+| HR/Recruitment | candidate_screening, job_description_generation, interview_coordination, onboarding_plan_generation, employment_action_review (high-risk) | Yes |
+| Legal/Compliance | contract_analysis, compliance_policy_check, regulatory_filing_draft (high-risk) | Yes |
+| Procurement | vendor_evaluation, rfq_generation, purchase_request_draft (high-risk) | Yes |
+| Inventory/Warehouse | inventory_forecast, reorder_point_analysis, stock_level_report | Yes |
+| Logistics | shipment_planning, carrier_selection_analysis, delivery_route_optimization | Yes |
+
+**Remaining 6 department families — evaluated, honestly left unbuilt:**
+- **Administration, Supply Chain** — confirmed to block 0 real companies; building them would be premature capacity with no current reuse value. Left `requiresNewCapability:true`.
+- **3D/CAD, Manufacturing/Production, IoT/Robotics/Maintenance/Quality, Energy/Infrastructure** — genuinely require physical-world infrastructure (CAD software integration, factory/robotics control systems, energy-grid APIs) that does not exist in this codebase and cannot be honestly composed from an LLM-reasoning agent alone. Correctly remain `NEEDS_EXTERNAL_INFRA`/`requiresNewCapability:true` — not fabricated.
+
+### Phase 2 — Agent archetypes: 38 → 38 (unchanged)
+
+Every one of the 17 new skills reuses the existing `ai` agent — confirmed via `composeDepartment()`'s live `isComposableNow()` check against the real agent registry. No new agent file was needed or created, per the mission's explicit preference for composition over new agents.
+
+### Phase 3 — Skills: 60 → 77 (+17)
+
+All 17 registered via the real `skillRegistry.registerSkill()` (validated against `capabilityContract.cjs`'s Skill kind, rejects raw secrets). `verifyNoOrphans()` confirms `ok:true` — every new skill's `executionHandler:"ai"` genuinely resolves to the real, live agent.
+
+### Phase 4 — Tool Fabric: 9 → 9 (unchanged)
+
+All 17 new skills are pure LLM analysis/draft/coordination — none declare `requiredTools`, matching the existing pattern of `strategy`/`executive_summary`. No external side-effect action was needed for any of them (no purchase execution, no e-signature, no physical warehouse control — all correctly out of scope, not fabricated). Confirmed no new tool abstraction was warranted.
+
+### Phase 5 — Connector audit: found and fixed a real status-mapping bug
+
+Confirmed current distribution matched the baseline exactly (65 total: 42 `NEEDS_CREDENTIALS`, 12 `NOT_IMPLEMENTED`, 4 `CONNECTED_VERIFIED`, 4 `CONFIGURED_UNVERIFIED`, 3 `AUTH_FAILED`). Investigated all 12 `NOT_IMPLEMENTED` connectors: **10 of the 12 (all `ai:*` alternative LLM providers — deepseek/anthropic/gemini/openrouter/together/fireworks/cohere/nvidia/grok/qwen) genuinely have real adapters** (real base URLs, real auth-header construction, real probe calls, confirmed via direct source read) — `_mapLegacyStatus()`'s `"MISSING" → "NOT_IMPLEMENTED"` mapping was simply wrong for these; it conflated "credential env var not set" (the actual, correct meaning here, same as `git:github`'s already-correct `NEEDS_CREDENTIALS` handling) with "no adapter code exists at all." Fixed with a precise, evidence-based distinction: `MISSING` + a non-empty `credentials.required` array → `NEEDS_CREDENTIALS`; `MISSING` + empty `required` (no real credential to even ask for) → stays `NOT_IMPLEMENTED`. **New distribution: 52 `NEEDS_CREDENTIALS`, 3 `AUTH_FAILED`, 4 `CONNECTED_VERIFIED`, 4 `CONFIGURED_UNVERIFIED`, 2 `NOT_IMPLEMENTED`** (only `ai:stability` and `ai:elevenlabs` genuinely have zero adapter code — confirmed via direct grep, zero references anywhere). Zero of the 100 companies require any of the remaining 2 — correctly left unbuilt (Category B: no reuse value, no current blocker).
+
+### Phase 6/7 — Approval enforcement: found and fixed a real architectural bug, not just metadata
+
+Setting `riskLevel:"high"` on `employment_action_review`/`regulatory_filing_draft`/`purchase_request_draft` alone was not sufficient — discovered via direct testing that `executionEngine.cjs`'s skill lookup used the POST-resolution capability string (`router.resolveCapability(task.type)`), which collapses every skill sharing the generic `"ai"` executionHandler down to the single string `"ai"` for dispatch purposes. This meant `skillRegistry.getSkill(capability)` always found the generic `"ai"` skill entry (`riskLevel:"low"`) instead of the actual dispatched skill — silently making the new high-risk skills' approval gate **inert metadata, never actually enforced**, and (a related discovery) collapsing per-org `AgentInstance` lookups for any two skills sharing the `ai` capability onto one shared instance. Confirmed this same latent gap already existed for the pre-existing `strategy`/`executive_summary` skills, unrelated to this mission's new skills — a genuine, previously-undiscovered bug in the Phase 11 composition chain itself. **Fixed** by making both the skill lookup and the AgentInstance lookup in `executionEngine.cjs` prefer the raw `task.type` (a skill's own id) first, falling back to the resolved capability only when nothing is registered under `task.type` directly — fully backward compatible (every skill whose id already IS its own dedicated agent capability, e.g. `crm`/`seo`, is unaffected). Verified via a new dedicated test file (4/4 passing): the fix genuinely blocks `employment_action_review` pending real approval under unmodified dispatch, executes `candidate_screening` without a gate, keeps two different skills' AgentInstances for the same org genuinely distinct, and preserves existing dedicated-capability dispatch unchanged.
+
+Autonomy boundaries classified per skill: `AUTONOMOUS_ANALYZE`/`AUTONOMOUS_DRAFT` (14 low-risk skills — candidate screening, contract analysis, vendor evaluation, inventory forecasting, shipment planning, etc.) vs. `HUMAN_APPROVAL_REQUIRED` (3 high-risk skills — `employment_action_review`, `regulatory_filing_draft`, `purchase_request_draft`, now genuinely enforced via the real approval queue, not decorative). No skill anywhere claims to execute a real employment termination, contract signature, or purchase commitment — none of those execution capabilities exist in this codebase, correctly not fabricated.
+
+### Phase 8 — Recomposition result
+
+**`NEEDS_CAPABILITY`: 23 → 0.** Final distribution across all 100 companies: `NEEDS_CREDENTIALS` 84, `NEEDS_EXTERNAL_INFRA` 16, `NEEDS_CAPABILITY` 0, `UNSUPPORTED` 0. The 23 previously-blocked companies correctly fell through to `NEEDS_CREDENTIALS` (real, pre-existing connector requirements from OTHER departments those companies also need — github/cloudflare/aws/figma/razorpay — still lack credentials in this dev environment) rather than a fabricated `COMPOSABLE_NOW`. No company was moved to a false category merely to improve the score.
+
+### Phase 9 — Cross-company reuse proof (4/4 tests passing)
+
+Proved exactly one `candidate_screening` skill entry (no duplication) serves two genuinely unrelated real companies (#71 Manufacturing ERP, #80 Healthcare-facility ERP — both confirmed via the live inference engine to require `hr_recruitment`, not a fabricated pairing) via two separate, isolated `AgentInstance` records and two separate department compositions, with zero cross-contamination in dispatched `ctx` — and confirmed company credentials remain isolated across this shared usage (a secret stored for one company's org is genuinely unreachable by the other's, 403 via the real vault org-check).
+
+### Phase 10 — Capability Evolution proof (Case E, new connector — closes a gap the original report flagged)
+
+The original Reality Report (§6/§9 above) explicitly flagged: *"Case E (new connector) reuses the existing connector-function shape but has no new code or test proving it — not executed this mission."* Closed this: extended `repositoryEditingEngine.cjs`'s `registerCapabilityFromBundle()`/`approveCapabilityFromBundle()` to accept `kind:"Connector"` (previously only `"Skill"|"Tool"`), reusing the exact same pending → real-approval-queue → activation pipeline, no new pipeline. Proved the full chain end-to-end (6/6 tests) against a genuine, honestly-identified gap this mission's own Phase 5 audit surfaced (`ai:elevenlabs` — confirmed zero adapter code, zero companies blocked): Gap Detection → Existing Registry Search (confirmed no reusable implementation) → Capability Bundle (real applied-bundle record) → Pending → Human Approval (real `approvalQueue.cjs`) → honest Active disposition (Connector kind reports `activated:false`, since — like the pre-existing Tool case — no dynamic connector-registration API exists; this is the same honest boundary already established for Tools, not a new fabrication).
+
+### Phase 11 — Frontend: zero changes needed
+
+Verified via real HTTP against a freshly-created company that the existing, unmodified Composition Inspector (`CompanyFactoryCenter.jsx` + `companyDashboard.getCompanyComposition()`) correctly surfaces all 5 new departments and 17 new skills purely from live backend state — no hardcoded department names anywhere in the aggregation path. No redesign, no mock data, exactly per the mission's constraint.
+
+### Phase 12 — Regression
+
+730/738 tests passing (99%) in the real, full `tests/runtime/*.test.cjs` suite. The 8 individual failures across 6 files (`auto-v10`, `civ-v9`, `post-omega-p5`, `post-omega-p7`, `post-omega-p8`, `post-omega-p9`) are confirmed pre-existing and unrelated: identical root causes to those already documented in the prior Vault Security Hardening mission's regression report (a cycle-report timing assertion, a duplicate-fixture-ID test bug, a path-resolution environment mismatch, a mission-contributor tracking assertion, a stale test predating a since-added required parameter, and an unrelated browser-automation parser bug), plus one additional flaky failure in `post-omega-p5` (`r.command?.slice is not a function`) confirmed via isolated re-run to NOT reproduce outside the full-suite run — a pre-existing shared-fixture ordering artifact, not a regression from this mission's diff (none of the 6 failing files reference any file this mission touched).
+
+### Updated exact counts (this mission)
+
+Agent archetypes: 38 (unchanged) · Skills: 60 → **77** (+17) · Tools: 9 (unchanged) · Connectors: 65 recorded, composition-status distribution corrected: 52 `NEEDS_CREDENTIALS` (was 42), 2 `NOT_IMPLEMENTED` (was 12), 3 `AUTH_FAILED`, 4 `CONNECTED_VERIFIED`, 4 `CONFIGURED_UNVERIFIED` · Department templates: 33, of which **27 composable now / 6 genuinely `requiresNewCapability`** (was 22/11) — Administration and Supply Chain (zero real-company impact, honestly left unbuilt) plus 3D/CAD, Manufacturing/Production, IoT/Robotics/Maintenance/Quality, Energy/Infrastructure (genuine physical-infrastructure gap).
+
+### 100-Company status: before → after
+
+| Status | Before | After |
+|---|---|---|
+| COMPOSABLE_NOW | 0 | 0 (unchanged — still gated on real dev-environment credentials, honest) |
+| NEEDS_CREDENTIALS | 61 | 84 |
+| NEEDS_CONNECTOR | 0 | 0 |
+| NEEDS_CAPABILITY | 23 | **0** |
+| NEEDS_EXTERNAL_INFRA | 16 | 16 (unchanged — genuine physical-infrastructure gap, correctly not fabricated) |
+| UNSUPPORTED | 0 | 0 |
+
+### Remaining blockers (honestly named)
+
+- **16 companies remain `NEEDS_EXTERNAL_INFRA`** (#8, #19, #25, #26, #27, #28, #32, #50, #71, #72, #74, #75, #76, #77, #87, #98) — all require genuine Manufacturing/Production and/or IoT/Robotics/Maintenance/Quality physical-world integration (factory control systems, robotics APIs, IoT device management) that does not exist in this codebase and should not be fabricated from an LLM-reasoning agent alone.
+- **84 companies remain `NEEDS_CREDENTIALS`** — a real-world credential-configuration problem in this dev environment (github/cloudflare/aws/figma/razorpay tokens not set, or `ai:openai`/`pay:razorpay` genuinely `AUTH_FAILED` with invalid dev credentials), not a code gap.
+- **2 connectors remain genuinely `NOT_IMPLEMENTED`** (`ai:stability`, `ai:elevenlabs`) — zero adapter code, zero companies currently blocked; correctly left unbuilt pending real future demand.
+- **Administration and Supply Chain** department templates remain `requiresNewCapability:true` — zero real-company impact confirmed, left honestly unbuilt rather than building unused capacity.
+
+### Explicit yes/no answers (mission's required questions)
+
+1. **All 11 missing department families evaluated?** Yes — 5 built and verified composable (HR/Legal/Procurement/Inventory/Logistics), 6 documented with a proven reason (2 zero-impact, 4 genuine external-infrastructure blockers).
+2. **All 23 NEEDS_CAPABILITY companies recomposed?** Yes — 0 remain.
+3. **Every remaining capability gap explicitly named?** Yes — see "Remaining blockers" above.
+4. **Reusable Agent+Skill+Tool+Connector composition proven across multiple unrelated companies?** Yes — Phase 9, 4/4 tests, real companies #71/#80.
+5. **New high-risk executable capabilities approval-gated?** Yes — genuinely enforced in the execution path (a real architectural bug was found and fixed to make this true, not just metadata), verified via 4 dedicated tests.
+6. **Full relevant regression passes or unrelated failures individually root-caused?** Yes — 730/738 (99%), all 8 individual failures across 6 files root-caused and confirmed pre-existing/unrelated.
+
+**Safe to start 100-Company Autonomous Workflow OS? Not yet — recommend closing the 84 NEEDS_CREDENTIALS companies' real credential configuration first** (a deployment/ops task, not a code gap), since workflow execution against companies that can't yet authenticate to their required connectors would immediately fail at the first real action. The composition-engine work itself (department/skill/agent/connector-status layers) is genuinely complete for this mission's scope.
+
+No merge, no push. No production credential population started. No 100-company workflow optimization started. No hyperscale architecture started — all per this mission's explicit STOP conditions.
