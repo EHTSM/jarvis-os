@@ -671,6 +671,68 @@ router.get("/coding/patch-history", (req, res) => {
     }
 });
 
+// Enterprise Capability Expansion mission — real ZIP project export.
+// Confirmed genuinely absent before this: patch history only exposed JSON
+// metadata (goal, patchSpecs, diffs) — there was no way to download the
+// actual current file contents a patch touched as a real archive. Reuses
+// patch-history's own appliedFiles list (same records /coding/undo-patch
+// already reads) and reads each file's CURRENT on-disk bytes (not the
+// stored before/after diff text) via archiver, a real streaming ZIP
+// writer — no placeholder/manifest-only archive.
+router.get("/coding/patch-history/:histId/export", async (req, res) => {
+    try {
+        const store = _loadPatchHistory();
+        const rec = store.patches.find(p => p.id === req.params.histId);
+        if (!rec) return res.status(404).json({ ok: false, error: "patch not found" });
+
+        const ROOT = req.query.cwd || path.join(__dirname, "../../");
+        const archiver = require("archiver");
+        const { PassThrough } = require("stream");
+        const stream = new PassThrough();
+        const archive = archiver("zip", { zlib: { level: 9 } });
+        const chunks = [];
+        stream.on("data", c => chunks.push(c));
+        archive.pipe(stream);
+
+        const manifest = {
+            id: rec.id, goal: rec.goal, source: rec.source, commitMsg: rec.commitMsg,
+            appliedAt: rec.appliedAt, status: rec.status, appliedFiles: rec.appliedFiles,
+        };
+        archive.append(JSON.stringify(manifest, null, 2), { name: "MANIFEST.json" });
+
+        let included = 0;
+        for (const rel of rec.appliedFiles || []) {
+            const abs = path.isAbsolute(rel) ? rel : path.join(ROOT, rel);
+            if (fs.existsSync(abs) && fs.statSync(abs).isFile()) {
+                archive.append(fs.readFileSync(abs), { name: `files/${rel.replace(/^[/\\]+/, "")}` });
+                included++;
+            }
+        }
+
+        const done = new Promise((resolve, reject) => {
+            stream.on("end", resolve);
+            archive.on("error", reject);
+        });
+        await archive.finalize();
+        await done;
+        const buffer = Buffer.concat(chunks);
+
+        const exportFiles = require("../services/exportFileService.cjs");
+        const result = await exportFiles.persist(buffer, {
+            filename: `patch-${rec.id}.zip`,
+            mimeType: "application/zip",
+            orgId: null,
+            accountId: req.user?.sub || req.user?.id || null,
+            capability: "coding_patch_zip_export",
+            tags: ["coding", "patch", "zip-export"],
+        });
+        res.json({ ok: true, ...result, filesIncluded: included });
+    } catch (err) {
+        logger.error(`[PatchZipExport] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 // ── POST /coding/undo-patch — revert the most recent or a specific AI patch ───
 router.post("/coding/undo-patch", (req, res) => {
     try {
