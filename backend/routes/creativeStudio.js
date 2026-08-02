@@ -32,6 +32,30 @@ function _ai() {
   try { return require("../services/aiService"); } catch { return null; }
 }
 
+// Enterprise Import/Export Validation mission — real generation agents.
+// Reused, not duplicated: agents/content/imageGeneratorAgent.cjs already
+// makes a genuine DALL-E 3 call (real image bytes hosted by OpenAI, real
+// URL returned) and agents/content/voiceCloningAgent.cjs already makes
+// genuine ElevenLabs/OpenAI TTS calls (real MP3 bytes written to disk).
+// Neither was ever wired to this route file — every capability here
+// previously went through a generic text-LLM stub that asked the model to
+// "respond with JSON {result, url: null}", so image/voice generation
+// requests always returned no media despite real generation code existing
+// elsewhere in the repo.
+function _imageAgent() {
+  try { return require("../../agents/content/imageGeneratorAgent.cjs"); } catch { return null; }
+}
+function _voiceAgent() {
+  try { return require("../../agents/content/voiceCloningAgent.cjs"); } catch { return null; }
+}
+
+// Capabilities with a real, byte-producing generator behind them (vs. the
+// text-LLM fallback used for every other capability, which never produces
+// real media — see the honest `generated:false`/`note` fields it now
+// returns instead of silently claiming success).
+const REAL_IMAGE_CAPABILITIES = new Set(["image_generate", "logo_generate", "banner_generate"]);
+const REAL_VOICE_CAPABILITIES = new Set(["text_to_speech"]);
+
 router.use("/creative", requireAuth);
 router.use("/creative", rateLimiter(30, 60_000));
 
@@ -122,30 +146,67 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
       prompt, accountId: _account(req), params: body,
     });
 
-    // Attempt actual AI call (falls back gracefully if no key)
     jobQueue.startJob(job.id);
-    let outputUrl = null;
-    let aiOutput  = null;
+    let outputUrl   = null;
+    let aiOutput    = null;
+    let generated   = false;
+    let generatedVia = null;
 
-    try {
-      const ai = _ai();
-      if (ai?.callAI) {
-        const aiPrompt = `You are a creative AI assistant. ${capability.replace(/_/g," ")}: "${prompt}".
-Respond with a JSON object: { "result": "description of what was generated", "url": null, "metadata": {} }`;
-        const aiResult = await ai.callAI(aiPrompt, { maxTokens: 256 });
-        aiOutput = aiResult?.content || aiResult?.text || null;
-        try { const parsed = JSON.parse(aiOutput); outputUrl = parsed.url; aiOutput = parsed; } catch {}
-      }
-    } catch {}
+    if (REAL_IMAGE_CAPABILITIES.has(capability)) {
+      // Real path: DALL-E 3 via imageGeneratorAgent.cjs.
+      try {
+        const agent = _imageAgent();
+        const result = await agent?.generate({ topic: prompt, style: body.style, mood: body.mood, size: body.size });
+        if (result?.generated && result.imageUrl) {
+          outputUrl    = result.imageUrl;
+          generated    = true;
+          generatedVia = result.via;
+        }
+        aiOutput = result;
+      } catch (e) { aiOutput = { error: e.message }; }
+    } else if (REAL_VOICE_CAPABILITIES.has(capability)) {
+      // Real path: ElevenLabs/OpenAI TTS via voiceCloningAgent.cjs. Writes a
+      // real local MP3 — served via the new /creative/audio/:filename
+      // static route below so the returned URL is actually fetchable.
+      try {
+        const agent = _voiceAgent();
+        const result = await agent?.synthesize({ text: prompt, voiceProfile: body.voiceProfile, speed: body.speed, pitch: body.pitch });
+        if (result?.generated && result.filename) {
+          outputUrl    = `/creative/audio/${result.filename}`;
+          generated    = true;
+          generatedVia = result.via;
+        }
+        aiOutput = result;
+      } catch (e) { aiOutput = { error: e.message }; }
+    } else {
+      // No real generator exists for this capability (video, image edit/
+      // upscale/background-remove, stt, music). Honest fallback: ask the
+      // model for a description, but never claim media was produced —
+      // generated:false and a note are always present so callers (and the
+      // UI) can tell the difference between a real asset and a preview.
+      try {
+        const ai = _ai();
+        if (ai?.callAI) {
+          const aiPrompt = `You are a creative AI assistant. ${capability.replace(/_/g," ")}: "${prompt}".
+Respond with a JSON object: { "result": "description of what was generated", "metadata": {} }`;
+          const aiResult = await ai.callAI(aiPrompt, { maxTokens: 256 });
+          const raw = aiResult?.content || aiResult?.text || null;
+          try { aiOutput = JSON.parse(raw); } catch { aiOutput = { result: raw }; }
+        }
+      } catch {}
+      aiOutput = { ...aiOutput, generated: false, note: `No real ${studioType} generator is wired for capability "${capability}" — this is a text description only, not a real asset.` };
+    }
 
-    // Store asset regardless
+    // Store asset regardless — real asset when outputUrl is set, a
+    // description-only record otherwise (matches prior behavior for
+    // capabilities with no real generator).
     const storedAsset = assets.storeAsset({
       type: studioType, prompt, provider: decision.provider,
       capability, model: decision.model,
       url: outputUrl, accountId: _account(req),
       jobId: job.id, tags: body.tags || [],
       folder: body.folder || studioType,
-      metadata: { params: body, aiOutput },
+      metadata: { params: body, aiOutput, generated, generatedVia },
     });
 
     // Consume credits
@@ -155,6 +216,7 @@ Respond with a JSON object: { "result": "description of what was generated", "ur
     res.json({
       ok: true, job: completed, asset: storedAsset, decision,
       output: aiOutput, creditsUsed: decision.creditsRequired,
+      generated, generatedVia, url: outputUrl,
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
 }
@@ -223,6 +285,27 @@ router.post("/creative/voice/clone", async (req, res) => {
 router.get("/creative/voice/history", (req, res) => {
   try { res.json({ ok: true, jobs: jobQueue.listJobs({ studioType: "audio", accountId: _account(req) }) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Serves the real MP3 files voiceCloningAgent.cjs writes to data/audio/ —
+// without this, the "url" returned from /creative/voice/tts pointed at a
+// path nothing ever served, so a real generated file existed on disk but
+// was unfetchable. Filename is a server-generated `tts_<timestamp>.mp3`
+// (see voiceCloningAgent.cjs), never derived from user input beyond the
+// route param — still validated against a strict pattern and resolved
+// path is confirmed to stay inside AUDIO_DIR before serving, since :filename
+// is technically caller-controlled at the HTTP layer.
+const _audioPath = require("path");
+const _audioFs   = require("fs");
+const AUDIO_DIR  = _audioPath.join(__dirname, "../../data/audio");
+router.get("/creative/audio/:filename", requireAuth, (req, res) => {
+  const filename = req.params.filename;
+  if (!/^[A-Za-z0-9_.-]+\.mp3$/.test(filename)) return res.status(400).json({ error: "invalid_filename" });
+  const abs = _audioPath.join(AUDIO_DIR, filename);
+  if (!abs.startsWith(AUDIO_DIR + _audioPath.sep)) return res.status(400).json({ error: "invalid_path" });
+  if (!_audioFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  res.setHeader("Content-Type", "audio/mpeg");
+  res.sendFile(abs);
 });
 
 // ══════════════════════════════════════════════════════════════════
