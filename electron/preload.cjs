@@ -53,6 +53,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
         return ipcRenderer.invoke("api-request", opts);
     },
     getServerHealth:   ()            => ipcRenderer.invoke("get-server-health"),
+    getOfflineQueue:    ()            => ipcRenderer.invoke("get-offline-queue"),
+    replayOfflineQueue: ()            => ipcRenderer.invoke("replay-offline-queue"),
     getEvolutionScore: ()            => ipcRenderer.invoke("get-evolution-score"),
     getSuggestions:    ()            => ipcRenderer.invoke("get-suggestions"),
     approveSuggestion: (id)          => ipcRenderer.invoke("approve-suggestion", id),
@@ -203,6 +205,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
     // Backend connectivity
     onBackendOnline:        (cb)     => _on("backend-online",          cb),
     onBackendOffline:       (cb)     => _on("backend-offline",         cb),
+    onOfflineWriteQueued:   (cb)     => _on("offline-write-queued",    cb),
+    onOfflineReplayStarted: (cb)     => _on("offline-replay-started",  cb),
+    onOfflineReplayCompleted: (cb)   => _on("offline-replay-completed", cb),
 
     // System events
     onSystemResume:         (cb)     => _on("system-resume",           cb),

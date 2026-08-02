@@ -171,6 +171,116 @@ const store = Store ? new Store({
     }
 }) : { get: (k, d) => d, set: () => {}, store: {} };
 
+// ── Offline write-replay queue ─────────────────────────────────────
+// Electron Production Completion mission — the app already detects
+// online/offline transitions (_startHealthPoll below, "backend-online"/
+// "backend-offline" IPC events) and has a read-only cache (cache-get/set/
+// clear), but nothing captured a write that failed while offline and
+// replayed it once connectivity returned — a mutating request (POST/PUT/
+// PATCH/DELETE) made while offline just failed and was lost.
+//
+// This queue is durable (persisted via the same electron-store instance
+// used for window state, so it survives an app restart while offline),
+// FIFO, and scoped to mutating methods only — GET requests are never
+// queued, since replaying a stale read is meaningless (a fresh GET after
+// reconnect is what the renderer should do instead). Capped at
+// MAX_QUEUE_ENTRIES to bound worst-case disk/memory use if the app is
+// offline for a long time.
+//
+// Security note: queued request bodies are persisted to disk in plaintext
+// (electron-store's JSON file, same as every other value in `store`) until
+// replayed. This is an accepted, bounded exposure consistent with this
+// app's existing threat model (window state/offlineCache already persist
+// unencrypted locally, and the on-disk file is only readable by the local
+// OS user), not a new category of risk — but a caller sending genuinely
+// sensitive payloads (raw passwords, not already-hashed/tokenized values)
+// through apiRequest() while offline should be aware they land on disk
+// until connectivity returns. No current frontend code calls apiRequest()
+// for a mutating request yet (grep confirms zero callers) — this queue is
+// prepared infrastructure ahead of that adoption.
+const MAX_QUEUE_ENTRIES = 200;
+const MUTATING_METHODS  = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+function _loadWriteQueue() {
+    return store.get("offlineWriteQueue", []);
+}
+function _saveWriteQueue(q) {
+    store.set("offlineWriteQueue", q.slice(-MAX_QUEUE_ENTRIES));
+}
+function _enqueueWrite({ method, path: reqPath, body, timeout }) {
+    const q = _loadWriteQueue();
+    const entry = {
+        id:        `owq_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        method, path: reqPath, body, timeout,
+        queuedAt:  new Date().toISOString(),
+        attempts:  0,
+    };
+    q.push(entry);
+    _saveWriteQueue(q);
+    windows.main?.webContents.send("offline-write-queued", { id: entry.id, method, path: reqPath, queueLength: q.length });
+    return entry;
+}
+
+let _replayInFlight = false;
+// Replays every queued write in FIFO order against the now-reachable
+// backend. Stops at the first request that still fails (keeps FIFO
+// ordering meaningful — a later write often depends on an earlier one
+// having actually landed) rather than skipping ahead and replaying
+// out of order.
+async function _replayWriteQueue() {
+    if (_replayInFlight) return; // avoid overlapping replay runs from rapid online/offline flapping
+    _replayInFlight = true;
+    try {
+        let q = _loadWriteQueue();
+        if (!q.length) return;
+        windows.main?.webContents.send("offline-replay-started", { queueLength: q.length });
+
+        const results = [];
+        while (q.length) {
+            const entry = q[0];
+            entry.attempts++;
+            try {
+                const r = await axios({
+                    method:  entry.method,
+                    url:     `${API_URL}${entry.path}`,
+                    data:    entry.body,
+                    timeout: entry.timeout || 15_000,
+                    withCredentials: false,
+                });
+                results.push({ id: entry.id, method: entry.method, path: entry.path, ok: true, status: r.status });
+                q.shift(); // succeeded — remove and continue to the next queued write
+                _saveWriteQueue(q);
+            } catch (err) {
+                // A 4xx response means the backend genuinely rejected the
+                // request (e.g. validation error, now-stale data) — retrying
+                // it forever would never succeed, so drop it and continue
+                // rather than blocking every write behind it permanently.
+                // A network-level failure (no response) means we're still
+                // offline or the backend is still unreachable — stop here
+                // and preserve the rest of the queue for the next replay.
+                const status = err.response?.status;
+                if (status && status >= 400 && status < 500) {
+                    results.push({ id: entry.id, method: entry.method, path: entry.path, ok: false, status, error: err.message, dropped: true });
+                    q.shift();
+                    _saveWriteQueue(q);
+                    continue;
+                }
+                results.push({ id: entry.id, method: entry.method, path: entry.path, ok: false, error: err.message, willRetry: true });
+                _saveWriteQueue(q); // persist the incremented attempts count even though the entry stays queued
+                break;
+            }
+        }
+        windows.main?.webContents.send("offline-replay-completed", { results, remainingQueueLength: q.length });
+    } finally {
+        _replayInFlight = false;
+    }
+}
+
+function _getWriteQueueStatus() {
+    const q = _loadWriteQueue();
+    return { length: q.length, entries: q.map(e => ({ id: e.id, method: e.method, path: e.path, queuedAt: e.queuedAt, attempts: e.attempts })) };
+}
+
 // ── Window registry ───────────────────────────────────────────────
 const windows = {
     main:      null,
@@ -811,6 +921,12 @@ function _startHealthPoll(fast) {
             if (_wasOffline) {
                 _wasOffline = false;
                 windows.main?.webContents.send("backend-online");
+                // Connectivity just returned — replay any writes that were
+                // queued while offline. Fire-and-forget: _replayWriteQueue
+                // emits its own offline-replay-started/completed events for
+                // the renderer to react to; this poll tick must not block
+                // on however long a full replay takes.
+                _replayWriteQueue().catch(() => {});
             }
         } catch {
             if (!_wasOffline) {
@@ -877,19 +993,34 @@ ipcMain.handle("send-command", async (_e, command) => {
 ipcMain.handle("api-request", async (_e, opts) => {
     try {
         if (!opts || typeof opts !== "object") return { success: false, error: "Invalid request" };
-        const method  = opts.method ?? "GET";
+        const method  = String(opts.method ?? "GET").toUpperCase();
         const p       = opts.path;
         const body    = opts.body;
         const timeout = opts.timeout ?? 15_000;
         if (typeof p !== "string" || !p.startsWith("/") || p.length > 1024) return { success: false, error: "Invalid path" };
-        if (!ALLOWED_METHODS.has(String(method).toUpperCase())) return { success: false, error: "Invalid method" };
+        if (!ALLOWED_METHODS.has(method)) return { success: false, error: "Invalid method" };
         if (typeof timeout !== "number" || timeout < 0 || timeout > 120_000) return { success: false, error: "Invalid timeout" };
-        const r = await axios({ method: String(method).toUpperCase(), url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
+        const r = await axios({ method, url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
         return { success: true, status: r.status, data: r.data };
     } catch (err) {
+        // Offline write replay: only mutating requests are queued (a failed
+        // GET should just be retried by the caller, not "replayed" later —
+        // there's nothing to preserve). Only a genuine network-level
+        // failure queues (no err.response at all — DNS/connection refused/
+        // timeout); a real 4xx/5xx from a reachable backend is a real
+        // rejection, not a connectivity problem, and must not be queued.
+        const method = String(opts?.method ?? "GET").toUpperCase();
+        const isNetworkFailure = !err.response;
+        if (opts && MUTATING_METHODS.has(method) && isNetworkFailure && typeof opts.path === "string") {
+            const entry = _enqueueWrite({ method, path: opts.path, body: opts.body, timeout: opts.timeout });
+            return { success: false, queued: true, queueId: entry.id, error: err.message, status: err.response?.status, data: err.response?.data };
+        }
         return { success: false, status: err.response?.status, error: err.message, data: err.response?.data };
     }
 });
+
+ipcMain.handle("get-offline-queue", () => _getWriteQueueStatus());
+ipcMain.handle("replay-offline-queue", async () => { await _replayWriteQueue(); return _getWriteQueueStatus(); });
 
 ipcMain.handle("get-server-health", async () => {
     try { await axios.get(`${API_URL}/health`, { timeout: 3_000 }); return { success: true, isHealthy: true }; }
