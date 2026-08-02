@@ -48,6 +48,41 @@ router.get("/graph/stats", (req, res) => {
     catch (e) { _err(res, e); }
 });
 
+// ── Export ────────────────────────────────────────────────────────────────────
+// Enterprise Capability Expansion mission — real Knowledge Graph export.
+// Confirmed genuinely absent before this: GET /graph/edges caps results at
+// a 200-edge page (see above); there was no way to pull the complete
+// graph in one call. Reuses getEdges() with no artificial cap plus the
+// same getStats()/NODE_TYPES/RELATIONS already exposed by /graph/stats
+// and /graph/schema — this route does not read the edge store directly,
+// it composes the exact same service functions the other routes call.
+router.get("/graph/export", async (req, res) => {
+    try {
+        const kg = _kg();
+        const { edges, total } = kg.getEdges({ limit: Number.MAX_SAFE_INTEGER, offset: 0 });
+        const dump = {
+            exportedAt: new Date().toISOString(),
+            nodeTypes: kg.NODE_TYPES,
+            relations: kg.RELATIONS,
+            stats: kg.getStats(),
+            edgeCount: total,
+            edges,
+        };
+        const buffer = Buffer.from(JSON.stringify(dump, null, 2), "utf8");
+
+        const exportFiles = require("../services/exportFileService.cjs");
+        const result = await exportFiles.persist(buffer, {
+            filename: `knowledge-graph-export-${Date.now()}.json`,
+            mimeType: "application/json",
+            orgId: null,
+            accountId: req.user?.sub || req.user?.id || null,
+            capability: "knowledge_graph_export",
+            tags: ["knowledge-graph", "export"],
+        });
+        _ok(res, { ...result, edgeCount: total });
+    } catch (e) { _err(res, e); }
+});
+
 // ── Indexing ──────────────────────────────────────────────────────────────────
 router.post("/graph/index", (req, res) => {
     try {
