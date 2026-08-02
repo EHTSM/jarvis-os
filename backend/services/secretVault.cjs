@@ -42,6 +42,7 @@ const crypto = require("crypto");
 const VAULT_FILE   = path.join(__dirname, "../../data/vault.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/vault-history.json");
 const AUDIT_FILE    = path.join(__dirname, "../../data/vault-access-audit.json");
+const KDF_SALT_FILE = path.join(__dirname, "../../data/vault-kdf-salt.bin");
 
 function _try(fn) { try { return fn(); } catch { return null; } }
 function _orgService() { return _try(() => require("./organizationService.cjs")); }
@@ -104,11 +105,59 @@ function getAccessAudit({ connectorId, limit = 200 } = {}) {
   return filtered.slice(0, limit);
 }
 
-// ── Encryption (AES-256-GCM, key from JWT_SECRET) ────────────────────────────
-function _key() {
+// ── Encryption (AES-256-GCM) ──────────────────────────────────────────────────
+// Vault Security Hardening — key derivation upgrade.
+//
+// Prior: the AES-256-GCM key was crypto.createHash("sha256").update(JWT_SECRET)
+// — a single unsalted hash. JWT_SECRET is already high-entropy (it's a real
+// signing secret, not a user password), so this was never brute-forceable
+// like a weak-password KDF gap would be; the actual weakness was structural:
+// no salt (the exact same key is derivable by anyone who ever learns
+// JWT_SECRET, with no per-install variance) and no cryptographic domain
+// separation from JWT signing's own use of the same secret.
+//
+// Fix: HKDF-SHA256 (RFC 5869) with a random, persistent, per-install salt
+// (data/vault-kdf-salt.bin, generated once, mode 0600) and an explicit
+// "info" context string that cryptographically separates this derived key
+// from any other use of JWT_SECRET (e.g. JWT signing itself). HKDF, not
+// PBKDF2/scrypt, is the correct primitive here: PBKDF2/scrypt exist to slow
+// down brute-forcing a LOW-entropy secret (a human password); JWT_SECRET is
+// already high-entropy key material, so what's needed is key separation via
+// HKDF's extract-and-expand construction, not added computational cost.
+//
+// Ciphertext stays AES-256-GCM, encoded as before, with one additive change:
+// new ciphertext is prefixed "v2:" (v2:iv:tag:enc). Ciphertext with no
+// recognized version prefix (the old iv:tag:enc, 3-part hex format) is
+// decrypted with the legacy raw-SHA-256 key — every credential already
+// encrypted under the old scheme keeps working with zero migration or
+// re-encryption required. New writes always use the new key.
+function _legacyKey() {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("JWT_SECRET required for vault encryption");
   return crypto.createHash("sha256").update(secret).digest();
+}
+
+function _kdfSalt() {
+  try {
+    return fs.readFileSync(KDF_SALT_FILE);
+  } catch {
+    const salt = crypto.randomBytes(32);
+    try {
+      fs.mkdirSync(path.dirname(KDF_SALT_FILE), { recursive: true });
+      const tmp = `${KDF_SALT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+      fs.writeFileSync(tmp, salt, { mode: 0o600 });
+      fs.renameSync(tmp, KDF_SALT_FILE);
+    } catch { /* if persistence fails, still return this salt for this process's lifetime */ }
+    return salt;
+  }
+}
+
+function _key() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET required for vault encryption");
+  const salt = _kdfSalt();
+  const info = Buffer.from("jarvis-os:secretVault:aes-256-gcm:v2", "utf8");
+  return Buffer.from(crypto.hkdfSync("sha256", Buffer.from(secret, "utf8"), salt, info, 32));
 }
 
 function _encrypt(plaintext) {
@@ -117,13 +166,15 @@ function _encrypt(plaintext) {
   const c   = crypto.createCipheriv("aes-256-gcm", k, iv);
   const enc = Buffer.concat([c.update(plaintext, "utf8"), c.final()]);
   const tag = c.getAuthTag();
-  return iv.toString("hex") + ":" + tag.toString("hex") + ":" + enc.toString("hex");
+  return "v2:" + iv.toString("hex") + ":" + tag.toString("hex") + ":" + enc.toString("hex");
 }
 
 function _decrypt(ciphertext) {
-  const [ivHex, tagHex, encHex] = ciphertext.split(":");
+  const parts = ciphertext.split(":");
+  const isV2  = parts.length === 4 && parts[0] === "v2";
+  const [ivHex, tagHex, encHex] = isV2 ? parts.slice(1) : parts;
   if (!ivHex || !tagHex || !encHex) throw new Error("Invalid ciphertext format");
-  const k   = _key();
+  const k   = isV2 ? _key() : _legacyKey();
   const iv  = Buffer.from(ivHex,  "hex");
   const tag = Buffer.from(tagHex, "hex");
   const enc = Buffer.from(encHex, "hex");
