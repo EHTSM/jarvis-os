@@ -39,8 +39,11 @@
  *   7  test_gate         — I7-4: run tests, benchmark, stop if red
  *   8  review_gate       — I7-5: review status + confidence check
  *   9  commit_gate       — I7-5: require approval + review + verification
- *   10 observe           — git status + diff post-commit
- *   11 learn             — lesson registration
+ *   10 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
+ *                          via gitHubEngineeringAgent.createPR if the commit's
+ *                          branch is already pushed; never pushes itself
+ *   11 observe           — git status + diff post-commit
+ *   12 learn             — lesson registration
  *
  * Public API:
  *   runPipeline(goal, opts)          → PipelineRun
@@ -134,6 +137,7 @@ const PIPELINE_STAGES = [
     { id: "test_gate",       label: "Test Gate",           agentHint: "agent_tester",      capability: "test_run",       gate: "test" },   // I7-4
     { id: "review_gate",     label: "Review Gate",         agentHint: "agent_reviewer",    capability: null,             gate: "review" }, // I7-5
     { id: "commit_gate",     label: "Commit Gate",         agentHint: "agent_reviewer",    capability: "git_commit",     gate: "commit" }, // I7-5
+    { id: "open_pr",         label: "Open Pull Request",   agentHint: "agent_reviewer",    capability: "open_pr",        gate: null },      // opt-in, non-blocking — see _executeStage's "open_pr" case
     { id: "observe",         label: "Post-Commit Observe", agentHint: "agent_verifier",    capability: "git_status",     gate: null },
     { id: "learn",           label: "Learn",               agentHint: "agent_executive",   capability: null,             gate: null },
 ];
@@ -187,6 +191,10 @@ function _buildRun(goal, opts = {}) {
         failedStage:     null,
         stagesCompleted: 0,
         stagesTotal:     stages.length,
+        openPR:          opts.openPR === true,   // opt-in — the open_pr stage no-ops unless explicitly requested
+        prBase:          opts.prBase || "main",
+        prUrl:           null,
+        prNumber:        null,
     };
 }
 
@@ -431,6 +439,41 @@ async function _executeStage(run, stage) {
             }
             break;
         }
+        case "open_pr": {
+            // Opt-in, non-blocking: only attempts a PR if the caller asked
+            // for one (opts.openPR) AND a commit actually happened this
+            // run. A declined/skipped/failed PR attempt never fails the
+            // pipeline — the engineering change is already safely committed
+            // regardless of whether a PR could be opened (e.g. branch not
+            // yet pushed, no GITHUB_TOKEN configured). This mission's "no
+            // push" constraint means this stage will routinely report a
+            // clean, expected skip rather than a real PR in most runs.
+            if (!run.openPR || !run.commitHash) {
+                result = { success: true, output: JSON.stringify({ skipped: true, reason: !run.openPR ? "not requested (opts.openPR not set)" : "no commit was made this run" }) };
+                break;
+            }
+            const aer = _aer();
+            if (!aer) { result = { success: true, output: JSON.stringify({ skipped: true, reason: "autonomousExecutionRuntime unavailable" }) }; break; }
+            const spec = run.patchSpec;
+            const prTitle = spec?.commitMsg || `feat: ${run.goal.slice(0, 80)} [pipeline]`;
+            const rec = await aer.executeStage({
+                stageId:    stage.stageId,
+                capability: "open_pr",
+                input:      `title:"${prTitle}" base:${run.prBase || "main"}`,
+                missionId:  run.missionId,
+                maxAttempts: 1,
+            });
+            const out = rec.output ? (() => { try { return JSON.parse(rec.output); } catch { return null; } })() : null;
+            if (out?.opened) {
+                run.prUrl = out.url;
+                run.prNumber = out.number;
+            }
+            // Never blocks the pipeline — always reports success at the
+            // stage level, with the real outcome (opened vs. declined)
+            // recorded in the output for visibility.
+            result = { success: true, output: rec.output || JSON.stringify({ skipped: true, reason: rec.error || "PR not opened" }) };
+            break;
+        }
         case "learn": {
             try {
                 const success = run.status !== "failed";
@@ -562,7 +605,7 @@ async function runPipeline(goal, opts = {}) {
                 })),
                 parallelGroups:     [],
                 approvalStages:     run.requireApproval ? [{ afterAgent: "agent_reviewer", approvalNote: "Human review required before commit" }] : [],
-                completionCriteria: [{ type: "all_stages_done", description: "All 11 pipeline stages completed" }],
+                completionCriteria: [{ type: "all_stages_done", description: `All ${PIPELINE_STAGES.length} pipeline stages completed` }],
             });
             if (plan) run.collaborationPlanId = plan.planId;
         } catch {}

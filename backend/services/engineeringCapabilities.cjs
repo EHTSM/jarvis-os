@@ -16,10 +16,11 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (12 + override of rollback):
+ * Registered capabilities (13):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
- *   rollback (override), git_status, git_diff, git_commit
+ *   rollback (real git revert/checkout, verified), git_status, git_diff,
+ *   git_commit, open_pr (real GitHub PR via gitHubEngineeringAgent)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -442,6 +443,80 @@ async function _rollbackUnstageOnly(ctx) {
     return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [] };
 }
 
+// ── open_pr: real GitHub PR creation via gitHubEngineeringAgent ───────────
+// Engineering Autonomous Completion mission. Reuses the EXISTING, already-
+// working GitHub write client (gitHubEngineeringAgent.createPR — real
+// POST /repos/{owner}/{repo}/pulls, no new HTTP client, no octokit
+// dependency added). This capability's job is only to derive the real
+// owner/repo/branch context from git and enforce the precondition a real
+// PR requires: the head branch must already exist on the remote. It never
+// runs `git push` itself — "no merge, no push" is enforced by construction
+// (there is no push call anywhere in this function), so this capability is
+// a real, complete PR-creation path for a branch some other actor already
+// pushed, not a push+PR combo.
+function _ghAgent() { try { return require("./gitHubEngineeringAgent.cjs"); } catch { return null; } }
+
+async function _parseGitHubRemote() {
+    const r = await _sh("git", ["remote", "get-url", "origin"]);
+    if (!r.ok) return null;
+    // Handles both SSH (git@github.com:owner/repo.git) and HTTPS
+    // (https://github.com/owner/repo.git) remote URL forms.
+    const m = r.stdout.trim().match(/github\.com[:/]([^/]+)\/([^/.]+?)(?:\.git)?$/);
+    return m ? { owner: m[1], repo: m[2] } : null;
+}
+
+async function _openPR(ctx) {
+    const input = ctx.input || "";
+    const titleMatch = input.match(/title:"([^"]*)"/i);
+    const baseMatch  = input.match(/base:([^\s]+)/i);
+    const headMatch  = input.match(/head:([^\s]+)/i);
+    const bodyMatch  = input.match(/body:"([\s\S]*?)"(?:\s|$)/i);
+    const draftFlag  = /draft:true/i.test(input);
+
+    const remote = await _parseGitHubRemote();
+    if (!remote) return { success: false, error: "no GitHub remote configured (git remote get-url origin)", output: null, nonRetriable: true };
+
+    const currentBranch = (await _sh("git", ["branch", "--show-current"])).stdout.trim();
+    const head = headMatch ? headMatch[1] : currentBranch;
+    const base = baseMatch ? baseMatch[1] : "main";
+    const title = titleMatch ? titleMatch[1] : `[pipeline] ${(ctx.missionId || "engineering change")}`.slice(0, 200);
+    const body  = bodyMatch ? bodyMatch[1] : "Opened by the autonomous engineering pipeline.";
+
+    if (!head) return { success: false, error: "no branch to open a PR from (detached HEAD and no head: specified)", output: null, nonRetriable: true };
+    if (head === base) return { success: false, error: `head branch equals base branch (${base}) — nothing to PR`, output: null, nonRetriable: true };
+
+    // Precondition, not a push: a real PR requires the head branch to
+    // already exist on the remote. This capability never pushes — if the
+    // branch isn't there, it fails cleanly with an actionable message
+    // rather than pushing on the caller's behalf.
+    const remoteRef = await _sh("git", ["ls-remote", "--heads", "origin", head]);
+    if (!remoteRef.ok || !remoteRef.stdout.trim()) {
+        return {
+            success: false,
+            error: `branch "${head}" does not exist on origin — push it first (this capability does not push; PR creation requires an already-pushed branch)`,
+            output: null,
+            nonRetriable: true,
+        };
+    }
+
+    const gh = _ghAgent();
+    if (!gh) return { success: false, error: "gitHubEngineeringAgent unavailable", output: null };
+
+    try {
+        const pr = await gh.createPR(remote.owner, remote.repo, { title, head, base, body, draft: draftFlag });
+        const output = JSON.stringify({ opened: true, number: pr.number, url: pr.url, title: pr.title, owner: remote.owner, repo: remote.repo, head, base });
+        remember("success", { pattern: "open_pr", appliedTo: ctx.missionId || "unknown", outcome: `PR #${pr.number} opened: ${pr.url}` },
+            { tags: ["pr", "github", "engineering"], importance: 65 });
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "open_pr", number: pr.number, url: pr.url });
+        _getBus()?.emit("execution:pr:opened", { missionId: ctx.missionId, executionId: ctx.executionId, number: pr.number, url: pr.url });
+        return { success: true, output, artifacts: [{ type: "pr_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `opened PR #${pr.number}` }] };
+    } catch (e) {
+        // GITHUB_TOKEN missing/invalid or a real API error — both are
+        // legitimate failures of a real write attempt, not fabricated.
+        return { success: false, error: _cap(e.message, 300), output: null };
+    }
+}
+
 // ── git_status: porcelain status ──────────────────────────────────────────
 async function _gitStatus(ctx) {
     const [status, branch] = await Promise.all([
@@ -516,10 +591,11 @@ const CAPABILITY_DEFS = [
     { name: "patch_apply",     description: "Verify staged diff is present and record patch apply artifact",       handler: _patchApply },
     { name: "build_run",       description: "Execute npm run build:frontend via safe-exec (90s timeout)",          handler: _buildRun },
     { name: "test_run",        description: "Execute npm run test:runtime via safe-exec (90s timeout)",            handler: _testRun },
-    { name: "rollback",        description: "git reset HEAD to undo staged changes — safe rollback",               handler: _rollback },
+    { name: "rollback",        description: "Real rollback: git revert <commit> or git checkout -- <file> from HEAD, verified", handler: _rollback },
     { name: "git_status",      description: "Porcelain git status + recent log",                                   handler: _gitStatus },
     { name: "git_diff",        description: "Git diff --stat (staged or HEAD)",                                    handler: _gitDiff },
     { name: "git_commit",      description: "Approval-aware git commit; requires approved:true in input",          handler: _gitCommit },
+    { name: "open_pr",         description: "Open a real GitHub PR via gitHubEngineeringAgent (requires an already-pushed head branch — never pushes itself)", handler: _openPR },
 ];
 
 let _registered = false;
@@ -559,6 +635,7 @@ function _category(name) {
     if (name.startsWith("patch_"))                             return "patch";
     if (name.startsWith("build_") || name.startsWith("test_")) return "ci";
     if (name.startsWith("git_") || name === "rollback")        return "git";
+    if (name === "open_pr")                                    return "git";
     return "general";
 }
 
