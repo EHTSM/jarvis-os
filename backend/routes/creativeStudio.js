@@ -58,6 +58,14 @@ function _voiceAgent() {
 function _videoAgent() {
   try { return require("../../agents/content/videoGeneratorAgent.cjs"); } catch { return null; }
 }
+// Enterprise Capability Expansion mission — real pixel-level processing
+// (resize/format-convert/rotate/grayscale) via sharp, no AI provider or
+// credential needed. Deliberately does NOT cover background_remove (needs
+// ML segmentation sharp cannot do) — that capability stays on the honest
+// text-only fallback below rather than faking a cutout.
+function _imageProcessor() {
+  try { return require("../../agents/content/imageProcessorAgent.cjs"); } catch { return null; }
+}
 
 // Capabilities with a real, byte-producing generator behind them (vs. the
 // text-LLM fallback used for every other capability, which never produces
@@ -66,6 +74,7 @@ function _videoAgent() {
 const REAL_IMAGE_CAPABILITIES = new Set(["image_generate", "logo_generate", "banner_generate"]);
 const REAL_VOICE_CAPABILITIES = new Set(["text_to_speech"]);
 const REAL_VIDEO_CAPABILITIES = new Set(["text_to_video"]);
+const REAL_IMAGE_PROCESSING_CAPABILITIES = new Set(["image_upscale", "image_edit"]);
 
 router.use("/creative", requireAuth);
 router.use("/creative", rateLimiter(30, 60_000));
@@ -205,6 +214,26 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
         }
         aiOutput = result;
       } catch (e) { aiOutput = { error: e.message }; }
+    } else if (REAL_IMAGE_PROCESSING_CAPABILITIES.has(capability) && body.imageUrl) {
+      // Real path: sharp-backed pixel processing via imageProcessorAgent.cjs.
+      // Requires a real source image (body.imageUrl) — image_edit's
+      // promptKey defaults to "prompt" (a text description) since it can
+      // also be used for AI-driven edits with no source image; only when a
+      // real imageUrl is actually supplied do we run genuine pixel
+      // transforms. Writes a real local file served via
+      // /creative/image/file/:filename below.
+      try {
+        const processor = _imageProcessor();
+        const result = capability === "image_upscale"
+          ? await processor?.upscale({ imageUrl: body.imageUrl, scale: body.scale, format: body.format })
+          : await processor?.edit({ imageUrl: body.imageUrl, resize: body.resize, format: body.format, rotate: body.rotate, grayscale: body.grayscale, quality: body.quality });
+        if (result?.generated && result.filename) {
+          outputUrl    = `/creative/image/file/${result.filename}`;
+          generated    = true;
+          generatedVia = result.via;
+        }
+        aiOutput = result;
+      } catch (e) { aiOutput = { error: e.message, generated: false, note: e.message }; }
     } else {
       // No real generator exists for this capability (image-to-video,
       // image edit/upscale/background-remove, stt, music). Honest
@@ -261,6 +290,25 @@ router.get("/creative/image/history", (req, res) => {
     const jobs = jobQueue.listJobs({ studioType: "image", accountId: _account(req), limit: 50 });
     res.json({ ok: true, jobs });
   } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Serves the real processed image files imageProcessorAgent.cjs writes to
+// data/processed-images/ — same pattern as the audio/video serving routes:
+// server-generated `upscale_<timestamp>.<ext>` / `edit_<timestamp>.<ext>`
+// filename, strict regex, resolved path confirmed to stay inside IMAGE_DIR.
+const _imgPath = require("path");
+const _imgFs   = require("fs");
+const PROCESSED_IMAGE_DIR = _imgPath.join(__dirname, "../../data/processed-images");
+const IMAGE_MIME = { png: "image/png", jpeg: "image/jpeg", webp: "image/webp" };
+router.get("/creative/image/file/:filename", requireAuth, (req, res) => {
+  const filename = req.params.filename;
+  const m = filename.match(/^[A-Za-z0-9_.-]+\.(png|jpeg|webp)$/);
+  if (!m) return res.status(400).json({ error: "invalid_filename" });
+  const abs = _imgPath.join(PROCESSED_IMAGE_DIR, filename);
+  if (!abs.startsWith(PROCESSED_IMAGE_DIR + _imgPath.sep)) return res.status(400).json({ error: "invalid_path" });
+  if (!_imgFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  res.setHeader("Content-Type", IMAGE_MIME[m[1]] || "application/octet-stream");
+  res.sendFile(abs);
 });
 
 // ══════════════════════════════════════════════════════════════════
