@@ -252,6 +252,23 @@ function getLessons({ type, severity, source, limit = 100, offset = 0 } = {}) {
     return { lessons: rows.slice(offset, offset + limit), total: rows.length };
 }
 
+/**
+ * Attach a proposed applyLearningRecord() action to a lesson so a human
+ * approver can review and apply it later — this never applies anything
+ * itself (that still requires an explicit approvedBy via
+ * applyLearningRecord). Lets automated sources (e.g. the engineering
+ * pipeline's "learn" stage) surface a concrete, bounded suggestion instead
+ * of only free-text `recommendation`.
+ */
+function attachSuggestedAction(lessonId, action) {
+    const lesson = _lessons.find(l => l.lessonId === lessonId);
+    if (!lesson) return null;
+    if (!action?.agentId || typeof action?.weightDelta !== "number") return null;
+    lesson.suggestedAction = { agentId: action.agentId, weightDelta: Math.max(-0.2, Math.min(0.2, action.weightDelta)) };
+    _saveLessons();
+    return lesson.suggestedAction;
+}
+
 // ── Universal Composition Engine Phase 12: approval-gated write-back ──────
 // This engine's analysis (runFullAnalysis/analyzeFailures/analyzeSuccesses)
 // is genuine, but every lesson's `applied` field is created false and
@@ -405,4 +422,6 @@ module.exports = {
     analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis,
     // Universal Composition Engine Phase 12
     applyLearningRecord,
+    // Autonomous Learning Engine V2
+    attachSuggestedAction,
 };

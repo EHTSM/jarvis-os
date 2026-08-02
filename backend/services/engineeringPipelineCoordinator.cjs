@@ -90,6 +90,23 @@ function _bus()   { try { return require("../../agents/runtime/runtimeEventBus.c
 function _sup()   { try { return require("./agentRuntimeSupervisor.cjs");                     } catch { return null; } }
 function _le()    { try { return require("./continuousLearningEngine.cjs");                   } catch { return null; } }
 function _conf()  { try { return require("./engineeringConfidenceEngine.cjs");                } catch { return null; } }
+function _agentReg() { try { return require("../../agents/runtime/agentRegistry.cjs");        } catch { return null; } }
+
+// Maps a PIPELINE_STAGES agentHint (a descriptive role label — see stage
+// defs above) to a real agentRegistry id, ONLY if that id is genuinely
+// registered right now. agentHint values were never real registry ids
+// (confirmed: agentRegistry has no "agent_developer" etc. — bootstrapRuntime
+// registers real ids like "dev", "browser", "terminal"), so a direct
+// pass-through would let learn-stage suggestions reference agents that
+// don't exist. "dev" is the one real registered agent whose capabilities
+// (["dev"]) match what agent_developer/agent_tester/agent_reviewer stages
+// actually do in this pipeline (patch generation/apply, build, test).
+const _AGENT_HINT_MAP = { agent_developer: "dev", agent_tester: "dev", agent_reviewer: "dev" };
+function _resolveRealAgentId(agentHint) {
+    const candidate = _AGENT_HINT_MAP[agentHint] || agentHint;
+    const reg = _agentReg();
+    return reg?.get?.(candidate) ? candidate : null;
+}
 
 // ── Persistence ────────────────────────────────────────────────────────────────
 const DATA_DIR  = path.join(__dirname, "../../data");
@@ -543,9 +560,36 @@ async function _executeStage(run, stage) {
             break;
         }
         case "learn": {
+            // Autonomous Learning Engine V2 — this stage already recorded a
+            // lesson and (nominally) consulted RCA; it never actually fed
+            // the result back into anything that changes future behavior.
+            // Three additive fixes, all reusing existing systems as-is:
+            //  1. `_rca()?.analyzePattern?.()` was a dead call — that method
+            //     does not exist on rootCauseAnalysisEngine's real export
+            //     surface (verified: module.exports lists runAnalysis,
+            //     getAnalysis, listAnalyses, recordFixSuccess, listPlaybooks,
+            //     getStats, invalidate — no analyzePattern). Silently no-op'd
+            //     via optional chaining, so RCA was never actually invoked on
+            //     pipeline failure. Fixed to call the real runAnalysis({force})
+            //     — RCA's actual designed entry point for a fresh corpus scan.
+            //  2. engineeringRuleRegistry.extractFromMission(missionId) was
+            //     never called from here — the pipeline's own missionId is
+            //     already available (run.missionId), so on success this now
+            //     promotes real rule candidates from this mission's decisions,
+            //     exactly like extractFromMission is used elsewhere.
+            //  3. continuousLearningEngine.applyLearningRecord() existed but
+            //     had zero real callers anywhere in the codebase — a fully
+            //     built, human-approval-gated write-back with no path to
+            //     reach it. It still cannot self-apply (approvedBy is
+            //     required by design — "no self-applied learning"), so this
+            //     does not call it directly. Instead it attaches a structured
+            //     `suggestedAction` to the lesson so a human/operator can
+            //     approve it via the new POST /p19/learn/lessons/:id/apply
+            //     route, closing the loop without weakening the safety gate.
+            let lessonId = null;
             try {
                 const success = run.status !== "failed";
-                _le()?.createLesson?.({
+                const created = _le()?.createLesson?.({
                     type:     success ? "success" : "failure",
                     severity: success ? "info" : "warning",
                     source:   "pipeline_coordinator",
@@ -553,14 +597,43 @@ async function _executeStage(run, stage) {
                     detail:   `${run.stagesCompleted}/${run.stagesTotal} stages, ${run.durationMs}ms${run.commitHash ? `, commit ${run.commitHash}` : ""}${run.rollbackExecuted ? ", rolled back" : ""}`,
                     tags:     ["pipeline", "engineering", success ? "success" : "failure"],
                     missionId: run.missionId,
+                    agentId:  run.agentHint || null,
                 });
-                // RCA consultation for failed pipelines
-                if (!success && run.failedStage) {
-                    _rca()?.analyzePattern?.({ errorType: run.failedStage, context: run.goal });
+                lessonId = created?.lessonId || null;
+
+                // Suggested action: nudge the preferenceWeight of the agent
+                // that actually did the work (patch_apply's agentHint), in
+                // the direction of the real outcome. Small, bounded, and
+                // only ever applied after human approval. PIPELINE_STAGES'
+                // agentHint values (agent_developer, agent_tester, ...) are
+                // descriptive role labels, NOT real agentRegistry ids — a
+                // real registry lookup (via agentRegistry.get, the same
+                // check applyLearningRecord itself performs) confirms
+                // whether one exists before attaching anything, so this
+                // never proposes an action against a non-existent agent.
+                const applyStage = run.stages?.find(s => s.id === "patch_apply");
+                if (lessonId && applyStage?.agentHint) {
+                    const realAgentId = _resolveRealAgentId(applyStage.agentHint);
+                    if (realAgentId) {
+                        _le()?.attachSuggestedAction?.(lessonId, {
+                            agentId: realAgentId,
+                            weightDelta: success ? 0.05 : -0.05,
+                        });
+                    }
                 }
-                result = { success: true, output: JSON.stringify({ lessonRegistered: true }) };
+
+                let ruleExtraction = null;
+                let rcaTriggered = false;
+                if (success && run.missionId) {
+                    ruleExtraction = _rules()?.extractFromMission?.(run.missionId) || null;
+                } else if (!success && run.failedStage) {
+                    _rca()?.runAnalysis?.({ force: true });
+                    rcaTriggered = true;
+                }
+
+                result = { success: true, output: JSON.stringify({ lessonRegistered: true, lessonId, rulesExtracted: ruleExtraction?.extracted || 0, rcaTriggered }) };
             } catch (e) {
-                result = { success: true, output: JSON.stringify({ error: e.message }) };
+                result = { success: true, output: JSON.stringify({ error: e.message, lessonId }) };
             }
             break;
         }

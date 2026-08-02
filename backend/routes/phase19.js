@@ -228,4 +228,19 @@ router.get("/p19/learn/stats", (req, res) => {
     res.json({ success: true, stats: cle.getStats() });
 });
 
+// Autonomous Learning Engine V2 — human-approval-gated write-back.
+// applyLearningRecord() has existed since Phase 12 but had no real caller
+// anywhere in the codebase — a fully built path with no way to reach it.
+// approvedBy is the authenticated caller (req.user), never client-supplied,
+// so this cannot be used to spoof approval attribution.
+router.post("/p19/learn/lessons/:lessonId/apply", (req, res) => {
+    const { action } = req.body || {};
+    const approvedBy = req.user?.sub || req.user?.id || req.user?.email;
+    if (!approvedBy) return res.status(401).json({ error: "Unauthorized" });
+    try {
+        const lesson = cle.applyLearningRecord(req.params.lessonId, action, approvedBy);
+        res.json({ success: true, lesson });
+    } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
 module.exports = router;

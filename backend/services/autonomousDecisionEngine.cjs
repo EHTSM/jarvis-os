@@ -36,6 +36,7 @@ function _getMissionMem(){ try { return require("./missionMemory.cjs"); } catch 
 function _getAiSvc()     { try { return require("./aiService.js"); } catch { return null; } }
 function _getObs()       { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
 function _getLoop()      { try { return require("../../agents/autonomousLoop.cjs"); } catch { return null; } }
+function _getLE()        { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const DATA_DIR      = path.join(__dirname, "../../data");
@@ -503,6 +504,75 @@ async function _maybeEnrichReason(decision, observerEvent) {
 }
 
 // ── Core: evaluate an observer event → produce decision ───────────────────
+// Autonomous Learning Engine V2 — real historical confidence adjustment.
+// Before this, every rule's confidence/priority was a fixed number baked
+// into the RULES table (verified: no rule reads any stored data). This
+// looks up REAL outcome lessons recorded by _recordDecisionOutcome() below
+// (created only from real mission completions/failures, never synthetic)
+// for this exact rule.id, and nudges confidence by the rule's actual
+// historical success rate — never overrides the rule's own judgment,
+// only tempers it once enough real evidence exists (>=3 outcomes).
+const MIN_OUTCOMES_FOR_ADJUSTMENT = 3;
+const MAX_CONFIDENCE_ADJUSTMENT   = 0.15;
+
+function _ruleSourcePattern(ruleId) { return `decision_rule:${ruleId}`; }
+
+function _adjustConfidenceFromHistory(ruleId, baseConfidence) {
+    try {
+        const le = _getLE();
+        if (!le) return { confidence: baseConfidence, adjustment: 0, sampleSize: 0 };
+        const { lessons } = le.getLessons({ source: "decision_engine_outcome", limit: 500 });
+        const forRule = lessons.filter(l => l.sourcePattern === _ruleSourcePattern(ruleId));
+        if (forRule.length < MIN_OUTCOMES_FOR_ADJUSTMENT) return { confidence: baseConfidence, adjustment: 0, sampleSize: forRule.length };
+
+        const successRate = forRule.filter(l => l.type === "success").length / forRule.length;
+        // successRate 1.0 → +MAX adjustment; 0.0 → -MAX adjustment; 0.5 → no change.
+        const raw = (successRate - 0.5) * 2 * MAX_CONFIDENCE_ADJUSTMENT;
+        const adjustment = Math.round(raw * 1000) / 1000;
+        const confidence = Math.max(0, Math.min(1, Math.round((baseConfidence + adjustment) * 1000) / 1000));
+        return { confidence, adjustment, sampleSize: forRule.length, successRate };
+    } catch {
+        return { confidence: baseConfidence, adjustment: 0, sampleSize: 0 };
+    }
+}
+
+// Autonomous Learning Engine V2 — records a real outcome lesson for the
+// rule that produced the decision behind a mission, once that mission
+// reaches a real terminal state. envelope.payload is missionOrchestrator's
+// own emit shape: { missionId, orchStatus, ...patch } (missionOrchestrator.cjs
+// _emit/_transition). No new state — resolves originDecisionId through
+// missionOrchestrator.getMission() (already the public accessor covering
+// both live and terminal/missionMemory-backed missions), then the rule via
+// this file's own _ring (getDecision-equivalent lookup).
+async function _recordDecisionOutcome(envelope) {
+    const missionId = envelope.payload?.missionId;
+    if (!missionId) return;
+
+    const orch = _getMissionOrch();
+    const mission = orch?.getMission?.(missionId);
+    const originDecisionId = mission?.originDecisionId;
+    if (!originDecisionId) return; // mission wasn't created from a decision — nothing to learn against
+
+    const decision = getDecision(originDecisionId);
+    if (!decision?.ruleId) return;
+
+    const le = _getLE();
+    if (!le) return;
+
+    const success = envelope.type === "orchestrator:completed";
+    le.createLesson({
+        type:          success ? "success" : "failure",
+        severity:      success ? "info" : "warning",
+        source:        "decision_engine_outcome",
+        title:         `Decision rule ${decision.ruleId} (${decision.ruleName}) → mission ${success ? "succeeded" : "failed"}`,
+        detail:        `Rule ${decision.ruleId} recommended ${decision.recommendedAction} (confidence ${decision.confidence}) for ${decision.affectedSubsystem}/${decision.affectedEntity}. Resulting mission ${missionId} ${success ? "completed" : "failed"}.`,
+        sourcePattern: _ruleSourcePattern(decision.ruleId),
+        recommendation: success
+            ? `Rule ${decision.ruleId} is producing successful outcomes — safe to trust at current or higher confidence.`
+            : `Rule ${decision.ruleId} led to a failed mission — review before trusting this rule's recommendation at face value.`,
+    });
+}
+
 async function _evaluate(observerEvent) {
     const t0 = Date.now();
 
@@ -515,6 +585,13 @@ async function _evaluate(observerEvent) {
 
     // Build deterministic decision fields
     const fields = rule.decide(observerEvent);
+
+    // Real historical adjustment — see _adjustConfidenceFromHistory above.
+    const hist = _adjustConfidenceFromHistory(rule.id, fields.confidence);
+    if (hist.sampleSize >= MIN_OUTCOMES_FOR_ADJUSTMENT) {
+        fields.confidence = hist.confidence;
+        fields.reason = `${fields.reason} [history: ${hist.sampleSize} past outcomes, ${Math.round(hist.successRate * 100)}% success, confidence ${hist.adjustment >= 0 ? "+" : ""}${hist.adjustment}]`;
+    }
 
     let decision = {
         decisionId:        _did(),
@@ -535,6 +612,9 @@ async function _evaluate(observerEvent) {
         observerCategory:  observerEvent.category,
         workspace:         observerEvent.workspace || "jarvis-os",
         metadata:          { observerAction: observerEvent.action, observerMetadata: observerEvent.metadata },
+        historyAdjustment: hist.sampleSize >= MIN_OUTCOMES_FOR_ADJUSTMENT
+            ? { sampleSize: hist.sampleSize, successRate: hist.successRate, confidenceDelta: hist.adjustment }
+            : null,
     };
 
     // Optional AI enrichment (non-blocking, 2s cap)
@@ -626,13 +706,36 @@ function start() {
         try {
             bus.subscribe(SUB_ID, (envelope) => {
                 // envelope = { seq, ts, type, payload }
-                if (envelope.type !== "observer") return;
-                const observerEvent = envelope.payload;
-                if (!observerEvent || !observerEvent.source) return;
-                // Evaluate async — never blocks subscriber
-                _evaluate(observerEvent).catch(err => {
-                    logger.warn(`[DecisionEngine] evaluate error: ${err.message}`);
-                });
+                if (envelope.type === "observer") {
+                    const observerEvent = envelope.payload;
+                    if (!observerEvent || !observerEvent.source) return;
+                    // Evaluate async — never blocks subscriber
+                    _evaluate(observerEvent).catch(err => {
+                        logger.warn(`[DecisionEngine] evaluate error: ${err.message}`);
+                    });
+                    return;
+                }
+                // Autonomous Learning Engine V2 — real outcome tracking,
+                // folded into this same subscriber (the event bus has a
+                // hard 20-subscriber cap and this file already holds one
+                // slot — no reason to spend a second on a filter this
+                // callback can already apply). Missions created from a
+                // decision (missionOrchestrator's own _subscribeDecisions,
+                // or approveDecision() above) already carry
+                // originDecisionId. missionOrchestrator already emits real
+                // "orchestrator:completed"/"orchestrator:failed" bus events
+                // on every mission's real terminal transition (_transition,
+                // verified at missionOrchestrator.cjs:352) — nothing new to
+                // instrument there. This closes the loop: real terminal
+                // outcome -> real lesson, keyed by the rule that produced
+                // the originating decision, consumed by
+                // _adjustConfidenceFromHistory above on the next matching
+                // event.
+                if (envelope.type === "orchestrator:completed" || envelope.type === "orchestrator:failed") {
+                    _recordDecisionOutcome(envelope).catch(err => {
+                        logger.warn(`[DecisionEngine] outcome recording error: ${err.message}`);
+                    });
+                }
             });
         } catch (err) {
             logger.warn(`[DecisionEngine] could not subscribe to event bus: ${err.message}`);
