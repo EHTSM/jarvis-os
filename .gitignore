@@ -42,6 +42,17 @@ dist/
 # tracked build artifacts and bloats the repo — untracked as of this change.
 frontend/build/
 
+# Mobile build output — same reasoning as frontend/build/ above.
+# mobile/android/ IS tracked (real Capacitor project scaffolding, `npx cap
+# add android` output — source, not a build artifact) but its own Gradle
+# build/ directories and the compiled APK/AAB outputs are not.
+mobile/build/
+mobile/android/**/build/
+mobile/android/.gradle/
+mobile/android/local.properties
+*.apk
+*.aab
+
 # OS
 
 # Benchmark/Debug/Temp artifacts
@@ -64,3 +75,8 @@ ooplix-release.keystore
 # Ephemeral verification scripts — never part of the codebase, one-off
 # real-service verification scripts written during missions.
 scratchpad/
+
+# Private credential workbook — contains operator-entered secret values.
+# Must NEVER be committed. See docs/audits/CREDENTIAL-CANONICAL-MAP.md.
+private/credentials/
+private/
