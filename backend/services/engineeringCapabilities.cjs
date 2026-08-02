@@ -443,6 +443,113 @@ async function _rollbackUnstageOnly(ctx) {
     return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [] };
 }
 
+// ── bundle_analyze / bundle_optimize: real frontend build size analysis ───
+// Engineering Autonomous Completion mission. No bundle-analyzer/webpack-
+// bundle-analyzer/source-map-explorer dependency exists in this codebase
+// (checked package.json — none installed) and this codebase's convention
+// is hand-rolled analysis with zero external analyzer libraries (matching
+// engineeringSmellDetector.cjs's own detectors). CRA's build output
+// (frontend/build/asset-manifest.json + frontend/build/static/**) already
+// contains everything needed for a REAL size analysis: every chunk's exact
+// on-disk byte size, with zero estimation or fabrication — fs.statSync on
+// real files, not a guessed/random number.
+const BUILD_DIR = path.join(REPO_ROOT, "frontend", "build");
+const ASSET_MANIFEST = path.join(BUILD_DIR, "asset-manifest.json");
+const LARGE_CHUNK_BYTES = 200 * 1024; // 200KB — CRA's own default warning threshold for a single chunk
+
+function _readBundleManifest() {
+    let manifest;
+    try { manifest = JSON.parse(fs.readFileSync(ASSET_MANIFEST, "utf8")); }
+    catch { return null; }
+    const files = manifest.files || {};
+    const entries = [];
+    for (const [logicalName, urlPath] of Object.entries(files)) {
+        // urlPath is like "/static/js/main.afcaad56.js" — map back to the
+        // real file on disk under frontend/build/.
+        const rel = urlPath.replace(/^\//, "");
+        const abs = path.join(BUILD_DIR, rel);
+        let size = null;
+        try { size = fs.statSync(abs).size; } catch { continue; } // file listed in manifest but missing on disk — skip, don't fabricate a size
+        entries.push({ name: logicalName, path: rel, sizeBytes: size });
+    }
+    return entries;
+}
+
+async function _bundleAnalyze(ctx) {
+    const entries = _readBundleManifest();
+    if (!entries) {
+        return { success: false, error: "frontend/build/asset-manifest.json not found — run `npm run build:frontend` first", output: null, nonRetriable: false };
+    }
+    const jsEntries  = entries.filter(e => e.name.endsWith(".js"));
+    const cssEntries = entries.filter(e => e.name.endsWith(".css"));
+    const totalJsBytes  = jsEntries.reduce((a, e) => a + e.sizeBytes, 0);
+    const totalCssBytes = cssEntries.reduce((a, e) => a + e.sizeBytes, 0);
+    const sorted = [...entries].sort((a, b) => b.sizeBytes - a.sizeBytes);
+    const largeChunks = sorted.filter(e => e.sizeBytes > LARGE_CHUNK_BYTES);
+
+    const output = JSON.stringify({
+        totalFiles: entries.length,
+        totalJsBytes, totalCssBytes,
+        totalBytes: totalJsBytes + totalCssBytes,
+        largeChunkCount: largeChunks.length,
+        largestChunks: sorted.slice(0, 10).map(e => ({ name: e.name, sizeKB: Math.round(e.sizeBytes / 1024) })),
+    });
+
+    remember("knowledge", { insight: `Bundle analysis: ${entries.length} files, ${Math.round((totalJsBytes+totalCssBytes)/1024)}KB total, ${largeChunks.length} chunk(s) over ${LARGE_CHUNK_BYTES/1024}KB` },
+        { tags: ["bundle", "engineering", "performance"], importance: 45 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "bundle_analyze", totalBytes: totalJsBytes + totalCssBytes, largeChunkCount: largeChunks.length });
+    return { success: true, output, artifacts: [{ type: "bundle_analysis", value: output }], logs: [] };
+}
+
+// bundle_optimize: this is deliberately NOT an auto-rewriter — no bundler
+// plugin, no code-splitting engine exists in this codebase to safely
+// rewrite import statements, and fabricating one here would violate the
+// mission's "extend, don't invent new architecture" constraint. What it
+// DOES do for real: identify SPECIFIC, actionable oversized chunks (real
+// file, real byte count, real recommendation) from the same real manifest
+// data bundle_analyze reads — the concrete "what to fix" a human or a
+// later patch_generate stage can act on, same shape as every other
+// smell/finding in this codebase (confidence-scored, human-reviewed, never
+// auto-applied).
+async function _bundleOptimize(ctx) {
+    const entries = _readBundleManifest();
+    if (!entries) {
+        return { success: false, error: "frontend/build/asset-manifest.json not found — run `npm run build:frontend` first", output: null, nonRetriable: false };
+    }
+    const largeChunks = entries.filter(e => e.sizeBytes > LARGE_CHUNK_BYTES).sort((a, b) => b.sizeBytes - a.sizeBytes);
+    const recommendations = largeChunks.slice(0, 10).map(e => {
+        const isCss = e.name.endsWith(".css");
+        let recommendation;
+        if (isCss) {
+            recommendation = `CSS bundle exceeds ${LARGE_CHUNK_BYTES/1024}KB — check for unused/duplicate rules or component-scoped CSS that could split per-route`;
+        } else if (e.name === "main.js") {
+            recommendation = "main.js is the entry chunk — audit top-level imports for code that could move behind React.lazy()";
+        } else {
+            recommendation = `Chunk exceeds ${LARGE_CHUNK_BYTES/1024}KB — verify it's already behind React.lazy(); if not, split it out`;
+        }
+        return {
+            file: e.name,
+            sizeKB: Math.round(e.sizeBytes / 1024),
+            recommendation,
+            confidence: 0.6, // heuristic size threshold, not a real dependency-graph analysis of WHY it's large
+        };
+    });
+
+    const output = JSON.stringify({
+        analyzed: true,
+        recommendationCount: recommendations.length,
+        recommendations,
+        totalPotentialSavingsKB: recommendations.reduce((a, r) => a + Math.max(0, r.sizeKB - LARGE_CHUNK_BYTES/1024), 0),
+    });
+
+    if (recommendations.length) {
+        remember("failure", { errorType: "bundle_size", context: `${recommendations.length} oversized chunk(s) found`, resolution: "review recommendations for code-splitting opportunities" },
+            { tags: ["bundle", "engineering", "performance"], importance: 50 });
+    }
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "bundle_optimize", recommendationCount: recommendations.length });
+    return { success: true, output, artifacts: [{ type: "bundle_optimize_result", value: output }], logs: [] };
+}
+
 // ── security_scan: real static security analysis via codeReviewEngine ─────
 // Engineering Autonomous Completion mission. Reuses codeReviewEngine.cjs's
 // EXISTING detectSecurity() (regex-based XSS/SQLi/eval/hardcoded-secret/
@@ -658,6 +765,8 @@ const CAPABILITY_DEFS = [
     { name: "git_commit",      description: "Approval-aware git commit; requires approved:true in input",          handler: _gitCommit },
     { name: "open_pr",         description: "Open a real GitHub PR via gitHubEngineeringAgent (requires an already-pushed head branch — never pushes itself)", handler: _openPR },
     { name: "security_scan",   description: "Real static security analysis via codeReviewEngine.detectSecurity on the run's target file", handler: _securityScan },
+    { name: "bundle_analyze",  description: "Real frontend build size analysis from frontend/build/asset-manifest.json (actual file sizes)", handler: _bundleAnalyze },
+    { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
 ];
 
 let _registered = false;
@@ -698,6 +807,7 @@ function _category(name) {
     if (name.startsWith("build_") || name.startsWith("test_")) return "ci";
     if (name.startsWith("git_") || name === "rollback")        return "git";
     if (name === "open_pr")                                    return "git";
+    if (name.startsWith("bundle_") || name === "security_scan") return "quality";
     return "general";
 }
 
