@@ -11,7 +11,7 @@
  *   autonomousExecutionRuntime — capability execution
  *   engineeringCapabilities    — repo_read, patch_generate, patch_apply,
  *                                build_run, test_run, rollback, git_commit,
- *                                open_pr, security_scan
+ *                                open_pr, security_scan, self_document
  *   engineeringBenchmark       — I7-7 end-to-end validation (10 real scenarios)
  *   engineeringRuleRegistry    — patch/build/test rule consulting
  *   rootCauseAnalysisEngine    — failure root cause
@@ -47,8 +47,10 @@
  *   11 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
  *                          via gitHubEngineeringAgent.createPR if the commit's
  *                          branch is already pushed; never pushes itself
- *   12 observe           — git status + diff post-commit
- *   13 learn             — lesson registration
+ *   12 self_document     — non-blocking: real markdown doc generated from the
+ *                          target file's actual exported functions + comments
+ *   13 observe           — git status + diff post-commit
+ *   14 learn             — lesson registration
  *
  * Public API:
  *   runPipeline(goal, opts)          → PipelineRun
@@ -144,6 +146,7 @@ const PIPELINE_STAGES = [
     { id: "review_gate",     label: "Review Gate",         agentHint: "agent_reviewer",    capability: null,             gate: "review" }, // I7-5
     { id: "commit_gate",     label: "Commit Gate",         agentHint: "agent_reviewer",    capability: "git_commit",     gate: "commit" }, // I7-5
     { id: "open_pr",         label: "Open Pull Request",   agentHint: "agent_reviewer",    capability: "open_pr",        gate: null },      // opt-in, non-blocking — see _executeStage's "open_pr" case
+    { id: "self_document",   label: "Self-Document",       agentHint: "agent_developer",   capability: "self_document",  gate: null },      // non-blocking — real doc from the patched file's actual exports
     { id: "observe",         label: "Post-Commit Observe", agentHint: "agent_verifier",    capability: "git_status",     gate: null },
     { id: "learn",           label: "Learn",               agentHint: "agent_executive",   capability: null,             gate: null },
 ];
@@ -562,7 +565,7 @@ async function _executeStage(run, stage) {
                 if (stage.id === "patch_generate" && run.patchSpec?.patchTarget) {
                     input = `patch_generate: ${run.goal} — target: ${run.patchSpec.patchTarget.slice(0, 80)}`;
                 }
-                if (stage.id === "security_gate" && run.patchSpec?.targetFile) {
+                if ((stage.id === "security_gate" || stage.id === "self_document") && run.patchSpec?.targetFile) {
                     input = `file:${run.patchSpec.targetFile}`;
                 }
                 const rec = await aer.executeStage({

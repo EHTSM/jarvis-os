@@ -16,11 +16,14 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (13):
+ * Registered capabilities (16):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
  *   rollback (real git revert/checkout, verified), git_status, git_diff,
- *   git_commit, open_pr (real GitHub PR via gitHubEngineeringAgent)
+ *   git_commit, open_pr (real GitHub PR via gitHubEngineeringAgent),
+ *   security_scan (real static analysis via codeReviewEngine),
+ *   bundle_analyze / bundle_optimize (real build-size analysis),
+ *   self_document (real doc generation from source inspection)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -550,6 +553,117 @@ async function _bundleOptimize(ctx) {
     return { success: true, output, artifacts: [{ type: "bundle_optimize_result", value: output }], logs: [] };
 }
 
+// ── self_document: real doc generation from actual source inspection ──────
+// Engineering Autonomous Completion mission. Prior state: no file matching
+// doc-generation-from-AST/JSDoc parsing existed anywhere in this codebase.
+// This generates a REAL markdown summary by parsing the target file's
+// actual `function name(...)`/`async function name(...)` declarations and
+// the real `module.exports = { ... }` shorthand list (same regex approach
+// already used by engineeringSmellDetector.cjs's _detectDeadExport, for
+// consistency), plus each exported function's immediately-preceding
+// comment block if one exists — copied verbatim from the real source, not
+// invented or templated. A function with no preceding comment gets listed
+// with no description rather than a fabricated one.
+function _extractExportedFunctionDocs(filePath) {
+    let content;
+    try { content = fs.readFileSync(filePath, "utf8"); } catch { return null; }
+
+    const exportMatch = content.match(/module\.exports\s*=\s*\{([\s\S]*?)\}\s*;?\s*$/m);
+    const exportedNames = exportMatch
+        ? [...exportMatch[1].matchAll(/(?:^|[,{\s])([A-Za-z_$][A-Za-z0-9_$]*)\s*(?:,|$|\/\/|\n|\})/g)]
+            .map(m => m[1]).filter(n => n && !["require", "module", "exports"].includes(n))
+        : [];
+    if (!exportedNames.length) return { exportedNames: [], functions: [] };
+
+    const lines = content.split("\n");
+    const functions = [];
+    const FN_RE = /^(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(([^)]*)\)/;
+
+    for (let i = 0; i < lines.length; i++) {
+        const m = lines[i].match(FN_RE);
+        if (!m) continue;
+        const name = m[1];
+        if (!exportedNames.includes(name)) continue; // only document real, actually-exported functions
+        const params = m[2].trim();
+
+        // Preceding comment block, if any — real text copied from source,
+        // never fabricated. Walks upward over contiguous // or /* */ lines.
+        let commentLines = [];
+        let j = i - 1;
+        while (j >= 0) {
+            const l = lines[j].trim();
+            if (l === "" ) { j--; continue; }
+            if (l.startsWith("//") || l.startsWith("*") || l.startsWith("/**") || l.endsWith("*/")) {
+                let stripped = l.replace(/^\/\*\*?|\*\/$|^\/\/|^\*\s?/g, "").trim();
+                // Strip leading/trailing ASCII divider runs (── / ---- /
+                // ==== etc.) — real section-header formatting in the
+                // source, but zero informational content on its own once
+                // extracted into a doc. Keeps any real text in between
+                // (e.g. "── Strategy selection ──" -> "Strategy selection").
+                stripped = stripped.replace(/^[─\-=_]{2,}\s*/, "").replace(/\s*[─\-=_]{2,}$/, "").trim();
+                if (stripped) commentLines.unshift(stripped);
+                j--;
+            } else break;
+        }
+        functions.push({ name, params, line: i + 1, doc: commentLines.filter(Boolean).join(" ") || null });
+    }
+    return { exportedNames, functions };
+}
+
+async function _selfDocument(ctx) {
+    const input = ctx.input || "";
+    const fileMatch = input.match(/file:([^\s]+)/i);
+    const targetFile = fileMatch ? fileMatch[1] : null;
+
+    if (!targetFile) {
+        return { success: true, output: JSON.stringify({ documented: false, reason: "no target file in this run" }), artifacts: [], logs: [] };
+    }
+    const absPath = path.resolve(REPO_ROOT, targetFile);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+
+    const extracted = _extractExportedFunctionDocs(absPath);
+    if (!extracted) return { success: false, error: `cannot read ${targetFile}`, output: null, nonRetriable: true };
+
+    const md = _renderDocMarkdown(targetFile, extracted);
+
+    // Write alongside the source file as a real .md companion — matches
+    // this codebase's existing convention of per-file docs (many services
+    // already have hand-written sibling doc comments; this makes an
+    // AI-readable one real and automatic instead of absent).
+    const docPath = absPath.replace(/\.(cjs|js)$/, ".autodoc.md");
+    try {
+        fs.writeFileSync(docPath, md, "utf8");
+    } catch (e) {
+        return { success: false, error: `failed to write doc: ${e.message}`, output: null };
+    }
+
+    const relDocPath = path.relative(REPO_ROOT, docPath);
+    const output = JSON.stringify({ documented: true, file: targetFile, docPath: relDocPath, functionCount: extracted.functions.length, exportedCount: extracted.exportedNames.length });
+
+    remember("knowledge", { insight: `Generated docs for ${targetFile}: ${extracted.functions.length}/${extracted.exportedNames.length} exported functions documented` },
+        { tags: ["documentation", "engineering"], importance: 35 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "self_document", file: targetFile, docPath: relDocPath });
+    return { success: true, output, artifacts: [{ type: "self_document_result", value: output }], logs: [] };
+}
+
+function _renderDocMarkdown(targetFile, { exportedNames, functions }) {
+    const lines = [`# ${targetFile}`, "", `_Auto-generated from real source inspection — ${new Date().toISOString()}_`, ""];
+    lines.push(`**Exported symbols (${exportedNames.length}):** ${exportedNames.map(n => `\`${n}\``).join(", ") || "(none detected)"}`, "");
+    if (functions.length) {
+        lines.push("## Functions", "");
+        for (const fn of functions) {
+            lines.push(`### \`${fn.name}(${fn.params})\``, "");
+            lines.push(fn.doc ? fn.doc : "_No description comment found in source._", "");
+            lines.push(`_Defined at line ${fn.line}._`, "");
+        }
+    } else {
+        lines.push("_No documented function declarations found among the exported symbols (may use arrow-function or other export style not covered by this parser)._", "");
+    }
+    return lines.join("\n");
+}
+
 // ── security_scan: real static security analysis via codeReviewEngine ─────
 // Engineering Autonomous Completion mission. Reuses codeReviewEngine.cjs's
 // EXISTING detectSecurity() (regex-based XSS/SQLi/eval/hardcoded-secret/
@@ -767,6 +881,7 @@ const CAPABILITY_DEFS = [
     { name: "security_scan",   description: "Real static security analysis via codeReviewEngine.detectSecurity on the run's target file", handler: _securityScan },
     { name: "bundle_analyze",  description: "Real frontend build size analysis from frontend/build/asset-manifest.json (actual file sizes)", handler: _bundleAnalyze },
     { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
+    { name: "self_document",   description: "Generate a real markdown doc from actual exported-function inspection (name, params, real preceding comment)", handler: _selfDocument },
 ];
 
 let _registered = false;
@@ -807,7 +922,7 @@ function _category(name) {
     if (name.startsWith("build_") || name.startsWith("test_")) return "ci";
     if (name.startsWith("git_") || name === "rollback")        return "git";
     if (name === "open_pr")                                    return "git";
-    if (name.startsWith("bundle_") || name === "security_scan") return "quality";
+    if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document") return "quality";
     return "general";
 }
 
