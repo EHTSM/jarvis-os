@@ -170,6 +170,7 @@ function _buildRun(goal, opts = {}) {
         missionId:       null,
         collaborationPlanId: null,
         commitHash:      null,
+        preCommitHash:   null,  // real rollback target — HEAD captured at repo_read, before any patch in this run
         approvalStatus:  opts.requireApproval !== false ? "pending" : "auto_approved",
         requireApproval: opts.requireApproval !== false,
         stages,
@@ -282,14 +283,21 @@ async function _testGate(run, stageState) {
     const passed = result?.ok === true || (result?.fail === 0 && result?.pass > 0);
     if (!passed) {
         _stats.testGateBlocked++;
-        // Auto-rollback via capability
+        // Real rollback via capability. At test_gate, commit_gate has not
+        // run yet (it's a later stage), so nothing is committed — the
+        // correct real rollback target is the specific patched file
+        // (restore from HEAD), not a generic no-op. Falls back to the
+        // legacy unstage-only behavior if no patchSpec.targetFile is known
+        // (free-form goals with no tracked target file).
         try {
             const aer = _aer();
             if (aer) {
-                await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", missionId: run.missionId, maxAttempts: 1 });
-                run.rollbackExecuted = true;
-                _stats.rollbacks++;
-                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "test_gate_failed" });
+                const targetFile = run.patchSpec?.targetFile;
+                const rbInput = targetFile ? `rollback:file=${targetFile}` : "";
+                const rbRec = await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", input: rbInput, missionId: run.missionId, maxAttempts: 1 });
+                run.rollbackExecuted = rbRec.status === "completed";
+                if (run.rollbackExecuted) _stats.rollbacks++;
+                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "test_gate_failed", verified: run.rollbackExecuted, target: targetFile || "(unstage_only)" });
             }
         } catch {}
         const recoveryMission = _createRecoveryMission(run, "test_gate", `Tests failed: ${result?.fail || "?"} failures`);
@@ -470,6 +478,12 @@ async function _executeStage(run, stage) {
                     output:  rec.output,
                     error:   rec.error,
                 };
+                // Capture the pre-patch HEAD from repo_read — this is the
+                // real rollback target used later if a commit needs
+                // reverting (see _rollback:commit= in engineeringCapabilities.cjs).
+                if (stage.id === "repo_read" && result.success && result.output) {
+                    try { run.preCommitHash = JSON.parse(result.output).headCommit || null; } catch {}
+                }
                 // Build gate check after build_run
                 if (stage.id === "build_gate") {
                     stage.output = rec.output;

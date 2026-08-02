@@ -157,23 +157,31 @@ function _obs(name, value, tags = {}) {
 
 // ── repo_read: git status + recent log ────────────────────────────────────
 async function _repoRead(ctx) {
-    const [status, log, branch] = await Promise.all([
+    const [status, log, branch, head] = await Promise.all([
         _sh("git", ["status", "--short"]),
         _sh("git", ["log", "--oneline", "-10"]),
         _sh("git", ["branch", "--show-current"]),
+        _sh("git", ["rev-parse", "--short", "HEAD"]),
     ]);
     if (!status.ok) return { success: false, error: status.reason || status.stderr.slice(0, 200), output: null };
+
+    // headCommit: the "known good" commit captured before any patching in
+    // this run — real rollback (see _rollback/rollback:commit=) needs this
+    // to know what to revert TO if a later stage (post-commit observe/learn)
+    // discovers a problem after commit_gate already committed.
+    const headCommit = head.ok ? head.stdout.trim() : null;
 
     const output = JSON.stringify({
         branch:   branch.stdout.trim(),
         status:   _cap(status.stdout),
         recentLog: _cap(log.stdout),
+        headCommit,
     });
     // Store in memory
-    remember("knowledge", { insight: `Repo state: branch=${branch.stdout.trim()} changes=${status.stdout.split("\n").filter(Boolean).length}` },
+    remember("knowledge", { insight: `Repo state: branch=${branch.stdout.trim()} changes=${status.stdout.split("\n").filter(Boolean).length} head=${headCommit || "?"}` },
         { tags: ["repo", "git"], importance: 40 });
-    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "repo_read", path: REPO_ROOT, summary: branch.stdout.trim() });
-    return { success: true, output, artifacts: [{ type: "repo_state", value: output }], logs: [] };
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "repo_read", path: REPO_ROOT, summary: branch.stdout.trim(), headCommit });
+    return { success: true, output, artifacts: [{ type: "repo_state", value: output, headCommit }], logs: [] };
 }
 
 // ── repo_index: build/refresh the repo intelligence index ─────────────────
@@ -320,8 +328,108 @@ async function _testRun(ctx) {
     return { success, output, artifacts: [{ type: "test_result", pass, fail, durationMs: dur }], logs: [{ ts: new Date().toISOString(), msg: `tests: ${pass} pass ${fail} fail in ${dur}ms` }] };
 }
 
-// ── rollback: git reset HEAD to undo staged changes (safe, no history loss) ─
+// ── rollback: real revert, not metadata-only ──────────────────────────────
+// Engineering Autonomous Completion mission — the prior implementation only
+// ran `git reset HEAD` (unstages, never touches working-tree content or
+// commit history) yet was invoked by the pipeline's test_gate as if it were
+// a genuine undo. Now supports three real, git-verified rollback targets,
+// chosen from ctx.input:
+//
+//   rollback:commit=<hash>   → the pipeline already committed (commit_gate
+//                               succeeded) and a LATER stage still failed
+//                               (e.g. observe/learn detects a regression) —
+//                               reverts that specific commit via
+//                               `git revert --no-edit <hash>`, a real,
+//                               history-preserving undo (never a destructive
+//                               reset --hard on shared history).
+//   rollback:file=<relPath>  → a patch was applied to the working tree but
+//                               never committed — restores that exact file's
+//                               content from HEAD via `git checkout -- <path>`
+//                               (scoped to the one file, never a blanket
+//                               reset of unrelated in-flight work).
+//   (no target / legacy)     → unstage only, the original safe-but-narrow
+//                               behavior, preserved for existing callers
+//                               that pass no target.
+//
+// Every branch is verified post-hoc (re-reads git status/diff to confirm
+// the working tree actually matches the reverted state) rather than trusting
+// the command's exit code alone — a silent no-op git command must not be
+// reported as a successful rollback.
 async function _rollback(ctx) {
+    const input = ctx.input || "";
+    const commitMatch = input.match(/rollback:commit=([0-9a-f]{4,40})/i);
+    const fileMatch    = input.match(/rollback:file=([^\s]+)/i);
+
+    if (commitMatch) {
+        return _rollbackCommit(ctx, commitMatch[1]);
+    }
+    if (fileMatch) {
+        return _rollbackFile(ctx, fileMatch[1]);
+    }
+    return _rollbackUnstageOnly(ctx);
+}
+
+async function _rollbackCommit(ctx, hash) {
+    // Verify the commit actually exists before attempting to revert it —
+    // git revert on an unknown ref fails loudly, but confirm first so the
+    // error is unambiguous (bad hash vs. genuine revert conflict).
+    const exists = await _sh("git", ["cat-file", "-e", hash]);
+    if (!exists.ok) {
+        return { success: false, error: `commit ${hash} not found — cannot revert`, output: null, nonRetriable: true };
+    }
+
+    const r = await _sh("git", ["revert", "--no-edit", hash]);
+    if (!r.ok) {
+        // A real revert conflict (not a transient error) — surface it as
+        // non-retriable so the caller escalates rather than looping.
+        return { success: false, error: `git revert failed: ${_cap(r.stderr, 300)}`, output: _cap(r.stdout, 300), nonRetriable: true };
+    }
+
+    // Verify: HEAD must now differ from the pre-revert hash, and the
+    // revert commit must actually exist.
+    const newHead = (await _sh("git", ["rev-parse", "--short", "HEAD"])).stdout.trim();
+    const verified = !!newHead && newHead !== hash.slice(0, newHead.length);
+    const output = JSON.stringify({ reverted: true, revertedCommit: hash, newHead, verified });
+
+    remember("knowledge", { insight: `Rollback executed: reverted commit ${hash} → new HEAD ${newHead}` }, { tags: ["rollback", "engineering", "git_revert"], importance: 65 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "git_revert", revertedCommit: hash, newHead });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "git_revert", revertedCommit: hash, newHead });
+    return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `reverted ${hash} -> ${newHead}` }] };
+}
+
+async function _rollbackFile(ctx, relPath) {
+    const absPath = path.resolve(REPO_ROOT, relPath);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+    // Snapshot working-tree content before restore, purely for the audit
+    // trail (lets a human see exactly what was discarded).
+    let before = null;
+    try { before = fs.readFileSync(absPath, "utf8"); } catch { /* file may not exist yet, that's fine */ }
+
+    const r = await _sh("git", ["checkout", "--", relPath]);
+    if (!r.ok) {
+        return { success: false, error: `git checkout failed: ${_cap(r.stderr, 300)}`, output: null, nonRetriable: true };
+    }
+
+    // Verify: the file must no longer show as modified in git status.
+    const status = await _sh("git", ["status", "--porcelain", "--", relPath]);
+    const stillDirty = status.ok && status.stdout.trim().length > 0;
+    const after = (() => { try { return fs.readFileSync(absPath, "utf8"); } catch { return null; } })();
+    const changed = before !== after;
+
+    const output = JSON.stringify({ restored: !stillDirty, file: relPath, contentChanged: changed, verified: !stillDirty });
+    if (stillDirty) {
+        return { success: false, error: `restore did not clear working-tree diff for ${relPath}`, output, nonRetriable: false };
+    }
+
+    remember("knowledge", { insight: `Rollback executed: restored ${relPath} from HEAD` }, { tags: ["rollback", "engineering", "file_restore"], importance: 55 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "file_restore", file: relPath });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "file_restore", file: relPath });
+    return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `restored ${relPath} from HEAD` }] };
+}
+
+async function _rollbackUnstageOnly(ctx) {
     const r = await _sh("git", ["reset", "HEAD"]);
     if (!r.ok && !r.stdout.includes("Unstaged")) {
         return { success: false, error: _cap(r.stderr, 200), output: null };
@@ -330,7 +438,7 @@ async function _rollback(ctx) {
     const output = JSON.stringify({ reset: true, status: _cap(status.stdout, 500) });
     remember("knowledge", { insight: `Rollback executed: staged changes reset to HEAD` }, { tags: ["rollback", "engineering"], importance: 50 });
     if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "git_reset_HEAD" });
-    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "git_reset_HEAD" });
     return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [] };
 }
 
