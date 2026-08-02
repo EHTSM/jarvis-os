@@ -337,7 +337,7 @@ router.post("/coding/review", async (req, res) => {
 // ── POST /coding/refactor — multi-file refactor ───────────────────────────────
 router.post("/coding/refactor", async (req, res) => {
     try {
-        const { files = [], goal, cwd } = req.body;
+        const { files = [], goal, cwd, apply = false, commitMsg, requireApproval = true } = req.body;
         if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
 
         const system = _buildRepoContext({ cwd});
@@ -351,9 +351,43 @@ router.post("/coding/refactor", async (req, res) => {
             if (m[1]) patches.push({ file: m[1].trim(), content: m[2].trim(), diff: "" });
         }
 
-        res.json({ ok: true, summary: reply.slice(0, 500), reply, patches });
+        // Engineering Autonomous Completion mission — "unify patch
+        // generation": previously this only ever returned a preview, no
+        // matter what the caller wanted. apply:true now writes the
+        // generated patches for real through the SAME shared apply path
+        // /coding/apply-patch uses (_applyPatchSpecs/_launchPipelineForPatch)
+        // — same real fs.writeFileSync, same real `git add`, same real
+        // patch history, same real Engineering Pipeline launch (including
+        // the new security_gate/build_gate/test_gate stages, so a bad
+        // multi-file refactor gets caught the same way a single-file patch
+        // does). Default remains preview-only — apply is opt-in so every
+        // existing caller of this route keeps its current behavior exactly.
+        if (!apply) {
+            return res.json({ ok: true, summary: reply.slice(0, 500), reply, patches, applied: false });
+        }
+
+        if (!patches.length) {
+            return res.json({ ok: true, summary: reply.slice(0, 500), reply, patches, applied: false, note: "no fenced file patches found in AI reply — nothing to apply" });
+        }
+
+        const ROOT = cwd || path.join(__dirname, "../../");
+        const patchSpecs = patches.map(p => ({
+            targetFile:  p.file,
+            fullContent: p.content,
+        }));
+
+        const { histId, applied } = _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel: "refactor" });
+        const pipeline = await _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval);
+
+        res.json({
+            ok: true, summary: reply.slice(0, 500), reply, patches,
+            applied: true, histId, appliedFiles: applied, staged: true, pipeline,
+            message: pipeline
+                ? `Applied ${applied.length} file(s), pipeline ${pipeline.pipelineId} started`
+                : `Applied ${applied.length} file(s) and staged — pipeline unavailable`,
+        });
     } catch (err) {
-        res.status(500).json({ ok: false, error: err.message });
+        res.status(err.status || 500).json({ ok: false, error: err.message });
     }
 });
 
@@ -475,6 +509,95 @@ If you cannot produce a safe, targeted patch (e.g. the change requires understan
     }
 });
 
+// ── Unified patch application ─────────────────────────────────────────────────
+// Engineering Autonomous Completion mission — "unify patch generation": both
+// /coding/apply-patch (string-replace patchSpecs) and /coding/refactor's new
+// apply mode (full-file-content patches, see below) now write files, stage
+// them, record history, and launch the Engineering Pipeline through this ONE
+// function, instead of each route having its own copy of that logic. Two
+// patch shapes are supported per spec:
+//   - string-replace: { targetFile, patchTarget, patchReplacement }
+//   - full-content:    { targetFile, fullContent }
+// Both produce the exact same downstream effects (real fs.writeFileSync,
+// real `git add`, real patch-history record, real pipeline launch).
+function _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel }) {
+    const ROOT = cwd || path.join(__dirname, "../../");
+    const applied   = [];
+    const originals = [];
+
+    for (const spec of patchSpecs) {
+        const absPath = path.isAbsolute(spec.targetFile) ? spec.targetFile : path.join(ROOT, spec.targetFile);
+        const isFullContent = typeof spec.fullContent === "string";
+
+        if (isFullContent) {
+            // Full-file-content patch (e.g. from /coding/refactor) — the
+            // file may be new (refactor can propose splitting code into a
+            // new file), so unlike string-replace mode this doesn't
+            // require the file to already exist.
+            const original = fs.existsSync(absPath) ? fs.readFileSync(absPath, "utf8") : null;
+            fs.mkdirSync(path.dirname(absPath), { recursive: true });
+            fs.writeFileSync(absPath, spec.fullContent, "utf8");
+            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
+            applied.push(spec.targetFile);
+        } else {
+            if (!fs.existsSync(absPath)) throw Object.assign(new Error(`File not found: ${spec.targetFile}`), { status: 400 });
+            const original = fs.readFileSync(absPath, "utf8");
+            if (!original.includes(spec.patchTarget)) throw Object.assign(new Error(`patchTarget not found in ${spec.targetFile}`), { status: 400 });
+            const patched = original.replace(spec.patchTarget, spec.patchReplacement);
+            fs.writeFileSync(absPath, patched, "utf8");
+            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
+            applied.push(spec.targetFile);
+        }
+    }
+
+    // Stage the changed files
+    for (const f of originals) {
+        spawnSync("git", ["add", f.absPath], { cwd: ROOT });
+    }
+
+    // Record in the one shared patch history
+    const histId = crypto.randomUUID();
+    _addToPatchHistory({
+        id:          histId,
+        goal,
+        source:      sourceLabel || "apply-patch",
+        commitMsg:   commitMsg || `feat: ${goal.slice(0, 80)} [ai-patch]`,
+        patchSpecs,
+        originals:   originals.map(o => ({ targetFile: o.targetFile, originalContent: o.originalContent })),
+        appliedFiles: applied,
+        appliedAt:   new Date().toISOString(),
+        status:      "staged",
+        pipelineId:  null,
+    });
+
+    return { histId, applied, originals, ROOT };
+}
+
+async function _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval) {
+    let pipeline = null;
+    try {
+        const pc = require("../services/engineeringPipelineCoordinator.cjs");
+        const pipelinePromise = pc.runPipeline(goal, {
+            patchSpec:      patchSpecs[0], // primary spec for pipeline validation
+            requireApproval,
+            priority:       "high",
+        });
+        pipelinePromise.catch(e => logger.warn(`[ApplyPatch] pipeline error: ${e.message}`));
+        await new Promise(r => setTimeout(r, 80));
+        const active = pc.getActivePipelines();
+        pipeline = active[active.length - 1] || null;
+        if (pipeline) {
+            const store = _loadPatchHistory();
+            const rec   = store.patches.find(p => p.id === histId);
+            if (rec) { rec.pipelineId = pipeline.pipelineId; rec.status = "pipeline_running"; }
+            _savePatchHistory(store);
+        }
+    } catch (e) {
+        logger.warn(`[ApplyPatch] pipeline launch failed: ${e.message}`);
+    }
+    return pipeline;
+}
+
 // ── POST /coding/apply-patch — apply patchSpecs via Engineering Pipeline ──────
 router.post("/coding/apply-patch", async (req, res) => {
     try {
@@ -482,70 +605,8 @@ router.post("/coding/apply-patch", async (req, res) => {
         if (!patchSpecs.length) return res.status(400).json({ ok: false, error: "patchSpecs required" });
         if (!goal?.trim())      return res.status(400).json({ ok: false, error: "goal required" });
 
-        const ROOT = cwd || path.join(__dirname, "../../");
-
-        // Step 1: Apply each patchSpec as a string replacement, save originals for undo
-        const applied  = [];
-        const originals = [];
-        for (const spec of patchSpecs) {
-            const absPath = path.isAbsolute(spec.targetFile)
-                ? spec.targetFile
-                : path.join(ROOT, spec.targetFile);
-            if (!fs.existsSync(absPath)) {
-                return res.status(400).json({ ok: false, error: `File not found: ${spec.targetFile}` });
-            }
-            const original = fs.readFileSync(absPath, "utf8");
-            if (!original.includes(spec.patchTarget)) {
-                return res.status(400).json({ ok: false, error: `patchTarget not found in ${spec.targetFile}` });
-            }
-            const patched = original.replace(spec.patchTarget, spec.patchReplacement);
-            fs.writeFileSync(absPath, patched, "utf8");
-            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
-            applied.push(spec.targetFile);
-        }
-
-        // Step 2: Stage the changed files
-        for (const f of originals) {
-            spawnSync("git", ["add", f.absPath], { cwd: ROOT });
-        }
-
-        // Step 3: Record in patch history
-        const histId = crypto.randomUUID();
-        _addToPatchHistory({
-            id:          histId,
-            goal,
-            commitMsg:   commitMsg || `feat: ${goal.slice(0, 80)} [ai-patch]`,
-            patchSpecs,
-            originals:   originals.map(o => ({ targetFile: o.targetFile, originalContent: o.originalContent })),
-            appliedFiles: applied,
-            appliedAt:   new Date().toISOString(),
-            status:      "staged",
-            pipelineId:  null,
-        });
-
-        // Step 4: Kick off Engineering Pipeline with the already-staged patch
-        let pipeline = null;
-        try {
-            const pc = require("../services/engineeringPipelineCoordinator.cjs");
-            const pipelinePromise = pc.runPipeline(goal, {
-                patchSpec:      patchSpecs[0], // primary spec for pipeline validation
-                requireApproval,
-                priority:       "high",
-            });
-            pipelinePromise.catch(e => logger.warn(`[ApplyPatch] pipeline error: ${e.message}`));
-            await new Promise(r => setTimeout(r, 80));
-            const active = pc.getActivePipelines();
-            pipeline = active[active.length - 1] || null;
-            // Update history with pipeline ID
-            if (pipeline) {
-                const store = _loadPatchHistory();
-                const rec   = store.patches.find(p => p.id === histId);
-                if (rec) { rec.pipelineId = pipeline.pipelineId; rec.status = "pipeline_running"; }
-                _savePatchHistory(store);
-            }
-        } catch (e) {
-            logger.warn(`[ApplyPatch] pipeline launch failed: ${e.message}`);
-        }
+        const { histId, applied } = _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel: "apply-patch" });
+        const pipeline = await _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval);
 
         res.json({
             ok:         true,
@@ -559,7 +620,7 @@ router.post("/coding/apply-patch", async (req, res) => {
         });
     } catch (err) {
         logger.error(`[ApplyPatch] ${err.message}`);
-        res.status(500).json({ ok: false, error: err.message });
+        res.status(err.status || 500).json({ ok: false, error: err.message });
     }
 });
 
@@ -631,8 +692,17 @@ router.post("/coding/undo-patch", (req, res) => {
                 const absPath = path.isAbsolute(orig.targetFile)
                     ? orig.targetFile
                     : path.join(ROOT, orig.targetFile);
-                fs.writeFileSync(absPath, orig.originalContent, "utf8");
-                spawnSync("git", ["add", absPath], { cwd: ROOT });
+                if (orig.originalContent === null) {
+                    // File was newly created by this patch (e.g. a
+                    // full-content refactor patch that split code into a
+                    // new file) — undo means removing it, not writing the
+                    // literal string "null".
+                    if (fs.existsSync(absPath)) fs.unlinkSync(absPath);
+                    spawnSync("git", ["rm", "--cached", "--ignore-unmatch", absPath], { cwd: ROOT });
+                } else {
+                    fs.writeFileSync(absPath, orig.originalContent, "utf8");
+                    spawnSync("git", ["add", absPath], { cwd: ROOT });
+                }
                 undone.push(orig.targetFile);
             } catch (e) {
                 errors.push(`${orig.targetFile}: ${e.message}`);

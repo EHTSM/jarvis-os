@@ -234,19 +234,28 @@ async function _patchValidateGate(run, stageState, opts) {
         }
         result.checks.push({ name: "target_file_exists", ok: true });
 
-        // 3. Conflict check — patchTarget must appear exactly once
-        const content = fs_.readFileSync(absPath, "utf8");
-        const occurrences = content.split(spec.patchTarget).length - 1;
-        if (occurrences === 0) {
-            result.checks.push({ name: "patch_target_found", ok: false });
-            result.issues.push("patchTarget not found in file — already applied or file changed");
-            result.ok = false;
-        } else if (occurrences > 1) {
-            result.checks.push({ name: "patch_target_unique", ok: false });
-            result.issues.push(`patchTarget appears ${occurrences} times — ambiguous patch`);
-            result.ok = false;
+        // 3. Conflict check — patchTarget must appear exactly once.
+        // Full-content specs (e.g. from /coding/refactor's apply mode —
+        // see codingAssistant.js's _applyPatchSpecs "unify patch
+        // generation" note) replace the whole file rather than a string
+        // target, so there is no patchTarget to check for uniqueness; the
+        // file-existence check above is this spec type's real validation.
+        if (typeof spec.fullContent === "string") {
+            result.checks.push({ name: "full_content_patch", ok: true });
         } else {
-            result.checks.push({ name: "patch_target_unique", ok: true });
+            const content = fs_.readFileSync(absPath, "utf8");
+            const occurrences = content.split(spec.patchTarget).length - 1;
+            if (occurrences === 0) {
+                result.checks.push({ name: "patch_target_found", ok: false });
+                result.issues.push("patchTarget not found in file — already applied or file changed");
+                result.ok = false;
+            } else if (occurrences > 1) {
+                result.checks.push({ name: "patch_target_unique", ok: false });
+                result.issues.push(`patchTarget appears ${occurrences} times — ambiguous patch`);
+                result.ok = false;
+            } else {
+                result.checks.push({ name: "patch_target_unique", ok: true });
+            }
         }
     } catch (e) {
         result.checks.push({ name: "file_read", ok: false });
