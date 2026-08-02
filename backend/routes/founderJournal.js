@@ -208,4 +208,38 @@ router.get("/fop/report", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// GET /fop/report/export?format=docx|pptx&date=YYYY-MM-DD
+// Enterprise Capability Expansion mission — real DOCX/PPTX export of the
+// exact same report object /fop/report returns (documentExportRenderer.cjs
+// only serializes it, never invents content). Persisted via the shared
+// exportFileService (cloud storage if configured, else data/exports/global/,
+// served back through GET /exports/global/:filename).
+router.get("/fop/report/export", async (req, res) => {
+  const format = String(req.query.format || "docx").toLowerCase();
+  if (!["docx", "pptx"].includes(format)) {
+    return res.status(400).json({ error: "format must be 'docx' or 'pptx'" });
+  }
+  try {
+    const report = j.getFullReport(req.query.date);
+    const renderer = require("../services/documentExportRenderer.cjs");
+    const buffer = format === "pptx"
+      ? await renderer.renderPptx({ title: "Founder Operating Report", report })
+      : await renderer.renderDocx({ title: "Founder Operating Report", report });
+
+    const exportFiles = require("../services/exportFileService.cjs");
+    const stamp = (req.query.date || _today()).replace(/[^0-9-]/g, "");
+    const result = await exportFiles.persist(buffer, {
+      filename: `fop-report-${stamp}.${format}`,
+      mimeType: format === "pptx"
+        ? "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      orgId: null, // founder journal is account-personal, not org-scoped
+      accountId: req.user?.sub || req.user?.id || null,
+      capability: "fop_report_export",
+      tags: ["fop", "report", format],
+    });
+    res.json({ ok: true, ...result, format });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 module.exports = router;
