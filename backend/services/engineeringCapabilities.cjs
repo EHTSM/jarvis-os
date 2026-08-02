@@ -16,14 +16,15 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (16):
+ * Registered capabilities (17):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
  *   rollback (real git revert/checkout, verified), git_status, git_diff,
  *   git_commit, open_pr (real GitHub PR via gitHubEngineeringAgent),
  *   security_scan (real static analysis via codeReviewEngine),
  *   bundle_analyze / bundle_optimize (real build-size analysis),
- *   self_document (real doc generation from source inspection)
+ *   self_document (real doc generation from source inspection),
+ *   frontend_heal (real selfHealingFrontend.heal() bridge)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -553,6 +554,61 @@ async function _bundleOptimize(ctx) {
     return { success: true, output, artifacts: [{ type: "bundle_optimize_result", value: output }], logs: [] };
 }
 
+// ── frontend_heal: wires selfHealingFrontend into the unified pipeline ────
+// Engineering Autonomous Completion mission — "wire frontend self-healing
+// into the existing autonomous pipeline." selfHealingFrontend.cjs (real
+// Playwright-based console-error detection + AI-generated, confidence-
+// gated fs.writeFileSync patch application) already exists and works, but
+// its only caller was POST /odi/heal — a standalone, manually-triggered
+// HTTP endpoint with zero connection to engineeringPipelineCoordinator,
+// the Observer, the Decision Engine, or Mission Runtime. This capability
+// is the missing bridge: it calls the SAME real heal() function (no
+// re-implementation, no parallel healing engine) through the same
+// capability-dispatch path every other pipeline stage uses, so a frontend
+// healing run is a first-class pipeline stage instead of an isolated
+// side-flow, and gets the same artifact recording / lesson registration /
+// event-bus emission as everything else in this file.
+function _selfHealingFrontend() { try { return require("./selfHealingFrontend.cjs"); } catch { return null; } }
+
+async function _frontendHeal(ctx) {
+    const input = ctx.input || "";
+    const urlMatch    = input.match(/url:([^\s]+)/i);
+    const targetMatch = input.match(/target:([^\s]+)/i);
+    const autoApply   = /autoApply:true/i.test(input);
+
+    const url = urlMatch ? urlMatch[1] : null;
+    if (!url) {
+        // No frontend URL to check is the normal case for a backend-only
+        // pipeline goal — not a failure, just nothing to heal this run.
+        return { success: true, output: JSON.stringify({ healed: false, reason: "no frontend url provided for this run" }), artifacts: [], logs: [] };
+    }
+
+    const shf = _selfHealingFrontend();
+    if (!shf) return { success: false, error: "selfHealingFrontend unavailable", output: null };
+
+    try {
+        const result = await shf.heal({ url, targetFile: targetMatch ? targetMatch[1] : undefined, autoApply });
+        const output = JSON.stringify({
+            healed: true, healId: result.healId, status: result.status,
+            applied: result.stages?.apply?.ok === true,
+            errorCount: result.stages?.collect?.count ?? 0,
+        });
+
+        if (result.stages?.apply?.ok) {
+            remember("success", { pattern: "frontend_heal", appliedTo: ctx.missionId || "unknown", outcome: `applied fix for ${result.stages.collect?.count || "?"} frontend error(s)` },
+                { tags: ["frontend", "healing", "engineering"], importance: 60 });
+        } else if (result.stages?.collect?.count) {
+            remember("knowledge", { insight: `Frontend heal detected ${result.stages.collect.count} error(s) but did not auto-apply (confidence/rollback-safety threshold not met)` },
+                { tags: ["frontend", "healing", "engineering"], importance: 50 });
+        }
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "frontend_heal", healId: result.healId, applied: result.stages?.apply?.ok === true });
+        _getBus()?.emit("execution:frontend_heal:completed", { missionId: ctx.missionId, executionId: ctx.executionId, healId: result.healId, applied: result.stages?.apply?.ok === true });
+        return { success: true, output, artifacts: [{ type: "frontend_heal_result", value: output }], logs: [] };
+    } catch (e) {
+        return { success: false, error: _cap(e.message, 300), output: null };
+    }
+}
+
 // ── self_document: real doc generation from actual source inspection ──────
 // Engineering Autonomous Completion mission. Prior state: no file matching
 // doc-generation-from-AST/JSDoc parsing existed anywhere in this codebase.
@@ -882,6 +938,7 @@ const CAPABILITY_DEFS = [
     { name: "bundle_analyze",  description: "Real frontend build size analysis from frontend/build/asset-manifest.json (actual file sizes)", handler: _bundleAnalyze },
     { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
     { name: "self_document",   description: "Generate a real markdown doc from actual exported-function inspection (name, params, real preceding comment)", handler: _selfDocument },
+    { name: "frontend_heal",   description: "Real frontend self-healing via selfHealingFrontend.heal() — Playwright error detection + confidence-gated auto-patch", handler: _frontendHeal },
 ];
 
 let _registered = false;
@@ -922,7 +979,7 @@ function _category(name) {
     if (name.startsWith("build_") || name.startsWith("test_")) return "ci";
     if (name.startsWith("git_") || name === "rollback")        return "git";
     if (name === "open_pr")                                    return "git";
-    if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document") return "quality";
+    if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document" || name === "frontend_heal") return "quality";
     return "general";
 }
 

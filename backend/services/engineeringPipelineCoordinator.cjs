@@ -11,7 +11,11 @@
  *   autonomousExecutionRuntime — capability execution
  *   engineeringCapabilities    — repo_read, patch_generate, patch_apply,
  *                                build_run, test_run, rollback, git_commit,
- *                                open_pr, security_scan, self_document
+ *                                open_pr, security_scan, self_document,
+ *                                frontend_heal
+ *   selfHealingFrontend        — real Playwright-based frontend error
+ *                                detection + confidence-gated auto-patch
+ *                                (bridged via the frontend_heal capability)
  *   engineeringBenchmark       — I7-7 end-to-end validation (10 real scenarios)
  *   engineeringRuleRegistry    — patch/build/test rule consulting
  *   rootCauseAnalysisEngine    — failure root cause
@@ -40,17 +44,22 @@
  *   5  patch_apply       — apply the staged change
  *   6  build_gate        — I7-3: run build, stop on failure, create recovery mission
  *   7  test_gate         — I7-4: run tests, benchmark, stop if red
- *   8  security_gate     — real static analysis (codeReviewEngine.detectSecurity)
+ *   8  frontend_heal     — opt-in (opts.healUrl), non-blocking: bridges the
+ *                          real selfHealingFrontend.heal() (Playwright error
+ *                          detection + confidence-gated auto-patch) into the
+ *                          pipeline instead of leaving it as a standalone
+ *                          HTTP-only flow
+ *   9  security_gate     — real static analysis (codeReviewEngine.detectSecurity)
  *                          on the target file; blocks on any CRITICAL finding
- *   9  review_gate       — I7-5: review status + confidence check
- *   10 commit_gate       — I7-5: require approval + review + verification
- *   11 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
+ *   10 review_gate       — I7-5: review status + confidence check
+ *   11 commit_gate       — I7-5: require approval + review + verification
+ *   12 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
  *                          via gitHubEngineeringAgent.createPR if the commit's
  *                          branch is already pushed; never pushes itself
- *   12 self_document     — non-blocking: real markdown doc generated from the
+ *   13 self_document     — non-blocking: real markdown doc generated from the
  *                          target file's actual exported functions + comments
- *   13 observe           — git status + diff post-commit
- *   14 learn             — lesson registration
+ *   14 observe           — git status + diff post-commit
+ *   15 learn             — lesson registration
  *
  * Public API:
  *   runPipeline(goal, opts)          → PipelineRun
@@ -142,6 +151,7 @@ const PIPELINE_STAGES = [
     { id: "patch_apply",     label: "Patch Apply",         agentHint: "agent_developer",   capability: "patch_apply",    gate: null },
     { id: "build_gate",      label: "Build Gate",          agentHint: "agent_tester",      capability: "build_run",      gate: "build" },  // I7-3
     { id: "test_gate",       label: "Test Gate",           agentHint: "agent_tester",      capability: "test_run",       gate: "test" },   // I7-4
+    { id: "frontend_heal",   label: "Frontend Self-Heal",  agentHint: "agent_tester",      capability: "frontend_heal",  gate: null },      // opt-in (opts.healUrl), non-blocking — bridges selfHealingFrontend.cjs into the pipeline
     { id: "security_gate",   label: "Security Gate",       agentHint: "agent_reviewer",    capability: "security_scan",  gate: "security" },
     { id: "review_gate",     label: "Review Gate",         agentHint: "agent_reviewer",    capability: null,             gate: "review" }, // I7-5
     { id: "commit_gate",     label: "Commit Gate",         agentHint: "agent_reviewer",    capability: "git_commit",     gate: "commit" }, // I7-5
@@ -204,6 +214,8 @@ function _buildRun(goal, opts = {}) {
         prBase:          opts.prBase || "main",
         prUrl:           null,
         prNumber:        null,
+        healUrl:         opts.healUrl || null,    // opt-in — the frontend_heal stage no-ops without a live URL to check
+        healAutoApply:   opts.healAutoApply === true,
     };
 }
 
@@ -567,6 +579,9 @@ async function _executeStage(run, stage) {
                 }
                 if ((stage.id === "security_gate" || stage.id === "self_document") && run.patchSpec?.targetFile) {
                     input = `file:${run.patchSpec.targetFile}`;
+                }
+                if (stage.id === "frontend_heal" && run.healUrl) {
+                    input = `url:${run.healUrl}${run.healAutoApply ? " autoApply:true" : ""}`;
                 }
                 const rec = await aer.executeStage({
                     stageId:     stage.stageId,
