@@ -443,6 +443,67 @@ async function _rollbackUnstageOnly(ctx) {
     return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [] };
 }
 
+// ── security_scan: real static security analysis via codeReviewEngine ─────
+// Engineering Autonomous Completion mission. Reuses codeReviewEngine.cjs's
+// EXISTING detectSecurity() (regex-based XSS/SQLi/eval/hardcoded-secret/
+// weak-crypto rules, already used by /coding/review) — no new scanner, no
+// new dependency. This capability's job is to point that real function at
+// the file the pipeline actually just patched (run.patchSpec.targetFile),
+// so the pipeline can gate a commit on real findings instead of a
+// disconnected, separately-invoked review.
+function _codeReview() { try { return require("./codeReviewEngine.cjs"); } catch { return null; } }
+
+async function _securityScan(ctx) {
+    const input = ctx.input || "";
+    const fileMatch = input.match(/file:([^\s]+)/i);
+    const targetFile = fileMatch ? fileMatch[1] : null;
+
+    if (!targetFile) {
+        // No specific file targeted (free-form goal, no patchSpec) — nothing
+        // concrete to scan. Not a failure: most pipeline runs have no
+        // single target file, and this stage must not block those.
+        return { success: true, output: JSON.stringify({ scanned: false, reason: "no target file in this run" }), artifacts: [], logs: [] };
+    }
+
+    const absPath = path.resolve(REPO_ROOT, targetFile);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+
+    let code;
+    try { code = fs.readFileSync(absPath, "utf8"); }
+    catch (e) { return { success: false, error: `cannot read ${targetFile}: ${e.message}`, output: null, nonRetriable: e.code === "ENOENT" }; }
+
+    const cr = _codeReview();
+    if (!cr) return { success: false, error: "codeReviewEngine unavailable", output: null };
+
+    const findings = cr.detectSecurity(code);
+    const critical = findings.filter(f => f.severity === "critical");
+    const high     = findings.filter(f => f.severity === "high");
+
+    const output = JSON.stringify({
+        scanned: true, file: targetFile,
+        findingCount: findings.length,
+        critical: critical.length, high: high.length,
+        findings: findings.slice(0, 20), // cap payload size, matches this file's other _cap-style truncation conventions
+    });
+
+    if (critical.length) {
+        remember("failure", { errorType: "security_finding", context: `${critical.length} critical security finding(s) in ${targetFile}`, resolution: "review and fix before commit" },
+            { tags: ["security", "engineering"], importance: 90 });
+    } else {
+        remember("knowledge", { insight: `Security scan clean: ${targetFile} (${findings.length} lower-severity findings)` }, { tags: ["security", "engineering"], importance: 40 });
+    }
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "security_scan", file: targetFile, critical: critical.length, high: high.length, total: findings.length });
+
+    // The capability itself always "succeeds" (the scan ran); whether
+    // critical findings BLOCK the pipeline is the security_gate stage's
+    // decision (engineeringPipelineCoordinator.cjs), matching the existing
+    // pattern where build_run/test_run always report their real result and
+    // a separate gate function decides pass/fail.
+    return { success: true, output, artifacts: [{ type: "security_scan_result", value: output }], logs: [] };
+}
+
 // ── open_pr: real GitHub PR creation via gitHubEngineeringAgent ───────────
 // Engineering Autonomous Completion mission. Reuses the EXISTING, already-
 // working GitHub write client (gitHubEngineeringAgent.createPR — real
@@ -596,6 +657,7 @@ const CAPABILITY_DEFS = [
     { name: "git_diff",        description: "Git diff --stat (staged or HEAD)",                                    handler: _gitDiff },
     { name: "git_commit",      description: "Approval-aware git commit; requires approved:true in input",          handler: _gitCommit },
     { name: "open_pr",         description: "Open a real GitHub PR via gitHubEngineeringAgent (requires an already-pushed head branch — never pushes itself)", handler: _openPR },
+    { name: "security_scan",   description: "Real static security analysis via codeReviewEngine.detectSecurity on the run's target file", handler: _securityScan },
 ];
 
 let _registered = false;

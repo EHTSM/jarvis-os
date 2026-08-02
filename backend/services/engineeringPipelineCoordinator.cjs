@@ -10,11 +10,14 @@
  *   missionOrchestrator        — mission creation
  *   autonomousExecutionRuntime — capability execution
  *   engineeringCapabilities    — repo_read, patch_generate, patch_apply,
- *                                build_run, test_run, rollback, git_commit
+ *                                build_run, test_run, rollback, git_commit,
+ *                                open_pr, security_scan
  *   engineeringBenchmark       — I7-7 end-to-end validation (10 real scenarios)
  *   engineeringRuleRegistry    — patch/build/test rule consulting
  *   rootCauseAnalysisEngine    — failure root cause
  *   graphReasoningEngine       — affected component risk
+ *   codeReviewEngine           — real static security analysis (detectSecurity)
+ *   gitHubEngineeringAgent     — real GitHub PR creation (createPR)
  *   runtimeEventBus            — event fan-out
  *   agentRuntimeSupervisor     — agent tick triggers for collaboration handoffs
  *   continuousLearningEngine   — lesson recording
@@ -37,13 +40,15 @@
  *   5  patch_apply       — apply the staged change
  *   6  build_gate        — I7-3: run build, stop on failure, create recovery mission
  *   7  test_gate         — I7-4: run tests, benchmark, stop if red
- *   8  review_gate       — I7-5: review status + confidence check
- *   9  commit_gate       — I7-5: require approval + review + verification
- *   10 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
+ *   8  security_gate     — real static analysis (codeReviewEngine.detectSecurity)
+ *                          on the target file; blocks on any CRITICAL finding
+ *   9  review_gate       — I7-5: review status + confidence check
+ *   10 commit_gate       — I7-5: require approval + review + verification
+ *   11 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
  *                          via gitHubEngineeringAgent.createPR if the commit's
  *                          branch is already pushed; never pushes itself
- *   11 observe           — git status + diff post-commit
- *   12 learn             — lesson registration
+ *   12 observe           — git status + diff post-commit
+ *   13 learn             — lesson registration
  *
  * Public API:
  *   runPipeline(goal, opts)          → PipelineRun
@@ -116,7 +121,7 @@ function _emit(type, payload) {
 // ── Statistics ─────────────────────────────────────────────────────────────────
 const _stats = {
     total: 0, completed: 0, failed: 0, cancelled: 0,
-    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0, securityGateBlocked: 0,
     rollbacks: 0, recoveryMissionsCreated: 0,
     // i7-s2: expose cancel count for dashboard
     // i7-s10: validationRuns tracks I7-7 benchmark invocations
@@ -135,6 +140,7 @@ const PIPELINE_STAGES = [
     { id: "patch_apply",     label: "Patch Apply",         agentHint: "agent_developer",   capability: "patch_apply",    gate: null },
     { id: "build_gate",      label: "Build Gate",          agentHint: "agent_tester",      capability: "build_run",      gate: "build" },  // I7-3
     { id: "test_gate",       label: "Test Gate",           agentHint: "agent_tester",      capability: "test_run",       gate: "test" },   // I7-4
+    { id: "security_gate",   label: "Security Gate",       agentHint: "agent_reviewer",    capability: "security_scan",  gate: "security" },
     { id: "review_gate",     label: "Review Gate",         agentHint: "agent_reviewer",    capability: null,             gate: "review" }, // I7-5
     { id: "commit_gate",     label: "Commit Gate",         agentHint: "agent_reviewer",    capability: "git_commit",     gate: "commit" }, // I7-5
     { id: "open_pr",         label: "Open Pull Request",   agentHint: "agent_reviewer",    capability: "open_pr",        gate: null },      // opt-in, non-blocking — see _executeStage's "open_pr" case
@@ -315,6 +321,44 @@ async function _testGate(run, stageState) {
         }
     }
     return { ok: passed, testResult: result };
+}
+
+// Security gate — real static analysis via codeReviewEngine.detectSecurity,
+// blocks on any CRITICAL finding (eval, SQL injection, hardcoded secrets),
+// same real-rollback response as the build/test gates on failure. High/
+// medium/low findings do not block — they're recorded (via the
+// security_scan capability's own remember() call) for human review but
+// don't stop an otherwise-good patch, matching this pipeline's existing
+// design of hard-blocking only on unambiguous failure (build/test) and
+// soft-gating on judgment calls (review_gate's confidence threshold).
+async function _securityGate(run, stageState) {
+    const result = stageState.output ? (() => {
+        try { return JSON.parse(stageState.output); } catch { return null; }
+    })() : null;
+
+    // No target file scanned (free-form goal) is not a failure — nothing
+    // to block on.
+    const passed = !result?.scanned || (result?.critical ?? 0) === 0;
+    if (!passed) {
+        _stats.securityGateBlocked++;
+        try {
+            const aer = _aer();
+            if (aer) {
+                const targetFile = run.patchSpec?.targetFile;
+                const rbInput = targetFile ? `rollback:file=${targetFile}` : "";
+                const rbRec = await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", input: rbInput, missionId: run.missionId, maxAttempts: 1 });
+                run.rollbackExecuted = rbRec.status === "completed";
+                if (run.rollbackExecuted) _stats.rollbacks++;
+                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "security_gate_failed", verified: run.rollbackExecuted, target: targetFile || "(unstage_only)" });
+            }
+        } catch {}
+        const recoveryMission = _createRecoveryMission(run, "security_gate", `${result?.critical || "?"} critical security finding(s) in ${result?.file || "target file"}`);
+        if (recoveryMission) {
+            run.recoveryMissionId = recoveryMission.missionId || recoveryMission.id;
+            _stats.recoveryMissionsCreated++;
+        }
+    }
+    return { ok: passed, securityResult: result };
 }
 
 // I7-5: Review gate — confidence + rule registry check
@@ -509,6 +553,9 @@ async function _executeStage(run, stage) {
                 if (stage.id === "patch_generate" && run.patchSpec?.patchTarget) {
                     input = `patch_generate: ${run.goal} — target: ${run.patchSpec.patchTarget.slice(0, 80)}`;
                 }
+                if (stage.id === "security_gate" && run.patchSpec?.targetFile) {
+                    input = `file:${run.patchSpec.targetFile}`;
+                }
                 const rec = await aer.executeStage({
                     stageId:     stage.stageId,
                     capability:  stage.capability,
@@ -547,6 +594,17 @@ async function _executeStage(run, stage) {
                     if (!gateResult.ok) {
                         result.success = false;
                         result.error   = `Test gate blocked: tests failed`;
+                    }
+                }
+                // Security gate check after security_scan
+                if (stage.id === "security_gate") {
+                    stage.output = rec.output;
+                    stage.error  = rec.error;
+                    const gateResult = await _securityGate(run, stage);
+                    stage.gateResult = gateResult;
+                    if (!gateResult.ok) {
+                        result.success = false;
+                        result.error   = `Security gate blocked: ${gateResult.securityResult?.critical || "?"} critical finding(s)`;
                     }
                 }
             } else {
