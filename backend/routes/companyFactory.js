@@ -207,6 +207,39 @@ router.patch("/company-factory/blueprints/:id/status", requireAuth, (req, res) =
 router.get("/company-factory/blueprints/stats", requireAuth, (req, res) =>
   res.json({ ok: true, stats: _cbe()?.getStats?.() || {} }));
 
+// Enterprise Capability Expansion mission — real blueprint file export/import.
+// Confirmed genuinely absent before this: GET /company-factory/blueprints/:id
+// only ever returned JSON inline, and there was no way to bring a blueprint
+// back in. Export persists the exact same object getBlueprint() already
+// returns as a real downloadable file via the shared exportFileService;
+// import calls the new companyBlueprintEngine.importBlueprint() (added
+// alongside this route, same persistence store as generateBlueprint()).
+router.get("/company-factory/blueprints/:id/export", requireAuth, async (req, res) => {
+  const bp = _cbe()?.getBlueprint?.(req.params.id);
+  if (!bp) return res.status(404).json({ ok: false, error: "blueprint not found" });
+  try {
+    const buffer = Buffer.from(JSON.stringify(bp, null, 2), "utf8");
+    const exportFiles = require("../services/exportFileService.cjs");
+    const result = await exportFiles.persist(buffer, {
+      filename: `blueprint-${bp.id}.json`,
+      mimeType: "application/json",
+      orgId: null,
+      accountId: req.user?.sub || req.user?.id || null,
+      capability: "blueprint_export",
+      tags: ["company-factory", "blueprint", "export"],
+    });
+    res.json({ ok: true, ...result });
+  } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
+
+router.post("/company-factory/blueprints/import", requireAuth, (req, res) => {
+  const { blueprint } = req.body || {};
+  if (!blueprint) return res.status(400).json({ ok: false, error: "blueprint object required in body" });
+  const result = _cbe()?.importBlueprint?.(blueprint);
+  if (!result) return res.status(503).json({ ok: false, error: "blueprint engine unavailable" });
+  res.status(result.ok ? 200 : 400).json(result);
+});
+
 // ── Workspaces ────────────────────────────────────────────────────────────────
 
 router.post("/company-factory/workspaces", requireAuth, async (req, res) => {

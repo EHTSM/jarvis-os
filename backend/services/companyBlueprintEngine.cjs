@@ -287,6 +287,40 @@ function updateBlueprintStatus(id, status) {
   return { ok: true, blueprint: bp };
 }
 
+// Enterprise Capability Expansion mission — real blueprint import.
+// Confirmed genuinely absent before this: blueprints could only be
+// created via generateBlueprint() (template-driven generation); there was
+// no way to bring in a previously exported blueprint (e.g. from another
+// JARVIS-OS instance, or a blueprint a founder edited offline). Validates
+// the required shape rather than trusting arbitrary input, assigns a
+// fresh id/timestamps so importing never collides with or overwrites an
+// existing blueprint, and reuses the exact same _load/_save persistence
+// generateBlueprint() already uses — no parallel store.
+function importBlueprint(raw) {
+  if (!raw || typeof raw !== "object") return { ok: false, error: "blueprint object required" };
+  const required = ["name", "templateId", "roadmap", "missions"];
+  const missing = required.filter(k => raw[k] === undefined || raw[k] === null);
+  if (missing.length) return { ok: false, error: `blueprint missing required fields: ${missing.join(", ")}` };
+  if (!Array.isArray(raw.roadmap) || !Array.isArray(raw.missions)) {
+    return { ok: false, error: "roadmap and missions must be arrays" };
+  }
+
+  const blueprint = {
+    ...raw,
+    id: _id(),
+    status: "draft",
+    importedAt: _ts(),
+    generatedAt: raw.generatedAt || _ts(),
+    updatedAt: _ts(),
+  };
+
+  const d = _load();
+  d.blueprints.push(blueprint);
+  _save(d);
+
+  return { ok: true, blueprint };
+}
+
 function getStats() {
   const d = _load();
   const byTemplate = {};
@@ -301,5 +335,6 @@ module.exports = {
   getBlueprint,
   listBlueprints,
   updateBlueprintStatus,
+  importBlueprint,
   getStats,
 };
