@@ -84,6 +84,15 @@ const PROVIDERS = {
     label: "Linear", connectorId: "issue:linear", category: "project_management",
     fields: [{ key: "api_key", label: "API Key", type: "password" }],
   },
+  // Capability Reuse Verification mission — real posting via
+  // backend/services/socialPostingService.cjs. Field key "oauth_token"
+  // matches that service's vault.getSecret(CONNECTOR_ID, "oauth_token", orgId)
+  // lookup, and secretVault.cjs's CRED_TYPES set (X's API v2 auth model is
+  // a single bearer token, which fits the existing oauth_token slot).
+  twitter: {
+    label: "X (Twitter)", connectorId: "social:twitter", category: "social",
+    fields: [{ key: "oauth_token", label: "Bearer Token", type: "password" }],
+  },
 };
 
 // attachOrg alone does NOT block cross-tenant access — it resolves req.org
