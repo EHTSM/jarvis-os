@@ -34,6 +34,99 @@ const os      = require("os");
 const { exec, spawn } = require("child_process");
 const axios   = require("axios");
 
+// ── Main-process crash handling ───────────────────────────────────
+// Security/Reliability Hardening: renderer crashes were already handled
+// (render-process-gone / unresponsive, see _attachCrashHandlers below), but
+// the MAIN process itself had no uncaughtException/unhandledRejection
+// handler at all — a single unexpected throw or rejected promise anywhere
+// in main.cjs (IPC handlers, the health-poll watchdog, autoUpdater
+// callbacks, or even a startup error in a package require below) would
+// crash the whole Electron process with no recovery, no graceful shutdown
+// of the spawned backend child process, and no record of what happened.
+// Installed immediately after the core requires (before Store/autoUpdater,
+// which can themselves throw during construction/require) so it is active
+// for the entire remaining startup sequence, not just after windows exist.
+//
+// On a fatal error: log + persist the crash, attempt to cleanly stop the
+// backend child process (so it isn't orphaned as a zombie), and escalate
+// to a clean quit if the process is crash-looping rather than leaving an
+// undefined half-alive state running indefinitely.
+const MAIN_CRASH_FILE = path.join(app.getPath("userData"), "main_process_crashes.json");
+const MAX_MAIN_CRASHES_BEFORE_QUIT = 3;
+
+function _loadMainCrashCount() {
+    try { return JSON.parse(fs.readFileSync(MAIN_CRASH_FILE, "utf8")).count || 0; }
+    catch { return 0; }
+}
+function _saveMainCrashCount(n) {
+    try { fs.writeFileSync(MAIN_CRASH_FILE, JSON.stringify({ count: n, ts: new Date().toISOString() })); }
+    catch { /* best-effort — must never throw from inside a crash handler */ }
+}
+let _mainCrashCount = _loadMainCrashCount();
+
+function _handleFatalMainError(kind, err) {
+    // Never let the handler itself throw — that would defeat the purpose.
+    try {
+        _mainCrashCount++;
+        console.error(`[Electron] FATAL main-process ${kind}:`, err?.stack || err?.message || err);
+        _saveMainCrashCount(_mainCrashCount);
+
+        // Best-effort: don't leave the backend child process orphaned if
+        // the main process is about to exit or restart. _stopBackend is
+        // defined later in this file (function declarations are hoisted),
+        // and may not have started a backend yet — both are fine, the
+        // function itself no-ops if _backendProc was never set.
+        try { typeof _stopBackend === "function" && _stopBackend(); } catch { /* backend may not exist yet */ }
+
+        if (_mainCrashCount > MAX_MAIN_CRASHES_BEFORE_QUIT) {
+            // Crash-looping — recovering further would likely just crash
+            // again immediately. Quit cleanly instead of leaving a zombie
+            // or repeatedly-crashing process running in the background.
+            console.error("[Electron] Too many main-process crashes — quitting.");
+            try { isQuitting = true; } catch { /* isQuitting may not be declared yet this early */ }
+            try { app.quit(); } catch { /* fall through to force-exit below */ }
+            setTimeout(() => process.exit(1), 5_000).unref();
+            return;
+        }
+
+        // First few crashes: surface it visibly (a native dialog needs no
+        // renderer) and keep the process alive — any windows/tray already
+        // created survive a caught exception in, say, an IPC handler or an
+        // async callback; only genuinely fatal errors reach this
+        // process-level last-resort handler at all.
+        try {
+            if (app.isReady()) {
+                dialog.showErrorBox(
+                    "Ooplix encountered an internal error",
+                    `${kind}: ${err?.message || String(err)}\n\nThe application will attempt to continue running. If this keeps happening, please restart Ooplix.`
+                );
+            }
+        } catch { /* dialog itself must never crash the crash handler */ }
+    } catch { /* absolute last resort: swallow, never rethrow from here */ }
+}
+
+process.on("uncaughtException", (err) => _handleFatalMainError("uncaughtException", err));
+process.on("unhandledRejection", (reason) => _handleFatalMainError("unhandledRejection", reason instanceof Error ? reason : new Error(String(reason))));
+
+// Graceful shutdown on OS-level termination signals (e.g. a process
+// supervisor or `kill` sending SIGTERM/SIGINT directly) — previously only
+// app.on("will-quit") ran cleanup, which fires for app-initiated quits but
+// is not guaranteed to run for a raw signal delivered straight to the
+// process. Reuses the same _stopBackend teardown path so there is only one
+// shutdown routine, not a second parallel one.
+let _shuttingDownFromSignal = false;
+function _gracefulSignalShutdown(signal) {
+    if (_shuttingDownFromSignal) return; // avoid re-entrancy on a second signal
+    _shuttingDownFromSignal = true;
+    console.log(`[Electron] Received ${signal} — shutting down gracefully.`);
+    try { isQuitting = true; } catch { /* isQuitting may not be declared yet this early */ }
+    try { typeof _stopBackend === "function" && _stopBackend(); } catch { /* best-effort */ }
+    try { app.quit(); } catch { /* fall through to force-exit below */ }
+    setTimeout(() => process.exit(0), 5_000).unref();
+}
+process.on("SIGTERM", () => _gracefulSignalShutdown("SIGTERM"));
+process.on("SIGINT",  () => _gracefulSignalShutdown("SIGINT"));
+
 // ── Packages ──────────────────────────────────────────────────────
 let autoUpdater, Store;
 try { autoUpdater = require("electron-updater").autoUpdater; } catch { autoUpdater = null; }
@@ -285,6 +378,8 @@ function createMainWindow() {
 
     windows.main.webContents.once("did-finish-load", () => {
         _saveCrashCount(0);
+        _mainCrashCount = 0;
+        _saveMainCrashCount(0);
         const startupMs = Date.now() - _appStartTs;
         windows.main?.webContents.send("runtime-ready",    { startupMs, buildOk: buildOk.ok });
         windows.main?.webContents.send("startup-success",  { startupMs });
