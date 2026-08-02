@@ -7,7 +7,10 @@
 
 const router          = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter     = require("../middleware/rateLimiter");
 const g               = require("../services/growthOS.cjs");
+const crm             = require("../services/crmService");
+const { parseCsvRecords } = require("../utils/csvParse.cjs");
 
 router.use("/growth", requireAuth);
 
@@ -257,6 +260,52 @@ router.post("/growth/audiences/:id/remove",      (req, res) => {
     const { memberIds } = req.body || {};
     if (!Array.isArray(memberIds)) return res.status(400).json({ error: "memberIds array required" });
     _ok(res, { audience: g.removeFromAudience(req.params.id, memberIds) });
+  } catch (e) { _err(res, e); }
+});
+
+// Enterprise Capability Expansion mission — real bulk marketing import.
+// Confirmed genuinely absent before this: audiences could only be built
+// via POST /growth/audiences/:id/add with an already-known memberIds
+// array, or synced from existing CRM leads. There was no way to bring in
+// a list of new contacts from a marketing CSV export in one call.
+// Composes two existing capabilities rather than inventing a third
+// contact store: each CSV row becomes a real CRM lead (crmService.saveLead,
+// same dedup-by-phone semantics as the CRM bulk import route), then every
+// resulting phone is added to the target audience via the existing
+// g.addToAudience — audiences already store phone-shaped memberIds
+// wherever CRM-derived (see g.syncCRMToAudience).
+router.post("/growth/audiences/:id/import", rateLimiter(5, 15 * 60_000), (req, res) => {
+  try {
+    const { csv } = req.body || {};
+    if (!csv || typeof csv !== "string") return res.status(400).json({ error: "csv (string body) required" });
+    const audience = g.getAudience(req.params.id);
+    if (!audience) return res.status(404).json({ error: "Audience not found" });
+
+    let records;
+    try { records = parseCsvRecords(csv); }
+    catch (e) { return res.status(400).json({ error: "Could not parse CSV: " + e.message }); }
+    if (!records.length) return res.status(400).json({ error: "CSV contains no data rows" });
+    if (records.length > 5000) return res.status(400).json({ error: "Import limited to 5000 rows per request" });
+
+    const userId = req.user.sub || req.user.id || null;
+    const results = { imported: 0, duplicates: 0, failed: 0, errors: [] };
+    const memberIds = [];
+
+    records.forEach((row, i) => {
+      const phoneRaw = row.phone || row.Phone || row.mobile || row.Mobile;
+      if (!phoneRaw) { results.failed++; if (results.errors.length < 50) results.errors.push({ row: i + 2, error: "phone required" }); return; }
+      const cleanPhone = String(phoneRaw).replace(/\D/g, "");
+      if (!cleanPhone || cleanPhone.length < 7) { results.failed++; if (results.errors.length < 50) results.errors.push({ row: i + 2, error: "invalid phone number" }); return; }
+
+      const wasExisting = !!crm.getLead(cleanPhone);
+      const { phone: _p, name, ...rest } = row;
+      crm.saveLead({ phone: cleanPhone, name, ...rest, userId, status: "new", createdAt: new Date().toISOString() });
+      if (wasExisting) results.duplicates++; else results.imported++;
+      memberIds.push(cleanPhone);
+    });
+
+    const updatedAudience = memberIds.length ? g.addToAudience(req.params.id, memberIds) : audience;
+    _ok(res, { totalRows: records.length, ...results, audience: updatedAudience });
   } catch (e) { _err(res, e); }
 });
 
