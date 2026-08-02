@@ -8,7 +8,18 @@
 const router = require("express").Router();
 
 const _try = fn => { try { return fn(); } catch { return null; } };
-const requireAuth = _try(() => require("../middleware/requireAuth")) || ((req, res, next) => next());
+// Security Hardening: this used to require("../middleware/requireAuth"), a
+// module that does not exist — the require threw, _try() swallowed it, and
+// every route below silently fell back to a no-op passthrough. It was only
+// actually protected because routes/index.js also applies an outer
+// `router.use("/computer", requireAuth)` gate before mounting this file —
+// and this file's /computer/terminal/run is the raw-shell-execution
+// endpoint, so a silent auth bypass here was the highest-severity finding
+// in the reality audit. Now pointing at the real module/export, with a
+// fail-closed fallback (403, not next()) if it were ever somehow still
+// unavailable.
+const { requireAuth: _realRequireAuth } = _try(() => require("../middleware/authMiddleware")) || {};
+const requireAuth = _realRequireAuth || ((req, res) => res.status(500).json({ ok: false, error: "auth middleware unavailable" }));
 
 const _cc  = () => _try(() => require("../services/computerController.cjs"));
 const _cee = () => _try(() => require("../services/computerExecutionEngine.cjs"));

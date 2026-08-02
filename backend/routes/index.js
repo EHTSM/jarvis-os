@@ -154,11 +154,11 @@ router.use(require("./founderAutomation"));     // POST-Ω P2: /founder/* /bible
 router.use(require("./autonomousExecution"));   // POST-Ω P3: /execution/* dashboard+plan+execute+evidence+recovery+metrics
 router.use("/approval", requireAuth);          // gate all /approval/* routes
 router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
-router.use("/computer", requireAuth);          // gate all /computer/* routes (in-file requireAuth resolves to no-op due to bad require path)
+router.use("/computer", requireAuth);          // gate all /computer/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)
 router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run
-router.use("/twin", requireAuth);              // gate all /twin/* routes (in-file requireAuth resolves to no-op due to bad require path)
+router.use("/twin", requireAuth);              // gate all /twin/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
-router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* routes (in-file requireAuth resolves to no-op due to bad require path)
+router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
 router.use("/company-factory", requireAuth);   // gate all /company-factory/* routes
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
