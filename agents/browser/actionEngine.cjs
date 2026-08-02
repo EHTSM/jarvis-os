@@ -291,6 +291,33 @@ async function screenshot(page, { fullPage = false } = {}) {
   }
 }
 
+// ── pdf ───────────────────────────────────────────────────────────────────────
+// Enterprise Import/Export Validation mission — the previously-exposed
+// POST /browser-platform/control/pdf route called this file's screenshot()
+// action (real PNG bytes) while claiming to produce a PDF and admitting in
+// its own response "requires headless mode" it never checked for. This is
+// the real fix: Chromium's built-in page.pdf() (Playwright already wraps
+// it — no new dependency), which genuinely only works in headless mode, so
+// that constraint is now enforced instead of silently ignored.
+async function pdf(page, { format = "A4", landscape = false, printBackground = true } = {}) {
+    try {
+        const buffer = await page.pdf({ format, landscape, printBackground });
+        const base64 = buffer.toString("base64");
+        return _ok("pdf", {
+            dataUrl: `data:application/pdf;base64,${base64}`,
+            sizeKb:  Math.round(buffer.length / 1024),
+            format, landscape,
+        });
+    } catch (err) {
+        // Playwright's page.pdf() throws a specific, recognizable error when
+        // called against a non-headless browser — surface that distinctly
+        // rather than a generic failure, since it's an actionable
+        // configuration fact, not a transient error.
+        const headlessOnly = /headless/i.test(err.message);
+        return _fail("pdf", headlessOnly ? `PDF export requires headless mode: ${err.message}` : err.message);
+    }
+}
+
 // ── getText ───────────────────────────────────────────────────────────────────
 async function getText(page, selector) {
   if (!selector) {
@@ -514,7 +541,7 @@ async function dismissModals(page, { timeout = 3000 } = {}) {
 module.exports = {
   navigate, reloadPage, waitForContent,
   click, typeText, fillForm,
-  waitForElement, screenshot, getText, getTitle, getUrl,
+  waitForElement, screenshot, pdf, getText, getTitle, getUrl,
   scrollDown, pressKey, selectOption, waitForNavigation, evaluate,
   hoverElement, getAttribute, checkElement, checkCaptcha, dismissModals,
 };

@@ -294,10 +294,14 @@ router.post("/browser-platform/control/screenshot", async (req, res) => {
 
 router.post("/browser-platform/control/pdf", async (req, res) => {
   try {
-    const { pageId } = req.body || {};
+    const { pageId, format, landscape, printBackground } = req.body || {};
     const runner = _getRunner();
-    const result = await runner.run([{ action: "screenshot", label: "PDF export" }], { pageId });
-    res.json({ ok: result.ok, result, note: "PDF export via Playwright page.pdf() — requires headless mode" });
+    // Real fix (Enterprise Import/Export Validation mission) — this
+    // previously ran a "screenshot" action (real PNG bytes) while claiming
+    // to be a PDF export. Now genuinely calls Chromium's page.pdf() via
+    // actionEngine.cjs's real pdf() action (added alongside this fix).
+    const result = await runner.run([{ action: "pdf", label: "PDF export", format, landscape, printBackground }], { pageId });
+    res.json({ ok: result.ok, result });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
