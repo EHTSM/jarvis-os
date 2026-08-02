@@ -3,6 +3,8 @@ const router = require("express").Router();
 const crm    = require("../services/crmService");
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit = require("../middleware/operatorAudit");
+const { parseCsvRecords } = require("../utils/csvParse.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 
 // Operator-only bulk read (used by operator console / internal tooling)
 router.get("/crm",       requireAuth, operatorOnly, (req, res) => res.json(crm.getLeads()));
@@ -30,6 +32,55 @@ router.post("/crm/lead", requireAuth, operatorAudit, (req, res) => {
     const lead = { phone: cleanPhone, name, ...rest, userId, status: "new", createdAt: new Date().toISOString() };
     crm.saveLead(lead);
     res.json({ success: true, duplicate: false, lead });
+});
+
+// Enterprise Capability Expansion mission — real bulk CRM import.
+// Confirmed genuinely absent before this: POST /crm/lead only ever
+// accepted one lead per request. Reuses the exact same validation
+// (phone required, digit-only, min 7 digits, name length cap) and dedup
+// logic (existing phone -> duplicate, never overwritten) as the
+// single-lead route above, just looped over real parsed CSV rows instead
+// of a single req.body. Rate-limited since a bulk import is a much
+// heavier write than a single lead.
+function _validateLeadRow(row) {
+    const phone = row.phone || row.Phone || row.mobile || row.Mobile;
+    if (!phone) return { error: "phone required" };
+    const cleanPhone = String(phone).replace(/\D/g, "");
+    if (!cleanPhone || cleanPhone.length < 7) return { error: "invalid phone number" };
+    const name = row.name || row.Name || undefined;
+    if (name !== undefined && String(name).trim().length > 200) return { error: "name too long — max 200 characters" };
+    return { cleanPhone, name };
+}
+
+router.post("/crm/leads/import", requireAuth, rateLimiter(5, 15 * 60_000), operatorAudit, (req, res) => {
+    const { csv } = req.body || {};
+    if (!csv || typeof csv !== "string") return res.status(400).json({ error: "csv (string body) required" });
+
+    let records;
+    try { records = parseCsvRecords(csv); }
+    catch (e) { return res.status(400).json({ error: "Could not parse CSV: " + e.message }); }
+    if (!records.length) return res.status(400).json({ error: "CSV contains no data rows" });
+    if (records.length > 5000) return res.status(400).json({ error: "Import limited to 5000 rows per request" });
+
+    const userId = req.user.sub || req.user.id || null;
+    const results = { imported: 0, duplicates: 0, failed: 0, errors: [] };
+
+    records.forEach((row, i) => {
+        const v = _validateLeadRow(row);
+        if (v.error) {
+            results.failed++;
+            if (results.errors.length < 50) results.errors.push({ row: i + 2, error: v.error });
+            return;
+        }
+        const existing = crm.getLead(v.cleanPhone);
+        if (existing) { results.duplicates++; return; }
+        const { phone: _p, name: _n, ...rest } = row;
+        const lead = { phone: v.cleanPhone, name: v.name, ...rest, userId, status: "new", createdAt: new Date().toISOString() };
+        crm.saveLead(lead);
+        results.imported++;
+    });
+
+    res.json({ success: true, totalRows: records.length, ...results });
 });
 
 router.patch("/crm/lead/:phone", requireAuth, operatorAudit, (req, res) => {
