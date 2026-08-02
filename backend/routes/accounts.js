@@ -139,6 +139,37 @@ router.get("/accounts/me", requireAuth, (req, res) => {
   });
 });
 
+// ── GET /accounts/me/export ─────────────────────────────────────────
+// GDPR self-service data export — Enterprise Capability Expansion mission.
+// Aggregates real records already stored across accountService/billing/
+// organizationService/crmService/creativeAssetLibrary for the calling
+// account (never another account's data — accountId is always derived
+// from the verified JWT, never a request parameter). Persisted as real
+// JSON bytes via the shared exportFileService and served back through the
+// existing GET /exports/global/:filename route.
+router.get("/accounts/me/export", requireAuth, rateLimiter(5, 15 * 60_000), async (req, res) => {
+  const accountId = req.user.sub || req.user.id;
+  if (!accountId) return res.status(401).json({ error: "Unauthorized" });
+  try {
+    const gdpr = require("../services/gdprExportService.cjs");
+    const data = gdpr.gatherAccountData(accountId);
+    const buffer = Buffer.from(JSON.stringify(data, null, 2), "utf8");
+
+    const exportFiles = require("../services/exportFileService.cjs");
+    const result = await exportFiles.persist(buffer, {
+      filename: `gdpr-export-${accountId}-${Date.now()}.json`,
+      mimeType: "application/json",
+      orgId: null,
+      accountId,
+      capability: "gdpr_data_export",
+      tags: ["gdpr", "privacy", "data-export"],
+    });
+    res.json({ success: true, ...result });
+  } catch (e) {
+    res.status(500).json({ error: e.message || "Export failed" });
+  }
+});
+
 // ── POST /accounts/resend-verification ────────────────────────────
 router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60_000), (req, res) => {
   const accountId = req.user.sub || req.user.id;
