@@ -113,6 +113,7 @@ router.use(require("./aiEcosystem"));     // /ai-ecosystem/* — Universal Regis
 router.use(require("./browserPlatform")); // /browser-platform/* — Browser Registry, Session Manager, Visual Controller, NL Browser, Memory, Workflow Builder, HITL, Marketplace, Dashboard, Benchmark
 router.use(require("./creativeStudio")); // /creative/* — Creative Registry, Unified Router, Image/Video/Voice/Brand/Social Studios, Workspace, Asset Library, Benchmark
 router.use(require("./exportFiles")); // /exports/:orgScope/:filename — Enterprise Capability Expansion: shared serving route for exportFileService.cjs (DOCX/PPTX/ZIP/JSON exports)
+router.use(require("./apiDocs"));     // /api-docs/* — Enterprise Capability Expansion: OpenAPI + Postman generated from the live mounted router tree
 router.use(require("./launchPlatform")); // /launch/* — Dashboard, Onboarding, Workspaces, Docs, Academy, Referral, CST, Feedback, Readiness, Benchmark
 router.use(require("./founderJournal")); // /fop/* — FOP-1: Journal, Escape, Crash, Perf, AI, Credits, Friction, Weekly Score, Launch Confidence, Ship Recommendation
 router.use(require("./growthOS"));        // /growth/* — G1: Email, SMS, WhatsApp, Push, Automation, Audience, Analytics, Templates, Dashboard, Benchmark
