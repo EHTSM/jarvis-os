@@ -31,6 +31,7 @@ const logger = require("../utils/logger");
 // ── Lazy service loaders ───────────────────────────────────────────────────
 function _getBus()       { try { return require("../../agents/runtime/runtimeEventBus.cjs"); } catch { return null; } }
 function _getMissionRT() { try { return require("../../agents/runtime/missionRuntime.cjs"); } catch { return null; } }
+function _getMissionOrch() { try { return require("./missionOrchestrator.cjs"); } catch { return null; } }
 function _getMissionMem(){ try { return require("./missionMemory.cjs"); } catch { return null; } }
 function _getAiSvc()     { try { return require("./aiService.js"); } catch { return null; } }
 function _getObs()       { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
@@ -593,8 +594,13 @@ async function _sideEffect(decision) {
             break;
         }
         case "CreateMission": {
-            // Queue a mission-creation task (requires approval, so we just notify)
-            // Actual mission creation waits for operator approval
+            // No side effect here by design — this decision either has
+            // requiresApproval:false, in which case missionOrchestrator.cjs's
+            // own runtimeEventBus subscriber (_subscribeDecisions) already
+            // auto-creates the mission from the "decision" event emitted
+            // above in _evaluate(), or requiresApproval:true, in which case
+            // the mission is created only via approveDecision() /
+            // POST /runtime/decisions/:id/approve once an operator confirms.
             break;
         }
         default:
@@ -671,6 +677,54 @@ function getDecision(id) {
     return _ring.find(d => d.decisionId === id) || null;
 }
 
+// ── Public: approveDecision ─────────────────────────────────────────────────
+// Capability Reuse Verification mission — closes a real, narrow gap: R011
+// ("task-failures-create-mission") is the only rule that ever produces a
+// CreateMission decision, and it always sets requiresApproval:true (by
+// design — an operator should confirm before a recovery mission spins up).
+// missionOrchestrator.cjs already has a real, working subscriber
+// (_subscribeDecisions) that auto-creates a mission the moment a
+// CreateMission decision arrives on runtimeEventBus with
+// requiresApproval:false — that path was already Active. But nothing
+// anywhere ever delivered approval for the requiresApproval:true case, so
+// every R011 decision was a dead end: recorded, visible via
+// GET /runtime/decisions/:id, and then never acted on again.
+//
+// This does NOT bypass or duplicate that existing subscriber — it reuses
+// the exact same real function the subscriber calls
+// (missionOrchestrator.createFromDecision), just from the explicit
+// operator-approval path instead of the auto-approved-only bus path. No
+// new mission-creation logic, no parallel system.
+function approveDecision(id, opts = {}) {
+    const d = getDecision(id);
+    if (!d) return { ok: false, error: "decision_not_found" };
+    if (d.status !== "pending") return { ok: false, error: `decision already ${d.status}`, decision: d };
+    if (!d.requiresApproval) return { ok: false, error: "decision did not require approval — it was already auto-processed", decision: d };
+
+    d.status      = "approved";
+    d.approvedAt  = new Date().toISOString();
+    d.approvedBy  = opts.operatorId || "operator";
+
+    let mission = null;
+    if (d.recommendedAction === "CreateMission") {
+        const orch = _getMissionOrch();
+        if (!orch) return { ok: false, error: "missionOrchestrator_unavailable", decision: d };
+        try {
+            mission = orch.createFromDecision({ ...d, requiresApproval: false });
+        } catch (e) {
+            d.status = "approval_failed";
+            return { ok: false, error: e.message, decision: d };
+        }
+    }
+
+    // Append-only audit trail, same pattern as _persist() for every other
+    // decision-lifecycle write in this file.
+    _persist({ decisionId: d.decisionId, event: "approved", approvedAt: d.approvedAt, approvedBy: d.approvedBy, missionId: mission?.missionId || null });
+    try { _getBus()?.emit("decision:approved", { decisionId: d.decisionId, missionId: mission?.missionId || null }); } catch { /* non-fatal */ }
+
+    return { ok: true, decision: d, mission };
+}
+
 // ── Public: getStatistics ──────────────────────────────────────────────────
 function getStatistics() {
     const avg = _latencies.length
@@ -729,4 +783,4 @@ function _saveState() {
     } catch { /* non-fatal */ }
 }
 
-module.exports = { start, stop, getDecisions, getDecision, getStatistics, replayEvent, getRules };
+module.exports = { start, stop, getDecisions, getDecision, approveDecision, getStatistics, replayEvent, getRules };

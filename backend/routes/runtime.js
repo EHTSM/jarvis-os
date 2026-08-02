@@ -11590,6 +11590,20 @@ router.get("/runtime/decisions/:id", rateLimiter(30, 60_000), (req, res) => {
     return res.json({ success: true, decision: d });
 });
 
+// POST /runtime/decisions/:id/approve
+// Capability Reuse Verification mission — the only route that can deliver
+// approval for a requiresApproval:true Decision Engine decision (currently
+// only R011 "task-failures-create-mission" produces one). Reuses
+// missionOrchestrator.createFromDecision via
+// autonomousDecisionEngine.approveDecision — no new mission-creation logic.
+router.post("/runtime/decisions/:id/approve", rateLimiter(20, 60_000), (req, res) => {
+    if (!_decision) return res.status(503).json({ success: false, error: "decision_engine_unavailable" });
+    if (typeof _decision.approveDecision !== "function") return res.status(503).json({ success: false, error: "approve_not_supported" });
+    const result = _decision.approveDecision(req.params.id, { operatorId: req.user?.sub || req.body?.operatorId || "operator" });
+    if (!result.ok) return res.status(result.error === "decision_not_found" ? 404 : 400).json({ success: false, ...result });
+    return res.json({ success: true, ...result });
+});
+
 // ── I1: Continuous Runtime Observer ────────────────────────────────────────
 const _observer = (() => { try { return require("../services/continuousRuntimeObserver.cjs"); } catch { return null; } })();
 
