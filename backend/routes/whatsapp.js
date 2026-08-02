@@ -93,19 +93,24 @@ router.post(
 router.post("/whatsapp/send", requireAuth, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone || !message) return res.status(400).json({ error: "phone and message required" });
-    const result = await wa.sendMessage(phone, message);
+    // Connector Secret Isolation: pass through org context when present
+    // (req.org?.id, undefined today since attachOrg isn't mounted on this
+    // route) so an org with its own connected WhatsApp account sends
+    // through its own credential instead of the founder's global one.
+    const result = await wa.sendMessage(phone, message, 2, req.org?.id || null);
     res.json(result);
 });
 
 router.post("/whatsapp/bulk", requireAuth, async (req, res) => {
     const { message, statusFilter } = req.body;
     if (!message) return res.status(400).json({ error: "message required" });
+    const orgId = req.org?.id || null;
     const leads = crm.getLeads(statusFilter || "new").filter(l => l.phone);
     const batch = leads.slice(0, 50);   // hard cap — stays under WA Cloud API rate limits
     let sent = 0;
     const _sleep = ms => new Promise(r => setTimeout(r, ms));
     for (let i = 0; i < batch.length; i++) {
-        const r = await wa.sendMessage(batch[i].phone, message);
+        const r = await wa.sendMessage(batch[i].phone, message, 2, orgId);
         if (r.success) sent++;
         if (i < batch.length - 1) await _sleep(1_200);
     }

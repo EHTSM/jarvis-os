@@ -7,6 +7,9 @@ const Razorpay = require("razorpay");
 const crypto   = require("crypto");
 const logger   = require("../utils/logger");
 
+const _try   = fn => { try { return fn(); } catch { return null; } };
+const _vault = () => _try(() => require("./secretVault.cjs"));
+
 // Accept both naming conventions: RAZORPAY_KEY or RAZORPAY_KEY_ID
 const _rzKey    = process.env.RAZORPAY_KEY    || process.env.RAZORPAY_KEY_ID    || "";
 const _rzSecret = process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET || "";
@@ -16,27 +19,61 @@ if (!_paymentsEnabled) {
     logger.warn("[Payment] RAZORPAY_KEY / RAZORPAY_SECRET not set — payment link creation disabled");
 }
 
-let _instance = null;
+// Connector Secret Isolation: previously a single Razorpay instance was
+// built once at module load from the founder's global env keys, so an org
+// that connected its OWN Razorpay account via myConnectors.js (vault
+// connectorId "pay:razorpay") had its stored credentials silently ignored —
+// every payment link, for every org, was created under the founder's
+// account. _resolveCreds(orgId) now checks that org's own vault-stored
+// key/secret first; the global instance (cached, as before) remains the
+// fallback for orgId=null or an org with no connected Razorpay account, so
+// existing single-tenant behavior is completely unaffected.
+let _globalInstance = null;
+const _orgInstances = new Map();
 
-function _getInstance() {
-    if (!_instance) {
-        _instance = new Razorpay({ key_id: _rzKey, key_secret: _rzSecret });
+function _resolveCreds(orgId) {
+    if (orgId) {
+        const vault  = _vault();
+        const keyId  = _try(() => vault?.getSecret?.("pay:razorpay", "api_key", orgId));
+        const secret = _try(() => vault?.getSecret?.("pay:razorpay", "webhook_secret", orgId));
+        if (keyId && secret) return { keyId, secret, scope: orgId };
     }
-    return _instance;
+    return { keyId: _rzKey, secret: _rzSecret, scope: "global" };
 }
 
-function isEnabled() { return _paymentsEnabled; }
+function _getInstance(orgId = null) {
+    const { keyId, secret, scope } = _resolveCreds(orgId);
+    if (!keyId || !secret) return null;
+
+    if (scope === "global") {
+        if (!_globalInstance) _globalInstance = new Razorpay({ key_id: keyId, key_secret: secret });
+        return _globalInstance;
+    }
+    if (!_orgInstances.has(scope)) {
+        _orgInstances.set(scope, new Razorpay({ key_id: keyId, key_secret: secret }));
+    }
+    return _orgInstances.get(scope);
+}
+
+function isEnabled(orgId = null) {
+    if (orgId) {
+        const { keyId, secret } = _resolveCreds(orgId);
+        if (keyId && secret) return true;
+    }
+    return _paymentsEnabled;
+}
 
 /**
  * Create a Razorpay payment link.
  * @returns {Promise<{success:boolean, link?:string, error?:string}>}
  */
-async function createPaymentLink({ amount = 999, name = "Customer", phone = null, description = "JARVIS Access", accountId = null }) {
+async function createPaymentLink({ amount = 999, name = "Customer", phone = null, description = "JARVIS Access", accountId = null, orgId = null }) {
     if (process.env.DISABLE_PAYMENTS === "true") {
         return { success: false, error: "Payments disabled (DISABLE_PAYMENTS=true in .env)" };
     }
-    if (!_paymentsEnabled) {
-        return { success: false, error: "Payments not configured — set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env" };
+    const rz = _getInstance(orgId);
+    if (!rz) {
+        return { success: false, error: "Payments not configured — set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env, or connect via /my-connectors/razorpay" };
     }
 
     // Guard: refuse to create live payment links with a localhost callback URL.
@@ -49,7 +86,6 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
     }
 
     try {
-        const rz   = _getInstance();
         const body = {
             amount:      amount * 100,   // paise
             currency:    "INR",

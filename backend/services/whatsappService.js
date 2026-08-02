@@ -7,8 +7,37 @@
 const axios  = require("axios");
 const logger = require("../utils/logger");
 
-function _token()   { return process.env.WA_TOKEN   || process.env.WHATSAPP_TOKEN || ""; }
-function _phoneId() { return process.env.WA_PHONE_ID || process.env.PHONE_NUMBER_ID || ""; }
+const _try   = fn => { try { return fn(); } catch { return null; } };
+const _vault = () => _try(() => require("./secretVault.cjs"));
+
+// Connector Secret Isolation: this service used to read only the founder's
+// global process.env WA_TOKEN, ignoring any per-org WhatsApp credential a
+// customer stored via myConnectors.js (vault connectorId "msg:whatsapp").
+// sendMessage() now accepts an optional orgId and, when present, resolves
+// that org's own vault-stored token/phoneId FIRST, falling back to the
+// global env only if the org has none configured — so an org that has
+// connected its own WhatsApp account actually sends through it, and never
+// silently uses (or is silently blocked by) another tenant's credentials.
+// Omitting orgId preserves the exact prior global-env-only behavior.
+function _token(orgId)   {
+    if (orgId) {
+        const v = _try(() => _vault()?.getSecret?.("msg:whatsapp", "api_key", orgId));
+        if (v) return v;
+    }
+    return process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN || "";
+}
+function _phoneId(orgId) {
+    if (orgId) {
+        // Phone Number ID is stored under credential type "webhook_secret" —
+        // matches myConnectors.js's PROVIDERS.whatsapp field mapping (the
+        // vault only supports a fixed CRED_TYPES enum; this reuses an
+        // existing slot rather than expanding the vault's type set for one
+        // field, same convention already used for Razorpay's Key Secret).
+        const v = _try(() => _vault()?.getSecret?.("msg:whatsapp", "webhook_secret", orgId));
+        if (v) return v;
+    }
+    return process.env.WA_PHONE_ID || process.env.PHONE_NUMBER_ID || "";
+}
 function _version() { return process.env.WA_API_VERSION || "v19.0"; }
 
 function _sanitizePhone(phone) {
@@ -16,31 +45,41 @@ function _sanitizePhone(phone) {
 }
 
 // Auth cooldown — after a 401/403 we stop retrying for AUTH_COOLDOWN_MS to avoid log spam.
+// Keyed per-scope (org id, or "global" for the founder's own credentials) so
+// one org's bad/expired token doesn't cool down sends for every other
+// tenant using their own connected WhatsApp account.
 const AUTH_COOLDOWN_MS = 60 * 60 * 1000;  // 1 hour
-let _authCooldownUntil = 0;
+const _authCooldownUntil = new Map();
 
-/** Reset the auth cooldown (call after updating WA_TOKEN in .env and reloading). */
-function resetAuthCooldown() { _authCooldownUntil = 0; }
+/** Reset the auth cooldown (call after updating WA_TOKEN in .env and reloading, or per-org after re-connecting). */
+function resetAuthCooldown(orgId = "global") { _authCooldownUntil.delete(orgId); }
 
 /**
  * Send a plain text WhatsApp message with retry.
+ * @param {string} phone
+ * @param {string} text
+ * @param {number} retries
+ * @param {string|null} orgId - when set, resolves this org's own vault-stored
+ *   WhatsApp credential first (see _token/_phoneId above); omit to use the
+ *   founder's global env-configured account (prior behavior, unaffected).
  * @returns {Promise<{success: boolean, messageId?: string, error?: string}>}
  */
-async function sendMessage(phone, text, retries = 2) {
-    const token   = _token();
-    const phoneId = _phoneId();
+async function sendMessage(phone, text, retries = 2, orgId = null) {
+    const scope   = orgId || "global";
+    const token   = _token(orgId);
+    const phoneId = _phoneId(orgId);
 
     if (process.env.DISABLE_WHATSAPP === "true") {
         return { success: false, error: "WhatsApp disabled (DISABLE_WHATSAPP=true in .env)" };
     }
 
     if (!token || !phoneId) {
-        logger.warn("[WA] Not configured — set WA_TOKEN and PHONE_NUMBER_ID in .env");
+        logger.warn(`[WA] Not configured for scope=${scope} — set WA_TOKEN/PHONE_NUMBER_ID in .env or connect via /my-connectors/whatsapp`);
         return { success: false, error: "WhatsApp not configured" };
     }
 
     // Suppress retries during auth cooldown — token is known bad, no point spamming Meta.
-    if (Date.now() < _authCooldownUntil) {
+    if (Date.now() < (_authCooldownUntil.get(scope) || 0)) {
         return { success: false, error: "WhatsApp auth failed — regenerate token in Meta Business Manager" };
     }
 
@@ -76,8 +115,8 @@ async function sendMessage(phone, text, retries = 2) {
 
             // Auth/Config errors: set cooldown so automation stops hammering Meta for the next hour.
             if (status === 400 || status === 401 || status === 403 || status === 404) {
-                _authCooldownUntil = Date.now() + AUTH_COOLDOWN_MS;
-                logger.error(`[WA] Permanent/Config error (${status}) — pausing WA sends for 1 hour. Fix .env (WA_PHONE_ID/WA_TOKEN) and restart.`);
+                _authCooldownUntil.set(scope, Date.now() + AUTH_COOLDOWN_MS);
+                logger.error(`[WA] Permanent/Config error (${status}) for scope=${scope} — pausing WA sends for this scope for 1 hour.`);
                 return { success: false, error: `Config error: ${detail}` };
             }
 

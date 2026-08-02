@@ -36,7 +36,15 @@ function _err(res, e, code) { res.status(code || 400).json({ ok: false, error: e
 const PROVIDERS = {
   whatsapp: {
     label: "WhatsApp Business", connectorId: "msg:whatsapp", category: "messaging",
-    fields: [{ key: "api_key", label: "WhatsApp API Token", type: "password" }],
+    // Connector Secret Isolation: added phone_id (stored under the existing
+    // webhook_secret credential type, same reuse-an-existing-slot convention
+    // already used for Razorpay's second field below) so whatsappService.js
+    // can resolve BOTH values this org needs to actually send through its
+    // own WhatsApp Business number, not just the token.
+    fields: [
+      { key: "api_key",        label: "WhatsApp API Token", type: "password" },
+      { key: "webhook_secret", label: "Phone Number ID",    type: "text" },
+    ],
   },
   razorpay: {
     label: "Razorpay", connectorId: "pay:razorpay", category: "payments",
