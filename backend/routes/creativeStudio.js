@@ -48,6 +48,16 @@ function _imageAgent() {
 function _voiceAgent() {
   try { return require("../../agents/content/voiceCloningAgent.cjs"); } catch { return null; }
 }
+// Enterprise Capability Expansion mission — real Sora video rendering via
+// videoGeneratorAgent.cjs's generateRealVideo(), credential-gated on
+// OPENAI_API_KEY exactly like the image/voice agents above. The same file
+// also exports generate()/run(), a genuinely useful text production-brief
+// generator that predates this mission and stays wired to the autonomous
+// agent runtime (content_video, capability video_brief) — this route only
+// adds the byte-producing path, it doesn't touch that one.
+function _videoAgent() {
+  try { return require("../../agents/content/videoGeneratorAgent.cjs"); } catch { return null; }
+}
 
 // Capabilities with a real, byte-producing generator behind them (vs. the
 // text-LLM fallback used for every other capability, which never produces
@@ -55,6 +65,7 @@ function _voiceAgent() {
 // returns instead of silently claiming success).
 const REAL_IMAGE_CAPABILITIES = new Set(["image_generate", "logo_generate", "banner_generate"]);
 const REAL_VOICE_CAPABILITIES = new Set(["text_to_speech"]);
+const REAL_VIDEO_CAPABILITIES = new Set(["text_to_video"]);
 
 router.use("/creative", requireAuth);
 router.use("/creative", rateLimiter(30, 60_000));
@@ -178,12 +189,29 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
         }
         aiOutput = result;
       } catch (e) { aiOutput = { error: e.message }; }
+    } else if (REAL_VIDEO_CAPABILITIES.has(capability)) {
+      // Real path: OpenAI Sora via videoGeneratorAgent.cjs's
+      // generateRealVideo(). Writes a real local MP4 — served via
+      // /creative/video/file/:filename below. Honest failure (generated:
+      // false + note/jobId) when no OPENAI_API_KEY is configured or the
+      // render hasn't finished within the inline poll window.
+      try {
+        const agent = _videoAgent();
+        const result = await agent?.generateRealVideo({ prompt, seconds: body.seconds, size: body.size });
+        if (result?.generated && result.filename) {
+          outputUrl    = `/creative/video/file/${result.filename}`;
+          generated    = true;
+          generatedVia = result.via;
+        }
+        aiOutput = result;
+      } catch (e) { aiOutput = { error: e.message }; }
     } else {
-      // No real generator exists for this capability (video, image edit/
-      // upscale/background-remove, stt, music). Honest fallback: ask the
-      // model for a description, but never claim media was produced —
-      // generated:false and a note are always present so callers (and the
-      // UI) can tell the difference between a real asset and a preview.
+      // No real generator exists for this capability (image-to-video,
+      // image edit/upscale/background-remove, stt, music). Honest
+      // fallback: ask the model for a description, but never claim media
+      // was produced — generated:false and a note are always present so
+      // callers (and the UI) can tell the difference between a real asset
+      // and a preview.
       try {
         const ai = _ai();
         if (ai?.callAI) {
@@ -257,6 +285,23 @@ router.get("/creative/video/queue", (req, res) => {
 router.get("/creative/video/history", (req, res) => {
   try { res.json({ ok: true, jobs: jobQueue.listJobs({ studioType: "video", accountId: _account(req) }) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Serves the real MP4 files videoGeneratorAgent.cjs's generateRealVideo()
+// writes to data/video/ — same pattern as /creative/audio/:filename below:
+// server-generated `video_<timestamp>.mp4` filename, strict regex, and the
+// resolved path is confirmed to stay inside VIDEO_DIR before serving.
+const _videoPath = require("path");
+const _videoFs   = require("fs");
+const VIDEO_DIR  = _videoPath.join(__dirname, "../../data/video");
+router.get("/creative/video/file/:filename", requireAuth, (req, res) => {
+  const filename = req.params.filename;
+  if (!/^[A-Za-z0-9_.-]+\.mp4$/.test(filename)) return res.status(400).json({ error: "invalid_filename" });
+  const abs = _videoPath.join(VIDEO_DIR, filename);
+  if (!abs.startsWith(VIDEO_DIR + _videoPath.sep)) return res.status(400).json({ error: "invalid_path" });
+  if (!_videoFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  res.setHeader("Content-Type", "video/mp4");
+  res.sendFile(abs);
 });
 
 // ══════════════════════════════════════════════════════════════════

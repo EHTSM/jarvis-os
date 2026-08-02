@@ -91,4 +91,94 @@ async function run(task) {
     }
 }
 
-module.exports = { generate, run };
+// ── Real rendered video (Sora) ──────────────────────────────────────────────
+// Enterprise Capability Expansion mission. generate()/run() above produce a
+// text production brief (script, scenes, b-roll) — genuinely useful but
+// never an actual video file. This adds REAL rendered MP4 output via
+// OpenAI's Sora API, credential-gated on OPENAI_API_KEY exactly like
+// imageGeneratorAgent.cjs's DALL-E 3 integration: if the key is missing,
+// generated:false with an honest reason is returned, never fabricated
+// output. Kept in this same file (not a second agent) since it's the same
+// capability domain — "video" — just a different output type.
+const fs   = require("fs");
+const path = require("path");
+const VIDEO_DIR = path.join(__dirname, "../../data/video");
+const POLL_INTERVAL_MS = 3000;
+const MAX_POLL_MS = 90_000; // Sora renders can take minutes; poll inline for
+                             // up to 90s and report a pending job id back
+                             // rather than blocking the HTTP request forever
+                             // or faking a completed result.
+
+function _openaiClient() {
+    const key = process.env.OPENAI_API_KEY;
+    if (!key) return null;
+    const OpenAI = require("openai");
+    return new OpenAI({ apiKey: key });
+}
+
+async function _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/**
+ * generateRealVideo({ prompt, seconds, size }) -> real rendered MP4 or honest failure
+ * @param {string} seconds "4" | "8" | "12"
+ * @param {string} size    "720x1280" | "1280x720" | "1024x1792" | "1792x1024"
+ */
+async function generateRealVideo({ prompt, seconds = "4", size = "1280x720" } = {}) {
+    if (!prompt) throw new Error("prompt required");
+
+    const result = {
+        prompt, seconds, size,
+        generated: false,
+        videoUrl: null,
+        jobId: null,
+        status: null,
+        note: "Set OPENAI_API_KEY to generate real video via Sora",
+    };
+
+    const client = _openaiClient();
+    if (!client) return result;
+
+    try {
+        let video = await client.videos.create({ model: "sora-2", prompt, seconds, size });
+        result.jobId  = video.id;
+        result.status = video.status;
+
+        const deadline = Date.now() + MAX_POLL_MS;
+        while (video.status === "queued" || video.status === "in_progress") {
+            if (Date.now() > deadline) {
+                result.status = video.status;
+                result.note = `Video still rendering (job ${video.id}) — not yet complete after ${MAX_POLL_MS / 1000}s. Retrieve by jobId later; no fake output returned.`;
+                return result;
+            }
+            await _sleep(POLL_INTERVAL_MS);
+            video = await client.videos.retrieve(video.id);
+        }
+
+        result.status = video.status;
+        if (video.status !== "completed") {
+            result.note = `Video generation failed (job ${video.id}, status: ${video.status})`;
+            return result;
+        }
+
+        const content = await client.videos.downloadContent(video.id);
+        const arrayBuffer = await content.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        fs.mkdirSync(VIDEO_DIR, { recursive: true });
+        const filename = `video_${Date.now()}.mp4`;
+        fs.writeFileSync(path.join(VIDEO_DIR, filename), buffer);
+
+        result.generated  = true;
+        result.filename   = filename;
+        result.via        = "sora-2";
+        result.sizeBytes  = buffer.length;
+        result.note       = null;
+        return result;
+    } catch (err) {
+        result.generationError = err.message;
+        result.note = `Sora API error: ${err.message}`;
+        return result;
+    }
+}
+
+module.exports = { generate, run, generateRealVideo };
