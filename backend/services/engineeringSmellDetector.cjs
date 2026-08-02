@@ -309,6 +309,89 @@ function _detectDuplicateLiterals(files, root) {
     return smells;
 }
 
+// dead_export: an exported symbol (module.exports = { name, ... } shorthand
+// form, the dominant pattern in this codebase — 382 files use it) that no
+// other file in the repo appears to require() and reference by that name.
+// Hand-rolled regex scan, consistent with every other detector in this file
+// (no ts-prune/madge/depcheck dependency — none are installed, and this
+// codebase's convention is regex-based static analysis with zero external
+// analyzer libraries).
+//
+// Heuristic, not exhaustive: a symbol is flagged only when (a) it's exported
+// via the shorthand `{ name, ... }` object-shorthand form (covers the
+// dominant convention; explicit `exports.foo = ...`/`module.exports.foo`
+// assignment forms are not currently used anywhere in this codebase per the
+// architecture map, so are intentionally out of scope rather than silently
+// mis-parsed) and (b) the bare identifier does not appear ANYWHERE else in
+// the codebase outside its own defining file — this deliberately
+// under-flags (a name that merely happens to collide with an unrelated
+// identifier elsewhere suppresses the finding) rather than over-flags,
+// matching this detector suite's existing confidence-scored, human-reviewed
+// design (nothing here auto-deletes code).
+function _detectDeadExport(files, root) {
+    const smells = [];
+    const EXPORT_LINE_RE = /^\s*module\.exports\s*=\s*\{([\s\S]*?)\}\s*;?\s*$/m;
+
+    // Pass 1: collect { file, rel, exportedNames[], exportLine } per file.
+    const exportsByFile = [];
+    for (const f of files) {
+        let content;
+        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        const m = content.match(EXPORT_LINE_RE);
+        if (!m) continue;
+        const body = m[1];
+        // Shorthand identifiers only (`name` or `name: value` where value is
+        // itself a bare identifier alias) — skip anything that isn't a plain
+        // identifier token to avoid false positives on computed/spread keys.
+        const names = [...body.matchAll(/(?:^|[,{\s])([A-Za-z_$][A-Za-z0-9_$]*)\s*(?:,|$|\/\/|\n|\})/g)]
+            .map(x => x[1])
+            .filter(n => n && !["require", "module", "exports"].includes(n));
+        if (!names.length) continue;
+        const lineNo = content.slice(0, m.index).split("\n").length;
+        exportsByFile.push({ file: f, rel: _rel(root, f), names: [...new Set(names)], line: lineNo });
+    }
+    if (!exportsByFile.length) return smells;
+
+    // Pass 2: for each candidate name, search every OTHER file's content for
+    // the bare identifier. One full-corpus read per file (already read in
+    // pass 1 for export detection, but re-read here per-target-file is
+    // avoided by caching file contents once).
+    const contentCache = new Map();
+    function _content(f) {
+        if (contentCache.has(f)) return contentCache.get(f);
+        let c = "";
+        try { c = fs.readFileSync(f, "utf8"); } catch {}
+        contentCache.set(f, c);
+        return c;
+    }
+
+    for (const entry of exportsByFile) {
+        const otherFiles = files.filter(f => f !== entry.file);
+        for (const name of entry.names) {
+            // Cheap guard: identifiers under 4 chars are too collision-prone
+            // for a whole-word regex scan to be meaningful (e.g. "ok", "id").
+            if (name.length < 4) continue;
+            const USAGE_RE = new RegExp(`\\b${name}\\b`);
+            let usedElsewhere = false;
+            for (const other of otherFiles) {
+                if (USAGE_RE.test(_content(other))) { usedElsewhere = true; break; }
+            }
+            if (!usedElsewhere) {
+                smells.push({
+                    type: "dead_export",
+                    severity: "low",
+                    file: entry.rel, line: entry.line,
+                    detail: `Exported symbol \`${name}\` has no detected import/reference anywhere else in the repo`,
+                    confidence: 0.55, // heuristic regex scan, not a real import-graph — human review required before removal
+                    patchHint: `Verify \`${name}\` is truly unused (check dynamic require()/string-based access first), then remove from the exports object`,
+                    estimatedMinutesSaved: 5,
+                });
+            }
+        }
+    }
+    return smells;
+}
+
 function _detectStaleFeatureFlags(files, root) {
     const smells = [];
     const FLAG_RE = /(?:feature_?flag|ff_|FLAG_|isEnabled|featureEnabled)\s*[=:]\s*(?:true|false|1|0)/gi;
@@ -461,6 +544,7 @@ function scan(repoPath) {
         ..._detectBlockingCrypto(files, root),
         ..._detectLongFunctions(files, root),
         ..._detectDuplicateLiterals(files, root),
+        ..._detectDeadExport(files, root),
         ..._detectStaleFeatureFlags(files, root),
         ..._detectStaleMissions(),
         ..._detectBuildFailures(),
