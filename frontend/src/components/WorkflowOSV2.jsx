@@ -208,7 +208,7 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
     try {
       const r = await sendMessage(`run ${wf.name}`, "exec");
       addToast(`✓ "${wf.label}" dispatched`, "success");
-      track("wf_library_run", { name: wf.name });
+      track.event("wf_library_run", { name: wf.name });
     } catch (e) {
       addToast(`Failed to dispatch: ${e.message}`, "error");
     } finally {
@@ -223,7 +223,7 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
       const r = await startCycle(triggerInput.trim(), "general", "ui");
       addToast(`✓ Cycle started: ${r?.cycleId || "dispatched"}`, "success");
       setTriggerInput("");
-      track("wf_quick_trigger");
+      track.event("wf_quick_trigger");
     } catch (e) {
       addToast(`Could not dispatch — ${e.message}`, "error");
     } finally {
@@ -367,7 +367,7 @@ function TabDesigner({ addToast, onViewLibrary }) {
     try {
       await startCycle(`design:${wfName}`, "workflow", "designer");
       setStep(3);
-      track("wf_designer_saved", { name: wfName });
+      track.event("wf_designer_saved", { name: wfName });
     } catch {
       addToast("Could not save workflow draft", "error");
     } finally {
@@ -527,7 +527,7 @@ function TabRunning({ addToast }) {
     try {
       await emergencyStop("operator_stop_running");
       addToast("Emergency stop dispatched — all workflows halting", "info");
-      track("wf_emergency_stop");
+      track.event("wf_emergency_stop");
       setTimeout(loadHistory, 2000);
     } catch (e) {
       addToast(`Stop failed: ${e.message}`, "error");
@@ -814,7 +814,7 @@ function TabRouter({ addToast }) {
         duration: null,
       }, ...prev]);
       setNewTask("");
-      track("wf_router_dispatch");
+      track.event("wf_router_dispatch");
     } catch (e) {
       addToast(`Dispatch failed: ${e.message}`, "error");
     } finally {

@@ -7,6 +7,7 @@ import {
   listAlerts, resolveAlert, getServiceMap,
 } from "../phase25Api";
 import { getAIStatus } from "../aiApi";
+import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
 
 // ── Constants ─────────────────────────────────────────────────────────
@@ -164,7 +165,7 @@ function TabRuntime({ addToast }) {
       await emergencyStop("operator_initiated");
       setEmergency(true);
       addToast("Emergency stop activated", "error");
-      track("emergency_stop");
+      track.event("emergency_stop");
     } catch (e) { addToast(`Stop failed: ${e.message}`, "error"); }
     finally    { setStopping(false); }
   }
@@ -175,7 +176,7 @@ function TabRuntime({ addToast }) {
       await emergencyResume();
       setEmergency(false);
       addToast("Execution resumed", "success");
-      track("emergency_resume");
+      track.event("emergency_resume");
     } catch (e) { addToast(`Resume failed: ${e.message}`, "error"); }
     finally    { setResuming(false); }
   }
@@ -191,7 +192,7 @@ function TabRuntime({ addToast }) {
       });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       addToast("Workers restarted — runtime recovering", "success");
-      track("workers_restarted");
+      track.event("workers_restarted");
       setTimeout(() => {
         getRuntimeStatus().then(s => { setStatus(s); setRestarting(false); }).catch(() => setRestarting(false));
       }, 3000);
@@ -296,6 +297,7 @@ function TabRuntime({ addToast }) {
 
 function TabDeployments({ addToast }) {
   const [deployments, setDeployments] = useState(SEED_DEPLOYMENTS);
+  const [isSample,    setIsSample]    = useState(true);
   const [loading,     setLoading]     = useState(true);
   const [envFilter,   setEnvFilter]   = useState("all");
   const [expanded,    setExpanded]    = useState(null);
@@ -308,6 +310,7 @@ function TabDeployments({ addToast }) {
     ]).then(([list, hist]) => {
       const raw = list?.deployments || hist?.history || (Array.isArray(list) ? list : null) || (Array.isArray(hist) ? hist : null);
       if (raw && raw.length > 0) {
+        setIsSample(false);
         setDeployments(raw.map(d => ({
           id:       d.id,
           env:      d.environment || d.env || "production",
@@ -331,6 +334,7 @@ function TabDeployments({ addToast }) {
 
   return (
     <div className="dv2-deploy-root">
+      {!loading && isSample && <SampleDataNotice label="sample deployment history" />}
       <div className="dv2-deploy-summary">
         {Object.entries(counts).map(([k, v]) => (
           <div key={k} className="dv2-ds-cell">
@@ -400,9 +404,10 @@ function TabDeployments({ addToast }) {
 // ── Tab: Observability ────────────────────────────────────────────────
 
 function TabObservability({ addToast }) {
-  const [slos,    setSlos]    = useState(SEED_SLOS);
-  const [svcMap,  setSvcMap]  = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [slos,     setSlos]     = useState(SEED_SLOS);
+  const [isSample, setIsSample] = useState(true);
+  const [svcMap,   setSvcMap]   = useState(null);
+  const [loading,  setLoading]  = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -410,7 +415,7 @@ function TabObservability({ addToast }) {
       getServiceMap().catch(() => null),
     ]).then(([s, m]) => {
       const arr = s?.slos || (Array.isArray(s) ? s : null);
-      if (arr && arr.length > 0) setSlos(arr);
+      if (arr && arr.length > 0) { setSlos(arr); setIsSample(false); }
       if (m) setSvcMap(m);
     }).finally(() => setLoading(false));
   }, []);
@@ -454,6 +459,7 @@ function TabObservability({ addToast }) {
     <div className="dv2-obs-root">
       <div className="dv2-panel dv2-slo-panel">
         <p className="dv2-section-label">SLO Status</p>
+        {!loading && isSample && <SampleDataNotice label="sample SLO targets" />}
         {loading ? [0,1,2].map(i => <SkelRow key={i} cols={4} />) : (
           slos.map(slo => <SloBar key={slo.id} slo={slo} />)
         )}
@@ -790,6 +796,7 @@ function TabModels({ addToast }) {
 
 function TabLogs({ addToast }) {
   const [logs,      setLogs]      = useState(SEED_LOGS);
+  const [isSample,  setIsSample]  = useState(true);
   const [loading,   setLoading]   = useState(true);
   const [levelF,    setLevelF]    = useState("all");
   const [typeF,     setTypeF]     = useState("all");
@@ -800,6 +807,7 @@ function TabLogs({ addToast }) {
     getRuntimeHistory(50).catch(() => null).then(h => {
       const arr = Array.isArray(h) ? h : (h?.history || []);
       if (arr.length > 0) {
+        setIsSample(false);
         setLogs(arr.slice(0, 50).map((e, i) => ({
           id:    e.id || `h${i}`,
           ts:    _timeAgo(e.timestamp || e.createdAt),
@@ -826,6 +834,7 @@ function TabLogs({ addToast }) {
 
   return (
     <div className="dv2-logs-root">
+      {!loading && isSample && <SampleDataNotice label="sample log entries" />}
       <div className="dv2-logs-summary">
         {Object.entries(counts).map(([k, v]) => (
           <div key={k} className="dv2-ls-cell" style={{ borderColor: LEVEL_COLORS[k]+"30" }}>
@@ -896,6 +905,7 @@ function TabLogs({ addToast }) {
 
 function TabAlerts({ addToast }) {
   const [alerts,   setAlerts]   = useState(SEED_ALERTS);
+  const [isSample, setIsSample] = useState(true);
   const [loading,  setLoading]  = useState(true);
   const [sevFilter,setSevFilter]= useState("all");
   const [statusF,  setStatusF]  = useState("open");
@@ -905,7 +915,7 @@ function TabAlerts({ addToast }) {
   useEffect(() => {
     listAlerts({ limit: 30 }).catch(() => null).then(r => {
       const arr = r?.alerts || (Array.isArray(r) ? r : null);
-      if (arr && arr.length > 0) setAlerts(arr);
+      if (arr && arr.length > 0) { setAlerts(arr); setIsSample(false); }
     }).finally(() => setLoading(false));
   }, []);
 
@@ -915,7 +925,7 @@ function TabAlerts({ addToast }) {
       await resolveAlert(a.id);
       setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
       addToast(`Alert resolved: ${a.title.slice(0, 40)}…`, "success");
-      track("alert_resolve", { alertId: a.id });
+      track.event("alert_resolve", { alertId: a.id });
     } catch {
       setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
       addToast("Alert marked resolved", "info");
@@ -936,6 +946,7 @@ function TabAlerts({ addToast }) {
 
   return (
     <div className="dv2-alerts-root">
+      {!loading && isSample && <SampleDataNotice label="sample alerts" />}
       <div className="dv2-alerts-summary">
         <div className="dv2-as-cell dv2-as-cell--critical">
           <span className="dv2-as-val">{criticalCount}</span>
@@ -1026,6 +1037,7 @@ function TabServices({ addToast }) {
   const [online,   setOnline]   = useState(null);
   const [ops,      setOps]      = useState(null);
   const [services, setServices] = useState(SEED_SERVICES);
+  const [isSample, setIsSample] = useState(true);
   const [loading,  setLoading]  = useState(true);
 
   useEffect(() => {
@@ -1035,13 +1047,11 @@ function TabServices({ addToast }) {
     ]).then(([h, o]) => {
       setOnline(h);
       setOps(o);
-      if (o?.services) {
-        const merged = SEED_SERVICES.map(s => {
-          const live = o.services[s.id] || o.services[s.name?.toLowerCase()] || {};
-          return { ...s, ...live };
-        });
-        setServices(merged);
-      }
+      // /ops's real `services` shape is {whatsapp,payments,telegram,groq}
+      // booleans, not per-service uptime/latency/memory/cpu rows — there is
+      // no live per-service metrics endpoint yet, so this tab's detailed
+      // rows always remain illustrative. Surfaced honestly via
+      // SampleDataNotice below rather than silently passed off as live.
     }).finally(() => setLoading(false));
   }, []);
 
@@ -1049,6 +1059,7 @@ function TabServices({ addToast }) {
 
   return (
     <div className="dv2-svc-root">
+      {!loading && isSample && <SampleDataNotice label="illustrative service rows (live health flags above are real)" />}
       <div className="dv2-svc-header">
         <div className="dv2-svc-hkpis">
           <div className="dv2-kpi">
@@ -1140,7 +1151,7 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Apply failed: ${r.error}`, "error");
       }
-      track("patch_applied");
+      track.event("patch_applied");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setApplying(null); }
   }
@@ -1158,7 +1169,7 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Verify: ${r.error || "done"}`, "info");
       }
-      track("patch_verified");
+      track.event("patch_verified");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setVerifying(null); }
   }
@@ -1175,7 +1186,7 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Rollback failed: ${r.error}`, "error");
       }
-      track("patch_rollback");
+      track.event("patch_rollback");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
   }
 
@@ -1274,7 +1285,7 @@ function TabDLQ({ addToast }) {
       const r = await recoverDLQ();
       addToast(r.success ? `Requeued ${r.queued || 0} task(s)` : `Recovery failed: ${r.error}`, r.success ? "success" : "error");
       if (r.success) await load();
-      track("dlq_recover_all");
+      track.event("dlq_recover_all");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setRecovering(false); }
   }
@@ -1289,7 +1300,7 @@ function TabDLQ({ addToast }) {
       } else {
         addToast(`Remove failed: ${r.error}`, "error");
       }
-      track("dlq_remove");
+      track.event("dlq_remove");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setRemoving(null); }
   }
@@ -1366,7 +1377,7 @@ export default function DevOpsCenterV2({ onNavigate }) {
   }, []);
   const removeToast = useCallback(id => setToasts(t => t.filter(x => x.id !== id)), []);
 
-  useEffect(() => { track("devops_v2_viewed"); }, []);
+  useEffect(() => { track.event("devops_v2_viewed"); }, []);
 
   return (
     <div className="dv2-root">

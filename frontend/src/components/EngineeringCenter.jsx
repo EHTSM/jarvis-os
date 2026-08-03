@@ -148,7 +148,7 @@ function TabMemory() {
       const r = await _get(`/runtime/memory/engineering?goal=${encodeURIComponent(goal)}&limit=15`);
       if (r?.success) { setEntries(r.entries || []); setSugg(r.suggestions || []); setStats(r.stats); }
     } catch {} finally { setLoading(false); }
-    track("eng_memory_search");
+    track.event("eng_memory_search");
   }
 
   return (
@@ -347,7 +347,7 @@ function TabDeploy() {
       if (ch?.success) setChains(ch);
       if (s?.success)  setSurv(s);
     } catch {} finally { setLoading(false); }
-    track("eng_deploy_center");
+    track.event("eng_deploy_center");
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -428,7 +428,7 @@ function TabTests() {
     finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { load(); track("eng_tests"); }, [load]);
+  useEffect(() => { load(); track.event("eng_tests"); }, [load]);
 
   async function handleVerify(p) {
     if (running) return;
@@ -563,7 +563,7 @@ function TabHealing() {
       if (hist?.success)   setHistory(hist.history || []);
       if (plns?.success)   setPlans(plns.plans || []);
     } catch {} finally { setLoading(false); }
-    track("eng_healing");
+    track.event("eng_healing");
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -709,7 +709,7 @@ function TabObservability() {
       setHealth(h);
       setFailIntel(fi);
     } catch {} finally { setLoading(false); }
-    track("eng_observability");
+    track.event("eng_observability");
   }, []);
 
   useEffect(() => {
@@ -843,7 +843,7 @@ const TABS = [
 export default function EngineeringCenter({ onNavigate }) {
   const [tab, setTab] = useState("observability");
 
-  useEffect(() => { track("engineering_center_viewed"); }, []);
+  useEffect(() => { track.event("engineering_center_viewed"); }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>

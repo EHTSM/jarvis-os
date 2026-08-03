@@ -75,7 +75,7 @@ export default function AgentActionCenter({ onNavigate }) {
   function approve(id, val) {
     const next = approvals.map(a => a.id === id ? { ...a, approved: val } : a);
     setApprovals(next); _save(KEY, next);
-    track("aac_approval", { id, val });
+    track.event("aac_approval", { id, val });
   }
 
   const pending    = approvals.filter(a => a.approved === null).length;

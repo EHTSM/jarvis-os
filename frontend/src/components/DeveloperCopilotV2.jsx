@@ -280,7 +280,7 @@ function TabPipeline({ addToast }) {
       setResult(r);
       if (r.ok) addToast("Pipeline completed successfully", "success");
       else      addToast(`Pipeline stopped: ${r.summary || r.error || "see stages"}`, "error");
-      track("pipeline_run", { ok: r.ok });
+      track.event("pipeline_run", { ok: r.ok });
     } catch (e) {
       addToast(`Pipeline error: ${e.message}`, "error");
     } finally {
@@ -413,7 +413,7 @@ function TabBlueprint({ addToast }) {
       } else {
         addToast(`Blueprint failed: ${r.error || "unknown"}`, "error");
       }
-      track("blueprint_generate");
+      track.event("blueprint_generate");
     } catch (e) {
       addToast(`Error: ${e.message}`, "error");
     } finally {
@@ -432,7 +432,7 @@ function TabBlueprint({ addToast }) {
       const r = await runProject(goal);
       setBuildResult(r);
       addToast(r.success ? "Project run started" : `Build failed: ${r.error}`, r.success ? "success" : "error");
-      track("blueprint_build");
+      track.event("blueprint_build");
     } catch (e) {
       addToast(`Build error: ${e.message}`, "error");
     } finally {
@@ -592,7 +592,7 @@ function TabRepos({ addToast }) {
     try {
       await sendMessage(`analyze repo ${repo.name}`, "code");
       addToast(`Analysis started for ${repo.name}`, "success");
-      track("repo_analyze", { name: repo.name });
+      track.event("repo_analyze", { name: repo.name });
     } catch (e) {
       addToast(`Analysis failed: ${e.message}`, "error");
     } finally {
@@ -609,7 +609,7 @@ function TabRepos({ addToast }) {
       const r = await semanticSearch(firstRepo?.id || "ooplix-backend", searchQ.trim());
       const hits = Array.isArray(r) ? r : (r?.results || r?.matches || []);
       setSearchResults({ query: searchQ, hits, mode: "semantic" });
-      track("repo_search", { q: searchQ, mode: "semantic" });
+      track.event("repo_search", { q: searchQ, mode: "semantic" });
     } catch {
       setSearchResults({ query: searchQ, hits: [], mode: "semantic" });
     } finally {
@@ -625,7 +625,7 @@ function TabRepos({ addToast }) {
       const r = await symbolSearch(symQ.trim());
       const hits = r?.results || r?.matches || (Array.isArray(r) ? r : []);
       setSymResults({ query: symQ, hits });
-      track("repo_search", { q: symQ, mode: "symbol" });
+      track.event("repo_search", { q: symQ, mode: "symbol" });
     } catch (e) {
       setSymResults({ query: symQ, hits: [], error: e.message });
     } finally {
@@ -849,7 +849,7 @@ function TabReview({ addToast }) {
         addToast("Review returned no findings", "info");
       }
       setPrInput("");
-      track("code_review_ai");
+      track.event("code_review_ai");
     } catch (e) {
       addToast(`Review failed: ${e.message}`, "error");
     } finally {
@@ -955,7 +955,7 @@ function TabArchitecture({ addToast }) {
     try {
       const r = await sendMessage(`architecture advisor: ${arcQ.trim()}`, "code");
       setArcAns(r?.reply || r?.output || "No response from advisor.");
-      track("arch_ask");
+      track.event("arch_ask");
     } catch (e) {
       setArcAns(`Error: ${e.message}`);
     } finally {
@@ -1263,7 +1263,7 @@ function TabIntegrations({ addToast, onNavigate }) {
       await revokeOAuth(intg.id);
       addToast(`${intg.name} disconnected`, "info");
       const updated = INTEGRATIONS_CATALOG.map(i => i.id === intg.id ? { ...i, connected: false } : i);
-      track("integration_revoke", { provider: intg.id });
+      track.event("integration_revoke", { provider: intg.id });
     } catch (e) { addToast(`Could not disconnect: ${e.message}`, "error"); }
     finally     { setRevoking(null); }
   }
@@ -1364,7 +1364,7 @@ function TabTools({ addToast }) {
       setHistory(prev => [entry, ...prev.slice(0, 9)]);
       setExecRes(entry);
       addToast(`Tool "${tool.name}" executed`, "success");
-      track("tool_execute", { toolId: tool.id });
+      track.event("tool_execute", { toolId: tool.id });
     } catch (e) {
       addToast(`Tool execution failed: ${e.message}`, "error");
       setExecRes({ tool: tool.name, input: execInput.trim(), result: `Error: ${e.message}`, ts: "—" });

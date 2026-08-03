@@ -96,14 +96,14 @@ export default function AgentFactoryCenter({ onNavigate }) {
   function handleCreate() {
     const n = { id: "af_" + Date.now(), name: form.name || "New Agent", template: form.template, status: "idle", runsToday: 0, model: form.model, created: new Date().toISOString().slice(0,10) };
     saveAgents([n, ...agents]);
-    track("agent_factory_create", { template: form.template });
+    track.event("agent_factory_create", { template: form.template });
     createManagedAgent({ name: n.name, type: n.template, model: n.model }).catch(() => {});
     setModal(null);
   }
 
   function handleRetire(id) {
     saveAgents(agents.map(a => a.id === id ? { ...a, status: "retired" } : a));
-    track("agent_factory_retire", { id });
+    track.event("agent_factory_retire", { id });
   }
 
   const tmplOf = id => TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
@@ -119,7 +119,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
           <p className="afc-subtitle">Create, clone, train and retire AI agents. Launch from templates.</p>
         </div>
         <div className="afc-actions">
-          <button className="afc-btn afc-btn-ghost" onClick={() => track("afc_docs")}>Templates</button>
+          <button className="afc-btn afc-btn-ghost" onClick={() => track.event("afc_docs")}>Templates</button>
           <button className="afc-btn afc-btn-primary" onClick={openCreate}>+ Create Agent</button>
         </div>
       </div>
@@ -265,7 +265,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
                 <div className="afc-agent-name">{t.name ?? t.id}</div>
                 <div className="afc-agent-meta">{t.type ?? "template"}{t.description ? ` · ${t.description}` : ""}</div>
               </div>
-              <button className="afc-agent-btn" onClick={() => track("p26_template_use", { id: t.id })}>Use</button>
+              <button className="afc-agent-btn" onClick={() => track.event("p26_template_use", { id: t.id })}>Use</button>
             </div>
           ))}
         </div>
@@ -310,7 +310,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
             <div className="afc-modal-footer">
               <button className="afc-btn afc-btn-ghost" onClick={() => { setModal(null); setTrainMsg(""); }}>Cancel</button>
               <button className="afc-btn afc-btn-primary" onClick={() => {
-                track("agent_factory_train", { id: cloneSource.id });
+                track.event("agent_factory_train", { id: cloneSource.id });
                 setTrainMsg("Training request queued. You will be notified when fine-tuning completes.");
                 setTimeout(() => { setModal(null); setTrainMsg(""); }, 2000);
               }}>

@@ -286,7 +286,7 @@ export default function EngineeringWorkspace() {
     setHealTimeline([]);
     const sid = `ws-${Date.now()}`;
     setSessionId(sid);
-    track("workspace_loop_started");
+    track.event("workspace_loop_started");
 
     try {
       // ── Stage 1: Plan ──
@@ -445,7 +445,7 @@ export default function EngineeringWorkspace() {
     } else {
       setStage("heal", { status: "fail", error: r?.error || "auto-fix failed" });
     }
-    track("workspace_incident_fix");
+    track.event("workspace_incident_fix");
   }
 
   // ── Manual patch auto-pipeline ──
@@ -469,7 +469,7 @@ export default function EngineeringWorkspace() {
       await refreshPatches();
       await refreshLearn();
     }
-    track("workspace_manual_auto_pipeline");
+    track.event("workspace_manual_auto_pipeline");
   }
 
   const pipelineStages = pipelineResult?.stages || [];

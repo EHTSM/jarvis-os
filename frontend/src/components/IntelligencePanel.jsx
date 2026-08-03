@@ -148,7 +148,7 @@ function TabSummary() {
     finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { load(); track("intel_summary"); }, [load]);
+  useEffect(() => { load(); track.event("intel_summary"); }, [load]);
 
   if (loading) return <div style={{ padding: 20 }}><Skel w="60%" /><br/><Skel w="80%" /><br/><Skel w="50%" /></div>;
   if (err || !data) return <Empty title="Could not load summary" sub={err} />;
@@ -228,7 +228,7 @@ function TabSimilarFixes() {
       setResults(r);
     } catch { setResults(null); }
     finally { setLoading(false); }
-    track("intel_similar_fixes");
+    track.event("intel_similar_fixes");
   }
 
   useEffect(() => { search(); }, []); // load all on mount
@@ -294,7 +294,7 @@ function TabPatterns() {
     try { setData(await _get(`/runtime/intel/pattern-ranking?type=${view}`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_patterns");
+    track.event("intel_patterns");
   }, [view]);
 
   useEffect(() => { load(); }, [load]);
@@ -403,7 +403,7 @@ function TabRecommend() {
     try { setData(await _post("/runtime/intel/recommend-patch", { description: desc, filePath, limit: 10 })); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_recommend");
+    track.event("intel_recommend");
   }
 
   const recs = data?.recommendations || [];
@@ -482,7 +482,7 @@ function TabIncidentKB() {
     try { setData(await _get(`/runtime/intel/incident-kb?q=${encodeURIComponent(query)}&limit=20`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_incident_kb");
+    track.event("intel_incident_kb");
   }, [q]);
 
   useEffect(() => { load(""); }, []);
@@ -606,7 +606,7 @@ function TabSearch() {
     try { setData(await _get(`/runtime/intel/search?q=${encodeURIComponent(q)}&scope=${scope}&limit=30`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_search");
+    track.event("intel_search");
   }
 
   const results = data?.results || [];
@@ -683,7 +683,7 @@ function TabCorrelate() {
     try { setData(await _get(`/runtime/intel/correlate?${qs}&limit=15`)); }
     catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("intel_correlate");
+    track.event("intel_correlate");
   }
 
   const correlated    = data?.correlated     || [];
@@ -787,7 +787,7 @@ const TABS = [
 export default function IntelligencePanel({ onNavigate }) {
   const [tab, setTab] = useState("summary");
 
-  useEffect(() => { track("intelligence_panel_viewed"); }, []);
+  useEffect(() => { track.event("intelligence_panel_viewed"); }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: C.text, fontFamily: "system-ui, -apple-system, sans-serif" }}>

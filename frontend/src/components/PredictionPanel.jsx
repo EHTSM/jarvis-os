@@ -158,7 +158,7 @@ function TabReadiness() {
     try { setData(await _get("/runtime/predict/readiness-score")); }
     catch (e) { setErr(e.message); }
     finally { setLoading(false); }
-    track("predict_readiness");
+    track.event("predict_readiness");
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -229,7 +229,7 @@ function TabFailureRisk() {
     try { setData(await _post("/runtime/predict/failure-risk", { request, filePath, pipelineName })); }
     catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("predict_failure_risk");
+    track.event("predict_failure_risk");
   }
 
   return (
@@ -322,7 +322,7 @@ function TabDeployRisk() {
       setData(await _post("/runtime/predict/deploy-risk", { pipelineName, request, filePaths: fps }));
     } catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("predict_deploy_risk");
+    track.event("predict_deploy_risk");
   }
 
   useEffect(() => { assess(); }, []); // load on mount with defaults
@@ -452,7 +452,7 @@ function TabCrossProject() {
     try { setData(await _get(`/runtime/predict/cross-project?q=${encodeURIComponent(q)}&limit=20`)); }
     catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("predict_cross_project");
+    track.event("predict_cross_project");
   }
 
   useEffect(() => { search(); }, []);
@@ -535,7 +535,7 @@ function TabPrePatch() {
     try { setData(await _post("/runtime/predict/pre-patch-advice", { filePath, description })); }
     catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("predict_pre_patch");
+    track.event("predict_pre_patch");
   }
 
   return (
@@ -655,7 +655,7 @@ function TabAdvisor() {
       }));
     } catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("predict_advisor");
+    track.event("predict_advisor");
   }
 
   const TYPES = ["patch", "file", "incident", "deploy"];
@@ -773,7 +773,7 @@ const TABS = [
 export default function PredictionPanel({ onNavigate }) {
   const [tab, setTab] = useState("readiness");
 
-  useEffect(() => { track("prediction_panel_viewed"); }, []);
+  useEffect(() => { track.event("prediction_panel_viewed"); }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>

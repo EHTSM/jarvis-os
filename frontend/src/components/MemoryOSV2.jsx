@@ -451,7 +451,7 @@ function TabKnowledge({ addToast }) {
 
   function handleNotify() {
     setNotified(true);
-    track("knowledge_notify_me");
+    track.event("knowledge_notify_me");
     addToast("We'll notify you when Knowledge Base is available!", "success");
   }
 

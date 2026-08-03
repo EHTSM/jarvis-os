@@ -237,7 +237,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
                 <div className="sic-rec-title">{r.title}</div>
                 <div className="sic-rec-desc">{r.desc}</div>
               </div>
-              <button className="sic-apply-btn" onClick={() => track("sic_apply", {title: r.title})}>Apply</button>
+              <button className="sic-apply-btn" onClick={() => track.event("sic_apply", {title: r.title})}>Apply</button>
             </div>
           ))}
         </div>
