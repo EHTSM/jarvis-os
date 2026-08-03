@@ -174,6 +174,62 @@ const BLOCKING_STATUSES = new Set(["awaiting_approval", "waiting_condition", "aw
  *   id, description, capability, nodeType, assignedAgent, dependsOn[],
  *   status, loopTaskId, retries, maxRetries
  */
+// Autonomous Learning Engine V2 — real historical risk assessment. Confirmed
+// genuinely missing before this: mission planning (_planStages/_createRecord)
+// had zero read of missionMemory's own historical outcome data — every new
+// mission got the same fixed maxRetries:2 and the caller-supplied
+// requiresApproval, regardless of how similar past goals had actually gone.
+// Reuses missionMemory.listMissions({search}) — the same real, already-
+// authoritative mission store every other read in this file already
+// depends on — no new store, no synthetic data.
+const STOPWORDS = new Set(["the","a","an","for","to","of","in","on","and","or","with","is","are","this","that","be","by","as"]);
+function _keywords(goal) {
+    return (goal.toLowerCase().match(/[a-z0-9]+/g) || [])
+        .filter(w => w.length > 3 && !STOPWORDS.has(w))
+        .slice(0, 6);
+}
+
+const MIN_SIMILAR_FOR_RISK = 3;
+const HIGH_FAILURE_RATE_THRESHOLD = 0.5;
+
+function _historicalRiskForGoal(goal) {
+    const mem = _getMem();
+    if (!mem) return { sampleSize: 0, failureRate: 0, highRisk: false };
+    const words = _keywords(goal);
+    if (!words.length) return { sampleSize: 0, failureRate: 0, highRisk: false };
+
+    // Count how many of the new goal's keywords each candidate mission's
+    // objective actually contains, via one real substring query per
+    // keyword (missionMemory.listMissions({search}) only does one term per
+    // call — no new index/embedding store). A UNION of single-keyword
+    // matches was tried first and rejected: with real production history
+    // (7000+ missions), one common word like "deploy" alone matches
+    // hundreds of unrelated missions and swamps the genuinely similar
+    // ones. Requiring a mission to match a MAJORITY of the goal's
+    // keywords (ceil(words.length/2)) keeps this to missions that are
+    // actually about the same thing.
+    const matchCounts = new Map();
+    const byId = new Map();
+    for (const w of words) {
+        try {
+            const { missions } = mem.listMissions({ search: w, limit: 200 });
+            for (const m of missions) {
+                matchCounts.set(m.id, (matchCounts.get(m.id) || 0) + 1);
+                byId.set(m.id, m);
+            }
+        } catch { /* non-fatal */ }
+    }
+    const requiredMatches = Math.max(1, Math.ceil(words.length / 2));
+    const similar = Array.from(matchCounts.entries())
+        .filter(([, count]) => count >= requiredMatches)
+        .map(([id]) => byId.get(id))
+        .filter(m => m.status === "completed" || m.status === "failed");
+    if (similar.length < MIN_SIMILAR_FOR_RISK) return { sampleSize: similar.length, failureRate: 0, highRisk: false };
+
+    const failureRate = similar.filter(m => m.status === "failed").length / similar.length;
+    return { sampleSize: similar.length, failureRate: Math.round(failureRate * 1000) / 1000, highRisk: failureRate >= HIGH_FAILURE_RATE_THRESHOLD };
+}
+
 function _planStages(goal, priority, opts = {}) {
     const reg = _getReg();
 
@@ -188,6 +244,14 @@ function _planStages(goal, priority, opts = {}) {
 
     // Allow caller to skip stages by capability name
     const skip = new Set(opts.skipCapabilities || []);
+
+    // Real historical risk — goals that keyword-match past FAILED missions
+    // at a high rate get more retry budget on the execution-critical stages.
+    // maxRetries stays at the existing default (2) unless real evidence says
+    // otherwise; this only ever adds retry budget, never removes it, so it
+    // can't make a mission less resilient than before this change.
+    const risk = opts.historicalRisk || { highRisk: false };
+    const retryBoost = risk.highRisk ? 1 : 0;
 
     const stages = [];
     for (let i = 0; i < pipeline.length; i++) {
@@ -207,7 +271,7 @@ function _planStages(goal, priority, opts = {}) {
             status:        "pending",
             loopTaskId:    null,
             retries:       0,
-            maxRetries:    2,
+            maxRetries:    2 + retryBoost,
             startedAt:     null,
             completedAt:   null,
             output:        null,
@@ -271,7 +335,14 @@ function _createRecord(opts) {
         subtasks:  [],   // stages added below
     });
 
-    const stages = _planStages(goal.trim(), priority, { skipCapabilities, extraStages });
+    // Real historical risk lookup — see _historicalRiskForGoal above.
+    const historicalRisk = _historicalRiskForGoal(goal.trim());
+    const stages = _planStages(goal.trim(), priority, { skipCapabilities, extraStages, historicalRisk });
+    // A goal that keyword-matches a majority-failed history AND wasn't
+    // already explicitly approval-gated gets escalated to require approval
+    // — real evidence overriding a caller's default, never the reverse
+    // (an explicit requiresApproval:true from the caller is never weakened).
+    const effectiveRequiresApproval = requiresApproval || historicalRisk.highRisk;
 
     // Register each stage as a missionMemory subtask for unified visibility
     for (const stg of stages) {
@@ -308,7 +379,8 @@ function _createRecord(opts) {
         currentStage:     null,
         stages,
         progress:         { total: stages.length, completed: 0, failed: 0, pending: stages.length },
-        requiresApproval,
+        requiresApproval: effectiveRequiresApproval,
+        historicalRisk,
         rollbackPlan:     rollbackPlan || `Revert changes made by mission ${memMission.id}`,
         verificationStatus: "pending",
         createdAt:        now,
@@ -324,7 +396,7 @@ function _createRecord(opts) {
     _stats.created++;
     _stats.totalStages += stages.length;
 
-    _emit("orchestrator:created", memMission.id, { goal: goal.trim(), priority, stageCount: stages.length, requiresApproval });
+    _emit("orchestrator:created", memMission.id, { goal: goal.trim(), priority, stageCount: stages.length, requiresApproval: effectiveRequiresApproval, historicalRisk });
     logger.info(`[Orchestrator] Created mission ${memMission.id} — ${stages.length} stages, priority=${priority}`);
 
     return { ...rec };
@@ -691,13 +763,17 @@ function _subscribeDecisions() {
             if (!d || d.recommendedAction !== "CreateMission") return;
             if (d.requiresApproval) return;   // operator must approve explicitly
 
-            // Auto-create mission from decision
+            // Auto-create mission from decision. _createRecord() can now
+            // escalate requiresApproval on its own (real historical risk —
+            // see _historicalRiskForGoal) even when the decision itself
+            // said requiresApproval:false, so this must check the
+            // RETURNED record before queuing, not just the decision's
+            // original flag (previously unconditional — a real gap this
+            // fixes rather than worsens).
             try {
                 const goal = d.reason?.slice(0, 300) || `Auto-mission from decision ${d.decisionId}`;
-                _createRecord({ goal, priority: _mapPriority(d.priority), originDecisionId: d.decisionId });
-                const ids = [..._live.keys()];
-                const missionId = ids[ids.length - 1];
-                if (missionId) _queue(missionId);
+                const rec = _createRecord({ goal, priority: _mapPriority(d.priority), originDecisionId: d.decisionId });
+                if (!rec.requiresApproval) _queue(rec.missionId);
             } catch (err) {
                 logger.warn(`[Orchestrator] auto-create from decision failed: ${err.message}`);
             }
