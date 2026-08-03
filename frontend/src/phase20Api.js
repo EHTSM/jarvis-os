@@ -40,6 +40,10 @@ export async function getMemoryInsights(params = {}) {
   const q = new URLSearchParams(params).toString();
   return _fetch(`/p20/memory/insights${q ? "?" + q : ""}`);
 }
+export async function rankMemories(params = {}) {
+  const q = new URLSearchParams(params).toString();
+  return _fetch(`/p20/memory/rank${q ? "?" + q : ""}`);
+}
 export async function optimizeMemory() {
   return _fetch("/p20/memory/optimize", { method: "POST" });
 }
@@ -64,6 +68,10 @@ export async function getAutonomyStatus() {
 }
 export async function getAutonomyScore() {
   return _fetch("/p20/ooplix/score");
+}
+export async function listOoplixTasks(params = {}) {
+  const q = new URLSearchParams(params).toString();
+  return _fetch(`/p20/ooplix/tasks${q ? "?" + q : ""}`);
 }
 export async function getAutonomyHistory(params = {}) {
   const q = new URLSearchParams(params).toString();

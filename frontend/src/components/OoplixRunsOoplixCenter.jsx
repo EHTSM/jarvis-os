@@ -1,7 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
-import { getAutonomyStatus, getAutonomyScore, getAutonomyHistory } from "../phase20Api";
+import { getAutonomyStatus, getAutonomyScore, getAutonomyHistory, listOoplixTasks } from "../phase20Api";
 import "./OoplixRunsOoplixCenter.css";
+
+// Real /p20/ooplix/tasks data only covers `marketing` and `support` task
+// types (content/seo tasks route to "marketing" domain here since both feed
+// content+SEO+campaign work). No real backend tracks "revenue", "operations"
+// or "engineering" domain activity — those three domains' recentActions stay
+// illustrative below (verified: ooplixAutonomyEngine.cjs's TASK_SPECS only
+// define content/seo/support/marketing types).
+const DOMAINS_WITH_LIVE_ACTIONS = { marketing: ["content", "seo", "marketing"], support: ["support"] };
+
+// Maps a real completed ooplix task → a domain "recentAction" row.
+function taskToAction(t) {
+  const ts = t.completedAt || t.dispatchedAt || t.createdAt;
+  return {
+    ts: ts ? new Date(ts).toLocaleString([], { hour: "2-digit", minute: "2-digit" }) : "—",
+    action: t.status === "completed" ? (t.output ? t.output.slice(0, 100) : t.title) : `${t.title} (${t.status})`,
+  };
+}
 
 const DOMAINS = [
   {
@@ -108,6 +125,7 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
   const [activeDomain, setActiveDomain] = useState("revenue");
   const [liveStatus,   setLiveStatus]   = useState(null);
   const [apiError,     setApiError]     = useState(null);
+  const [liveActions,  setLiveActions]  = useState({}); // domainId -> real recentActions[]
 
   React.useEffect(() => { track.event("ooplix_runs_ooplix_viewed"); }, []);
 
@@ -122,12 +140,36 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    // Only "marketing" and "support" domains have a matching real task-type
+    // source (content/seo/marketing tasks -> marketing domain; support -> support).
+    Promise.all(
+      Object.entries(DOMAINS_WITH_LIVE_ACTIONS).map(([domainId, types]) =>
+        Promise.all(types.map(type => listOoplixTasks({ type, status: "completed", limit: 5 }).catch(() => null)))
+          .then(results => {
+            const tasks = results.flatMap(r => r?.tasks || []);
+            tasks.sort((a, b) => new Date(b.completedAt || b.createdAt) - new Date(a.completedAt || a.createdAt));
+            return [domainId, tasks.slice(0, 4).map(taskToAction)];
+          })
+      )
+    ).then(pairs => {
+      if (cancelled) return;
+      const next = {};
+      for (const [domainId, actions] of pairs) { if (actions.length > 0) next[domainId] = actions; }
+      setLiveActions(next);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   const liveOverallScore = liveStatus?.overallScore ?? liveStatus?.score;
   const automationScore    = liveOverallScore ?? Math.round(DOMAINS.reduce((a,d)=>a+d.score,0)/DOMAINS.length);
   const humanDependency    = 100 - automationScore;
   const autonomousExecScore= Math.round((DOMAINS.filter(d=>d.score>=80).length/DOMAINS.length)*100);
 
   const domain = DOMAINS.find(d=>d.id===activeDomain) || DOMAINS[0];
+  const effectiveActions = d => liveActions[d.id] || d.recentActions;
+  const isLive = d => !!liveActions[d.id];
 
   const SECTIONS = [
     {id:"overview",   label:"Overview"},
@@ -198,8 +240,8 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
             </div>
 
             <div className="oro-recent-all">
-              <p className="oro-ov-label">Recent autonomous actions (all domains)</p>
-              {DOMAINS.flatMap(d=>d.recentActions.slice(0,1).map(a=>({...a,domain:d.label,color:d.color}))).map((a,i)=>(
+              <p className="oro-ov-label">Recent autonomous actions (all domains) <span style={{fontSize:10,fontWeight:400,color:"var(--text-faint)"}}>(live where available — Marketing &amp; Support; others illustrative)</span></p>
+              {DOMAINS.flatMap(d=>effectiveActions(d).slice(0,1).map(a=>({...a,domain:d.label,color:d.color}))).map((a,i)=>(
                 <div key={i} className="oro-recent-row">
                   <span className="oro-recent-domain" style={{color:a.color}}>{a.domain}</span>
                   <span className="oro-recent-action">{a.action}</span>
@@ -231,7 +273,9 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
                   Agent:  <div className="oro-flow-content">{domain.agents.map(a=><span key={a} className="oro-flow-tag" style={{borderColor:domain.color+"44",color:domain.color}}>{a}</span>)}</div>,
                   Tool:   <div className="oro-flow-content">{domain.tools.map(t=><span key={t} className="oro-flow-tag oro-flow-tag--tool">{t}</span>)}</div>,
                   Memory: <div className="oro-flow-content">{domain.memory.map(m=><span key={m} className="oro-flow-tag oro-flow-tag--mem">{m}</span>)}</div>,
-                  Action: <div className="oro-flow-content oro-flow-content--actions">{domain.recentActions.map((a,j)=>(
+                  Action: <div className="oro-flow-content oro-flow-content--actions">
+                    {!isLive(domain) && <p style={{fontSize:10,color:"var(--text-faint)",margin:"0 0 6px"}}>Illustrative — no live task feed for this domain yet.</p>}
+                    {effectiveActions(domain).map((a,j)=>(
                     <div key={j} className="oro-flow-action-row">
                       <span className="oro-flow-action-ts">{a.ts}</span>
                       <span className="oro-flow-action-text">{a.action}</span>
@@ -282,8 +326,8 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
                     {d.agents.map(a=><div key={a} className="oro-ddc-item" style={{borderLeftColor:d.color}}>{a}</div>)}
                   </div>
                   <div className="oro-ddc-col">
-                    <p className="oro-ddc-col-label">Recent actions</p>
-                    {d.recentActions.map((a,i)=>(
+                    <p className="oro-ddc-col-label">Recent actions {isLive(d) && <span style={{color:"var(--success)",fontWeight:400}}>· live</span>}</p>
+                    {effectiveActions(d).map((a,i)=>(
                       <div key={i} className="oro-ddc-action">
                         <span className="oro-ddc-action-ts">{a.ts}</span>
                         <span className="oro-ddc-action-text">{a.action}</span>

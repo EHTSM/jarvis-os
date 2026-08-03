@@ -1,21 +1,42 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { getMemoryIntelligence, getMemoryInsights } from "../phase20Api";
+import { getMemoryIntelligence, getMemoryInsights, rankMemories } from "../phase20Api";
 import { memoryStats } from "../phase18Api";
 import "./MemoryIntelligenceCenter.css";
 
 const MEM_KEY = "ooplix_memory_intel_v1";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
 
-const SEED_MEMORIES = [
-  { id: "m1", icon: "🏢", key: "Company Profile",   type: "entity",    importance: 98, confidence: 95, staleness: 2,  ageDays: 3,  links: 12, usage: 87 },
-  { id: "m2", icon: "👤", key: "CEO Preferences",   type: "person",    importance: 91, confidence: 88, staleness: 8,  ageDays: 7,  links: 5,  usage: 44 },
-  { id: "m3", icon: "📋", key: "Sales Playbook",    type: "procedure", importance: 85, confidence: 92, staleness: 15, ageDays: 14, links: 8,  usage: 62 },
-  { id: "m4", icon: "🎯", key: "Q3 Goals",          type: "goal",      importance: 94, confidence: 78, staleness: 30, ageDays: 21, links: 6,  usage: 38 },
-  { id: "m5", icon: "🔧", key: "Tech Stack",        type: "technical", importance: 72, confidence: 97, staleness: 5,  ageDays: 2,  links: 15, usage: 91 },
-  { id: "m6", icon: "📊", key: "MRR Benchmarks",   type: "metric",    importance: 88, confidence: 60, staleness: 45, ageDays: 30, links: 3,  usage: 22 },
-  { id: "m7", icon: "💬", key: "Customer Feedback", type: "insight",   importance: 79, confidence: 82, staleness: 10, ageDays: 5,  links: 9,  usage: 55 },
-];
+// Generic per-type icon — real memory items don't carry a custom icon field,
+// so we key off the real `type` returned by the backend instead of fabricating one.
+const TYPE_ICONS = {
+  entity: "🏢", person: "👤", procedure: "📋", goal: "🎯",
+  technical: "🔧", metric: "📊", insight: "💬",
+};
+function iconForType(type) { return TYPE_ICONS[type] || "🧠"; }
+
+function _daysSince(iso) {
+  if (!iso) return null;
+  const ms = Date.now() - new Date(iso).getTime();
+  return Math.max(0, Math.round(ms / 86_400_000));
+}
+
+// Maps a real /p20/memory/rank node → the fields this view renders.
+function mapMemoryNode(n) {
+  const ageDays = _daysSince(n.updatedAt || n.createdAt);
+  return {
+    id: n.id,
+    icon: iconForType(n.type),
+    key: n.key || "untitled",
+    type: n.type || "insight",
+    importance: n.importance ?? 0,
+    confidence: n.confidence ?? 0,
+    staleness: ageDays ?? 0,
+    ageDays: ageDays ?? 0,
+    links: (n.agentIds || []).length,
+    usage: n.usageCount ?? 0,
+  };
+}
 
 const GAPS = [
   { text: "No pricing intelligence stored for top 3 competitors", severity: "critical", dot: "#ff6464" },
@@ -46,25 +67,30 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
   const [tab,     setTab]     = useState("overview");
   const [stats,   setStats]   = useState(null);
   const [insights, setInsights] = useState([]);
+  const [memories, setMemories] = useState([]);
+  const [memLoading, setMemLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([memoryStats(), getMemoryIntelligence(), getMemoryInsights()])
-      .then(([statsRes, intelRes, insightRes]) => {
+    Promise.all([memoryStats(), getMemoryIntelligence(), getMemoryInsights(), rankMemories({ limit: 100 })])
+      .then(([statsRes, intelRes, insightRes, rankRes]) => {
         if (cancelled) return;
         if (statsRes) setStats(statsRes);
         const ins = insightRes?.insights || intelRes?.patterns || [];
         if (Array.isArray(ins) && ins.length > 0) setInsights(ins);
+        const ranked = rankRes?.ranked;
+        if (Array.isArray(ranked)) setMemories(ranked.map(mapMemoryNode));
       })
-      .catch(err => { if (!cancelled) setApiError(err.message); });
+      .catch(err => { if (!cancelled) setApiError(err.message); })
+      .finally(() => { if (!cancelled) setMemLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
-  const totalMem  = stats?.total ?? SEED_MEMORIES.length;
-  const avgImp    = Math.round(SEED_MEMORIES.reduce((s,m) => s + m.importance, 0) / totalMem);
-  const avgConf   = Math.round(SEED_MEMORIES.reduce((s,m) => s + m.confidence, 0) / totalMem);
-  const stale     = SEED_MEMORIES.filter(m => m.staleness > 20).length;
+  const totalMem  = stats?.total ?? memories.length;
+  const avgImp    = memories.length ? Math.round(memories.reduce((s,m) => s + m.importance, 0) / memories.length) : 0;
+  const avgConf   = memories.length ? Math.round(memories.reduce((s,m) => s + m.confidence, 0) / memories.length) : 0;
+  const stale     = memories.filter(m => m.staleness > 20).length;
   const gapCount  = GAPS.filter(g => g.severity === "critical").length;
 
   const TABS = ["overview","relationships","quality","decay","gaps"];
@@ -101,7 +127,11 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
         <div className="mic-grid">
           <div className="mic-panel mic-panel-full">
             <div className="mic-panel-title">All Memories — Importance × Confidence</div>
-            {SEED_MEMORIES.map(m => (
+            {memLoading ? (
+              <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>Loading memories…</div>
+            ) : memories.length === 0 ? (
+              <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>No memories recorded yet.</div>
+            ) : memories.map(m => (
               <div key={m.id} className="mic-memory-row">
                 <span className="mic-memory-icon">{m.icon}</span>
                 <div className="mic-memory-info">
@@ -140,7 +170,9 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
         <div className="mic-panel">
           <div className="mic-panel-title">Memory Quality Scores</div>
           <div className="mic-bar-row">
-            {SEED_MEMORIES.map(m => (
+            {memories.length === 0 ? (
+              <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>{memLoading ? "Loading…" : "No memories recorded yet."}</div>
+            ) : memories.map(m => (
               <div key={m.id} className="mic-bar-row">
                 <div className="mic-bar-label"><span>{m.key}</span><span>I:{m.importance} C:{m.confidence}</span></div>
                 <div className="mic-bar-track">
@@ -156,7 +188,9 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
         <div className="mic-panel">
           <div className="mic-panel-title">Memory Staleness (days without refresh)</div>
           <div className="mic-decay-list">
-            {[...SEED_MEMORIES].sort((a,b) => b.staleness - a.staleness).map(m => (
+            {memories.length === 0 ? (
+              <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>{memLoading ? "Loading…" : "No memories recorded yet."}</div>
+            ) : [...memories].sort((a,b) => b.staleness - a.staleness).map(m => (
               <div key={m.id} className="mic-decay-item">
                 <span style={{fontSize:16}}>{m.icon}</span>
                 <span className="mic-decay-name">{m.key}</span>

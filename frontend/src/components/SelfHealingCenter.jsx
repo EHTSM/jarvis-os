@@ -3,7 +3,10 @@ import { track } from "../analytics";
 import { getHealStatus, getHealHistory, runProbe } from "../phase19Api";
 import "./SelfHealingCenter.css";
 
-// ── Seed data ─────────────────────────────────────────────────────────
+// ── Illustrative health check registry ──────────────────────────────────
+// No backend exposes a named per-service health-check registry (verified:
+// selfHealingRuntime.cjs's getStatus() only returns aggregate probe/heal
+// counts, not per-target check state). Kept illustrative rather than faked-live.
 const HEALTH_CHECKS = [
   { id: "hc1",  name: "API Server liveness",       target: "api.ooplix.com/health",     interval: "30s", status: "passing", lastCheck: "8s ago",    consecutive: 1240, failCount: 0  },
   { id: "hc2",  name: "WhatsApp Bridge heartbeat", target: "wa-bridge:3001/ping",       interval: "15s", status: "passing", lastCheck: "4s ago",    consecutive: 2180, failCount: 2  },
@@ -35,7 +38,11 @@ const PREVENTION_RULES = [
   { id: "pr8",  name: "Stale WhatsApp session recovery",   condition: "WhatsApp bridge returns auth error",                 action: "Clear session and prompt QR re-scan",   enabled: true,  triggers: 2  },
 ];
 
-const TIMELINE = [
+// Illustrative fallback timeline — used only until real heal history loads.
+// Real timeline entries are derived from the same liveHistory (/p19/heal/history)
+// data already fetched below, mapped honestly (recovery events only — this
+// backend doesn't emit "check"/"deploy"/"incident" event types).
+const TIMELINE_FALLBACK = [
   { id: "tl1",  ts: "2026-06-04 14:10", type: "check",    label: "Mobile API Proxy health check failing", severity: "critical", detail: "Pod CPU at 78%. Single replica serving all traffic." },
   { id: "tl2",  ts: "2026-06-04 13:58", type: "recovery", label: "Auto-restart triggered: mobile-api-proxy", severity: "warning", detail: "Recovery action triggered by rule: Pod restart on repeated health fail." },
   { id: "tl3",  ts: "2026-06-04 11:32", type: "deploy",   label: "Deploy success: ooplix-frontend v9.4.0", severity: "info",    detail: "2285 additions, 20 deletions. CI passed. No post-deploy errors." },
@@ -45,6 +52,18 @@ const TIMELINE = [
   { id: "tl7",  ts: "2026-06-02 10:00", type: "recovery", label: "Queue worker restarted",                severity: "warning",  detail: "Bull queue depth exceeded 500. Worker restarted. Queue cleared in 8 min." },
   { id: "tl8",  ts: "2026-06-01 15:30", type: "recovery", label: "API server scaled 1→2 replicas",        severity: "warning",  detail: "CPU sustained above 80% for 12 min. Auto-scaled. CPU normalised at 18%." },
 ];
+
+// Maps a real heal-history record → the timeline row shape this view renders.
+function historyToTimelineEvent(h, i) {
+  return {
+    id: h.id || `th${i}`,
+    ts: h.ts ? new Date(h.ts).toLocaleString() : (h.healedAt ? new Date(h.healedAt).toLocaleString() : "—"),
+    type: "recovery",
+    label: `${h.success ? "Recovery" : "Recovery attempt failed"}: ${h.target || h.targetId || "service"} (${h.type || "restart"})`,
+    severity: h.success ? "warning" : "critical",
+    detail: h.result || h.trigger || "Auto-recovery event.",
+  };
+}
 
 const TYPE_ICONS    = { restart: "↺", rollback: "↩", scale: "↑", check: "◎", recovery: "⬟", deploy: "▷", incident: "⚠" };
 const SEV_COLORS    = { critical: "var(--danger)", warning: "var(--warning)", info: "var(--accent2)", success: "var(--success)" };
@@ -56,6 +75,7 @@ export default function SelfHealingCenter({ onNavigate }) {
   const [toast,     setToast]     = useState(null);
   const [liveStatus, setLiveStatus] = useState(null);
   const [liveHistory, setLiveHistory] = useState(RECOVERY_ACTIONS);
+  const [liveTimeline, setLiveTimeline] = useState(null);
   const [apiError,  setApiError]  = useState(null);
 
   useEffect(() => { track.event("self_healing_viewed"); }, []);
@@ -66,19 +86,21 @@ export default function SelfHealingCenter({ onNavigate }) {
       .then(([statusRes, histRes]) => {
         if (cancelled) return;
         if (statusRes) setLiveStatus(statusRes);
-        const hist = histRes?.history || histRes?.events;
+        // Real /p19/heal/history responds { success, records, total, stats }
+        const hist = histRes?.records || histRes?.history || histRes?.events;
         if (Array.isArray(hist) && hist.length > 0) {
           const mapped = hist.map((h, i) => ({
             id:      h.id || `rh${i}`,
             type:    h.strategy || "restart",
             target:  h.targetId || h.target || "service",
             trigger: h.reason || h.trigger || "health check",
-            status:  h.status || "success",
-            ts:      h.healedAt ? new Date(h.healedAt).toLocaleString() : "recently",
-            result:  h.outcome?.message || h.message || "Healed",
-            success: h.status === "healed" || h.status === "success",
+            status:  h.status || (h.success ? "success" : "failed"),
+            ts:      h.ts ? new Date(h.ts).toLocaleString() : (h.healedAt ? new Date(h.healedAt).toLocaleString() : "recently"),
+            result:  h.outcome?.message || h.message || (h.success ? "Healed" : "Recovery attempt failed"),
+            success: h.success === true || h.status === "healed" || h.status === "success",
           }));
           setLiveHistory(mapped);
+          setLiveTimeline(hist.map(historyToTimelineEvent));
         }
       })
       .catch(err => { if (!cancelled) setApiError(err.message); });
@@ -226,11 +248,14 @@ export default function SelfHealingCenter({ onNavigate }) {
         {/* Incident Timeline */}
         {section === "timeline" && (
           <div className="shc-timeline">
-            {TIMELINE.map((ev, i) => (
+            {!liveTimeline && (
+              <div className="ac-api-banner ac-api-banner--error">⚠ No live recovery events yet — showing illustrative timeline.</div>
+            )}
+            {(liveTimeline || TIMELINE_FALLBACK).map((ev, i) => (
               <div key={ev.id} className="shc-tl-row">
                 <div className="shc-tl-spine">
                   <div className="shc-tl-dot" style={{ background: SEV_COLORS[ev.severity] || "var(--text-faint)" }} />
-                  {i < TIMELINE.length - 1 && <div className="shc-tl-line" />}
+                  {i < (liveTimeline || TIMELINE_FALLBACK).length - 1 && <div className="shc-tl-line" />}
                 </div>
                 <div className="shc-tl-content">
                   <div className="shc-tl-header">

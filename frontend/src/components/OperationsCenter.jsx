@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { track } from "../analytics";
 import { getReadinessReport } from "../phase21Api";
+import { getOpsData } from "../telemetryApi";
+import { listCoordSessions } from "../phase19Api";
 import "./OperationsCenter.css";
 
-// ── Static seed metrics ───────────────────────────────────────────────
+// ── Illustrative agent roster ───────────────────────────────────────────
+// No backend exposes per-agent throughput/duration/error-rate metrics for
+// this named roster (verified: agentExecutionEngine.cjs has the roster but
+// no metrics fields; toolExecutionLayer/taskQueue have no per-agent or
+// hourly breakdown). Kept as clearly-labeled illustrative data rather than
+// fabricating a mapping onto unrelated real metrics.
 const AGENT_THROUGHPUT = [
   { agent: "Support Agent",   color: "#52d68a",          tasksToday: 31, avgDuration: "8s",  successRate: "98.8%", errorRate: "1.2%", queueDepth: 2  },
   { agent: "Analytics Agent", color: "#38bdf8",          tasksToday: 18, avgDuration: "22s", successRate: "99.7%", errorRate: "0.3%", queueDepth: 0  },
@@ -16,12 +23,17 @@ const AGENT_THROUGHPUT = [
   { agent: "DevOps Agent",    color: "#fc6d26",          tasksToday: 5,  avgDuration: "1m22s",successRate:"99.5%", errorRate: "0.5%", queueDepth: 0  },
 ];
 
+// Illustrative — no backend buckets task volume by hour of day (verified:
+// errorAggregator.cjs buckets errors by hour, not tasks; taskQueue.cjs
+// groups by task type, not time).
 const HOURLY_TASKS = [
   { h: "08", tasks: 4 }, { h: "09", tasks: 18 }, { h: "10", tasks: 31 },
   { h: "11", tasks: 24 }, { h: "12", tasks: 12 }, { h: "13", tasks: 8 },
   { h: "14", tasks: 22 }, { h: "15", tasks: 0 },
 ];
 
+// Illustrative per-agent queue breakdown — real queue depth (aggregate) comes
+// from getOpsData().queue below; no backend splits queue depth per named agent.
 const QUEUE_STATUS = [
   { name: "Support queue",   depth: 2,  max: 20, agent: "Support Agent",   color: "#52d68a",        urgent: 1 },
   { name: "SEO queue",       depth: 3,  max: 10, agent: "SEO Agent",       color: "var(--accent2)", urgent: 0 },
@@ -30,18 +42,23 @@ const QUEUE_STATUS = [
   { name: "Sales queue",     depth: 1,  max: 10, agent: "Sales Agent",     color: "#da552f",        urgent: 0 },
 ];
 
-const COORD_EVENTS = [
-  { id: "ce1", ts: "14:08", type: "handoff",     from: "Sales Agent",     to: "Support Agent",   detail: "Lead #4821 converted → onboarding handoff",              status: "success" },
-  { id: "ce2", ts: "13:52", type: "escalation",  from: "Support Agent",   to: "human",            detail: "Ticket #1023 escalated — billing dispute",               status: "escalated"},
-  { id: "ce3", ts: "13:44", type: "memory_write",from: "Analytics Agent", to: "shared_memory",    detail: "Weekly metrics snapshot written to company memory",      status: "success" },
-  { id: "ce4", ts: "13:30", type: "handoff",     from: "SEO Agent",       to: "Content Agent",   detail: "Keyword brief for blog post handed off",                  status: "success" },
-  { id: "ce5", ts: "12:20", type: "memory_read", from: "Marketing Agent", to: "shared_memory",    detail: "Read brand tone, pricing, and ICP from company memory",  status: "success" },
-  { id: "ce6", ts: "11:55", type: "trigger",     from: "DevOps Agent",    to: "Dev Agent",        detail: "Deploy health check passed → unblocked PR review queue", status: "success" },
-  { id: "ce7", ts: "11:14", type: "handoff",     from: "Research Agent",  to: "Content Agent",   detail: "Competitor analysis report handed off for blog post",     status: "success" },
-  { id: "ce8", ts: "10:08", type: "escalation",  from: "Support Agent",   to: "Sales Agent",     detail: "Upsell signal detected — handed off to Sales Agent",      status: "success" },
-];
+const EVENT_COLORS = { handoff: "var(--accent2)", escalation: "var(--danger)", trigger: "var(--warning)", dependency: "#a78bfa" };
 
-const EVENT_COLORS = { handoff: "var(--accent2)", escalation: "var(--danger)", memory_write: "var(--warning)", memory_read: "var(--accent)", trigger: "#52d68a" };
+// Real /p19/coord/sessions data uses `pattern` + `agents[]`, not the
+// from/to/type/detail shape this view renders — map honestly, no fabrication.
+function sessionToCoordEvent(s) {
+  const agents = s.agents || [];
+  const typeMap = { handoff: "handoff", delegation: "dependency", collaboration: "trigger" };
+  return {
+    id: s.sessionId,
+    ts: s.createdAt ? new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—",
+    type: typeMap[s.pattern] || "handoff",
+    from: agents[0] || "unknown",
+    to: agents[1] || agents[0] || "unknown",
+    detail: (s.output || s.error || `${s.pattern} across ${agents.length} agent(s)`).slice(0, 120),
+    status: s.status === "completed" ? "success" : s.status === "failed" ? "escalated" : s.status,
+  };
+}
 
 function MiniBarChart({ data, colorFn }) {
   const max = Math.max(...data.map(d => d.tasks), 1);
@@ -63,6 +80,8 @@ export default function OperationsCenter({ onNavigate }) {
   const [section,    setSection]    = useState("overview");
   const [readiness,  setReadiness]  = useState(null);
   const [apiError,   setApiError]   = useState(null);
+  const [opsQueue,   setOpsQueue]   = useState(null);
+  const [coordEvents,setCoordEvents]= useState([]);
 
   React.useEffect(() => { track.event("operations_center_viewed"); }, []);
 
@@ -74,8 +93,24 @@ export default function OperationsCenter({ onNavigate }) {
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([getOpsData(), listCoordSessions({ limit: 20 })])
+      .then(([ops, coordRes]) => {
+        if (cancelled) return;
+        if (ops?.queue) setOpsQueue(ops.queue);
+        const sessions = coordRes?.sessions;
+        if (Array.isArray(sessions)) setCoordEvents(sessions.map(sessionToCoordEvent));
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  const COORD_EVENTS = coordEvents;
+
   const totalTasks  = AGENT_THROUGHPUT.reduce((s,a) => s + a.tasksToday, 0);
-  const totalQueue  = QUEUE_STATUS.reduce((s,q) => s + q.depth, 0);
+  // Real aggregate queue depth when available, falling back to the illustrative per-agent sum.
+  const totalQueue  = opsQueue ? (opsQueue.pending || 0) + (opsQueue.running || 0) : QUEUE_STATUS.reduce((s,q) => s + q.depth, 0);
   const avgSuccess  = (AGENT_THROUGHPUT.reduce((s,a) => s + parseFloat(a.successRate), 0) / AGENT_THROUGHPUT.length).toFixed(1);
   const avgError    = (AGENT_THROUGHPUT.reduce((s,a) => s + parseFloat(a.errorRate), 0) / AGENT_THROUGHPUT.length).toFixed(2);
   const urgentCount = QUEUE_STATUS.reduce((s,q) => s + q.urgent, 0);
@@ -134,12 +169,12 @@ export default function OperationsCenter({ onNavigate }) {
           <div className="oc-overview">
             <div className="oc-overview-top">
               <div className="oc-overview-card">
-                <p className="oc-ov-label">Task volume today (hourly)</p>
+                <p className="oc-ov-label">Task volume today (hourly) <span style={{fontSize:10,fontWeight:400,color:"var(--text-faint)"}}>(illustrative — no hourly breakdown backend)</span></p>
                 <MiniBarChart data={HOURLY_TASKS} />
                 <p className="oc-ov-sub">Peak: 10:00 — 31 tasks. Total: {totalTasks} tasks.</p>
               </div>
               <div className="oc-overview-card">
-                <p className="oc-ov-label">Queue health</p>
+                <p className="oc-ov-label">Queue health {opsQueue && <span style={{fontSize:10,fontWeight:400,color:"var(--success)"}}>· live total: {totalQueue}</span>}</p>
                 <div className="oc-queue-overview">
                   {QUEUE_STATUS.map(q => (
                     <div key={q.name} className="oc-qo-row">
@@ -156,6 +191,9 @@ export default function OperationsCenter({ onNavigate }) {
             <div className="oc-overview-card oc-overview-card--wide">
               <p className="oc-ov-label">Recent coordination events</p>
               <div className="oc-coord-mini">
+                {COORD_EVENTS.length === 0 && (
+                  <p className="oc-ov-sub">No coordination sessions recorded yet.</p>
+                )}
                 {COORD_EVENTS.slice(0,4).map(ev => (
                   <div key={ev.id} className="oc-coord-mini-row">
                     <span className="oc-coord-type-dot" style={{ background: EVENT_COLORS[ev.type] }} />
@@ -174,6 +212,7 @@ export default function OperationsCenter({ onNavigate }) {
         {/* Agent Throughput */}
         {section === "throughput" && (
           <div className="oc-throughput-section">
+            <div className="ac-api-banner ac-api-banner--error">⚠ No per-agent throughput backend exists yet — this breakdown is illustrative, not live.</div>
             <div className="oc-throughput-list">
               {AGENT_THROUGHPUT.sort((a,b)=>b.tasksToday-a.tasksToday).map(a => {
                 const maxTasks = Math.max(...AGENT_THROUGHPUT.map(x=>x.tasksToday));
@@ -204,6 +243,7 @@ export default function OperationsCenter({ onNavigate }) {
         {/* Queue Health */}
         {section === "queue" && (
           <div className="oc-queue-section">
+            <div className="ac-api-banner ac-api-banner--error">⚠ No per-agent queue breakdown backend exists yet — per-queue rows below are illustrative{opsQueue ? `; live aggregate depth is ${totalQueue}` : ""}.</div>
             {QUEUE_STATUS.map(q => {
               const pct = Math.round((q.depth / q.max) * 100);
               const color = pct >= 80 ? "var(--danger)" : pct >= 50 ? "var(--warning)" : q.color;
@@ -230,6 +270,7 @@ export default function OperationsCenter({ onNavigate }) {
         {/* Error rates */}
         {section === "errors" && (
           <div className="oc-errors-section">
+            <div className="ac-api-banner ac-api-banner--error">⚠ No per-agent error-rate backend exists yet — this breakdown is illustrative, not live.</div>
             <div className="oc-errors-list">
               {AGENT_THROUGHPUT.sort((a,b)=>parseFloat(b.errorRate)-parseFloat(a.errorRate)).map(a => {
                 const err = parseFloat(a.errorRate);
@@ -267,6 +308,9 @@ export default function OperationsCenter({ onNavigate }) {
               ))}
             </div>
             <div className="oc-coord-list">
+              {COORD_EVENTS.length === 0 && (
+                <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>No coordination sessions recorded yet.</div>
+              )}
               {COORD_EVENTS.map(ev => (
                 <div key={ev.id} className="oc-coord-row">
                   <span className="oc-coord-ts-col">{ev.ts}</span>

@@ -3,7 +3,7 @@ import { track } from "../analytics";
 import { sendMessage } from "../api";
 import { getRuntimeHistory, dispatchTask, emergencyStop } from "../runtimeApi";
 import { getOpsData, getHealStatus } from "../telemetryApi";
-import { startCycle, listCycles, cycleStats } from "../phase18Api";
+import { startCycle, listCycles, cycleStats, listAgents, getAgentHistory } from "../phase18Api";
 import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
 
@@ -50,16 +50,20 @@ const ROUTER_AGENTS = [
   { id: "ag_analytics", name: "Analytics Agent",  icon: "▣", color: "#38bdf8" },
 ];
 
-const SEED_TASKS = [
-  { id: "rt1", title: "Generate meta descriptions for Phase 10 blog post",   priority: "high",     status: "completed",  agentId: "ag_seo",       category: "seo",        createdAt: "10:02", duration: "720ms" },
-  { id: "rt2", title: "Triage 3 inbound support tickets",                    priority: "critical", status: "completed",  agentId: "ag_support",   category: "support",    createdAt: "10:08", duration: "180ms" },
-  { id: "rt3", title: "Draft LinkedIn post about Phase 9 AI OS release",     priority: "medium",   status: "in_progress",agentId: "ag_marketing", category: "marketing",  createdAt: "10:15", duration: null   },
-  { id: "rt4", title: "Analyse keyword gap vs competitors",                  priority: "medium",   status: "queued",     agentId: "ag_seo",       category: "seo",        createdAt: "10:18", duration: null   },
-  { id: "rt5", title: "Write blog: WhatsApp Automation for Agencies",        priority: "high",     status: "queued",     agentId: "ag_content",   category: "content",    createdAt: "10:20", duration: null   },
-  { id: "rt6", title: "Check deploy health after v9.4.0 push",              priority: "critical", status: "completed",  agentId: "ag_devops",    category: "devops",     createdAt: "09:58", duration: "92ms" },
-  { id: "rt7", title: "Qualify 5 new leads from yesterday sign-ups",        priority: "high",     status: "in_progress",agentId: "ag_sales",     category: "sales",      createdAt: "10:10", duration: null   },
-  { id: "rt8", title: "Weekly analytics summary report",                    priority: "medium",   status: "completed",  agentId: "ag_analytics", category: "analytics",  createdAt: "09:00", duration: "310ms" },
-];
+// Maps real agent execution history (same source TaskRouterCenter.jsx uses:
+// listAgents + getAgentHistory from phase18Api) into this tab's task-row shape.
+function historyToRouterTask(agentId, r, i) {
+  return {
+    id: `live_${agentId}_${i}`,
+    title: r.input?.slice(0, 80) || "Agent task",
+    priority: "medium",
+    status: r.status === "completed" ? "completed" : r.status === "running" ? "in_progress" : "queued",
+    agentId,
+    category: "runtime",
+    createdAt: r.startedAt ? new Date(r.startedAt).toLocaleTimeString() : "—",
+    duration: r.durationMs != null ? `${r.durationMs}ms` : null,
+  };
+}
 
 const DEPARTMENTS = [
   {
@@ -749,7 +753,8 @@ function TabHistory() {
 
 function TabRouter({ addToast }) {
   const [opsData,    setOpsData]    = useState(null);
-  const [tasks,      setTasks]      = useState(SEED_TASKS);
+  const [tasks,      setTasks]      = useState([]);
+  const [tasksLoading, setTasksLoading] = useState(true);
   const [statusF,    setStatusF]    = useState("all");
   const [newTask,    setNewTask]    = useState("");
   const [dispatching,setDispatching]= useState(false);
@@ -759,6 +764,29 @@ function TabRouter({ addToast }) {
     load();
     const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
+  }, []);
+
+  // Same real source TaskRouterCenter.jsx uses: live agent execution history.
+  useEffect(() => {
+    let cancelled = false;
+    listAgents()
+      .then(async res => {
+        if (cancelled) return;
+        const agents = res?.agents;
+        if (!Array.isArray(agents) || !agents.length) return;
+        const histories = await Promise.all(
+          agents.slice(0, 5).map(a => getAgentHistory(a.id, { limit: 5 }).catch(() => null))
+        );
+        if (cancelled) return;
+        const liveTasks = histories.flatMap((h, i) => {
+          const runs = h?.history || h?.runs || [];
+          return runs.map((r, j) => historyToRouterTask(agents[i]?.id || "unknown", r, j));
+        });
+        setTasks(liveTasks);
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setTasksLoading(false); });
+    return () => { cancelled = true; };
   }, []);
 
   const queue = opsData?.queue || {};
@@ -865,11 +893,15 @@ function TabRouter({ addToast }) {
       </div>
 
       <div className="wov2-task-list">
-        {filtered.length === 0 ? (
+        {tasksLoading ? (
+          <div className="wov2-empty" style={{ padding: "24px" }}>
+            <p className="wov2-empty-title">Loading tasks…</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="wov2-empty" style={{ padding: "24px" }}>
             <span className="wov2-empty-icon" style={{ color: "#52d68a", fontSize: 22 }}>✓</span>
             <p className="wov2-empty-title">Queue is clear</p>
-            <p className="wov2-empty-sub">All tasks completed. No items pending.</p>
+            <p className="wov2-empty-sub">No agent task history yet. Dispatch a task above to get started.</p>
           </div>
         ) : (
           filtered.map(task => {
