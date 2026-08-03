@@ -22,7 +22,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
+const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
 
 function _vault() { try { return require("../services/secretVault.cjs"); } catch { return null; } }
 
@@ -102,7 +102,16 @@ const PROVIDERS = {
 // missing that enforcement (Vault Security Hardening finding: a genuine
 // cross-tenant IDOR — any authenticated user could pass another org's ID
 // and store/list/delete/validate that org's connector credentials).
-router.use("/my-connectors", requireAuth, attachOrg, requireOrgMember);
+//
+// Connector Permission Scoping: upgraded from requireOrgMember (any role)
+// to requireOrgPermission("manage_connectors") (org_owner/org_admin only).
+// These credentials are third-party secrets (WhatsApp/Razorpay/Stripe/etc)
+// for the whole org, the same sensitivity class as manage_billing/manage_sso
+// — a plain "member" or "viewer" role should not be able to read presence
+// of, rotate, or delete them. manage_connectors is its own dedicated
+// permission in organizationService.cjs's ACTIONS map, not a reuse of
+// manage_billing, so this doesn't couple connector access to billing policy.
+router.use("/my-connectors", requireAuth, attachOrg, requireOrgPermission("manage_connectors"));
 
 // GET /my-connectors — status of every curated provider for the caller's org
 router.get("/my-connectors", (req, res) => {

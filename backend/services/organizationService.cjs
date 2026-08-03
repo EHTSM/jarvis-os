@@ -177,6 +177,13 @@ const ACTIONS = {
     // Billing / settings
     manage_billing:      ["org_owner"],
     view_analytics:      ["org_owner", "org_admin", "dept_lead"],
+    // Connector credentials (WhatsApp/Razorpay/Stripe/etc, myConnectors.js) —
+    // sensitive third-party secrets scoped to this org, same bar as
+    // update_org/manage_members rather than the stricter owner-only
+    // manage_billing (deliberately not reused here — connectors aren't a
+    // billing action, and reusing it would silently gate connector setup
+    // behind whatever future changes are made to billing permissions).
+    manage_connectors:   ["org_owner", "org_admin"],
     // Enterprise — SSO/SCIM/policy control who can even reach this org, so
     // these are org_owner-only, same bar as delete_org/manage_billing.
     manage_sso:          ["org_owner"],

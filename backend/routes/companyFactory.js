@@ -626,7 +626,7 @@ router.get("/company-factory/companies/:id/connectors", requireAuth, (req, res) 
 });
 
 router.post("/company-factory/companies/:id/connectors/:connectorId/:type", requireAuth, (req, res) => {
-  const company = _requireCompanyOrgPermission(req, res, "manage_billing");
+  const company = _requireCompanyOrgPermission(req, res, "manage_connectors");
   if (!company) return;
   const { value, meta } = req.body || {};
   if (!value) return res.status(400).json({ ok: false, error: "value required" });
@@ -651,7 +651,7 @@ router.post("/company-factory/companies/:id/connectors/:connectorId/:type/valida
 });
 
 router.delete("/company-factory/companies/:id/connectors/:connectorId/:type", requireAuth, (req, res) => {
-  const company = _requireCompanyOrgPermission(req, res, "manage_billing");
+  const company = _requireCompanyOrgPermission(req, res, "manage_connectors");
   if (!company) return;
   const deleted = _vault()?.deleteSecret?.(req.params.connectorId, req.params.type, company.orgId, req.user.sub);
   res.json({ ok: !!deleted });
