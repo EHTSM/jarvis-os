@@ -73,20 +73,72 @@ async function askStream(orgId, accountId, messages, opts = {}, onChunk = () => 
   return orchestrator.executeStream(messages, { ...opts, orgId, accountId }, onChunk);
 }
 
+// Autonomous Learning Engine V2 — real historical re-ranking. Confirmed
+// genuinely missing before this: recommend() only ever returned
+// aiOrchestrator's on-paper ranking (cost/quality/latencyClass) plus a
+// live reachability probe — no read of any stored outcome data anywhere
+// in this file. usageMetering.queryFromLedger({orgId}) is this org's
+// already-real, already-org-scoped usage ledger (the exact same store
+// getUsage() above reads), and every recorded event already carries a
+// real `success` boolean (see aiOrchestrator.cjs:425/449) — this reuses
+// that data, it does not add a second usage-tracking mechanism.
+const MIN_EVENTS_FOR_RERANK = 5;
+const MAX_SCORE_ADJUSTMENT  = 0.2;
+
+function _providerHistoricalSuccessRate(orgId, providerId) {
+  const usage = _usage();
+  if (!usage) return null;
+  const events = usage.queryFromLedger?.({ orgId, provider: providerId, maxScan: 2000 }) || [];
+  if (events.length < MIN_EVENTS_FOR_RERANK) return null;
+  const successCount = events.filter(e => e.success !== false).length;
+  return { successRate: successCount / events.length, sampleSize: events.length };
+}
+
 /** Provider/model recommendation for a capability — read-only, no
  * execution, so it only needs membership, not the full use_ai gate.
  * aiOrchestrator.recommend() is async (it live-probes each top candidate's
  * reachability) and returns a plain ranked array directly (not
  * {candidates: [...]}) — awaited and wrapped here under a "candidates" key
  * so the route's response shape is self-describing JSON, not a bare array
- * or (the bug this fixes) an un-awaited Promise. */
+ * or (the bug this fixes) an un-awaited Promise.
+ *
+ * Candidates are then annotated with this org's REAL historical success
+ * rate for each provider (>=5 real usage events required before any
+ * adjustment is applied — never speculate from a handful of calls), and
+ * re-sorted by a blended score: aiOrchestrator's on-paper rank position
+ * stays the primary signal, historical reliability breaks ties and can
+ * demote a provider that looks good on paper but has been failing for
+ * this specific org. */
 async function recommend(orgId, accountId, capability, opts = {}) {
   if (!_org()?.hasPermission?.(orgId, accountId, "view_members")) {
     const e = new Error("Forbidden — not a member of this organization");
     e.status = 403;
     throw e;
   }
-  const candidates = await _orchestrator()?.recommend?.(capability, opts) || [];
+  const raw = await _orchestrator()?.recommend?.(capability, opts) || [];
+
+  const annotated = raw.map((c, i) => {
+    const hist = _providerHistoricalSuccessRate(orgId, c.providerId);
+    return {
+      ...c,
+      rankScore: raw.length > 1 ? 1 - i / (raw.length - 1) : 1, // on-paper rank, normalized 0..1 (best=1)
+      historicalSuccessRate: hist?.successRate ?? null,
+      historicalSampleSize:  hist?.sampleSize ?? 0,
+    };
+  });
+
+  const scored = annotated.map(c => {
+    const histTerm = c.historicalSuccessRate != null ? (c.historicalSuccessRate - 0.5) * 2 * MAX_SCORE_ADJUSTMENT : 0;
+    return { ...c, blendedScore: Math.round((c.rankScore + histTerm) * 1000) / 1000 };
+  });
+
+  scored.sort((a, b) => b.blendedScore - a.blendedScore);
+  // Preserve aiOrchestrator's own reachability-based recommendation unless
+  // history has enough real evidence to override it — never silently
+  // recommend an unreachable provider just because it scored well historically.
+  const firstReachable = scored.find(c => c.reachable);
+  const candidates = scored.map(c => ({ ...c, recommended: firstReachable ? c.providerId === firstReachable.providerId : false }));
+
   return { candidates };
 }
 
