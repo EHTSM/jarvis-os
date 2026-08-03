@@ -38,7 +38,7 @@ router.patch("/growth/email/campaigns/:id",      (req, res) => {
 
 router.post("/growth/email/campaigns/:id/send",  (req, res) => {
   try { _ok(res, { campaign: g.sendEmailCampaign(req.params.id) }); }
-  catch (e) { _err(res, e); }
+  catch (e) { _err(res, e, e.nonRetriable ? 400 : 500); }
 });
 
 router.get("/growth/email/sequences",            (req, res) => {
@@ -85,7 +85,7 @@ router.patch("/growth/sms/campaigns/:id",        (req, res) => {
 
 router.post("/growth/sms/campaigns/:id/send",    (req, res) => {
   try { _ok(res, { campaign: g.sendSMSCampaign(req.params.id) }); }
-  catch (e) { _err(res, e); }
+  catch (e) { _err(res, e, e.nonRetriable ? 400 : 500); }
 });
 
 router.post("/growth/sms/campaigns/:id/schedule",(req, res) => {
@@ -101,7 +101,7 @@ router.post("/growth/sms/otp",                   (req, res) => {
     const { to, otp } = req.body || {};
     if (!to) return res.status(400).json({ error: "to required" });
     _ok(res, g.sendOTP(to, otp || Math.floor(100000 + Math.random() * 900000).toString()));
-  } catch (e) { _err(res, e); }
+  } catch (e) { _err(res, e, e.nonRetriable ? 400 : 500); }
 });
 
 // ══════════════════════════════════════════════════════════════════
@@ -118,8 +118,8 @@ router.post("/growth/whatsapp/broadcasts",             (req, res) => {
   catch (e) { _err(res, e); }
 });
 
-router.post("/growth/whatsapp/broadcasts/:id/send",    (req, res) => {
-  try { _ok(res, { campaign: g.sendWhatsAppBroadcast(req.params.id) }); }
+router.post("/growth/whatsapp/broadcasts/:id/send",    async (req, res) => {
+  try { _ok(res, { campaign: await g.sendWhatsAppBroadcast(req.params.id) }); }
   catch (e) { _err(res, e); }
 });
 

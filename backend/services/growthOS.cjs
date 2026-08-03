@@ -78,38 +78,29 @@ function updateEmailCampaign(id, patch) {
   return s.campaigns[id];
 }
 
+// Production Completion Week: this used to fabricate delivered/opened/
+// clicked/bounced stats via fixed percentage multipliers with zero real
+// email send. A real multi-provider emailService.cjs exists and is reused
+// elsewhere in the codebase, but CRM leads in this deployment are
+// phone/WhatsApp-first and carry no email address field at all
+// (crmService.js's lead schema has no `email` key) — there is genuinely
+// no real recipient email data anywhere in this system to send to.
+// Rather than fabricate stats OR silently pretend a send happened,
+// this now fails honestly: building real email-address collection into
+// the CRM would be new capability expansion, out of scope for this fix.
 function sendEmailCampaign(id) {
   const s = _load();
   const c = s.campaigns[id];
   if (!c) throw new Error(`Campaign ${id} not found`);
   if (c.type !== "email") throw new Error("Not an email campaign");
 
-  const size = c.audienceId && s.audiences[c.audienceId]
-    ? (s.audiences[c.audienceId].memberCount || 0)
-    : (crm.getLeads().length || 0);
-
-  c.status          = "sent";
-  c.sentAt          = _ts();
-  c.stats.sent      = size;
-  c.stats.delivered = Math.round(size * 0.97);
-  c.stats.opened    = Math.round(size * 0.23);
-  c.stats.clicked   = Math.round(size * 0.04);
-  c.stats.bounced   = Math.round(size * 0.02);
-
-  if (c.abTest && c.variantB) {
-    // A/B split: 50/50
-    const half = Math.round(size / 2);
-    c.stats.sent = half;
-    c.variantBStats = {
-      sent:    half,
-      opened:  Math.round(half * 0.28), // variant B often outperforms
-      clicked: Math.round(half * 0.06),
-    };
-  }
-
-  _recordEvent({ type: "email_sent", campaignId: id, count: size });
-  _save(s);
-  return c;
+  const err = new Error(
+    "Email campaign sending is not available: CRM leads in this deployment have no email address field " +
+    "(phone/WhatsApp-first CRM), so there is no real recipient list to send to. " +
+    "Configure a real audience with real email addresses via /growth/audiences to enable sending."
+  );
+  err.nonRetriable = true;
+  throw err;
 }
 
 function listEmailCampaigns(status) {
@@ -178,23 +169,21 @@ function updateSMSCampaign(id, patch) {
   return s.campaigns[id];
 }
 
+// Production Completion Week: this used to fabricate delivered/failed
+// stats via fixed percentage multipliers with zero real SMS send. Unlike
+// email/WhatsApp, no SMS provider integration (Twilio, MessageBird, etc)
+// exists anywhere in this repo — confirmed via repository search. Building
+// one would be new capability expansion, out of scope for this fix. Fails
+// honestly instead of fabricating a delivery report for a channel that
+// was never actually connected to any provider.
 function sendSMSCampaign(id) {
   const s = _load();
   const c = s.campaigns[id];
   if (!c || c.type !== "sms") throw new Error(`SMS campaign ${id} not found`);
 
-  const size = c.audienceId && s.audiences[c.audienceId]
-    ? (s.audiences[c.audienceId].memberCount || 0)
-    : (crm.getLeads().length || 0);
-
-  c.status          = "sent";
-  c.sentAt          = _ts();
-  c.stats.sent      = size;
-  c.stats.delivered = Math.round(size * 0.95);
-  c.stats.failed    = Math.round(size * 0.03);
-  _recordEvent({ type: "sms_sent", campaignId: id, count: size });
-  _save(s);
-  return c;
+  const err = new Error("SMS campaign sending is not available: no SMS provider is configured in this deployment.");
+  err.nonRetriable = true;
+  throw err;
 }
 
 function scheduleSMSCampaign(id, scheduledAt) {
@@ -208,9 +197,17 @@ function scheduleSMSCampaign(id, scheduledAt) {
   return c;
 }
 
+// Production Completion Week: this returned {ok:true, deliveredAt} for
+// every call regardless of whether any real SMS was sent — the most
+// severe instance of the fabrication pattern in this file, since a caller
+// of /growth/sms/otp would be told a one-time code was delivered when it
+// never was. No SMS provider exists anywhere in this repo to genuinely
+// send one. Fails honestly instead of reporting fake delivery for a
+// security-relevant code.
 function sendOTP(to, otp) {
-  _recordEvent({ type: "otp_sent", to, otp: "****" });
-  return { ok: true, to, deliveredAt: _ts() };
+  const err = new Error("SMS OTP delivery is not available: no SMS provider is configured in this deployment.");
+  err.nonRetriable = true;
+  throw err;
 }
 
 function listSMSCampaigns(status) {
@@ -243,24 +240,51 @@ function createWhatsAppBroadcast(opts) {
   return s.campaigns[id];
 }
 
-function sendWhatsAppBroadcast(id) {
+// Production Completion Week: this used to fabricate delivered/read/
+// replied/leads/optOut via fixed percentage multipliers of audience size
+// with zero real WhatsApp send — a real user could not tell a fabricated
+// campaign report from a genuinely delivered one. Now makes a real send
+// per recipient via whatsappService.js (already used elsewhere in the
+// codebase, not duplicated here), and reports real per-recipient outcomes.
+// "read"/"replied" are inherently unknowable at send time for any
+// WhatsApp integration (they require a later inbound webhook event, which
+// this module does not currently consume) — reported as null rather than
+// a fabricated number, honest about what genuinely cannot be known yet
+// rather than guessing.
+async function sendWhatsAppBroadcast(id) {
   const s = _load();
   const c = s.campaigns[id];
   if (!c || c.type !== "whatsapp") throw new Error(`WhatsApp broadcast ${id} not found`);
 
-  const size = c.audienceId && s.audiences[c.audienceId]
-    ? (s.audiences[c.audienceId].memberCount || 0)
-    : (crm.getLeads().length || 0);
+  const memberIds = c.audienceId && s.audiences[c.audienceId]
+    ? (s.audiences[c.audienceId].memberIds || [])
+    : crm.getLeads().map(l => l.phone).filter(Boolean);
+
+  const wa = require("./whatsappService.js");
+  let delivered = 0, failed = 0;
+  const failures = [];
+  for (const memberId of memberIds) {
+    try {
+      const result = await wa.sendMessage(memberId, c.body || c.name || "", 2, null);
+      if (result?.ok) delivered++;
+      else { failed++; failures.push({ to: memberId, error: result?.error || "send failed" }); }
+    } catch (err) {
+      failed++;
+      failures.push({ to: memberId, error: err.message });
+    }
+  }
 
   c.status          = "sent";
   c.sentAt          = _ts();
-  c.stats.sent      = size;
-  c.stats.delivered = Math.round(size * 0.96);
-  c.stats.read      = Math.round(size * 0.72);
-  c.stats.replied   = Math.round(size * 0.18);
-  c.stats.leads     = Math.round(size * 0.05);
-  c.stats.optOut    = Math.round(size * 0.01);
-  _recordEvent({ type: "wa_sent", campaignId: id, count: size });
+  c.stats.sent      = memberIds.length;
+  c.stats.delivered = delivered;
+  c.stats.failed    = failed;
+  c.stats.read      = null;   // requires an inbound read-receipt webhook this module doesn't consume
+  c.stats.replied   = null;   // requires an inbound message webhook this module doesn't consume
+  c.stats.leads     = 0;
+  c.stats.optOut    = 0;
+  if (failures.length) c.lastSendFailures = failures.slice(0, 20);
+  _recordEvent({ type: "wa_sent", campaignId: id, count: memberIds.length, delivered, failed });
   _save(s);
   return c;
 }

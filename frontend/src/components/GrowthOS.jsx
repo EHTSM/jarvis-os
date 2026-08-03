@@ -172,7 +172,12 @@ function EmailPanel() {
   };
 
   const send = async (id) => {
-    await post(`/growth/email/campaigns/${id}/send`, {});
+    const r = await post(`/growth/email/campaigns/${id}/send`, {});
+    // Production Completion Week: api()'s fetch().then(r => r.json()) never
+    // checks response.ok, so a real backend error (e.g. "no email address
+    // data for this deployment") resolves as JSON like any success — this
+    // was silently reporting "Campaign sent!" for a call that failed.
+    if (r?.error) { toast(r.error); return; }
     toast("Campaign sent!");
     reloadCamps();
   };
@@ -329,7 +334,8 @@ function SMSPanel() {
   };
 
   const send = async (id) => {
-    await post(`/growth/sms/campaigns/${id}/send`, {});
+    const r = await post(`/growth/sms/campaigns/${id}/send`, {});
+    if (r?.error) { toast(r.error); return; }
     toast("SMS campaign sent!");
     reload();
   };
@@ -344,7 +350,8 @@ function SMSPanel() {
 
   const sendOTP = async () => {
     if (!otp.to) return;
-    await post("/growth/sms/otp", otp);
+    const r = await post("/growth/sms/otp", otp);
+    if (r?.error) { toast(r.error); return; }
     toast(`OTP sent to ${otp.to}`);
     setOtp({ to: "" });
   };
@@ -475,8 +482,16 @@ function WhatsAppPanel() {
   };
 
   const send = async (id) => {
-    await post(`/growth/whatsapp/broadcasts/${id}/send`, {});
-    toast("Broadcast sent!");
+    const r = await post(`/growth/whatsapp/broadcasts/${id}/send`, {});
+    if (r?.error) { toast(r.error); return; }
+    const c = r?.campaign;
+    // Production Completion Week: this now makes real per-recipient sends
+    // via whatsappService.js, so a partial failure (some recipients
+    // succeeded, some didn't — e.g. invalid numbers) is a real possible
+    // outcome, not just all-or-nothing.
+    toast(c?.stats?.failed > 0
+      ? `Broadcast sent — ${c.stats.delivered} delivered, ${c.stats.failed} failed`
+      : "Broadcast sent!");
     reload();
   };
 
