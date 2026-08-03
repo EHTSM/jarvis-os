@@ -232,6 +232,21 @@ app.use((err, req, res, _next) => {
         return res.status(413).json({ success: false, error: "Payload too large" });
     }
     logger.error("Unhandled error:", err.message);
+    // Zero Blind Spot / Continuous Autonomous Operations Certification:
+    // a raw uncaught route exception previously only reached plain
+    // logger.error() (console-only unless LOG_FILE is set, which it isn't
+    // in the real .env) — it never landed in data/logs/structured.ndjson,
+    // the one file continuousRuntimeObserver.cjs's logs source and
+    // errorAggregator.cjs actually read. That made a genuinely broken
+    // backend route invisible to the autonomous observe->decide->mission
+    // loop unless it also crashed the whole process (caught separately by
+    // the pm2 source). Reusing the existing structuredLog() writer here —
+    // no new logging system — closes that gap.
+    try {
+        require("./services/observabilityEngine.cjs").structuredLog("error", err.message, {
+            service: "http", path: req.originalUrl, method: req.method,
+        });
+    } catch { /* non-fatal — must never block the error response */ }
     const body = { success: false, error: "Internal server error" };
     if (process.env.NODE_ENV !== "production") body.details = err.message;
     res.status(500).json(body);

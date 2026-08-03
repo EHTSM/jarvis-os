@@ -1,7 +1,7 @@
 {
   "name": "jarvis-desktop",
-  "version": "1.0.0",
-  "description": "Ooplix - AI Operating System Desktop Application",
+  "version": "1.0.0-rc6",
+  "description": "Ooplix - AI Operating System Desktop Application. NOTE: real packaging/release builds run from the repo root (see root package.json's \"build\" block and .github/workflows/release.yml) — this file's own \"build\"/\"build-app*\" scripts are a legacy standalone dev setup kept in sync only for appId/productName/electron version so they no longer produce a mismatched artifact if ever invoked directly.",
   "main": "main.cjs",
   "homepage": "./",
   "author": "JARVIS Team",
@@ -18,10 +18,7 @@
     "build-app-linux": "npm run build && electron-builder -l",
     "build-app-win": "npm run build && electron-builder -w",
     "lint": "eslint src",
-    "test": "react-scripts test --watchAll=false",
-    "mobile:sync": "npm run build && npx cap copy android",
-    "mobile:open": "npx cap open android",
-    "mobile:build": "npm run build && npx cap copy android && npx cap open android"
+    "test": "react-scripts test --watchAll=false"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -29,17 +26,14 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
-    "react-speech-recognition": "^4.0.1",
-    "@capacitor/core": "^6.0.0"
+    "react-speech-recognition": "^4.0.1"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
+    "concurrently": "^9.2.1",
     "cross-env": "^7.0.3",
-    "electron": "^41.2.1",
-    "electron-builder": "^26.8.1",
-    "wait-on": "^7.0.1",
-    "@capacitor/cli": "^6.0.0",
-    "@capacitor/android": "^6.0.0"
+    "electron": "^41.4.0",
+    "electron-builder": "^25.1.8",
+    "wait-on": "^7.0.1"
   },
   "browserslist": {
     "production": [
@@ -54,8 +48,8 @@
     ]
   },
   "build": {
-    "appId": "com.jarvis.desktop",
-    "productName": "JARVIS",
+    "appId": "com.ooplix.jarvis",
+    "productName": "Ooplix",
     "files": [
       "build/**/*",
       "electron/**/*",

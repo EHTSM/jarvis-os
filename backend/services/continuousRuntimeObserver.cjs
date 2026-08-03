@@ -309,6 +309,32 @@ async function _observePm2() {
 // ── Source: logs ───────────────────────────────────────────────────────────
 let _logPrevErrCount = 0;
 
+// Reads data/logs/structured.ndjson (LOG_FILE above) — the file
+// observabilityEngine.structuredLog() writes to and backend/server.js's
+// global Express error handler now feeds on every uncaught route
+// exception. Previously LOG_FILE was imported but never read here, so a
+// raw handled-500 route error (no agent task involved) never reached this
+// observer at all — only agentExecutionEngine's own task failures (via
+// execLog) were visible. Combining both keeps the existing execLog signal
+// and adds real HTTP-layer error visibility with zero new architecture.
+function _readStructuredErrors(windowMs) {
+    try {
+        const text  = fs.readFileSync(LOG_FILE, "utf8");
+        const lines = text.split("\n").filter(Boolean);
+        const now   = Date.now();
+        let count = 0;
+        for (const line of lines.slice(-500)) {
+            try {
+                const e = JSON.parse(line);
+                if (e.level === "ERROR" && e.ts && (now - new Date(e.ts).getTime()) < windowMs) count++;
+            } catch { /* skip malformed line */ }
+        }
+        return count;
+    } catch {
+        return 0;   // file doesn't exist yet — no structured errors recorded
+    }
+}
+
 async function _observeLogs() {
     const src = "logs";
     try {
@@ -316,14 +342,16 @@ async function _observeLogs() {
         const entries = execLog ? execLog.tail(100) : [];
         const now     = Date.now();
         const recent  = entries.filter(e => e.ts && (now - new Date(e.ts).getTime()) < 5 * 60_000);
-        const errors  = recent.filter(e => e.level === "error" || e.success === false).length;
+        const taskErrors = recent.filter(e => e.level === "error" || e.success === false).length;
+        const httpErrors = _readStructuredErrors(5 * 60_000);
+        const errors      = taskErrors + httpErrors;
 
         if (errors !== _logPrevErrCount) {
             _logPrevErrCount = errors;
             const severity = errors > 10 ? "ERROR" : errors > 3 ? "WARN" : "INFO";
             _emit({ source: src, category: "logs", severity,
                 entity: "exec_log", action: "error_rate_change",
-                metadata: { errorsLast5Min: errors, recentSampled: recent.length },
+                metadata: { errorsLast5Min: errors, taskErrors, httpErrors, recentSampled: recent.length },
                 confidence: 0.85 });
         }
         _sourceOk(src);
