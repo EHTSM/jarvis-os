@@ -67,6 +67,12 @@ const ExecutionCenter          = lazy(() => import("./components/ExecutionCenter
 const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCenter.jsx"));
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
+// Production Completion Week: RuntimeObserverPanel is a real, working
+// dashboard (polls /runtime/observer/status|events|statistics|sources|health
+// every 10s) that was only reachable inside ElectronWorkspace's Electron-only
+// bottom panel — web-mode users had no way to see it at all. Reusing the
+// exact same component here, not duplicating it.
+const RuntimeObserverPanel     = lazy(() => import("./components/RuntimeObserverPanel.jsx"));
 const AgentRegistryCenter      = lazy(() => import("./components/AgentRegistryCenter.jsx"));
 const TaskRouterCenter         = lazy(() => import("./components/TaskRouterCenter.jsx"));
 const SharedMemoryCenter       = lazy(() => import("./components/SharedMemoryCenter.jsx"));
@@ -204,6 +210,7 @@ const MORE_TABS = [
   { id: "copilot",    label: "Copilot",            group: "Engineering"  },
   { id: "devops",     label: "DevOps",             group: "Engineering"  },
   { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
+  { id: "observer",   label: "Runtime Observer",   group: "Engineering"  },
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth"       },
@@ -1342,6 +1349,7 @@ function AppInner() {
         {tab === "reliability"   && <ReliabilityCenter      onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
+        {tab === "observer"      && <RuntimeObserverPanel />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
         {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
         {tab === "sharedmem"     && <SharedMemoryCenter     onNavigate={setTab} />}

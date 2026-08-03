@@ -23,6 +23,7 @@ const NAV_ACTIONS = [
   { id: "nav-operations", label: "Operations",            icon: "◉", group: "Runtime & Ops",       tab: "operations" },
   { id: "nav-reliability",label: "Reliability",           icon: "◈", group: "Runtime & Ops",       tab: "reliability"},
   { id: "nav-selfhealing",label: "Self-Healing",          icon: "✦", group: "Runtime & Ops",       tab: "selfhealing"},
+  { id: "nav-observer",   label: "Runtime Observer",      icon: "◉", group: "Runtime & Ops",       tab: "observer"   },
   { id: "nav-orchestrator",label:"Orchestrator",          icon: "◎", group: "Runtime & Ops",       tab: "orchestrator"},
   { id: "nav-taskrouter", label: "Task Router",           icon: "◇", group: "Runtime & Ops",       tab: "taskrouter" },
   { id: "nav-agents",     label: "Agents",                icon: "⬡", group: "Runtime & Ops",       tab: "agents"     },
