@@ -581,8 +581,20 @@ function getGlobalHealth() {
   // Business
   try {
     const d = _bizSt()?.getDashboard() || {};
-    const winRate = d.pipeline?.winRate || 0;
-    health.orgs.business = { winRate, mrr: d.revenue?.mrr || 0, score: Math.round(winRate * 100) };
+    // Executive OS Numeric Integrity Certification: businessOrgState.cjs's
+    // getDashboard() already computes winRate as a real 0-100 percentage
+    // integer (Math.round(won/closed * 100) at businessOrgState.cjs:349),
+    // unlike knowledge's `ratio` and evolution's `keepRate` just above/below
+    // this block, which are genuine 0-1 fractions requiring the `* 100`
+    // scale-up. This line was multiplying an already-scaled percentage by
+    // 100 again (e.g. winRate:95 -> score:9500), silently corrupting both
+    // this org's own reported score and the overall health.score average
+    // that sums all 5 org scores below — the outer Math.min(100, ...) clamp
+    // on the final aggregate masked the symptom by always reporting a
+    // deceptively perfect 100 whenever any deal had closed, rather than
+    // surfacing the real, lower health score other orgs' real problems
+    // (e.g. engineering blockers) should have produced.
+    health.orgs.business = { winRate: d.pipeline?.winRate || 0, mrr: d.revenue?.mrr || 0, score: Math.min(100, d.pipeline?.winRate || 0) };
   } catch { health.orgs.business = { score: 50 }; }
   // Knowledge
   try {
