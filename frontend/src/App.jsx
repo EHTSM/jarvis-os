@@ -73,6 +73,13 @@ const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCent
 // bottom panel — web-mode users had no way to see it at all. Reusing the
 // exact same component here, not duplicating it.
 const RuntimeObserverPanel     = lazy(() => import("./components/RuntimeObserverPanel.jsx"));
+// V6-V10 Production Realization: executiveOrg/enterpriseOrg/ecosystemOrg/
+// civilizationOrg/autonomousOrg (backend/routes/{executive,enterprise,
+// ecosystem,civilization,autonomous}Org.js) are real, self-ticking backend
+// infrastructure confirmed this session, previously with zero frontend
+// surface. One reusable component (OrgLevelStatus.jsx), parameterized by
+// level below, instead of 5 near-duplicate dashboard files.
+const OrgLevelStatus           = lazy(() => import("./components/OrgLevelStatus.jsx"));
 const AgentRegistryCenter      = lazy(() => import("./components/AgentRegistryCenter.jsx"));
 const TaskRouterCenter         = lazy(() => import("./components/TaskRouterCenter.jsx"));
 const SharedMemoryCenter       = lazy(() => import("./components/SharedMemoryCenter.jsx"));
@@ -211,6 +218,15 @@ const MORE_TABS = [
   { id: "devops",     label: "DevOps",             group: "Engineering"  },
   { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
   { id: "observer",   label: "Runtime Observer",   group: "Engineering"  },
+  // ── Org Levels (V6-V10) — read-only status views over real, self-ticking
+  // backend infrastructure (backend/routes/{executive,enterprise,ecosystem,
+  // civilization,autonomous}Org.js), each rendering OrgLevelStatus with a
+  // different `level` prop rather than 5 separate components.
+  { id: "orglevel-eos",  label: "Executive OS (L6)",    group: "Org Levels" },
+  { id: "orglevel-ent",  label: "Enterprise OS (L7)",   group: "Org Levels" },
+  { id: "orglevel-eco",  label: "Ecosystem OS (L8)",    group: "Org Levels" },
+  { id: "orglevel-civ",  label: "Civilization OS (L9)", group: "Org Levels" },
+  { id: "orglevel-auto", label: "Autonomous OS (L10)",  group: "Org Levels" },
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth"       },
@@ -1350,6 +1366,11 @@ function AppInner() {
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "observer"      && <RuntimeObserverPanel />}
+        {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}
+        {tab === "orglevel-ent"  && <OrgLevelStatus level="ent" />}
+        {tab === "orglevel-eco"  && <OrgLevelStatus level="eco" />}
+        {tab === "orglevel-civ"  && <OrgLevelStatus level="civ" />}
+        {tab === "orglevel-auto" && <OrgLevelStatus level="auto" />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
         {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
         {tab === "sharedmem"     && <SharedMemoryCenter     onNavigate={setTab} />}
