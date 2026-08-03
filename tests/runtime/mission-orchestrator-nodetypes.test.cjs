@@ -1,6 +1,16 @@
 "use strict";
 const { describe, it } = require("node:test");
 const assert = require("node:assert/strict");
+
+// Boot I4 + I5 the same way backend/server.js does before I3, so
+// missionOrchestrator's real completion-time verification gate
+// (_runVerificationGate -> executeStage) can find real registered
+// capabilities (test_run/git_status) instead of silently falling through
+// to the generic "ai" dispatch path, which has no AI provider configured
+// in this test environment and always fails.
+require("../../backend/services/autonomousExecutionRuntime.cjs").start();
+require("../../backend/services/engineeringCapabilities.cjs").register();
+
 const orchestrator = require("../../backend/services/missionOrchestrator.cjs");
 
 function waitFor(predicate, { timeoutMs = 3000, intervalMs = 20 } = {}) {
@@ -63,7 +73,14 @@ describe("missionOrchestrator — Phase 9 workflow node types", () => {
         const resolved = orchestrator.resolveBlockingStage(mission.missionId, waitStageId, { outcome: "met" });
         assert.equal(resolved.status, "completed");
 
-        await waitFor(() => orchestrator.getMission(mission.missionId).orchStatus === "completed");
+        // Autonomous Verification & Regression Certification: _complete() now
+        // runs a real verification gate before transitioning to "completed"
+        // — this mission's stages are all skipped except the Wait node
+        // (nodeType, not a real capability), so it's not code-touching and
+        // gets the lightweight git_status check, not the full test suite —
+        // still real I/O (a real git subprocess), so a slightly longer
+        // timeout than the prior instant hardcoded-pass behavior.
+        await waitFor(() => orchestrator.getMission(mission.missionId).orchStatus === "completed", { timeoutMs: 8_000 });
     });
 
     it("a HumanTask stage transitions to awaiting_human and can be resolved as done or rejected", async () => {

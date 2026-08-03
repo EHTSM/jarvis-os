@@ -50,6 +50,7 @@ function _getRT()     { try { return require("../../agents/runtime/missionRuntim
 function _getLoop()   { try { return require("../../agents/autonomousLoop.cjs");           } catch { return null; } }
 function _getReg()    { try { return require("../../agents/runtime/agentRegistry.cjs");    } catch { return null; } }
 function _getObs()    { try { return require("./observabilityEngine.cjs");                 } catch { return null; } }
+function _getExecRT() { try { return require("./autonomousExecutionRuntime.cjs");           } catch { return null; } }
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const DATA_DIR       = path.join(__dirname, "../../data");
@@ -383,6 +384,8 @@ function _createRecord(opts) {
         historicalRisk,
         rollbackPlan:     rollbackPlan || `Revert changes made by mission ${memMission.id}`,
         verificationStatus: "pending",
+        regressionStatus:   "pending",
+        regressionDetail:   null,
         createdAt:        now,
         updatedAt:        now,
         estimatedCompletion: null,
@@ -471,7 +474,7 @@ async function _advance(missionId) {
         if (anyFailed) {
             _fail(missionId, "One or more stages failed");
         } else if (allDone) {
-            _complete(missionId);
+            await _complete(missionId);
         } else {
             // Some stages still pending but nothing ready — dependency deadlock or waiting
             _transition(missionId, "waiting");
@@ -717,17 +720,112 @@ function resolveBlockingStage(missionId, stageId, resolution = {}) {
     return { ...stg };
 }
 
+// ── Real verification + regression gate ───────────────────────────────────
+// Autonomous Verification & Regression Certification: rec.verificationStatus
+// was previously hardcoded to "passed" unconditionally in _complete() below
+// — a label, not a computed result. This gate always runs a real, existing
+// I4/engineeringCapabilities.cjs capability through executeStage() (the
+// existing execution authority) — never a new framework, never a
+// fabricated result.
+//
+// Two tiers, chosen by whether the mission's own stage graph actually
+// touched code (capability in CODE_TOUCHING_CAPABILITIES — patch_apply,
+// git_commit, rollback, frontend_heal, the real code-mutating handlers in
+// engineeringCapabilities.cjs):
+//   - Code-touching missions get the full regression suite: test_run,
+//     which genuinely executes `npm run test:runtime` (~5s standalone).
+//   - Everything else (the common case — most missions never touch code,
+//     e.g. CRM/marketing/reporting goals) gets git_status: a real,
+//     millisecond-cost check (`git status --porcelain` + `git log -5`)
+//     that proves the repo is in a real, inspectable, non-broken state
+//     without paying full-suite cost for work that couldn't have caused a
+//     code regression in the first place.
+// This was a real, measured problem, not a hypothetical: gating every
+// mission unconditionally on the full suite caused genuine resource
+// contention under a burst of completions (observed directly:
+// tests/runtime/mission-orchestrator-nodetypes.test.cjs's 6-mission run
+// went from ~5s to 90s+ wall time with cascading timeouts, because each
+// `npm run test:runtime` is itself a full `node --test` child process
+// competing for the same CPU/disk as the outer test run).
+const CODE_TOUCHING_CAPABILITIES = new Set(["patch_apply", "git_commit", "rollback", "frontend_heal"]);
+
+function _missionTouchedCode(rec) {
+    return rec.stages.some(s => CODE_TOUCHING_CAPABILITIES.has(s.capability));
+}
+
+async function _runVerificationGate(missionId, rec) {
+    const execRT = _getExecRT();
+    if (!execRT) {
+        // I4 unavailable — this is a genuine infrastructure absence, not a
+        // test failure, but the mission's own requirement ("completion must
+        // NOT occur until verification passes, regression passes") has no
+        // carve-out for "the gate couldn't run" — that would let a missing
+        // subsystem silently reopen the exact hole this fix closes. I4 boots
+        // unconditionally at real server startup (backend/server.js), so
+        // this path is not expected to occur in the real deployed system;
+        // fail closed rather than pass open.
+        return { verificationStatus: "failed", regressionStatus: "failed", regressionDetail: { error: "autonomousExecutionRuntime (I4) unavailable — cannot verify" } };
+    }
+
+    const codeTouching = _missionTouchedCode(rec);
+    const capability   = codeTouching ? "test_run" : "git_status";
+
+    try {
+        const result = await execRT.executeStage({
+            missionId,
+            capability,
+            input:  `${codeTouching ? "Regression" : "Verification"} gate for mission completion: "${rec.goal.slice(0, 80)}"`,
+            policy: { maxRetries: 0, timeoutMs: codeTouching ? 90_000 : 10_000 },
+        });
+
+        if (!codeTouching) {
+            // git_status: real success = the check itself completed and
+            // I4's own _verify() found real output with no fatal marker —
+            // there is no pass/fail count to parse, this is a repo-health
+            // check, not a test run.
+            const passed = result.status === "completed" && result.verificationResult === "passed";
+            return {
+                verificationStatus: passed ? "passed" : "failed",
+                regressionStatus:   "not_applicable",
+                regressionDetail:   { reason: "mission did not touch code — full regression suite not required", executionId: result.executionId },
+            };
+        }
+
+        const parsed = (() => { try { return JSON.parse(result.output || "{}"); } catch { return {}; } })();
+        const regressionPassed = result.status === "completed" && result.verificationResult === "passed" && (parsed.fail ?? 0) === 0;
+        return {
+            verificationStatus: regressionPassed ? "passed" : "failed",
+            regressionStatus:   regressionPassed ? "passed" : "failed",
+            regressionDetail:   { pass: parsed.pass ?? null, fail: parsed.fail ?? null, durationMs: parsed.durationMs ?? result.duration ?? null, executionId: result.executionId },
+        };
+    } catch (err) {
+        // The gate itself throwing is not a silent pass — record it as a
+        // real failure so a broken gate can't masquerade as a green mission.
+        return { verificationStatus: "failed", regressionStatus: "failed", regressionDetail: { error: err.message } };
+    }
+}
+
 // ── Mission terminal transitions ──────────────────────────────────────────
-function _complete(missionId) {
+async function _complete(missionId) {
     const rec = _live.get(missionId);
     if (!rec) return;
-    rec.completedAt         = new Date().toISOString();
-    rec.verificationStatus  = "passed";
+
+    const gate = await _runVerificationGate(missionId, rec);
+    rec.verificationStatus = gate.verificationStatus;
+    rec.regressionStatus   = gate.regressionStatus;
+    rec.regressionDetail   = gate.regressionDetail || null;
+
+    if (gate.verificationStatus === "failed" || gate.regressionStatus === "failed") {
+        _fail(missionId, `Verification/regression gate failed: ${JSON.stringify(gate.regressionDetail || {})}`);
+        return;
+    }
+
+    rec.completedAt = new Date().toISOString();
     _transition(missionId, "completed");
     _stats.completed++;
     _obs("orchestrator.mission.completed", 1, { priority: rec.priority });
     try { _getRT()?.completeMission(missionId, { summary: `Orchestrator completed mission: ${rec.goal.slice(0, 80)}` }); } catch { /* non-fatal */ }
-    logger.info(`[Orchestrator] Mission ${missionId} completed`);
+    logger.info(`[Orchestrator] Mission ${missionId} completed (verification=${rec.verificationStatus}, regression=${rec.regressionStatus})`);
 }
 
 function _fail(missionId, reason) {

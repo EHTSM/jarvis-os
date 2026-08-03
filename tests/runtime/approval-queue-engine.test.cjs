@@ -11,6 +11,16 @@
 const { describe, it } = require("node:test");
 const assert = require("node:assert/strict");
 const approvalQueue = require("../../backend/services/approvalQueue.cjs");
+
+// Boot I4 + I5 the same way backend/server.js does before I3, so
+// missionOrchestrator's real completion-time verification gate
+// (_runVerificationGate -> executeStage) can find real registered
+// capabilities (test_run/git_status) instead of silently falling through
+// to the generic "ai" dispatch path, which has no AI provider configured
+// in this test environment and always fails/hangs the completion.
+require("../../backend/services/autonomousExecutionRuntime.cjs").start();
+require("../../backend/services/engineeringCapabilities.cjs").register();
+
 const orchestrator = require("../../backend/services/missionOrchestrator.cjs");
 
 function waitFor(predicate, { timeoutMs = 3000, intervalMs = 20 } = {}) {
