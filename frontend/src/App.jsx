@@ -118,8 +118,14 @@ const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashbo
 const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
 const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
 // AI Command Center (Module 3) — previously fully built but never wired into
-// nav. operator-os/MissionControl.jsx intentionally excluded: it duplicates
-// the already-wired MissionControlV1.jsx (Module 4's territory).
+// nav. operator-os/MissionControl.jsx is NOT excluded — ElectronWorkspace.jsx
+// renders it directly (isElectron() only) as the Operator OS home dashboard,
+// independent of the tab system below. Clicking its "Missions" tile calls
+// onNavigate("mission"), which routes back into this tab's MissionControlV1
+// (the drill-down detail view). In web mode, ElectronWorkspace is a pure
+// passthrough (`if (!isElectron()) return children`), so only MissionControlV1
+// ever renders there. Not a duplicate — two intentionally distinct
+// granularities (Electron home dashboard vs. mission detail view).
 const OperatorCommandLayer     = lazy(() => import("./components/operator-os/OperatorCommandLayer.jsx"));
 const ExecutiveLoop            = lazy(() => import("./components/operator-os/ExecutiveLoop.jsx"));
 const IntelligenceOverlay      = lazy(() => import("./components/operator-os/IntelligenceOverlay.jsx"));
