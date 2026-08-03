@@ -1255,7 +1255,18 @@ const TOOL_MAP = {
     ft_food_trace:             "ftFoodChain",
     ft_food_risk:              "ftFoodChain",
     ft_food_inventory:         "ftFoodChain",
-    ft_food_safety:            "ftFoodChain"
+    ft_food_safety:            "ftFoodChain",
+
+    // Org-level pipelines (Levels 6-10) — real backend/services/*Workflow.cjs
+    // command pipelines (backend/routes/executiveOrg.js etc, confirmed real
+    // and self-ticking via agentRuntimeSupervisor this session), previously
+    // reachable only via raw authenticated HTTP with zero autonomous-runtime
+    // path. dev-task-style type aliases for direct dispatch.
+    eos_command:               "execOS",
+    ent_command:               "entOS",
+    eco_command:               "ecoOS",
+    civ_command:               "civOS",
+    auto_command:              "autoOS"
 };
 
 // Keyword-to-tool mapping for free-text intent detection
@@ -1676,7 +1687,20 @@ const INTENT_KEYWORDS = [
     { keywords: ["disaster prediction","disaster risk","early warning disaster","earthquake prediction","flood prediction","wildfire risk","hurricane forecast","tsunami warning","evacuation alert"],                   tool: "ftDisaster"         },
     { keywords: ["ocean status","ocean monitoring","marine ecosystem","ocean currents","sea level rise","ocean temperature","ocean acidification","coral reef health","ocean basin"],                                   tool: "ftOcean"            },
     { keywords: ["crop recommendation","crop health","irrigation optimise","harvest prediction","farm ai","precision farming","ndvi crop","pest detection","agricultural ai","crop monitor"],                           tool: "ftAgriculture"      },
-    { keywords: ["food supply chain","trace food","food traceability","food safety alert","inventory food","supply chain risk food","food recall","food chain optimise","product trace food"],                         tool: "ftFoodChain"        }
+    { keywords: ["food supply chain","trace food","food traceability","food safety alert","inventory food","supply chain risk food","food recall","food chain optimise","product trace food"],                         tool: "ftFoodChain"        },
+
+    // Org-level pipelines (Levels 6-10) — real command pipelines in
+    // backend/services/{executive,enterprise,ecosystem,civilization,
+    // autonomous}Workflow.cjs / autonomousLoop.cjs, gated by requireAuth at
+    // the route mount, confirmed real (not stub) and self-ticking at boot
+    // via agentRuntimeSupervisor this session. Keyword phrases are specific
+    // to each level's own domain vocabulary to avoid collision with the
+    // generic futureTech/metaverse entries above.
+    { keywords: ["executive goal","executive strategy","executive mission","run executive pipeline","company-wide goal","executive os command","board decision","corporate strategy goal"],                             tool: "execOS"             },
+    { keywords: ["enterprise pipeline","enterprise governance","company portfolio command","run enterprise pipeline","enterprise policy evaluate","portfolio budget allocate","enterprise compliance run"],              tool: "entOS"              },
+    { keywords: ["ecosystem tenant","ecosystem marketplace command","run ecosystem pipeline","cross-org mission ecosystem","developer platform command","ecosystem trust engine"],                                     tool: "ecoOS"              },
+    { keywords: ["civilization member","civilization council","run civilization pipeline","civilization economy command","civilization diplomacy","civilization constitution"],                                        tool: "civOS"              },
+    { keywords: ["autonomous civilization cycle","run ooda cycle","autonomous org command","run autonomous pipeline","autonomy level set","autonomous opportunity act"],                                                tool: "autoOS"             }
 ];
 
 function _detectFromText(text) {

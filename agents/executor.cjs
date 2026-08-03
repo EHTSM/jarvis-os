@@ -456,6 +456,44 @@ function _buildHandlers() {
             return handlers.notifyWhatsApp(task);
         },
 
+        // ── Org-Level Pipelines (Levels 6-10) ────────────────────────
+        // Real backend/services/*Workflow.cjs command pipelines (executive/
+        // enterprise/ecosystem/civilization/autonomous), confirmed real
+        // (not stub) and self-ticking via agentRuntimeSupervisor at boot —
+        // previously reachable only via raw authenticated HTTP with zero
+        // path from the autonomous mission pipeline. Reused directly here,
+        // same require()-the-service-module pattern as infraPayment/
+        // notifyWhatsApp above, not duplicated.
+        execOS: async (task) => {
+            const wf = require("../backend/services/executiveWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runFullPipeline(p.command || task.input, { priority: p.priority, kpis: p.kpis, deadline: p.deadline });
+        },
+        entOS: async (task) => {
+            const wf = require("../backend/services/enterpriseWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runEnterprisePipeline(p.command || task.input, { companyId: p.companyId, portfolioId: p.portfolioId, priority: p.priority, amountUsd: p.amountUsd, autoApprove: p.autoApprove });
+        },
+        ecoOS: async (task) => {
+            const wf = require("../backend/services/ecosystemWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runEcosystemPipeline(p.command || task.input, { tenantId: p.tenantId, companyId: p.companyId, portfolioId: p.portfolioId, priority: p.priority, amountUsd: p.amountUsd });
+        },
+        civOS: async (task) => {
+            const wf = require("../backend/services/civilizationWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runCivilizationPipeline(p.command || task.input, { memberId: p.memberId, tenantId: p.tenantId, priority: p.priority, domain: p.domain, resources: p.resources, amountUsd: p.amountUsd });
+        },
+        autoOS: async (task) => {
+            const st = require("../backend/services/autonomousState.cjs");
+            const lp = require("../backend/services/autonomousLoop.cjs");
+            const p = task.payload || {};
+            if (p.mode) st.setMode(p.mode);
+            if (p.autonomyLevel !== undefined) st.setAutonomyLevel(p.autonomyLevel);
+            const cycle = await lp.runCycle();
+            return { success: true, command: p.command || task.input, cycle };
+        },
+
         // ── Health Layer ─────────────────────────────────────────────
         healthSymptom: async (task) => {
             const { checkSymptoms } = require("./health/symptomChecker.cjs");
