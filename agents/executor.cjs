@@ -32,13 +32,15 @@ const systemHealth       = require("./system/systemHealth.cjs");
 // dev/business/internet/content handlers ARE reachable via agentExecutorMod.
 // All other layers (businessPro, social, education, life, enterprise,
 //   health, media) produce no planner task types — excluded from startup load.
-// dev/index.cjs belonged to a legacy dev-agent subsystem that has since been
-// superseded (agents/dev/ now holds the current AI Coding Program tooling —
-// apiFactory.cjs, productAssembly.cjs, etc. — with no index.cjs entrypoint).
-// Guarded so a genuinely-removed legacy module degrades this handler set
-// instead of crashing the process, same pattern used for _legacyExecutor
-// elsewhere in this codebase.
-try { require("./dev/index.cjs"); } catch { /* legacy dev-agent subsystem removed */ }
+// V6-V10 Production Realization: dev/index.cjs belonged to a legacy
+// dev-agent subsystem that has since been superseded (agents/dev/ now holds
+// the current AI Coding Program tooling — apiFactory.cjs, productAssembly.cjs,
+// etc — with no index.cjs entrypoint, confirmed via `ls agents/dev/`). The
+// require() that used to sit here was a permanently-failing guarded no-op
+// (the target file cannot exist under the new layout) — removed rather than
+// kept as a phantom reference; the 3 lines below remain guarded because
+// business/internet/content DO still have real index.cjs entrypoints, just
+// superseded ones, which is a different situation.
 // business/internet/content wrappers depend on legacy agents/paymentAgent.cjs,
 // agents/crm.cjs, agents/core/groqClient.cjs, backend/utils/payment.cjs, and
 // backend/utils/whatsapp.cjs — all superseded by backend/services/paymentService.js,
