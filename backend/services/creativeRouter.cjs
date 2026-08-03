@@ -146,10 +146,26 @@ function consumeCredits(accountId, routingDecision, plan = "trial") {
 }
 
 /**
+ * Reserve (check + deduct atomically) credits for a creative job BEFORE
+ * starting slow provider work — see creditEngine.reserve()'s doc comment for
+ * why this must happen up front rather than via a later consumeCredits()
+ * call once the slow work finishes.
+ */
+function reserveCredits(accountId, routingDecision, plan = "trial") {
+  if (!accountId) return { ok: true, canProceed: true, note: "no_account" };
+  return creditEngine.reserve(accountId, "creative", {
+    plan,
+    cost: routingDecision.creditsRequired || 2,
+    meta: { capability: routingDecision.capability, provider: routingDecision.provider },
+    localProviderAvailable: routingDecision.provider === "local",
+  });
+}
+
+/**
  * List all routable capabilities with routing metadata.
  */
 function listCapabilities() {
   return creativeRegistry.listCapabilities();
 }
 
-module.exports = { route, detectCapability, consumeCredits, listCapabilities };
+module.exports = { route, detectCapability, consumeCredits, reserveCredits, listCapabilities };

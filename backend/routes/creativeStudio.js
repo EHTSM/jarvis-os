@@ -160,6 +160,20 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
       return res.status(402).json({ error: "insufficient_credits", creditCheck: decision.creditCheck });
     }
 
+    // Reserve (check + deduct atomically) before the slow provider call below
+    // rather than trusting the earlier decision.creditCheck snapshot. Credit
+    // consumption used to happen only after the await'd provider call
+    // completed, which left a TOCTOU gap — concurrent requests from the same
+    // account could all pass the balance check before any of their slow
+    // calls finished, letting every one of them proceed even when the
+    // account could only afford a fraction (verified: 25 concurrent requests
+    // against a balance of 20 all proceeded pre-fix). Reserving here, before
+    // any slow work starts, makes the check-and-deduct atomic per request.
+    const reservation = creativeRouter.reserveCredits(_account(req), decision, _plan(req));
+    if (!reservation.canProceed) {
+      return res.status(402).json({ error: "insufficient_credits", creditCheck: reservation });
+    }
+
     const job = jobQueue.createJob({
       capability, studioType,
       provider: decision.provider, model: decision.model,
@@ -266,8 +280,8 @@ Respond with a JSON object: { "result": "description of what was generated", "me
       metadata: { params: body, aiOutput, generated, generatedVia },
     });
 
-    // Consume credits
-    creativeRouter.consumeCredits(_account(req), decision, _plan(req));
+    // Credits were already reserved (deducted) atomically above, before the
+    // slow provider call — nothing left to consume here.
     const completed = jobQueue.completeJob(job.id, { assetId: storedAsset.id, outputUrl, credits: decision.creditsRequired });
 
     res.json({

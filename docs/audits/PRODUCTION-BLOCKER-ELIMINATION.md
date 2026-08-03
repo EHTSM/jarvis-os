@@ -193,3 +193,103 @@ are hitting local mode's actual boundary (e.g. to prioritize which
 capabilities might be worth adding a genuine local/free option for), distinct
 from silent, unlogged billing.
 
+---
+
+## Module 3 — Credit check-then-act race condition (PARTIALLY CONFIRMED, FIXED; original report DOCUMENTED AS FALSE)
+
+**Severity:** Medium — real, reachable overspend allowing more paid provider
+work than an account's balance should permit, but narrower than originally
+reported.
+
+### Reproduce / verify exploit — the audit's original claim did NOT reproduce
+
+The original finding described `creditEngine.cjs`'s `_load()`/`_save()` full-file
+read-modify-write as racy under concurrent `checkCredit()`+`consume()` calls
+(e.g. "3 concurrent consume(cost=1) calls against balance=2 all read balance=2,
+all proceed"). This was tested directly — both with synchronous concurrent
+calls and with real concurrent HTTP requests to `/commercial/credits/consume`
+— and **did not reproduce**:
+
+```
+20 real concurrent HTTP POST /commercial/credits/consume requests
+against a starting balance of 20 (cost 1 each)
+  → all 20 succeeded, final balance = 0, all 20 transactions recorded.
+  No lost updates, no overspend.
+```
+
+Root cause of why the original claim was wrong: `checkCredit()` and
+`consume()` are each **fully synchronous** (plain `fs.readFileSync`/
+`writeFileSync`, no `await` anywhere in their bodies). Under Node's
+single-threaded event loop, a synchronous function can never be interrupted
+mid-execution by another request's handler — each call's full load→modify→save
+cycle completes atomically before the next queued callback runs, even though
+the underlying HTTP connections arrive concurrently. This is documented here
+rather than "fixed," per instructions — the file-level lock the original
+finding implied was needed does not apply to this code path as written, and
+adding one would be an unnecessary abstraction for a non-existent race.
+
+### Reproduce / verify exploit — the REAL, reachable race
+
+A genuine TOCTOU race does exist, but at a different call site:
+`backend/routes/creativeStudio.js`'s `_createCreativeJob()` (shared by all 15
+`/creative/*` generation endpoints) checked `decision.creditCheck.canProceed`
+early, then `await`ed a slow real paid-provider call (DALL-E 3 / Sora /
+ElevenLabs, seconds of latency), and only called `consumeCredits()` afterward.
+The `await` is the interleaving point the original finding was looking for —
+it just wasn't between `checkCredit`/`consume`'s own internals, it was between
+an early check and a much later consume, both in the calling route.
+
+Verified directly against `creditEngine` (simulated the exact
+check→await(slow)→consume pattern) and end-to-end against the real route:
+
+```
+25 concurrent check→await(20ms)→consume "jobs" against a balance of 20
+  → all 25 proceeded (should be at most 20) — real overspend.
+
+25 concurrent real HTTP POST /creative/image/generate requests against a
+balance of 20 (5 credits/request under default routing, headroom for 4)
+  → before fix: not bounded by the pre-slow-work check (each request's
+    check ran against the same stale starting balance).
+```
+
+### Fix
+
+- `backend/services/creditEngine.cjs` — added `reserve(accountId, requestType,
+  opts)`: checks and deducts in the same synchronous pass (still no `await`
+  inside, so it's atomic per call for the same reason plain `consume()`
+  already was) and returns the reservation result including the transaction,
+  so it can be `refund()`-ed later if the subsequent slow work fails.
+- `backend/services/creativeRouter.cjs` — added `reserveCredits()`, wrapping
+  `creditEngine.reserve()`.
+- `backend/routes/creativeStudio.js` — `_createCreativeJob()` now calls
+  `creativeRouter.reserveCredits()` immediately after routing (before
+  `jobQueue.createJob`/the slow provider `await`s) instead of calling
+  `consumeCredits()` afterward. Preserves exact prior billing semantics
+  (credits are still spent once per request regardless of whether generation
+  ultimately succeeds) — only the *timing* of the deduction moved earlier, to
+  close the race.
+
+### Regression
+
+New permanent test (below): the fixed `reserve()`-based flow allows exactly
+the number of concurrent requests the balance affords (verified at both the
+`creditEngine` layer and end-to-end via real HTTP against
+`/creative/image/generate`) and rejects the rest with `402
+insufficient_credits`, with the balance floor exactly 0 in both cases. Full
+legacy suite (`node --test tests/legacy/*.test.cjs`): 83 pass / 72 fail,
+identical to baseline.
+
+### Security verification
+
+New permanent regression test:
+`tests/security/11-credit-reservation-race.cjs` (7/7 pass). Covers the
+simulated concurrent-reservation case and the real end-to-end HTTP case
+against the actual creative-studio route.
+
+### Telemetry
+
+No new telemetry needed for this module — `402 insufficient_credits`
+responses are already visible to the client and the existing credit ledger
+(`getLedger`) already records every real transaction with its cost and
+timestamp, which is sufficient to audit reservation activity after the fact.
+

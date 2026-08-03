@@ -177,8 +177,41 @@ function checkCredit(accountId, requestType = "default", plan = "trial", opts = 
 }
 
 /**
+ * Reserve (check-and-deduct in one synchronous pass) credits for a request
+ * that is about to start slow work (e.g. a real paid provider call).
+ *
+ * checkCredit() and consume() are each individually atomic (this module has
+ * no `await` between its own load/save calls, so under Node's single-threaded
+ * event loop no other request can interleave mid-call) — but a caller that
+ * calls checkCredit(), then `await`s slow work, then calls consume()
+ * afterward reintroduces a real TOCTOU gap: N concurrent requests can all
+ * pass the check against the same starting balance before any of their slow
+ * awaits finish and their consume() calls fire, letting all N proceed even
+ * when the account can only afford a fraction of them (verified: 25
+ * concurrent check→await→consume-style calls against a balance of 20 all
+ * proceeded). reserve() closes that gap by doing the check and the deduction
+ * in the same synchronous pass, before the caller's slow work starts — call
+ * this instead of checkCredit() whenever slow/async work happens between the
+ * check and the eventual consume.
+ *
+ * Returns { ok, tx?, creditType?, cost, canProceed, source, balance }.
+ * If ok is false, no state was mutated (nothing to refund).
+ */
+function reserve(accountId, requestType = "default", opts = {}) {
+  const check = checkCredit(accountId, requestType, opts.plan || "trial", opts);
+  if (!check.canProceed) return { ok: false, canProceed: false, ...check };
+  const result = consume(accountId, requestType, opts);
+  return { ok: true, canProceed: true, ...result, ...check, cost: result.cost };
+}
+
+/**
  * Consume credits for a request. Returns the transaction entry.
  * Same localProviderAvailable gate as checkCredit — see its doc comment.
+ *
+ * NOTE: consume() alone does not re-check the balance — a caller that
+ * checked earlier and now wants to commit that reservation after slow work
+ * completed should use reserve() up front instead so the check and the
+ * deduction happen in the same atomic pass (see reserve() doc comment).
  */
 function consume(accountId, requestType = "default", opts = {}) {
   const records  = _load();
@@ -303,6 +336,7 @@ function getAllSummary() {
 module.exports = {
   getRecord,
   checkCredit,
+  reserve,
   consume,
   topup,
   refund,
