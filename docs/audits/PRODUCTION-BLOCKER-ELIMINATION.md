@@ -489,3 +489,143 @@ reflects the in-flight-inclusive total, which is sufficient for the existing
 `enterpriseMonitoring`/`orgAiBrain` dashboards to show accurate near-real-time
 spend without a new event stream.
 
+---
+
+## Module 8 — Orphaned frontend components (CLASSIFIED; 10 removed, 19 archived in place)
+
+**Severity:** Low — no runtime/security impact, but ~24 unreachable
+components misrepresented what functionality actually ships.
+
+### Reclassification mandate
+
+A follow-up instruction to this mission required re-classifying every
+orphaned component (rather than deleting on sight) into one of four buckets,
+with proof from a full cross-repo search (routes, services, agents,
+Electron, telemetry, docs) before any deletion — explicitly forbidding
+deletion of anything without proof, and requiring "archive, don't delete"
+for prototypes with no backend support. A classification pass was run
+against all 28 originally-flagged components plus 3 more discovered during
+that pass (`AgentCenter.jsx`, `useOperatorPrefs.js` hook, `LicenseManager.jsx`
+noted as orphaned but out of scope for this pass).
+
+**Key discovery**: `docs/project-manager/06_SCREEN_CATALOG.md` and
+`05_FEATURE_CATALOG.md` show that 14 of these components were **deliberately
+removed from all navigation surfaces on 2026-07-17** (`App.jsx` tabs,
+`GlobalSearch.jsx`, `CommandPalette.jsx`) specifically because they rendered
+fabricated/hardcoded data. This was not an accidental orphaning — it was a
+documented cleanup already in progress before this audit.
+
+### Classification results (28 components)
+
+**A. Hidden production feature (0 requiring action)** — `AgentCenter.jsx`'s
+backend (`/p18/*` in `backend/routes/phase18.js`) is real, but the same
+functions are already reached via the actively-wired `AgentOSV2.jsx` and
+`AgentRegistryCenter.jsx`. No capability is actually stranded; downgraded to
+B in practice.
+
+**B. Superseded by newer implementation (8 — REMOVED)**, each verified
+against a specific, actively-imported replacement in `App.jsx` or
+`OperatorConsole.jsx`:
+
+| Removed | Superseded by | Verification |
+|---|---|---|
+| `ToastSystem.jsx` | `Toast.jsx` (`App.jsx:13`) | Identical `ToastContainer({toasts, onRemove})` export signature — verbatim duplicate |
+| `ControlCenter.jsx` + `.css` | `CommandCenter.jsx` (`App.jsx:24`) | Strict superset: same runtime/telemetry calls plus approval queue, unified queue, health report, founderHomeApi |
+| `ExecutiveSummary.jsx` + `.css` | `Dashboard.jsx` (`App.jsx:1325`) | Same `{stats, opsData}` props shape, no fetch of its own |
+| `VisualIntelligence.jsx` + `.css` | `Dashboard.jsx` / `SystemHealthDashboard.jsx` (`App.jsx:111`) | Same props shape, no fetch of its own |
+| `RetentionSummary.jsx` + `.css` | `Dashboard.jsx` / `EndOfDayReview.jsx` (`App.jsx:132`) | Same props shape |
+| `operator/TaskQueuePanel.jsx` | `operator/widgets/QueueStatusCard.jsx` (`OperatorConsole.jsx:16`, confirmed imported+rendered) | QueueStatusCard reads live `ops.queue` state; TaskQueuePanel only accepted a static prop |
+| `operator/widgets/HelpPanel.jsx` | `HelpHub.jsx` (`App.jsx:53`) | Confirmed absent from `OperatorConsole.jsx`'s own widget import list |
+| `operator/widgets/PreferencesPanel.jsx` | `WorkspaceSettings.jsx` (`App.jsx:56`) | Confirmed absent from `OperatorConsole.jsx`'s import list; was the sole consumer of `hooks/useOperatorPrefs.js`, which is now also dead and was removed with it |
+
+**C. Prototype with no backend or runtime support (19 — ARCHIVED IN PLACE, not deleted per instruction)**:
+
+- **The three full "OS" pages** — `PersonalOS.jsx`, `DeveloperOS.jsx`,
+  `EnterpriseOS.jsx` — each calls a dedicated API module (`personalApi.js`,
+  `developerApi.js`, `enterpriseApi.js`) whose endpoints (`/personal/*`,
+  `/dev/*`, `/enterprise/orgs|depts|teams|roles` unscoped) do not exist
+  anywhere in `backend/routes/index.js`'s full mount list. Corroborated by
+  `docs/current/phase4-frontend-audit.md`. `docs/current/v1-final-reality-report.md`
+  documents the specific failure mode: the fetch helper receives the SPA's
+  200-status HTML shell, `res.json()` throws, and the component silently
+  renders a permanently empty page with no visible error.
+- **Fabricated-data cluster (7)**, all named in `05_FEATURE_CATALOG.md`'s
+  2026-07-17 removal record as containing hardcoded/seed data with no real
+  backend: `EnterpriseCRM.jsx`, `AutonomousCompanyCenter.jsx`,
+  `AutonomousMarketingCenter.jsx`, `AutonomousSupportCenter.jsx`,
+  `CommunityCenter.jsx`, `DataOwnershipCenter.jsx`, `DisasterRecoveryCenter.jsx`,
+  `MobilePlatformCenter.jsx`.
+- **Marketing/growth cluster (5)** — `EmailMarketingOS.jsx`,
+  `SeoCommandCenter.jsx`, `SocialHub.jsx`, `ContentEngine.jsx`,
+  `ExecutiveReports.jsx` — each uses `localStorage` and/or hardcoded seed
+  data (`ExecutiveReports.jsx` literally calls `Math.random()` to generate
+  revenue/churn numbers at module load) where a real, wired equivalent
+  already exists and is reachable (`GrowthOS.jsx`, `ContentSEO.jsx`,
+  `DistributionOS.jsx`, `ExecutiveDashboard.jsx` respectively).
+- `LaunchCommandCenter.jsx` — real launch-related backends exist
+  (`/launch/*`, `/op1/*`, `/rc1`-`/rc4`) but this component calls none of
+  them; `BetaChecklist.jsx` is the wired equivalent.
+
+These are intentionally left in place, not deleted — wiring them would
+surface fabricated data to real users (the exact regression the 2026-07-17
+nav cleanup and the `v1-final-reality-report.md` audit were chartered to
+prevent), and deleting a prototype without a proven zero-dependency chain
+would contradict the "archive, don't delete" instruction for this class. If
+any of this functionality is wanted, the correct path is extending the
+already-wired superseding component, not resurrecting the prototype.
+
+**D. Genuine dead code (2 — REMOVED, proof of zero dependency)**:
+
+- `PremiumGate.jsx` + `.css` — exports `PremiumGate`, `PremiumBadge`,
+  `UpgradeNudge`, `UsageBar`. The one apparent reference
+  (`LicenseManager.jsx`) was verified as a false positive: `LicenseManager.jsx:29`
+  declares its own private `function UsageBar(...)` and never imports from
+  `PremiumGate.jsx`. Gating is handled server-side by `featureGate.cjs` and
+  client-side by the actively-wired `UpgradeModal.jsx`/`TrialBanner.jsx`.
+  Zero docs/Electron/backend references confirmed via full-repo grep.
+- `WorkspaceLayout.jsx` + `.css` — a resizable panel-grid component. Zero
+  references anywhere (`frontend/src`, `docs/`, `electron/`, `backend/`,
+  `agents/`) confirmed via full-repo grep, including its own `localStorage`
+  key (`workspace-layout`) having no reader. Distinct from the actively-used
+  `WorkspaceSettings.jsx`/`TeamWorkspace.jsx`, which are unrelated concerns.
+
+### Regression
+
+- `npm run build` (frontend/) completed cleanly after removal — no broken
+  imports, no missing-module errors.
+- Full-repo grep swept for all 9 removed component/hook names post-deletion:
+  zero remaining references in `frontend/src`, `electron/`, or active
+  `docs/` (only historical `docs/archive/*` audit reports mention them,
+  which is expected — those are records of past state, not live
+  dependencies).
+- Backend legacy suite: 83 pass / 72 fail, identical to baseline (this
+  module made no backend changes).
+
+### Security verification
+
+N/A — no security-relevant code path touched. Verification for this module
+was the cross-repo reference sweep described above (routes, services,
+Electron, docs), which is the applicable diligence for a dead-code removal.
+
+### Telemetry
+
+N/A — no runtime behavior change for any reachable code path.
+
+### Disposition summary
+
+- **Removed (10 files + 1 hook, all proven B or D class)**: `ToastSystem.jsx`,
+  `ControlCenter.jsx`/`.css`, `ExecutiveSummary.jsx`/`.css`,
+  `VisualIntelligence.jsx`/`.css`, `RetentionSummary.jsx`/`.css`,
+  `PremiumGate.jsx`/`.css`, `WorkspaceLayout.jsx`/`.css`,
+  `operator/TaskQueuePanel.jsx`, `operator/widgets/HelpPanel.jsx`,
+  `operator/widgets/PreferencesPanel.jsx`, `hooks/useOperatorPrefs.js`.
+- **Archived in place, untouched (19 files, class C)**: all prototypes with
+  no real backend — see list above. Not deleted per instruction; each would
+  need either a real backend built for it or to stay retired.
+- **No action needed (class A)**: `AgentCenter.jsx` — its backend is real
+  but already reachable via other wired components.
+- **Noted but out of scope**: `LicenseManager.jsx` was discovered to be
+  itself unreferenced during this investigation but was not part of the
+  original 28-component list and was not independently verified to the same
+  standard — left untouched, flagged here for a future pass.
+
