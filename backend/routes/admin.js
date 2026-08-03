@@ -15,14 +15,18 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireWorkspaceMember, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/adminService.cjs");
 
 router.use("/admin", requireAuth);
 router.use(attachWorkspace);
+router.use(requireWorkspaceMember);
 
+// Workspace is always the authenticated requester's validated membership —
+// never a raw client-supplied id. requireWorkspaceMember (above) confirms
+// req.user.sub is a member of req.workspace before any handler runs.
 function _wsId(req) {
-  return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
+  return req.workspace.id;
 }
 
 // ── Team ──────────────────────────────────────────────────────────

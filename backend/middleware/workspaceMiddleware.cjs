@@ -11,6 +11,12 @@ function _ws() {
   return _wsSvc;
 }
 
+let _bus = null;
+function _evtBus() {
+  if (!_bus) try { _bus = require("../../agents/runtime/runtimeEventBus.cjs"); } catch {}
+  return _bus;
+}
+
 /**
  * Attaches req.workspace and req.workspaceRole.
  * Non-blocking — if workspace resolution fails, req.workspace is null.
@@ -38,7 +44,21 @@ function attachWorkspace(req, res, next) {
  */
 function requireWorkspaceMember(req, res, next) {
   if (!req.workspace) return res.status(404).json({ error: "Workspace not found" });
-  if (!req.workspaceRole) return res.status(403).json({ error: "Not a member of this workspace" });
+  if (!req.workspaceRole) {
+    // Cross-workspace access attempt — the requested/active workspace resolved,
+    // but the authenticated account holds no membership in it. Emitted so ops
+    // can spot IDOR probing (a client repeatedly trying workspaceId values
+    // that aren't theirs) rather than this failing silently.
+    try {
+      _evtBus()?.emit("workspace_access_denied", {
+        accountId: req.user?.sub || null,
+        workspaceId: req.workspace.id,
+        path: req.originalUrl,
+        _ts: Date.now(),
+      });
+    } catch {}
+    return res.status(403).json({ error: "Not a member of this workspace" });
+  }
   next();
 }
 
