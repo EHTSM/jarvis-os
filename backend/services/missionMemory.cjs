@@ -55,11 +55,26 @@ function _loadMissions() {
     }
 }
 
+// Final Production Integration mission, Blocker #6 fix — the shared
+// literal ".tmp" path collided across processes: a real, long-running
+// server process and a second process (test/script/ops tool) writing
+// missions.json around the same time could each write their own content
+// to the SAME tmp path, then the first to rename() would consume it out
+// from under the second, producing a reproducible ENOENT on renameSync
+// and silently dropping that write. Same real fix already applied to
+// organizationService.cjs and secretVault.cjs this session: a
+// per-call-unique tmp filename (pid + random suffix) means two
+// processes/calls can never share a tmp path, so rename() always finds
+// its own file. This does not fix the underlying lost-update race for
+// two writes based on the same stale read (a real lock/single-writer
+// queue would be a larger architectural change, out of scope here) — it
+// eliminates the file-corruption/ENOENT-crash class, which is what was
+// actually observed and reproduced.
 function _saveMissions(store) {
     const dir = path.dirname(MISSIONS_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const updated = { missions: store.missions, lastUpdated: new Date().toISOString() };
-    const tmp = MISSIONS_FILE + ".tmp";
+    const tmp = `${MISSIONS_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     try {
         fs.writeFileSync(tmp, JSON.stringify(updated, null, 2), "utf8");
         fs.renameSync(tmp, MISSIONS_FILE);

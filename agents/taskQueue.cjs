@@ -4,8 +4,9 @@
  * States: pending → running → completed | failed
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 const logger = require("../backend/utils/logger");
 
 const QUEUE_FILE = path.join(__dirname, "../data/task-queue.json");
@@ -68,10 +69,19 @@ function _load() {
     }
 }
 
+// Final Production Integration mission, Blocker #6 fix — same real
+// cross-process tmp-path collision as missionMemory.cjs's _saveMissions,
+// reproduced during stress testing: a live server process and a second
+// process writing task-queue.json around the same time could each target
+// the identical literal ".tmp" path, and the first rename() would consume
+// it before the second call's renameSync ran, producing a genuine ENOENT.
+// Per-call-unique tmp filename (pid + random suffix, same pattern already
+// used by organizationService.cjs/secretVault.cjs/missionMemory.cjs this
+// session) eliminates that specific crash/corruption class.
 function _save(tasks) {
     const dir = path.dirname(QUEUE_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmp = QUEUE_FILE + ".tmp";
+    const tmp = `${QUEUE_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(tasks, null, 2));
     fs.renameSync(tmp, QUEUE_FILE);  // atomic on POSIX — prevents partial-write corruption
 }
