@@ -51,6 +51,11 @@ function _getExtRT()      { try { return require("./extensionRuntime.cjs"); } ca
 function _getMemLayer()   { try { return require("./memoryPersistenceLayer.cjs"); } catch { return null; } }
 function _getAiSvc()      { try { return require("./aiService.js"); } catch { return null; } }
 function _getExecLog()    { try { return require("../utils/execLog.cjs"); } catch { return null; } }
+function _getExecOrg()    { try { return require("./executiveOrg.cjs"); } catch { return null; } }
+function _getEntOrg()     { try { return require("./enterpriseOrg.cjs"); } catch { return null; } }
+function _getEcoOrg()     { try { return require("./ecosystemOrg.cjs"); } catch { return null; } }
+function _getCivOrg()     { try { return require("./civilizationOrg.cjs"); } catch { return null; } }
+function _getAutoOrg()    { try { return require("./autonomousOrg.cjs"); } catch { return null; } }
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const DATA_DIR       = path.join(__dirname, "../../data");
@@ -623,6 +628,60 @@ async function _observeAI() {
     }
 }
 
+// ── Source: org levels (V6-V10) ─────────────────────────────────────────────
+// V6-V10 Production Realization: executiveOrg/enterpriseOrg/ecosystemOrg/
+// civilizationOrg/autonomousOrg (confirmed real, self-ticking backend
+// infrastructure, registered into agentRuntimeSupervisor at boot) had zero
+// telemetry — no recordMetric/structuredLog calls anywhere in the 5 module
+// trios, and no consumer here despite each internally emitting its own bus
+// events. Added as a real polled source, same pattern as every other
+// source above, rather than trying to retrofit metrics into 5 separate
+// service files.
+let _orgLevelsPrevSig = null;
+
+async function _observeOrgLevels() {
+    const src = "orgLevels";
+    try {
+        const levels = [
+            { key: "eos",  label: "executive",     get: _getExecOrg  },
+            { key: "ent",  label: "enterprise",     get: _getEntOrg   },
+            { key: "eco",  label: "ecosystem",      get: _getEcoOrg   },
+            { key: "civ",  label: "civilization",   get: _getCivOrg   },
+            { key: "auto", label: "autonomous",     get: _getAutoOrg  },
+        ];
+        const summaries = {};
+        for (const lvl of levels) {
+            try {
+                const svc = lvl.get();
+                summaries[lvl.key] = svc?.getOrgSummary ? svc.getOrgSummary() : null;
+            } catch { summaries[lvl.key] = null; }
+        }
+
+        const sig = levels.map(l => {
+            const s = summaries[l.key];
+            if (!s) return `${l.key}:na`;
+            return `${l.key}:${s.total ?? 0}:${s.running ?? 0}`;
+        }).join("|");
+
+        if (sig !== _orgLevelsPrevSig) {
+            _orgLevelsPrevSig = sig;
+            const anyDown = levels.some(l => {
+                const s = summaries[l.key];
+                return s && (s.running ?? s.total) === 0 && (s.total ?? 0) > 0;
+            });
+            _emit({ source: src, category: "orgLevels", severity: anyDown ? "WARN" : "INFO",
+                entity: "org_levels", action: "org_level_state_change",
+                metadata: { summaries },
+                confidence: 1.0 });
+        }
+        _sourceOk(src);
+        return { levels: levels.length };
+    } catch (err) {
+        _sourceErr(src, err);
+        return null;
+    }
+}
+
 // ── Source: system resources ───────────────────────────────────────────────
 let _sysPrevBucket = null;
 
@@ -670,6 +729,7 @@ const SOURCES = [
     { name: "extensions", fn: _observeExtensions,  intervalMs: 120_000 },  // 2 min
     { name: "memory",     fn: _observeMemory,      intervalMs: 120_000 },  // 2 min
     { name: "ai",         fn: _observeAI,          intervalMs: 300_000 },  // 5 min
+    { name: "orgLevels",  fn: _observeOrgLevels,   intervalMs: 60_000  },  // 1 min
     { name: "system",     fn: _observeSystem,      intervalMs: 20_000  },  // 20 s
     // files handled via fs.watch (event-driven), no polling interval
 ];
