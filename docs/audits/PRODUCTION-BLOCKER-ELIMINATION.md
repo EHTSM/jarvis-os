@@ -349,3 +349,62 @@ inside `activatePlan`/`cancelPlan` themselves, or a route that checks
 slow `await`), the same `reserve()`-style fix pattern from Module 3 would
 apply.
 
+---
+
+## Module 6 — Mission memory lost-update race (DOCUMENTED AS FALSE — no code change)
+
+**Original claim:** `missionMemory.cjs`'s own code comment (from an earlier
+mission's Blocker #6 fix) explicitly acknowledges "the underlying
+lost-update race for two writes based on the same stale read" as known and
+unfixed — only the separate file-corruption/ENOENT-crash class (two
+processes sharing a literal `.tmp` path) was fixed there. The audit read
+that comment as confirmation of a live, reachable production race: two
+concurrent requests calling `addSubtask`/`recordDecision`/etc. for the same
+mission could each read the same stale snapshot and one's write would
+silently overwrite the other's.
+
+### Verification — did not reproduce under any tested interleaving
+
+Same investigation as Modules 3 and 4: every mutation function in
+`missionMemory.cjs` (`addSubtask`, `updateMission`, `recordDecision`,
+`recordArtifact`, `recordFailure`, `recordApproval`, ...) is fully
+synchronous — no `await` inside their own bodies — and their callers (in
+`backend/routes/mission.js` and the ~75 other files across the codebase that
+import `missionMemory`, spot-checked via `agents/runtime/missionRuntime.cjs`)
+never insert an `await` between reading a mission and writing it back. Under
+Node's single-threaded event loop this makes each mutation atomic in
+practice, the same reason Module 3's `creditEngine.consume()` alone was
+never actually racy — the race there only existed because
+`creativeStudio.js` inserted a genuine `await` (a real paid provider call)
+between an earlier check and a later write; no `missionMemory.cjs` caller
+does that.
+
+Tested directly against the real `/mission/git/*` routes and the real
+`missionMemory` service via genuine concurrent HTTP requests targeting the
+**same mission**:
+
+1. **Same mutation type** — 30 concurrent `record-branch` requests (each
+   calling `recordDecision` for the same mission). Result: all 30 decisions
+   recorded, zero lost.
+2. **Mixed mutation types** — 40 concurrent requests split across
+   `record-commit` (→ artifact + decision), `record-branch` (→ decision),
+   `record-rollback` (→ failure + decision), and `record-review` (→ approval
+   + artifact), all against the same mission — the scenario the audit's
+   finding literally describes (different concurrent writes to the same
+   mission object). Result: exactly the expected counts in every category
+   (20 artifacts, 30 decisions, 10 failures, 10 approvals) — zero lost
+   writes.
+
+### Outcome
+
+Documented as a false finding, per instructions — no code change made.
+`missionMemory.cjs` is unchanged; its own comment about the theoretical race
+remains accurate as a statement of what the `.tmp`-path fix did *not*
+address, but the race it describes is not reachable given how every current
+caller in this codebase uses the API (always synchronous, no `await` gap
+between read and write). If a future caller introduces an `await` between
+reading a mission and writing it back (mirroring the real Module 3 pattern),
+the same lost-update risk would become real at that call site specifically —
+worth re-checking if `missionMemory.cjs` callers are ever refactored to do
+slow work mid-mutation.
+
