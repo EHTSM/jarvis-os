@@ -93,11 +93,63 @@ function _spendThisMonth(dimension, id) {
   return { costUsd: s.totalCostUsd, requests: s.totalRequests };
 }
 
+// ── In-flight reservation (closes the check-then-await-then-record gap) ──
+//
+// checkBudget() reads usageMetering's ledger, which is only written to AFTER
+// a request's real provider call completes (aiOrchestrator.execute() checks
+// budget, then `await`s the actual AI call, then records real cost). N
+// concurrent requests for the same org can each see the same ledger snapshot
+// and all pass the check before any of their spend lands — verified: 30
+// concurrent requests against a $0.01 cap ($0.002/request) all proceeded,
+// spending $0.06 (6x over cap).
+//
+// This process-local map tracks estimated cost for requests that have
+// passed the check but not yet recorded real spend. checkBudget() adds this
+// in-flight total to the ledger total, so a concurrent request sees the
+// prior requests' reservations even though their real cost hasn't hit the
+// ledger yet. reserveInFlight()/releaseInFlight() are synchronous (plain Map
+// ops, no I/O), so — same reasoning as creditEngine.reserve() in Module 3 —
+// they're atomic per call under Node's single-threaded event loop; no lock
+// needed for a single-process deployment (this app runs pm2 fork mode,
+// instances:1 — see ecosystem.config.cjs).
+const _inFlight = new Map(); // key: `${dimension}:${id}` -> total estimated USD reserved
+
+function _inFlightKey(dimension, id) { return `${dimension}:${id}`; }
+
+function _inFlightTotal(dimension, id) {
+  return _inFlight.get(_inFlightKey(dimension, id)) || 0;
+}
+
+/**
+ * Reserve an estimated cost against an org/workspace's in-flight total,
+ * before starting the slow provider call. Call releaseInFlight() with the
+ * SAME estimatedUsd once the real cost has been recorded (or the request
+ * failed/was abandoned) to remove the reservation.
+ */
+function reserveInFlight({ orgId, workspaceId, estimatedUsd }) {
+  const amt = Number(estimatedUsd) || 0;
+  if (orgId)       _inFlight.set(_inFlightKey("orgId", orgId),             _inFlightTotal("orgId", orgId) + amt);
+  if (workspaceId) _inFlight.set(_inFlightKey("workspaceId", workspaceId), _inFlightTotal("workspaceId", workspaceId) + amt);
+}
+
+/**
+ * Release a previously reserved estimate (called after the real spend is
+ * recorded to the ledger, or if the request never completed).
+ */
+function releaseInFlight({ orgId, workspaceId, estimatedUsd }) {
+  const amt = Number(estimatedUsd) || 0;
+  if (orgId)       _inFlight.set(_inFlightKey("orgId", orgId),             Math.max(0, _inFlightTotal("orgId", orgId) - amt));
+  if (workspaceId) _inFlight.set(_inFlightKey("workspaceId", workspaceId), Math.max(0, _inFlightTotal("workspaceId", workspaceId) - amt));
+}
+
 /**
  * Check whether an org and/or workspace is within budget. Both are checked
  * independently when both ids are supplied — either one failing blocks the
  * request (a workspace budget is meant to be a tighter sub-cap within its
  * org's budget, not an alternative to it).
+ *
+ * spentUsd/spentRequests include both real (ledger) spend and any
+ * currently-reserved in-flight estimate — see reserveInFlight() above.
  *
  * @returns {{ allowed: bool, reason?: string, org?: object, workspace?: object }}
  */
@@ -107,10 +159,11 @@ function checkBudget({ orgId, workspaceId } = {}) {
   if (orgId) {
     const budget = getOrgBudget(orgId);
     const spend  = _spendThisMonth("orgId", orgId);
-    result.org = { orgId, ...budget, spentUsd: spend.costUsd, spentRequests: spend.requests };
-    if (budget.monthlyCapUsd != null && spend.costUsd >= budget.monthlyCapUsd) {
+    const costUsd = spend.costUsd + _inFlightTotal("orgId", orgId);
+    result.org = { orgId, ...budget, spentUsd: costUsd, spentRequests: spend.requests };
+    if (budget.monthlyCapUsd != null && costUsd >= budget.monthlyCapUsd) {
       result.allowed = false;
-      result.reason = `Organization monthly AI budget exceeded ($${spend.costUsd.toFixed(6)} / $${budget.monthlyCapUsd})`;
+      result.reason = `Organization monthly AI budget exceeded ($${costUsd.toFixed(6)} / $${budget.monthlyCapUsd})`;
     }
     if (result.allowed && budget.monthlyRequestCap != null && spend.requests >= budget.monthlyRequestCap) {
       result.allowed = false;
@@ -121,10 +174,11 @@ function checkBudget({ orgId, workspaceId } = {}) {
   if (result.allowed && workspaceId) {
     const budget = getWorkspaceBudget(workspaceId);
     const spend  = _spendThisMonth("workspaceId", workspaceId);
-    result.workspace = { workspaceId, ...budget, spentUsd: spend.costUsd, spentRequests: spend.requests };
-    if (budget.monthlyCapUsd != null && spend.costUsd >= budget.monthlyCapUsd) {
+    const costUsd = spend.costUsd + _inFlightTotal("workspaceId", workspaceId);
+    result.workspace = { workspaceId, ...budget, spentUsd: costUsd, spentRequests: spend.requests };
+    if (budget.monthlyCapUsd != null && costUsd >= budget.monthlyCapUsd) {
       result.allowed = false;
-      result.reason = `Workspace monthly AI budget exceeded ($${spend.costUsd.toFixed(6)} / $${budget.monthlyCapUsd})`;
+      result.reason = `Workspace monthly AI budget exceeded ($${costUsd.toFixed(6)} / $${budget.monthlyCapUsd})`;
     }
     if (result.allowed && budget.monthlyRequestCap != null && spend.requests >= budget.monthlyRequestCap) {
       result.allowed = false;
@@ -137,4 +191,5 @@ function checkBudget({ orgId, workspaceId } = {}) {
 
 module.exports = {
   getOrgBudget, setOrgBudget, getWorkspaceBudget, setWorkspaceBudget, getAllBudgets, checkBudget,
+  reserveInFlight, releaseInFlight,
 };

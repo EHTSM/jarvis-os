@@ -408,3 +408,84 @@ the same lost-update risk would become real at that call site specifically —
 worth re-checking if `missionMemory.cjs` callers are ever refactored to do
 slow work mid-mutation.
 
+---
+
+## Module 7 — Org AI budget burst-overshoot (CONFIRMED, FIXED)
+
+**Severity:** Low — bounded cost overshoot, not corruption or a security
+boundary (the audit's own characterization; this module was addressed last
+per the mission's stated priority order).
+
+### Reproduce / verify exploit
+
+Unlike Modules 4 and 6, this claim DID reproduce. `orgBudgets.checkBudget()`
+derives spend by re-aggregating `usageMetering`'s ledger — which is only
+written to by `aiOrchestrator.execute()`/`executeStream()` AFTER their real
+(awaited) provider call completes. `checkBudget()` runs, then `await
+aiService.chat(...)` (a real, slow provider call), then `usageMetering.record()`
+— the same check-then-await-then-record shape as the real Module 3 race, just
+in a different service.
+
+Verified directly (deterministic cost per call, bypassing real provider
+routing/API-key requirements):
+
+```
+30 concurrent check→await(15ms)→record calls against a $0.01 cap
+($0.002/call, ~5 should be allowed under a correctly enforced cap)
+  → all 30 proceeded, final recorded spend = $0.06 (6x over cap).
+```
+
+And confirmed the actual enforcement gate in `aiOrchestrator.execute()`
+(via spies) calls `checkBudget()` before the slow provider call and
+`usageMetering.record()` only after — the exact vulnerable shape.
+
+### Fix
+
+- `backend/services/orgBudgets.cjs` — added `reserveInFlight()`/
+  `releaseInFlight()`: a process-local `Map` tracking estimated
+  (not-yet-recorded) spend per org/workspace. `checkBudget()` now adds this
+  in-flight total to the ledger-derived total, so a concurrent request sees
+  prior requests' reservations even before their real cost lands. Both
+  functions are synchronous Map operations (no I/O) — atomic per call under
+  Node's single-threaded event loop, same reasoning as `creditEngine.reserve()`
+  in Module 3. Single-process only (no cross-process lock) — matches this
+  app's `pm2` fork-mode, `instances: 1` deployment (see `ecosystem.config.cjs`),
+  the same constraint already documented for other in-memory-backed services.
+- `backend/services/aiOrchestrator.cjs` — added `_estimateRequestCostUsd()`
+  (a conservative worst-case estimate using the candidate provider's real
+  per-1k-token cost table and `opts.maxTokens`, or a safe default when
+  unset). `execute()` and `executeStream()` now call `reserveInFlight()`
+  immediately before each candidate's provider call and `releaseInFlight()`
+  once real cost is recorded (success) or the call fails (no real cost
+  incurred, so the reservation is freed rather than converted).
+- Read-only budget/usage reporting call sites (`enterpriseMonitoring.cjs`'s
+  `getAiUsageHealth`, `orgAiBrain.cjs`'s `getUsage`) call `checkBudget()` for
+  display purposes only, not as a spend gate — left unchanged, no reservation
+  needed there.
+
+### Regression
+
+New permanent test (below): the fixed reservation flow allows exactly the
+number of concurrent requests the cap affords (5 of 30 at $0.002/call
+against a $0.01 cap) with final spend landing exactly at the cap, and an org
+with no configured cap remains completely unaffected by in-flight
+reservations. Full legacy suite: 83 pass / 72 fail, identical to baseline.
+
+### Security verification
+
+New permanent regression test:
+`tests/security/14-orgbudgets-inflight-reservation.cjs` (6/6 pass). Covers
+the closed race at the `orgBudgets` layer, confirms `aiOrchestrator.execute()`
+actually wires `reserveInFlight`/`releaseInFlight` around its provider call
+(via spies, since this test environment has no real provider API keys to
+exercise an exact end-to-end dollar assertion), and confirms uncapped orgs
+are unaffected.
+
+### Telemetry
+
+No new telemetry added — `429 budget_exceeded` responses are already
+visible to the caller, and `checkBudget()`'s returned `spentUsd` already
+reflects the in-flight-inclusive total, which is sufficient for the existing
+`enterpriseMonitoring`/`orgAiBrain` dashboards to show accurate near-real-time
+spend without a new event stream.
+

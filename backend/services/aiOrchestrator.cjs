@@ -41,6 +41,26 @@ function _promptHistory()      { try { return require("./promptHistory.cjs");   
 function _budgets()            { try { return require("./orgBudgets.cjs");         } catch { return null; } }
 function _integrationConnectors() { try { return require("./integrationConnectors.cjs"); } catch { return null; } }
 
+// Conservative worst-case cost estimate for an org/workspace budget
+// reservation — see orgBudgets.reserveInFlight()'s doc comment for why this
+// exists: checkBudget() only reflects the real ledger, which isn't written
+// until AFTER the slow provider call below completes, so N concurrent
+// requests could otherwise all pass the check before any of their real cost
+// lands. This doesn't need to be precise — it only needs to be a reasonable
+// upper bound so a burst of concurrent requests can't all sail past a cap
+// that a single one of them would've tripped; the real recorded cost always
+// replaces this estimate once the call finishes (see the reservation
+// release below), so a slightly-too-high estimate costs nothing but a
+// possible false "budget exceeded" under heavy burst, and a slightly-too-low
+// one only narrows (doesn't reopen) the race window this closes.
+function _estimateRequestCostUsd(candidate, opts) {
+  const inputChars  = (opts.messages || []).reduce((s, m) => s + (m.content?.length || 0), 0);
+  const inputTokens  = Math.ceil(inputChars / 4) || 50;
+  const outputTokens = opts.maxTokens || 1024; // worst case: the model uses its full budget
+  const costs = usageMetering.PROVIDER_COSTS[candidate.providerId] || { input: 0.002, output: 0.002 };
+  return (inputTokens * costs.input + outputTokens * costs.output) / 1000;
+}
+
 // ── Capability detection (reuses capabilityRouter's intent patterns rather
 // than re-implementing regex matching) ───────────────────────────────────
 function detectCapability(intentOrCapability) {
@@ -297,6 +317,14 @@ async function execute(messages, opts = {}) {
   const errors = [];
   for (const candidate of chain) {
     const t0 = Date.now();
+    // Reserve a conservative estimate against the org/workspace budget
+    // BEFORE the slow provider call, so a burst of concurrent requests can't
+    // all pass checkBudget() against the same stale ledger snapshot — see
+    // orgBudgets.reserveInFlight() and _estimateRequestCostUsd() above.
+    const reservation = budgets && (opts.orgId || opts.workspaceId)
+      ? { estimatedUsd: _estimateRequestCostUsd(candidate, { ...opts, messages }) }
+      : null;
+    if (reservation) budgets.reserveInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
     try {
       const callOpts = { provider: candidate.providerId, model: opts.model || candidate.model,
                           maxTokens: opts.maxTokens, temperature: opts.temperature };
@@ -320,6 +348,9 @@ async function execute(messages, opts = {}) {
         requestType: opts.tools?.length ? "chat_with_tools" : "chat",
         inputTokens, outputTokens, latencyMs, success: true,
       });
+      // Real cost is now in the ledger — release the estimate so it isn't
+      // double-counted alongside the just-recorded real spend.
+      if (reservation) budgets.releaseInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
 
       const history = _promptHistory();
       if (history) {
@@ -355,6 +386,10 @@ async function execute(messages, opts = {}) {
     } catch (err) {
       const latencyMs = Date.now() - t0;
       errors.push({ providerId: candidate.providerId, error: err.message });
+      // The call failed — no real cost was incurred, so release the
+      // reservation rather than letting it linger and undercount headroom
+      // for the next candidate/request.
+      if (reservation) budgets.releaseInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
       usageMetering.record({
         accountId: opts.accountId, orgId: opts.orgId, workspaceId: opts.workspaceId, missionId: opts.missionId,
         provider: candidate.providerId, requestType: opts.tools?.length ? "chat_with_tools" : "chat",
@@ -405,6 +440,10 @@ async function executeStream(messages, opts = {}, onChunk = () => {}) {
   const errors = [];
   for (const candidate of streamableChain) {
     const t0 = Date.now();
+    const reservation = budgets && (opts.orgId || opts.workspaceId)
+      ? { estimatedUsd: _estimateRequestCostUsd(candidate, { ...opts, messages }) }
+      : null;
+    if (reservation) budgets.reserveInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
     try {
       const result = await aiService.streamChat(
         messages,
@@ -424,6 +463,7 @@ async function executeStream(messages, opts = {}, onChunk = () => {}) {
         provider: candidate.providerId, model: result.model || candidate.model,
         requestType: "chat_stream", inputTokens, outputTokens, latencyMs, success: true,
       });
+      if (reservation) budgets.releaseInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
 
       const history = _promptHistory();
       if (history) {
@@ -444,6 +484,7 @@ async function executeStream(messages, opts = {}, onChunk = () => {}) {
     } catch (err) {
       const latencyMs = Date.now() - t0;
       errors.push({ providerId: candidate.providerId, error: err.message });
+      if (reservation) budgets.releaseInFlight({ orgId: opts.orgId, workspaceId: opts.workspaceId, estimatedUsd: reservation.estimatedUsd });
       usageMetering.record({
         accountId: opts.accountId, orgId: opts.orgId, workspaceId: opts.workspaceId, missionId: opts.missionId,
         provider: candidate.providerId, requestType: "chat_stream", latencyMs, success: false, errorCode: err.message,
