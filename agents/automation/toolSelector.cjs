@@ -1680,7 +1680,7 @@ const INTENT_KEYWORDS = [
 ];
 
 function _detectFromText(text) {
-    const lower = (text || "").toLowerCase();
+    const lower = (typeof text === "string" ? text : "").toLowerCase();
     let best = null, bestScore = 0;
     for (const { keywords, tool } of INTENT_KEYWORDS) {
         const score = keywords.reduce((s, kw) => s + (lower.includes(kw) ? 1 : 0), 0);
