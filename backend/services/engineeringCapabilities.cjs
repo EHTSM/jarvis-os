@@ -16,7 +16,7 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (17):
+ * Registered capabilities (18):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
  *   rollback (real git revert/checkout, verified), git_status, git_diff,
@@ -24,7 +24,9 @@
  *   security_scan (real static analysis via codeReviewEngine),
  *   bundle_analyze / bundle_optimize (real build-size analysis),
  *   self_document (real doc generation from source inspection),
- *   frontend_heal (real selfHealingFrontend.heal() bridge)
+ *   frontend_heal (real selfHealingFrontend.heal() bridge),
+ *   browser_automate (real nlBrowser+browserRunner bridge, same danger-
+ *     scan/HITL-approval gate as POST /browser-platform/nl/run)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -794,6 +796,72 @@ async function _securityScan(ctx) {
 // pushed, not a push+PR combo.
 function _ghAgent() { try { return require("./gitHubEngineeringAgent.cjs"); } catch { return null; } }
 
+// Final Production Integration mission — Browser Agent wiring. Confirmed
+// genuinely absent before this: agents/browser/browserRunner.cjs +
+// nlBrowser.cjs + humanInTheLoop.cjs are all real and already power
+// POST /browser-platform/nl/run, but no autonomous decision/mission/
+// pipeline path could ever reach them — the decision engine, mission
+// orchestrator, and this capability layer had zero reference to any
+// browser module. This adds ONE capability that delegates to the exact
+// same real pipeline the HTTP route already uses (nlBrowser.parse ->
+// humanInTheLoop.scanSteps -> browserRunner.run), not a new browser
+// automation implementation — same danger-scan/approval-gate semantics,
+// so an autonomous caller gets no more trust than an HTTP caller does.
+function _nlBrowser()      { try { return require("./nlBrowser.cjs");        } catch { return null; } }
+function _humanInTheLoop() { try { return require("./humanInTheLoop.cjs");   } catch { return null; } }
+function _browserRunner()  { try { return require("../../agents/browser/browserRunner.cjs"); } catch { return null; } }
+
+async function _browserAutomate(ctx) {
+    const intent = (ctx.input || "").trim();
+    if (!intent) return { success: false, error: "browser_automate requires a natural-language intent as input", output: null, nonRetriable: true };
+
+    const nl = _nlBrowser();
+    const hitl = _humanInTheLoop();
+    const runner = _browserRunner();
+    if (!nl || !hitl || !runner) return { success: false, error: "browser automation services unavailable", output: null };
+
+    let parsed;
+    try {
+        parsed = await nl.parse(intent, { useKnownFlow: true });
+    } catch (e) {
+        return { success: false, error: `intent parsing failed: ${e.message}`, output: null };
+    }
+    if (!parsed?.steps?.length) {
+        return { success: false, error: "no browser steps could be parsed from this intent", output: JSON.stringify({ parsed }) };
+    }
+
+    // Same real danger scan the HTTP route applies — a flagged step means
+    // this capability stops and creates a real HITL request rather than
+    // running it, exactly like an interactive caller would be blocked.
+    const flagged = hitl.scanSteps(parsed.steps, intent);
+    if (flagged.length > 0) {
+        const hitlReq = hitl.createRequest({
+            intent, steps: parsed.steps, flaggedSteps: flagged,
+            dangerLevel: parsed.dangerLevel, dangerReason: parsed.dangerReason,
+            context: { missionId: ctx.missionId || null, source: "autonomous_pipeline" },
+        });
+        remember("knowledge", { insight: `Browser automation held for approval: "${intent.slice(0, 100)}"` }, { tags: ["browser", "hitl", "engineering"], importance: 60 });
+        return {
+            success: false,
+            error: `requires human approval — flagged ${flagged.length} step(s), see /browser-platform/hitl/${hitlReq.id}/approve`,
+            output: JSON.stringify({ requiresApproval: true, hitlRequestId: hitlReq.id, flagged }),
+            nonRetriable: true,
+        };
+    }
+
+    const result = await runner.run(parsed.steps, { headless: true });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "browser_automation", intent, steps: parsed.steps.length, ok: result.ok });
+    remember("knowledge", { insight: `Browser automation ${result.ok ? "succeeded" : "failed"}: "${intent.slice(0, 100)}"` }, { tags: ["browser", "engineering", result.ok ? "success" : "failure"], importance: 55 });
+
+    return {
+        success: !!result.ok,
+        error: result.ok ? null : (result.error || "browser workflow failed"),
+        output: JSON.stringify({ workflowId: result.workflowId, stepsRun: parsed.steps.length, summary: result.summary || null }),
+        artifacts: [{ type: "browser_result", value: { workflowId: result.workflowId } }],
+        logs: [],
+    };
+}
+
 async function _parseGitHubRemote() {
     const r = await _sh("git", ["remote", "get-url", "origin"]);
     if (!r.ok) return null;
@@ -934,6 +1002,7 @@ const CAPABILITY_DEFS = [
     { name: "git_diff",        description: "Git diff --stat (staged or HEAD)",                                    handler: _gitDiff },
     { name: "git_commit",      description: "Approval-aware git commit; requires approved:true in input",          handler: _gitCommit },
     { name: "open_pr",         description: "Open a real GitHub PR via gitHubEngineeringAgent (requires an already-pushed head branch — never pushes itself)", handler: _openPR },
+    { name: "browser_automate",description: "Real browser automation via nlBrowser+browserRunner — same danger-scan/HITL-approval gate as the HTTP route", handler: _browserAutomate },
     { name: "security_scan",   description: "Real static security analysis via codeReviewEngine.detectSecurity on the run's target file", handler: _securityScan },
     { name: "bundle_analyze",  description: "Real frontend build size analysis from frontend/build/asset-manifest.json (actual file sizes)", handler: _bundleAnalyze },
     { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
