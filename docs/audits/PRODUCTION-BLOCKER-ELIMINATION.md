@@ -94,3 +94,102 @@ independently exploitable pre-fix (role is resolved server-side against
 `req.workspace`, so an attacker without Admin in the target workspace was
 already rejected there) — but they benefit from the same
 `requireWorkspaceMember` gate now applying uniformly ahead of them.
+
+---
+
+## Module 2 — Billing bypass via "local mode" flag (CONFIRMED, FIXED)
+
+**Severity:** High — direct revenue leak. Any authenticated account, including
+a brand-new trial signup, could zero out billing for arbitrary AI capabilities
+while the system still executed real, paid provider calls.
+
+### Reproduce / verify exploit
+
+`POST /commercial/credits/local` (`backend/routes/commercial.js`) let any
+authenticated user set `local.enabled = true` on their credit record with no
+plan/feature gate (unlike the adjacent BYOK route, which correctly checks
+`gates.checkGate("ai.byok", ...)` first).
+
+`creditEngine.checkCredit()`/`consume()` then unconditionally treated
+`rec.local.enabled` as "this request is free" — but provider *selection* in
+`creativeRouter.cjs` (`creativeRegistry.getBestProvider`) and
+`capabilityRouter.cjs` (`aiRegistry.bestFor`) was entirely independent of that
+flag: it always picked the best-scoring provider by quality/cost/latency,
+which for most capabilities is a real paid one (DALL-E 3 / Stability, an
+OpenRouter video model, Claude/GPT for reasoning, etc.).
+
+Verified live against the real services (real `creditEngine` ledger, real
+`creativeRegistry`/`aiRegistry` provider tables):
+
+```
+account sets local.enabled = true
+creativeRouter.route({ capability: "image_generate", ... })
+  → provider: "stability" (real, paid)     cost: 0   canProceed: true
+
+creativeRouter.route({ capability: "text_to_video", ... })
+  → provider: "openrouter" (real, paid — this capability has NO free option)
+                                            cost: 0   canProceed: true
+
+capabilityRouter.route({ intent: "reasoning task", ... })
+  → primary: "nvidia" (real, paid — ollama has no reasoning capability)
+                                            cost: 0
+```
+
+The worst case: capabilities with **no free/local provider option at all**
+(video, reasoning, voice clone, music, animation, presentations, ads) were
+still fully zeroed out — there was no legitimate interpretation under which
+these could be free, this was a pure billing defeat.
+
+### Fix
+
+Root cause: `local.enabled` is meant to mean "route this request to a real
+local/free provider," not "waive billing regardless of what actually runs."
+The credit ledger cannot know on its own whether a local provider exists for
+a given capability — only the routers know that.
+
+- `backend/services/creditEngine.cjs` — `checkCredit()`/`consume()` now
+  require an explicit `opts.localProviderAvailable` confirmation from the
+  caller before honoring `local.enabled`; without it (e.g. the generic
+  `/commercial/credits/consume` route, which has no way to verify what
+  actually ran) local mode is ignored and real billing applies. BYOK is
+  unaffected — it remains a legitimate unconditional waiver (billed to the
+  user's own key).
+- `backend/services/creativeRouter.cjs` — when `local.enabled` is set, only
+  forces routing to the capability's real `"local"` provider entry
+  (`creativeRegistry`) if one exists for that capability; otherwise falls
+  through to normal paid routing and passes `localProviderAvailable: false`
+  to `checkCredit`, so real billing applies. `consumeCredits()` derives the
+  same fact from `routingDecision.provider === "local"`.
+- `backend/services/capabilityRouter.cjs` — same pattern, using `aiRegistry`'s
+  `type: "local"` providers (currently only `ollama`, which covers
+  `chat`/`code`/`embeddings`/`vision` — not `reasoning`, `image`, `video`,
+  `speech`, `voice`, `music`, `browser`, `animation`, `3d`).
+
+### Regression
+
+New permanent test (below) confirms: (a) capabilities with a genuine local
+provider still route free when local mode is on, (b) capabilities without one
+still bill full price even with local mode on, (c) accounts without local mode
+enabled are completely unaffected. Full legacy suite
+(`node --test tests/legacy/*.test.cjs`): 83 pass / 72 fail, identical to the
+pre-existing baseline (no new regressions).
+
+### Security verification
+
+New permanent regression test:
+`tests/security/10-credit-local-mode-bypass.cjs` (13/13 pass). Covers the
+exact three exploited paths (image/video/reasoning), the direct
+`creditEngine.checkCredit()` call with no `opts` (the shape the generic
+`/commercial/credits/consume` route uses), and non-local-account billing to
+guard against a fix that accidentally billed everyone.
+
+### Telemetry
+
+`creativeRouter.cjs` and `capabilityRouter.cjs` now emit a
+`credit_local_mode_denied` event (accountId, capability, reason, ts) via
+`runtimeEventBus` whenever an account has `local.enabled` set but the
+requested capability has no real local provider — surfaces to ops when users
+are hitting local mode's actual boundary (e.g. to prioritize which
+capabilities might be worth adding a genuine local/free option for), distinct
+from silent, unlogged billing.
+

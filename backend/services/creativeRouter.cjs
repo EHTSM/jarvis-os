@@ -14,6 +14,12 @@
 const creditEngine    = require("./creditEngine.cjs");
 const creativeRegistry = require("./creativeRegistry.cjs");
 
+let _bus = null;
+function _evtBus() {
+  if (!_bus) try { _bus = require("../../agents/runtime/runtimeEventBus.cjs"); } catch {}
+  return _bus;
+}
+
 // Intent → capability keyword map
 const INTENT_PATTERNS = [
   { pattern: /\b(ad|advertisement|campaign|promote|commercial)\b/i,         cap: "ad_generate" },
@@ -65,11 +71,31 @@ function route(opts = {}) {
     return { ok: false, error: `Unknown capability: ${capability}` };
   }
 
-  const primary = creativeRegistry.getBestProvider(capability, {
-    quality: !!preferQuality,
-    cheapest: !!preferCheap,
-    excludeProvider,
-  });
+  // local.enabled means "route to the free/local provider" — it is not a
+  // blanket billing waiver. Only honor it if this capability actually has a
+  // real local provider (id "local", credits: 0); otherwise every provider
+  // for this capability is a real paid one and local mode must not apply
+  // (falls through to normal credit-gated routing below).
+  const localRecord  = accountId ? creditEngine.getRecord(accountId, plan) : null;
+  const wantsLocal    = !!localRecord?.local?.enabled;
+  const localProvider = cap.providers.find(p => p.id === "local");
+  const useLocal       = wantsLocal && !!localProvider;
+
+  if (wantsLocal && !useLocal) {
+    try {
+      _evtBus()?.emit("credit_local_mode_denied", {
+        accountId, capability, reason: "no_local_provider_for_capability", _ts: Date.now(),
+      });
+    } catch {}
+  }
+
+  const primary = useLocal
+    ? localProvider
+    : creativeRegistry.getBestProvider(capability, {
+        quality: !!preferQuality,
+        cheapest: !!preferCheap,
+        excludeProvider,
+      });
 
   if (!primary) {
     return { ok: false, capability, error: "No provider available for this capability" };
@@ -77,10 +103,11 @@ function route(opts = {}) {
 
   const fallbackChain = creativeRegistry.getFallbackChain(capability, primary.id);
 
-  // Credit validation
+  // Credit validation — local mode only bypasses cost when we actually
+  // selected the local provider above; every other path is billed normally.
   let creditCheck = { canProceed: true, source: "no_account", balance: Infinity, cost: 0 };
   if (accountId) {
-    creditCheck = creditEngine.checkCredit(accountId, "creative", plan);
+    creditCheck = creditEngine.checkCredit(accountId, "creative", plan, { localProviderAvailable: useLocal });
   }
 
   // Pick first available model
@@ -114,6 +141,7 @@ function consumeCredits(accountId, routingDecision, plan = "trial") {
     plan,
     cost: routingDecision.creditsRequired || 2,
     meta: { capability: routingDecision.capability, provider: routingDecision.provider },
+    localProviderAvailable: routingDecision.provider === "local",
   });
 }
 

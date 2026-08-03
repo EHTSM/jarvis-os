@@ -136,8 +136,17 @@ function getRecord(accountId, plan = "trial") {
 /**
  * Check available credit for an account.
  * Returns { canProceed, source, balance, cost }
+ *
+ * `local.enabled` only waives cost when the caller confirms (via
+ * opts.localProviderAvailable) that the request will actually be served by a
+ * real local/free provider for the requested capability. Without that
+ * confirmation the flag is ignored and normal billing applies — local mode
+ * is "route this to my free local model," not a blanket billing waiver, and
+ * whether a local provider exists for a given capability is a routing-layer
+ * fact (capabilityRouter/creativeRouter), not something this ledger can
+ * verify on its own.
  */
-function checkCredit(accountId, requestType = "default", plan = "trial") {
+function checkCredit(accountId, requestType = "default", plan = "trial", opts = {}) {
   const records = _load();
   const rec = _ensureRecord(records, accountId, plan);
   _refreshFree(rec, plan);
@@ -145,9 +154,11 @@ function checkCredit(accountId, requestType = "default", plan = "trial") {
 
   const cost = CREDIT_COSTS[requestType] || CREDIT_COSTS.default;
 
-  // BYOK / local never consume credits
+  // BYOK never consumes credits — billed directly to the user's own key.
   if (rec.byok.enabled) return { canProceed: true, source: "byok",  balance: Infinity, cost: 0 };
-  if (rec.local.enabled) return { canProceed: true, source: "local", balance: Infinity, cost: 0 };
+  if (rec.local.enabled && opts.localProviderAvailable) {
+    return { canProceed: true, source: "local", balance: Infinity, cost: 0 };
+  }
 
   // Premium credits (check expiry)
   if (rec.premium.balance > 0) {
@@ -167,6 +178,7 @@ function checkCredit(accountId, requestType = "default", plan = "trial") {
 
 /**
  * Consume credits for a request. Returns the transaction entry.
+ * Same localProviderAvailable gate as checkCredit — see its doc comment.
  */
 function consume(accountId, requestType = "default", opts = {}) {
   const records  = _load();
@@ -177,7 +189,7 @@ function consume(accountId, requestType = "default", opts = {}) {
 
   let creditType = "free";
   if (rec.byok.enabled) { creditType = "byok"; }
-  else if (rec.local.enabled) { creditType = "local"; }
+  else if (rec.local.enabled && opts.localProviderAvailable) { creditType = "local"; }
   else if (rec.premium.balance >= cost && !(rec.premium.expiresAt && new Date(rec.premium.expiresAt) < new Date())) {
     creditType = "premium";
     rec.premium.balance = Math.max(0, rec.premium.balance - cost);
