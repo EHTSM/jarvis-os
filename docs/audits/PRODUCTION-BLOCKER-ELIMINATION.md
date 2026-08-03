@@ -293,3 +293,59 @@ responses are already visible to the client and the existing credit ledger
 (`getLedger`) already records every real transaction with its cost and
 timestamp, which is sufficient to audit reservation activity after the fact.
 
+---
+
+## Module 4 — Billing state lost-update race (DOCUMENTED AS FALSE — no code change)
+
+**Original claim:** concurrent Razorpay webhook deliveries for different
+accounts (e.g. account A activating, account B cancelling near-simultaneously)
+could race on `billingService.js`'s full-file `_load()`/`_save()`, with
+whichever `_save()` wins overwriting the other account's just-written state —
+silently reverting a paying customer's activation or undoing a cancellation.
+
+### Verification — did not reproduce under any tested interleaving
+
+Same root cause investigation as Module 3: `activatePlan()` and `cancelPlan()`
+are each fully synchronous (`fs.readFileSync`/`writeFileSync`, no `await`
+inside), so Node's single-threaded event loop cannot interleave two calls to
+either function — each call's full load→modify→save completes atomically
+before the next queued callback runs.
+
+Tested three interleavings directly against the real webhook controller and
+real billing service, all via genuine concurrent HTTP requests (not
+simulated):
+
+1. **Different accounts, alternating event types** — 30 concurrent
+   `subscription.activated` (account A) / `subscription.cancelled` (account B)
+   webhook deliveries interleaved. Result: both accounts ended in the
+   correct, expected final state every run.
+2. **Different accounts, with a real `await` in the handler path** — 40
+   concurrent `payment.captured` events (one per account; this event type
+   does have a genuine `await automation.triggerFulfillment(...)` before the
+   `activatePlan()` call, unlike the subscription events). Result: 40/40
+   accounts activated correctly.
+3. **Same account, duplicate delivery** (Razorpay explicitly retries
+   on non-2xx/timeout, so the same event can genuinely arrive twice
+   concurrently) — 15 concurrent duplicate `subscription.activated` events
+   for one account. Result: correct final state (`starter`/`active`) —
+   `activatePlan()` is naturally idempotent since it always writes the same
+   final shape regardless of the record's prior state.
+
+No interleaving tested produced a lost update. The `await` inside
+`handleRazorpayWebhook`'s `payment.captured` branch happens *before* the
+`billing.activatePlan()` call, not between a read and a write within
+`activatePlan()` itself, and `activatePlan()`/`cancelPlan()` always
+`_load()` a fresh on-disk snapshot rather than reusing any state captured
+before an await — so there is no stale-snapshot-across-a-yield-point gap for
+this pair of functions, unlike the real race found in Module 3.
+
+### Outcome
+
+Documented as a false finding, per instructions — no code change made.
+`billingService.js` is unchanged. If a genuine cross-account race is ever
+found here in the future (e.g. introduced by a refactor that adds an `await`
+inside `activatePlan`/`cancelPlan` themselves, or a route that checks
+`checkAccess()` and only calls `activatePlan()`/`cancelPlan()` after its own
+slow `await`), the same `reserve()`-style fix pattern from Module 3 would
+apply.
+
