@@ -159,6 +159,7 @@ router.use("/approval", requireAuth);          // gate all /approval/* routes
 router.use(require("./approvalRoutes"));        // POST-Ω P4: /approval/* queue+engine+evidence+analytics+dashboard+policy
 router.use("/computer", requireAuth);          // gate all /computer/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)
 router.use(require("./computerController"));    // POST-Ω P5: /computer/* desktop+browser+editor+terminal+workspace+run
+router.use(require("./dockerController"));      // V6 Phase 3: /computer/docker/* container+compose+network+volume orchestration
 router.use("/twin", requireAuth);              // gate all /twin/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)
 router.use(require("./founderTwin"));          // POST-Ω P6: /twin/* profile+decisions+predict+preferences+context+scenarios
 router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* routes (Security Hardening: in-file requireAuth now also points at the real middleware, fail-closed)

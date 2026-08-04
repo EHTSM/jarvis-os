@@ -26,6 +26,7 @@ const _bc   = () => _try(() => require("./browserController.cjs"));
 const _ec   = () => _try(() => require("./editorController.cjs"));
 const _tc   = () => _try(() => require("./terminalController.cjs"));
 const _wc   = () => _try(() => require("./workspaceController.cjs"));
+const _dkc  = () => _try(() => require("./dockerController.cjs"));
 
 // ── Main NL command entry point ───────────────────────────────────────────────
 
@@ -110,6 +111,34 @@ const workspace = {
   stats:        ()              => _wc()?.getStats?.(),
 };
 
+// ── Docker facade (V6 Phase 3: Docker Orchestration) ───────────────────────────
+
+const docker = {
+  listContainers:   (opts)                => _dkc()?.listContainers?.(opts),
+  inspectContainer: (ref)                 => _dkc()?.inspectContainer?.(ref),
+  containerLogs:    (ref, opts)           => _dkc()?.containerLogs?.(ref, opts),
+  containerStats:   (ref)                 => _dkc()?.containerStats?.(ref),
+  start:            (ref)                 => _dkc()?.startContainer?.(ref),
+  stop:             (ref)                 => _dkc()?.stopContainer?.(ref),
+  restart:          (ref)                 => _dkc()?.restartContainer?.(ref),
+  remove:           (ref, opts)           => _dkc()?.removeContainer?.(ref, opts),
+  exec:             (ref, cmd, args)      => _dkc()?.execInContainer?.(ref, cmd, args),
+  listImages:       ()                    => _dkc()?.listImages?.(),
+  build:            (opts)                => _dkc()?.buildImage?.(opts),
+  composeUp:        (opts)                => _dkc()?.composeUp?.(opts),
+  composeDown:      (opts)                => _dkc()?.composeDown?.(opts),
+  composeStatus:    (opts)                => _dkc()?.composeStatus?.(opts),
+  composeLogs:      (opts)                => _dkc()?.composeLogs?.(opts),
+  composeRollback:  (snapshotId)          => _dkc()?.composeRollback?.(snapshotId),
+  listNetworks:     ()                    => _dkc()?.listNetworks?.(),
+  listVolumes:      ()                    => _dkc()?.listVolumes?.(),
+  containerHealth:  (ref)                 => _dkc()?.containerHealth?.(ref),
+  daemonHealth:     ()                    => _dkc()?.daemonHealth?.(),
+  dashboard:        ()                    => _dkc()?.getDashboard?.(),
+  stats:            ()                    => _dkc()?.getStats?.(),
+  history:          (opts)                => _dkc()?.listHistory?.(opts),
+};
+
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
 function getDashboard() {
@@ -146,6 +175,11 @@ function getCapabilities() {
       workspace: {
         description: "Cross-domain workspace state",
         capabilities: ["track_active_project","track_active_browser","track_active_terminal","track_current_task","automation_coverage","founder_time_saved"],
+      },
+      docker: {
+        description: "Container / compose orchestration",
+        capabilities: ["list_containers","inspect","logs","stats","start","stop","restart","remove","exec","list_images","build","compose_up","compose_down","compose_status","compose_logs","compose_rollback","list_networks","list_volumes","container_health","daemon_health"],
+        integrations: ["continuousLearningEngine","runtimeEventBus"],
       },
     },
     exampleCommands: [
@@ -187,6 +221,6 @@ function getRun(runId) {
 
 module.exports = {
   run,
-  desktop, browser, editor, terminal, workspace,
+  desktop, browser, editor, terminal, workspace, docker,
   getDashboard, getCapabilities, getStats, listRuns, getRun,
 };

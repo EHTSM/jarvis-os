@@ -16,7 +16,7 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (18):
+ * Registered capabilities (22):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
  *   rollback (real git revert/checkout, verified), git_status, git_diff,
@@ -27,6 +27,10 @@
  *   frontend_heal (real selfHealingFrontend.heal() bridge),
  *   browser_automate (real nlBrowser+browserRunner bridge, same danger-
  *     scan/HITL-approval gate as POST /browser-platform/nl/run)
+ *   docker_status / docker_health / docker_compose_up / docker_compose_down
+ *     (V6 Phase 3: real container/compose orchestration via
+ *     dockerController.cjs, its own execFileSync-backed adapter — not
+ *     duplicated through safe-exec, which correctly hard-blocks `docker`)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -985,6 +989,90 @@ async function _gitCommit(ctx) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// DOCKER (V6 Phase 3: Docker Orchestration — Mission Runtime integration)
+// ══════════════════════════════════════════════════════════════════════════════
+// Real container/compose orchestration lives in dockerController.cjs (its own
+// service, matching this file's existing "does not duplicate execution
+// engines" rule — Docker's command surface is far richer than safe-exec's
+// git/npm/node allowlist, so it gets its own real execFileSync-backed
+// adapter rather than being squeezed through _sh()). These 4 handlers are
+// the Mission Runtime / Agent Registry / Executor integration point: any
+// mission or agent can request a docker_* capability the same way it
+// already requests build_run/test_run, and get the same real remember()/
+// recordArtifact() memory trail.
+function _dockerCtl() { try { return require("./dockerController.cjs"); } catch { return null; } }
+
+// docker_status: read-only daemon + container snapshot.
+async function _dockerStatus(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const dash = dk.getDashboard();
+    const output = JSON.stringify({ reachable: dash.daemon?.reachable, containersRunning: dash.daemonStats?.containersRunning, containersTotal: dash.daemonStats?.containersTotal });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_status", ...dash.daemonStats });
+    return { success: !!dash.daemon?.reachable, output, artifacts: [{ type: "docker_status", value: dash.daemonStats }], logs: [] };
+}
+
+// docker_health: single container health check. input: "docker_health: <ref>"
+async function _dockerHealth(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const ref = ctx.input.replace(/^docker[_\s]health:?\s*/i, "").trim();
+    if (!ref) return { success: false, error: "container ref required (docker_health: <ref>)", output: null, nonRetriable: true };
+    const health = dk.containerHealth(ref);
+    if (!health.ok) return { success: false, error: health.error, output: null };
+    const output = JSON.stringify(health);
+    remember(health.running ? "success" : "failure",
+        health.running ? { pattern: "docker_health", appliedTo: ref, outcome: `running, health=${health.health}` }
+                        : { errorType: "container_down", context: ref, resolution: "restart or investigate container logs" },
+        { tags: ["docker", "health"], importance: health.running ? 40 : 65 });
+    return { success: health.running, output, artifacts: [{ type: "docker_health", ref, value: health }], logs: [] };
+}
+
+// docker_compose_up: input JSON {composeFile?, services?[]}, or a bare
+// composeFile path string. Real rollback snapshot is captured by
+// dockerController.composeUp() itself — the resulting snapshotId is
+// recorded as a mission artifact so a later docker_rollback capability
+// call (or a human) can reference it.
+async function _dockerComposeUp(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^docker[_\s]compose[_\s]up:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { composeFile: raw || undefined }; } catch { opts = { composeFile: raw || undefined }; }
+
+    const result = dk.composeUp(opts);
+    const output = JSON.stringify(result);
+    if (result.ok) {
+        remember("success", { pattern: "docker_compose_up", appliedTo: opts.composeFile || "docker-compose.prod.yml", outcome: `snapshot ${result.snapshotId}` },
+            { tags: ["docker", "compose", "deploy"], importance: 65 });
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_compose_up", composeFile: opts.composeFile, snapshotId: result.snapshotId });
+    } else {
+        remember("failure", { errorType: "compose_up_failed", context: opts.composeFile || "docker-compose.prod.yml", resolution: "check compose file and daemon reachability" },
+            { tags: ["docker", "compose"], importance: 75 });
+    }
+    return { success: result.ok, error: result.ok ? undefined : result.error, output, artifacts: [{ type: "docker_compose_up", snapshotId: result.snapshotId, ok: result.ok }], logs: [] };
+}
+
+// docker_compose_down: input JSON {composeFile?, removeVolumes?}, or a bare
+// composeFile path string.
+async function _dockerComposeDown(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^docker[_\s]compose[_\s]down:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { composeFile: raw || undefined }; } catch { opts = { composeFile: raw || undefined }; }
+
+    const result = dk.composeDown(opts);
+    const output = JSON.stringify(result);
+    remember(result.ok ? "success" : "failure",
+        result.ok ? { pattern: "docker_compose_down", appliedTo: opts.composeFile || "docker-compose.prod.yml", outcome: "stack stopped" }
+                   : { errorType: "compose_down_failed", context: opts.composeFile || "docker-compose.prod.yml", resolution: "check daemon reachability" },
+        { tags: ["docker", "compose"], importance: result.ok ? 40 : 70 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_compose_down", composeFile: opts.composeFile, ok: result.ok });
+    return { success: result.ok, error: result.ok ? undefined : result.error, output, artifacts: [{ type: "docker_compose_down", ok: result.ok }], logs: [] };
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // REGISTRATION
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -1008,6 +1096,10 @@ const CAPABILITY_DEFS = [
     { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
     { name: "self_document",   description: "Generate a real markdown doc from actual exported-function inspection (name, params, real preceding comment)", handler: _selfDocument },
     { name: "frontend_heal",   description: "Real frontend self-healing via selfHealingFrontend.heal() — Playwright error detection + confidence-gated auto-patch", handler: _frontendHeal },
+    { name: "docker_status",       description: "Real Docker daemon reachability + container counts via dockerController.cjs", handler: _dockerStatus },
+    { name: "docker_health",       description: "Real single-container health check (running/health/restartCount) via dockerController.cjs", handler: _dockerHealth },
+    { name: "docker_compose_up",   description: "Real docker compose up -d with automatic pre-up rollback snapshot", handler: _dockerComposeUp },
+    { name: "docker_compose_down", description: "Real docker compose down", handler: _dockerComposeDown },
 ];
 
 let _registered = false;
@@ -1049,6 +1141,7 @@ function _category(name) {
     if (name.startsWith("git_") || name === "rollback")        return "git";
     if (name === "open_pr")                                    return "git";
     if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document" || name === "frontend_heal") return "quality";
+    if (name.startsWith("docker_"))                            return "docker";
     return "general";
 }
 

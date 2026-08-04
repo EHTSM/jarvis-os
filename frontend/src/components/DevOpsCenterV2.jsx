@@ -7,6 +7,7 @@ import {
   listAlerts, resolveAlert, getServiceMap,
 } from "../phase25Api";
 import { getAIStatus } from "../aiApi";
+import * as dockerApi from "../dockerApi";
 import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
 
@@ -23,6 +24,7 @@ const TABS = [
   { id: "services",    label: "Service Health"},
   { id: "patches",     label: "Patches"      },
   { id: "dlq",         label: "Recovery"     },
+  { id: "docker",      label: "Docker"       },
 ];
 
 const SEED_DEPLOYMENTS = [
@@ -1114,6 +1116,147 @@ function TabServices({ addToast }) {
   );
 }
 
+// ── Tab: Docker (V6 Phase 3: Docker Orchestration) ─────────────────────
+// Real data only — no seed/sample fallback, unlike TabServices above,
+// since /computer/docker/* returns genuine live daemon/container state
+// with no illustrative gap to fill.
+
+function TabDocker({ addToast }) {
+  const [dashboard, setDashboard] = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
+  const [acting,    setActing]    = useState(null); // containerId currently being acted on
+  const [expanded,  setExpanded]  = useState(null);
+  const [logs,      setLogs]      = useState({});   // containerId -> log text
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    dockerApi.getDashboard()
+      .then(d => { setDashboard(d); setError(null); })
+      .catch(e => setError(e.message || "Failed to load Docker dashboard"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const act = async (ref, action, fn) => {
+    setActing(ref + action);
+    try {
+      const r = await fn(ref);
+      if (r?.ok !== false) {
+        addToast?.(`${action} ${ref}: ok`, "success");
+        refresh();
+      } else {
+        addToast?.(`${action} ${ref} failed: ${r?.error || "unknown error"}`, "error");
+      }
+    } catch (e) {
+      addToast?.(`${action} ${ref} failed: ${e.message}`, "error");
+    } finally {
+      setActing(null);
+    }
+  };
+
+  const loadLogs = async (ref) => {
+    if (expanded === ref) { setExpanded(null); return; }
+    setExpanded(ref);
+    if (!logs[ref]) {
+      try {
+        const r = await dockerApi.getContainerLogs(ref, 50);
+        setLogs(prev => ({ ...prev, [ref]: r.ok ? r.logs : (r.error || "no logs") }));
+      } catch (e) {
+        setLogs(prev => ({ ...prev, [ref]: e.message }));
+      }
+    }
+  };
+
+  if (loading && !dashboard) return <div className="dv2-empty">Loading Docker status…</div>;
+  if (error && !dashboard) return <div className="dv2-empty">⚠ {error}</div>;
+
+  const daemon    = dashboard?.daemon || {};
+  const dstats    = dashboard?.daemonStats || {};
+  const containers = dashboard?.containers || [];
+
+  return (
+    <div className="dv2-svc-root">
+      <div className="dv2-svc-header">
+        <div className="dv2-svc-hkpis">
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val" style={{ color: daemon.reachable ? "#52d68a" : "#f55b5b" }}>
+              {daemon.reachable ? "REACHABLE" : "UNREACHABLE"}
+            </span>
+            <span className="dv2-kpi-label">Docker Daemon</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val" style={{ color: "#52d68a" }}>{dstats.containersRunning ?? "—"}</span>
+            <span className="dv2-kpi-label">Running</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val">{dstats.containersTotal ?? "—"}</span>
+            <span className="dv2-kpi-label">Total containers</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val">{dstats.imagesTotal ?? "—"}</span>
+            <span className="dv2-kpi-label">Images</span>
+          </div>
+        </div>
+        <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={refresh} disabled={loading}>
+          {loading ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
+      {daemon.serverVersion && (
+        <div className="dv2-sc-provider" style={{ marginBottom: 12 }}>
+          Server {daemon.serverVersion} ({daemon.serverOs}) · Client {daemon.clientVersion}
+        </div>
+      )}
+
+      {containers.length === 0 && !loading && (
+        <div className="dv2-empty">No containers found.</div>
+      )}
+
+      <div className="dv2-svc-grid">
+        {containers.map(c => {
+          const running = (c.State || "").toLowerCase() === "running";
+          const color = running ? "#52d68a" : "#8994b0";
+          const ref = c.ID || c.Names;
+          return (
+            <div key={ref} className={`dv2-svc-card${!running ? " dv2-svc-card--degraded" : ""}`}>
+              <div className="dv2-sc-top">
+                <span className="dv2-sc-dot" style={{ background: color }} />
+                <span className="dv2-sc-name">{c.Names}</span>
+                <span className="dv2-chip dv2-chip--xs" style={{ color, background: color+"15", borderColor: color+"30" }}>{c.State}</span>
+              </div>
+              <div className="dv2-sc-meta">
+                <span className="dv2-sc-stat">Image: <strong>{c.Image}</strong></span>
+                {c.Ports && <span className="dv2-sc-stat">Ports: <strong>{c.Ports}</strong></span>}
+                <span className="dv2-sc-stat">Up: <strong>{c.RunningFor}</strong></span>
+              </div>
+              <div className="dv2-sc-provider" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {running ? (
+                  <>
+                    <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"restart"} onClick={() => act(ref, "restart", dockerApi.restartContainer)}>Restart</button>
+                    <button className="dv2-btn dv2-btn--xs dv2-btn--danger" disabled={acting === ref+"stop"} onClick={() => act(ref, "stop", dockerApi.stopContainer)}>Stop</button>
+                  </>
+                ) : (
+                  <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"start"} onClick={() => act(ref, "start", dockerApi.startContainer)}>Start</button>
+                )}
+                <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" onClick={() => loadLogs(ref)}>
+                  {expanded === ref ? "Hide logs" : "Logs"}
+                </button>
+              </div>
+              {expanded === ref && (
+                <pre style={{ fontSize: "0.68rem", maxHeight: 180, overflow: "auto", background: "rgba(0,0,0,.25)", padding: 8, borderRadius: 6, marginTop: 6, whiteSpace: "pre-wrap" }}>
+                  {logs[ref] || "Loading…"}
+                </pre>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ── Tab: Patches ──────────────────────────────────────────────────────
 
 const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
@@ -1411,6 +1554,7 @@ export default function DevOpsCenterV2({ onNavigate }) {
         {tab === "services"     && <TabServices      addToast={addToast} />}
         {tab === "patches"      && <TabPatches       addToast={addToast} />}
         {tab === "dlq"          && <TabDLQ           addToast={addToast} />}
+        {tab === "docker"       && <TabDocker        addToast={addToast} />}
       </div>
 
       <div className="dv2-toast-container">
