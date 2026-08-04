@@ -81,9 +81,9 @@ async function buildPage({ planId, pageSpec, writeToFile = false } = {}) {
   let result;
   try {
     const raw = await ai.callAI(PAGE_PROMPT(page, components, tokens, responsive), { maxTokens: 3000 });
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return { ok: false, error: "AI did not return valid JSON" };
-    result = JSON.parse(jsonMatch[0]);
+    const extracted = ai.extractJSON(raw);
+    if (!extracted.ok) return { ok: false, error: extracted.error };
+    result = extracted.data;
   } catch (e) {
     return { ok: false, error: `Page generation failed: ${e.message}` };
   }

@@ -79,9 +79,9 @@ Return ONLY the JSON object. No prose, no markdown fences.`;
   let plan;
   try {
     const raw = await ai.callAI(prompt, { maxTokens: 2000 });
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return { ok: false, error: "AI did not return valid JSON plan" };
-    plan = JSON.parse(jsonMatch[0]);
+    const extracted = ai.extractJSON(raw);
+    if (!extracted.ok) return { ok: false, error: extracted.error };
+    plan = extracted.data;
   } catch (e) {
     return { ok: false, error: `Plan generation failed: ${e.message}` };
   }

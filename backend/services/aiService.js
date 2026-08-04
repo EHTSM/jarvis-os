@@ -1195,8 +1195,64 @@ async function streamChat(messages, opts = {}, onChunk = () => {}) {
     throw new Error("All streaming-capable AI providers failed — check your API keys.");
 }
 
+/**
+ * Extract and parse a JSON object from a raw LLM text response.
+ *
+ * Every AI-JSON generator in this codebase (componentGenerator.cjs,
+ * autonomousPageBuilder.cjs, aiDesignPlanner.cjs, selfHealingFrontend.cjs,
+ * and others) independently duplicated the same `raw.match(/\{[\s\S]*\}/)`
+ * + `JSON.parse()` pattern, none of them handling a real, observed failure
+ * mode: LLMs frequently return multi-line code inside a JSON string value
+ * with literal (unescaped) newlines/tabs instead of `\n`/`\t` — valid as
+ * "text a model would write," invalid per the JSON spec, and something
+ * `JSON.parse` rejects outright ("Bad control character in string
+ * literal"). Consolidating here (not redesigning each caller's contract)
+ * so every generator gets the same real fix and only needs to switch its
+ * two-line inline block for a call to this.
+ *
+ * @param {string} raw - full LLM response text
+ * @returns {{ok:true, data:object}|{ok:false, error:string}}
+ */
+function extractJSON(raw) {
+    if (typeof raw !== "string") return { ok: false, error: "AI response was not text" };
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return { ok: false, error: "AI did not return JSON" };
+    const candidate = jsonMatch[0];
+    try {
+        return { ok: true, data: JSON.parse(candidate) };
+    } catch (firstErr) {
+        // Escape raw control characters (newline, tab, CR) that appear
+        // INSIDE string literals — the single most common real failure
+        // mode for multi-line code/text embedded in an LLM's JSON output.
+        // Walks the string tracking quote state so control chars outside
+        // strings (real JSON formatting whitespace) are left untouched.
+        let repaired = "";
+        let inString = false;
+        let escaped  = false;
+        for (const ch of candidate) {
+            if (inString) {
+                if (escaped) { repaired += ch; escaped = false; continue; }
+                if (ch === "\\") { repaired += ch; escaped = true; continue; }
+                if (ch === '"') { inString = false; repaired += ch; continue; }
+                if (ch === "\n") { repaired += "\\n"; continue; }
+                if (ch === "\r") { repaired += "\\r"; continue; }
+                if (ch === "\t") { repaired += "\\t"; continue; }
+                repaired += ch;
+            } else {
+                if (ch === '"') inString = true;
+                repaired += ch;
+            }
+        }
+        try {
+            return { ok: true, data: JSON.parse(repaired) };
+        } catch (secondErr) {
+            return { ok: false, error: `AI returned malformed JSON: ${firstErr.message}` };
+        }
+    }
+}
+
 module.exports = {
-    callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus,
+    callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus, extractJSON,
     // Exported for aiOrchestrator.cjs's availability probing — read-only
     // accessors, no new behavior; local-server URL builders + reachability
     // check already existed internally (used by _ollama/_lmstudio's own

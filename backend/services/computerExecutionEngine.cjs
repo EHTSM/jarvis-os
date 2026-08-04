@@ -165,16 +165,27 @@ async function _runRegression(run) {
 async function _captureScreenshots(run) {
   const results = [];
   // Desktop screenshot
-  const desk = await _dc()?.captureScreenshot?.({}) || { ok: true, note: "desktop screenshot attempted" };
+  const desk = await _dc()?.captureScreenshot?.({}) || { ok: false, note: "desktop capture unavailable" };
   results.push({ type: "desktop", ok: desk.ok, path: desk.path });
   // Browser screenshot
   const tabs = _bc()?.listTabs?.({ status: "open" }) || [];
   for (const tab of tabs.slice(0, 3)) {
-    const shot = await _bc()?.captureScreenshot?.(tab.tabId, {}) || { ok: true };
+    const shot = await _bc()?.captureScreenshot?.(tab.tabId, {}) || { ok: false };
     results.push({ type: "browser", tabId: tab.tabId, url: tab.url, ok: shot.ok });
   }
   run.minutesSaved = 5;
-  return { ok: true, screenshots: results };
+  // Trust boundary fix (FINAL-JARVIS-DREAM-CERTIFICATION.md's
+  // computerExecutionEngine false-success finding): this previously
+  // returned { ok: true, ... } unconditionally, discarding the real
+  // per-capture ok values collected in `results` — a request where every
+  // underlying screenshot attempt genuinely failed still reported
+  // outcome:"success" one level up in execute(). ok now reflects whether
+  // ANY real capture succeeded (there is genuinely no capture to take when
+  // zero tabs are open and desktop capture is unavailable — that's not a
+  // failure of this step, so `some`, not `every`, matches
+  // _deployRelease's/the generic branch's existing every-vs-some
+  // discipline for "at least one requested thing worked" semantics).
+  return { ok: results.length > 0 && results.some(r => r.ok), screenshots: results };
 }
 
 async function _generateDocumentation(run) {
@@ -185,7 +196,10 @@ async function _generateDocumentation(run) {
   ];
   const results = cmds.map(cmd => _tc()?.execute?.(cmd, { timeoutMs: 15000 }) || { ok: false });
   run.minutesSaved = 30;
-  return { ok: results.some(r => r.ok), results };
+  // Trust boundary fix: allOk lets execute()'s outcome logic distinguish
+  // "all 3 introspection commands worked" from "only 1 of 3 worked" —
+  // previously both collapsed to the same ok:true/outcome:"success".
+  return { ok: results.some(r => r.ok), allOk: results.every(r => r.ok), results };
 }
 
 async function _fixTests(run) {
@@ -267,7 +281,13 @@ async function execute(command, opts = {}) {
         toolResults.push({ tool, ...r });
         run.toolsUsed.push(tool);
       }
-      result = { ok: toolResults.some(r => r.ok), toolResults };
+      // Trust boundary fix: ok reflects "did anything work" (some), but
+      // allOk separately records "did EVERYTHING requested work" (every) —
+      // used below so a partially-failed multi-tool request is reported
+      // as outcome:"partial", not outcome:"success". Previously result.ok
+      // alone drove the success/partial split, so 1-of-2 tools failing
+      // was indistinguishable from 2-of-2 succeeding.
+      result = { ok: toolResults.some(r => r.ok), allOk: toolResults.length > 0 && toolResults.every(r => r.ok), toolResults };
     }
 
     // Step 5: Validate
@@ -284,7 +304,17 @@ async function execute(command, opts = {}) {
       }
     }
 
-    run.outcome    = result.ok ? "success" : "partial";
+    // Trust boundary fix: when a branch above distinguishes "some worked"
+    // (result.ok) from "everything requested worked" (result.allOk — set
+    // only by the generic multi-tool branch, whose composite ok was a
+    // .some() rather than .every()), a partial result must not be
+    // reported as outcome:"success". Branches that don't set allOk (they
+    // already return a single unambiguous ok, e.g. _deployRelease's own
+    // .every()) are unaffected — result.allOk === undefined there, so the
+    // `!== false` check preserves their existing ok-driven behavior
+    // exactly.
+    const fullSuccess = result.ok && result.allOk !== false;
+    run.outcome    = fullSuccess ? "success" : "partial";
     run.status     = result.ok ? "completed" : "completed_with_errors";
     run.result     = result;
 

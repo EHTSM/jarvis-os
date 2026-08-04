@@ -159,9 +159,9 @@ Generate a minimal fix. Return JSON only:
 
   try {
     const raw = await ai.callAI(prompt, { maxTokens: 512 });
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (jsonMatch) return { ok: true, ...JSON.parse(jsonMatch[0]) };
-    return { ok: false, error: "AI did not return valid JSON" };
+    const extracted = ai.extractJSON(raw);
+    if (extracted.ok) return { ok: true, ...extracted.data };
+    return { ok: false, error: extracted.error };
   } catch (e) {
     return { ok: false, error: `AI unavailable: ${e.message}` };
   }
