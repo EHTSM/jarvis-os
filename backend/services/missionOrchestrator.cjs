@@ -449,11 +449,14 @@ const LIVE_EVICTION_GRACE_MS = 5 * 60_000;
 
 function _sweepTerminalMissions() {
     const now = Date.now();
+    let evicted = 0;
     for (const [missionId, rec] of _live) {
         if (rec._terminalAt && now - rec._terminalAt > LIVE_EVICTION_GRACE_MS) {
             _live.delete(missionId);
+            evicted++;
         }
     }
+    if (evicted > 0) _obs("orchestrator.sweep.terminal_evicted", evicted);
 }
 
 setInterval(_sweepTerminalMissions, 60_000).unref();
@@ -469,6 +472,7 @@ const DEADLOCK_SWEEP_MS   = 120_000;
 const STALLED_STAGE_MS    = 6 * 60_000;  // 1 minute past _monitorStage's own 5-minute timeout
 function _sweepDeadlockedMissions() {
     const now = Date.now();
+    let reArmed = 0, reDriven = 0;
     for (const [missionId, rec] of _live) {
         if (TERMINAL_STATES.has(rec.orchStatus)) continue;
         const stalledStage = (rec.stages || []).find(s => {
@@ -478,6 +482,7 @@ function _sweepDeadlockedMissions() {
         if (stalledStage) {
             logger.warn(`[Orchestrator] deadlock sweep: re-arming stalled stage ${stalledStage.id} on mission ${missionId}`);
             _monitorStage(missionId, stalledStage).catch(() => { /* handled inside */ });
+            reArmed++;
             continue;
         }
         // No running stage, not terminal, not blocking-awaiting — re-drive
@@ -486,8 +491,11 @@ function _sweepDeadlockedMissions() {
         const hasBlocking = (rec.stages || []).some(s => BLOCKING_STATUSES.has(s.status));
         if (!hasRunning && !hasBlocking && rec.orchStatus !== "queued") {
             _advance(missionId).catch(() => { /* handled */ });
+            reDriven++;
         }
     }
+    if (reArmed > 0) _obs("orchestrator.sweep.stage_rearmed", reArmed);
+    if (reDriven > 0) _obs("orchestrator.sweep.mission_redriven", reDriven);
 }
 
 setInterval(_sweepDeadlockedMissions, DEADLOCK_SWEEP_MS).unref();
