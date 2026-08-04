@@ -9,6 +9,7 @@ import {
 import { getAIStatus } from "../aiApi";
 import * as dockerApi from "../dockerApi";
 import * as deployStrategyApi from "../deploymentStrategyApi";
+import * as depAuditApi from "../dependencyAuditApi";
 import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
 
@@ -26,6 +27,7 @@ const TABS = [
   { id: "patches",     label: "Patches"      },
   { id: "dlq",         label: "Recovery"     },
   { id: "docker",      label: "Docker"       },
+  { id: "dependencies",label: "Dependencies" },
 ];
 
 const SEED_DEPLOYMENTS = [
@@ -1342,6 +1344,123 @@ function TabDocker({ addToast }) {
   );
 }
 
+// ── Tab: Dependencies (V6 Phase 5) ──────────────────────────────────────
+
+const DEP_SEVERITY_COLORS = { critical:"#f55b5b", high:"#f0703c", moderate:"#f0b429", low:"#4ecdc4", info:"#8994b0" };
+
+function TabDependencies({ addToast }) {
+  const [scan,      setScan]      = useState(null);
+  const [outdated,  setOutdated]  = useState(null);
+  const [stats,     setStats]     = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [scanning,  setScanning]  = useState(false);
+  const [updating,  setUpdating]  = useState(null); // packageName currently updating
+
+  const refresh = useCallback(() => {
+    Promise.all([
+      depAuditApi.getLastScan().catch(() => null),
+      depAuditApi.listOutdated().catch(() => null),
+      depAuditApi.getStats().catch(() => null),
+    ]).then(([s, o, st]) => {
+      setScan(s?.scan || null);
+      setOutdated(o?.packages || []);
+      setStats(st?.stats || null);
+    }).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function runScan() {
+    setScanning(true);
+    try {
+      const r = await depAuditApi.scanVulnerabilities();
+      if (r?.ok) addToast(`Scan complete — ${r.totalVulnerabilities} vulnerabilit${r.totalVulnerabilities === 1 ? "y" : "ies"} found`, r.totalVulnerabilities > 0 ? "error" : "success");
+      else addToast(`Scan failed: ${r?.error || "unknown error"}`, "error");
+    } catch (e) {
+      addToast(`Scan request failed: ${e.message}`, "error");
+    } finally {
+      setScanning(false);
+      refresh();
+    }
+  }
+
+  async function runUpdate(packageName) {
+    setUpdating(packageName);
+    try {
+      const r = await depAuditApi.applySafeUpdate(packageName);
+      if (r?.ok) addToast(`${packageName} updated and regression-verified`, "success");
+      else addToast(`${packageName} update failed${r?.reverted ? " — reverted" : ""}: ${r?.error || "unknown error"}`, "error");
+    } catch (e) {
+      addToast(`Update request failed: ${e.message}`, "error");
+    } finally {
+      setUpdating(null);
+      refresh();
+    }
+  }
+
+  if (loading) return <div className="dv2-empty">Loading dependency status…</div>;
+
+  return (
+    <div className="dv2-svc-root">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Dependency Vulnerability Scan</span>
+        <button className={`dv2-btn dv2-btn--primary dv2-btn--sm${scanning ? " dv2-btn--loading" : ""}`} onClick={runScan} disabled={scanning}>
+          {scanning ? "⟳ Scanning…" : "▶ Run npm audit"}
+        </button>
+      </div>
+
+      {stats && (
+        <div className="dv2-deploy-summary">
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.scans || 0}</span><span className="dv2-ds-label">scans run</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.vulnerabilitiesFound || 0}</span><span className="dv2-ds-label">vulns found</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.updatesApplied || 0}</span><span className="dv2-ds-label">updates applied</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.updatesReverted || 0}</span><span className="dv2-ds-label">reverted</span></div>
+        </div>
+      )}
+
+      {scan ? (
+        <div className="dv2-strategy-runs">
+          {scan.packages.length === 0 ? (
+            <p className="dv2-cs-sub">Last scan ({_timeAgo(scan.ts)}): no known vulnerabilities.</p>
+          ) : scan.packages.map(p => (
+            <div key={p.name} className="dv2-strategy-run-row">
+              <span className="dv2-dr-status dv2-chip" style={{ color: DEP_SEVERITY_COLORS[p.severity], background: DEP_SEVERITY_COLORS[p.severity]+"15" }}>{p.severity}</span>
+              <span className="dv2-dr-repo dv2-mono">{p.name}</span>
+              <span className="dv2-dr-version dv2-mono">{p.range}</span>
+              <span className="dv2-dr-ts">{p.fixAvailable ? "fix available" : "no fix yet"}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="dv2-cs-sub">No scan yet — click "Run npm audit" above.</p>
+      )}
+
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Outdated Packages</span>
+      </div>
+      <div className="dv2-strategy-runs">
+        {(outdated || []).length === 0 ? (
+          <p className="dv2-cs-sub">All packages up to date, or not yet checked.</p>
+        ) : outdated.map(p => (
+          <div key={p.name} className="dv2-strategy-run-row">
+            <span className="dv2-dr-repo dv2-mono">{p.name}</span>
+            <span className="dv2-dr-version dv2-mono">{p.current} → {p.wanted}{p.majorBump ? ` (latest ${p.latest})` : ""}</span>
+            <span className="dv2-dr-ts">{p.majorBump ? "major bump — not auto-updatable" : "semver-safe"}</span>
+            <button
+              className="dv2-btn dv2-btn--ghost dv2-btn--xs"
+              disabled={!p.semverSafe || updating === p.name}
+              onClick={() => runUpdate(p.name)}
+              title={p.majorBump ? "Only wanted (semver-safe) updates are applied automatically" : ""}
+            >
+              {updating === p.name ? "⟳ Updating…" : "Update + verify"}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Tab: Patches ──────────────────────────────────────────────────────
 
 const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
@@ -1640,6 +1759,7 @@ export default function DevOpsCenterV2({ onNavigate }) {
         {tab === "patches"      && <TabPatches       addToast={addToast} />}
         {tab === "dlq"          && <TabDLQ           addToast={addToast} />}
         {tab === "docker"       && <TabDocker        addToast={addToast} />}
+        {tab === "dependencies" && <TabDependencies  addToast={addToast} />}
       </div>
 
       <div className="dv2-toast-container">
