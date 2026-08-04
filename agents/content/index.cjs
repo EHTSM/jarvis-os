@@ -1,8 +1,10 @@
 /**
- * Content Agents — barrel export of the 10 content/*.cjs implementation
- * files (9 registered; imageProcessorAgent.cjs is NOT in this list — see
- * module 3 of the unification report for why it stays unregistered).
- * Required by executor.cjs solely to confirm each file loads cleanly.
+ * Content Agents — barrel export of the content/*.cjs implementation
+ * files. Required by executor.cjs solely to confirm each file loads
+ * cleanly. imageProcessorAgent.cjs (real sharp-based upscale/edit) is
+ * exported here too but registered separately in bootstrapRuntime.cjs
+ * under a task-type adapter (its export shape is {upscale, edit}, not
+ * run(task), like its siblings below).
  *
  * Agent Civilization Unification (module 2): this barrel used to ALSO
  * register each agent into agentManager (agents/multi/'s private shadow
@@ -25,7 +27,8 @@ const CONTENT_AGENTS = {
     reelGenerator:     require("./reelGeneratorAgent.cjs"),
     podcastGenerator:  require("./podcastGeneratorAgent.cjs"),
     voiceCloning:      require("./voiceCloningAgent.cjs"),
-    contentScheduler:  require("./contentScheduler.cjs")
+    contentScheduler:  require("./contentScheduler.cjs"),
+    imageProcessor:    require("./imageProcessorAgent.cjs")
 };
 
 module.exports = CONTENT_AGENTS;

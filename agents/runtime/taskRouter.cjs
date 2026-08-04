@@ -174,6 +174,10 @@ const TASK_TYPE_MAP = {
     git_commit:           "terminal",
     git_status:           "terminal",
     git_log:              "terminal",
+
+    // content_image_processor (real sharp upscale/edit) — see bootstrapRuntime.cjs
+    image_upscale:        "image_processing",
+    image_edit:           "image_processing",
 };
 
 /** Resolve a task type to a capability string. Falls back to "ai". */

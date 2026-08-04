@@ -417,6 +417,35 @@ for (const { file, id, capabilities } of INTERNET_AGENTS) {
     }
 }
 
+// ── Content: image processor — real sharp-backed pixel processing
+// (upscale/edit), already wired directly into backend/routes/
+// creativeStudio.js's /creative/image/upscale and /creative/image/edit
+// endpoints. That route-level wiring is untouched by this registration —
+// this only makes the same real capability discoverable/callable through
+// agentRegistry.findForCapability("image_processing") for any caller
+// that goes through the runtime dispatch path instead of the REST route
+// directly, closing the one gap found in the Agent Civilization
+// Discovery pass (imageProcessorAgent.cjs was the only content/*.cjs
+// file not present in either registry). No run(task) contract in the
+// source file (exports upscale/edit directly) — adapted the same way as
+// system_health above.
+try {
+    const imageProcessor = require("../content/imageProcessorAgent.cjs");
+    orchestrator.registerAgent({
+        id: "content_image_processor",
+        capabilities: ["image_processing"],
+        maxConcurrent: 2,
+        handler: async (task) => {
+            const p = task.payload || {};
+            const op = task.type === "image_edit" ? "edit" : "upscale";
+            return op === "edit" ? imageProcessor.edit(p) : imageProcessor.upscale(p);
+        },
+    });
+    logger.info("[Bootstrap] content_image_processor agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] content_image_processor agent skipped:", err.message);
+}
+
 // ── System health — real os-module metrics, no run(task) contract in the
 // source file, so a small task-type adapter is used (same pattern as the
 // filesystem agent above) ───────────────────────────────────────────────
