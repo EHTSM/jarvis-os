@@ -14,6 +14,7 @@ import { PluginsPanel, PluginHealthPanel, PluginDiagPanel } from "./WorkspaceSet
 import { ExecutivePanel, WorkspaceHealthPanel, AutomationROIPanel, AIUtilizationPanel, RuntimeCapacityPanel, EnterpriseReportsPanel } from "./WorkspaceSettingsK6";
 import { PolicyLibraryPanel, CompliancePanel, RiskMatrixPanel, GovernanceOverviewPanel, GovReportsPanel } from "./WorkspaceSettingsK4";
 import { SessionsPanel, DevicesPanel, AuditPanel, TokensPanel, PoliciesPanel } from "./WorkspaceSettingsK2";
+import { DesktopIntegrationsPanel } from "./WorkspaceSettingsDesktop";
 
 // ── Storage helpers ───────────────────────────────────────────────────
 const BRAND_KEY    = "ooplix_ws_branding";
@@ -205,6 +206,7 @@ export default function WorkspaceSettings({ onNavigate }) {
             { id: "policies",      icon: "⬡", label: "Policies"      },
             { id: "sessions",      icon: "▷", label: "Sessions"      },
             { id: "devices",       icon: "◇", label: "Devices"       },
+            { id: "desktop",       icon: "🖥", label: "Desktop"       },
             { id: "tokens",        icon: "◎", label: "API Tokens"    },
             { id: "auditlog",      icon: "✦", label: "Audit Log"     },
             { id: "directory",     icon: "◈", label: "Team Directory" },
@@ -441,6 +443,17 @@ export default function WorkspaceSettings({ onNavigate }) {
               <h2 className="ws-section-title">Trusted Devices</h2>
               <p className="ws-section-desc">Devices that have accessed this workspace. Require device trust in Policies to enforce this list.</p>
               <DevicesPanel />
+            </div>
+          )}
+
+          {/* Desktop Integrations — recovered hidden capability: real Electron
+              IPC handlers (print-to-PDF, scanner hand-off, native save dialog,
+              folder sync) that had zero frontend caller. */}
+          {section === "desktop" && (
+            <div className="ws-section">
+              <h2 className="ws-section-title">Desktop Integrations</h2>
+              <p className="ws-section-desc">Native OS capabilities available in the Ooplix desktop app — printing, scanning, file export, and local folder sync.</p>
+              <DesktopIntegrationsPanel />
             </div>
           )}
 
