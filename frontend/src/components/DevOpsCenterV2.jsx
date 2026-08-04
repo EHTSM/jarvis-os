@@ -10,6 +10,7 @@ import { getAIStatus } from "../aiApi";
 import * as dockerApi from "../dockerApi";
 import * as deployStrategyApi from "../deploymentStrategyApi";
 import * as depAuditApi from "../dependencyAuditApi";
+import * as terminalApi from "../computerTerminalApi";
 import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
 
@@ -28,6 +29,7 @@ const TABS = [
   { id: "dlq",         label: "Recovery"     },
   { id: "docker",      label: "Docker"       },
   { id: "dependencies",label: "Dependencies" },
+  { id: "terminal",    label: "Terminal"     },
 ];
 
 const SEED_DEPLOYMENTS = [
@@ -1461,6 +1463,85 @@ function TabDependencies({ addToast }) {
   );
 }
 
+// ── Tab: Terminal ─────────────────────────────────────────────────────
+// terminalController.cjs (real execFileSync-based, no-shell execution,
+// per-binary allowlist, real command history) had zero frontend consumer.
+
+function TabTerminal({ addToast }) {
+  const [cmd, setCmd]           = useState("");
+  const [running, setRunning]   = useState(false);
+  const [history, setHistory]   = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const bottomRef = useRef(null);
+
+  const refresh = useCallback(() => {
+    terminalApi.listCommands({ limit: 30 })
+      .then(r => setHistory((r?.commands || []).slice().reverse()))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [history]);
+
+  const run = async (e) => {
+    e.preventDefault();
+    const c = cmd.trim();
+    if (!c || running) return;
+    setCmd("");
+    setRunning(true);
+    try {
+      const r = await terminalApi.run(c);
+      if (r?.ok === false) addToast(`Blocked or failed: ${r.error || "unknown error"}`, "error");
+      refresh();
+    } catch (e2) {
+      addToast(`Terminal request failed: ${e2.message}`, "error");
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  if (loading) return <div className="dv2-empty">Loading terminal…</div>;
+
+  return (
+    <div className="dv2-svc-root">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Terminal</span>
+        <span className="dv2-cs-sub">Real execFileSync execution — no shell, per-binary allowlist. Not a general-purpose shell.</span>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 420, overflowY: "auto", marginBottom: 12, fontFamily: "monospace", fontSize: 12 }}>
+        {history.length === 0 ? (
+          <p className="dv2-cs-sub">No commands run yet.</p>
+        ) : history.map(h => (
+          <div key={h.cmdId} style={{ padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", color: h.status === "success" ? "#52d68a" : h.status === "failed" ? "#f55b5b" : "#f0b429" }}>
+              <span>$ {h.cmd}</span>
+              <span>{h.status}{h.durationMs != null ? ` · ${h.durationMs}ms` : ""}</span>
+            </div>
+            {h.output && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "#c8ccd8" }}>{h.output.slice(0, 1000)}</pre>}
+            {h.error && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "#f55b5b" }}>{h.error.slice(0, 1000)}</pre>}
+          </div>
+        ))}
+        <div ref={bottomRef} />
+      </div>
+
+      <form onSubmit={run} style={{ display: "flex", gap: 8 }}>
+        <input
+          value={cmd}
+          onChange={e => setCmd(e.target.value)}
+          placeholder="e.g. git status"
+          style={{ flex: 1, fontFamily: "monospace" }}
+          disabled={running}
+        />
+        <button className="dv2-btn dv2-btn--primary dv2-btn--sm" type="submit" disabled={running || !cmd.trim()}>
+          {running ? "⟳ Running…" : "Run"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 // ── Tab: Patches ──────────────────────────────────────────────────────
 
 const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
@@ -1760,6 +1841,7 @@ export default function DevOpsCenterV2({ onNavigate }) {
         {tab === "dlq"          && <TabDLQ           addToast={addToast} />}
         {tab === "docker"       && <TabDocker        addToast={addToast} />}
         {tab === "dependencies" && <TabDependencies  addToast={addToast} />}
+        {tab === "terminal"     && <TabTerminal      addToast={addToast} />}
       </div>
 
       <div className="dv2-toast-container">
