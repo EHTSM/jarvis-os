@@ -671,6 +671,15 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[SelfHeal] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 1 (Continuous Self Improvement): startWeeklySchedule() was
+        // fully built (real setInterval, real report generation/persistence)
+        // but never called anywhere in the repo — confirmed via grep before
+        // this change. Wiring it here, not rebuilding it.
+        require("./services/improvementLoop.cjs").startWeeklySchedule();
+    } catch (err) {
+        logger.warn("[ImprovementLoop] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
