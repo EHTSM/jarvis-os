@@ -278,7 +278,9 @@ async function execute(command, opts = {}) {
       if (!result.ok && result.error?.includes("Nothing to commit")) result.ok = true; // clean tree is not a failure
       run.minutesSaved = 5;
     } else if (/health.*check|verify.*env/i.test(command)) {
-      result = _tc()?.verify?.("general") || { ok: true };
+      // Trust boundary: an explicit health-check command must not report
+      // ok:true when the underlying verify() couldn't even run.
+      result = _tc()?.verify?.("general") || { ok: false, error: "terminalController.verify unavailable" };
       run.minutesSaved = 10;
     } else {
       // Generic: route to best-matching tool
