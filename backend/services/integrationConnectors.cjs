@@ -30,6 +30,7 @@ const path   = require("path");
 const https  = require("https");
 const http   = require("http");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const DATA_FILE = path.join(__dirname, "../../data/integration-connectors.json");
 
@@ -1595,6 +1596,52 @@ function getScanSummary() {
   };
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// CONTINUOUS HEALTH MONITOR — V7 Phase 3
+// ══════════════════════════════════════════════════════════════════════════════
+// Survey confirmed runFullScan() (real: 13 category scanners, real HTTP
+// probes to live providers with a 6s per-probe timeout, persists to
+// data/integration-connectors.json) existed only as a route-triggered
+// action (/integrations/scan) — connector health had zero background
+// monitoring, so a credential expiring or a provider going down between
+// operator visits produced no signal until someone happened to load the
+// dashboard. 4h interval, not more frequent: each tick performs real
+// external HTTP calls against every configured provider (GitHub, Stripe,
+// etc.) — hourly+ would be needless load on those APIs for a founder-
+// facing status page, matching the same conservative cadence
+// secretRotationAutomation already uses (24h) for a similar concern.
+function _obsHealth() { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
+
+let _healthScheduleHandle = null;
+
+async function _monitorTick() {
+  try {
+    const result = await runFullScan();
+    const obs = _obsHealth();
+    if (obs) {
+      obs.recordMetric("connectors.scan.score", result.score);
+      obs.recordMetric("connectors.scan.connected", result.counts.CONNECTED || 0);
+      obs.recordMetric("connectors.scan.missing", result.counts.MISSING || 0);
+      obs.recordMetric("connectors.scan.failures", result.failures.length);
+    }
+    if (result.failures.length > 0) {
+      logger.warn(`[ConnectorMonitor] tick: score=${result.score}% ${result.failures.length} connector(s) need attention: ${result.failures.map(f => f.connectorId).join(", ")}`);
+    } else {
+      logger.info(`[ConnectorMonitor] tick: score=${result.score}% all ${result.total} connectors healthy or not-applicable`);
+    }
+  } catch (err) {
+    logger.error("[ConnectorMonitor] scheduled scan error:", err.message);
+  }
+}
+
+function startHealthMonitor(intervalMs = 4 * 60 * 60 * 1000) {
+  if (_healthScheduleHandle) return _healthScheduleHandle;
+  _healthScheduleHandle = setInterval(_monitorTick, intervalMs);
+  if (typeof _healthScheduleHandle.unref === "function") _healthScheduleHandle.unref();
+  logger.info(`[ConnectorMonitor] Continuous health monitor started (${Math.round(intervalMs / 3_600_000)}h interval).`);
+  return _healthScheduleHandle;
+}
+
 module.exports = {
   // Phase scanners
   scanAllAIProviders, scanAllGitProviders, scanAllInfraProviders,
@@ -1620,6 +1667,8 @@ module.exports = {
   rotateCredentialsGuide, detectFailures,
   // Full scan
   runFullScan, getScanSummary,
+  // Continuous health monitor (V7 Phase 3)
+  startHealthMonitor,
   // Universal Composition Engine Phase 7 — richer status vocabulary,
   // derived from the same real records above (additive, no connector
   // function above was modified)

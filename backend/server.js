@@ -689,6 +689,15 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[SelfImprovement] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 3 (Real Connector Runtime): runFullScan() was real (13
+        // category scanners, live HTTP probes, persisted state) but only
+        // ever triggered by POST /integrations/scan — connector health had
+        // zero background monitoring.
+        require("./services/integrationConnectors.cjs").startHealthMonitor();
+    } catch (err) {
+        logger.warn("[ConnectorMonitor] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
