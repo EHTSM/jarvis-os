@@ -709,6 +709,16 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[BusinessOps] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 5 (Founder Operating System): founderIdentityOS.cjs's
+        // runFullSystemScan() (identity graph + asset discovery +
+        // relationship graph + credential intelligence) and
+        // runSecretDiscovery() (bounded scan of known sensitive config
+        // locations) were both real but exclusively route-driven.
+        require("./services/founderIdentitySyncScheduler.cjs").startIdentitySyncSchedule();
+    } catch (err) {
+        logger.warn("[FounderIdentitySync] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
