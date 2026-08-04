@@ -159,8 +159,17 @@ async function captureScreenshot(opts = {}) {
   const cap = _cap();
   if (!cap) return { ok: false, error: "visualCaptureService not available" };
   try {
-    const result = await cap.captureDesktop?.(opts) || await cap.captureViewport?.(opts);
-    return { ok: true, ...result };
+    // Trust boundary: captureDesktop() always returns a real object (never
+    // undefined), so `||` never actually fell through on a real failure —
+    // this previously did `return {ok:true, ...result}` unconditionally,
+    // discarding a real {ok:false, error} from captureDesktop(). Also:
+    // captureViewport() requires a `url` desktop captures never provide, so
+    // it was never a working fallback in the first place — captureDesktop()
+    // itself now has a real native-OS fallback (visualCaptureService.cjs)
+    // for when Electron isn't the host process, so nothing else is needed.
+    const result = await cap.captureDesktop?.(opts);
+    if (!result) return { ok: false, error: "captureDesktop unavailable" };
+    return { ...result };
   } catch (e) {
     return { ok: false, error: e.message };
   }
