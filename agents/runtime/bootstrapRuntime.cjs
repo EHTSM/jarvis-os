@@ -491,6 +491,60 @@ try {
     logger.warn("[Bootstrap] business_affiliate agent skipped:", err.message);
 }
 
+// ── Business: pricing intelligence — real bundle/annual pricing
+// recommendation engine (POST-Ω Sprint P15's pricingIntelligenceEngine.cjs),
+// already reads real revenue/health context. executor.cjs's
+// "pricingOptimizer" key routed to agentExecutorMod.run("pricingOptimizer",
+// task) — never registered anywhere — closing that gap the same way as
+// business_affiliate above.
+try {
+    const pricingEngine = require("../../backend/services/pricingIntelligenceEngine.cjs");
+    orchestrator.registerAgent({
+        id: "business_pricing",
+        capabilities: ["pricing_optimization"],
+        maxConcurrent: 3,
+        handler: async (task) => {
+            const p = task.payload || {};
+            if (task.type === "pricing_recommendations") {
+                return { success: true, result: pricingEngine.listRecommendations(p) };
+            }
+            return { success: true, result: pricingEngine.recommend(p) };
+        },
+    });
+    logger.info("[Bootstrap] business_pricing agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] business_pricing agent skipped:", err.message);
+}
+
+// ── Business: email automation — real transactional/marketing email
+// service (backend/services/emailService.cjs), already used elsewhere in
+// the codebase for welcome/OTP/password-reset emails. executor.cjs's
+// "emailAutomation" key routed to agentExecutorMod.run("emailAutomationPro",
+// task) — never registered anywhere.
+try {
+    const emailService = require("../../backend/services/emailService.cjs");
+    orchestrator.registerAgent({
+        id: "business_email_automation",
+        capabilities: ["email_automation"],
+        maxConcurrent: 5,
+        // sendMarketing(to, subject, html) takes positional args and
+        // sendEmail() (which it wraps) returns {ok, ...}, not {sent, ...}
+        // — verified by reading emailService.cjs directly rather than
+        // assumed from its name.
+        handler: async (task) => {
+            const p = task.payload || {};
+            if (!p.to || !p.subject) {
+                return { success: false, error: "payload.to and payload.subject are required" };
+            }
+            const result = await emailService.sendMarketing(p.to, p.subject, p.html || p.body || "");
+            return { success: !!result?.ok, result };
+        },
+    });
+    logger.info("[Bootstrap] business_email_automation agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] business_email_automation agent skipped:", err.message);
+}
+
 // ── System health — real os-module metrics, no run(task) contract in the
 // source file, so a small task-type adapter is used (same pattern as the
 // filesystem agent above) ───────────────────────────────────────────────

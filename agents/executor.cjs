@@ -300,11 +300,17 @@ function _buildHandlers() {
         funnelBuilder:           async (task) => agentExecutorMod.run("funnelBuilderAgent",      task),
         upsell:                  async (task) => agentExecutorMod.run("upsellAgent",             task),
         crossSell:               async (task) => agentExecutorMod.run("crossSellAgent",          task),
-        pricingOptimizer:        async (task) => agentExecutorMod.run("pricingOptimizer",        task),
+        // Recovered during module 6 classification — real backing exists:
+        // backend/services/pricingIntelligenceEngine.cjs (POST-Ω P15),
+        // registered as "business_pricing".
+        pricingOptimizer:        async (task) => agentExecutorMod.run("business_pricing",         task),
         adCopy:                  async (task) => agentExecutorMod.run("adCopyAgent",             task),
         adCampaign:              async (task) => agentExecutorMod.run("adCampaignMonitor",       task),
         retargeting:             async (task) => agentExecutorMod.run("retargetingEngine",       task),
-        emailAutomation:         async (task) => agentExecutorMod.run("emailAutomationPro",      task),
+        // Recovered during module 6 classification — real backing exists:
+        // backend/services/emailService.cjs's sendMarketing(),
+        // registered as "business_email_automation".
+        emailAutomation:         async (task) => agentExecutorMod.run("business_email_automation", task),
         whatsappBot:             async (task) => agentExecutorMod.run("whatsappBotPro",          task),
         ecommerce:               async (task) => agentExecutorMod.run("ecommerceManager",        task),
         productListing:          async (task) => agentExecutorMod.run("productListingAgent",     task),
