@@ -439,6 +439,121 @@ function MissionCollaborationPanel() {
   );
 }
 
+const MC_WF_STATUS_COLORS = {
+  pending: '#94a3b8', in_progress: '#60a5fa', awaiting_approval: '#f59e0b',
+  completed: '#10b981', escalated: '#ef4444',
+};
+
+function MissionWorkforcePanel() {
+  const [missionId, setMissionId] = useState('');
+  const [inputId,   setInputId]   = useState('');
+  const [wf,        setWf]        = useState(null);
+  const [err,       setErr]       = useState(null);
+  const [busyStep,  setBusyStep]  = useState(null);
+
+  const load = useCallback(async (id) => {
+    try {
+      const r = await _fetch(`/workforce/${id}`);
+      setWf(r || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, []);
+
+  useEffect(() => {
+    if (!missionId) return;
+    load(missionId);
+    const t = setInterval(() => { if (!document.hidden) load(missionId); }, 8000);
+    return () => clearInterval(t);
+  }, [missionId, load]);
+
+  const attach = () => {
+    if (!inputId.trim()) return;
+    setMissionId(inputId.trim());
+  };
+
+  const completeStep = useCallback(async (stepId) => {
+    setBusyStep(stepId);
+    try {
+      await _fetch(`/workforce/${missionId}/steps/${stepId}/complete`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ output: 'Marked complete by operator' }),
+      });
+      load(missionId);
+    } catch (e) { setErr(e.message); }
+    finally { setBusyStep(null); }
+  }, [missionId, load]);
+
+  const steps    = wf?.steps || [];
+  const summary  = wf?.summary || {};
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>Mission Workforce</h2>
+      </div>
+
+      <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+        <input
+          className="mc-lc-input"
+          placeholder="Mission ID (msn_…)"
+          value={inputId}
+          onChange={e => setInputId(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') attach(); }}
+        />
+        <button className="mc-btn mc-btn--sm" onClick={attach} disabled={!inputId.trim()}>Attach</button>
+      </div>
+
+      {err && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 6 }}>{err}</div>}
+
+      {missionId && wf && !wf.plan && (
+        <p className="mc-empty">No collaboration plan for this mission.</p>
+      )}
+
+      {missionId && wf?.plan && (
+        <>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
+            {[
+              ['Total', summary.total], ['Pending', summary.pending],
+              ['In Progress', summary.inProgress], ['Awaiting Approval', summary.awaitingApproval],
+              ['Completed', summary.completed], ['Escalated', summary.escalated],
+            ].map(([lbl, val]) => (
+              <div key={lbl} style={{ fontSize: 10, color: '#94a3b8' }}>
+                <span style={{ fontWeight: 700, color: '#e2e8f0', marginRight: 4 }}>{val ?? 0}</span>{lbl}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ maxHeight: 220, overflowY: 'auto', background: '#0c0e14', borderRadius: 5, border: '1px solid rgba(255,255,255,0.07)', padding: '6px 8px' }}>
+            {steps.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No steps in plan.</div>}
+            {steps.map((step) => (
+              <div key={step.stepId} style={{ padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontWeight: 700, color: MC_WF_STATUS_COLORS[step.status] || '#64748b', minWidth: 100, textTransform: 'uppercase', fontSize: 9 }}>
+                  {step.status}
+                </span>
+                <span style={{ flex: 1, color: '#e2e8f0' }}>{step.name || step.description || step.stepId}</span>
+                {step.worker && (
+                  <span style={{ fontSize: 9, color: '#94a3b8' }}>
+                    {step.worker.type === 'ai' ? '🤖' : '👤'} {step.worker.id}
+                  </span>
+                )}
+                {step.worker?.type === 'human' && step.status === 'in_progress' && (
+                  <button
+                    className="mc-btn mc-btn--sm"
+                    disabled={busyStep === step.stepId}
+                    onClick={() => completeStep(step.stepId)}
+                  >
+                    {busyStep === step.stepId ? '…' : 'Complete'}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 function RecommendationConfidence() {
   const [recs, setRecs] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -1042,6 +1157,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* AI Collaboration */}
       <MissionCollaborationPanel />
+
+      {/* Mission Workforce — human+AI step assignment, handoff, approvals (Phase M2) */}
+      <MissionWorkforcePanel />
 
       {/* Recent Activity */}
       <section className="mc-section">
