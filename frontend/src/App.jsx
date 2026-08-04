@@ -68,6 +68,7 @@ const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCent
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformCenter.jsx"));
 const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
+const LegalOSCenter            = lazy(() => import("./components/LegalOSCenter.jsx"));
 const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
 const DailyPlanningConsole     = lazy(() => import("./components/DailyPlanningConsole.jsx"));
 const FounderAssistant         = lazy(() => import("./components/FounderAssistant.jsx"));
@@ -254,6 +255,7 @@ const MORE_TABS = [
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
   { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
+  { id: "legalos",    label: "Legal OS",           group: "Enterprise"   },
   { id: "supportos",  label: "Support",            group: "Enterprise"   },
   { id: "customersuccess", label: "Customer Success", group: "Enterprise" },
   { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
@@ -1408,6 +1410,7 @@ function AppInner() {
         {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
+        {tab === "legalos"           && <LegalOSCenter                                 />}
         {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
         {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
         {tab === "aiusage"           && <AIUsageDashboard />}
