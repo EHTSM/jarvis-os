@@ -26,6 +26,13 @@ const _nl   = () => _try(() => require("./nlBrowser.cjs"));
 const _cap  = () => _try(() => require("./visualCaptureService.cjs"));
 const _hitl = () => _try(() => require("./humanInTheLoop.cjs"));
 const _le   = () => _try(() => require("./continuousLearningEngine.cjs"));
+// Real Playwright action primitives (navigate/click/typeText/screenshot/
+// etc., agents/browser/actionEngine.cjs) — executeWorkflow() below
+// previously parsed an intent into a step plan via nlBrowser.cjs and
+// returned it without ever running a single step against a real page;
+// this closes that gap using the same real actions already driving
+// openTab()/inspectPage() above, not a new execution path.
+const _ae   = () => _try(() => require("../../agents/browser/actionEngine.cjs"));
 // Real Playwright session (agents/browser/browserSession.cjs) — the same
 // service visualCaptureService.cjs already drives for real screenshot
 // capture (confirmed live in the Universal Brand/JARVIS Dream audits).
@@ -228,8 +235,13 @@ async function executeWorkflow(intent, { tabId, context = {}, skipDangerCheck = 
   const nlSvc = _nl();
   if (!nlSvc) return { ok: false, error: "nlBrowser unavailable" };
 
-  // Parse intent to steps
-  const parsed = nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent);
+  // Parse intent to steps. Real bug fix: nlSvc.parse() is async but was
+  // never awaited here — `nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent)`
+  // always short-circuited on the truthy (unresolved) Promise parse()
+  // returns, so matchKnownFlow's known-flow fast path was unreachable and
+  // parsed.steps was always undefined regardless of what nlBrowser would
+  // have actually produced — every workflow ran with an empty step list.
+  const parsed = await nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent) || { steps: [] };
   const danger = nlSvc.detectDanger?.(intent) || { isDangerous: false };
 
   // Gate dangerous workflows through HITL
@@ -253,13 +265,88 @@ async function executeWorkflow(intent, { tabId, context = {}, skipDangerCheck = 
   if (d.history.length > 200) d.history = d.history.slice(-200);
   _save(d);
 
+  // Real execution — previously this function only ever returned the
+  // parsed step PLAN without running a single step, regardless of
+  // whether a tabId/real page was available. A tabId is required to
+  // actually execute (there is no page to act on otherwise); without one
+  // this still returns the plan, same as before, but now honestly
+  // labeled "planned" rather than implying execution happened.
+  const steps = parsed?.steps || [];
+  let stepResults = null;
+  let executed = false;
+  if (tabId && steps.length) {
+    const session = _session();
+    const page = session?.getPage?.(tabId);
+    const ae = _ae();
+    if (page && ae) {
+      stepResults = await _runSteps(ae, page, steps);
+      executed = true;
+    }
+  }
+
   _le()?.createLesson?.({
     type: "browser_workflow", title: `Browser: ${intent}`, source: "browserController",
     confidence: 0.85, tags: ["browser", "workflow", "automation"],
-    data: { intent, parsed, tabId },
+    data: { intent, parsed, tabId, executed },
   });
 
-  return { ok: true, intent, steps: parsed?.steps || [], danger, tabId, executedAt: _ts() };
+  const allStepsOk = executed && stepResults.length > 0 && stepResults.every(r => r.ok !== false);
+  return {
+    ok: executed ? allStepsOk : true,
+    intent, steps, danger, tabId, executedAt: _ts(),
+    status: executed ? (allStepsOk ? "executed" : "executed_with_errors") : "planned",
+    stepResults,
+  };
+}
+
+// ── _runSteps — dispatch a parsed step plan onto real Playwright actions ──────
+// Step action vocabulary matches nlBrowser.cjs's own AI prompt template
+// exactly (buildPrompt()'s "Available actions:" line + its known-flow
+// library) rather than a guessed subset — every action nlBrowser can
+// produce has a real actionEngine.cjs function backing it here.
+async function _runSteps(ae, page, steps) {
+  const results = [];
+  for (const step of steps) {
+    try {
+      let r;
+      switch (step.action) {
+        case "navigate":
+          r = await ae.navigate(page, step.url); break;
+        case "click":
+          r = await ae.click(page, step.selector); break;
+        case "type":
+          r = await ae.typeText(page, step.selector, step.text ?? step.value ?? ""); break;
+        case "fillForm":
+          r = await ae.fillForm(page, step.selector, step.text ?? step.value ?? ""); break;
+        case "screenshot":
+          r = await ae.screenshot(page, { fullPage: !!step.fullPage }); break;
+        case "scroll":
+          r = await ae.scrollDown(page, step.pixels || 500); break;
+        case "pressKey":
+          r = await ae.pressKey(page, step.key); break;
+        case "selectOption":
+          r = await ae.selectOption(page, step.selector, step.value); break;
+        case "waitForElement":
+          r = await ae.waitForElement(page, step.selector, { timeout: step.timeout }); break;
+        case "waitForNavigation":
+          r = await ae.waitForNavigation(page, { timeout: step.timeout }); break;
+        case "getText":
+          r = await ae.getText(page, step.selector); break;
+        case "getUrl":
+          r = { ok: true, action: "getUrl", url: ae.getUrl(page), ts: new Date().toISOString() }; break;
+        case "hoverElement":
+          r = await ae.hoverElement(page, step.selector); break;
+        default:
+          r = { ok: false, action: step.action || "unknown", error: `unsupported step action: ${step.action}` };
+      }
+      results.push({ step, ...r });
+      if (!r.ok && step.stopOnFail !== false) break;
+    } catch (e) {
+      results.push({ step, ok: false, error: e.message });
+      break;
+    }
+  }
+  return results;
 }
 
 // ── authenticate (session-aware auth via browserSessionManager) ───────────────

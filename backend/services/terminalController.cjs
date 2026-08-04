@@ -58,10 +58,11 @@ function _save(d) {
 // (node/npm/git read-only + test/build scripts already defined in
 // package.json) are reachable. Anything else is rejected before exec.
 const ALLOWED_COMMANDS = {
-  "node":  { args: (rest) => _assertNodeArgs(rest) },
-  "npm":   { args: (rest) => _assertNpmArgs(rest) },
-  "git":   { args: (rest) => _assertGitArgs(rest) },
-  "sleep": { args: (rest) => rest.length === 1 && /^\d{1,2}$/.test(rest[0]) },
+  "node":   { args: (rest) => _assertNodeArgs(rest) },
+  "npm":    { args: (rest) => _assertNpmArgs(rest) },
+  "git":    { args: (rest) => _assertGitArgs(rest) },
+  "sleep":  { args: (rest) => rest.length === 1 && /^\d{1,2}$/.test(rest[0]) },
+  "docker": { args: (rest) => _assertDockerArgs(rest) },
 };
 
 // node: --version, or running a single test file that resolves inside this
@@ -111,6 +112,57 @@ function _assertGitArgs(rest) {
 
 function _assertFlags(rest, allowed) {
   return rest.length >= 1 && allowed.includes(rest[0]);
+}
+
+// docker (FINAL-JARVIS-DREAM-CERTIFICATION.md P2 finding): confirmed no
+// Docker execution capability exists anywhere in the codebase, and the
+// broader agents/terminalAgent.cjs's safe-exec.js sandbox deliberately
+// hard-blocks it outright (correct there — that path is a wide-open
+// general-purpose agent shell tool, not the place for a new
+// container-control surface). Adding it here instead, in this file's own
+// narrow, per-binary-allowlisted pattern, matching the same discipline
+// already applied to node/npm/git above:
+//   - Read-only introspection is unrestricted in scope (ps, images,
+//     inspect, logs, version, stats) — cannot mutate anything.
+//   - Lifecycle control (start/stop/restart/rm) is restricted to a single
+//     trailing container-name/id argument — no image pulls, no `run`
+//     (which could execute arbitrary attacker-supplied commands inside a
+//     new container with whatever mount/network flags accompany it — a
+//     real RCE-equivalent risk), no `exec` (same risk against a running
+//     container), no `build`, no `--privileged`/volume-mount flags of any
+//     kind. A name/id must also pass a strict format check (no shell
+//     metacharacters possible via execFileSync anyway, but keeping the
+//     shape sane matches _assertGitArgs's existing discipline).
+const DOCKER_READONLY_SUBCOMMANDS  = new Set(["ps", "images", "version", "info", "inspect", "logs", "stats", "top", "port"]);
+const DOCKER_LIFECYCLE_SUBCOMMANDS = new Set(["start", "stop", "restart"]);
+const _isSafeContainerRef = (s) => typeof s === "string" && s.length > 0 && s.length < 128 && /^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/.test(s);
+
+function _assertDockerArgs(rest) {
+  if (!rest.length) return false;
+  const [sub, ...args] = rest;
+
+  if (sub === "ps") {
+    // Allow common read-only flags only.
+    return args.every(a => ["-a", "--all", "-q", "--quiet", "--no-trunc"].includes(a));
+  }
+  if (DOCKER_READONLY_SUBCOMMANDS.has(sub)) {
+    if (sub === "logs") {
+      // `docker logs [--tail N] <container>` — bounded tail, single real target.
+      if (args.length === 1) return _isSafeContainerRef(args[0]);
+      if (args.length === 3 && args[0] === "--tail" && /^\d{1,4}$/.test(args[1])) return _isSafeContainerRef(args[2]);
+      return false;
+    }
+    if (sub === "version" || sub === "info") return args.length === 0;
+    // inspect/stats/top/port/images: single container/image ref, or none
+    // (images with no args lists all — read-only either way).
+    return args.length === 0 || (args.length === 1 && _isSafeContainerRef(args[0]));
+  }
+
+  if (DOCKER_LIFECYCLE_SUBCOMMANDS.has(sub)) {
+    return args.length === 1 && _isSafeContainerRef(args[0]);
+  }
+
+  return false;   // build/run/exec/rm/rmi/pull/push/network/volume — all blocked
 }
 
 // Minimal environment for allow-listed commands: PATH (needed to locate the
