@@ -153,6 +153,7 @@ import { usePinnedTabs }        from "./components/WorkspacePersonalization.jsx"
 import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
+import { startPersonalNotifications, stopPersonalNotifications } from "./personalNotifications";
 import { useElectronEvent } from "./hooks/useElectron.js";
 import "./App.css";
 
@@ -574,6 +575,16 @@ const DESKTOP_TABS = [
 
 function AppInner() {
   const { user, loading: authLoading } = useAuth();
+
+  // V6 Phase 8 (Personal JARVIS): overdue-task / pending-decision native
+  // notifications — desktop-only (Electron), only once authenticated since
+  // /planning/agenda requires a session.
+  useEffect(() => {
+    if (user) startPersonalNotifications();
+    else stopPersonalNotifications();
+    return () => stopPersonalNotifications();
+  }, [user]);
+
   const [screen,   setScreen]   = useState(_initialScreen);
   const [messages, setMessages] = useState(() => [{
     id: 1, role: "jarvis",
