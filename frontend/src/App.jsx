@@ -66,6 +66,7 @@ const RecommendationCenter     = lazy(() => import("./components/RecommendationC
 const ExecutionCenter          = lazy(() => import("./components/ExecutionCenter.jsx"));
 const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCenter.jsx"));
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
+const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformCenter.jsx"));
 const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
 const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
 const DailyPlanningConsole     = lazy(() => import("./components/DailyPlanningConsole.jsx"));
@@ -190,6 +191,7 @@ const MORE_TABS = [
   { id: "reliability",label: "Reliability",        group: "Operations"   },
   { id: "globalactivity", label:"Global Activity", group: "Operations"   },
   { id: "systemhealth",   label:"System Health",   group: "Operations"   },
+  { id: "mobile",         label:"Mobile Platform", group: "Operations"   },
   // ── AI & Agents
   { id: "agents",     label: "Agents",             group: "AI & Agents"  },
   { id: "agentruntime", label: "Agent Runtime",    group: "AI & Agents"  },
@@ -1383,6 +1385,7 @@ function AppInner() {
         {tab === "execution"     && <ExecutionCenter        onNavigate={setTab} />}
         {tab === "reliability"   && <ReliabilityCenter      onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
+        {tab === "mobile"        && <MobilePlatformCenter   onNavigate={setTab} />}
         {tab === "twin"          && <FounderTwinConsole                          />}
         {tab === "customersuccess" && <CustomerSuccessCenter                     />}
         {tab === "planning"      && <DailyPlanningConsole                        />}

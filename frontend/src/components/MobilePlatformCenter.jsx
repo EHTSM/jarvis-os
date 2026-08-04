@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
+import { getPushReadiness } from "../pushDeviceApi";
 import "./MobilePlatformCenter.css";
 
 const RELEASES = [
@@ -79,8 +80,18 @@ function BarRow({ label, pct, color }) {
 export default function MobilePlatformCenter({ onNavigate }) {
   const [section, setSection] = useState("android");
   const [devicePlatform, setDevicePlatform] = useState("android");
+  const [pushReadiness, setPushReadiness] = useState(null);
+  const [pushReadinessLoading, setPushReadinessLoading] = useState(false);
 
   React.useEffect(() => { track.event("mobile_platform_viewed"); }, []);
+
+  useEffect(() => {
+    if (section !== "push") return;
+    let cancelled = false;
+    setPushReadinessLoading(true);
+    getPushReadiness().then(r => { if (!cancelled) { setPushReadiness(r); setPushReadinessLoading(false); } });
+    return () => { cancelled = true; };
+  }, [section]);
 
   const liveRelease    = RELEASES.find(r => r.status === "live");
   const liveTablet     = TABLET_RELEASES.find(r => r.status === "live");
@@ -299,6 +310,30 @@ export default function MobilePlatformCenter({ onNavigate }) {
 
         {section === "push" && (
           <div className="mpc-push-section">
+            <div className="mpc-push-registry">
+              <div className="mpc-push-registry-header">
+                <span>Device Registry Status</span>
+                {pushReadinessLoading && <span className="mpc-push-registry-loading">Checking…</span>}
+              </div>
+              {!pushReadinessLoading && pushReadiness && (
+                pushReadiness.ok ? (
+                  <div className="mpc-push-registry-body">
+                    <span className={`mpc-push-registry-badge ${pushReadiness.pushReady ? "mpc-push-registry-badge--ready" : "mpc-push-registry-badge--blocked"}`}>
+                      {pushReadiness.pushReady ? "Firebase Connected" : `Not Ready — ${pushReadiness.firebaseStatus || "unconfigured"}`}
+                    </span>
+                    <span className="mpc-push-registry-count">{pushReadiness.registeredTokens ?? 0} device token(s) registered</span>
+                    {!pushReadiness.pushReady && pushReadiness.detail && (
+                      <span className="mpc-push-registry-detail">{pushReadiness.detail}</span>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mpc-push-registry-body">
+                    <span className="mpc-push-registry-badge mpc-push-registry-badge--blocked">Registry unavailable — {pushReadiness.error}</span>
+                  </div>
+                )
+              )}
+            </div>
+            <div className="mpc-push-summary-label">Sample delivery analytics (illustrative — real delivery requires Firebase credentials)</div>
             <div className="mpc-push-summary">
               {[
                 {label:"Total sent",      value:"2,161", color:"var(--accent2)"},
