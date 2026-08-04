@@ -216,6 +216,38 @@ function _cosine(vecA, vecB) {
   return dot / (Math.sqrt(magA) * Math.sqrt(magB));
 }
 
+// ── Corpus/IDF cache ─────────────────────────────────────────────────────
+// _tfidfSearch previously re-tokenized every node and rebuilt the full IDF
+// map from scratch on every single call — measured live at 20-75ms per
+// search purely from this rebuild, on a corpus that rarely changes between
+// calls within the same tick (e.g. selfImprovementEngine's scheduled
+// evolution cycle and businessOperationsScheduler's BI scan both call
+// through this path multiple times per run). Cache key is a cheap
+// fingerprint (node count + last node's id+updatedAt) — correctness-safe:
+// any node add/update/delete changes either the count or the fingerprinted
+// tail, invalidating the cache rather than silently serving stale results.
+let _corpusCache = null; // { fingerprint, corpus }
+
+// Fingerprint over count + every node's id+updatedAt (not just the last
+// one) — mpl.list() does not guarantee a stable order, so a fingerprint
+// based only on the tail element could miss a change to an earlier node.
+function _fingerprint(nodes) {
+  if (nodes.length === 0) return "empty";
+  let fp = String(nodes.length);
+  for (const n of nodes) fp += `|${n.nodeId || n.id || ""}:${n.updatedAt || n.createdAt || ""}`;
+  return fp;
+}
+
+function _getCorpus(nodes) {
+  const fp = _fingerprint(nodes);
+  if (_corpusCache && _corpusCache.fingerprint === fp) {
+    return _corpusCache.corpus;
+  }
+  const corpus = nodes.map(n => _tokenise(_nodeText(n)));
+  _corpusCache = { fingerprint: fp, corpus };
+  return corpus;
+}
+
 /**
  * Run TF-IDF semantic search against a node array.
  * Returns nodes sorted by cosine score descending, filtered by minScore.
@@ -223,8 +255,8 @@ function _cosine(vecA, vecB) {
 function _tfidfSearch(query, nodes, { minScore = 0.1, limit = 20 } = {}) {
   if (!nodes.length) return [];
 
-  // Build corpus: each node contributes one document
-  const corpus = nodes.map(n => _tokenise(_nodeText(n)));
+  // Build corpus: each node contributes one document (cached — see above)
+  const corpus = _getCorpus(nodes);
   const queryTokens = _tokenise(query);
 
   if (!queryTokens.length) return [];
