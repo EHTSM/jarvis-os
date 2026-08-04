@@ -67,6 +67,7 @@ const ExecutionCenter          = lazy(() => import("./components/ExecutionCenter
 const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCenter.jsx"));
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
+const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
 // Production Completion Week: RuntimeObserverPanel is a real, working
 // dashboard (polls /runtime/observer/status|events|statistics|sources|health
@@ -247,6 +248,7 @@ const MORE_TABS = [
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
   { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
   { id: "supportos",  label: "Support",            group: "Enterprise"   },
+  { id: "customersuccess", label: "Customer Success", group: "Enterprise" },
   { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
   { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
   { id: "orgadmin",   label: "Organization",       group: "Enterprise"   },
@@ -1367,6 +1369,7 @@ function AppInner() {
         {tab === "reliability"   && <ReliabilityCenter      onNavigate={setTab} />}
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "twin"          && <FounderTwinConsole                          />}
+        {tab === "customersuccess" && <CustomerSuccessCenter                     />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "observer"      && <RuntimeObserverPanel />}
         {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}

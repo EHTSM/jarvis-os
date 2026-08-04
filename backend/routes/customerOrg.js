@@ -5,6 +5,9 @@
  */
 
 const router = require("express").Router();
+const { requireAuth } = require("../middleware/authMiddleware");
+router.use("/customer-org", requireAuth);
+
 const _try   = fn => { try { return fn(); } catch { return null; } };
 const _cje   = () => _try(() => require("../services/customerJourneyEngine.cjs"));
 const _che   = () => _try(() => require("../services/customerHealthEngine.cjs"));
