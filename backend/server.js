@@ -698,6 +698,17 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[ConnectorMonitor] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 4 (Autonomous Business Operations): composes 5 real,
+        // already-built batch functions (customerJourneyEngine.syncJourneys,
+        // customerHealthEngine.scoreAll, customerAutomationEngine.
+        // runAutomationScan, revenueAutomationEngine.runRevenuePipeline,
+        // businessIntelligenceEngine.scan) that were each exclusively
+        // route-driven — confirmed via survey, zero scheduling anywhere.
+        require("./services/businessOperationsScheduler.cjs").startOperationsSchedule();
+    } catch (err) {
+        logger.warn("[BusinessOps] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
