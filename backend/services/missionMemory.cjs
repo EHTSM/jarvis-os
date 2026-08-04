@@ -174,7 +174,18 @@ function _ingestSubtask(mission, subtask, emitTimeline = true) {
 }
 
 // ── Validation helpers ───────────────────────────────────────────────────────
-const VALID_STATUSES  = new Set(["planned", "active", "paused", "completed", "failed", "cancelled"]);
+// "running" is missionRuntime.cjs's status for an in-progress mission (its
+// TRANSITIONS state machine uses this vocabulary throughout, and the real
+// POST /mission/runtime/start/:id route depends on it) — every call to
+// startMission() threw "invalid status \"running\"" here before this was
+// added, because this set only had "active" for that same concept. Keeping
+// both: "active" already has scattered lower-confidence external readers
+// (e.g. backend/routes/engineering.js explicitly checks
+// `status === "running" || status === "active"`, apparently defensively
+// coded around this exact mismatch previously), so removing it risks a
+// silent behavior change elsewhere; adding "running" is the minimal fix
+// that makes the actually-used state machine work.
+const VALID_STATUSES  = new Set(["planned", "active", "running", "paused", "completed", "failed", "cancelled"]);
 const VALID_PRIORITIES = new Set(["low", "medium", "high", "critical"]);
 
 function _assertMission(mission, missionId) {

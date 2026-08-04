@@ -105,6 +105,45 @@ function _transition(missionId, nextStatus, patch = {}) {
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /**
+ * Reset any mission stuck in "running" back to "planned" on process startup.
+ * A mission can only be "running" because a prior process instance called
+ * startMission() — if this process is only now booting, that prior instance
+ * crashed (or was killed) before the mission reached a terminal state, so
+ * the "running" status is stale and would otherwise never resolve, since
+ * nothing else transitions a mission out of "running" except completeMission/
+ * failMission/cancelMission, none of which anything calls automatically.
+ * Mirrors taskQueue.recoverStale()'s identical role for the task queue —
+ * same failure mode (process dies mid-execution), same fix shape (reset to
+ * a re-driveable state on the next boot). "planned" (not "failed") because
+ * failed → running is already a valid retry transition, and a genuine
+ * crash isn't necessarily the mission's fault the way an execution failure
+ * is — resetting to "planned" lets whatever normally starts missions decide
+ * to retry it same as any other planned mission, without misrepresenting
+ * an infrastructure crash as an execution failure in the mission's own
+ * history.
+ *
+ * @returns {{ recovered: number, missionIds: string[] }}
+ */
+function recoverStaleMissions() {
+    const { missions: stale } = memory.listMissions({ status: "running", limit: 1000 });
+    const missionIds = [];
+    for (const m of stale) {
+        memory.updateMission(m.id, { status: "planned" });
+        memory.recordDecision(m.id, {
+            type: "system",
+            description: "Recovered from stale \"running\" state on process restart",
+            rationale: "Mission was left running by a prior process instance that did not reach a terminal state (crash or forced restart)",
+            outcome: "reset_to_planned",
+        });
+        missionIds.push(m.id);
+    }
+    if (missionIds.length > 0) {
+        logger.info(`[MissionRuntime] Recovered ${missionIds.length} stale running mission(s) → planned`);
+    }
+    return { recovered: missionIds.length, missionIds };
+}
+
+/**
  * Transition mission from planned → running and emit live event.
  */
 function startMission(missionId) {
@@ -383,4 +422,5 @@ module.exports = {
     getExecutionTimeline,
     runtimeStatus,
     getActiveMission,
+    recoverStaleMissions,
 };

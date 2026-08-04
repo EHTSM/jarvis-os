@@ -1006,6 +1006,14 @@ _httpServer = app.listen(PORT, HOST, () => {
             const all = tq.getAll();
             queueLen = `${all.filter(t => t.status === "pending").length} pending / ${all.length} total`;
         } catch { /* queue unavailable */ }
+        try {
+            // Same crash-recovery role as tq.recoverStale() above, for
+            // missions left "running" by a prior process instance that
+            // didn't reach a terminal state.
+            const missionRuntime = require("../agents/runtime/missionRuntime.cjs");
+            const { recovered } = missionRuntime.recoverStaleMissions();
+            if (recovered > 0) logger.info(`[Startup] Recovered ${recovered} stale running mission(s) → planned`);
+        } catch { /* mission runtime unavailable */ }
 
         logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
         logger.info(` Startup Diagnostics`);
