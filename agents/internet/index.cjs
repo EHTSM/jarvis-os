@@ -1,9 +1,17 @@
 /**
- * Internet Agents Registry — registers all internet/data-intelligence agents.
- * Import once (in executor.cjs) to activate the layer.
+ * Internet Agents — barrel export of the 10 internet/*.cjs implementation
+ * files. Required by executor.cjs solely to confirm each file loads cleanly.
+ *
+ * Agent Civilization Unification (module 2): this barrel used to ALSO
+ * register each agent into agentManager (agents/multi/'s private shadow
+ * registry) under camelCase names (webScraper, trendAnalyzer, ...).
+ * agents/runtime/bootstrapRuntime.cjs independently registers the same
+ * 10 files into the real, production agentRegistry under different IDs
+ * (internet_web_scraper, internet_trend_analyzer, ...) — confirmed 1:1
+ * file coverage. agentManager had zero consumers after module 1, so this
+ * was pure duplicate state with no reader. See agents/business/index.cjs
+ * for the full rationale (identical pattern, applied consistently here).
  */
-
-const agentManager = require("../multi/agentManager.cjs");
 
 const INTERNET_AGENTS = {
     webScraper:          require("./webScraperAgent.cjs"),
@@ -17,15 +25,5 @@ const INTERNET_AGENTS = {
     location:            require("./locationAgent.cjs"),
     weather:             require("./weatherAgent.cjs")
 };
-
-for (const [name, agent] of Object.entries(INTERNET_AGENTS)) {
-    if (!agentManager.has(name)) {
-        try {
-            agentManager.register(name, agent, { category: "internet", autoRegistered: true });
-        } catch (err) {
-            console.error(`[internet/index] Failed to register ${name}:`, err.message);
-        }
-    }
-}
 
 module.exports = INTERNET_AGENTS;
