@@ -270,6 +270,81 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
 
 const GRANTABLE_ACTIONS = ["view_missions", "view_members", "view_departments", "view_teams", "view_analytics"];
 
+// ── Executive Intelligence ───────────────────────────────────────────────
+// V6 Phase 6 recovery: backend/routes/orgExecutiveIntelligence.js (/org-executive/:orgId/*)
+// was fully built (V5 Global AI Organization Platform, Module 6) with zero
+// frontend consumers until this panel.
+
+function ExecIntelPanel({ orgId, onToast }) {
+  const [summary, setSummary] = useState(null);
+  const [insights, setInsights] = useState(null);
+  const [recs, setRecs] = useState(null);
+  const [forecast, setForecast] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(() => {
+    if (!orgId) return;
+    setLoading(true);
+    Promise.all([
+      _fetch(`/org-executive/${orgId}/summary`).catch(e => ({ ok: false, error: e.message })),
+      _fetch(`/org-executive/${orgId}/insights`).catch(e => ({ ok: false, error: e.message })),
+      _fetch(`/org-executive/${orgId}/recommendations`).catch(e => ({ ok: false, error: e.message })),
+      _fetch(`/org-executive/${orgId}/forecast`).catch(e => ({ ok: false, error: e.message })),
+    ]).then(([s, i, r, f]) => {
+      setSummary(s.ok !== false ? s : null);
+      setInsights(i.ok !== false ? i : null);
+      setRecs(r.ok !== false ? r.recommendations : []);
+      setForecast(f.ok !== false ? f : null);
+      setError(s.ok === false ? (s.error || "Failed to load executive intelligence") : null);
+    }).finally(() => setLoading(false));
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  if (loading && !summary) return <div className="oac-loading">Loading executive intelligence…</div>;
+  if (error && !summary) return <Empty title="Couldn't load executive intelligence" sub={error} />;
+
+  return (
+    <div>
+      {summary?.summary && (
+        <div className="oac-panel" style={{ marginBottom: 16 }}>
+          {summary.summary.map((line, i) => <p key={i} style={{ margin: "4px 0", fontSize: 13 }}>{line}</p>)}
+        </div>
+      )}
+
+      {insights && (
+        <div className="oac-panel" style={{ marginBottom: 16, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+          <div><div style={{ fontSize: 18, fontWeight: 800 }}>{insights.connectorHealthScore ?? "—"}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Connector Health</div></div>
+          <div><div style={{ fontSize: 18, fontWeight: 800 }}>${insights.aiSpendUsd ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>AI Spend (sampled)</div></div>
+          <div><div style={{ fontSize: 18, fontWeight: 800 }}>{insights.knowledgeNodeCount ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Knowledge Nodes</div></div>
+          <div><div style={{ fontSize: 18, fontWeight: 800 }}>{insights.automationRulesActive ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Active Automations</div></div>
+        </div>
+      )}
+
+      {recs && recs.length > 0 && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", opacity: 0.7, marginBottom: 8 }}>Recommendations</div>
+          {recs.map(r => (
+            <div key={r.id} style={{ padding: "8px 10px", marginBottom: 6, borderRadius: 5, background: r.severity === "critical" ? "rgba(245,91,91,0.1)" : "rgba(240,180,41,0.1)", fontSize: 12 }}>
+              {r.text}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {forecast && !forecast.insufficientData && (
+        <div style={{ fontSize: 12, opacity: 0.7 }}>
+          Projected AI spend over next {forecast.projectionDays} days: ~${forecast.projectedTotalCostUsd} (based on {forecast.historicalDays} real days of usage history)
+        </div>
+      )}
+      {forecast?.insufficientData && (
+        <div style={{ fontSize: 12, opacity: 0.6 }}>Not enough usage history yet to forecast ({forecast.historicalDays} day(s) recorded).</div>
+      )}
+    </div>
+  );
+}
+
 function GrantsPanel({ orgId, isOwner, onToast }) {
   const [grants, setGrants] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -483,6 +558,7 @@ const VIEWS = [
   { id: "members",     label: "Roles"       },
   { id: "departments", label: "Departments" },
   { id: "grants",      label: "Cross-org access" },
+  { id: "execintel",   label: "Executive Intelligence" },
 ];
 
 export default function OrgAdminCenter({ onToast }) {
@@ -549,6 +625,7 @@ export default function OrgAdminCenter({ onToast }) {
         {view === "members"     && <MembersPanel orgId={orgId} myRole={primary.orgRole} canManage={canManage} onToast={onToast} />}
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
         {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}
+        {view === "execintel"   && <ExecIntelPanel orgId={orgId} onToast={onToast} />}
       </div>
     </div>
   );
