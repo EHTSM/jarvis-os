@@ -20,6 +20,7 @@ import {
   getDeploymentActive,
   getDeploymentStats,
 } from "../founderHomeApi";
+import { getTwinDashboard } from "../twinApi";
 import {
   FadeUp,
   StaggerList,
@@ -1206,6 +1207,65 @@ function RevenuePulse({ onNavigate }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: FounderTwinPulse — Digital Twin trust/decisions from /twin/dashboard.
+// V6 Phase 6 recovery: this backend (POST-Ω Sprint P6, digitalTwinEngine.cjs)
+// was fully built with zero frontend consumers until this widget.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function FounderTwinPulse({ onNavigate }) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getTwinDashboard();
+    if (r?.status === 401 || r?.status === 403) { setError(null); setData({ forbidden: true }); return; }
+    if (r?.ok !== false) { setData(r); setError(null); }
+    else { setError(r.error || "Failed to load Digital Twin data"); }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, [load]);
+
+  if (data?.forbidden) return null;
+  if (error && !data) return <CmdPanelError error={error} onRetry={load} />;
+  if (!data) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading twin…</div>
+  );
+
+  const items = [
+    { label: 'Trust Score',   value: `${data.trustScore ?? 0}`,       color: '#7c6fff' },
+    { label: 'Accuracy',      value: `${data.accuracy ?? 0}%`,        color: '#52d68a' },
+    { label: 'Decisions',     value: data.totalDecisions ?? '—',      color: '#4ecdc4' },
+    { label: 'Auto-Resolved', value: data.autoResolved ?? '—',        color: '#5dc8f5' },
+    { label: 'Escalated',     value: data.founderRequired ?? '—',     color: '#f0b429' },
+    { label: 'Min Saved',     value: data.minutesSaved ?? '—',        color: '#8994b0' },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        {items.map(item => (
+          <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '7px 8px', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: item.color, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{item.value}</div>
+            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
+          </div>
+        ))}
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('twin')}>
+          Full twin console →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Founder Home: ConnectorHealthPulse — secret/credential health from /vault/health.
 // operator-only endpoint — 403 for non-operator roles renders nothing (not an error).
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1658,7 +1718,7 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...transition.enter, delay: 0.11 }}
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, padding: '0 16px 12px' }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, padding: '0 16px 12px' }}
       >
         <section className="cmd-panel">
           <div className="cmd-panel-header">
@@ -1684,6 +1744,15 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
           </div>
           <div style={{ padding: '10px 12px' }}>
             <DeploymentPulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Digital Twin</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <FounderTwinPulse onNavigate={onNavigate} />
           </div>
         </section>
       </motion.div>
