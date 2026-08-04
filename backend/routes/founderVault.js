@@ -23,6 +23,7 @@ const _ic     = () => _try(() => require("../services/integrationConnectors.cjs"
 const _oauth  = () => _try(() => require("../services/oauthIntegrationLayer.cjs"));
 const _sml    = () => _try(() => require("../services/secretManagementLayer.cjs"));
 const _rot    = () => _try(() => require("../services/secretRotationAutomation.cjs"));
+const _import = () => _try(() => require("../services/credentialImportTool.cjs"));
 
 // This is the single-operator Founder Identity & Secret Vault (userId
 // defaults to "founder" below) — distinct from the regular end-user OAuth
@@ -480,6 +481,43 @@ router.post("/vault/connect/:connectorId/:type", async (req, res) => {
       envInjected: !!envKey,
       note: "Secret stored in vault and injected into runtime env. Restart server to persist to .env.",
     });
+  } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+});
+
+// ── Bulk credential import (env-var snapshot -> Vault) ─────────────────────────
+// Recovered capability: credentialImportTool.cjs was fully built (dry-run
+// classification, real Vault-backed import, structural no-secret-logging
+// guarantee) but had zero route ever calling it. Exposes its existing public
+// API verbatim — no new import/classification logic added here.
+// Body: { rows: ImportRow[] }
+router.post("/vault/bulk-import/dry-run", (req, res) => {
+  try {
+    const tool = _import();
+    if (!tool) return res.status(503).json({ ok: false, error: "credentialImportTool unavailable" });
+    const { rows } = req.body || {};
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ ok: false, error: "rows (non-empty array) required" });
+    }
+    res.json({ ok: true, ...tool.dryRun(rows, { overwrite: !!req.body?.overwrite }) });
+  } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+});
+
+// Body: { rows: ImportRow[], overwrite?: boolean, confirm: true }
+// `confirm: true` is a required explicit-confirmation gate, matching the
+// tool's own realImport() contract — this route does not loosen it.
+router.post("/vault/bulk-import/run", (req, res) => {
+  try {
+    const tool = _import();
+    if (!tool) return res.status(503).json({ ok: false, error: "credentialImportTool unavailable" });
+    const { rows, overwrite, confirm } = req.body || {};
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ ok: false, error: "rows (non-empty array) required" });
+    }
+    if (confirm !== true) {
+      return res.status(400).json({ ok: false, error: "confirm:true required to perform a real Vault write" });
+    }
+    const result = tool.realImport(rows, { overwrite: !!overwrite, confirm: true, requestingAccountId: req.user?.sub || null });
+    res.json({ ok: true, ...result });
   } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
 });
 
