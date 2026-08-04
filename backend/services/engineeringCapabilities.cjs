@@ -1002,6 +1002,7 @@ async function _gitCommit(ctx) {
 // recordArtifact() memory trail.
 function _dockerCtl() { try { return require("./dockerController.cjs"); } catch { return null; } }
 function _depAudit()  { try { return require("./dependencyAuditEngine.cjs"); } catch { return null; } }
+function _legalDoc()  { try { return require("./legalDocumentEngine.cjs"); } catch { return null; } }
 
 // docker_status: read-only daemon + container snapshot.
 async function _dockerStatus(ctx) {
@@ -1089,6 +1090,28 @@ async function _dependencyScan(ctx) {
     return { success: true, output, artifacts: [{ type: "dependency_scan", value: result.bySeverity }], logs: [] };
 }
 
+// legal_document_generate: input JSON {type, params, workspaceId} — real
+// AI-drafted legal document via legalDocumentEngine.cjs (V6 Phase 6:
+// Category E, Legal OS). Always sets acknowledgeNotLegalAdvice:true when
+// invoked as a mission capability — a mission is an explicit operator-
+// initiated action, matching the same acknowledgement the HTTP route
+// requires from a human caller.
+async function _legalDocumentGenerate(ctx) {
+    const eng = _legalDoc();
+    if (!eng) return { success: false, error: "legalDocumentEngine unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^legal[_\s]document[_\s]generate:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { type: raw }; } catch { opts = { type: raw }; }
+    if (!opts.type) return { success: false, error: "document type required (legal_document_generate: {\"type\":\"nda\",...})", output: null, nonRetriable: true };
+
+    const result = await eng.generateDocument({ ...opts, acknowledgeNotLegalAdvice: true });
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ docId: result.document.docId, type: result.document.type, title: result.document.title });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "legal_document", docId: result.document.docId, docType: result.document.type });
+    remember("success", { pattern: "legal_document_generate", appliedTo: opts.type, outcome: `drafted ${result.document.title}` }, { tags: ["legal", "document"], importance: 55 });
+    return { success: true, output, artifacts: [{ type: "legal_document", docId: result.document.docId }], logs: [] };
+}
+
 // ══════════════════════════════════════════════════════════════════════════════
 // REGISTRATION
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1118,6 +1141,7 @@ const CAPABILITY_DEFS = [
     { name: "docker_compose_up",   description: "Real docker compose up -d with automatic pre-up rollback snapshot", handler: _dockerComposeUp },
     { name: "docker_compose_down", description: "Real docker compose down", handler: _dockerComposeDown },
     { name: "dependency_scan",     description: "Real npm audit vulnerability scan via dependencyAuditEngine.cjs", handler: _dependencyScan },
+    { name: "legal_document_generate", description: "Real AI-drafted legal document (NDA/DPA/MSA/SOW/offer/vendor) via legalDocumentEngine.cjs", handler: _legalDocumentGenerate },
 ];
 
 let _registered = false;
@@ -1161,6 +1185,7 @@ function _category(name) {
     if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document" || name === "frontend_heal") return "quality";
     if (name.startsWith("docker_"))                            return "docker";
     if (name === "dependency_scan")                            return "devops";
+    if (name === "legal_document_generate")                    return "legal";
     return "general";
 }
 
