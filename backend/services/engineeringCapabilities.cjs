@@ -1001,6 +1001,7 @@ async function _gitCommit(ctx) {
 // already requests build_run/test_run, and get the same real remember()/
 // recordArtifact() memory trail.
 function _dockerCtl() { try { return require("./dockerController.cjs"); } catch { return null; } }
+function _depAudit()  { try { return require("./dependencyAuditEngine.cjs"); } catch { return null; } }
 
 // docker_status: read-only daemon + container snapshot.
 async function _dockerStatus(ctx) {
@@ -1072,6 +1073,22 @@ async function _dockerComposeDown(ctx) {
     return { success: result.ok, error: result.ok ? undefined : result.error, output, artifacts: [{ type: "docker_compose_down", ok: result.ok }], logs: [] };
 }
 
+// docker_dependency_scan: real npm audit — reusing the naming convention
+// docker_* established, "dependency_scan" describes the real action.
+async function _dependencyScan(ctx) {
+    const eng = _depAudit();
+    if (!eng) return { success: false, error: "dependencyAuditEngine unavailable", output: null, nonRetriable: true };
+    const result = eng.scanVulnerabilities();
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ totalVulnerabilities: result.totalVulnerabilities, bySeverity: result.bySeverity });
+    remember(result.totalVulnerabilities === 0 ? "success" : "failure",
+        result.totalVulnerabilities === 0 ? { pattern: "dependency_scan", appliedTo: "package.json", outcome: "no vulnerabilities" }
+                                            : { errorType: "vulnerabilities_found", context: `${result.totalVulnerabilities} found`, resolution: "review and apply safe updates" },
+        { tags: ["dependency", "security"], importance: result.bySeverity.critical > 0 ? 85 : 50 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "dependency_scan", ...result.bySeverity });
+    return { success: true, output, artifacts: [{ type: "dependency_scan", value: result.bySeverity }], logs: [] };
+}
+
 // ══════════════════════════════════════════════════════════════════════════════
 // REGISTRATION
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1100,6 +1117,7 @@ const CAPABILITY_DEFS = [
     { name: "docker_health",       description: "Real single-container health check (running/health/restartCount) via dockerController.cjs", handler: _dockerHealth },
     { name: "docker_compose_up",   description: "Real docker compose up -d with automatic pre-up rollback snapshot", handler: _dockerComposeUp },
     { name: "docker_compose_down", description: "Real docker compose down", handler: _dockerComposeDown },
+    { name: "dependency_scan",     description: "Real npm audit vulnerability scan via dependencyAuditEngine.cjs", handler: _dependencyScan },
 ];
 
 let _registered = false;
@@ -1142,6 +1160,7 @@ function _category(name) {
     if (name === "open_pr")                                    return "git";
     if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document" || name === "frontend_heal") return "quality";
     if (name.startsWith("docker_"))                            return "docker";
+    if (name === "dependency_scan")                            return "devops";
     return "general";
 }
 
