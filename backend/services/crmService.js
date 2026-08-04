@@ -39,6 +39,19 @@ function _write(data) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
+// Digits-only identity normalization, used everywhere this file compares
+// two phone-like values for equality (dedup on save, lookup by phone in
+// updateLead/getLead). Was six independent `.replace(/\D/g, "")` call
+// sites — consolidated to one function so the identity rule can't drift
+// between them. Distinct from paymentService.js/whatsappService.js's own
+// phone normalization, which ALSO strips leading zeros because it builds
+// an international dialing format (`+${clean}`) for an outbound API call
+// — a different operation with a real reason to diverge, not the same
+// bug; not consolidated with this one.
+function _normalizePhone(value) {
+    return String(value || "").replace(/\D/g, "");
+}
+
 // ── Public API ─────────────────────────────────────────────────────
 
 /**
@@ -48,7 +61,7 @@ function _write(data) {
  */
 function saveLead(lead) {
     const data = _read();
-    const phone = String(lead.phone || "").replace(/\D/g, "");
+    const phone = _normalizePhone(lead.phone);
     const userId = String(lead.userId || lead.chatId || "");
     const orgId = lead.orgId || null;
 
@@ -56,7 +69,7 @@ function saveLead(lead) {
     if (!phone && (!userId || userId === "unknown")) return;
 
     // Dedup by phone (if present), scoped to the same org
-    if (phone && data.some(l => String(l.phone || "").replace(/\D/g, "") === phone && (l.orgId || null) === orgId)) return;
+    if (phone && data.some(l => _normalizePhone(l.phone) === phone && (l.orgId || null) === orgId)) return;
     // Dedup by userId (non-phone leads like Telegram chatIds), scoped to the same org
     if (!phone && userId && data.some(l => String(l.userId || l.chatId || "") === userId && (l.orgId || null) === orgId)) return;
 
@@ -86,10 +99,10 @@ function saveLead(lead) {
  */
 function updateLead(identifier, updates, orgId) {
     const data   = _read();
-    const clean  = String(identifier || "").replace(/\D/g, "");
+    const clean  = _normalizePhone(identifier);
     const updated = data.map(l => {
         if (orgId !== undefined && (l.orgId || null) !== (orgId || null)) return l;
-        const lPhone = String(l.phone || l.userId || "").replace(/\D/g, "");
+        const lPhone = _normalizePhone(l.phone || l.userId);
         if (lPhone === clean || String(l.userId) === String(identifier)) {
             return { ...l, ...updates, updatedAt: new Date().toISOString() };
         }
@@ -117,10 +130,10 @@ function getLeads(filterStatus, orgId) {
  * collision leak: org A's lookup can no longer resolve to org B's lead).
  */
 function getLead(identifier, orgId) {
-    const clean = String(identifier || "").replace(/\D/g, "");
+    const clean = _normalizePhone(identifier);
     return _read().find(l => {
         if (orgId !== undefined && (l.orgId || null) !== (orgId || null)) return false;
-        return String(l.phone || "").replace(/\D/g, "") === clean || String(l.userId) === String(identifier);
+        return _normalizePhone(l.phone) === clean || String(l.userId) === String(identifier);
     }) || null;
 }
 
