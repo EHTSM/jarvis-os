@@ -90,6 +90,7 @@ router.use(require("./dependencyAudit"));    // V6 Phase 5: /devops/dependencies
 router.use(require("./legal"));              // V6 Phase 6 (Legal OS): /legal/* real AI-drafted document generation
 router.use(require("./dailyPlanning"));      // V6 Phase 8 (Personal JARVIS): /planning/* real task/agenda engine, composes missions+twin
 router.use(require("./founderAssistant"));   // V6 Phase 8 (Personal JARVIS): /assistant/* conversational entrypoint, composes twin+profile+planning
+router.use(require("./pushNotifications"));  // V6 Phase 8 (Personal JARVIS: mobile): /push/* device token registry, real Firebase-readiness gated send
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
 router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/departments, /admin/profile, /admin/statistics, /admin/quotas
