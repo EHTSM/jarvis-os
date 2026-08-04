@@ -30,8 +30,9 @@
  *   data/acp11-evolution-log.json              — lightweight audit log only
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const logger = require("../utils/logger");
 
 const DATA_DIR  = path.join(__dirname, "../../data");
 const LOG_FILE  = path.join(DATA_DIR, "acp11-evolution-log.json");
@@ -871,6 +872,28 @@ function getStatistics() {
     };
 }
 
+// ── Continuous schedule ────────────────────────────────────────────────────
+// V7 Phase 2 (Continuous Self Improvement): runEvolutionCycle() was real and
+// comprehensive (8 stages, reuses ruleRegistry/confidenceEngine/every ACP-*
+// engine, writes nothing new) but was exclusively route-driven — confirmed
+// via grep, only backend/routes/selfImprovement.js called it. Every stage is
+// individually try/caught so one failing subsystem can't abort the cycle.
+// Same interval-schedule shape as improvementLoop.cjs's startWeeklySchedule().
+let _scheduleHandle = null;
+
+function startEvolutionSchedule(intervalMs = 6 * 60 * 60 * 1000) {
+    if (_scheduleHandle) return _scheduleHandle;
+    _scheduleHandle = setInterval(() => {
+        logger.info("[SelfImprovement] Evolution schedule tick — running runEvolutionCycle()");
+        runEvolutionCycle().catch(err => {
+            logger.error("[SelfImprovement] Scheduled evolution cycle error:", err.message);
+        });
+    }, intervalMs);
+    if (typeof _scheduleHandle.unref === "function") _scheduleHandle.unref();
+    logger.info(`[SelfImprovement] Evolution schedule started (${Math.round(intervalMs / 3_600_000)}h interval).`);
+    return _scheduleHandle;
+}
+
 // ── Benchmark ─────────────────────────────────────────────────────────────────
 
 async function runBenchmark() {
@@ -986,4 +1009,5 @@ module.exports = {
     runEvolutionCycle,
     getStatistics,
     runBenchmark,
+    startEvolutionSchedule,
 };

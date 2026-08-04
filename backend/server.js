@@ -680,6 +680,15 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[ImprovementLoop] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 2 (Continuous Self Improvement): runEvolutionCycle() was
+        // real (8-stage pattern discovery -> rule promotion/retirement ->
+        // confidence update) but exclusively route-driven — confirmed via
+        // grep, only routes/selfImprovement.js ever called it.
+        require("./services/selfImprovementEngine.cjs").startEvolutionSchedule();
+    } catch (err) {
+        logger.warn("[SelfImprovement] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
