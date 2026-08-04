@@ -4,13 +4,16 @@
 // founderAssistantEngine.cjs. Distinct from Chat.jsx (repo/coding context).
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as fa from "../founderAssistantApi";
+import { isVoiceSupported, listenOnce } from "../voiceCommandEngine";
 
-export default function FounderAssistant() {
+export default function FounderAssistant({ onNavigate } = {}) {
   const [briefing, setBriefing] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  const [listening, setListening] = useState(false);
+  const voiceSupported = isVoiceSupported();
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +41,24 @@ export default function FounderAssistant() {
       setSending(false);
     }
   }, [input, sending, messages]);
+
+  const startListening = useCallback(async () => {
+    if (listening) return;
+    setListening(true);
+    setError(null);
+    try {
+      const { transcript, result } = await listenOnce({
+        onNavigate,
+        onTranscript: (t) => setMessages(m => [...m, { role: "user", content: t }]),
+      });
+      setMessages(m => [...m, { role: "assistant", content: result.message }]);
+      void transcript;
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setListening(false);
+    }
+  }, [listening, onNavigate]);
 
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: "0 auto", display: "flex", flexDirection: "column", height: "calc(100vh - 120px)" }}>
@@ -73,6 +94,11 @@ export default function FounderAssistant() {
           style={{ flex: 1 }}
           disabled={sending}
         />
+        {voiceSupported && (
+          <button type="button" onClick={startListening} disabled={listening || sending} title="Voice command">
+            {listening ? "🎤…" : "🎤"}
+          </button>
+        )}
         <button type="submit" disabled={sending || !input.trim()}>Send</button>
       </form>
     </div>

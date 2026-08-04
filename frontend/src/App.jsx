@@ -1386,7 +1386,7 @@ function AppInner() {
         {tab === "twin"          && <FounderTwinConsole                          />}
         {tab === "customersuccess" && <CustomerSuccessCenter                     />}
         {tab === "planning"      && <DailyPlanningConsole                        />}
-        {tab === "assistant"     && <FounderAssistant                            />}
+        {tab === "assistant"     && <FounderAssistant onNavigate={setTab}          />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "observer"      && <RuntimeObserverPanel />}
         {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}
