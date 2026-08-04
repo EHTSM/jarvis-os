@@ -8,6 +8,7 @@ import {
 } from "../phase25Api";
 import { getAIStatus } from "../aiApi";
 import * as dockerApi from "../dockerApi";
+import * as deployStrategyApi from "../deploymentStrategyApi";
 import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
 
@@ -297,6 +298,96 @@ function TabRuntime({ addToast }) {
 
 // ── Tab: Deployments ──────────────────────────────────────────────────
 
+function StrategyDeployPanel({ addToast }) {
+  const [envs,       setEnvs]       = useState([]);
+  const [runs,       setRuns]       = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [mode,       setMode]       = useState("blue-green"); // "blue-green" | "canary"
+  const [composeFile,setComposeFile]= useState("");
+  const [healthUrl,  setHealthUrl]  = useState("");
+  const [service,    setService]    = useState("");
+  const [totalReplicas, setTotalReplicas] = useState(3);
+  const [canaryReplicas, setCanaryReplicas] = useState(1);
+  const [running,    setRunning]    = useState(false);
+
+  const refresh = useCallback(() => {
+    Promise.all([
+      deployStrategyApi.listEnvironments().catch(() => null),
+      deployStrategyApi.listStrategyRuns({ limit: 10 }).catch(() => null),
+    ]).then(([e, r]) => {
+      setEnvs(e?.environments || []);
+      setRuns(r?.runs || []);
+    }).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function handleDeploy() {
+    if (!composeFile) { addToast("composeFile is required", "error"); return; }
+    if (!healthUrl)   { addToast("healthUrl is required — cutover is health-gated", "error"); return; }
+    if (mode === "canary" && (!service || !totalReplicas)) {
+      addToast("service and totalReplicas are required for canary", "error");
+      return;
+    }
+    setRunning(true);
+    try {
+      const result = mode === "blue-green"
+        ? await deployStrategyApi.blueGreenDeploy({ composeFile, healthUrl })
+        : await deployStrategyApi.canaryDeploy({ composeFile, healthUrl, service, totalReplicas: +totalReplicas, canaryReplicas: +canaryReplicas });
+      if (result?.ok) {
+        addToast(`${mode === "blue-green" ? "Blue/green" : "Canary"} deploy ${result.rolledBack ? "rolled back" : "promoted"} — run ${result.runId}`, result.rolledBack ? "error" : "success");
+      } else {
+        addToast(`Deploy failed: ${result?.error || "unknown error"}`, "error");
+      }
+    } catch (e) {
+      addToast(`Deploy request failed: ${e.message}`, "error");
+    } finally {
+      setRunning(false);
+      refresh();
+    }
+  }
+
+  return (
+    <div className="dv2-strategy-panel">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Blue/Green & Canary Deploy</span>
+        {envs.length > 0 && <span className="dv2-strategy-envcount">{envs.length} registered environment(s)</span>}
+      </div>
+      <div className="dv2-strategy-mode">
+        {["blue-green", "canary"].map(m => (
+          <button key={m} className={`dv2-filter-chip${mode===m?" dv2-filter-chip--active":""}`} onClick={() => setMode(m)}>{m}</button>
+        ))}
+      </div>
+      <div className="dv2-strategy-form">
+        <input className="dv2-search" placeholder="composeFile (e.g. docker-compose.yml)" value={composeFile} onChange={e => setComposeFile(e.target.value)} />
+        <input className="dv2-search" placeholder="healthUrl (e.g. http://localhost:5050/health)" value={healthUrl} onChange={e => setHealthUrl(e.target.value)} />
+        {mode === "canary" && (
+          <>
+            <input className="dv2-search" placeholder="service name" value={service} onChange={e => setService(e.target.value)} />
+            <input className="dv2-search" type="number" min="1" placeholder="canary replicas" value={canaryReplicas} onChange={e => setCanaryReplicas(e.target.value)} style={{ maxWidth: 140 }} />
+            <input className="dv2-search" type="number" min="1" placeholder="total replicas" value={totalReplicas} onChange={e => setTotalReplicas(e.target.value)} style={{ maxWidth: 140 }} />
+          </>
+        )}
+        <button className={`dv2-btn dv2-btn--primary${running ? " dv2-btn--loading" : ""}`} onClick={handleDeploy} disabled={running}>
+          {running ? "⟳ Deploying…" : `▶ Run ${mode}`}
+        </button>
+      </div>
+      <div className="dv2-strategy-runs">
+        {loading ? <SkelRow cols={4} /> : runs.length === 0 ? (
+          <p className="dv2-cs-sub">No strategy runs yet.</p>
+        ) : runs.map(r => (
+          <div key={r.id} className="dv2-strategy-run-row">
+            <span className="dv2-dr-status dv2-chip" style={{ color: sc(r.ok ? "success" : "failed"), background: (r.ok ? "#2ecc71" : "#f55b5b")+"15" }}>{r.ok ? "success" : (r.rolledBack ? "rolled back" : "failed")}</span>
+            <span className="dv2-dr-repo dv2-mono">{r.type}</span>
+            <span className="dv2-dr-version dv2-mono">{r.composeFile}</span>
+            <span className="dv2-dr-ts">{r.ts ? _timeAgo(r.ts) : "—"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TabDeployments({ addToast }) {
   const [deployments, setDeployments] = useState(SEED_DEPLOYMENTS);
   const [isSample,    setIsSample]    = useState(true);
@@ -346,13 +437,7 @@ function TabDeployments({ addToast }) {
         ))}
       </div>
 
-      <div className="dv2-coming-soon">
-        <span className="dv2-cs-icon">◎</span>
-        <div>
-          <p className="dv2-cs-title">One-click Deploy & Rollback <span className="csb-beta-badge">BETA</span></p>
-          <p className="dv2-cs-sub">Interactive deploy pipeline with canary release, blue/green switching, and automated rollback. Until then: <code className="dv2-code">pm2 restart all</code></p>
-        </div>
-      </div>
+      <StrategyDeployPanel addToast={addToast} />
 
       <div className="dv2-deploy-filter">
         {["all","production","staging","development"].map(e => (
