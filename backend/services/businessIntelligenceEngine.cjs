@@ -330,10 +330,38 @@ function _emitRecommendation(signal, ruleId, entityType) {
 // MISSION CREATION — via missionOrchestrator/businessEntityModel
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Dedup window for auto-triggered missions — without this, any caller that
+// runs scan() on a recurring schedule (e.g. businessOperationsScheduler.cjs,
+// V7 Phase 4) would create a brand new mission for the same still-idle lead
+// every single tick, since _triggerMission() previously had no memory of
+// what it already triggered. Reuses missionMemory's real disk-persisted
+// listMissions({since}) — NOT missionOrchestrator.listMissions(), whose
+// in-memory _live records never carry the metadata field passed to
+// createManual() at all (confirmed live: metadata only reaches the
+// missionMemory-backed record _createRecord() creates underneath). A
+// process restart losing nothing here since missionMemory is disk-backed.
+const _MISSION_DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+function _recentlyTriggered(entityType, entityId, signalType) {
+    try {
+        const mm = _mem();
+        if (!mm) return false;
+        const since = new Date(Date.now() - _MISSION_DEDUP_WINDOW_MS).toISOString();
+        const { missions } = mm.listMissions({ since, limit: 500 });
+        return missions.some(m =>
+            m.metadata?.autoTriggered &&
+            m.metadata?.entityType === entityType &&
+            m.metadata?.entityId === entityId &&
+            m.metadata?.signalType === signalType
+        );
+    } catch { return false; }
+}
+
 function _triggerMission(signal, entityType, entityId) {
     try {
         const orch = _orch();
         if (!orch) return null;
+        if (_recentlyTriggered(entityType, entityId, signal.type)) return null;
         const priority = signal.urgency === "critical" ? "critical"
                        : signal.urgency === "high"     ? "high"
                        : "medium";
