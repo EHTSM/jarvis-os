@@ -446,6 +446,40 @@ function _sweepTerminalMissions() {
 
 setInterval(_sweepTerminalMissions, 60_000).unref();
 
+// Periodic deadlock sweep — same problem _resumeOrphanedMissions() fixes for
+// a process restart, but for a mission that stalls mid-process (e.g. a
+// _monitorStage() poll loop that exits via an uncaught path without calling
+// _stageComplete/_stageFailed). A stage "running" with no update in over the
+// monitor's own 5-minute timeout window has no other watcher left, since
+// _monitorStage's while loop already exited. Re-arms the same functions used
+// everywhere else in this file — not a parallel recovery mechanism.
+const DEADLOCK_SWEEP_MS   = 120_000;
+const STALLED_STAGE_MS    = 6 * 60_000;  // 1 minute past _monitorStage's own 5-minute timeout
+function _sweepDeadlockedMissions() {
+    const now = Date.now();
+    for (const [missionId, rec] of _live) {
+        if (TERMINAL_STATES.has(rec.orchStatus)) continue;
+        const stalledStage = (rec.stages || []).find(s => {
+            if (s.status !== "running" || !s.startedAt) return false;
+            return now - new Date(s.startedAt).getTime() > STALLED_STAGE_MS;
+        });
+        if (stalledStage) {
+            logger.warn(`[Orchestrator] deadlock sweep: re-arming stalled stage ${stalledStage.id} on mission ${missionId}`);
+            _monitorStage(missionId, stalledStage).catch(() => { /* handled inside */ });
+            continue;
+        }
+        // No running stage, not terminal, not blocking-awaiting — re-drive
+        // in case a completion/failure check was missed.
+        const hasRunning = (rec.stages || []).some(s => s.status === "running");
+        const hasBlocking = (rec.stages || []).some(s => BLOCKING_STATUSES.has(s.status));
+        if (!hasRunning && !hasBlocking && rec.orchStatus !== "queued") {
+            _advance(missionId).catch(() => { /* handled */ });
+        }
+    }
+}
+
+setInterval(_sweepDeadlockedMissions, DEADLOCK_SWEEP_MS).unref();
+
 // ── Queue for execution (non-approval missions auto-advance) ───────────────
 function _queue(missionId) {
     const rec = _live.get(missionId);
@@ -897,8 +931,42 @@ function start() {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     _loadOrch();
     _subscribeDecisions();
+    _resumeOrphanedMissions();
     logger.info("[Orchestrator] I3 started");
     return { started: true };
+}
+
+// ── Resume missions left in-flight across a process restart ────────────────
+// _loadOrch() restores non-terminal records from disk into _live, but a
+// mission whose stage was "running" had its _monitorStage() poll loop die
+// with the previous process — nothing re-arms it, and nothing re-invokes
+// _advance() for a mission left in "waiting"/"executing" with no active
+// running stage. Root cause of missions never reaching "completed": confirmed
+// live via data/orchestrator-state.json (21/22 records stuck in "executing",
+// stage 1 "running" with a loopTaskId whose task-queue entry had already
+// finished — nothing was polling it after restart). Fixes by re-arming the
+// exact same _monitorStage/_advance functions used for freshly-dispatched
+// stages, not a parallel mechanism.
+function _resumeOrphanedMissions() {
+    let resumed = 0;
+    for (const [missionId, rec] of _live) {
+        if (TERMINAL_STATES.has(rec.orchStatus)) continue;
+        const runningStages = (rec.stages || []).filter(s => s.status === "running");
+        if (runningStages.length > 0) {
+            for (const stg of runningStages) {
+                _monitorStage(missionId, stg).catch(() => { /* handled inside */ });
+            }
+            resumed++;
+        } else {
+            // No stage actively running (e.g. left "waiting" with nothing
+            // dispatched, or "executing" with all stages settled but the
+            // completion check never re-ran) — re-drive via the normal
+            // advance path, which is a safe no-op if truly nothing is ready.
+            setImmediate(() => _advance(missionId).catch(() => { /* handled */ }));
+            resumed++;
+        }
+    }
+    if (resumed > 0) logger.info(`[Orchestrator] resumed ${resumed} orphaned mission(s) after restart`);
 }
 
 function stop() {
