@@ -109,10 +109,40 @@ function _buildHandlers() {
         },
 
         research: async (task) => {
-            const researchAgent = require("./researchAgent.cjs");
+            // Agent Civilization Unification (module 4): this handler used
+            // to require("./researchAgent.cjs") — a file that only exists
+            // in _archive/20260520_010917/agents/, not the live tree. Every
+            // call here has thrown MODULE_NOT_FOUND since that archive move,
+            // with no test coverage to catch it. Redirect to the real,
+            // already-registered "news" capability (agents/internet/
+            // newsAggregatorAgent.cjs — id: internet_news), which takes the
+            // same free-text query/topic/keyword contract the old
+            // researchAgent(query) call expected. Deliberately NOT the
+            // shared "research" tag several internet/* agents also carry
+            // (internet_web_scraper, internet_browser_automation, ...) —
+            // those need a url/target, not a free-text query, and would
+            // silently mis-serve this handler's callers if findForCapability
+            // happened to pick one of them first (verified: it does, by
+            // registration order, findForCapability has no shape-awareness).
+            // taskRouter.cjs's own header comment documents this exact
+            // pattern: "each agent's first capability is a unique tag so
+            // TASK_TYPE_MAP can deterministically address one specific
+            // agent" — applying that same discipline here.
+            const agentRegistry = require("./runtime/agentRegistry.cjs");
+            const agent = agentRegistry.findForCapability("news");
+            if (!agent) {
+                return { type: "research", success: false, error: "No research-capable agent available" };
+            }
             const query = task.payload?.query || task.input || "";
-            const result = await researchAgent(query);
-            return { type: "research", result, success: true };
+            agent.acquireSlot();
+            try {
+                const result = await agent.handler({ ...task, payload: { ...(task.payload || {}), query, topic: query, keyword: query } });
+                agent.recordSuccess();
+                return { type: "research", result, success: result?.success !== false, agentId: agent.id };
+            } catch (err) {
+                agent.recordFailure();
+                return { type: "research", success: false, error: err.message, agentId: agent.id };
+            }
         },
 
         dev: async (task) => {
