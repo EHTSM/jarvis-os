@@ -11,6 +11,10 @@ let passed = 0;
 let failed = 0;
 const promises = [];
 
+// Returns the tracked promise for async tests (undefined for sync ones) so
+// a later test can explicitly `await` an earlier async test's completion
+// when it depends on that test's side effects (e.g. an opened tab id) —
+// existing call sites that ignore the return value are unaffected.
 function test(name, fn) {
   try {
     const r = fn();
@@ -18,6 +22,7 @@ function test(name, fn) {
       const p = r.then(() => { console.log(`  PASS  ${name}`); passed++; })
                   .catch(e => { console.log(`  FAIL  ${name}: ${e.message || e}`); failed++; });
       promises.push(p);
+      return p;
     } else {
       console.log(`  PASS  ${name}`);
       passed++;
@@ -120,15 +125,22 @@ test("selectBrowser returns available browser", () => {
 
 // openTab/closeTab/inspectPage are real async functions since
 // fix(browser-agent): wire browserController onto the real Playwright
-// session — these 6 tests previously called them without await, so `r`
+// session — these tests previously called them without await, so `r`
 // was always an unresolved Promise (r.ok/r.tabId always undefined) and
 // every assertion here was checking a Promise object, not a real result.
 // This never surfaced as a failure before that fix because the pre-fix
 // openTab() was effectively-synchronous fake bookkeeping; genuinely
-// async Playwright calls exposed the missing await. Fixed by awaiting
-// each call — the test harness (test(name, fn) above) already awaits fn()
-// correctly when fn is async and returns its promise.
-test("openTab creates tab with required fields", async () => {
+// async Playwright calls exposed the missing await.
+//
+// listTabs/switchTab below depend on openTabId, which this test sets —
+// but the test(name, fn) harness only *collects* an async test's promise
+// to await at the very end of the file (see the final Promise.all), it
+// does not block subsequent test() calls from running immediately. Awaiting
+// this test's own promise explicitly before calling the two dependent
+// tests (rather than restructuring the harness or merging three separately-
+// reported tests into one) keeps each test's pass/fail independently
+// visible while guaranteeing openTabId is real by the time they run.
+const _openTabTest = test("openTab creates tab with required fields", async () => {
   const r = await bc.openTab({ url: "https://example.com", browser: "Chrome" });
   assert(r.ok, "openTab failed: " + JSON.stringify(r));
   assert(r.tabId, "no tabId");
@@ -136,13 +148,15 @@ test("openTab creates tab with required fields", async () => {
   openTabId = r.tabId;
 });
 
-test("listTabs returns open tab", () => {
+test("listTabs returns open tab", async () => {
+  await _openTabTest;
   const tabs = bc.listTabs({ status: "open" });
   assert(Array.isArray(tabs), "not array");
   assert(tabs.some(t => t.tabId === openTabId), "opened tab not in list");
 });
 
-test("switchTab works for open tab", () => {
+test("switchTab works for open tab", async () => {
+  await _openTabTest;
   const r = bc.switchTab(openTabId);
   assert(r.ok, "switchTab failed: " + r.error);
   assert(r.url === "https://example.com");
