@@ -5,6 +5,7 @@ const automation   = require("../services/automationService");
 const controller   = require("../controllers/jarvisController");
 const errTracker   = require("../utils/errorTracker");
 const memTracker   = require("../utils/memoryTracker");
+const logger       = require("../utils/logger");
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit   = require("../middleware/operatorAudit");
 
@@ -185,7 +186,7 @@ router.get("/ops", (req, res) => {
 
 // POST /runtime/reboot — safely restart the process (PM2 will bring it back)
 router.post("/runtime/reboot", requireAuth, operatorAudit("runtime-reboot"), (req, res) => {
-    console.warn(`[Runtime] Operator ${req.user?.sub} initiated SAFE REBOOT`);
+    logger.warn(`[Runtime] Operator ${req.user?.sub} initiated SAFE REBOOT`);
     res.json({ success: true, message: "Reboot initiated. System will be back in ~10s." });
     setTimeout(() => process.exit(0), 1000);
 });

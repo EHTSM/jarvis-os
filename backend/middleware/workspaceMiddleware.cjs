@@ -50,7 +50,7 @@ function requireWorkspaceMember(req, res, next) {
     // can spot IDOR probing (a client repeatedly trying workspaceId values
     // that aren't theirs) rather than this failing silently.
     try {
-      _evtBus()?.emit("workspace_access_denied", {
+      _evtBus()?.emit("workspace:access:denied", {
         accountId: req.user?.sub || null,
         workspaceId: req.workspace.id,
         path: req.originalUrl,

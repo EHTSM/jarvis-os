@@ -1,5 +1,6 @@
 "use strict";
-const axios = require("axios");
+const axios  = require("axios");
+const logger = require("../utils/logger");
 
 const API = "https://api.telegram.org";
 
@@ -26,7 +27,7 @@ async function sendMessage(chatId, text) {
     } catch (err) {
         const code = err.response?.status;
         const desc = err.response?.data?.description || err.message;
-        console.warn(`[Telegram] sendMessage failed (${code}): ${desc}`);
+        logger.warn(`[Telegram] sendMessage failed (${code}): ${desc}`);
         return { sent: false, reason: desc, status: code };
     }
 }

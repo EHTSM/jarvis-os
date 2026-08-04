@@ -179,7 +179,7 @@ async function _executeAction(rule, context, workspaceId, dryRun = false) {
   if (approvalGate) {
     const msg = `Rule "${rule.name}" requires ${approvalGate.requiredRole} approval (timeout: ${approvalGate.timeoutHours}h)`;
     if (!dryRun) {
-      _evtBus()?.emit("automation_approval_required", {
+      _evtBus()?.emit("automation:approval:required", {
         workspaceId, ruleId: rule.id, ruleName: rule.name, approvalGate, _ts: Date.now(),
       });
       try { _sec()?.addAuditEntry(workspaceId, "system", "automation.approval_required", msg); } catch {}
@@ -212,7 +212,7 @@ async function _executeAction(rule, context, workspaceId, dryRun = false) {
     case "notify": {
       const msg = _interpolate(action.message || "Automation rule fired", context);
       try { _sec()?.addAuditEntry(workspaceId, "system", "automation.notify", msg); } catch {}
-      _evtBus()?.emit("automation_notify", { workspaceId, ruleId: rule.id, message: msg, _ts: Date.now() });
+      _evtBus()?.emit("automation:notify", { workspaceId, ruleId: rule.id, message: msg, _ts: Date.now() });
       return { outcome: "success", detail: msg };
     }
     case "escalate": {
@@ -266,7 +266,7 @@ function createRule(workspaceId, { name, description = "", trigger, conditions =
     lastOutcome:  null,
   };
   ws.rules.push(rule);
-  _evtBus()?.emit("automation_rule_created", { workspaceId, ruleId: rule.id, _ts: Date.now() });
+  _evtBus()?.emit("automation:rule:created", { workspaceId, ruleId: rule.id, _ts: Date.now() });
   try { _sec()?.addAuditEntry(workspaceId, requestingAccountId, "automation.rule_created", `name=${name}`); } catch {}
   _save(all);
   return rule;
@@ -330,7 +330,7 @@ async function fireRule(workspaceId, ruleId, context = {}, requestingAccountId =
     rule.lastOutcome = result.outcome;
   }
   _addHistory(ws, ruleId, rule.name, result.outcome, result.detail, dryRun);
-  _evtBus()?.emit("automation_rule_fired", { workspaceId, ruleId, outcome: result.outcome, dryRun, _ts: Date.now() });
+  _evtBus()?.emit("automation:rule:fired", { workspaceId, ruleId, outcome: result.outcome, dryRun, _ts: Date.now() });
   _save(all);
   return result;
 }

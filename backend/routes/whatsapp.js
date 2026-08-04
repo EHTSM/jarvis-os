@@ -6,6 +6,7 @@ const crm        = require("../services/crmService");
 const controller = require("../controllers/jarvisController");
 const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
+const logger      = require("../utils/logger");
 
 // ── WhatsApp HMAC verification ────────────────────────────────────
 // Meta signs every incoming webhook with HMAC-SHA256 using the app secret.
@@ -16,7 +17,7 @@ function _verifyWhatsAppSignature(rawBody, header) {
     if (!secret) {
         // Not configured — reject in production, warn in dev
         if (process.env.NODE_ENV === "production") return false;
-        console.warn("[WA] WHATSAPP_APP_SECRET not set — skipping HMAC verification (dev only)");
+        logger.warn("[WA] WHATSAPP_APP_SECRET not set — skipping HMAC verification (dev only)");
         return true;
     }
     if (!header || !header.startsWith("sha256=")) return false;
@@ -70,7 +71,7 @@ router.post(
         const sig    = req.headers["x-hub-signature-256"] || "";
         const body   = req.rawBody || "";
         if (!_verifyWhatsAppSignature(body, sig)) {
-            console.warn("[WA] Webhook HMAC mismatch — rejected");
+            logger.warn("[WA] Webhook HMAC mismatch — rejected");
             return res.status(401).json({ error: "Invalid webhook signature" });
         }
         // req.body is not reliable here — see handleWhatsAppWebhook's comment
@@ -82,7 +83,7 @@ router.post(
         catch { parsedBody = req.body; }
         const messageId = _extractMessageId(parsedBody);
         if (_isReplay(messageId)) {
-            console.warn(`[WA] Replay detected for message ${messageId} — rejected`);
+            logger.warn(`[WA] Replay detected for message ${messageId} — rejected`);
             return res.status(400).json({ error: "Replay detected" });
         }
         next();

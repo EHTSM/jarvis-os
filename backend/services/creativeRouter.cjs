@@ -83,7 +83,7 @@ function route(opts = {}) {
 
   if (wantsLocal && !useLocal) {
     try {
-      _evtBus()?.emit("credit_local_mode_denied", {
+      _evtBus()?.emit("credit:local_mode:denied", {
         accountId, capability, reason: "no_local_provider_for_capability", _ts: Date.now(),
       });
     } catch {}

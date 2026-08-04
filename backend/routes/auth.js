@@ -5,6 +5,7 @@ const rateLimiter = require("../middleware/rateLimiter");
 const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
 const auditLog    = require("../utils/auditLog.cjs");
 const accountSvc  = require("../services/accountService");
+const logger      = require("../utils/logger");
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _sso = () => _try(() => require("../services/ssoService.cjs"));
 const _policy = () => _try(() => require("../services/policyService.cjs"));
@@ -253,7 +254,7 @@ async function _handleFirebaseSession(req, res) {
     if (process.env.NODE_ENV === "production") {
       return res.status(503).json({ error: "Firebase auth not configured" });
     }
-    if (process.env.NODE_ENV !== "production") console.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
+    if (process.env.NODE_ENV !== "production") logger.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
   }
 
   const cleanEmail = email.trim().toLowerCase();
