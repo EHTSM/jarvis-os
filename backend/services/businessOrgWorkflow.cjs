@@ -312,9 +312,22 @@ function revenueOpsUpdate() {
   let revData = null;
   try { revData = rev()?.getRevenueDashboard?.(); } catch {}
 
-  const kpis    = st().getAllKpis();
-  const totalMrr = kpis.reduce((s, k) => s + (k.mrr || 0), 0);
-  const totalWon = kpis.reduce((s, k) => s + (k.dealsWon || 0), 0);
+  // Business Org Financial Integrity Certification: this used to compute
+  // its own kpis.reduce((s,k) => s + (k.mrr||0), 0) across every
+  // department's KPI, INCLUDING bizorg_revops's own — then wrote that sum
+  // back into bizorg_revops.mrr. Since this function runs on a real
+  // 240s interval forever, each run's output became part of the next
+  // run's input: a real, confirmed recursive self-accumulation bug
+  // (verified via direct execution: bizorg_revops.mrr grew by a fresh
+  // ~totalMrr-sized delta on every call with zero real business activity
+  // involved). Reusing getDashboard().revenue.mrr instead — the single
+  // source of truth for total MRR, which now correctly excludes
+  // bizorg_revops/bizorg_billing from its own sum (see
+  // businessOrgState.cjs's MRR_REPORTING_DEPTS) — rather than duplicating
+  // (and re-diverging from) that reduce logic here.
+  const dash     = st().getDashboard();
+  const totalMrr = dash.revenue.mrr;
+  const totalWon = dash.leads.won;
 
   _kpiUp("bizorg_revops", { mrr: totalMrr, arr: totalMrr * 12, tasksCompleted: (st().getKpi("bizorg_revops").tasksCompleted || 0) + 1 });
   _mem("bizorg_revops", "revenue_update", `Revenue update: MRR=$${totalMrr}`, `ARR=$${totalMrr * 12} | Deals won: ${totalWon}`, { metrics: { mrr: totalMrr, arr: totalMrr * 12 } });

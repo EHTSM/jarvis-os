@@ -630,13 +630,29 @@ function updateKpi(deptId, p) {
 // DASHBOARD
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Business Org Financial Integrity Certification: departments whose own
+// mrr KPI is a REPORT of other departments' revenue, not a genuine
+// independent source of it. bizorg_revops's revenueOpsUpdate() (below,
+// businessOrgWorkflow.cjs) writes kpis.reduce(...) — a sum across every
+// department, itself included — back into bizorg_revops.mrr. Summing
+// bizorg_revops.mrr into totalMrr here fed that department's own report
+// back into the next report's input: a real, confirmed recursive
+// self-accumulation bug (verified via direct execution: bizorg_revops.mrr
+// grew by a fresh ~totalMrr-sized delta on every single call, unbounded,
+// with zero real business activity involved) — the dominant contributor
+// to the MRR overflow this and the prior Executive OS session found.
+// bizorg_billing is excluded too, defensively, even though its own
+// duplicate mrr accumulator was removed in a separate fix — it was never
+// a genuine deal-originating department either.
+const MRR_REPORTING_DEPTS = new Set(["bizorg_revops", "bizorg_billing"]);
+
 function getDashboard() {
   _s();
   const kpis     = Object.values(_kpis);
   const deals    = _state.deals;
   const tasks    = _state.tasks;
   const pipeline = getPipelineStats();
-  const totalMrr = kpis.reduce((s, k) => s + (k.mrr || 0), 0);
+  const totalMrr = kpis.reduce((s, k) => s + (MRR_REPORTING_DEPTS.has(k.deptId) ? 0 : (k.mrr || 0)), 0);
   const totalLeads = kpis.reduce((s, k) => s + (k.leadsGenerated || 0), 0);
   const totalWon = kpis.reduce((s, k) => s + (k.dealsWon || 0), 0);
   return {
