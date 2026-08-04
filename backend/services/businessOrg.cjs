@@ -271,10 +271,24 @@ async function _csTick(s) {
 async function _financeTick(s) {
   _setObj(s, "Reviewing financial performance and P&L");
   try {
-    const dash    = _st()?.getDashboard?.() || {};
-    const kpis    = _st()?.getAllKpis?.() || [];
-    const totalMrr = kpis.reduce((s, k) => s + (k.mrr || 0), 0);
-    const totalWon = kpis.reduce((s, k) => s + (k.dealValueWon || 0), 0);
+    // Business Org Financial Integrity Certification: this used to compute
+    // its own kpis.reduce((s,k) => s + (k.mrr||0), 0) across every
+    // department's KPI, INCLUDING bizorg_finance's own — then wrote that
+    // sum back into bizorg_finance.mrr via updateKpi(s.id, ...) below
+    // (s.id === "bizorg_finance" here). Since this tick runs on a real
+    // 300s interval forever, each run's output became part of the next
+    // run's input — the same real, confirmed recursive self-accumulation
+    // bug already found and fixed in bizorg_revops's revenueOpsUpdate()
+    // (businessOrgWorkflow.cjs). Confirmed via direct execution: one
+    // simulated tick doubled bizorg_finance.mrr from 2.9e+258 to
+    // 5.8e+258 with zero real deals involved. Now reuses
+    // getDashboard().revenue.mrr, which already correctly excludes
+    // bizorg_finance/bizorg_revops/bizorg_billing from its own sum (see
+    // businessOrgState.cjs's MRR_REPORTING_DEPTS) — one source of truth,
+    // not a second independently-diverging reduce.
+    const dash     = _st()?.getDashboard?.() || {};
+    const totalMrr = dash.revenue?.mrr || 0;
+    const totalWon = dash.pipeline?.totalWonValue || 0;
     _st()?.updateKpi(s.id, { mrr: totalMrr, arr: totalMrr * 12 });
     if (totalMrr === 0) {
       _mission(s.id, {

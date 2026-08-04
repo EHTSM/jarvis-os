@@ -643,8 +643,9 @@ function updateKpi(deptId, p) {
 // to the MRR overflow this and the prior Executive OS session found.
 // bizorg_billing is excluded too, defensively, even though its own
 // duplicate mrr accumulator was removed in a separate fix — it was never
-// a genuine deal-originating department either.
-const MRR_REPORTING_DEPTS = new Set(["bizorg_revops", "bizorg_billing"]);
+// a genuine deal-originating department either. bizorg_finance has the
+// identical bug in its own _financeTick (businessOrg.cjs) — also excluded.
+const MRR_REPORTING_DEPTS = new Set(["bizorg_revops", "bizorg_billing", "bizorg_finance"]);
 
 function getDashboard() {
   _s();
