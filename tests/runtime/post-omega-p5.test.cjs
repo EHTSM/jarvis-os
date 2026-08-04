@@ -163,10 +163,17 @@ test("switchTab works for open tab", async () => {
 });
 
 test("closeTab transitions to closed", async () => {
-  // Open a fresh one to close
-  const t = await bc.openTab({ url: "https://close-me.example.com" });
+  // Open a fresh one to close. Previously used a non-resolving fake
+  // domain (close-me.example.com) — harmless under the old fake-tab-ID
+  // bookkeeping this test was written for, but real Playwright genuinely
+  // tries to resolve DNS now (fix(browser-agent): wire browserController
+  // onto the real Playwright session), so openTab() correctly failed with
+  // net::ERR_NAME_NOT_RESOLVED and t.tabId was undefined. example.com is
+  // real and resolves.
+  const t = await bc.openTab({ url: "https://example.com" });
+  assert(t.ok, "openTab failed: " + JSON.stringify(t));
   const r = await bc.closeTab(t.tabId);
-  assert(r.ok, "closeTab failed");
+  assert(r.ok, "closeTab failed: " + JSON.stringify(r));
   // Should not be in open tabs anymore
   const open = bc.listTabs({ status: "open" });
   assert(!open.some(tab => tab.tabId === t.tabId), "closed tab still in open list");
@@ -608,12 +615,14 @@ test("browser.open() + browser.tabs() work", async () => {
   // cc.browser.open() is a thin facade returning openTab()'s real Promise
   // unchanged (backend/services/computerController.cjs:55) — missing
   // await here meant t was always an unresolved Promise, t?.ok always
-  // undefined. Same root cause as the openTab tests above.
-  const t = await cc.browser.open("https://facade.example.com");
-  assert(t?.ok, "browser.open failed");
+  // undefined. Also switched off the non-resolving facade.example.com
+  // fake domain (same real-DNS-failure issue as the closeTab test above)
+  // to a real, resolving one.
+  const t = await cc.browser.open("https://example.com");
+  assert(t?.ok, "browser.open failed: " + JSON.stringify(t));
   const tabs = cc.browser.tabs({ status: "open" });
   assert(Array.isArray(tabs));
-  assert(tabs.some(tab => tab.url === "https://facade.example.com"), "tab not found");
+  assert(tabs.some(tab => tab.url === "https://example.com"), "tab not found");
 });
 
 test("terminal.run() executes via facade", () => {
