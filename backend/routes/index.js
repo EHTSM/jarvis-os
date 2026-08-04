@@ -88,6 +88,7 @@ router.use(require("./pipeline"));           // /pipeline/run, /pipeline/:id, /p
 router.use(require("./deployment"));         // /deployment/run, /deployment/:id, /deployment/targets, /deployment/active, /deployment/benchmark (Phase I8)
 router.use(require("./dependencyAudit"));    // V6 Phase 5: /devops/dependencies/* real npm audit/outdated/update
 router.use(require("./legal"));              // V6 Phase 6 (Legal OS): /legal/* real AI-drafted document generation
+router.use(require("./dailyPlanning"));      // V6 Phase 8 (Personal JARVIS): /planning/* real task/agenda engine, composes missions+twin
 router.use(require("./workspace"));      // /workspace, /workspace/:id, /workspace/invite, /workspace/switch, /workspace/activity
 router.use(require("./security"));      // /security/sessions, /security/devices, /security/audit, /security/policies, /security/tokens, /security/score
 router.use(require("./admin"));         // /admin/team, /admin/member/*, /admin/departments, /admin/profile, /admin/statistics, /admin/quotas

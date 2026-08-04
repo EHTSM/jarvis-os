@@ -1003,6 +1003,7 @@ async function _gitCommit(ctx) {
 function _dockerCtl() { try { return require("./dockerController.cjs"); } catch { return null; } }
 function _depAudit()  { try { return require("./dependencyAuditEngine.cjs"); } catch { return null; } }
 function _legalDoc()  { try { return require("./legalDocumentEngine.cjs"); } catch { return null; } }
+function _dailyPlan() { try { return require("./dailyPlanningEngine.cjs"); } catch { return null; } }
 
 // docker_status: read-only daemon + container snapshot.
 async function _dockerStatus(ctx) {
@@ -1112,6 +1113,24 @@ async function _legalDocumentGenerate(ctx) {
     return { success: true, output, artifacts: [{ type: "legal_document", docId: result.document.docId }], logs: [] };
 }
 
+// daily_task_create: input JSON {title, dueDate, priority, notes} — real
+// personal task via dailyPlanningEngine.cjs (V6 Phase 8: Personal JARVIS).
+async function _dailyTaskCreate(ctx) {
+    const eng = _dailyPlan();
+    if (!eng) return { success: false, error: "dailyPlanningEngine unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^daily[_\s]task[_\s]create:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { title: raw }; } catch { opts = { title: raw }; }
+    if (!opts.title) return { success: false, error: "task title required (daily_task_create: {\"title\":\"...\",...})", output: null, nonRetriable: true };
+
+    const result = eng.createTask({ ...opts, source: "mission" });
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ taskId: result.task.id, title: result.task.title, dueDate: result.task.dueDate });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "daily_task", taskId: result.task.id });
+    remember("success", { pattern: "daily_task_create", appliedTo: opts.title, outcome: `created task ${result.task.id}` }, { tags: ["planning", "task"], importance: 40 });
+    return { success: true, output, artifacts: [{ type: "daily_task", taskId: result.task.id }], logs: [] };
+}
+
 // ══════════════════════════════════════════════════════════════════════════════
 // REGISTRATION
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1142,6 +1161,7 @@ const CAPABILITY_DEFS = [
     { name: "docker_compose_down", description: "Real docker compose down", handler: _dockerComposeDown },
     { name: "dependency_scan",     description: "Real npm audit vulnerability scan via dependencyAuditEngine.cjs", handler: _dependencyScan },
     { name: "legal_document_generate", description: "Real AI-drafted legal document (NDA/DPA/MSA/SOW/offer/vendor) via legalDocumentEngine.cjs", handler: _legalDocumentGenerate },
+    { name: "daily_task_create",   description: "Real personal task with due date/priority via dailyPlanningEngine.cjs", handler: _dailyTaskCreate },
 ];
 
 let _registered = false;
@@ -1186,6 +1206,7 @@ function _category(name) {
     if (name.startsWith("docker_"))                            return "docker";
     if (name === "dependency_scan")                            return "devops";
     if (name === "legal_document_generate")                    return "legal";
+    if (name === "daily_task_create")                          return "planning";
     return "general";
 }
 

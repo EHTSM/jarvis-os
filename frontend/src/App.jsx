@@ -68,6 +68,7 @@ const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCent
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
 const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
 const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
+const DailyPlanningConsole     = lazy(() => import("./components/DailyPlanningConsole.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
 // Production Completion Week: RuntimeObserverPanel is a real, working
 // dashboard (polls /runtime/observer/status|events|statistics|sources|health
@@ -214,6 +215,7 @@ const MORE_TABS = [
   { id: "selfimprove",label:"Self-Improve",        group: "Intelligence" },
   { id: "jarvisbrain",label:"Jarvis Brain",        group: "Intelligence" },
   { id: "twin",       label: "Digital Twin",       group: "Intelligence" },
+  { id: "planning",   label: "Daily Planning",     group: "Intelligence" },
   // ── Engineering
   { id: "engineering",label: "Engineering",        group: "Engineering"  },
   { id: "workspace",  label: "Eng Workspace",      group: "Engineering"  },
@@ -1370,6 +1372,7 @@ function AppInner() {
         {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
         {tab === "twin"          && <FounderTwinConsole                          />}
         {tab === "customersuccess" && <CustomerSuccessCenter                     />}
+        {tab === "planning"      && <DailyPlanningConsole                        />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "observer"      && <RuntimeObserverPanel />}
         {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}
