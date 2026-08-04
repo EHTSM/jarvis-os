@@ -607,13 +607,114 @@ function EvolveView() {
     );
 }
 
+// ── Unified Index view (cross-product memory index: agents/runtime/unifiedMemoryEngine.cjs) ──
+
+const NS_COLORS = {
+    project: "#60a5fa", workflow: "#94a3b8", incident: "#ef4444",
+    decision: "#a78bfa", knowledge: "#10b981",
+};
+
+function IndexView() {
+    const [summary, setSummary] = useState(null);
+    const [query,   setQuery]   = useState("");
+    const [results, setResults] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [rebuilding, setRebuilding] = useState(false);
+
+    const loadSummary = useCallback(() => {
+        API("GET", "/memory-index/summary").then(r => r.namespaces && setSummary(r));
+    }, []);
+
+    useEffect(() => { loadSummary(); }, [loadSummary]);
+
+    const search = async () => {
+        if (!query.trim()) return;
+        setLoading(true);
+        try {
+            const r = await API("GET", `/memory-index/search?q=${encodeURIComponent(query)}&limit=20`);
+            setResults(r.results || []);
+        } catch { setResults([]); }
+        setLoading(false);
+    };
+
+    const rebuild = async () => {
+        setRebuilding(true);
+        try { await API("POST", "/memory-index/rebuild"); loadSummary(); }
+        finally { setRebuilding(false); }
+    };
+
+    return (
+        <div className="emp-sim">
+            {summary && (
+                <div className="emp-stats-row">
+                    {Object.entries(summary.namespaces || {}).map(([ns, count]) => (
+                        <div key={ns} className="emp-stat">
+                            <div className="emp-stat-val" style={{ color: NS_COLORS[ns] || "#6b7280" }}>{count}</div>
+                            <div className="emp-stat-key">{ns}</div>
+                        </div>
+                    ))}
+                    <div className="emp-stat">
+                        <div className="emp-stat-val">{summary.totalIndexed ?? 0}</div>
+                        <div className="emp-stat-key">Total Indexed</div>
+                    </div>
+                    <div className="emp-stat">
+                        <div className="emp-stat-val" style={{ fontSize: 11 }}>{summary.indexAge}</div>
+                        <div className="emp-stat-key">Index Age</div>
+                    </div>
+                </div>
+            )}
+            <div className="emp-sim-toolbar">
+                <div className="emp-sim-search-row">
+                    <input className="emp-sim-input"
+                        placeholder="Search across blueprints, incidents, RCAs, pipeline runs, decisions…"
+                        value={query}
+                        onChange={e => setQuery(e.target.value)}
+                        onKeyDown={e => e.key === "Enter" && search()} />
+                    <button className="emp-search-btn" onClick={search} disabled={loading || !query.trim()}>
+                        {loading ? "…" : "Search"}
+                    </button>
+                    <button className="emp-search-btn" onClick={rebuild} disabled={rebuilding}>
+                        {rebuilding ? "Rebuilding…" : "Rebuild Index"}
+                    </button>
+                </div>
+            </div>
+            <div className="emp-sim-results">
+                {results === null && !loading && (
+                    <div className="emp-empty">Search the unified cross-product memory index</div>
+                )}
+                {results && results.length === 0 && !loading && (
+                    <div className="emp-empty">No matches found</div>
+                )}
+                {(results || []).map((item, i) => (
+                    <div key={i} className="emp-result-card">
+                        <div className="emp-result-head">
+                            <span className="emp-result-type" style={{ color: NS_COLORS[item.ns] || "#6b7280" }}>
+                                {item.ns} · {item.type}
+                            </span>
+                        </div>
+                        <div className="emp-result-body">
+                            {item.title && <div className="emp-result-title">{item.title}</div>}
+                            {item.summary && <div className="emp-result-detail">{item.summary}</div>}
+                            <div className="emp-result-meta">
+                                {item.blueprintId && <span>blueprint: {item.blueprintId}</span>}
+                                {item.ts && <span>{timeAgo(item.ts)}</span>}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 // ── Main panel ────────────────────────────────────────────────────────────────
 
-const VIEWS = ["timeline", "lessons", "similarity", "predictions", "growth", "evolve", "benchmark"];
+const VIEWS = ["timeline", "lessons", "similarity", "predictions", "growth", "evolve", "benchmark", "index"];
 
 const VIEW_LABELS = {
     timeline: "Timeline", lessons: "Lessons", similarity: "Similarity",
     predictions: "Predictions", growth: "Growth", evolve: "Evolve", benchmark: "Benchmark",
+    index: "Unified Index",
 };
 
 export default function EngineeringMemoryPanel() {
@@ -650,6 +751,7 @@ export default function EngineeringMemoryPanel() {
                 {view === "growth"      && <KnowledgeGrowthView />}
                 {view === "evolve"      && <EvolveView />}
                 {view === "benchmark"   && <BenchmarkView />}
+                {view === "index"       && <IndexView />}
             </div>
         </div>
     );
