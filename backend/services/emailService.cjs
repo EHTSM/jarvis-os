@@ -89,12 +89,20 @@ function _get(url, headers = {}) {
 const FROM = () => _env("SMTP_FROM") || _env("EMAIL_FROM") || "noreply@ooplix.com";
 const APP  = () => _env("PRODUCT_NAME") || "Ooplix";
 const URL  = () => _env("BASE_URL") || "https://app.ooplix.com";
+// Real brand accent (frontend/src/index.css --accent, assets/brand/brandRegistry.cjs) —
+// email templates previously hardcoded an unrelated #6366f1 button color found during
+// the Universal Brand System Certification; now reuses the one real accent value.
+const ACCENT = () => "#7c6fff";
+// Hosted mark — same PNG served as the site's apple-touch-icon, generated from the
+// real OoplixMark.jsx geometry. Email clients strip <svg>/data: URIs from most inboxes,
+// so this reuses the raster output rather than adding a third logo format.
+const LOGO_HEADER = () => `<img src="https://ooplix.com/apple-touch-icon.png" width="40" height="40" alt="${APP()}" style="display:block;border-radius:8px;margin-bottom:16px" />`;
 
 const TEMPLATES = {
   welcome(name) {
     return {
       subject: `Welcome to ${APP()}!`,
-      html: `<h2>Welcome, ${name || "there"}!</h2>
+      html: `${LOGO_HEADER()}<h2>Welcome, ${name || "there"}!</h2>
 <p>Your ${APP()} account is ready. <a href="${URL()}">Log in now</a> to get started.</p>
 <p>If you have questions, reply to this email — we read every one.</p>
 <p>— The ${APP()} Team</p>`,
@@ -104,7 +112,7 @@ const TEMPLATES = {
   otp(otp, expMin = 10) {
     return {
       subject: `Your ${APP()} verification code: ${otp}`,
-      html: `<h2>Your one-time code</h2>
+      html: `${LOGO_HEADER()}<h2>Your one-time code</h2>
 <p style="font-size:32px;font-weight:bold;letter-spacing:6px">${otp}</p>
 <p>Expires in <strong>${expMin} minutes</strong>. Do not share this code.</p>`,
       text: `Your ${APP()} verification code: ${otp}\nExpires in ${expMin} minutes. Do not share.`,
@@ -113,8 +121,8 @@ const TEMPLATES = {
   password_reset(link) {
     return {
       subject: `Reset your ${APP()} password`,
-      html: `<h2>Password reset request</h2>
-<p><a href="${link}" style="background:#6366f1;color:#fff;padding:10px 20px;border-radius:5px;text-decoration:none">Reset Password</a></p>
+      html: `${LOGO_HEADER()}<h2>Password reset request</h2>
+<p><a href="${link}" style="background:${ACCENT()};color:#fff;padding:10px 20px;border-radius:5px;text-decoration:none">Reset Password</a></p>
 <p>Link expires in 1 hour. If you didn't request this, ignore this email.</p>`,
       text: `Reset your ${APP()} password:\n${link}\n\nLink expires in 1 hour.`,
     };
