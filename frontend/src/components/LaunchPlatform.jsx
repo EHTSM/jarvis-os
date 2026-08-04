@@ -296,15 +296,38 @@ function AcademyPanel() {
   const [badges, setBadges]     = useState([]);
   const [progress, setProgress] = useState(null);
   const [view, setView]         = useState("paths");
+  const [genTopic, setGenTopic] = useState("");
+  const [genLevel, setGenLevel] = useState("beginner");
+  const [generating, setGenerating] = useState(false);
+  const [genError, setGenError] = useState(null);
+
+  const loadPaths = useCallback(() => {
+    api("/launch/academy/paths").then(r => { if (r.ok) { setPaths(r.paths || []); setBadges(r.badges || []); } });
+  }, []);
 
   useEffect(() => {
-    api("/launch/academy/paths").then(r => { if (r.ok) { setPaths(r.paths || []); setBadges(r.badges || []); } });
+    loadPaths();
     api("/launch/academy/progress").then(r => r.ok && setProgress(r.progress));
-  }, []);
+  }, [loadPaths]);
 
   const enroll = async (pathId) => {
     await post(`/launch/academy/enroll/${pathId}`, {});
     api("/launch/academy/progress").then(r => r.ok && setProgress(r.progress));
+  };
+
+  const generatePath = async (e) => {
+    e.preventDefault();
+    if (!genTopic.trim()) return;
+    setGenerating(true);
+    setGenError(null);
+    try {
+      const r = await post("/launch/academy/paths/generate", { topic: genTopic.trim(), level: genLevel });
+      if (!r.ok) { setGenError(r.error || "Generation failed"); return; }
+      setGenTopic("");
+      loadPaths();
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const getPathProg = (pathId) => (progress?.paths || []).find(p => p.pathId === pathId);
@@ -320,6 +343,24 @@ function AcademyPanel() {
       </div>
 
       {view === "paths" && (
+        <>
+          <form onSubmit={generatePath} style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+            <input
+              placeholder="Generate a custom path — e.g. 'Kubernetes basics'"
+              value={genTopic}
+              onChange={e => setGenTopic(e.target.value)}
+              style={{ flex: 1, minWidth: 220 }}
+            />
+            <select value={genLevel} onChange={e => setGenLevel(e.target.value)}>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            <button className="btn-primary" type="submit" disabled={generating || !genTopic.trim()}>
+              {generating ? "Generating…" : "Generate Path"}
+            </button>
+          </form>
+          {genError && <div style={{ color: "#f55b5b", fontSize: 12, marginBottom: 12 }}>⚠ {genError}</div>}
         <div className="path-list">
           {paths.map(p => {
             const prog = getPathProg(p.id);
@@ -346,6 +387,7 @@ function AcademyPanel() {
             );
           })}
         </div>
+        </>
       )}
 
       {view === "badges" && (
