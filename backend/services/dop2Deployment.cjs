@@ -1070,4 +1070,11 @@ module.exports = {
   VALID_PHASES,
   phaseVPSConnection, phaseDependencies, phaseRepository, phaseEnvironment,
   phaseNginx, phaseSSL, phasePM2, phaseHealthVerification, phaseSmokeTest,
+  // Exported for deploymentCoordinator.cjs's real deploy-execution stage
+  // (FINAL-JARVIS-DREAM-CERTIFICATION.md P1 Deployment finding) — this is
+  // the same real VPS_HOST/SSH_HOST/DEPLOY_HOST-gated `ssh` execution this
+  // file already uses for every read-only readiness check; reused as-is
+  // rather than reimplemented, per this file's own "no duplicate DevOps
+  // runtime" rule (also stated in deploymentCoordinator.cjs's header).
+  sshExec: _ssh,
 };
