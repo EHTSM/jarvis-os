@@ -938,6 +938,9 @@ function AudiencePanel() {
   const [dynFilter, setDynFilter] = useState({ field: "source", op: "equals", value: "" });
   const [view,  setView] = useState("list");
   const [toast, Toast]   = useToast();
+  const [importTarget, setImportTarget] = useState(null);
+  const [importCsv, setImportCsv] = useState("");
+  const [importing, setImporting] = useState(false);
 
   const create = async () => {
     if (!form.name) return;
@@ -966,6 +969,22 @@ function AudiencePanel() {
     await post(`/growth/audiences/${id}/evaluate`, {});
     toast("Dynamic audience refreshed");
     reload();
+  };
+
+  const importContacts = async () => {
+    if (!importTarget || !importCsv.trim()) return;
+    setImporting(true);
+    try {
+      const r = await post(`/growth/audiences/${importTarget}/import`, { csv: importCsv });
+      if (r?.error) { toast(r.error); }
+      else {
+        toast(`Imported ${r.imported} · ${r.duplicates} duplicates · ${r.failed} failed`);
+        setImportTarget(null);
+        setImportCsv("");
+        reload();
+      }
+    } catch (e) { toast(e.message || "Import failed"); }
+    finally { setImporting(false); }
   };
 
   const createTag = async () => {
@@ -1020,9 +1039,32 @@ function AudiencePanel() {
                 <span className="gos-campaign-sent">{(a.memberCount || 0).toLocaleString()} members</span>
                 {a.syncFromCRM && <button className="gos-btn-sm" onClick={() => syncCRM(a.id)}>Sync CRM</button>}
                 {a.type === "dynamic" && <button className="gos-btn-sm" onClick={() => evaluate(a.id)}>Refresh</button>}
+                {a.type !== "dynamic" && (
+                  <button className="gos-btn-sm" onClick={() => { setImportTarget(a.id); setImportCsv(""); }}>Import CSV</button>
+                )}
               </div>
             ))}
           </div>
+
+          {importTarget && (
+            <div className="gos-form" style={{ marginTop: 12 }}>
+              <div className="gos-form-title">Import contacts into "{list.find(a => a.id === importTarget)?.name || importTarget}"</div>
+              <textarea
+                className="gos-input"
+                style={{ width: "100%", minHeight: 100, fontFamily: "monospace", fontSize: 12 }}
+                placeholder={"phone,name\n+15551234567,Jane Doe\n+15559876543,John Smith"}
+                value={importCsv}
+                onChange={e => setImportCsv(e.target.value)}
+              />
+              <div className="gos-form-row" style={{ marginTop: 8 }}>
+                <button className="gos-btn" onClick={importContacts} disabled={importing || !importCsv.trim()}>
+                  {importing ? "Importing…" : "Import"}
+                </button>
+                <button className="gos-btn-sm" onClick={() => { setImportTarget(null); setImportCsv(""); }}>Cancel</button>
+              </div>
+              <p className="gos-hint">CSV with a "phone" column (required) and optional "name" and other fields. Each row becomes a CRM lead and is added to this audience. Max 5000 rows.</p>
+            </div>
+          )}
         </div>
       )}
 
