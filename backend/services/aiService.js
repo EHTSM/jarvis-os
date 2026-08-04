@@ -196,26 +196,26 @@ async function _withRetry(fn) {
 
 // ── Provider adapters ─────────────────────────────────────────────────────────
 
-async function _groq(messages, model) {
+async function _groq(messages, model, opts = {}) {
     const key = process.env.GROQ_API_KEY;
     if (!key) throw new Error("GROQ_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             GROQ_URL,
-            { model: model || "llama-3.3-70b-versatile", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "llama-3.3-70b-versatile", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.groq }
         );
         return res.data.choices[0].message.content;
     });
 }
 
-async function _openrouter(messages, model) {
+async function _openrouter(messages, model, opts = {}) {
     const key = process.env.OPENROUTER_API_KEY;
     if (!key) throw new Error("OPENROUTER_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             OPENROUTER_URL,
-            { model: model || "anthropic/claude-haiku-4-5", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "anthropic/claude-haiku-4-5", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             {
                 headers: {
                     Authorization:  `Bearer ${key}`,
@@ -230,25 +230,25 @@ async function _openrouter(messages, model) {
     });
 }
 
-async function _openai(messages, model) {
+async function _openai(messages, model, opts = {}) {
     const key = process.env.OPENAI_API_KEY;
     if (!key) throw new Error("OPENAI_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             OPENAI_URL,
-            { model: model || "gpt-4o-mini", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "gpt-4o-mini", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.openai }
         );
         return res.data.choices[0].message.content;
     });
 }
 
-async function _ollama(messages, model) {
+async function _ollama(messages, model, opts = {}) {
     const url = _ollamaUrl();
     await _assertLocalServerUp(url, "Ollama");
     const res = await axios.post(
         url,
-        { model: model || _ollamaModel(), messages, stream: false },
+        { model: model || _ollamaModel(), messages, stream: false, options: { num_predict: opts.maxTokens || 1024 } },
         { timeout: TIMEOUTS.ollama }
     );
     const content = res.data?.message?.content;
@@ -303,7 +303,7 @@ async function _gemini(messages, model, opts = {}) {
 
     const res = await axios.post(
         url,
-        { contents: [{ parts: [{ text: fullPrompt }] }] },
+        { contents: [{ parts: [{ text: fullPrompt }] }], generationConfig: { maxOutputTokens: opts.maxTokens || 1024 } },
         { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.gemini }
     );
     const text = res.data?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -312,13 +312,13 @@ async function _gemini(messages, model, opts = {}) {
 }
 
 // ── DeepSeek adapter (OpenAI-compatible) ─────────────────────────────────────
-async function _deepseek(messages, model) {
+async function _deepseek(messages, model, opts = {}) {
     const key = process.env.DEEPSEEK_API_KEY;
     if (!key) throw new Error("DEEPSEEK_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             DEEPSEEK_URL,
-            { model: model || _deepseekModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _deepseekModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.deepseek }
         );
         return res.data.choices[0].message.content;
@@ -326,13 +326,13 @@ async function _deepseek(messages, model) {
 }
 
 // ── Together AI adapter (OpenAI-compatible) ───────────────────────────────────
-async function _together(messages, model) {
+async function _together(messages, model, opts = {}) {
     const key = process.env.TOGETHER_API_KEY;
     if (!key) throw new Error("TOGETHER_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             TOGETHER_URL,
-            { model: model || _togetherModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _togetherModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.together }
         );
         return res.data.choices[0].message.content;
@@ -340,13 +340,13 @@ async function _together(messages, model) {
 }
 
 // ── Fireworks AI adapter (OpenAI-compatible) ──────────────────────────────────
-async function _fireworks(messages, model) {
+async function _fireworks(messages, model, opts = {}) {
     const key = process.env.FIREWORKS_API_KEY;
     if (!key) throw new Error("FIREWORKS_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             FIREWORKS_URL,
-            { model: model || _fireworksModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _fireworksModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.fireworks }
         );
         return res.data.choices[0].message.content;
@@ -355,7 +355,7 @@ async function _fireworks(messages, model) {
 
 // ── Cohere adapter ─────────────────────────────────────────────────────────────
 // Cohere Chat v1 accepts OpenAI-style message arrays.
-async function _cohere(messages, model) {
+async function _cohere(messages, model, opts = {}) {
     const key = process.env.COHERE_API_KEY;
     if (!key) throw new Error("COHERE_API_KEY not set");
     return _withRetry(async () => {
@@ -369,7 +369,7 @@ async function _cohere(messages, model) {
 
         const res = await axios.post(
             COHERE_URL,
-            { model: model || _cohereModel(), message: lastUser?.message || "", chat_history: chatHistory, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _cohereModel(), message: lastUser?.message || "", chat_history: chatHistory, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", Accept: "application/json" }, timeout: TIMEOUTS.cohere }
         );
         const text = res.data?.text || res.data?.message?.content?.[0]?.text;
@@ -379,13 +379,13 @@ async function _cohere(messages, model) {
 }
 
 // ── NVIDIA NIM adapter (OpenAI-compatible) ────────────────────────────────────
-async function _nvidia(messages, model) {
+async function _nvidia(messages, model, opts = {}) {
     const key = process.env.NVIDIA_API_KEY;
     if (!key) throw new Error("NVIDIA_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             NVIDIA_URL,
-            { model: model || _nvidiaModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _nvidiaModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.nvidia }
         );
         return res.data.choices[0].message.content;
@@ -393,13 +393,13 @@ async function _nvidia(messages, model) {
 }
 
 // ── Grok (x.ai) adapter (OpenAI-compatible) ──────────────────────────────────
-async function _grok(messages, model) {
+async function _grok(messages, model, opts = {}) {
     const key = process.env.GROK_API_KEY;
     if (!key) throw new Error("GROK_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             GROK_URL,
-            { model: model || _grokModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _grokModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.grok }
         );
         return res.data.choices[0].message.content;
@@ -407,13 +407,13 @@ async function _grok(messages, model) {
 }
 
 // ── Qwen (Alibaba DashScope) adapter (OpenAI-compatible) ─────────────────────
-async function _qwen(messages, model) {
+async function _qwen(messages, model, opts = {}) {
     const key = process.env.DASHSCOPE_API_KEY;
     if (!key) throw new Error("DASHSCOPE_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             _qwenUrl(),
-            { model: model || _qwenModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _qwenModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.qwen }
         );
         return res.data.choices[0].message.content;
@@ -421,12 +421,12 @@ async function _qwen(messages, model) {
 }
 
 // ── LM Studio adapter (OpenAI-compatible, local) ─────────────────────────────
-async function _lmstudio(messages, model) {
+async function _lmstudio(messages, model, opts = {}) {
     const url = _lmStudioUrl();
     await _assertLocalServerUp(url, "LM Studio");
     const res = await axios.post(
         url,
-        { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: 1024 },
+        { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
         { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.lmstudio }
     );
     const content = res.data?.choices?.[0]?.message?.content;
@@ -565,20 +565,20 @@ async function callAI(prompt, opts = {}) {
         try {
             let reply;
             switch (provider) {
-                case "groq":       reply = await _groq(messages, model);              break;
-                case "openrouter": reply = await _openrouter(messages, model);        break;
-                case "openai":     reply = await _openai(messages, model);            break;
-                case "ollama":     reply = await _ollama(messages, model);            break;
+                case "groq":       reply = await _groq(messages, model, opts);         break;
+                case "openrouter": reply = await _openrouter(messages, model, opts);   break;
+                case "openai":     reply = await _openai(messages, model, opts);       break;
+                case "ollama":     reply = await _ollama(messages, model, opts);       break;
                 case "claude":     reply = await _claude(messages, model, opts);      break;
                 case "gemini":     reply = await _gemini(messages, model, opts);      break;
-                case "deepseek":   reply = await _deepseek(messages, model);          break;
-                case "together":   reply = await _together(messages, model);          break;
-                case "fireworks":  reply = await _fireworks(messages, model);         break;
-                case "cohere":     reply = await _cohere(messages, model);            break;
-                case "nvidia":     reply = await _nvidia(messages, model);            break;
-                case "lmstudio":   reply = await _lmstudio(messages, model);         break;
-                case "grok":       reply = await _grok(messages, model);             break;
-                case "qwen":       reply = await _qwen(messages, model);             break;
+                case "deepseek":   reply = await _deepseek(messages, model, opts);     break;
+                case "together":   reply = await _together(messages, model, opts);     break;
+                case "fireworks":  reply = await _fireworks(messages, model, opts);    break;
+                case "cohere":     reply = await _cohere(messages, model, opts);       break;
+                case "nvidia":     reply = await _nvidia(messages, model, opts);       break;
+                case "lmstudio":   reply = await _lmstudio(messages, model, opts);    break;
+                case "grok":       reply = await _grok(messages, model, opts);        break;
+                case "qwen":       reply = await _qwen(messages, model, opts);        break;
                 default:
                     logger.warn(`AI: unknown provider "${provider}", skipping`);
                     continue;
@@ -755,20 +755,20 @@ async function chat(messages, opts = {}) {
             let text;
             const allMessages = systemMsg ? [systemMsg, ...rest] : rest;
             switch (p) {
-                case "groq":       text = await _groq(allMessages, model);             break;
-                case "openrouter": text = await _openrouter(allMessages, model);       break;
-                case "openai":     text = await _openai(allMessages, model);           break;
-                case "ollama":     text = await _ollama(allMessages, model);           break;
+                case "groq":       text = await _groq(allMessages, model, adapterOpts);       break;
+                case "openrouter": text = await _openrouter(allMessages, model, adapterOpts); break;
+                case "openai":     text = await _openai(allMessages, model, adapterOpts);     break;
+                case "ollama":     text = await _ollama(allMessages, model, adapterOpts);     break;
                 case "claude":     text = await _claude(allMessages, model, adapterOpts); break;
                 case "gemini":     text = await _gemini(allMessages, model, adapterOpts); break;
-                case "deepseek":   text = await _deepseek(allMessages, model);         break;
-                case "together":   text = await _together(allMessages, model);         break;
-                case "fireworks":  text = await _fireworks(allMessages, model);        break;
-                case "cohere":     text = await _cohere(allMessages, model);           break;
-                case "nvidia":     text = await _nvidia(allMessages, model);           break;
-                case "lmstudio":   text = await _lmstudio(allMessages, model);        break;
-                case "grok":       text = await _grok(allMessages, model);            break;
-                case "qwen":       text = await _qwen(allMessages, model);            break;
+                case "deepseek":   text = await _deepseek(allMessages, model, adapterOpts);   break;
+                case "together":   text = await _together(allMessages, model, adapterOpts);   break;
+                case "fireworks":  text = await _fireworks(allMessages, model, adapterOpts);  break;
+                case "cohere":     text = await _cohere(allMessages, model, adapterOpts);     break;
+                case "nvidia":     text = await _nvidia(allMessages, model, adapterOpts);     break;
+                case "lmstudio":   text = await _lmstudio(allMessages, model, adapterOpts);  break;
+                case "grok":       text = await _grok(allMessages, model, adapterOpts);      break;
+                case "qwen":       text = await _qwen(allMessages, model, adapterOpts);      break;
                 default:
                     continue;
             }
@@ -861,7 +861,7 @@ function getProviderStatus() {
 // Returns a unified shape: { text, toolCalls: [{id,name,arguments}], provider, model }.
 // toolCalls is [] when the model responded with plain text instead of a call.
 
-async function _openaiCompatWithTools(url, key, messages, tools, model, defaultModel, timeout) {
+async function _openaiCompatWithTools(url, key, messages, tools, model, defaultModel, timeout, opts = {}) {
     if (!key) throw new Error("API key not set");
     const res = await axios.post(
         url,
@@ -871,7 +871,7 @@ async function _openaiCompatWithTools(url, key, messages, tools, model, defaultM
             tools: tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.parameters } })),
             tool_choice: "auto",
             temperature: 0.7,
-            max_tokens: 1024,
+            max_tokens: opts.maxTokens || 1024,
         },
         { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout }
     );
@@ -964,10 +964,10 @@ async function chatWithTools(messages, tools = [], opts = {}) {
             let result;
             switch (p) {
                 case "openai":
-                    result = await _openaiCompatWithTools(OPENAI_URL, process.env.OPENAI_API_KEY, messages, tools, model, "gpt-4o-mini", TIMEOUTS.openai);
+                    result = await _openaiCompatWithTools(OPENAI_URL, process.env.OPENAI_API_KEY, messages, tools, model, "gpt-4o-mini", TIMEOUTS.openai, opts);
                     break;
                 case "openrouter":
-                    result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter);
+                    result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter, opts);
                     break;
                 case "claude":
                     result = await _claudeWithTools(messages, tools, model, opts);
@@ -1167,15 +1167,15 @@ async function streamChat(messages, opts = {}, onChunk = () => {}) {
         try {
             let text;
             switch (p) {
-                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "llama-3.3-70b-versatile", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.groq, onChunk); break;
-                case "openrouter": text = await _streamOpenAICompatible(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, { model: model || "anthropic/claude-haiku-4-5", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.openrouter, onChunk); break;
-                case "openai":     text = await _streamOpenAICompatible(OPENAI_URL, process.env.OPENAI_API_KEY, { model: model || "gpt-4o-mini", messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.openai, onChunk); break;
-                case "deepseek":   text = await _streamOpenAICompatible(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, { model: model || _deepseekModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.deepseek, onChunk); break;
-                case "together":   text = await _streamOpenAICompatible(TOGETHER_URL, process.env.TOGETHER_API_KEY, { model: model || _togetherModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.together, onChunk); break;
-                case "fireworks":  text = await _streamOpenAICompatible(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, { model: model || _fireworksModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.fireworks, onChunk); break;
-                case "nvidia":     text = await _streamOpenAICompatible(NVIDIA_URL, process.env.NVIDIA_API_KEY, { model: model || _nvidiaModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.nvidia, onChunk); break;
-                case "grok":       text = await _streamOpenAICompatible(GROK_URL, process.env.GROK_API_KEY, { model: model || _grokModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.grok, onChunk); break;
-                case "qwen":       text = await _streamOpenAICompatible(_qwenUrl(), process.env.DASHSCOPE_API_KEY, { model: model || _qwenModel(), messages: allMessages, temperature: 0.7, max_tokens: 1024 }, TIMEOUTS.qwen, onChunk); break;
+                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "llama-3.3-70b-versatile", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.groq, onChunk); break;
+                case "openrouter": text = await _streamOpenAICompatible(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, { model: model || "anthropic/claude-haiku-4-5", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openrouter, onChunk); break;
+                case "openai":     text = await _streamOpenAICompatible(OPENAI_URL, process.env.OPENAI_API_KEY, { model: model || "gpt-4o-mini", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openai, onChunk); break;
+                case "deepseek":   text = await _streamOpenAICompatible(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, { model: model || _deepseekModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.deepseek, onChunk); break;
+                case "together":   text = await _streamOpenAICompatible(TOGETHER_URL, process.env.TOGETHER_API_KEY, { model: model || _togetherModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.together, onChunk); break;
+                case "fireworks":  text = await _streamOpenAICompatible(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, { model: model || _fireworksModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.fireworks, onChunk); break;
+                case "nvidia":     text = await _streamOpenAICompatible(NVIDIA_URL, process.env.NVIDIA_API_KEY, { model: model || _nvidiaModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.nvidia, onChunk); break;
+                case "grok":       text = await _streamOpenAICompatible(GROK_URL, process.env.GROK_API_KEY, { model: model || _grokModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.grok, onChunk); break;
+                case "qwen":       text = await _streamOpenAICompatible(_qwenUrl(), process.env.DASHSCOPE_API_KEY, { model: model || _qwenModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.qwen, onChunk); break;
                 case "claude":     text = await _streamClaude(allMessages, model, opts, onChunk); break;
                 case "gemini":     text = await _streamGemini(allMessages, model, opts, onChunk); break;
                 case "ollama":     text = await _streamOllama(allMessages, model, onChunk); break;
