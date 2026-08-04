@@ -113,19 +113,31 @@ function _loadOrch() {
     return _orcState;
 }
 
+// Same dropped-write bug found and fixed in engineeringPipelineCoordinator.cjs's
+// _persist() (FINAL-JARVIS-DREAM-CERTIFICATION.md P1 Software Engineering
+// verification): _orcDirty was set on every call but never actually
+// re-checked to trigger a follow-up write, so a _saveOrch() call arriving
+// while a previous write was in flight was silently dropped instead of
+// queued — the LAST call in a fast sequence (e.g. a mission's final
+// terminal-status transition, called right after several per-stage saves)
+// could lose its write entirely.
 function _saveOrch() {
     _orcDirty = true;
     if (_orcWriting) return;
     _orcWriting = true;
-    setImmediate(() => {
+    const _flush = () => {
+        _orcDirty = false;
         const data  = JSON.stringify({ records: [..._live.values()], savedAt: new Date().toISOString() }, null, 2);
         const tmp   = ORCH_FILE + ".tmp";
         fs.writeFile(tmp, data, "utf8", err => {
-            _orcWriting = false;
-            if (!err) fs.rename(tmp, ORCH_FILE, () => { _orcDirty = false; });
-            else logger.warn(`[Orchestrator] save error: ${err.message}`);
+            if (err) logger.warn(`[Orchestrator] save error: ${err.message}`);
+            fs.rename(tmp, ORCH_FILE, () => {
+                if (_orcDirty) { setImmediate(_flush); }  // state changed again mid-write — flush the latest, don't drop it
+                else { _orcWriting = false; }
+            });
         });
-    });
+    };
+    setImmediate(_flush);
 }
 
 // ── Statistics counters ────────────────────────────────────────────────────

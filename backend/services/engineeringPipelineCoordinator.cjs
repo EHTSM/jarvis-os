@@ -114,6 +114,7 @@ const PIPE_FILE = path.join(DATA_DIR, "engineering-pipelines.json");
 
 let _store   = null;
 let _writing = false;
+let _dirty   = false;
 
 function _load() {
     if (_store) return _store;
@@ -123,17 +124,34 @@ function _load() {
     return _store;
 }
 
+// Real bug found while live-verifying the Software Engineering pipeline
+// (FINAL-JARVIS-DREAM-CERTIFICATION.md P1): _persist() previously dropped
+// any call that arrived while a write was already in flight — no queuing,
+// just `if (_writing) return`. runPipeline() calls _persist() multiple
+// times in quick succession (once per stage, plus once more on the
+// terminal status transition), so the FINAL, most important call — the
+// one recording "completed"/"failed" — could be silently dropped if an
+// earlier per-stage write was still in flight, leaving the persisted file
+// permanently stuck showing the second-to-last state. Confirmed live:
+// data/engineering-pipelines.json showed status:"running" on a pipeline
+// whose in-memory result (and console/log output) had already reached
+// status:"failed" — the write that would have recorded that never landed.
 function _persist() {
+    _dirty = true;
     if (_writing) return;
     _writing = true;
-    setImmediate(() => {
+    const _flush = () => {
+        _dirty = false;
         const tmp = PIPE_FILE + ".tmp";
         fs.writeFile(tmp, JSON.stringify({ ..._store, savedAt: new Date().toISOString() }, null, 2), "utf8", err => {
-            _writing = false;
-            if (!err) fs.rename(tmp, PIPE_FILE, () => {});
-            else logger.warn(`[PipelineCoord] save error: ${err.message}`);
+            if (err) logger.warn(`[PipelineCoord] save error: ${err.message}`);
+            fs.rename(tmp, PIPE_FILE, () => {
+                if (_dirty) { setImmediate(_flush); }  // state changed again mid-write — flush the latest, don't drop it
+                else { _writing = false; }
+            });
         });
-    });
+    };
+    setImmediate(_flush);
 }
 
 // ── ID helpers ─────────────────────────────────────────────────────────────────
