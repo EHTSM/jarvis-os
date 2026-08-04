@@ -236,23 +236,43 @@ async function triggerFulfillment(phone, name) {
         return;
     }
 
-    const wa = _wa();
-    logger.info(`[Automation] Fulfillment for ${phone}`);
-
-    await wa.sendMessage(
-        phone,
-        `Payment confirmed! Welcome${name ? " " + name : ""}!\n\n` +
-        `JARVIS AI is now ACTIVE.\n\n` +
-        `I'll automatically follow up with every lead you add, send payment links, and help close clients.\n\n` +
-        `Reply with anything to get started.`
-    );
-
-    _crm().updateLead(phone, {
+    // Claim onboardingDone BEFORE the slow WhatsApp send, not after. Razorpay
+    // retries webhook delivery on any non-2xx/timeout response, so duplicate
+    // payment.captured events for the same phone are a real production
+    // scenario — the old code checked onboardingDone, then awaited the send,
+    // then marked onboardingDone true, leaving a TOCTOU gap where N
+    // concurrent duplicate deliveries could all pass the check before any of
+    // them finished the await (verified: 10 concurrent duplicate webhooks
+    // all sent the WhatsApp welcome message). crmService.updateLead() is
+    // fully synchronous (no await inside), so claiming here is atomic per
+    // call under Node's single-threaded event loop — same reasoning as
+    // creditEngine.reserve() from the credit-race fix.
+    crm.updateLead(phone, {
         status:         "onboarded",
         onboardingDone: true,
         paymentStatus:  "paid",
         onboardedAt:    new Date().toISOString()
     });
+
+    const wa = _wa();
+    logger.info(`[Automation] Fulfillment for ${phone}`);
+
+    try {
+        await wa.sendMessage(
+            phone,
+            `Payment confirmed! Welcome${name ? " " + name : ""}!\n\n` +
+            `JARVIS AI is now ACTIVE.\n\n` +
+            `I'll automatically follow up with every lead you add, send payment links, and help close clients.\n\n` +
+            `Reply with anything to get started.`
+        );
+    } catch (err) {
+        // The send failed — release the claim so a genuine retry (not a
+        // duplicate webhook, but e.g. an operator re-running fulfillment)
+        // can still send the welcome message instead of being silently
+        // skipped forever because onboardingDone was already set.
+        crm.updateLead(phone, { onboardingDone: false });
+        throw err;
+    }
 }
 
 /**
