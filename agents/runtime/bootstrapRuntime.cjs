@@ -446,6 +446,51 @@ try {
     logger.warn("[Bootstrap] content_image_processor agent skipped:", err.message);
 }
 
+// ── Business: affiliate/partner center — real, already live at
+// /revenue/affiliates/* (backend/routes/revenueOS.js) with genuine
+// persisted state (data/revenue-os.json's affiliates/commissions).
+// Agent Civilization Discovery found executor.cjs's "affiliate" and
+// "commissionOptimizer" handler keys routed to agentExecutorMod.run(
+// "affiliateAgent"/"commissionOptimizer", task) — names never registered
+// anywhere, silently unreachable via the runtime dispatch path even
+// though the underlying capability is real and already shipped via REST.
+// This registration closes that gap without touching the route (task-
+// type adapter over the same exported functions the route already
+// calls), so a caller going through agentRegistry.findForCapability()
+// reaches the identical state as a caller hitting the REST endpoint.
+try {
+    const revenueOS = require("../../backend/services/revenueOS.cjs");
+    orchestrator.registerAgent({
+        id: "business_affiliate",
+        capabilities: ["affiliate_management"],
+        maxConcurrent: 3,
+        // Task-type strings match agents/automation/toolSelector.cjs's
+        // TOOL_MAP entries that route to the "affiliate" tool
+        // (add_affiliate, record_referral, affiliate_payout,
+        // list_affiliates, affiliate_stats) — the actual task.type values
+        // a real caller sends, confirmed by reading toolSelector.cjs.
+        handler: async (task) => {
+            const p = task.payload || {};
+            switch (task.type) {
+                case "add_affiliate":
+                    return { success: true, result: revenueOS.createAffiliate(p) };
+                case "record_referral":
+                    return { success: true, result: revenueOS.recordAffiliateConversion(p.affiliateId, p) };
+                case "affiliate_payout":
+                    return { success: true, result: revenueOS.processAffiliatePayout(p.affiliateId) };
+                case "affiliate_stats":
+                    return { success: true, result: revenueOS.getAffiliateAnalytics() };
+                case "list_affiliates":
+                default:
+                    return { success: true, result: revenueOS.listAffiliates(p.tier, p.status) };
+            }
+        },
+    });
+    logger.info("[Bootstrap] business_affiliate agent registered");
+} catch (err) {
+    logger.warn("[Bootstrap] business_affiliate agent skipped:", err.message);
+}
+
 // ── System health — real os-module metrics, no run(task) contract in the
 // source file, so a small task-type adapter is used (same pattern as the
 // filesystem agent above) ───────────────────────────────────────────────

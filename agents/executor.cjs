@@ -313,7 +313,12 @@ function _buildHandlers() {
         orderAutomation:         async (task) => agentExecutorMod.run("orderAutomationAgent",    task),
         supplierFinder:          async (task) => agentExecutorMod.run("supplierFinderAgent",     task),
         dropshipping:            async (task) => agentExecutorMod.run("dropshippingAgent",       task),
-        affiliate:               async (task) => agentExecutorMod.run("affiliateAgent",          task),
+        // Agent Civilization Unification (module 6): was routed to
+        // agentExecutorMod.run("affiliateAgent", task) — a name never
+        // registered anywhere. The real capability exists and is already
+        // live at /revenue/affiliates/* (backend/services/revenueOS.cjs) —
+        // registered as "business_affiliate" in bootstrapRuntime.cjs.
+        affiliate:               async (task) => agentExecutorMod.run("business_affiliate",       task),
         commissionOptimizer:     async (task) => agentExecutorMod.run("commissionOptimizer",     task),
         profitForecast:          async (task) => agentExecutorMod.run("profitForecastAgent",     task),
 
