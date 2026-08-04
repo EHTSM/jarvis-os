@@ -51,11 +51,32 @@ function _shadowDelete(id) {
 // ──────────────────────────────────────────────────────────────────────────
 
 
+// Read-through cache keyed on the file's mtime — _load() is called from 10
+// sites in this file plus getAll()/getQueue() are called directly from
+// dozens of read-only sites across the runtime (missionOrchestrator's
+// 3-second stage-monitor poll loop chief among them: every actively-
+// monitored mission stage re-reads and re-parses the entire queue file on
+// every single poll tick). mtime is updated by every _save() call (via
+// renameSync, which always produces a fresh mtime) regardless of which
+// process wrote it, so a stale cached read across processes is not
+// possible — any real write anywhere invalidates it. Same pattern already
+// verified correct in missionMemory.cjs's _loadMissions().
+let _queueCache = null; // { mtimeMs, tasks }
+
 function _load() {
+    let mtimeMs;
+    try { mtimeMs = fs.statSync(QUEUE_FILE).mtimeMs; }
+    catch { mtimeMs = null; } // file doesn't exist yet — fall through to the reset path below
+
+    if (mtimeMs !== null && _queueCache && _queueCache.mtimeMs === mtimeMs) {
+        return _queueCache.tasks;
+    }
+
     try {
         const raw = fs.readFileSync(QUEUE_FILE, "utf8");
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return [];
+        if (mtimeMs !== null) _queueCache = { mtimeMs, tasks: parsed };
         return parsed;
     } catch (err) {
         // Corrupt file mid-session — back up and reset so the queue stays alive
