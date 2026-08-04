@@ -26,6 +26,15 @@ const _nl   = () => _try(() => require("./nlBrowser.cjs"));
 const _cap  = () => _try(() => require("./visualCaptureService.cjs"));
 const _hitl = () => _try(() => require("./humanInTheLoop.cjs"));
 const _le   = () => _try(() => require("./continuousLearningEngine.cjs"));
+// Real Playwright session (agents/browser/browserSession.cjs) — the same
+// service visualCaptureService.cjs already drives for real screenshot
+// capture (confirmed live in the Universal Brand/JARVIS Dream audits).
+// openTab/closeTab/inspectPage below previously only wrote JSON bookkeeping
+// records with a fabricated tabId and never opened a real browser — this
+// wires the existing real session manager in instead of building a second,
+// parallel browser runtime.
+const _session = () => _try(() => require("../../agents/browser/browserSession.cjs"));
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `bc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`; }
@@ -58,10 +67,32 @@ function selectBrowser(preferredBrowser = null) {
 
 // ── openTab ───────────────────────────────────────────────────────────────────
 
-function openTab({ url, browser = null, profileId = null } = {}) {
+async function openTab({ url, browser = null, profileId = null } = {}) {
   if (!url) return { ok: false, error: "url required" };
+
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
+
+  const session = _session();
+  if (!session) return { ok: false, error: "browserSession (Playwright) unavailable" };
+
+  if (!session.isRunning()) {
+    const launched = await session.launch({ headless: true });
+    if (!launched.ok) return { ok: false, error: `Browser launch failed: ${launched.error}` };
+  }
+
+  const page = await session.newPage();
+  if (!page.ok) return { ok: false, error: page.error };
+
+  try {
+    await page.page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 });
+  } catch (e) {
+    await session.closePage(page.pageId).catch(() => {});
+    return { ok: false, error: `Navigation failed: ${e.message}` };
+  }
+
   const d = _load();
-  const tabId = _id();
+  const tabId = page.pageId;   // real Playwright pageId, not a fabricated id
   const browserResult = selectBrowser(browser);
 
   const tab = {
@@ -73,7 +104,7 @@ function openTab({ url, browser = null, profileId = null } = {}) {
     status:     "open",
     openedAt:   _ts(),
     closedAt:   null,
-    title:      null,
+    title:      await page.page.title().catch(() => ""),
   };
 
   // Register with browserSessionManager
@@ -88,15 +119,19 @@ function openTab({ url, browser = null, profileId = null } = {}) {
   if (d.history.length > 200) d.history = d.history.slice(-200);
   _save(d);
 
-  return { ok: true, tabId, url, browser: tab.browserName };
+  return { ok: true, tabId, url, browser: tab.browserName, title: tab.title };
 }
 
 // ── closeTab ──────────────────────────────────────────────────────────────────
 
-function closeTab(tabId) {
+async function closeTab(tabId) {
   const d = _load();
   const tab = d.sessions[tabId];
   if (!tab) return { ok: false, error: "tab not found" };
+
+  const session = _session();
+  if (session) await session.closePage(tabId).catch(() => {});
+
   tab.status   = "closed";
   tab.closedAt = _ts();
   d.stats.closedTabs++;
@@ -128,13 +163,38 @@ function listTabs({ status } = {}) {
 
 // ── inspectPage (NL-powered page understanding) ───────────────────────────────
 
-function inspectPage(tabId, query = "") {
+async function inspectPage(tabId, query = "") {
   const d = _load();
   const tab = d.sessions[tabId];
   if (!tab) return { ok: false, error: "tab not found" };
-  d.history.push({ event: "inspect_page", tabId, query, ts: _ts() });
+
+  const session = _session();
+  const page    = session?.getPage?.(tabId);
+  if (!page) {
+    d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: false });
+    _save(d);
+    return { ok: false, tabId, url: tab.url, query, error: "no active Playwright page for this tab (closed or session restarted)" };
+  }
+
+  let title, url, text;
+  try {
+    title = await page.title();
+    url   = page.url();
+    // Visible-text snapshot — a real (if simple) answer to "what's on this
+    // page," matching the query-in/summary-out contract this function
+    // already advertised. For selector-targeted element inspection, use
+    // liveDesignInspector.cjs's inspectElement({pageId, selector}), which
+    // already exists for that narrower, real use case — not duplicated here.
+    text = await page.evaluate(() => document.body?.innerText?.slice(0, 2000) || "");
+  } catch (e) {
+    d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: false });
+    _save(d);
+    return { ok: false, tabId, error: `inspection failed: ${e.message}` };
+  }
+
+  d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: true });
   _save(d);
-  return { ok: true, tabId, url: tab.url, query, note: "Page inspection requires active Playwright session" };
+  return { ok: true, tabId, url, title, query, text };
 }
 
 // ── captureScreenshot ────────────────────────────────────────────────────────
@@ -146,7 +206,14 @@ async function captureScreenshot(tabId, opts = {}) {
   d.stats.screenshots++;
   _save(d);
   try {
-    const result = await cap.captureViewport?.(opts) || await cap.captureDesktop?.(opts);
+    // Screenshot the ALREADY-OPEN, tracked tab (captureFromPage reuses the
+    // real page by pageId) instead of always spawning an unrelated new one
+    // via captureViewport, which previously happened regardless of tabId.
+    const result = tabId
+      ? await cap.captureFromPage?.({ pageId: tabId, ...opts })
+      : (await cap.captureViewport?.(opts) || await cap.captureDesktop?.(opts));
+    if (!result) return { ok: false, tabId, error: "capture unavailable" };
+    if (result.ok === false) return { ok: false, tabId, error: result.error };
     return { ok: true, tabId, ...result };
   } catch (e) {
     return { ok: false, error: e.message };

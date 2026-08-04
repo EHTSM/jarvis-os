@@ -102,11 +102,15 @@ router.post("/computer/desktop/screenshot", requireAuth, async (req, res) => {
 
 router.get("/computer/browser/tabs",        requireAuth, (req, res) => res.json({ ok: true, tabs: _bc()?.listTabs?.(req.query) || [] }));
 router.get("/computer/browser/stats",       requireAuth, (req, res) => res.json({ ok: true, stats: _bc()?.getStats?.() || {} }));
-router.post("/computer/browser/open",       requireAuth, (req, res) => {
+router.post("/computer/browser/open",       requireAuth, async (req, res) => {
   const { url, browser, profileId } = req.body || {};
-  res.json(_bc()?.openTab?.({ url, browser, profileId }) || { ok: false });
+  try { res.json(await _bc()?.openTab?.({ url, browser, profileId }) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
-router.post("/computer/browser/close/:tabId", requireAuth, (req, res) => res.json(_bc()?.closeTab?.(req.params.tabId) || { ok: false }));
+router.post("/computer/browser/close/:tabId", requireAuth, async (req, res) => {
+  try { res.json(await _bc()?.closeTab?.(req.params.tabId) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
 router.post("/computer/browser/switch/:tabId",requireAuth, (req, res) => res.json(_bc()?.switchTab?.(req.params.tabId) || { ok: false }));
 router.post("/computer/browser/screenshot/:tabId", requireAuth, async (req, res) => {
   try { res.json(await _bc()?.captureScreenshot?.(req.params.tabId, req.body) || { ok: false }); }
