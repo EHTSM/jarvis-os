@@ -100,6 +100,7 @@ router.use("/repo-viz", requireAuth);        // gate all /repo-viz/* routes
 router.use(require("./repositoryViz"));      // /repo-viz/* (ACP-9)
 router.use("/memory", requireAuth);           // gate all /memory/* routes
 router.use(require("./engineeringMemory"));   // /memory/* (ACP-10)
+router.use(require("./unifiedMemoryIndex"));  // /memory-index/* — cross-product memory index (agents/runtime/unifiedMemoryEngine.cjs), previously built but unwired
 router.use("/improvement", requireAuth);       // gate all /improvement/* routes
 router.use(require("./selfImprovement"));      // /improvement/* (ACP-11)
 router.use("/platform", requireAuth);         // gate all /platform/* routes
