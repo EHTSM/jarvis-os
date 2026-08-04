@@ -34,6 +34,12 @@ function _ensureDir() { if (!fs.existsSync(DIR)) fs.mkdirSync(DIR, { recursive: 
 // ── Defaults ──────────────────────────────────────────────────────────────────
 
 const PIPELINE_STAGES = ["prospect", "qualified", "demo", "proposal", "negotiation", "closed_won", "closed_lost"];
+// Business Org Financial Integrity Certification: a deal in either of these
+// stages is terminal — no further stage transition is legitimate. Shared
+// constant so advanceDeal()'s idempotency guard and getPipelineStats()'s
+// won/active/closed filters (previously two separate inline array literals
+// that could silently drift out of sync) read from one source of truth.
+const TERMINAL_STAGES = ["closed_won", "closed_lost"];
 
 function _defaultState() {
   return {
@@ -298,6 +304,23 @@ function advanceDeal(id, { stage, actor, note = "", value } = {}) {
   if (!deal) return { ok: false, error: "Deal not found" };
   if (!PIPELINE_STAGES.includes(stage)) return { ok: false, error: `Invalid stage: ${stage}` };
 
+  // Business Org Financial Integrity Certification: a deal already in a
+  // terminal stage has no legitimate further transition — real call sites
+  // can genuinely race on the same deal (businessOrg.cjs's _salesTick polls
+  // listDeals({stage:"proposal"}) on a fixed interval independently of
+  // businessOrgWorkflow.cjs's event-driven setTimeout chain, which also
+  // advances the same deal through demo->proposal->closed_won off a
+  // "lead:qualified" event — nothing serialized these two paths against
+  // each other). Previously, a second advanceDeal(id,{stage:"closed_won"})
+  // on an already-closed_won deal re-ran every side effect below
+  // (dealsWon++, dealValueWon += value, mrr += value/12) with no bound —
+  // the real, confirmed root cause of the MRR overflow found in the prior
+  // Executive OS Numeric Integrity Certification session. Idempotent no-op
+  // now, not a silent re-application.
+  if (TERMINAL_STAGES.includes(deal.stage)) {
+    return { ok: false, error: `Deal ${id} is already in terminal stage "${deal.stage}" — no further transition allowed`, deal, nonRetriable: true };
+  }
+
   const prev = deal.stage;
   deal.stage     = stage;
   deal.updatedAt = new Date().toISOString();
@@ -340,13 +363,14 @@ function getPipelineStats() {
     if (byStage[d.stage]) { byStage[d.stage].count++; byStage[d.stage].value += d.value; }
   }
   const won    = deals.filter(d => d.stage === "closed_won");
-  const active = deals.filter(d => !["closed_won","closed_lost"].includes(d.stage));
+  const active = deals.filter(d => !TERMINAL_STAGES.includes(d.stage));
+  const closed = deals.filter(d => TERMINAL_STAGES.includes(d.stage));
   return {
     total: deals.length,
     byStage,
     pipelineValue:  active.reduce((s, d) => s + d.value, 0),
     totalWonValue:  won.reduce((s, d) => s + d.value, 0),
-    winRate:        deals.length ? Math.round(won.length / deals.filter(d => ["closed_won","closed_lost"].includes(d.stage)).length * 100) || 0 : 0,
+    winRate:        deals.length && closed.length ? Math.round(won.length / closed.length * 100) : 0,
   };
 }
 
