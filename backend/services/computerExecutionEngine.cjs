@@ -103,7 +103,11 @@ async function _executeTool(tool, command, context = {}) {
       return { ok: true, tool: "editor", note: "Editor command dispatched" };
 
     case "browser":
-      if (/screenshot/i.test(command)) return (_bc()?.captureScreenshot?.(null) || { ok: true, note: "screenshot attempted" });
+      // Trust boundary: a missing module/method (the `||` fallback) is
+      // "not attempted," never "succeeded" — matches every sibling branch
+      // in this function. Previously reported ok:true here even when
+      // browserController was unavailable and nothing was captured.
+      if (/screenshot/i.test(command)) return (_bc()?.captureScreenshot?.(null) || { ok: false, error: "browserController unavailable" });
       if (/navigate|go.*to|open/i.test(command)) {
         const url = command.match(/https?:\/\/\S+/)?.[0];
         if (url) return _bc()?.openTab?.({ url }) || { ok: false };
@@ -111,7 +115,7 @@ async function _executeTool(tool, command, context = {}) {
       return _bc()?.executeWorkflow?.(command, { context }) || { ok: false };
 
     case "desktop":
-      if (/screenshot/i.test(command)) return (_dc()?.captureScreenshot?.() || { ok: true });
+      if (/screenshot/i.test(command)) return (_dc()?.captureScreenshot?.() || { ok: false, error: "desktopController unavailable" });
       if (/launch|open.*app/i.test(command)) {
         const app = command.replace(/launch|open|app/gi, "").trim();
         return _dc()?.launchApp?.(app) || { ok: false };
@@ -138,7 +142,10 @@ async function _deployRelease(run) {
   steps.push({ step: "build", ok: build?.ok !== false });
 
   // 3. Verify environment
-  const health = _tc()?.verify?.("deployment") || { ok: true };
+  // Trust boundary: this feeds directly into the deploy-gate `steps.every()`
+  // check below — an unavailable verify() must not silently pass a
+  // deployment health check. Previously defaulted to {ok:true}.
+  const health = _tc()?.verify?.("deployment") || { ok: false, error: "terminalController.verify unavailable" };
   steps.push({ step: "health_check", ok: health.ok });
 
   // 4. Trigger AEE for actual deploy workflow
