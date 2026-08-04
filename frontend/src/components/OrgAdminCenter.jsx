@@ -565,6 +565,10 @@ function AiWorkspacePanel({ orgId, onToast }) {
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
   const [answer, setAnswer] = useState(null);
+  const [agentId, setAgentId] = useState("");
+  const [agentInput, setAgentInput] = useState("");
+  const [running, setRunning] = useState(false);
+  const [runResult, setRunResult] = useState(null);
 
   const load = useCallback(() => {
     if (!orgId) return;
@@ -593,6 +597,25 @@ function AiWorkspacePanel({ orgId, onToast }) {
       onToast?.("error", e.message);
     } finally {
       setAsking(false);
+    }
+  };
+
+  const runAgent = async () => {
+    if (!agentId || !agentInput.trim()) return;
+    setRunning(true);
+    setRunResult(null);
+    try {
+      const r = await _fetch(`/org-agents/${orgId}/${agentId}/run`, {
+        method: "POST",
+        body: JSON.stringify({ input: agentInput.trim() }),
+      });
+      setRunResult(r);
+      setAgentInput("");
+      load();
+    } catch (e) {
+      onToast?.("error", e.message);
+    } finally {
+      setRunning(false);
     }
   };
 
@@ -635,6 +658,29 @@ function AiWorkspacePanel({ orgId, onToast }) {
               <span key={type} className="oac-badge">{type}: {count}</span>
             ))}
           </div>
+        </div>
+      )}
+
+      {agents.agents?.length > 0 && (
+        <div className="oac-panel" style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", opacity: 0.7, marginBottom: 8 }}>Run an agent</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <select className="oac-select" value={agentId} onChange={e => setAgentId(e.target.value)}>
+              <option value="">Select agent…</option>
+              {agents.agents.map(a => <option key={a.id} value={a.id}>{a.name || a.id}</option>)}
+            </select>
+            <input className="oac-input" style={{ flex: 1 }} placeholder="Task input…"
+              value={agentInput} onChange={e => setAgentInput(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && runAgent()} />
+            <button className="oac-btn primary" onClick={runAgent} disabled={running || !agentId || !agentInput.trim()}>
+              {running ? "Running…" : "Run"}
+            </button>
+          </div>
+          {runResult && (
+            <p style={{ marginTop: 10, fontSize: 13, whiteSpace: "pre-wrap" }}>
+              {runResult.error || runResult.output || runResult.result || JSON.stringify(runResult).slice(0, 300)}
+            </p>
+          )}
         </div>
       )}
 
