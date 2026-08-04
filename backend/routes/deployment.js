@@ -61,6 +61,62 @@ router.post("/deployment/targets/register", (req, res) => {
     } catch (e) { _err(res, e, 400); }
 });
 
+// ── V6 Phase 4: Deployment strategies (blue/green, canary) ──────────────────
+// Real execution via deploymentStrategyExecutor.cjs — separate from and
+// reusing dockerController.cjs's compose primitives (Phase 3), not a fork
+// of _dc()'s linear pre_check→deploy→health_verify pipeline above.
+function _se() { return require("../services/deploymentStrategyExecutor.cjs"); }
+
+router.post("/deployment/strategy/blue-green", async (req, res) => {
+    try {
+        const { composeFile, healthUrl, healthAttempts, healthIntervalMs } = req.body || {};
+        if (!composeFile || !healthUrl) return _err(res, new Error("composeFile and healthUrl required"), 400);
+        _ok(res, await _se().blueGreenDeploy({ composeFile, healthUrl, healthAttempts, healthIntervalMs }));
+    } catch (e) { _err(res, e); }
+});
+
+router.post("/deployment/strategy/canary", async (req, res) => {
+    try {
+        const { composeFile, service, canaryReplicas, totalReplicas, healthUrl, healthAttempts, healthIntervalMs } = req.body || {};
+        if (!composeFile || !service || !totalReplicas) return _err(res, new Error("composeFile, service, and totalReplicas required"), 400);
+        _ok(res, await _se().canaryDeploy({ composeFile, service, canaryReplicas, totalReplicas, healthUrl, healthAttempts, healthIntervalMs }));
+    } catch (e) { _err(res, e); }
+});
+
+router.post("/deployment/strategy/canary/:runId/promote", async (req, res) => {
+    try { _ok(res, await _se().promoteCanary(req.params.runId, req.body || {})); }
+    catch (e) { _err(res, e); }
+});
+
+router.get("/deployment/strategy/environments", (req, res) => {
+    try { _ok(res, { environments: _se().listEnvironments() }); }
+    catch (e) { _err(res, e); }
+});
+
+router.post("/deployment/strategy/environments", (req, res) => {
+    try {
+        const { name, composeFile, healthUrl, description } = req.body || {};
+        _ok(res, _se().registerEnvironment(name, { composeFile, healthUrl, description }));
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.post("/deployment/strategy/environments/:name/blue-green", async (req, res) => {
+    try { _ok(res, await _se().blueGreenDeployToEnvironment(req.params.name, req.body || {})); }
+    catch (e) { _err(res, e); }
+});
+
+router.get("/deployment/strategy/runs", (req, res) => {
+    try {
+        const { limit, type } = req.query;
+        _ok(res, { runs: _se().listRuns({ limit: limit ? +limit : 50, type }) });
+    } catch (e) { _err(res, e); }
+});
+
+router.get("/deployment/strategy/stats", (req, res) => {
+    try { _ok(res, { stats: _se().getStats() }); }
+    catch (e) { _err(res, e); }
+});
+
 // GET /deployment/benchmark/last
 router.get("/deployment/benchmark/last", (req, res) => {
     if (!_lastBenchReport) return res.status(404).json({ ok: false, error: "No benchmark report. POST /deployment/benchmark to run." });

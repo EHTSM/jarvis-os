@@ -79,8 +79,8 @@ router.post("/p25/deploy/canary/:id/promote", async (req, res) => {
     catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
-router.post("/p25/deploy/canary/:id/rollback", (req, res) => {
-    try { res.json({ success: true, ...da.rollback(req.params.id, req.body.reason || "canary-rollback") }); }
+router.post("/p25/deploy/canary/:id/rollback", async (req, res) => {
+    try { res.json({ success: true, ...(await da.rollback(req.params.id, req.body.reason || "canary-rollback")) }); }
     catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
@@ -94,8 +94,8 @@ router.post("/p25/deploy/bluegreen/:id/switch", async (req, res) => {
     catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
-router.post("/p25/deploy/bluegreen/:id/rollback", (req, res) => {
-    try { res.json({ success: true, ...da.rollback(req.params.id, req.body.reason || "bg-rollback") }); }
+router.post("/p25/deploy/bluegreen/:id/rollback", async (req, res) => {
+    try { res.json({ success: true, ...(await da.rollback(req.params.id, req.body.reason || "bg-rollback")) }); }
     catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
@@ -109,8 +109,8 @@ router.post("/p25/deploy/validate", async (req, res) => {
     catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
-router.post("/p25/deploy/:id/rollback", (req, res) => {
-    try { res.json({ success: true, ...da.rollback(req.params.id, req.body.reason) }); }
+router.post("/p25/deploy/:id/rollback", async (req, res) => {
+    try { res.json({ success: true, ...(await da.rollback(req.params.id, req.body.reason)) }); }
     catch (e) { res.status(404).json({ success: false, error: e.message }); }
 });
 
