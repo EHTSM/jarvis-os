@@ -229,8 +229,23 @@ function billingProcessPayment(dealId, { plan = "pro", amount } = {}) {
   const deal = st().getDeal(dealId);
   if (!deal) return { ok: false, error: "Deal not found" };
   const paymentAmount = amount || deal.value;
+  // Business Org Financial Integrity Certification: this used to also
+  // increment bizorg_billing's own `mrr` KPI by Math.round(paymentAmount/12)
+  // — the SAME real-world revenue event businessOrgState.cjs's advanceDeal()
+  // already records once, correctly, on the deal's own department KPI when
+  // it transitions to closed_won. getDashboard()'s totalMrr sums `mrr`
+  // across every department's KPI (businessOrgState.cjs:639), so every
+  // closed deal's MRR was counted twice in the reported global figure —
+  // confirmed with a real direct test: a single $12,000 deal added $1,000
+  // to the deal's department AND a separate $1,000 to bizorg_billing,
+  // summing to $2,000 reported instead of the real $1,000. No other code
+  // anywhere reads bizorg_billing.mrr as its own distinct metric (confirmed
+  // via repository search) — it existed only as a duplicate accumulator,
+  // not a genuinely separate billing-department view. Removed; billing's
+  // real, non-duplicative activity (tasksCompleted, the payment-processed
+  // memory record, and the bizorg:payment:processed event other
+  // departments subscribe to) is unchanged.
   _kpiUp("bizorg_billing", {
-    mrr:          (st().getKpi("bizorg_billing").mrr || 0) + Math.round(paymentAmount / 12),
     tasksCompleted: (st().getKpi("bizorg_billing").tasksCompleted || 0) + 1,
   });
   _mem("bizorg_billing", "payment_processed", `Payment: ${deal.company}`, `Amount: $${paymentAmount} | Plan: ${plan}`, { dealId });

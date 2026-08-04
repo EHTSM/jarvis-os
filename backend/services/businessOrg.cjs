@@ -301,9 +301,16 @@ async function _billingTick(s) {
     for (const deal of won.filter(d => !billedDeals.has(d.id)).slice(0, 2)) {
       _wf()?.billingProcessPayment(deal.id);
     }
-    const kpi = _st()?.getKpi(s.id) || {};
-    s.v2Billing = { mrr: kpi.mrr };
-    _lesson(s.id, { type: "billing_review", severity: "info", title: `Billing: MRR=$${kpi.mrr || 0}`, detail: `Won deals: ${won.length}`, tags: ["billing"] });
+    // Business Org Financial Integrity Certification: bizorg_billing's own
+    // kpi.mrr was a duplicate accumulator (removed from billingProcessPayment
+    // in businessOrgWorkflow.cjs — see that fix's comment for the full
+    // trace) and would now always read 0/undefined here. The real, single
+    // source of truth for global MRR is getDashboard().revenue.mrr (summed
+    // once, correctly, across each deal's own department KPI) — read that
+    // instead of a per-department field that never had independent meaning.
+    const globalMrr = _st()?.getDashboard()?.revenue?.mrr || 0;
+    s.v2Billing = { mrr: globalMrr };
+    _lesson(s.id, { type: "billing_review", severity: "info", title: `Billing: MRR=$${globalMrr}`, detail: `Won deals: ${won.length}`, tags: ["billing"] });
   } catch {}
   _setObj(s, "Billing processed");
 }
