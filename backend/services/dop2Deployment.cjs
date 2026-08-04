@@ -1020,6 +1020,41 @@ async function runPhase(phase) {
   }
 }
 
+// ── Ad-hoc VPS command execution (FINAL-JARVIS-DREAM-CERTIFICATION.md P2
+// VPS finding) ──────────────────────────────────────────────────────────────
+// The 8 phases above only ever run their own fixed, hardcoded read-only
+// checks over sshExec — there was no way to ask "run this one specific
+// safe command on the VPS" the way terminalController.cjs exposes for
+// local execution. Reuses the same real sshExec (_ssh) this file already
+// uses everywhere, adding a matching allowlist discipline rather than
+// opening arbitrary remote command execution — same "read-only
+// introspection is broad, mutation is a tiny explicit allowlist" shape
+// terminalController.cjs's own docker/git/npm allowlists already use.
+const VPS_READONLY_COMMANDS = new Set([
+  "uptime", "hostname", "whoami", "date", "df -h", "free -h", "uname -a",
+  "systemctl status nginx", "systemctl status pm2-root", "pm2 status",
+  "pm2 list", "pm2 logs jarvis-os --nostream --lines 20",
+  "nginx -t", "git log --oneline -5", "git status", "df -h /",
+]);
+const VPS_LIFECYCLE_COMMANDS = new Set([
+  "pm2 restart jarvis-os", "pm2 reload jarvis-os", "systemctl restart nginx",
+]);
+
+function runVpsCommand(cmd, { allowMutation = false } = {}) {
+  const trimmed = String(cmd || "").trim();
+  const isReadonly = VPS_READONLY_COMMANDS.has(trimmed);
+  const isLifecycle = VPS_LIFECYCLE_COMMANDS.has(trimmed);
+
+  if (!isReadonly && !(allowMutation && isLifecycle)) {
+    return { ok: false, error: allowMutation
+      ? `Command not in the VPS allowlist: "${trimmed}"`
+      : `Command not in the VPS read-only allowlist (pass allowMutation:true for lifecycle commands): "${trimmed}"` };
+  }
+
+  const result = _ssh(trimmed);
+  return { ok: result.ok, ssh: result.ssh, out: result.out, command: trimmed, mutating: isLifecycle };
+}
+
 function getLastReport()    { return _load().reports?.[0] || null; }
 function getReportHistory() { return (_load().reports || []).map(r => ({ id: r.id, runAt: r.runAt, productionScore: r.productionScore, verdict: r.verdict, vpsHost: r.vpsHost, baseUrl: r.baseUrl })); }
 
@@ -1077,4 +1112,5 @@ module.exports = {
   // rather than reimplemented, per this file's own "no duplicate DevOps
   // runtime" rule (also stated in deploymentCoordinator.cjs's header).
   sshExec: _ssh,
+  runVpsCommand,
 };

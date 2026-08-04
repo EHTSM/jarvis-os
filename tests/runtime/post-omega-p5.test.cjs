@@ -118,8 +118,18 @@ test("selectBrowser returns available browser", () => {
   if (r.ok) assert(r.browser, "no browser");
 });
 
-test("openTab creates tab with required fields", () => {
-  const r = bc.openTab({ url: "https://example.com", browser: "Chrome" });
+// openTab/closeTab/inspectPage are real async functions since
+// fix(browser-agent): wire browserController onto the real Playwright
+// session — these 6 tests previously called them without await, so `r`
+// was always an unresolved Promise (r.ok/r.tabId always undefined) and
+// every assertion here was checking a Promise object, not a real result.
+// This never surfaced as a failure before that fix because the pre-fix
+// openTab() was effectively-synchronous fake bookkeeping; genuinely
+// async Playwright calls exposed the missing await. Fixed by awaiting
+// each call — the test harness (test(name, fn) above) already awaits fn()
+// correctly when fn is async and returns its promise.
+test("openTab creates tab with required fields", async () => {
+  const r = await bc.openTab({ url: "https://example.com", browser: "Chrome" });
   assert(r.ok, "openTab failed: " + JSON.stringify(r));
   assert(r.tabId, "no tabId");
   assert(r.url === "https://example.com", "url mismatch");
@@ -138,24 +148,24 @@ test("switchTab works for open tab", () => {
   assert(r.url === "https://example.com");
 });
 
-test("closeTab transitions to closed", () => {
+test("closeTab transitions to closed", async () => {
   // Open a fresh one to close
-  const t = bc.openTab({ url: "https://close-me.example.com" });
-  const r = bc.closeTab(t.tabId);
+  const t = await bc.openTab({ url: "https://close-me.example.com" });
+  const r = await bc.closeTab(t.tabId);
   assert(r.ok, "closeTab failed");
   // Should not be in open tabs anymore
   const open = bc.listTabs({ status: "open" });
   assert(!open.some(tab => tab.tabId === t.tabId), "closed tab still in open list");
 });
 
-test("closeTab on nonexistent returns error", () => {
-  const r = bc.closeTab("nonexistent_tab_xyz");
+test("closeTab on nonexistent returns error", async () => {
+  const r = await bc.closeTab("nonexistent_tab_xyz");
   assert(!r.ok, "expected failure");
   assert(r.error, "no error message");
 });
 
-test("inspectPage returns structured result", () => {
-  const r = bc.inspectPage(openTabId, "test query");
+test("inspectPage returns structured result", async () => {
+  const r = await bc.inspectPage(openTabId, "test query");
   assert(r.ok || r.error, "need ok or error");
   if (r.ok) assert(r.tabId === openTabId);
 });
@@ -580,8 +590,12 @@ test("desktop.clipboardRead() and clipboardWrite() work", () => {
   assert(typeof r?.ok === "boolean");
 });
 
-test("browser.open() + browser.tabs() work", () => {
-  const t = cc.browser.open("https://facade.example.com");
+test("browser.open() + browser.tabs() work", async () => {
+  // cc.browser.open() is a thin facade returning openTab()'s real Promise
+  // unchanged (backend/services/computerController.cjs:55) — missing
+  // await here meant t was always an unresolved Promise, t?.ok always
+  // undefined. Same root cause as the openTab tests above.
+  const t = await cc.browser.open("https://facade.example.com");
   assert(t?.ok, "browser.open failed");
   const tabs = cc.browser.tabs({ status: "open" });
   assert(Array.isArray(tabs));
