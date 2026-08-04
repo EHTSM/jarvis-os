@@ -45,10 +45,10 @@ router.get("/revenue/subscriptions/:accountId", (req, res) => {
 
 router.post("/revenue/subscriptions/:accountId/upgrade", (req, res) => {
   try {
-    const { plan } = req.body || {};
+    const { plan, razorpaySubId } = req.body || {};
     if (!plan) return res.status(400).json({ error: "plan required" });
-    _ok(res, g.upgradeSubscription(req.params.accountId, plan));
-  } catch (e) { _err(res, e); }
+    _ok(res, g.upgradeSubscription(req.params.accountId, plan, razorpaySubId));
+  } catch (e) { _err(res, e, e.message?.includes("razorpaySubId required") ? 402 : 500); }
 });
 
 router.post("/revenue/subscriptions/:accountId/pause",   (req, res) => {
@@ -67,9 +67,9 @@ router.post("/revenue/subscriptions/:accountId/cancel",  (req, res) => {
 
 router.post("/revenue/subscriptions/:accountId/reactivate", (req, res) => {
   try {
-    const { plan } = req.body || {};
-    _ok(res, g.reactivateSubscription(req.params.accountId, plan));
-  } catch (e) { _err(res, e); }
+    const { plan, razorpaySubId } = req.body || {};
+    _ok(res, g.reactivateSubscription(req.params.accountId, plan, razorpaySubId));
+  } catch (e) { _err(res, e, e.message?.includes("razorpaySubId required") ? 402 : 500); }
 });
 
 router.get("/revenue/lifecycle/events",      (req, res) => {

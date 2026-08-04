@@ -163,12 +163,44 @@ function getSubscriptionRecord(accountId) {
   };
 }
 
-function upgradeSubscription(accountId, targetPlan) {
+// Trust boundary fix (FINAL-JARVIS-DREAM-CERTIFICATION.md's Sales↔Payments
+// finding): this previously called billing.activatePlan(accountId,
+// targetPlan) with no third argument, silently accepting its
+// razorpaySubId=null default — this endpoint is operator-only
+// (revenueOS.js:23 router.use(requireAuth, operatorOnly)), so it was never
+// an end-user self-upgrade exploit, but it let an operator grant any paid
+// plan via a normal authenticated call with zero payment proof attached —
+// indistinguishable from a real payment in the account record. A real,
+// signature-verified webhook receiver DOES already exist and IS wired
+// (backend/controllers/webhookController.js's handleRazorpayWebhook, routed
+// from backend/routes/payment.js's POST /webhook/razorpay and
+// /razorpay-webhook, calling paymentService.js's verifyWebhookSignature/
+// parseWebhookEvent for real) — that path correctly calls
+// billing.activatePlan(accountId, plan, subId) with a real subId sourced
+// from Razorpay's own webhook payload. This function is a SEPARATE,
+// operator-facing manual-override path (e.g. comping a customer, activating
+// after an off-platform payment) that bypassed even the guard
+// billingService's own activatePlan() doc comment describes ("called from
+// Razorpay webhook OR manual upgrade" — manual upgrade should still require
+// proof). Now requires a caller to supply a real razorpaySubId (obtained
+// from billing.createRazorpaySubscription() / POST /billing/upgrade, the
+// already-verified-working Razorpay integration) before granting the plan,
+// closing the "zero payment proof" gap without touching the real webhook
+// path, which was already correct.
+function upgradeSubscription(accountId, targetPlan, razorpaySubId = null) {
   if (!PLANS[targetPlan]) throw new Error(`Unknown plan: ${targetPlan}`);
   const current = billing.getRecord(accountId);
   if (current.plan === targetPlan) throw new Error("Already on this plan");
+  if (!razorpaySubId) {
+    throw new Error(
+      "razorpaySubId required — call billing.createRazorpaySubscription() " +
+      "(POST /billing/upgrade) first to obtain a real, verified Razorpay " +
+      "subscription before granting a paid plan. Upgrading without payment " +
+      "proof is not permitted."
+    );
+  }
 
-  const result = billing.activatePlan(accountId, targetPlan);
+  const result = billing.activatePlan(accountId, targetPlan, razorpaySubId);
   // Log lifecycle event
   const s = _load();
   if (!s.lifecycleEvents) s.lifecycleEvents = [];
@@ -194,9 +226,17 @@ function pauseSubscription(accountId, pauseUntil) {
   return { ok: true, accountId, pauseUntil, pausedAt: _ts() };
 }
 
-function reactivateSubscription(accountId, plan) {
+// Same trust boundary fix as upgradeSubscription() above — reactivation is
+// also a plan grant and was subject to the identical zero-payment-proof gap.
+function reactivateSubscription(accountId, plan, razorpaySubId = null) {
   const targetPlan = plan || "starter";
-  const result = billing.activatePlan(accountId, targetPlan);
+  if (!razorpaySubId) {
+    throw new Error(
+      "razorpaySubId required — reactivating a paid plan requires the same " +
+      "payment proof as upgradeSubscription()."
+    );
+  }
+  const result = billing.activatePlan(accountId, targetPlan, razorpaySubId);
   const s = _load();
   if (!s.lifecycleEvents) s.lifecycleEvents = [];
   s.lifecycleEvents.push({ id: _id("lce"), accountId, event: "reactivation", toPlan: targetPlan, occurredAt: _ts() });
