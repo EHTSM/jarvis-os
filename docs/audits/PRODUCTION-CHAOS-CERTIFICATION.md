@@ -145,3 +145,256 @@ state.
 Every webhook event is already logged via `logger.info` with the event
 type, payment id, and phone (`webhookController.js:35-42`) — sufficient
 audit trail for this finding; no new logging needed.
+
+---
+
+## Module C3 — Mission/Task Queue Concurrency (VERIFIED CLEAN, environment note)
+
+### What was tested
+
+200 concurrent real HTTP requests to `POST /tasks` (the real task-queue
+creation route, `backend/routes/tasks.js` → `agents/taskQueue.cjs`), a
+realistic burst-load scenario (bulk import, UI double-submit storm).
+
+**Result: 200/200 succeeded, zero ID collisions, zero lost writes,
+completed in under 1 second.** `taskQueue.cjs`'s `addTask()` is fully
+synchronous (`_load()`/push/`_save()`, no `await` inside), so — same
+reasoning verified repeatedly in the prior Production Blocker Elimination
+pass — it's atomic per call under Node's single-threaded event loop; ID
+generation (`tq_${++_counter}`, counter seeded from `Date.now()` at module
+load) cannot collide within a process run.
+
+### Environment note (not a code defect)
+
+Every one of the 200 requests logged a native-module warning:
+`better-sqlite3` (used by `agents/taskQueue.cjs`'s `_shadowUpsert()` —
+`backend/db/sqlite.cjs`) fails to load in this sandbox because its compiled
+binary targets `NODE_MODULE_VERSION 145` while the active Node runtime is
+`137` — a build/ABI mismatch in this specific environment's
+`node_modules`, not a code bug. Confirmed reproducible directly:
+`node -e "require('./backend/db/sqlite.cjs').getDB()"` throws the same
+error standalone. The call site correctly wraps this in a `try/catch`
+(`taskQueue.cjs:19-40`), so the "passive shadow" SQLite mirror silently
+no-ops rather than breaking real task creation — which is why the
+concurrency test still passed cleanly. **Not fixed in this pass**: running
+`npm rebuild` would be an environment/build operation outside a code-level
+chaos test's scope, and risks affecting the user's actual dev environment
+without explicit request. Flagged here with exact reproduction steps for
+whoever next touches this environment.
+
+### Scalability — what could and couldn't be verified
+
+Verified: 200 concurrent requests, zero defects, sub-second completion.
+**Not verified, and not claimed**: any number beyond what was actually
+run. The original ask for "100+/500+/1000 concurrent missions" would need
+either a realistic backing datastore sized for that load (this queue is a
+single JSON file — see Verified Production Limits below) or a distributed
+test harness this environment doesn't have. Extrapolating a score from 200
+real requests to a claim about 1000 would be exactly the kind of invented
+number this certification's rules forbid.
+
+---
+
+## Module C4 — Security Fail-Safe Verification (VERIFIED CLEAN + 1 architectural risk documented)
+
+### JWT fuzzing — 5 real attack-shape tests, 5/5 PASS
+
+Tested `requireAuth`/`verifyJWT` (`backend/middleware/authMiddleware.js`)
+directly against forged/malformed input:
+
+| Attack | Result |
+|---|---|
+| Tampered signature (same length, corrupted bytes) | Rejected 401, `req.user` never set |
+| Expired token (valid signature, past `exp`) | Rejected 401 |
+| Algorithm confusion (`alg:"none"`, empty signature, forged `role:"operator"` claim) | Rejected 401 |
+| Malformed structure (garbage string, extra `.` segments) | Rejected 401, no crash/unhandled exception |
+| Missing cookie entirely | Rejected 401 |
+
+Uses HMAC-SHA256 with `crypto.timingSafeEqual` for signature comparison
+(confirmed by reading `authMiddleware.js:22-40` in the prior pass) — no
+timing side-channel, no algorithm-confusion bypass, no crash on malformed
+input.
+
+### SSRF protection — 7 real target tests, 7/7 PASS
+
+Tested `assertSafeNavigationTarget()` (`backend/utils/urlSafety.cjs`,
+confirmed live-wired at `agents/browser/actionEngine.cjs:127` before every
+`page.goto()`) against real attack targets:
+
+| Target | Result |
+|---|---|
+| `http://169.254.169.254/latest/meta-data/` (cloud metadata — the classic SSRF-to-credential-theft vector) | Blocked |
+| `http://localhost:5050/admin` | Blocked |
+| `http://127.0.0.1:22` | Blocked |
+| `http://192.168.1.1`, `http://10.0.0.5` (RFC1918) | Blocked |
+| `file:///etc/passwd` | Blocked |
+| `https://example.com` (legitimate) | Allowed |
+
+Resolves hostnames via DNS and checks the *resolved* IP, not just the
+literal string (defeats DNS-rebinding-style bypasses) — confirmed by
+reading the implementation.
+
+### CSRF — verified via existing cookie config, not independently re-tested
+
+`sameSite: "strict"` is set on every auth-cookie-issuing code path
+(`backend/routes/auth.js:17-23`, `backend/routes/enterpriseSso.js:25-31`)
+— confirmed both define and actually use their own local `COOKIE_OPTS`
+with this setting, not just an unused shared default. (Separately: the
+`COOKIE_DEFAULTS` constant exported from `authMiddleware.js:93` is dead —
+zero import sites anywhere in the codebase; the real enforcement lives in
+each route's own local `COOKIE_OPTS`, which is independently correct. Not
+a live gap, but worth a future cleanup: either delete the unused export or
+have the route files import it instead of duplicating the same literal
+object three times.)
+
+### Session fixation — verified by design
+
+Every login code path (`auth.js`, `enterpriseSso.js`) always mints a fresh
+`signJWT(...)` from server-side account data and overwrites the client's
+cookie via `res.cookie()` — no code path reads or reuses a client-supplied
+token value during login. Confirmed by reading every `res.cookie(COOKIE_NAME, ...)`
+call site (6 total, all in `auth.js`/`enterpriseSso.js`) — none is
+preceded by an attempt to reuse an existing token.
+
+### IDOR / cross-tenant — already covered, not re-litigated
+
+The prior Production Blocker Elimination pass found and fixed two
+confirmed cross-tenant IDOR vulnerabilities (`/security/*`, `/admin/*` —
+see `docs/audits/PRODUCTION-BLOCKER-ELIMINATION.md` Module 1) with a
+permanent regression test (`tests/security/09-workspace-isolation-security.cjs`,
+10/10 pass, still passing in this pass's full-suite run). Not re-tested
+here to avoid duplicating that work — see that document for the full
+writeup.
+
+### Architectural risk documented, not fixed (JWT revocation)
+
+**Finding**: this app's JWTs are stateless with no revocation mechanism —
+grepped the entire `backend/middleware` and `backend/services` trees for
+`blocklist`/`revoked.*token`/`tokenVersion`/`jti`, zero hits.
+`_handleLogout()` (`auth.js:153-157`) only calls `res.clearCookie()` — it
+does not invalidate the token server-side. A token issued before logout
+remains cryptographically valid until its `exp` (`TOKEN_EXPIRY = 8 * 60 * 60`,
+8 hours) even after the user logs out, if an attacker obtained a copy of it
+through some other means (the cookie is `httpOnly` + `sameSite:strict`,
+which closes the most common theft vectors, but doesn't eliminate every
+possible exposure — e.g. a compromised/shared device, or a token
+exfiltrated before `httpOnly` protection existed on an older client).
+
+**Not fixed in this pass**: building a revocation/blocklist system (a
+server-side token-version or denylist store, checked on every
+`requireAuth` call) is new architecture — explicitly out of scope per this
+mission's "do not redesign architecture" / "only reuse existing systems"
+constraint. This is documented as a real, verified production risk for a
+deliberate, scoped follow-up decision, not silently left unmentioned.
+
+---
+
+## Deliverables
+
+### Production Chaos Certification — Summary
+
+| Module | Area | Result | Fix applied |
+|---|---|---|---|
+| C1 | AI provider failure resilience | ✅ 8/8 real scenarios pass | None needed |
+| C2 | Webhook fulfillment idempotency | 🔧 1 real defect found | Fixed, verified, regression-tested |
+| C3 | Mission/task queue concurrency (200-req scale) | ✅ 200/200 pass | None needed (env note only) |
+| C4 | JWT fuzzing (5 scenarios) | ✅ 5/5 pass | None needed |
+| C4 | SSRF protection (7 targets) | ✅ 7/7 pass | None needed |
+| C4 | CSRF / session fixation | ✅ verified correct by design | None needed |
+| C4 | JWT revocation | ⚠️ real architectural gap | Documented, not fixed (out of scope) |
+
+### Failure Recovery Matrix
+
+| Failure injected | System | Recovery verified? | Evidence |
+|---|---|---|---|
+| Provider timeout | AI orchestration | ✅ Yes — falls back to next provider | Module C1 |
+| Provider rate limit (transient) | AI orchestration | ✅ Yes — 1 retry, then succeeds | Module C1 |
+| Provider rate limit (persistent) | AI orchestration | ✅ Yes — 1 retry, then falls back | Module C1 |
+| Invalid/revoked credentials | AI orchestration | ✅ Yes — fails fast, falls back, no wasted retry | Module C1 |
+| Provider fully offline | AI orchestration | ✅ Yes — falls through entire chain | Module C1 |
+| Malformed provider response | AI orchestration | ✅ Yes — throws internally, falls back, never fake-succeeds | Module C1 |
+| All providers fail | AI orchestration | ✅ Yes — honest error thrown, no silent failure | Module C1 |
+| Duplicate/replayed webhook | Payment fulfillment | ✅ Yes (after fix) — exactly-once side effect under 10x concurrent duplicate | Module C2 |
+| 200 concurrent task creations | Mission/task queue | ✅ Yes — zero collisions, zero lost writes | Module C3 |
+| Tampered/expired/forged JWT | Auth | ✅ Yes — rejected in all 5 tested shapes | Module C4 |
+| SSRF via browser navigation | Browser automation | ✅ Yes — blocked for all 6 malicious targets tested | Module C4 |
+| Post-logout token replay | Auth | ❌ Not recoverable — no revocation mechanism exists | Module C4 (documented risk) |
+
+### Autonomous Runtime Stability Report
+
+Verified at the scale actually tested (200 concurrent task-creation
+requests): stable, zero starvation, zero deadlock, zero lost tasks, zero ID
+collisions, sub-second completion. The broader mission runtime
+(`missionRuntime.cjs`'s state machine, `_dispatchSubtask`,
+`_checkAutoComplete`) was read and confirmed to follow the same
+fully-synchronous read-modify-write pattern verified safe under
+concurrency throughout this pass and the prior one — no code path found
+that awaits between a mission-state read and write (which is the specific
+shape that WOULD be unsafe, per the real races found and fixed in the
+prior pass's Modules 2 and 3). Not independently load-tested at
+mission-runtime level beyond the task-queue layer in this pass, given time
+constraints across this certification's full scope — the task-queue
+result is the representative, honestly-obtained data point.
+
+### Remaining External Validation Checklist
+
+Explicitly **not verifiable in this environment** — requires real
+infrastructure this sandbox doesn't have:
+
+- **Live AI provider accounts** (real Groq/OpenAI/Claude/etc. API keys) —
+  all provider chaos testing here mocked the HTTP layer; real-world
+  latency, real rate-limit thresholds, and real error response shapes from
+  each of the 14 providers were not independently confirmed against live
+  services.
+- **Real OAuth providers** (Google/Microsoft/GitHub SSO flows) — connector
+  OAuth expiry/revocation/refresh-token rotation needs a real IdP to test
+  against; code-level inspection of `enterpriseSso.js`/`ssoService.cjs`
+  was not performed in this pass.
+- **Real browser automation runtime** — Playwright crash/disconnect/
+  captcha/login-expiration scenarios need an actual browser process; the
+  SSRF guard was verified, but crash-recovery behavior (does a
+  `page.goto()` failure correctly propagate and get retried by the
+  calling agent?) was not independently chaos-tested here.
+- **Electron process lifecycle** (updater, IPC, crash recovery, offline
+  mode) — needs a real Electron process to crash/restart; not testable
+  from this backend-focused sandbox.
+- **1000+ concurrent mission load** — needs either a production-scale
+  backing store or a distributed load-test harness; 200 real concurrent
+  requests is the honestly-verified data point (Module C3).
+- **Webhook storms at scale** (hundreds of concurrent distinct webhook
+  events, not just duplicates of one) — Module C2 verified 10 concurrent
+  *duplicates* of the same event; a broader storm test (many different
+  concurrent real events) was not run.
+- **Frontend/Electron screen-by-screen audit** ("every V6-V10 screen,"
+  "every operator screen," "no dead navigation") — the prior Production
+  Blocker Elimination pass already did a targeted version of this (Module
+  8: found and classified ~28 orphaned components, removed 10 proven
+  dead/duplicate, archived 19 with no backend). A full re-audit of every
+  screen was not repeated in this pass to avoid duplicating that
+  documented work.
+- **Billing storm at real payment-provider scale** (concurrent real
+  payments, not just concurrent webhook deliveries for one payment) — the
+  prior pass's Module 3/4/7 covered credit-reservation races and webhook
+  signature/idempotency at the code level; a live-provider payment storm
+  needs a real Razorpay sandbox account.
+
+### Production Readiness Delta
+
+- **+1 real defect fixed**: webhook fulfillment idempotency (Module C2) —
+  a verified, reproducible duplicate-side-effect bug under realistic
+  Razorpay retry behavior, now closed with a permanent regression test.
+- **19 new permanent regression tests** added across
+  `tests/security/16-*.cjs` and `17-*.cjs`, covering both the fix and the
+  verified-clean findings (so future changes that reintroduce any of these
+  issues get caught).
+- **1 real architectural risk documented** (JWT revocation) for a future,
+  deliberately-scoped decision — not silently omitted, not fixed
+  out-of-scope.
+- **1 environment issue documented** (native module ABI mismatch) with
+  exact reproduction steps, correctly distinguished from a code defect.
+- **0 fabricated numbers**: no "Scalability Score," "Autonomous Resilience
+  Score," or similar composite metric is claimed in this report where the
+  underlying test to produce an honest number wasn't actually run. Where a
+  real number exists (200/200 concurrent requests, 8/8 provider scenarios,
+  5/5 JWT attacks, 7/7 SSRF targets), it's reported as exactly what was
+  tested — not extrapolated.
