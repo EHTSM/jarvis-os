@@ -550,6 +550,119 @@ function InviteTeamPanel({ onToast }) {
   );
 }
 
+// V5 Global AI Organization Platform, Modules 1-5 recovery:
+// backend/routes/orgAiWorkspace.js (/org-workspace/:orgId/*) composes
+// Module 1 (orgAiBrain), Module 2 (orgKnowledgeGraph), Module 3 (orgAgents),
+// and the automation layer into one dashboard payload — real data, zero
+// frontend consumers until this panel. The "Ask AI" box below calls
+// Module 1 directly (POST /org-ai/:orgId/ask) since getFullWorkspace only
+// exposes chat *history*, not a way to send a new message.
+
+function AiWorkspacePanel({ orgId, onToast }) {
+  const [ws, setWs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [question, setQuestion] = useState("");
+  const [asking, setAsking] = useState(false);
+  const [answer, setAnswer] = useState(null);
+
+  const load = useCallback(() => {
+    if (!orgId) return;
+    setLoading(true);
+    _fetch(`/org-workspace/${orgId}`)
+      .then(r => { setWs(r); setError(r?.ok === false ? r.error : null); })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const ask = async () => {
+    if (!question.trim()) return;
+    setAsking(true);
+    setAnswer(null);
+    try {
+      const r = await _fetch(`/org-ai/${orgId}/ask`, {
+        method: "POST",
+        body: JSON.stringify({ messages: [{ role: "user", content: question.trim() }] }),
+      });
+      setAnswer(r.text || r.error || "No response");
+      setQuestion("");
+      load();
+    } catch (e) {
+      onToast?.("error", e.message);
+    } finally {
+      setAsking(false);
+    }
+  };
+
+  if (loading && !ws) return <div className="oac-loading">Loading AI workspace…</div>;
+  if (error && !ws) return <Empty title="Couldn't load AI workspace" sub={error} />;
+
+  const chat = ws?.chat || {};
+  const memory = ws?.memory || {};
+  const agents = ws?.agents || {};
+  const workflows = ws?.workflows || {};
+  const collab = ws?.collaboration || {};
+
+  return (
+    <div>
+      <div className="oac-panel" style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", opacity: 0.7, marginBottom: 8 }}>Ask the org AI</div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input className="oac-input" style={{ flex: 1 }} placeholder="Ask a question about this organization…"
+            value={question} onChange={e => setQuestion(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && ask()} />
+          <button className="oac-btn primary" onClick={ask} disabled={asking || !question.trim()}>
+            {asking ? "Asking…" : "Ask"}
+          </button>
+        </div>
+        {answer && <p style={{ marginTop: 10, fontSize: 13, whiteSpace: "pre-wrap" }}>{answer}</p>}
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 16 }}>
+        <div className="oac-panel"><div style={{ fontSize: 18, fontWeight: 800 }}>{chat.recentConversations?.length ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Recent Conversations</div></div>
+        <div className="oac-panel"><div style={{ fontSize: 18, fontWeight: 800 }}>{agents.agents?.length ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Available Agents</div></div>
+        <div className="oac-panel"><div style={{ fontSize: 18, fontWeight: 800 }}>{workflows.rules?.length ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Automation Rules</div></div>
+        <div className="oac-panel"><div style={{ fontSize: 18, fontWeight: 800 }}>{collab.collaborations?.length ?? 0}</div><div style={{ fontSize: 10, opacity: 0.7 }}>Cross-org Collaborations</div></div>
+      </div>
+
+      {memory.byType && Object.keys(memory.byType).length > 0 && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", opacity: 0.7, marginBottom: 8 }}>Knowledge Graph</div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            {Object.entries(memory.byType).map(([type, count]) => (
+              <span key={type} className="oac-badge">{type}: {count}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {agents.recentRuns?.length > 0 && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", opacity: 0.7, marginBottom: 8 }}>Recent Agent Runs</div>
+          <table className="oac-table">
+            <thead><tr><th>Agent</th><th>Status</th><th>When</th></tr></thead>
+            <tbody>
+              {agents.recentRuns.slice(0, 10).map((r, i) => (
+                <tr key={r.id || i}>
+                  <td className="oac-td-name">{r.agentId || r.agent || "—"}</td>
+                  <td className="oac-td-dim">{r.status || "—"}</td>
+                  <td className="oac-td-dim">{r.startedAt ? new Date(r.startedAt).toLocaleString() : "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {!chat.recentConversations?.length && !agents.agents?.length && !workflows.rules?.length && (
+        <Empty title="AI workspace is empty" sub="Chat, agents, and automation activity for this organization will appear here as they happen." />
+      )}
+    </div>
+  );
+}
+
 // ── Root ──────────────────────────────────────────────────────────────
 
 const VIEWS = [
@@ -559,6 +672,7 @@ const VIEWS = [
   { id: "departments", label: "Departments" },
   { id: "grants",      label: "Cross-org access" },
   { id: "execintel",   label: "Executive Intelligence" },
+  { id: "aiworkspace", label: "AI Workspace" },
 ];
 
 export default function OrgAdminCenter({ onToast }) {
@@ -626,6 +740,7 @@ export default function OrgAdminCenter({ onToast }) {
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
         {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}
         {view === "execintel"   && <ExecIntelPanel orgId={orgId} onToast={onToast} />}
+        {view === "aiworkspace" && <AiWorkspacePanel orgId={orgId} onToast={onToast} />}
       </div>
     </div>
   );
