@@ -97,6 +97,10 @@ const TASK_TYPE_MAP = {
     location_lookup:      "location_lookup",
     get_weather:          "weather",
     system_health_check:  "system_health",
+    // agents/executor.cjs's DEV_TASK_TYPES uses the bare "system_health"
+    // string (distinct literal from system_health_check above) for the
+    // same real system_health agent — both now resolve identically.
+    system_health:        "system_health",
 
     // ── Repaired agents (100-COMPANY P1 mission Phase 1) ────────────
     // crmAgent.cjs's own aliases (add_lead/get_leads/update_lead/etc.)
@@ -129,6 +133,47 @@ const TASK_TYPE_MAP = {
     video_script:         "video_script",
     thumbnail_brief:      "thumbnail_brief",
     video_brief:          "video_brief",
+
+    // ── Agent Civilization Unification: agents/executor.cjs's
+    // DEV_TASK_TYPES set (generate_code, debug_code, build_api, deploy,
+    // git_*, etc.) previously had no entry here at all, so every one of
+    // these task types silently resolved to the generic "ai" fallback
+    // capability instead of the real "dev" agent
+    // (agents/devAgent.cjs -> agents/dev/codeGeneratorAgent.cjs, which
+    // already handles generate + modify + patch-propose for any
+    // framework/description) or "terminal" (git ops, via the
+    // whitelisted safe-exec allowlist which includes "git"). No new
+    // capability is introduced — these route onto agents already
+    // registered in bootstrapRuntime.cjs. Narrower intents named here
+    // (debug_code, build_api, create_schema, firebase_setup, deploy,
+    // generate_tests, optimize_code, security_scan) have no distinct
+    // real backing agent of their own — they collapse onto "dev" or
+    // "terminal" rather than routing to a non-existent specialist,
+    // which is strictly better than the previous silent "ai" fallback
+    // (dev/git tasks now reach an agent that can act on files/commands)
+    // but does not claim a specialist that doesn't exist.
+    generate_code:        "dev",
+    write_code:           "dev",
+    debug_code:           "dev",
+    fix_error:            "dev",
+    fix_bug:              "dev",
+    build_api:            "dev",
+    create_api:           "dev",
+    create_schema:        "dev",
+    database_op:          "dev",
+    firebase_setup:       "dev",
+    deploy:               "dev",
+    create_dockerfile:    "dev",
+    generate_tests:       "dev",
+    run_tests:            "dev",
+    optimize_code:        "dev",
+    security_scan:        "dev",
+    sanitize_code:        "dev",
+    git_op:               "terminal",
+    git_init:             "terminal",
+    git_commit:           "terminal",
+    git_status:           "terminal",
+    git_log:              "terminal",
 };
 
 /** Resolve a task type to a capability string. Falls back to "ai". */

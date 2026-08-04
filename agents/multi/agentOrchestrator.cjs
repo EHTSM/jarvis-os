@@ -61,13 +61,21 @@ async function runParallel(workflowId, steps = []) {
     };
 }
 
-// Pre-built workflow: full dev project scaffold
+// Pre-built workflow: full dev project scaffold.
+// Agent Civilization Unification (module 1/2): steps used to name agents
+// ("codeGenerator", "versionControl", "deployment", "testRunner") that
+// were never registered anywhere — this workflow could not have
+// succeeded a single time it was called. Retargeted onto agent IDs
+// actually present in the production agentRegistry: "dev" (generation,
+// via agents/devAgent.cjs -> agents/dev/codeGeneratorAgent.cjs) and
+// "terminal" (git ops, via agents/terminalAgent.cjs's whitelisted-command
+// executor). No real, distinct "deployment" or "testRunner" agent exists
+// in the registry today — see the unification report for the
+// A-E classification of that gap.
 async function devProjectWorkflow(projectName, description) {
     return runWorkflow(`dev-project-${Date.now()}`, [
-        { agent: "codeGenerator",  task: { type: "generate_code",  payload: { framework: "express", description } } },
-        { agent: "versionControl", task: { type: "git_init",       payload: { path: `./generated/${projectName}` } } },
-        { agent: "deployment",     task: { type: "deploy",         payload: { appName: projectName, outputDir: `./generated/${projectName}/deploy` } } },
-        { agent: "testRunner",     task: { type: "generate_tests", payload: { testType: "api" } } }
+        { agent: "dev",      task: { type: "dev",      payload: { framework: "express", description } } },
+        { agent: "terminal", task: { type: "terminal", payload: { command: `git init ./generated/${projectName}` } } },
     ]);
 }
 
