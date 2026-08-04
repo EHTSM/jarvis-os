@@ -89,14 +89,69 @@ function _ensure(store, accountId) {
   return store[accountId];
 }
 
+// ── V6 Phase 6 (Category E: Education OS) — custom learning path
+// generation ──────────────────────────────────────────────────────
+// The 4 catalogue PATHS above are real but static/hand-authored (product
+// onboarding content) — confirmed no AI-generated lesson/path content
+// exists anywhere, and no way to create a NEW path (e.g. an operator's
+// own team-training topic) existed. Reuses aiService.js's real callAI +
+// extractJSON (the same fix this session applied to every other AI-JSON
+// generator) rather than a new AI-calling mechanism. Stored separately
+// from the hardcoded PATHS const (never mutated in place) and merged at
+// read time in listPaths()/getPath() below.
+const CUSTOM_STORE_FILE = path.join(__dirname, "../../data/academy-custom-paths.json");
+function _loadCustom() { try { return JSON.parse(fs.readFileSync(CUSTOM_STORE_FILE, "utf8")); } catch { return { paths: {} }; } }
+function _saveCustom(d) { try { fs.mkdirSync(path.dirname(CUSTOM_STORE_FILE), { recursive: true }); fs.writeFileSync(CUSTOM_STORE_FILE, JSON.stringify(d, null, 2)); } catch {} }
+
+async function generateCustomPath({ topic, level = "beginner", moduleCount = 4, createdBy } = {}) {
+  if (!topic) return { ok: false, error: "topic required" };
+  const ai = require("./aiService.js");
+
+  const prompt = `Create a learning path for the topic: "${topic}". Level: ${level}. Exactly ${moduleCount} modules.
+
+Return JSON only:
+{
+  "title": "string",
+  "description": "one sentence",
+  "estimatedHours": number,
+  "modules": [{ "id": "kebab-case-id", "title": "string", "type": "video|interactive|walkthrough|mission", "durationMin": number }]
+}`;
+
+  let raw;
+  try { raw = await ai.callAI(prompt, { maxTokens: 1200 }); }
+  catch (e) { return { ok: false, error: `AI generation failed: ${e.message}` }; }
+
+  const extracted = ai.extractJSON(raw);
+  if (!extracted.ok) return { ok: false, error: extracted.error };
+  const gen = extracted.data;
+  if (!Array.isArray(gen.modules) || gen.modules.length === 0) return { ok: false, error: "AI response missing modules array" };
+
+  const pathId = `custom_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+  const badgeId = `${pathId}_badge`;
+  const record = {
+    id: pathId, title: gen.title || topic, description: gen.description || "",
+    level, estimatedHours: gen.estimatedHours || Math.round(gen.modules.reduce((s, m) => s + (m.durationMin || 10), 0) / 60 * 10) / 10,
+    badge: badgeId, modules: gen.modules, custom: true, createdBy: createdBy || null,
+    createdAt: new Date().toISOString(),
+  };
+
+  const store = _loadCustom();
+  store.paths[pathId] = record;
+  _saveCustom(store);
+
+  return { ok: true, path: record };
+}
+
+function listCustomPaths() { return Object.values(_loadCustom().paths); }
+
 // ── API ────────────────────────────────────────────────────────────
 
-function listPaths()   { return Object.values(PATHS); }
-function getPath(id)   { return PATHS[id] || null; }
+function listPaths()   { return [...Object.values(PATHS), ...listCustomPaths()]; }
+function getPath(id)   { return PATHS[id] || _loadCustom().paths[id] || null; }
 function listBadges()  { return Object.values(BADGES); }
 
 function enrollPath(accountId, pathId) {
-  const p = PATHS[pathId];
+  const p = getPath(pathId);
   if (!p) return { ok: false, error: "Unknown path" };
   const store = _load();
   const acct  = _ensure(store, accountId);
@@ -117,7 +172,7 @@ function completeModule(accountId, pathId, moduleId) {
   const prog  = acct.paths[pathId];
   prog.modules[moduleId] = { done: true, doneAt: new Date().toISOString() };
 
-  const p     = PATHS[pathId];
+  const p     = getPath(pathId);
   const total = p?.modules?.length || 0;
   const done  = Object.values(prog.modules).filter(m => m.done).length;
   if (total > 0 && done >= total && !prog.completed) {
@@ -156,7 +211,7 @@ function getProgress(accountId) {
   if (!acct) return { paths: [], badges: [], certificates: [] };
 
   const pathProgress = Object.entries(acct.paths || {}).map(([pathId, prog]) => {
-    const p    = PATHS[pathId] || {};
+    const p    = getPath(pathId) || {};
     const total = (p.modules || []).length;
     const done  = Object.values(prog.modules || {}).filter(m => m.done).length;
     return { pathId, title: p.title, completed: prog.completed, done, total, pct: total ? Math.round((done/total)*100) : 0 };
@@ -179,4 +234,4 @@ function getLeaderboard() {
   })).sort((a,b) => b.badges - a.badges).slice(0,20);
 }
 
-module.exports = { listPaths, getPath, listBadges, enrollPath, completeModule, awardBadge, getProgress, getLeaderboard, PATHS, BADGES };
+module.exports = { listPaths, getPath, listBadges, enrollPath, completeModule, awardBadge, getProgress, getLeaderboard, PATHS, BADGES, generateCustomPath, listCustomPaths };

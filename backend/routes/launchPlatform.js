@@ -222,6 +222,18 @@ router.post("/launch/academy/:pathId/module/:moduleId", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// V6 Phase 6 (Category E: Education OS) — real AI-generated custom
+// learning path, merged into the existing catalogue (see academyEngine.cjs).
+router.post("/launch/academy/paths/generate", async (req, res) => {
+  try {
+    const { topic, level, moduleCount } = req.body || {};
+    if (!topic) return res.status(400).json({ error: "topic required" });
+    const result = await academy.generateCustomPath({ topic, level, moduleCount, createdBy: _account(req) });
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    res.json({ ok: true, ...result });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 router.get("/launch/academy/leaderboard", (req, res) => {
   try { res.json({ ok: true, leaderboard: academy.getLeaderboard() }); }
   catch (e) { res.status(500).json({ error: e.message }); }
