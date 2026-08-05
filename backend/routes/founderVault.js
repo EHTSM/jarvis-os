@@ -4,7 +4,7 @@
  *
  * Founder Identity & Secret Vault routes.
  *
- * /vault/*      — encrypted secret store (57 connectors, 12 credential types)
+ * /vault/*      — encrypted secret store (60 connectors, 12 credential types)
  * /vault/env/*  — environment manager
  *
  * All routes require authentication.

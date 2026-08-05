@@ -2,7 +2,7 @@
 // No new backend routes.
 //
 // Two backends, complementary:
-//   /vault/*        founderVault.js — operator-only credential store (57 connectors,
+//   /vault/*        founderVault.js — operator-only credential store (60 connectors,
 //                    12 credential types). Setup/validate/rotate/delete secrets.
 //   /integrations/*  integrations.js — live scan/probe layer. Health, reconnect,
 //                    metrics, failures. Auth-only (any logged-in user), not operator-only.

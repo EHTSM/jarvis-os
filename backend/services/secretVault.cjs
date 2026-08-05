@@ -734,19 +734,29 @@ function getDashboard() {
   } catch { /* optional */ }
 
   // Missing connectors — list of known connector IDs that have no vault or env entry
+  // Phase 6 connector reachability audit: KNOWN_CONNECTORS previously
+  // omitted ai:grok, ai:qwen (both have real probe logic in AI_PROVIDERS
+  // and ENV_MAP entries above, just never added here), msg:teams,
+  // prod:notion (Phase F/H — real connect functions + ENV_MAP entries),
+  // and issue:jira/issue:linear (Phase M — scanAllProjectManagementProviders
+  // already probes both). All six were reachable via /integrations/* and
+  // myConnectors.js's customer setup forms but invisible on this founder
+  // dashboard, so IntegrationCenter.jsx (which renders dashboard.connected
+  // + dashboard.missing) never showed them at all.
   const KNOWN_CONNECTORS = [
-    "ai:groq","ai:openrouter","ai:openai","ai:anthropic","ai:gemini","ai:deepseek","ai:together","ai:fireworks","ai:cohere","ai:nvidia",
+    "ai:groq","ai:openrouter","ai:openai","ai:anthropic","ai:gemini","ai:deepseek","ai:together","ai:fireworks","ai:cohere","ai:nvidia","ai:grok","ai:qwen",
     "git:github","git:gitlab","git:bitbucket",
     "infra:aws","infra:r2","infra:cloudflare","infra:hostinger","infra:supabase","infra:firebase",
     "pay:razorpay","pay:stripe","pay:paddle","pay:lemonsqueezy",
     "email:resend","email:sendgrid","email:mailgun","email:postmark","email:brevo","email:smtp",
-    "msg:whatsapp","msg:telegram","msg:twilio","msg:discord","msg:slack",
+    "msg:whatsapp","msg:telegram","msg:twilio","msg:discord","msg:slack","msg:teams",
     "auth:google","auth:github","auth:microsoft","auth:linkedin","auth:apple","auth:discord",
-    "prod:google_workspace","prod:m365","prod:dropbox",
+    "prod:google_workspace","prod:m365","prod:dropbox","prod:notion",
     "commerce:shopify","commerce:woocommerce","commerce:wordpress",
     "creative:figma","creative:canva",
     "auto:zapier","auto:make","auto:n8n",
     "monitor:sentry","monitor:datadog","monitor:uptime",
+    "issue:jira","issue:linear",
   ];
   const connected  = KNOWN_CONNECTORS.filter(id => {
     const inVault = records.some(r => r.connectorId === id);
