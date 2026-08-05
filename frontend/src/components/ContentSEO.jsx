@@ -288,11 +288,23 @@ function SEOPanel() {
   const [schemaResult, setSchemaResult] = useState(null);
   const [toast,    Toast]         = useToast();
 
+  const [linkForm, setLinkForm] = useState({});
+  const [linkOpenId, setLinkOpenId] = useState(null);
+
   const createCluster = async () => {
     if (!cfForm.pillarTopic) return;
     await post("/content/seo/clusters", { pillarTopic: cfForm.pillarTopic, supportingTopics: cfForm.supportingTopics.split(",").map(t => t.trim()).filter(Boolean) });
     setCfForm({ pillarTopic: "", supportingTopics: "" });
     toast("Topic cluster created");
+    reloadClusters();
+  };
+
+  const addLink = async (clusterId) => {
+    const f = linkForm[clusterId] || {};
+    if (!f.from || !f.to) return;
+    await post(`/content/seo/clusters/${clusterId}/link`, { from: f.from, to: f.to, anchorText: f.anchorText || "" });
+    setLinkForm(s => ({ ...s, [clusterId]: { from: "", to: "", anchorText: "" } }));
+    toast("Internal link added");
     reloadClusters();
   };
 
@@ -351,19 +363,53 @@ function SEOPanel() {
           <div className="cseo-list">
             {(clusters?.clusters || []).length === 0 && <div className="cseo-empty">No topic clusters. Create pillar + supporting content clusters for SEO authority.</div>}
             {(clusters?.clusters || []).map(c => (
-              <div key={c.id} className="cseo-row">
-                <div style={{ flex: 1 }}>
-                  <div className="cseo-row-name">⬡ {c.pillarTopic}</div>
-                  <div className="cseo-row-meta">
-                    {c.supportingTopics?.length || 0} supporting topics · {c.internalLinks?.length || 0} internal links
-                  </div>
-                  {c.supportingTopics?.length > 0 && (
-                    <div className="cseo-tag-row">
-                      {c.supportingTopics.map((t, i) => <Chip key={i}>{t}</Chip>)}
+              <div key={c.id} className="cseo-row" style={{ flexDirection: "column", alignItems: "stretch" }}>
+                <div style={{ display: "flex", width: "100%" }}>
+                  <div style={{ flex: 1 }}>
+                    <div className="cseo-row-name">⬡ {c.pillarTopic}</div>
+                    <div className="cseo-row-meta">
+                      {c.supportingTopics?.length || 0} supporting topics · {c.internalLinks?.length || 0} internal links
                     </div>
-                  )}
+                    {c.supportingTopics?.length > 0 && (
+                      <div className="cseo-tag-row">
+                        {c.supportingTopics.map((t, i) => <Chip key={i}>{t}</Chip>)}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                    <Chip color="green">{c.status}</Chip>
+                    <button className="cseo-btn-sm" onClick={() => setLinkOpenId(linkOpenId === c.id ? null : c.id)}>
+                      {linkOpenId === c.id ? "Close" : "Link pages"}
+                    </button>
+                  </div>
                 </div>
-                <Chip color="green">{c.status}</Chip>
+
+                {c.internalLinks?.length > 0 && (
+                  <div className="cseo-list" style={{ marginTop: 8 }}>
+                    {c.internalLinks.map((l, i) => (
+                      <div key={i} className="cseo-row-meta">↳ {l.from} → {l.to}{l.anchorText ? ` ("${l.anchorText}")` : ""}</div>
+                    ))}
+                  </div>
+                )}
+
+                {linkOpenId === c.id && (
+                  <div className="cseo-form" style={{ marginTop: 8 }}>
+                    <div className="cseo-form-row">
+                      <input className="cseo-input" style={{ flex: 1 }} placeholder="From URL *"
+                        value={linkForm[c.id]?.from || ""}
+                        onChange={e => setLinkForm(s => ({ ...s, [c.id]: { ...s[c.id], from: e.target.value } }))} />
+                      <input className="cseo-input" style={{ flex: 1 }} placeholder="To URL *"
+                        value={linkForm[c.id]?.to || ""}
+                        onChange={e => setLinkForm(s => ({ ...s, [c.id]: { ...s[c.id], to: e.target.value } }))} />
+                    </div>
+                    <div className="cseo-form-row">
+                      <input className="cseo-input" style={{ flex: 1 }} placeholder="Anchor text"
+                        value={linkForm[c.id]?.anchorText || ""}
+                        onChange={e => setLinkForm(s => ({ ...s, [c.id]: { ...s[c.id], anchorText: e.target.value } }))} />
+                      <button className="cseo-btn" onClick={() => addLink(c.id)}>Add Link</button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
