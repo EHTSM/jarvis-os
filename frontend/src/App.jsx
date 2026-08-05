@@ -229,10 +229,11 @@ const MORE_TABS = [
   { id: "devops",     label: "DevOps",             group: "Engineering"  },
   { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
   { id: "observer",   label: "Runtime Observer",   group: "Engineering"  },
-  // ── Org Levels (V6-V10) — read-only status views over real, self-ticking
-  // backend infrastructure (backend/routes/{executive,enterprise,ecosystem,
-  // civilization,autonomous}Org.js), each rendering OrgLevelStatus with a
-  // different `level` prop rather than 5 separate components.
+  // ── Org Levels (L4, V6-V10) — read-only status views over real, self-ticking
+  // backend infrastructure (backend/routes/{autonomousKnowledgeOrg,executive,
+  // enterprise,ecosystem,civilization,autonomous}Org.js), each rendering
+  // OrgLevelStatus with a different `level` prop rather than separate components.
+  { id: "orglevel-ako",  label: "Knowledge Org (L4)",   group: "Org Levels" },
   { id: "orglevel-eos",  label: "Executive OS (L6)",    group: "Org Levels" },
   { id: "orglevel-ent",  label: "Enterprise OS (L7)",   group: "Org Levels" },
   { id: "orglevel-eco",  label: "Ecosystem OS (L8)",    group: "Org Levels" },
@@ -1394,6 +1395,7 @@ function AppInner() {
         {tab === "assistant"     && <FounderAssistant onNavigate={setTab}          />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
         {tab === "observer"      && <RuntimeObserverPanel />}
+        {tab === "orglevel-ako"  && <OrgLevelStatus level="ako" />}
         {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}
         {tab === "orglevel-ent"  && <OrgLevelStatus level="ent" />}
         {tab === "orglevel-eco"  && <OrgLevelStatus level="eco" />}

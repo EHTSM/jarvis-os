@@ -11,6 +11,7 @@ import { _fetch } from "../_client";
 // fields are actually present rather than assuming a fixed schema.
 
 const LEVELS = {
+  ako:  { label: "Knowledge Org (L4)", statusPath: "/ako/status", summaryPath: "/ako/summary", accent: "#9d6cff" },
   eos:  { label: "Executive OS",     statusPath: "/eos/status",  summaryPath: "/eos/summary",  accent: "#6c63ff" },
   ent:  { label: "Enterprise OS",    statusPath: "/ent/status",  summaryPath: "/ent/summary",  accent: "#00d4ff" },
   eco:  { label: "Ecosystem OS",     statusPath: "/eco/status",  summaryPath: "/eco/summary",  accent: "#52d68a" },
