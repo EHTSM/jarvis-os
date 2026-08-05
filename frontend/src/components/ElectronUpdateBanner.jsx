@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAutoUpdater } from '../hooks/useElectron';
 
 /**
@@ -8,6 +8,19 @@ import { useAutoUpdater } from '../hooks/useElectron';
 export default function ElectronUpdateBanner() {
   const { updateState, updateVersion, downloadPercent, downloadUpdate, quitAndInstall } =
     useAutoUpdater();
+
+  // dock-set-progress (real setProgressBar() on the dock/taskbar icon) was
+  // fully implemented in electron/main.cjs and exposed via preload, but had
+  // zero frontend caller — mirror the update download's real percent onto
+  // the OS icon so progress is visible even when the app isn't focused.
+  useEffect(() => {
+    if (!window.electronAPI?.dockSetProgress) return;
+    if (updateState === 'downloading') {
+      window.electronAPI.dockSetProgress(Math.max(0, Math.min(1, downloadPercent / 100)));
+    } else if (updateState === 'downloaded' || updateState === 'error') {
+      window.electronAPI.dockSetProgress(-1); // hide once finished/failed
+    }
+  }, [updateState, downloadPercent]);
 
   if (!updateState || updateState === 'checking' || updateState === 'up-to-date') return null;
 
