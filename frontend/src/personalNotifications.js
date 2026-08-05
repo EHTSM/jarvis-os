@@ -21,6 +21,16 @@ function _saveSeen(set) {
 function _notify(title, body) {
   if (!_isElectron() || !window.electronAPI?.showNotification) return;
   window.electronAPI.showNotification({ title, body });
+  window.electronAPI.dockBounce?.({ type: "informational" });
+}
+
+// Reflects the same overdue+dueToday+pending-decision count used for
+// notifications onto the real OS dock badge (macOS) / taskbar overlay
+// (Windows) — taskbar-badge was already implemented in electron/main.cjs
+// and exposed via preload, but nothing ever called it.
+function _updateBadge(count) {
+  if (!_isElectron() || !window.electronAPI?.taskbarBadge) return;
+  window.electronAPI.taskbarBadge({ count });
 }
 
 /**
@@ -59,6 +69,7 @@ async function _checkAndNotify() {
   }
 
   _saveSeen(seen);
+  _updateBadge(overdue.length + dueToday.length);
 }
 
 let _timer = null;
@@ -76,4 +87,5 @@ export function startPersonalNotifications() {
 
 export function stopPersonalNotifications() {
   if (_timer) { clearInterval(_timer); _timer = null; }
+  _updateBadge(0);
 }
