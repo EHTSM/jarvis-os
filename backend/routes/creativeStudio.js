@@ -16,6 +16,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter = require("../middleware/rateLimiter");
 
 const creativeRegistry = require("../services/creativeRegistry.cjs");
@@ -574,6 +575,47 @@ router.get("/creative/social/history", (req, res) => {
   try {
     const history = socialEngine.getHistory({ accountId: _account(req), platform: req.query.platform, limit: parseInt(req.query.limit || "50") });
     res.json({ ok: true, history, stats: socialEngine.getStats() });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Phase 6 connector reachability audit: socialPostingService.cjs (real X
+// API v2 posting, org-scoped credential via secretVault's social:twitter
+// connector — set up through /my-connectors/twitter) had no route calling
+// it anywhere — /creative/social/generate only produces caption text,
+// nothing ever published it. This is the missing "actually post" route,
+// reusing socialContentEngine's generation history as the source text so
+// a generated caption can be published without retyping it, and reusing
+// orgMiddleware's attachOrg (non-blocking — falls back to the global
+// TWITTER_BEARER_TOKEN env var when no org context is present, same
+// single-tenant fallback socialPostingService.cjs already documents).
+function _socialPoster() { try { return require("../services/socialPostingService.cjs"); } catch { return null; } }
+
+router.post("/creative/social/publish", attachOrg, async (req, res) => {
+  try {
+    const poster = _socialPoster();
+    if (!poster) return res.status(503).json({ error: "socialPostingService unavailable" });
+    const { text, entryId } = req.body || {};
+    let body = text;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "text or entryId required" });
+
+    const result = await poster.post(body, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postId: result.postId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/creative/social/publish/:postId", attachOrg, async (req, res) => {
+  try {
+    const poster = _socialPoster();
+    if (!poster) return res.status(503).json({ error: "socialPostingService unavailable" });
+    const result = await poster.deletePost(req.params.postId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, deleted: result.deleted });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 

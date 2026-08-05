@@ -446,6 +446,7 @@ function SocialPanel({ onComplete }) {
   const [result,   setResult]   = useState(null);
   const [busy,     setBusy]     = useState(false);
   const [hist,     setHist]     = useState([]);
+  const [publish,  setPublish]  = useState(null); // { busy, ok, error, url }
 
   useEffect(() => {
     apiGet("/creative/social/history?limit=10").then(r => { if (r.ok) setHist(r.history || []); });
@@ -453,13 +454,27 @@ function SocialPanel({ onComplete }) {
 
   async function generate() {
     if (!brief) return;
-    setBusy(true); setResult(null);
+    setBusy(true); setResult(null); setPublish(null);
     try {
       const r = await apiPost("/creative/social/generate", { platform, brief });
       setResult(r);
       if (r.ok && onComplete) onComplete();
     } catch (e) { setResult({ ok: false, error: e.message }); }
     finally { setBusy(false); }
+  }
+
+  // Publishing (real X/Twitter post via socialPostingService.cjs) is only
+  // wired for platform "x" — the other 9 platforms in PLATFORMS are
+  // caption-generation only, socialContentEngine.cjs never claimed to post
+  // to Instagram/Facebook/etc, so this button only appears where a real
+  // publish path exists (connect an account first via Connectors → X (Twitter)).
+  async function doPublish() {
+    if (!result?.entry?.id) return;
+    setPublish({ busy: true });
+    try {
+      const r = await apiPost("/creative/social/publish", { entryId: result.entry.id });
+      setPublish(r.ok ? { ok: true, url: r.url } : { ok: false, error: r.error });
+    } catch (e) { setPublish({ ok: false, error: e.message }); }
   }
 
   const platLabel = p => p.charAt(0).toUpperCase() + p.slice(1);
@@ -510,6 +525,21 @@ function SocialPanel({ onComplete }) {
             <div className="cs-social-section">
               <div className="cs-section-title">Variations</div>
               {result.result.variations.map((v, i) => <div key={i} className="cs-variation">{v}</div>)}
+            </div>
+          )}
+          {platform === "x" && (
+            <div className="cs-social-section">
+              <button className="cs-action-btn" onClick={doPublish} disabled={publish?.busy}>
+                {publish?.busy ? "Publishing…" : "Publish to X"}
+              </button>
+              {publish?.ok && (
+                <div className="cs-social-text" style={{ marginTop: 8 }}>
+                  ✓ Posted{publish.url ? <> — <a href={publish.url} target="_blank" rel="noreferrer">view post</a></> : null}
+                </div>
+              )}
+              {publish && !publish.busy && !publish.ok && (
+                <div className="cs-error-inline">{publish.error}</div>
+              )}
             </div>
           )}
         </div>
