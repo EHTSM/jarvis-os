@@ -85,6 +85,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
 
 const registry   = require("../services/aiRegistry.cjs");
 const capRouter  = require("../services/capabilityRouter.cjs");
@@ -340,12 +341,26 @@ router.get("/ai-ecosystem/policies", (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/ai-ecosystem/policies/:orgId", (req, res) => {
+// Phase A.1 Recertification finding: both routes below resolved/mutated an
+// org's AI policy by client-supplied :orgId with no ownership/membership
+// check beyond the barrel-level `router.use("/ai-ecosystem", requireAuth)`
+// — any authenticated user could read or overwrite any other org's AI
+// policy (provider allow/deny lists, per-request cost ceiling). Fixed with
+// the same attachOrg + requireOrgPermission("manage_billing") pattern
+// already used for the sibling budget routes in MODULE 11 below and the
+// analytics/org/:orgId route above — not a new authorization primitive.
+function _forwardPolicyOrgParam(req, res, next) {
+  req.body = req.body || {};
+  if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
+  return attachOrg(req, res, next);
+}
+
+router.get("/ai-ecosystem/policies/:orgId", _forwardPolicyOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
   try { res.json({ ok: true, policy: policies.getPolicy(req.params.orgId) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.put("/ai-ecosystem/policies/:orgId", (req, res) => {
+router.put("/ai-ecosystem/policies/:orgId", _forwardPolicyOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
   try {
     const p = policies.setPolicy(req.params.orgId, req.body || {});
     res.json({ ok: true, policy: p });
@@ -380,7 +395,6 @@ router.post("/ai-ecosystem/policies/filter", (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 const orgBudgets = require("../services/orgBudgets.cjs");
-const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
 
 router.get("/ai-ecosystem/budgets", (req, res) => {
   try { res.json({ ok: true, ...orgBudgets.getAllBudgets() }); }
@@ -412,7 +426,13 @@ router.put("/ai-ecosystem/budgets/org/:orgId", _forwardOrgParam, requireOrgPermi
   } catch (e) { res.status(400).json({ error: e.message }); }
 });
 
-router.get("/ai-ecosystem/budgets/workspace/:workspaceId", (req, res) => {
+// Phase A.1 Recertification finding: this read route had no org check at
+// all while its PUT sibling below did — any authenticated user could read
+// any other org's workspace AI spend/budget. Fixed with the identical
+// attachOrg + requireOrgPermission("manage_billing") pair the PUT already
+// uses (an orgId must still be supplied via header/query/body — workspaceId
+// alone doesn't tell requireOrgPermission which org's RBAC to check).
+router.get("/ai-ecosystem/budgets/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
   try { res.json({ ok: true, budget: orgBudgets.getWorkspaceBudget(req.params.workspaceId) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -731,7 +751,14 @@ router.get("/ai-ecosystem/history/me", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/ai-ecosystem/history/workspace/:workspaceId", (req, res) => {
+// Phase A.1 Recertification finding: no org check at all — any
+// authenticated user could read any other org's workspace AI prompt/
+// response history by guessing workspaceId. Fixed with the same
+// attachOrg + requireOrgPermission("manage_billing") pair used for the
+// workspace budget routes above — the caller must supply an orgId (header/
+// query/body) they actually hold billing/AI-usage visibility in, same
+// authorization bar as every other cost/usage-sensitive route in this file.
+router.get("/ai-ecosystem/history/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
   try {
     const { limit, provider, capability, since } = req.query || {};
     const entries = promptHistory.query({ workspaceId: req.params.workspaceId, limit: limit ? parseInt(limit, 10) : 50, provider, capability, since });
