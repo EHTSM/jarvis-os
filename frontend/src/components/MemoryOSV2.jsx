@@ -4,6 +4,7 @@ import {
   listMemoryNodes,
   searchMemory,
   memoryStats,
+  archiveMemoryNode,
 } from "../phase18Api";
 import { getKnowledge, addKnowledge, deleteKnowledge } from "../personalApi";
 import "./MemoryOSV2.css";
@@ -138,7 +139,7 @@ function Toast({ msg, type, onDone }) {
 
 // ── Memory Index tab ──────────────────────────────────────────────────
 
-function TabIndex({ entries, loading, apiDown }) {
+function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
   const [search, setSearch]   = useState("");
   const [typeF,  setTypeF]    = useState("all");
   const [expanded, setExpanded] = useState(null);
@@ -233,6 +234,16 @@ function TabIndex({ entries, loading, apiDown }) {
                   )}
                 </div>
                 <span className="mov2-entry-ts">{_timeAgo(e.created || e.createdAt || e.lastUpdated)}</span>
+                {onDelete && (e.nodeId || e.id) && (
+                  <button
+                    className="mov2-doc-del"
+                    title="Delete memory"
+                    disabled={deletingId === (e.nodeId || e.id)}
+                    onClick={(ev) => { ev.stopPropagation(); onDelete(e.nodeId || e.id); }}
+                  >
+                    {deletingId === (e.nodeId || e.id) ? "…" : "✕"}
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -704,6 +715,8 @@ export default function MemoryOSV2({ onNavigate }) {
   const [stats, setStats]     = useState(null);
   const [loading, setLoading] = useState(true);
   const [apiDown, setApiDown] = useState(false);
+  const [isLive, setIsLive]   = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [toasts, setToasts]   = useState([]);
 
   const addToast = useCallback((msg, type = "info") => {
@@ -722,7 +735,7 @@ export default function MemoryOSV2({ onNavigate }) {
       ]);
       const nodes = Array.isArray(nodesRes) ? nodesRes
         : (nodesRes?.nodes || nodesRes?.entries || nodesRes?.data || []);
-      if (nodes.length > 0) setEntries(nodes);
+      if (nodes.length > 0) { setEntries(nodes); setIsLive(true); }
       if (statsRes && !statsRes.error) setStats(statsRes);
       setApiDown(false);
     } catch {
@@ -733,6 +746,19 @@ export default function MemoryOSV2({ onNavigate }) {
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  const handleDeleteEntry = useCallback(async (nodeId) => {
+    setDeletingId(nodeId);
+    try {
+      await archiveMemoryNode(nodeId);
+      setEntries(prev => prev.filter(e => (e.nodeId || e.id) !== nodeId));
+      addToast("Memory archived", "success");
+    } catch (err) {
+      addToast(err.message || "Failed to archive memory", "error");
+    } finally {
+      setDeletingId(null);
+    }
+  }, [addToast]);
 
   const totalEntries = stats?.total || stats?.count || entries.length;
   const lastUpdated  = stats?.lastUpdated || entries[0]?.created;
@@ -781,7 +807,7 @@ export default function MemoryOSV2({ onNavigate }) {
 
       {/* Tab content */}
       <div className="mov2-tab-content">
-        {tab === "index"        && <TabIndex entries={entries} loading={loading} apiDown={apiDown} />}
+        {tab === "index"        && <TabIndex entries={entries} loading={loading} apiDown={apiDown} onDelete={isLive ? handleDeleteEntry : null} deletingId={deletingId} />}
         {tab === "shared"       && <TabShared />}
         {tab === "intelligence" && <TabIntelligence />}
         {tab === "knowledge"    && <TabKnowledge addToast={addToast} />}
