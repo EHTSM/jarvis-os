@@ -49,6 +49,24 @@ function _id(p)   { return `${p}-${Date.now()}-${Math.random().toString(36).slic
 function _ts()    { return new Date().toISOString(); }
 function _today() { return new Date().toISOString().slice(0, 10); }
 
+// Tenant isolation — same pattern recovered for growthOS.cjs (G1): this
+// service's data model had zero org scoping (confirmed live: a fresh
+// account's Blog Studio showed 698 pre-existing "Test Camp"/benchmark
+// articles created by other tenants running the Content Benchmark).
+// Every record now carries orgId, set server-side by contentSEO.js's
+// req.orgId middleware (organizationService.resolveContext), and every
+// list/get function filters by it.
+function _scopedRecords(recordsObj, orgId) {
+  const all = Object.values(recordsObj || {});
+  if (!orgId) return [];
+  return all.filter(r => r.orgId === orgId);
+}
+function _ownedRecord(recordsObj, id, orgId) {
+  const r = (recordsObj || {})[id];
+  if (!r || !orgId || r.orgId !== orgId) return null;
+  return r;
+}
+
 // ── SEO scoring helpers ───────────────────────────────────────────────────────
 
 function _seoScore(opts) {
@@ -87,7 +105,7 @@ function _opportunityScore(kw) {
 
 const ARTICLE_TYPES = ["blog", "how-to", "case-study", "release-notes", "product-update", "tutorial", "listicle", "comparison"];
 
-function createArticle(opts) {
+function createArticle(opts, orgId) {
   const s  = _load();
   const id = _id("art");
   const body = opts.body || "";
@@ -95,6 +113,7 @@ function createArticle(opts) {
 
   s.articles[id] = {
     id,
+    orgId,
     type:         opts.type        || "blog",
     title:        opts.title       || "",
     slug:         opts.slug        || opts.title?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || id,
@@ -118,9 +137,9 @@ function createArticle(opts) {
   return s.articles[id];
 }
 
-function updateArticle(id, patch) {
+function updateArticle(id, patch, orgId) {
   const s = _load();
-  if (!s.articles[id]) throw new Error(`Article ${id} not found`);
+  if (!_ownedRecord(s.articles, id, orgId)) throw new Error(`Article ${id} not found`);
   Object.assign(s.articles[id], patch, { updatedAt: _ts() });
   // Recompute SEO score on body/meta update
   const a = s.articles[id];
@@ -131,18 +150,18 @@ function updateArticle(id, patch) {
   return s.articles[id];
 }
 
-function publishArticle(id) {
-  return updateArticle(id, { status: "published" });
+function publishArticle(id, orgId) {
+  return updateArticle(id, { status: "published" }, orgId);
 }
 
-function listArticles(type, status) {
+function listArticles(type, status, orgId) {
   const s = _load();
-  return Object.values(s.articles)
+  return _scopedRecords(s.articles, orgId)
     .filter(a => (!type || a.type === type) && (!status || a.status === status))
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 }
 
-function getArticle(id) { return _load().articles[id] || null; }
+function getArticle(id, orgId) { return _ownedRecord(_load().articles, id, orgId); }
 
 function buildArticlePrompt(type, topic, opts = {}) {
   const LENGTH = { blog: 1200, "how-to": 900, "case-study": 1000, "release-notes": 400, "product-update": 500, tutorial: 1500, listicle: 800, comparison: 1000 };
@@ -202,11 +221,12 @@ function runTechnicalAudit(siteStatus = {}) {
   };
 }
 
-function createTopicCluster(opts) {
+function createTopicCluster(opts, orgId) {
   const s  = _load();
   const id = _id("cls");
   s.clusters[id] = {
     id,
+    orgId,
     pillarTopic: opts.pillarTopic || "",
     pillarUrl:   opts.pillarUrl   || null,
     supportingTopics: opts.supportingTopics || [],
@@ -219,21 +239,17 @@ function createTopicCluster(opts) {
   return s.clusters[id];
 }
 
-function updateTopicCluster(id, patch) {
+function updateTopicCluster(id, patch, orgId) {
   const s = _load();
-  if (!s.clusters[id]) throw new Error(`Cluster ${id} not found`);
+  if (!_ownedRecord(s.clusters, id, orgId)) throw new Error(`Cluster ${id} not found`);
   Object.assign(s.clusters[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.clusters[id];
 }
 
-function listTopicClusters() {
-  return Object.values(_load().clusters).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-}
-
-function addInternalLink(clusterId, from, to, anchorText) {
+function addInternalLink(clusterId, from, to, anchorText, orgId) {
   const s = _load();
-  const c = s.clusters[clusterId];
+  const c = _ownedRecord(s.clusters, clusterId, orgId);
   if (!c) throw new Error(`Cluster ${clusterId} not found`);
   c.internalLinks.push({ from, to, anchorText, addedAt: _ts() });
   c.updatedAt = _ts();
@@ -294,12 +310,12 @@ function buildRepurposePrompts(sourceContent, targets, opts = {}) {
   }).filter(Boolean);
 }
 
-function storeRepurposeJob(sourceId, targets, results) {
+function storeRepurposeJob(sourceId, targets, results, orgId) {
   const s  = _load();
   if (!s.repurposeJobs) s.repurposeJobs = {};
   const id = _id("rpj");
   s.repurposeJobs[id] = {
-    id, sourceId, targets, results,
+    id, orgId, sourceId, targets, results,
     status: "completed",
     createdAt: _ts(),
   };
@@ -307,16 +323,16 @@ function storeRepurposeJob(sourceId, targets, results) {
   return s.repurposeJobs[id];
 }
 
-function listRepurposeJobs() {
+function listRepurposeJobs(orgId) {
   const s = _load();
-  return Object.values(s.repurposeJobs || {}).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 50);
+  return _scopedRecords(s.repurposeJobs, orgId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 50);
 }
 
 // ── MODULE 4: Landing Page Builder ────────────────────────────────────────────
 
 const LP_SECTIONS = ["hero", "problem", "solution", "features", "social_proof", "pricing", "faq", "cta"];
 
-function createLandingPage(opts) {
+function createLandingPage(opts, orgId) {
   const s  = _load();
   const id = _id("lp");
   const sections = opts.sections || {};
@@ -341,6 +357,7 @@ function createLandingPage(opts) {
 
   s.landingPages[id] = {
     id,
+    orgId,
     name:           opts.name           || "Landing Page",
     slug:           opts.slug           || id,
     audience:       opts.audience       || "",
@@ -361,9 +378,9 @@ function createLandingPage(opts) {
   return s.landingPages[id];
 }
 
-function updateLandingPage(id, patch) {
+function updateLandingPage(id, patch, orgId) {
   const s = _load();
-  if (!s.landingPages[id]) throw new Error(`Landing page ${id} not found`);
+  if (!_ownedRecord(s.landingPages, id, orgId)) throw new Error(`Landing page ${id} not found`);
   Object.assign(s.landingPages[id], patch, { updatedAt: _ts() });
   const lp = s.landingPages[id];
   lp.conversionScore = _conversionScore({ headline: lp.sections?.hero?.headline, cta: lp.sections?.cta?.text, benefits: lp.sections?.features?.items || [], socialProof: lp.sections?.social_proof?.text, urgency: lp.sections?.hero?.urgency, subheadline: lp.sections?.hero?.subheadline });
@@ -372,9 +389,9 @@ function updateLandingPage(id, patch) {
   return s.landingPages[id];
 }
 
-function listLandingPages(status) {
+function listLandingPages(status, orgId) {
   const s = _load();
-  return Object.values(s.landingPages).filter(lp => !status || lp.status === status).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+  return _scopedRecords(s.landingPages, orgId).filter(lp => !status || lp.status === status).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 }
 
 function buildLandingPagePrompt(audience, keyword, opts = {}) {
@@ -389,11 +406,12 @@ function buildLandingPagePrompt(audience, keyword, opts = {}) {
 
 const DOC_TYPES = ["api-reference", "feature-guide", "release-notes", "tutorial", "troubleshooting", "changelog", "faq"];
 
-function createDoc(opts) {
+function createDoc(opts, orgId) {
   const s  = _load();
   const id = _id("doc");
   s.docs[id] = {
     id,
+    orgId,
     type:       opts.type       || "feature-guide",
     title:      opts.title      || "",
     slug:       opts.slug       || opts.title?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || id,
@@ -410,22 +428,22 @@ function createDoc(opts) {
   return s.docs[id];
 }
 
-function updateDoc(id, patch) {
+function updateDoc(id, patch, orgId) {
   const s = _load();
-  if (!s.docs[id]) throw new Error(`Doc ${id} not found`);
+  if (!_ownedRecord(s.docs, id, orgId)) throw new Error(`Doc ${id} not found`);
   Object.assign(s.docs[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.docs[id];
 }
 
-function listDocs(type, status) {
+function listDocs(type, status, orgId) {
   const s = _load();
-  return Object.values(s.docs)
+  return _scopedRecords(s.docs, orgId)
     .filter(d => (!type || d.type === type) && (!status || d.status === status))
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 }
 
-function getDoc(id) { return _load().docs[id] || null; }
+function getDoc(id, orgId) { return _ownedRecord(_load().docs, id, orgId); }
 
 function buildDocPrompt(type, subject, opts = {}) {
   const TEMPLATES = {
@@ -448,11 +466,12 @@ function buildDocPrompt(type, subject, opts = {}) {
 
 const APPROVAL_STATES = ["draft", "in-review", "approved", "scheduled", "published", "rejected"];
 
-function createCalendarEntry(opts) {
+function createCalendarEntry(opts, orgId) {
   const s  = _load();
   const id = _id("cal");
   s.calendar[id] = {
     id,
+    orgId,
     title:        opts.title        || "",
     type:         opts.type         || "blog",
     channel:      opts.channel      || "blog",
@@ -472,17 +491,17 @@ function createCalendarEntry(opts) {
   return s.calendar[id];
 }
 
-function updateCalendarEntry(id, patch) {
+function updateCalendarEntry(id, patch, orgId) {
   const s = _load();
-  if (!s.calendar[id]) throw new Error(`Calendar entry ${id} not found`);
+  if (!_ownedRecord(s.calendar, id, orgId)) throw new Error(`Calendar entry ${id} not found`);
   Object.assign(s.calendar[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.calendar[id];
 }
 
-function approveCalendarEntry(id, notes, approved) {
+function approveCalendarEntry(id, notes, approved, orgId) {
   const s = _load();
-  const e = s.calendar[id];
+  const e = _ownedRecord(s.calendar, id, orgId);
   if (!e) throw new Error(`Calendar entry ${id} not found`);
   e.approvalState = approved ? "approved" : "rejected";
   e.approvalNotes.push({ note: notes, at: _ts(), approved });
@@ -491,9 +510,9 @@ function approveCalendarEntry(id, notes, approved) {
   return e;
 }
 
-function listCalendarEntries(month, channel, status) {
+function listCalendarEntries(month, channel, status, orgId) {
   const s = _load();
-  return Object.values(s.calendar)
+  return _scopedRecords(s.calendar, orgId)
     .filter(e =>
       (!month  || e.scheduledDate?.startsWith(month)) &&
       (!channel || e.channel === channel) &&
@@ -502,9 +521,9 @@ function listCalendarEntries(month, channel, status) {
     .sort((a, b) => (a.scheduledDate || "").localeCompare(b.scheduledDate || ""));
 }
 
-function getCalendarStats() {
+function getCalendarStats(orgId) {
   const s       = _load();
-  const entries = Object.values(s.calendar);
+  const entries = _scopedRecords(s.calendar, orgId);
   const byState = {};
   const byChannel = {};
   for (const e of entries) {
@@ -529,11 +548,12 @@ const BUILTIN_KEYWORDS = [
   { keyword: "solo founder tools 2026",        volume: 590,  difficulty: 15, intent: "informational", competitorGap: true,  trend: "emerging"},
 ];
 
-function addKeyword(opts) {
+function addKeyword(opts, orgId) {
   const s  = _load();
   const id = _id("kw");
   const kw = {
     id,
+    orgId,
     keyword:      opts.keyword     || "",
     volume:       opts.volume      || 0,
     difficulty:   opts.difficulty  || 50,
@@ -550,9 +570,9 @@ function addKeyword(opts) {
   return kw;
 }
 
-function listKeywords(intent, minOpportunity) {
+function listKeywords(intent, minOpportunity, orgId) {
   const s = _load();
-  const custom = Object.values(s.keywords);
+  const custom = _scopedRecords(s.keywords, orgId);
   const all    = [
     ...BUILTIN_KEYWORDS.map(k => ({ ...k, id: `builtin-${k.keyword.replace(/\s+/g,"-")}`, opportunityScore: _opportunityScore(k), builtin: true })),
     ...custom,
@@ -562,14 +582,14 @@ function listKeywords(intent, minOpportunity) {
     .sort((a, b) => b.opportunityScore - a.opportunityScore);
 }
 
-function getKeywordById(id) {
+function getKeywordById(id, orgId) {
   const builtin = BUILTIN_KEYWORDS.find(k => `builtin-${k.keyword.replace(/\s+/g,"-")}` === id);
   if (builtin) return { ...builtin, id, opportunityScore: _opportunityScore(builtin), builtin: true };
-  return _load().keywords[id] || null;
+  return _ownedRecord(_load().keywords, id, orgId);
 }
 
-function getKeywordIntelligence() {
-  const all = listKeywords();
+function getKeywordIntelligence(orgId) {
+  const all = listKeywords(undefined, undefined, orgId);
   const byIntent = {};
   for (const k of all) byIntent[k.intent] = (byIntent[k.intent] || 0) + 1;
   return {
@@ -667,14 +687,14 @@ function checkBrandConsistency(text) {
 
 // ── MODULE 9: Growth Content Dashboard ───────────────────────────────────────
 
-function getContentDashboard() {
+function getContentDashboard(orgId) {
   const s        = _load();
-  const articles = Object.values(s.articles);
-  const lps      = Object.values(s.landingPages);
-  const docs     = Object.values(s.docs);
-  const calendar = Object.values(s.calendar);
-  const keywords = listKeywords();
-  const kwIntel  = getKeywordIntelligence();
+  const articles = _scopedRecords(s.articles, orgId);
+  const lps      = _scopedRecords(s.landingPages, orgId);
+  const docs     = _scopedRecords(s.docs, orgId);
+  const calendar = _scopedRecords(s.calendar, orgId);
+  const keywords = listKeywords(undefined, undefined, orgId);
+  const kwIntel  = getKeywordIntelligence(orgId);
 
   const published  = articles.filter(a => a.status === "published");
   const avgSEO     = articles.length ? Math.round(articles.reduce((s, a) => s + (a.seoScore || 0), 0) / articles.length) : 0;
@@ -684,7 +704,7 @@ function getContentDashboard() {
     (published.length > 0 ? 20 : 0) +
     (avgSEO * 0.3) +
     (kwIntel.highOpportunity > 0 ? 15 : 0) +
-    (listTopicClusters().length > 0 ? 15 : 0) +
+    (listTopicClusters(orgId).length > 0 ? 15 : 0) +
     (docs.length > 0 ? 10 : 0) +
     (lps.filter(l => l.seoScore > 60).length > 0 ? 10 : 0)
   );
@@ -712,7 +732,7 @@ function getContentDashboard() {
       byType:           _countBy(articles, "type"),
     },
     keywords: kwIntel,
-    calendar: getCalendarStats(),
+    calendar: getCalendarStats(orgId),
     publishing: {
       scheduled: calendar.filter(e => e.approvalState === "scheduled").length,
       approved:  calendar.filter(e => e.approvalState === "approved").length,
@@ -720,7 +740,7 @@ function getContentDashboard() {
     },
     trafficProjection,
     repurposing: {
-      totalJobs: Object.keys(s.repurposeJobs || {}).length,
+      totalJobs: _scopedRecords(s.repurposeJobs, orgId).length,
       platforms: REPURPOSE_TARGETS.length,
     },
     brand: { glossaryTerms: listGlossary().length },
@@ -733,23 +753,23 @@ function _countBy(arr, key) {
   return out;
 }
 
-function listTopicClusters() {
-  return Object.values(_load().clusters || {});
+function listTopicClusters(orgId) {
+  return _scopedRecords(_load().clusters, orgId);
 }
 
 // ── MODULE 10: Commercial Benchmark ──────────────────────────────────────────
 
-function runBenchmark() {
+function runBenchmark(orgId) {
   const checks = [
     {
       id: "blog_studio",
       label: "AI Blog Studio (blog/how-to/case-study/release-notes/product-update)",
       run: () => {
         const types = ["blog","how-to","case-study","release-notes","product-update"];
-        const ids = types.map(t => createArticle({ type: t, title: `Benchmark ${t}`, metaDesc: "Test meta description that is within the required length range.", keyword: "benchmark keyword", body: "This is a benchmark test article body with enough words to pass validation checks. ".repeat(20), slug: `benchmark-${t}` }).id);
+        const ids = types.map(t => createArticle({ type: t, title: `Benchmark ${t}`, metaDesc: "Test meta description that is within the required length range.", keyword: "benchmark keyword", body: "This is a benchmark test article body with enough words to pass validation checks. ".repeat(20), slug: `benchmark-${t}` }, orgId).id);
         const prompts = types.map(t => buildArticlePrompt(t, "AI automation for founders"));
-        publishArticle(ids[0]);
-        const art = getArticle(ids[0]);
+        publishArticle(ids[0], orgId);
+        const art = getArticle(ids[0], orgId);
         return ids.length === 5 && art.status === "published" && art.seoScore >= 0 && prompts.length === 5;
       },
     },
@@ -758,8 +778,8 @@ function runBenchmark() {
       label: "SEO Command Center (audit + schema + clusters + internal links)",
       run: () => {
         const audit   = runTechnicalAudit();
-        const cluster = createTopicCluster({ pillarTopic: "WhatsApp Automation", supportingTopics: ["OTP automation","broadcast campaigns","lead qualification"] });
-        addInternalLink(cluster.id, "/blog/whatsapp-automation", "/blog/otp-guide", "OTP automation guide");
+        const cluster = createTopicCluster({ pillarTopic: "WhatsApp Automation", supportingTopics: ["OTP automation","broadcast campaigns","lead qualification"] }, orgId);
+        addInternalLink(cluster.id, "/blog/whatsapp-automation", "/blog/otp-guide", "OTP automation guide", orgId);
         const schema = generateSchemaMarkup("article", { title: "Benchmark Article", date: _today() });
         const faq    = generateSchemaMarkup("faq", { faqs: [{ q: "What is Ooplix?", a: "An AI OS." }] });
         return audit.total >= 20 && cluster.id && schema["@type"] === "Article" && faq["@type"] === "FAQPage";
@@ -771,8 +791,8 @@ function runBenchmark() {
       run: () => {
         const targets = REPURPOSE_TARGETS.map(t => t.id);
         const prompts = buildRepurposePrompts("This is a test article about AI automation.", targets);
-        const job = storeRepurposeJob("art-bench", targets, prompts.map(p => ({ target: p.targetId, content: "Generated content" })));
-        const jobs = listRepurposeJobs();
+        const job = storeRepurposeJob("art-bench", targets, prompts.map(p => ({ target: p.targetId, content: "Generated content" })), orgId);
+        const jobs = listRepurposeJobs(orgId);
         return prompts.length === 10 && job.id && jobs.length >= 1;
       },
     },
@@ -786,7 +806,7 @@ function runBenchmark() {
           slug: "ai-crm-freelancers-india",
           sections: { hero: { headline: "Stop Losing Leads. Start Closing More.", subheadline: "Ooplix automates your follow-ups so you can focus on the work.", cta: "Start Free Trial" }, features: { items: [{icon:"⚡",title:"Auto Follow-up"},{icon:"₹",title:"Payment Automation"},{icon:"◉",title:"Lead Tracking"}] }, social_proof: { text: "Used by 500+ freelancers" }, cta: { text: "Get Started Free" } },
           schema: generateSchemaMarkup("product", { name: "Ooplix", price: "0" }),
-        });
+        }, orgId);
         const prompt = buildLandingPagePrompt("freelancers", "ai crm for freelancers india");
         return lp.id && lp.seoScore >= 0 && lp.conversionScore >= 0 && prompt.userPrompt?.length > 50;
       },
@@ -796,9 +816,9 @@ function runBenchmark() {
       label: "Documentation Generator (API/feature/release/tutorial docs)",
       run: () => {
         const types = ["api-reference","feature-guide","release-notes","tutorial","troubleshooting"];
-        const ids   = types.map(t => createDoc({ type: t, title: `Benchmark ${t}`, body: "Documentation content here.", version: "v3.0" }).id);
+        const ids   = types.map(t => createDoc({ type: t, title: `Benchmark ${t}`, body: "Documentation content here.", version: "v3.0" }, orgId).id);
         const prompts = types.map(t => buildDocPrompt(t, "Growth OS API", { version: "v3.0" }));
-        const docs  = listDocs();
+        const docs  = listDocs(undefined, undefined, orgId);
         return ids.length === 5 && docs.length >= 5 && prompts.every(p => p.userPrompt?.length > 20);
       },
     },
@@ -806,11 +826,11 @@ function runBenchmark() {
       id: "content_calendar",
       label: "Content Calendar (planning + scheduling + approval workflow)",
       run: () => {
-        const e1 = createCalendarEntry({ title: "WA Automation Guide", type: "blog", channel: "blog", scheduledDate: `${_today().slice(0,7)}-15`, keywords: ["whatsapp automation"] });
-        const e2 = createCalendarEntry({ title: "LinkedIn Post: AI OS", type: "social", channel: "linkedin", scheduledDate: `${_today().slice(0,7)}-18` });
-        approveCalendarEntry(e1.id, "Content looks good, approved for publish", true);
-        updateCalendarEntry(e2.id, { approvalState: "in-review" });
-        const stats = getCalendarStats();
+        const e1 = createCalendarEntry({ title: "WA Automation Guide", type: "blog", channel: "blog", scheduledDate: `${_today().slice(0,7)}-15`, keywords: ["whatsapp automation"] }, orgId);
+        const e2 = createCalendarEntry({ title: "LinkedIn Post: AI OS", type: "social", channel: "linkedin", scheduledDate: `${_today().slice(0,7)}-18` }, orgId);
+        approveCalendarEntry(e1.id, "Content looks good, approved for publish", true, orgId);
+        updateCalendarEntry(e2.id, { approvalState: "in-review" }, orgId);
+        const stats = getCalendarStats(orgId);
         return e1.id && e2.id && stats.total >= 2 && stats.byState?.approved >= 1;
       },
     },
@@ -818,9 +838,9 @@ function runBenchmark() {
       id: "keyword_intel",
       label: "Keyword Intelligence (opportunity score + difficulty + intent + competitor gap)",
       run: () => {
-        const custom = addKeyword({ keyword: "ai automation india", volume: 5400, difficulty: 38, intent: "commercial", competitorGap: true, trend: "rising" });
-        const all    = listKeywords();
-        const intel  = getKeywordIntelligence();
+        const custom = addKeyword({ keyword: "ai automation india", volume: 5400, difficulty: 38, intent: "commercial", competitorGap: true, trend: "rising" }, orgId);
+        const all    = listKeywords(undefined, undefined, orgId);
+        const intel  = getKeywordIntelligence(orgId);
         const highOpp = all.find(k => k.opportunityScore >= 50);
         return all.length >= 10 && custom.id && intel.total >= 10 && highOpp && typeof intel.avgOpportunity === "number";
       },
@@ -841,7 +861,7 @@ function runBenchmark() {
       id: "content_dashboard",
       label: "Growth Content Dashboard (SEO + traffic projections + organic score)",
       run: () => {
-        const dash = getContentDashboard();
+        const dash = getContentDashboard(orgId);
         return typeof dash.organicScore === "number" && dash.seo && dash.content && dash.keywords && dash.trafficProjection?.month6 >= 0 && dash.publishing;
       },
     },
@@ -850,10 +870,10 @@ function runBenchmark() {
       label: "Organic Readiness (article count + keyword coverage + cluster + LP)",
       run: () => {
         const audit    = runTechnicalAudit();
-        const articles = listArticles();
-        const keywords = listKeywords();
-        const clusters = listTopicClusters();
-        const lps      = listLandingPages();
+        const articles = listArticles(undefined, undefined, orgId);
+        const keywords = listKeywords(undefined, undefined, orgId);
+        const clusters = listTopicClusters(orgId);
+        const lps      = listLandingPages(undefined, orgId);
         return audit.total >= 20 && articles.length >= 5 && keywords.length >= 10 && clusters.length >= 1 && lps.length >= 1;
       },
     },
