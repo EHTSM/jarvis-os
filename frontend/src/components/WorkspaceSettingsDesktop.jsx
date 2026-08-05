@@ -49,6 +49,54 @@ function PrintToPdfCard() {
   );
 }
 
+// ── Multi-monitor: move window to display ────────────────────────────
+function DisplaysCard() {
+  const [displays, setDisplays] = useState(null);
+  const [moving, setMoving]     = useState(null);
+
+  useEffect(() => {
+    window.electronAPI.getDisplays().then(r => setDisplays(r?.displays || []));
+  }, []);
+
+  const handleMove = async (displayId) => {
+    setMoving(displayId);
+    try {
+      await window.electronAPI.moveToDisplay(displayId);
+    } finally {
+      setMoving(null);
+    }
+  };
+
+  if (!displays || displays.length < 2) return null; // nothing to show on a single monitor
+
+  return (
+    <div className="k2-tokens-panel">
+      <div className="k2-tokens-header">
+        <span>Displays</span>
+      </div>
+      <p className="k2-row-sub" style={{ padding: "0 2px" }}>
+        {displays.length} monitors detected. Move this window to another display.
+      </p>
+      <div className="k2-list">
+        {displays.map(d => (
+          <div key={d.id} className="k2-row">
+            <span className="k2-row-icon">🖥</span>
+            <div className="k2-row-meta">
+              <span className="k2-row-title">{d.bounds.width}×{d.bounds.height}{d.primary ? " (primary)" : ""}</span>
+              <span className="k2-row-sub">scale {d.scaleFactor}x</span>
+            </div>
+            <div className="k2-row-actions">
+              <button className="k2-create-btn" onClick={() => handleMove(d.id)} disabled={moving === d.id}>
+                {moving === d.id ? "Moving…" : "Move here"}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Printer list + direct print ──────────────────────────────────────
 function PrinterCard() {
   const [printers, setPrinters] = useState(null);
@@ -301,6 +349,7 @@ export function DesktopIntegrationsPanel() {
   }
   return (
     <div className="k2-list">
+      <DisplaysCard />
       <PrinterCard />
       <PrintToPdfCard />
       <ScannerCard />
