@@ -940,9 +940,24 @@ function AppInner() {
   // Shown once per account (own localStorage key), never for operators.
   // user is not resolved on first render (authLoading), so this is derived
   // reactively rather than computed once in a useState initializer.
+  //
+  // Founder Journey Certification finding: neither this condition nor
+  // shouldShowCustomerFirstRun() excluded the desktop shell, so on
+  // ?desktop=1 both this wizard AND WelcomeFlow.jsx (the desktop-specific
+  // equivalent — project picker + coding-mission quick actions, gated on
+  // _IS_DESKTOP, see its own file header) were simultaneously eligible for
+  // the exact same brand-new signup. Reproduced directly: both wizards'
+  // "Welcome to Ooplix" cards raced to mount, and the second one's
+  // backdrop blocked clicks meant for the first — a real, confusing
+  // stacked-onboarding experience, not just a test artifact. WelcomeFlow
+  // already covers desktop's "get oriented" need with desktop-appropriate
+  // content (this wizard's CRM/team-invite/connectors steps don't fit the
+  // immediate desktop-shell context); excluding this one on desktop,
+  // matching the exact !_IS_DESKTOP precedent already used one screen
+  // below for showFirstLaunchHint.
   const [firstRunDismissed, setFirstRunDismissed] = useState(false);
   const showCustomerFirstRun = !authLoading && !!user && user.role !== "operator"
-    && !firstRunDismissed && shouldShowCustomerFirstRun();
+    && !_IS_DESKTOP && !firstRunDismissed && shouldShowCustomerFirstRun();
 
   // ── Legal page overlay ────────────────────────────────────────────
   // null = no legal page; string = which page is open
