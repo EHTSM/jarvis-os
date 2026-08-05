@@ -219,6 +219,19 @@
 .aad-btn--danger { background: #ef444422; color: #ef4444; border-color: #ef444455; }
 .aad-btn--ghost  { background: var(--bg3, #27272a); color: var(--text, #e2e8f0); border-color: var(--border, #3f3f46); }
 
+/* Inputs */
+.aad-input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-family: inherit;
+  background: var(--bg3, #27272a);
+  color: var(--text, #e2e8f0);
+  border: 1px solid var(--border, #3f3f46);
+}
+.aad-input:disabled { opacity: 0.5; cursor: not-allowed; }
+.aad-input:focus { outline: none; border-color: #3b82f6; }
+
 /* Footer */
 .aad-footer {
   font-size: 10px;

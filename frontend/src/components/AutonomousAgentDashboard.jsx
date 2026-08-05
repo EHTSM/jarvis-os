@@ -507,6 +507,8 @@ function PipelineTab() {
     const [loading, setLoading] = useState(true);
     const [error, setError]     = useState(null);
     const [allPipes, setAll]    = useState([]);
+    const [goal, setGoal]       = useState("");
+    const [starting, setStarting] = useState(false);
     const pollRef = useRef(null);
 
     const load = useCallback(async () => {
@@ -529,6 +531,17 @@ function PipelineTab() {
         return () => clearInterval(pollRef.current);
     }, [load]);
 
+    const handleStartPipeline = async () => {
+        if (!goal.trim() || starting) return;
+        setStarting(true);
+        try {
+            await _fetch("/pipeline/run", { method: "POST", body: JSON.stringify({ goal: goal.trim() }) });
+            setGoal("");
+            await load();
+        } catch (e) { setError(e.message); }
+        finally { setStarting(false); }
+    };
+
     if (loading && !data) return <div className="aad-loading">Loading pipeline data…</div>;
     if (error) return <div className="aad-error-banner">{error}</div>;
 
@@ -536,6 +549,22 @@ function PipelineTab() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Start pipeline */}
+            <div style={{ display: "flex", gap: 8 }}>
+                <input
+                    className="aad-input"
+                    style={{ flex: 1 }}
+                    placeholder="Describe an engineering goal to run through the pipeline…"
+                    value={goal}
+                    onChange={e => setGoal(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") handleStartPipeline(); }}
+                    disabled={starting}
+                />
+                <button className="aad-btn aad-btn--ok" onClick={handleStartPipeline} disabled={starting || !goal.trim()}>
+                    {starting ? "Starting…" : "Start Pipeline"}
+                </button>
+            </div>
+
             {/* Stat bar */}
             {stats && (
                 <div className="aad-collab-summary">
@@ -560,7 +589,7 @@ function PipelineTab() {
 
             <div className="aad-collab-section-title">Recent Pipelines ({allPipes.length})</div>
             {allPipes.length === 0 && (
-                <div className="aad-empty">No pipelines yet. POST /pipeline/run with a goal to start.</div>
+                <div className="aad-empty">No pipelines yet. Enter a goal above to start one.</div>
             )}
             <div className="aad-cards">
                 {allPipes.map(p => <PipelineCard key={p.pipelineId} pipeline={p} />)}
@@ -641,6 +670,9 @@ function DeploymentTab() {
     const [error, setError]     = useState(null);
     const [allDeps, setAll]     = useState([]);
     const [targets, setTargets] = useState({});
+    const [target, setTarget]   = useState("");
+    const [goal, setGoal]       = useState("");
+    const [starting, setStarting] = useState(false);
     const pollRef = useRef(null);
 
     const load = useCallback(async () => {
@@ -665,6 +697,22 @@ function DeploymentTab() {
         return () => clearInterval(pollRef.current);
     }, [load]);
 
+    useEffect(() => {
+        const ids = Object.keys(targets);
+        if (!target && ids.length > 0) setTarget(ids[0]);
+    }, [targets, target]);
+
+    const handleStartDeployment = async () => {
+        if (!target || starting) return;
+        setStarting(true);
+        try {
+            await _fetch("/deployment/run", { method: "POST", body: JSON.stringify({ target, goal: goal.trim() || undefined }) });
+            setGoal("");
+            await load();
+        } catch (e) { setError(e.message); }
+        finally { setStarting(false); }
+    };
+
     if (loading && !data) return <div className="aad-loading">Loading deployment data…</div>;
     if (error) return <div className="aad-error-banner">{error}</div>;
 
@@ -672,6 +720,27 @@ function DeploymentTab() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Start deployment */}
+            {Object.keys(targets).length > 0 && (
+                <div style={{ display: "flex", gap: 8 }}>
+                    <select className="aad-input" value={target} onChange={e => setTarget(e.target.value)} disabled={starting}>
+                        {Object.values(targets).map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+                    </select>
+                    <input
+                        className="aad-input"
+                        style={{ flex: 1 }}
+                        placeholder="Optional deployment goal/description…"
+                        value={goal}
+                        onChange={e => setGoal(e.target.value)}
+                        onKeyDown={e => { if (e.key === "Enter") handleStartDeployment(); }}
+                        disabled={starting}
+                    />
+                    <button className="aad-btn aad-btn--ok" onClick={handleStartDeployment} disabled={starting || !target}>
+                        {starting ? "Starting…" : "Deploy"}
+                    </button>
+                </div>
+            )}
+
             {/* Deployment stat bar */}
             {stats && (
                 <div className="aad-collab-summary">
@@ -707,7 +776,7 @@ function DeploymentTab() {
 
             <div className="aad-collab-section-title">Deployment History ({allDeps.length})</div>
             {allDeps.length === 0 && (
-                <div className="aad-empty">No deployments yet. POST /deployment/run with a target to start.</div>
+                <div className="aad-empty">No deployments yet. Pick a target above to start one.</div>
             )}
             <div className="aad-cards">
                 {allDeps.map(d => <DeploymentCard key={d.deployId} dep={d} />)}
