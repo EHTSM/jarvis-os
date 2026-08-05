@@ -156,7 +156,7 @@ function marketingLaunchCampaign({ objectiveId, title, channel = "email", target
 // STEP 4 — Growth/Lead Gen captures leads from campaign
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, source = "campaign" } = {}) {
+function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, source = "campaign", synthetic = false } = {}) {
   if (!company) return null;
   const deal = st().createDeal({
     title:       `${company} — inbound lead`,
@@ -167,6 +167,21 @@ function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, so
     deptId:      "bizorg_crm",
     campaignId,
     leadSource:  source,
+    // Zero-Trust Competitor Remediation, Phase 2: this function is shared
+    // by a real HTTP-triggered lead-capture route (backend/routes/
+    // businessOrg.js:254) and by businessOrg.cjs's/this file's own
+    // autonomous demo tick (_growthTick, and the setTimeout cascade
+    // below), which generates fictional company names and Math.random()
+    // values on a real setInterval that starts automatically on every
+    // server boot (server.js's Level 3 registration). Reproduced live:
+    // confirmed real "Acme Corp" records were already written to
+    // data/business-leads.json / business-contacts.json /
+    // business-opportunities.json from prior server runs. Explicitly
+    // tagging fabricated records at the source (rather than deleting the
+    // demo pipeline outright, which is out of scope for this remediation)
+    // is what lets every downstream consumer — the dashboard, exports,
+    // any future integration — tell real leads from simulated ones.
+    synthetic,
   });
   if (!deal.ok) return null;
 
@@ -471,11 +486,14 @@ function subscribeWorkflowEvents() {
   b.subscribe("bizorg_wf_growth", (evt) => {
     if (evt.type !== "bizorg:campaign:launched") return;
     const { campaignId, title } = evt.payload || {};
-    // Simulate 2-3 leads per campaign launch
+    // Simulate 2-3 leads per campaign launch — synthetic:true makes this
+    // code's own pre-existing "Simulate" intent honest in the persisted
+    // data too, not just the comment (Zero-Trust Competitor Remediation,
+    // Phase 2).
     const companies = ["Acme Corp", "TechStart Inc", "GlobalSMB Ltd"];
     const n = 1 + Math.floor(Math.random() * 2);
     for (const co of companies.slice(0, n)) {
-      growthCaptureLead({ campaignId, company: co, value: 1200 + Math.floor(Math.random() * 2400) });
+      growthCaptureLead({ campaignId, company: co, value: 1200 + Math.floor(Math.random() * 2400), source: "demo_simulation", synthetic: true });
     }
   });
 

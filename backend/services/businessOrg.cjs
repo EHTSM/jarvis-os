@@ -215,12 +215,18 @@ async function _growthTick(s) {
   _setObj(s, "Running growth experiments and capturing leads");
   try {
     const campaigns = _st()?.listCampaigns({ status: "active" }) || [];
-    // Capture leads for active campaigns
+    // Capture leads for active campaigns.
+    // Zero-Trust Competitor Remediation, Phase 2: these are fictional
+    // demo company names, not real leads — synthetic:true (and
+    // source:"demo_simulation") is threaded through so every downstream
+    // consumer (dashboard, exports) can tell this apart from a real
+    // HTTP-triggered lead capture. See businessOrgWorkflow.cjs's
+    // growthCaptureLead() for the full incident writeup.
     for (const c of campaigns.slice(0, 2)) {
       if (c.actualLeads < c.targetLeads) {
         const companies = ["Prospect Alpha", "Beta Dynamics", "Gamma Solutions", "Delta Systems"];
         const co = companies[Math.floor(Math.random() * companies.length)] + ` ${Date.now().toString(36).slice(-4)}`;
-        _wf()?.growthCaptureLead({ campaignId: c.id, company: co, value: 1200 + Math.floor(Math.random() * 3600) });
+        _wf()?.growthCaptureLead({ campaignId: c.id, company: co, value: 1200 + Math.floor(Math.random() * 3600), source: "demo_simulation", synthetic: true });
       }
     }
     const kpi = _st()?.getKpi(s.id) || {};
