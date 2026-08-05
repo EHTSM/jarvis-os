@@ -270,6 +270,94 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
 
 const GRANTABLE_ACTIONS = ["view_missions", "view_members", "view_departments", "view_teams", "view_analytics"];
 
+// ── Knowledge Graph (V5 Module 2) ────────────────────────────────────────
+// backend/routes/orgKnowledgeGraph.js (/org-graph/:orgId/*) indexes CRM,
+// connectors, workflows, AI context and documents into the org-scoped
+// knowledge graph and exposes read-only traversal — real backend, no
+// frontend consumer until this panel.
+
+function KnowledgeGraphPanel({ orgId, onToast }) {
+  const [graph, setGraph]     = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [indexing, setIndexing] = useState(false);
+  const [error, setError]     = useState(null);
+
+  const load = useCallback(() => {
+    if (!orgId) return;
+    setLoading(true);
+    _fetch(`/org-graph/${orgId}`).then(r => {
+      setGraph(r.ok !== false ? r : null);
+      setError(r.ok === false ? (r.error || "Failed to load knowledge graph") : null);
+    }).catch(e => setError(e.message)).finally(() => setLoading(false));
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleIndex = async () => {
+    setIndexing(true);
+    const r = await _fetch(`/org-graph/${orgId}/index`, { method: "POST" }).catch(e => ({ ok: false, error: e.message }));
+    setIndexing(false);
+    if (r.ok === false) onToast?.("error", r.error || "Failed to index organization");
+    else { onToast?.("success", `Indexed ${r.indexed} item${r.indexed === 1 ? "" : "s"}`); load(); }
+  };
+
+  if (loading && !graph) return <div className="oac-loading">Loading knowledge graph…</div>;
+
+  const byType = graph?.byType || {};
+  const types = Object.keys(byType);
+
+  return (
+    <div className="oac-section">
+      <div className="oac-section-header">
+        <h3 className="oac-section-title">Knowledge Graph</h3>
+        <button className="oac-btn primary" onClick={handleIndex} disabled={indexing}>
+          {indexing ? "Indexing…" : "Reindex organization"}
+        </button>
+      </div>
+
+      {error && !graph && <Empty title="Couldn't load knowledge graph" sub={error} />}
+
+      {graph && (
+        <>
+          <div className="oac-stats-grid">
+            <div className="oac-stat-card">
+              <span className="oac-stat-val">{graph.totalNodes ?? 0}</span>
+              <span className="oac-stat-label">Connected nodes</span>
+            </div>
+            <div className="oac-stat-card">
+              <span className="oac-stat-val">{types.length}</span>
+              <span className="oac-stat-label">Node types</span>
+            </div>
+          </div>
+
+          {types.length === 0 ? (
+            <Empty title="No indexed knowledge yet" sub="Reindex to pull CRM records, connectors, workflows, AI context, and documents into the graph." />
+          ) : (
+            <div className="oac-card-list">
+              {types.map(t => (
+                <div key={t} className="oac-card">
+                  <div className="oac-card-top">
+                    <span className="oac-card-name" style={{ textTransform: "capitalize" }}>{t.replace(/_/g, " ")}</span>
+                    <span className="oac-card-meta">{byType[t].length}</span>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 6 }}>
+                    {byType[t].slice(0, 8).map(n => (
+                      <span key={n.id} className="oac-badge" style={{ color: "var(--text-dim)", borderColor: "var(--border)" }}>
+                        {n.metadata?.name || n.metadata?.title || n.id}
+                      </span>
+                    ))}
+                    {byType[t].length > 8 && <span className="oac-card-meta">+{byType[t].length - 8} more</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 // ── Executive Intelligence ───────────────────────────────────────────────
 // V6 Phase 6 recovery: backend/routes/orgExecutiveIntelligence.js (/org-executive/:orgId/*)
 // was fully built (V5 Global AI Organization Platform, Module 6) with zero
@@ -718,6 +806,7 @@ const VIEWS = [
   { id: "departments", label: "Departments" },
   { id: "grants",      label: "Cross-org access" },
   { id: "execintel",   label: "Executive Intelligence" },
+  { id: "knowledgegraph", label: "Knowledge Graph" },
   { id: "aiworkspace", label: "AI Workspace" },
 ];
 
@@ -786,6 +875,7 @@ export default function OrgAdminCenter({ onToast }) {
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
         {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}
         {view === "execintel"   && <ExecIntelPanel orgId={orgId} onToast={onToast} />}
+        {view === "knowledgegraph" && <KnowledgeGraphPanel orgId={orgId} onToast={onToast} />}
         {view === "aiworkspace" && <AiWorkspacePanel orgId={orgId} onToast={onToast} />}
       </div>
     </div>
