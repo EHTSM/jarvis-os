@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
+import { useAuth } from "../contexts/AuthContext";
 import { getSettingsStatus, saveWhatsAppCredentials } from "../settingsApi";
 import { getAllIntegrations } from "../connectorApi";
 import ThemeToggle from "./ThemeToggle.jsx";
@@ -100,6 +101,7 @@ const INTEGRATIONS = [
 
 
 export default function WorkspaceSettings({ onNavigate }) {
+  const { user } = useAuth();
   const [section, setSection] = useState("branding");
   const [brand, setBrand] = useState(() => _load(BRAND_KEY, {
     workspaceName: "My Workspace",
@@ -125,12 +127,24 @@ export default function WorkspaceSettings({ onNavigate }) {
   useEffect(() => {
     track.event("workspace_settings_viewed");
     getSettingsStatus().then(s => { if (s && !s.error) setSettingsStatus(s); });
-    getAllIntegrations().then(r => {
-      if (r?.ok && Array.isArray(r.connectors)) {
-        setConnectorStatus(Object.fromEntries(r.connectors.map(c => [c.id, c])));
-      }
-    });
-  }, []);
+    // Workflow Coverage Completion finding: GET /integrations is
+    // operatorOnly server-side — every non-operator founder who opened
+    // Settings (a universal, non-operator-gated destination every account
+    // visits) got a silent 403 here. connectorStatus only powers a
+    // "Connected"/"Not connected" badge (falls back to "Not connected" for
+    // everyone when empty — an honest, non-broken default), so gating the
+    // call itself is safe: operators still see live status, non-operators
+    // just don't fire a call they were never authorized to make. Matches
+    // the same fix already applied to App.jsx's stats/ops polling and the
+    // DevOps tab mount.
+    if (user?.role === "operator") {
+      getAllIntegrations().then(r => {
+        if (r?.ok && Array.isArray(r.connectors)) {
+          setConnectorStatus(Object.fromEntries(r.connectors.map(c => [c.id, c])));
+        }
+      });
+    }
+  }, [user]);
 
   useEffect(() => { _applyBranding(brand); }, [brand]);
 

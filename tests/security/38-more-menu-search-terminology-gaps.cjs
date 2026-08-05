@@ -124,16 +124,34 @@ async function main() {
   await page.locator('input[type="email"]').first().fill(uniqueEmail);
   await page.locator('input[type="password"]').first().fill("TerminologyRegression12345!");
   await page.locator('button:has-text("Start free trial")').click();
-  await page.waitForTimeout(4000);
+  // Wait for real post-signup content rather than a fixed timeout — under
+  // load (concurrent test runs, background AutoLoop activity) signup can
+  // take longer than a fixed guess, and a fixed wait either flakes early
+  // or wastes time when it's fast.
+  await page.waitForFunction(
+    () => {
+      const t = document.body.innerText;
+      return t.includes("Welcome to Ooplix") || t.includes("Welcome back") || t.includes("Dashboard");
+    },
+    { timeout: 25000 }
+  ).catch(() => {});
+  await page.waitForTimeout(500);
 
+  // Same hardening as tests 35/37: check for a lingering onboarding
+  // backdrop, not just button visibility, before proceeding — a backdrop
+  // can report not-visible a beat before it actually unmounts, still
+  // intercepting the next real click (the More menu trigger below).
   const DISMISS = ["Skip for now", "Skip setup", "Skip tour", "Skip"];
-  for (let round = 0; round < 6; round++) {
+  const BACKDROP_SELECTORS = [".wf-overlay", ".gt-overlay", ".cfr-backdrop"];
+  for (let round = 0; round < 8; round++) {
     let did = false;
     for (const label of DISMISS) {
       const btn = page.getByText(label, { exact: true }).first();
       if (await btn.isVisible({ timeout: 600 }).catch(() => false)) { await btn.click().catch(() => {}); await page.waitForTimeout(500); did = true; }
     }
-    if (!did) break;
+    const anyBackdropLeft = await page.evaluate((sels) => sels.some(s => document.querySelector(s)), BACKDROP_SELECTORS).catch(() => false);
+    if (!did && !anyBackdropLeft) break;
+    if (anyBackdropLeft) await page.waitForTimeout(400);
   }
 
   const moreBtn = page.locator("text=/More \\(\\d+\\)/");

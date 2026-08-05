@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "../api";
 import { getRuntimeStatus, getRuntimeHistory } from "../runtimeApi";
 import { listAgents, memoryStats, cycleStats } from "../phase18Api";
@@ -824,6 +825,7 @@ function MissionReasoningPanel() {
 }
 
 export default function MissionControlV1({ onNavigate }) {
+  const { user } = useAuth();
   const [health,    setHealth]    = useState(null);
   const [ops,       setOps]       = useState(null);
   const [stats,     setStats]     = useState(null);
@@ -848,10 +850,21 @@ export default function MissionControlV1({ onNavigate }) {
 
   const load = useCallback(async () => {
     try {
+      // Workflow Coverage Completion finding: getOpsData()/getStats() (->
+      // /ops, /stats) are operatorOnly server-side ("platform-wide founder
+      // data... a regular customer must never reach these"). Every
+      // non-operator founder visiting Mission Control — a primary,
+      // ungated dashboard destination — fired a 403 on both every time
+      // this loaded. REVENUE/LEADS/etc. cards already render "—" safely
+      // when their source is absent, so gating by role (matching the same
+      // fix already applied to App.jsx's own polling, DevOpsCenterV2, and
+      // WorkspaceSettings) costs nothing for non-operators and preserves
+      // the real data for operators who are actually authorized to see it.
+      const isOperator = user?.role === "operator";
       const [h, o, s, rt, hist, ag, ms, cy, au, bl] = await Promise.allSettled([
         checkHealth(),
-        getOpsData(),
-        getStats(),
+        isOperator ? getOpsData()   : Promise.resolve(null),
+        isOperator ? getStats()     : Promise.resolve(null),
         getRuntimeStatus(),
         getRuntimeHistory(10),
         listAgents(),
@@ -887,7 +900,7 @@ export default function MissionControlV1({ onNavigate }) {
       setLoading(false);
       setLastRefresh(new Date());
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     load();

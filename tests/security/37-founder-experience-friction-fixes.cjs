@@ -151,7 +151,16 @@ async function main() {
   await page.locator('input[type="email"]').first().fill(uniqueEmail);
   await page.locator('input[type="password"]').first().fill(password);
   await page.locator('button:has-text("Start free trial")').click();
-  await page.waitForTimeout(4000);
+  // Wait for real post-signup content rather than a fixed timeout — under
+  // load, signup can take longer than a fixed guess.
+  await page.waitForFunction(
+    () => {
+      const t = document.body.innerText;
+      return t.includes("Welcome to Ooplix") || t.includes("Welcome back") || t.includes("Dashboard") || t.includes("Internal server error");
+    },
+    { timeout: 25000 }
+  ).catch(() => {});
+  await page.waitForTimeout(500);
   const registered = !(await page.locator("text=Internal server error").isVisible().catch(() => false));
   assert(registered, "signup succeeds through the real web UI", "signup failed — cannot proceed with the rest of this regression");
   if (!registered) { await browser.close(); console.log(`\nPass: ${pass} Fail: ${fail}`); process.exit(1); }
@@ -175,6 +184,11 @@ async function main() {
   section("Fix 3 — DevOps tab shows an honest operator-required message instead of firing 403s");
   {
     badRequests.length = 0;
+    // The tour can re-mount at any point via its own independent timer
+    // (App.jsx) — dismiss again defensively before this second More-menu
+    // click, since a long idle wait (Fix 2's section above) is exactly
+    // the kind of gap it can appear in.
+    await dismissOnboarding(page);
     const moreBtn = page.locator("text=/More \\(\\d+\\)/");
     if (await moreBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
       await moreBtn.click();
@@ -197,6 +211,7 @@ async function main() {
 
   section("Fix 4 (MOST SEVERE) — a founder can actually log out through the UI");
   {
+    await dismissOnboarding(page);
     const orgTrigger = page.locator(".org-switcher-trigger").first();
     const triggerVisible = await orgTrigger.isVisible({ timeout: 3000 }).catch(() => false);
     assert(triggerVisible, "the org switcher trigger (where Sign out now lives) is reachable", "trigger not found — nav structure may have changed");

@@ -125,10 +125,15 @@ const LC_COLORS = {
   heal:'#94a3b8', learn:'#94a3b8',
 };
 
-function LifecycleIntelligence({ missions }) {
+function LifecycleIntelligence({ missions, missionsLive }) {
   const [stages, setStages] = useState([]);
 
   useEffect(() => {
+    // Don't fire real /runtime/stage/:id calls against seed-data mission
+    // IDs (m1/m2/m3) — always-404s, and wasted requests on every account
+    // that hasn't gotten real mission data back yet (see the missionsLive
+    // fix in fetchAll above).
+    if (!missionsLive) { setStages([]); return; }
     const running = missions.filter(m =>
       m.status === 'active' || m.status === 'running'
     ).slice(0, 3);
@@ -148,7 +153,7 @@ function LifecycleIntelligence({ missions }) {
       setStages(rows);
     });
     return () => { mounted = false; };
-  }, [missions]);
+  }, [missions, missionsLive]);
 
   if (stages.length === 0) return null;
 
@@ -339,13 +344,15 @@ function ObserverStatus() {
 }
 
 // ── J5: Recommendation Approval Cards ────────────────────────────────
-function RecommendationApprovalCards({ missions }) {
+function RecommendationApprovalCards({ missions, missionsLive }) {
   const [items,    setItems]    = useState([]);
   const [acting,   setActing]   = useState({});
   const [aiReply,  setAiReply]  = useState(null);
 
   useEffect(() => {
-    if (!missions.length) return;
+    // Don't fire /collaboration/history/:id against a seed-data mission ID
+    // — see the matching fix in LifecycleIntelligence above.
+    if (!missionsLive || !missions.length) return;
     // Collect the first active mission with a history
     const active = missions.find(m => m.status === 'active' || m.status === 'running' || m.status === 'planned');
     if (!active) return;
@@ -358,7 +365,7 @@ function RecommendationApprovalCards({ missions }) {
       })
       .catch(() => {});
     return () => { mounted = false; };
-  }, [missions]);
+  }, [missions, missionsLive]);
 
   const doAction = useCallback(async (act, missionId, itemId, reason) => {
     const key = `${missionId}_${itemId}_${act}`;
@@ -465,10 +472,24 @@ export default function ExecutiveDashboard({ onNavigate }) {
     };
 
     // Mission status
+    // Workflow Coverage Completion finding: /metrics/dashboard's real
+    // response (backend/routes/metrics.js) never includes a `missions`
+    // field at all — not empty, absent — so this condition has never once
+    // passed for any account, and the component's initial useState(
+    // SEED_MISSIONS) (5 fabricated missions with fake MRR/SEO/support-SLA
+    // objectives and fake "2m ago" timestamps) stays permanently displayed
+    // as if real. The dashboard's own "showing example data" disclosure
+    // banner exists but was gated on dataError (fetch threw), not on this
+    // "real data field never arrived" case — a successful fetch with no
+    // missions field isn't a thrown error, so the banner never fired
+    // either. Widening dataError to also cover this closes the gap using
+    // the disclosure mechanism that already exists, not a new one.
     const mOk = await safe("/metrics/dashboard", data => {
       if (data?.missions && Array.isArray(data.missions)) {
         setMissions(data.missions.slice(0, 5));
         setMissionsLive(true);
+      } else {
+        anyError = true;
       }
     });
 
@@ -521,7 +542,11 @@ export default function ExecutiveDashboard({ onNavigate }) {
           })));
         }
       } catch (_) {
-        // keep seed recs
+        // keep seed recs — but flag it the same way the missions seed-data
+        // gap above is flagged, so the existing "showing example data"
+        // banner actually fires instead of silently presenting
+        // SEED_RECOMMENDATIONS' fabricated objectives as real.
+        anyError = true;
       }
     }
 
@@ -700,7 +725,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
       </motion.div>
 
       {/* ── Lifecycle Runtime Intelligence ── */}
-      <LifecycleIntelligence missions={missions} />
+      <LifecycleIntelligence missions={missions} missionsLive={missionsLive} />
 
       {/* ── Cross-Domain Intelligence ── */}
       <IntelligenceInsights />
@@ -712,7 +737,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
       <ObserverStatus />
 
       {/* ── Recommendation Approvals (J5) ── */}
-      <RecommendationApprovalCards missions={missions} />
+      <RecommendationApprovalCards missions={missions} missionsLive={missionsLive} />
 
       {/* ── Row 4: Active Missions ── */}
       <motion.div className="ed-section" {...fadeUp(0.2)}>

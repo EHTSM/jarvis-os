@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { getStats, getOpsData, getMetrics } from "../telemetryApi";
 import { getLeads } from "../api";
 import JourneyBanner from "./JourneyBanner";
@@ -272,6 +273,7 @@ function ServiceHealth({ opsData, online, loading }) {
 // ── Root Reports V2 ───────────────────────────────────────────────────────────
 
 export default function ReportsV2({ online = false, onNavigate }) {
+  const { user } = useAuth();
   const [stats,     setStats]     = useState(null);
   const [opsData,   setOpsData]   = useState(null);
   const [metrics,   setMetrics]   = useState(null);
@@ -283,18 +285,30 @@ export default function ReportsV2({ online = false, onNavigate }) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
+      // Workflow Coverage Completion finding: getStats/getOpsData/getMetrics
+      // (-> /stats, /ops, /metrics) are operatorOnly server-side. Every
+      // non-operator founder ALWAYS gets null back from all three (403,
+      // swallowed) — which is exactly the signal this component's own
+      // "all three null = real outage" heuristic below was built to
+      // detect, so it fired a false "Couldn't load reports — Backend
+      // unavailable" banner on every single load for every founder, sitting
+      // directly above genuinely correct, successfully-loaded lead/revenue
+      // data from the separate getLeads() call. Skipping the operator-only
+      // calls entirely for non-operators (rather than letting them resolve
+      // to null and be misread as an outage) fixes the false positive while
+      // preserving the real check for an actual operator-session outage.
+      const isOperator = user?.role === "operator";
       const [st, ops, met, leds] = await Promise.all([
-        getStats(), getOpsData(), getMetrics(), getLeads(),
+        isOperator ? getStats()   : Promise.resolve(undefined),
+        isOperator ? getOpsData() : Promise.resolve(undefined),
+        isOperator ? getMetrics() : Promise.resolve(undefined),
+        getLeads(),
       ]);
-      setStats(st);
-      setOpsData(ops);
-      setMetrics(met);
+      setStats(st ?? null);
+      setOpsData(ops ?? null);
+      setMetrics(met ?? null);
       setLeads(Array.isArray(leds) ? leds : []);
-      // getStats/getOpsData/getMetrics each swallow their own fetch errors and
-      // resolve to null rather than rejecting — a real backend outage looks
-      // like every one of them coming back null at once. Surface that as a
-      // distinct error instead of silently rendering "—" everywhere forever.
-      if (st == null && ops == null && met == null) {
+      if (isOperator && st == null && ops == null && met == null) {
         setError("Backend unavailable — reports data could not be loaded.");
       } else {
         setError(null);
@@ -302,7 +316,7 @@ export default function ReportsV2({ online = false, onNavigate }) {
     } catch (e) {
       setError(e.message || "Failed to load reports data");
     } finally { setLoading(false); }
-  }, []);
+  }, [user]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
