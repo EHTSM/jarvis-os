@@ -7,11 +7,31 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const svc = require("../services/closedBeta.cjs");
+const _orgSvc = () => require("../services/organizationService.cjs");
 
 router.use("/cbeta", requireAuth);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }
+
+// Security Hardening (Zero-Trust Competitor Remediation, Phase 4): found
+// during systemic tenant-isolation verification, same bug class as the
+// platformOrg/workforce IDORs fixed earlier in this pass —
+// GET /cbeta/orgs/:orgId/deletion-check had no ownership/membership check,
+// gated only by the barrel-level requireAuth above, disclosing another
+// org's member count and open-mission count to any authenticated user by
+// ID guessing. The DELETE route on the same :orgId param is NOT affected —
+// it delegates through svc.safeDeleteOrg -> organizationService.deleteOrg
+// -> archiveOrg, which already calls _assertPermission(orgId, accountId,
+// "delete_org") at the deepest layer; verified real and unchanged.
+function _requireOrgMemberOrAdmin(req, res, next) {
+  const orgId = req.params.orgId;
+  const accountId = req.user?.sub;
+  const svc2 = _orgSvc();
+  const role = accountId ? svc2.getMemberRole(orgId, accountId) : null;
+  if (role || (accountId && svc2.isEnterpriseAdmin(accountId))) return next();
+  return res.status(404).json({ ok: false, error: "Organization not found" });
+}
 
 // ── FIX A1 — Invite Revocation ───────────────────────────────────────────────
 
@@ -49,7 +69,7 @@ router.post("/cbeta/ai-workflows/record", (req, res) => {
 
 // ── FIX B1 — Org Deletion Safeguards ────────────────────────────────────────
 
-router.get("/cbeta/orgs/:orgId/deletion-check", (req, res) => {
+router.get("/cbeta/orgs/:orgId/deletion-check", _requireOrgMemberOrAdmin, (req, res) => {
   try { _ok(res, svc.checkOrgDeletionSafeguards(req.params.orgId)); } catch (e) { _err(res, e); }
 });
 
