@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { _fetch } from "../_client";
+import { useAuth } from "../contexts/AuthContext";
 
 const ROLE_COLOR = {
   org_owner: "var(--warning)",
@@ -19,6 +20,7 @@ const ROLE_COLOR = {
 // a lighter-weight project/team grouping. This component is additive: it
 // does nothing if the account has no org memberships yet.
 export default function OrgSwitcher({ onNavigate }) {
+  const { logout } = useAuth();
   const [open, setOpen]         = useState(false);
   const [orgs, setOrgs]         = useState([]);
   const [activeId, setActiveId] = useState(null);
@@ -100,6 +102,10 @@ export default function OrgSwitcher({ onNavigate }) {
         title="Switch organization"
       >
         <span className="org-switcher-icon">◈</span>
+        {/* Matching label added to WorkspaceSwitcher.jsx's trigger — see its
+            comment for why: the two pills sit side by side and default to
+            the same name, otherwise indistinguishable at a glance. */}
+        <span className="org-switcher-kind">Org</span>
         <span className="org-switcher-name">{activeOrg?.orgName || "Organization"}</span>
         <span className="org-switcher-caret">{open ? "▴" : "▾"}</span>
       </button>
@@ -157,6 +163,22 @@ export default function OrgSwitcher({ onNavigate }) {
               Manage organization →
             </button>
           )}
+
+          <div className="org-switcher-divider" />
+
+          {/* Founder Experience Certification finding: AuthContext.jsx has
+              a real, fully-working logout() — but before this fix, zero
+              components in the entire frontend called it. The only
+              existing call site was a "Sign out" button buried inside a
+              session-expiry warning banner that only renders in the last
+              5 minutes of an 8-hour session. A founder had no way to log
+              out of their own account through the UI. This dropdown
+              (already showing account-level context — org name, role) is
+              the most standard, discoverable place for this control,
+              matching where most SaaS products put it. */}
+          <button className="org-switcher-manage" onClick={() => { setOpen(false); logout(); }}>
+            Sign out
+          </button>
         </div>
       )}
     </div>

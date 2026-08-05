@@ -68,6 +68,17 @@ export default function WorkspaceSwitcher({ onNavigate }) {
         title="Switch workspace"
       >
         <span className="ws-switcher-icon">⬡</span>
+        {/* Founder Experience Certification finding: this pill sits directly
+            next to OrgSwitcher's, both defaulting to the same name (a new
+            workspace is named after its org on signup) with no visible
+            distinction beyond a barely-different icon color — a first-time
+            founder cannot tell these are two different concepts (workspace
+            = lightweight project grouping, org = the real tenant/billing
+            boundary, see OrgSwitcher.jsx's own comment) without hovering
+            for the title tooltip. Small always-visible micro-label added,
+            reusing the existing tiny-caps style already used for the
+            dropdown's own "Workspaces" header — no new component. */}
+        <span className="ws-switcher-kind">Workspace</span>
         <span className="ws-switcher-name">{activeWs?.name || "Workspace"}</span>
         <span className="ws-switcher-caret">{open ? "▴" : "▾"}</span>
       </button>

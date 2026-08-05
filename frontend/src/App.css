@@ -948,6 +948,10 @@
 }
 .ws-switcher-trigger:hover { color: var(--text); border-color: rgba(124,111,255,0.35); }
 .ws-switcher-icon { font-size: 11px; color: var(--accent); flex-shrink: 0; }
+.ws-switcher-kind {
+  font-size: 9px; font-weight: 800; color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0;
+}
 .ws-switcher-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 90px; }
 .ws-switcher-caret { font-size: 9px; flex-shrink: 0; opacity: 0.6; }
 
@@ -1022,6 +1026,10 @@
 .org-switcher-trigger:hover { color: var(--text); border-color: rgba(78,205,196,0.35); }
 .org-switcher-trigger--empty { color: var(--text-faint); border-style: dashed; }
 .org-switcher-icon { font-size: 11px; color: var(--accent2); flex-shrink: 0; }
+.org-switcher-kind {
+  font-size: 9px; font-weight: 800; color: var(--text-faint);
+  text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0;
+}
 .org-switcher-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 90px; }
 .org-switcher-caret { font-size: 9px; flex-shrink: 0; opacity: 0.6; }
 

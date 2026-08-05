@@ -722,7 +722,17 @@ function AppInner() {
       wasOnline = healthy;
       setOnline(healthy);
 
-      if (healthy) {
+      // /stats and /ops are operator-only (platform-wide founder data —
+      // CRM lead stats, revenue, system metrics — gated server-side by
+      // ops.js's operatorOnly, "a regular customer must never reach
+      // these"). Every non-operator account was polling both every 8s for
+      // the whole session and getting a 403 each time — silently swallowed
+      // (getStats/getOpsData catch and return null), so nothing visibly
+      // broke, but it was constant, avoidable console noise and wasted
+      // requests for the product's primary audience (founders, role
+      // "user"). Scope the poll to operators, matching the same
+      // user?.role === "operator" gate CommandCenter/home-tab already use.
+      if (healthy && user?.role === "operator") {
         const [st, ops] = await Promise.allSettled([getStats(), getOpsData()]);
         setStats(st.value   ?? null);
         setOpsData(ops.value ?? null);
@@ -732,7 +742,7 @@ function AppInner() {
     poll();
     const id = setInterval(() => { if (!document.hidden) poll(); }, 8000);
     return () => clearInterval(id);
-  }, [screen, push]);
+  }, [screen, push, user]);
 
   // ── Auto-scroll ───────────────────────────────────────────────────
   useEffect(() => {
@@ -1401,7 +1411,20 @@ function AppInner() {
         {tab === "recommend"     && <RecommendationCenter   onNavigate={setTab} />}
         {tab === "execution"     && <ExecutionCenter        onNavigate={setTab} />}
         {tab === "reliability"   && <ReliabilityCenter      onNavigate={setTab} />}
-        {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
+        {tab === "devops" && user?.role === "operator" && <DevOpsCenterV2 onNavigate={setTab} />}
+        {tab === "devops" && user?.role !== "operator" && (
+          // DevOpsCenterV2 unconditionally polls /ops, /metrics, and every
+          // /computer/docker/* route — all operatorOnly server-side (same
+          // route group as the fixed App.jsx /stats+/ops polling bug) —
+          // so any non-operator account landing on this tab fired a burst
+          // of silently-swallowed 403s. Docker container control and
+          // dependency-update infrastructure isn't meaningful founder-
+          // facing content, so this mirrors the "integrations" tab's own
+          // operator/non-operator branch above rather than inventing new UI.
+          <div className="app-tab-empty" style={{ padding: "48px 24px", textAlign: "center", color: "var(--text-dim)" }}>
+            <p>DevOps is available to organization operators.</p>
+          </div>
+        )}
         {tab === "mobile"        && <MobilePlatformCenter   onNavigate={setTab} />}
         {tab === "twin"          && <FounderTwinConsole                          />}
         {tab === "customersuccess" && <CustomerSuccessCenter                     />}
