@@ -17,7 +17,7 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-3.0.0-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0--rc6-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License](https://img.shields.io/badge/license-Proprietary-ef4444?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/EHTSM/jarvis-os/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EHTSM/jarvis-os/actions)
@@ -223,8 +223,8 @@ bash deploy/validate-production.sh   # 30-point production validation
 | ✅ Shipped | Growth OS · Launch Platform · Founder Journal · ACP-12 |
 | ✅ Shipped | Production deployment infrastructure (OP-1) |
 | 🔄 Active | Closed Beta — first 100 users |
-| 📋 Planned | Mobile app (Android — APK ready) |
-| 📋 Planned | Team accounts (multi-seat, RBAC) |
+| 📋 Planned | Mobile app (Android — build instructions in `mobile/BUILD.md`; no packaged release yet) |
+| ✅ Shipped | Org/Dept/Team RBAC (6 roles, cross-org grants, enterprise admin) — corrected 2026-08-05, this was previously listed as "Planned" but already exists |
 | 📋 Planned | Public plugin marketplace |
 | 📋 Planned | White-label / API-only mode |
 
