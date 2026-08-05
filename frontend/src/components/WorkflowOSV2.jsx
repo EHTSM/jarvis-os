@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { sendMessage } from "../api";
 import { getRuntimeHistory, dispatchTask, emergencyStop } from "../runtimeApi";
@@ -752,6 +753,7 @@ function TabHistory() {
 // ── Tab: Task Router ──────────────────────────────────────────────────
 
 function TabRouter({ addToast }) {
+  const { user } = useAuth();
   const [opsData,    setOpsData]    = useState(null);
   const [tasks,      setTasks]      = useState([]);
   const [tasksLoading, setTasksLoading] = useState(true);
@@ -759,12 +761,16 @@ function TabRouter({ addToast }) {
   const [newTask,    setNewTask]    = useState("");
   const [dispatching,setDispatching]= useState(false);
 
+  // Workflow Coverage Completion finding: /ops is operatorOnly
+  // server-side; any non-operator founder on the Router tab fired a 403
+  // on this poll every 10s.
   useEffect(() => {
+    if (user?.role !== "operator") return;
     const load = () => { if (!document.hidden) getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {}); };
     load();
     const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
-  }, []);
+  }, [user]);
 
   // Same real source TaskRouterCenter.jsx uses: live agent execution history.
   useEffect(() => {
@@ -935,14 +941,20 @@ function TabRouter({ addToast }) {
 // ── Tab: Autonomous Company ───────────────────────────────────────────
 
 function TabAutonomous({ addToast }) {
+  const { user } = useAuth();
   const [selected, setSelected] = useState(null);
   const [opsData,  setOpsData]  = useState(null);
   const [healStatus, setHealStatus] = useState(null);
 
+  // Workflow Coverage Completion finding: /ops is operatorOnly
+  // server-side; any non-operator founder on the Autonomous Company tab
+  // fired a 403 fetching it.
   useEffect(() => {
-    getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    if (user?.role === "operator") {
+      getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    }
     getHealStatus().then(r => { if (r) setHealStatus(r); }).catch(() => {});
-  }, []);
+  }, [user]);
 
   const WK_STATUS = { in_progress: "⟳", queued: "○", done: "✓" };
   const WK_COLORS = { in_progress: "#7c6fff", queued: "#4a5470", done: "#52d68a" };

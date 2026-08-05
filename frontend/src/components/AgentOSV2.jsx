@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { listAgents, getAgentFailures, executeAgentTask } from "../phase18Api";
 import { listManagedAgents, createManagedAgent } from "../phase20Api";
 import { getOpsData, getStats } from "../telemetryApi";
@@ -891,6 +892,7 @@ const TABS = [
 const AGENTS_KEY = "av2_agent_registry";
 
 export default function AgentOSV2({ onNavigate, online = false }) {
+  const { user } = useAuth();
   const [activeTab,  setActiveTab]  = useState("center");
   // Previously seeded with 5 fabricated agents (SEED_AGENTS) that persisted
   // to localStorage forever if the account genuinely had none configured —
@@ -915,8 +917,17 @@ export default function AgentOSV2({ onNavigate, online = false }) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
+      // Workflow Coverage Completion finding: getOpsData()/getStats() (->
+      // /ops, /stats) are operatorOnly server-side. Every non-operator
+      // founder visiting Agents fired a 403 on both here. Gating by role,
+      // matching the same fix already applied 6 times this engagement
+      // (App.jsx polling, DevOpsCenterV2, WorkspaceSettings, MissionControlV1,
+      // ReportsV2).
+      const isOperator = user?.role === "operator";
       const [ops, st, hist, agentRes] = await Promise.all([
-        getOpsData(), getStats(), getRuntimeHistory(40), listAgents(),
+        isOperator ? getOpsData() : Promise.resolve(null),
+        isOperator ? getStats()   : Promise.resolve(null),
+        getRuntimeHistory(40), listAgents(),
       ]);
       setOpsData(ops);
       setStats(st);
@@ -936,7 +947,7 @@ export default function AgentOSV2({ onNavigate, online = false }) {
       }
     } catch {}
     finally { setLoading(false); }
-  }, []);
+  }, [user]);
 
   useEffect(() => { refresh(); }, [refresh]);
 

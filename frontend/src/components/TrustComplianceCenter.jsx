@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { getOpsData } from "../telemetryApi";
 import { _fetch } from "../_client";
@@ -118,6 +119,7 @@ const RISK_IMPACT  = { critical:"var(--danger)", high:"var(--warning)", medium:"
 const RISK_STATUS  = { mitigated:"var(--success)", open:"var(--danger)", in_progress:"var(--accent2)", accepted:"var(--text-faint)" };
 
 export default function TrustComplianceCenter({ onNavigate }) {
+  const { user } = useAuth();
   const [section,   setSection]   = useState("overview");
   const [selFw,     setSelFw]     = useState("gdpr");
   const [liveOps,   setLiveOps]   = useState(null);
@@ -125,11 +127,16 @@ export default function TrustComplianceCenter({ onNavigate }) {
 
   useEffect(() => {
     track.event("trust_compliance_viewed");
-    getOpsData().then(d => { if (d) setLiveOps(d); });
+    // Workflow Coverage Completion finding: /ops is operatorOnly
+    // server-side; any non-operator founder opening Trust & Compliance
+    // fired a 403 fetching it.
+    if (user?.role === "operator") {
+      getOpsData().then(d => { if (d) setLiveOps(d); });
+    }
     _fetch("/governance/risk").then(d => {
       if (Array.isArray(d?.riskMatrix) && d.riskMatrix.length > 0) setLiveRisks(d.riskMatrix.map(riskEntryToRow));
     }).catch(() => {});
-  }, []);
+  }, [user]);
 
   const RISK_REGISTER = liveRisks || RISK_REGISTER_FALLBACK;
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { sendMessage, checkHealth } from "../api";
 import { checkHealth as getHealth, getOpsData, getMetrics } from "../telemetryApi";
@@ -1042,6 +1043,7 @@ function TabArchitecture({ addToast }) {
 // ── Tab: Engineering Health ───────────────────────────────────────────
 
 function TabHealth({ addToast }) {
+  const { user } = useAuth();
   const [health,   setHealth]   = useState(null);
   const [ops,      setOps]      = useState(null);
   const [metrics,  setMetrics]  = useState(null);
@@ -1049,12 +1051,16 @@ function TabHealth({ addToast }) {
   const [loading,  setLoading]  = useState(true);
   const [subTab,   setSubTab]   = useState("overview");
 
+  // Workflow Coverage Completion finding: /ops and /metrics are
+  // operatorOnly server-side. Any non-operator founder opening Copilot's
+  // Health tab fired a 403 on both.
+  const isOperator = user?.role === "operator";
   useEffect(() => {
     setLoading(true);
     Promise.all([
       getHealth().catch(() => null),
-      getOpsData().catch(() => null),
-      getMetrics().catch(() => null),
+      isOperator ? getOpsData().catch(() => null)  : Promise.resolve(null),
+      isOperator ? getMetrics().catch(() => null)  : Promise.resolve(null),
       getRuntimeHistory(20).catch(() => []),
     ]).then(([h, o, m, hist]) => {
       setHealth(h);
@@ -1063,7 +1069,7 @@ function TabHealth({ addToast }) {
       const arr = Array.isArray(hist) ? hist : (hist?.history || []);
       setHistory(arr.filter(i => i.status === "failed" || i.status === "error"));
     }).finally(() => setLoading(false));
-  }, []);
+  }, [isOperator]);
 
   const q = ops?.queue || {};
   const uptimeSecs = ops?.uptime ?? 0;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { getReadinessReport } from "../phase21Api";
 import { getOpsData } from "../telemetryApi";
@@ -77,6 +78,7 @@ function MiniBarChart({ data, colorFn }) {
 }
 
 export default function OperationsCenter({ onNavigate }) {
+  const { user } = useAuth();
   const [section,    setSection]    = useState("overview");
   const [readiness,  setReadiness]  = useState(null);
   const [apiError,   setApiError]   = useState(null);
@@ -95,7 +97,13 @@ export default function OperationsCenter({ onNavigate }) {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getOpsData(), listCoordSessions({ limit: 20 })])
+    // Workflow Coverage Completion finding: /ops is operatorOnly
+    // server-side; any non-operator founder opening Operations fired a
+    // 403 fetching it.
+    Promise.all([
+      user?.role === "operator" ? getOpsData() : Promise.resolve(null),
+      listCoordSessions({ limit: 20 }),
+    ])
       .then(([ops, coordRes]) => {
         if (cancelled) return;
         if (ops?.queue) setOpsQueue(ops.queue);
@@ -104,7 +112,7 @@ export default function OperationsCenter({ onNavigate }) {
       })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, []);
+  }, [user]);
 
   const COORD_EVENTS = coordEvents;
 
