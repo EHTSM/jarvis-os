@@ -88,8 +88,18 @@ async function checkServersUp() {
   } catch { return false; }
 }
 
+// Same hardening as tests/security/35-more-menu-overflow-clipping.cjs's
+// dismissOnboarding: this product stacks multiple independently-built
+// onboarding overlays (WelcomeFlow, GuidedTour, CustomerFirstRunWizard —
+// see that test's own comment for the full history), and a backdrop can
+// report visible=false via isVisible() a beat before it actually finishes
+// unmounting, still intercepting a real click. Checking for a lingering
+// backdrop element (not just button visibility) before declaring done
+// avoids flaky "intercepts pointer events" failures on the next real
+// click this test makes (e.g. the org-switcher trigger).
 const DISMISS_LABELS = ["Skip for now", "Skip setup", "Skip tour", "Skip", "Got it", "Close", "Maybe later"];
-async function dismissOnboarding(page, maxRounds = 6) {
+const BACKDROP_SELECTORS = [".wf-overlay", ".gt-overlay", ".cfr-backdrop"];
+async function dismissOnboarding(page, maxRounds = 8) {
   for (let round = 0; round < maxRounds; round++) {
     let dismissedSomething = false;
     for (const label of DISMISS_LABELS) {
@@ -100,7 +110,9 @@ async function dismissOnboarding(page, maxRounds = 6) {
         dismissedSomething = true;
       }
     }
-    if (!dismissedSomething) break;
+    const anyBackdropLeft = await page.evaluate((sels) => sels.some(s => document.querySelector(s)), BACKDROP_SELECTORS).catch(() => false);
+    if (!dismissedSomething && !anyBackdropLeft) break;
+    if (anyBackdropLeft) await page.waitForTimeout(400);
   }
 }
 

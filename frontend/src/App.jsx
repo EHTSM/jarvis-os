@@ -174,7 +174,7 @@ const TABS = [
 const MORE_TABS = [
   // ── Account & Setup
   { id: "success",    label: "Getting Started",    group: "Account"      },
-  { id: "billing",    label: "Billing",            group: "Account"      },
+  { id: "billing",    label: "Billing",            group: "Account", alias: "finance" },
   { id: "settings",   label: "Settings",           group: "Account"      },
   { id: "help",       label: "Help & Guides",      group: "Account"      },
   { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
@@ -242,7 +242,7 @@ const MORE_TABS = [
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth"       },
-  { id: "growth",     label: "Growth",             group: "Growth"       },
+  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing" },
   { id: "contentseo", label: "Content & SEO",      group: "Growth"       },
   { id: "distribution",label:"Distribution",       group: "Growth"       },
   { id: "referral",   label: "Referral Engine",    group: "Growth"       },
@@ -252,7 +252,7 @@ const MORE_TABS = [
   // ── Enterprise & Platform
   { id: "business",   label: "CRM",                group: "Enterprise"   },
   { id: "companies",  label: "Companies",          group: "Enterprise"   },
-  { id: "team",       label: "Team",               group: "Enterprise"   },
+  { id: "team",       label: "Team",               group: "Enterprise", alias: "invite" },
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
   { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
@@ -328,7 +328,15 @@ function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q)) : MORE_TABS;
+    // Workflow Simplification Certification finding: a founder searching
+    // the single most natural term for an entire category — "marketing"
+    // (0 matches; the real module is labeled "Growth"), "finance" (0
+    // matches; the real module is labeled "Billing") — got nothing, despite
+    // real, substantial functionality existing under a less obvious name.
+    // `alias` is an additive, invisible synonym field (no label/group
+    // renamed, no risk to existing muscle memory) checked alongside the
+    // visible label/group text.
+    return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q) || m.alias?.toLowerCase().includes(q)) : MORE_TABS;
   }, [query]);
 
   const pinnedItems = React.useMemo(
