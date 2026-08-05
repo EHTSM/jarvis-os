@@ -275,6 +275,28 @@
   flex: 1;
   padding: 0 16px;
   overflow-x: auto;
+  /* Real Productivity & Operator Experience Certification: explicit
+     overflow-y:visible is required here, not cosmetic. Per the CSS
+     overflow spec, setting only overflow-x to a non-visible value forces
+     the other axis to compute as `auto` too — so without this line,
+     .tabs became a clipping container on BOTH axes. Its child
+     .tab-more-menu (the "More (79)" dropdown, position:absolute,
+     rendered below the tab bar) was silently clipped to the tab bar's
+     own thin height. Confirmed live: document.elementsFromPoint() at
+     coordinates squarely inside the dropdown's own reported
+     getBoundingClientRect() returned zero elements from the menu —
+     every computed style on the menu and its 79 real items (dark
+     background, white text, correct position/z-index) was individually
+     correct, but nothing painted or received clicks. This made every
+     product surface beyond the 5 pinned top-level tabs (Dashboard,
+     Contacts, Payments, Pipeline, AI) completely unreachable by mouse —
+     confirmed reproducible in real Chromium, not a headless-only quirk
+     (verified by disabling backdrop-filter/animation/transform, which
+     made no difference; only overflow-y:visible did).
+     scrollbar-width:none/::-webkit-scrollbar below still hide the
+     horizontal scrollbar this container legitimately needs when many
+     tabs are pinned — only the vertical clipping was the bug. */
+  overflow-y: visible;
   scrollbar-width: none;
 }
 .tabs::-webkit-scrollbar { display: none; }
