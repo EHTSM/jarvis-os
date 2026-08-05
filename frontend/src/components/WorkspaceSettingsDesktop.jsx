@@ -205,8 +205,13 @@ function SaveDialogCard() {
     setBusy(true);
     setResult(null);
     try {
+      // fs-get-downloads-path was real (app.getPath("downloads")) but had no
+      // frontend caller — use it to default the save dialog to Downloads
+      // instead of wherever the OS last remembered.
+      const downloads = await window.electronAPI.fsGetDownloadsPath().catch(() => null);
+      const defaultName = `ooplix-export-${Date.now()}.json`;
       const dialogRes = await window.electronAPI.fsShowSaveDialog({
-        defaultPath: `ooplix-export-${Date.now()}.json`,
+        defaultPath: downloads?.path ? `${downloads.path}/${defaultName}` : defaultName,
         filters: [{ name: "JSON", extensions: ["json"] }],
       });
       if (dialogRes.canceled || !dialogRes.filePath) { setBusy(false); return; }
