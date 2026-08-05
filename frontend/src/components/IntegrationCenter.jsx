@@ -20,19 +20,24 @@ import "./IntegrationCenter.css";
 // probe function, so calling /integrations/:id/health for them throws
 // "Unknown connector" server-side (500). Gate the call rather than let every
 // email connector's detail panel fire a doomed request.
-const HEALTH_PROBE_PHASES = new Set(["ai", "git", "infra", "pay", "msg", "auth", "prod", "commerce", "creative", "auto", "monitor"]);
+// "issue" (Jira/Linear) added — Phase 6 connector reachability audit found
+// scanAllProjectManagementProviders()/reconnect()'s "issue" dispatch group
+// already probe both connectJira()/connectLinear() for real, this set just
+// hadn't been updated when that phase was added.
+const HEALTH_PROBE_PHASES = new Set(["ai", "git", "infra", "pay", "msg", "auth", "prod", "commerce", "creative", "auto", "monitor", "issue"]);
 
 const PHASE_LABEL = {
   ai: "AI Providers", auth: "Authentication", auto: "Automation", commerce: "Commerce",
   creative: "Creative", email: "Email", git: "Git", infra: "Infrastructure",
   monitor: "Monitoring", msg: "Messaging", pay: "Payments", prod: "Productivity",
+  issue: "Project Management",
 };
 
 const CONNECTOR_NAME = {
   "ai:anthropic": "Anthropic", "ai:cohere": "Cohere", "ai:deepseek": "DeepSeek",
-  "ai:fireworks": "Fireworks AI", "ai:gemini": "Google Gemini", "ai:groq": "Groq",
-  "ai:nvidia": "NVIDIA NIM", "ai:openai": "OpenAI", "ai:openrouter": "OpenRouter",
-  "ai:together": "Together AI",
+  "ai:fireworks": "Fireworks AI", "ai:gemini": "Google Gemini", "ai:grok": "Grok (x.ai)",
+  "ai:groq": "Groq", "ai:nvidia": "NVIDIA NIM", "ai:openai": "OpenAI",
+  "ai:openrouter": "OpenRouter", "ai:qwen": "Qwen (DashScope)", "ai:together": "Together AI",
   "auth:apple": "Sign in with Apple", "auth:discord": "Discord OAuth",
   "auth:github": "GitHub OAuth", "auth:google": "Google OAuth",
   "auth:linkedin": "LinkedIn OAuth", "auth:microsoft": "Microsoft OAuth",
@@ -45,12 +50,14 @@ const CONNECTOR_NAME = {
   "git:bitbucket": "Bitbucket", "git:github": "GitHub", "git:gitlab": "GitLab",
   "infra:aws": "AWS", "infra:cloudflare": "Cloudflare", "infra:firebase": "Firebase",
   "infra:hostinger": "Hostinger", "infra:r2": "Cloudflare R2", "infra:supabase": "Supabase",
+  "issue:jira": "Jira", "issue:linear": "Linear",
   "monitor:datadog": "Datadog", "monitor:sentry": "Sentry", "monitor:uptime": "UptimeRobot",
-  "msg:discord": "Discord", "msg:slack": "Slack", "msg:telegram": "Telegram",
-  "msg:twilio": "Twilio", "msg:whatsapp": "WhatsApp Business",
+  "msg:discord": "Discord", "msg:slack": "Slack", "msg:teams": "Microsoft Teams",
+  "msg:telegram": "Telegram", "msg:twilio": "Twilio", "msg:whatsapp": "WhatsApp Business",
   "pay:lemonsqueezy": "Lemon Squeezy", "pay:paddle": "Paddle",
   "pay:razorpay": "Razorpay", "pay:stripe": "Stripe",
-  "prod:dropbox": "Dropbox", "prod:google_workspace": "Google Workspace", "prod:m365": "Microsoft 365",
+  "prod:dropbox": "Dropbox", "prod:google_workspace": "Google Workspace",
+  "prod:m365": "Microsoft 365", "prod:notion": "Notion",
 };
 
 function _label(connectorId) {
@@ -69,7 +76,7 @@ function _likelyCredentialType(connectorId) {
   const [phase, id] = connectorId.split(":");
   if (phase === "auth") return "oauth_token";
   if (id === "smtp") return "smtp_credentials";
-  if (phase === "git" || phase === "creative") return "personal_access_token";
+  if (phase === "git" || phase === "creative" || id === "jira") return "personal_access_token";
   if (id === "google_workspace" || id === "firebase") return "service_account_json";
   return "api_key";
 }
