@@ -74,6 +74,9 @@ function _phaseLabel(connectorId) { return PHASE_LABEL[_phaseOf(connectorId)] ||
 // connector id/phase instead; the dropdown remains fully overridable.
 function _likelyCredentialType(connectorId) {
   const [phase, id] = connectorId.split(":");
+  // auth:apple's ENV_MAP entry is auth:apple::ssh_key (APPLE_PRIVATE_KEY),
+  // not oauth_token like its other auth: siblings.
+  if (id === "apple") return "ssh_key";
   if (phase === "auth") return "oauth_token";
   if (id === "smtp") return "smtp_credentials";
   if (phase === "git" || phase === "creative" || id === "jira") return "personal_access_token";
@@ -83,11 +86,23 @@ function _likelyCredentialType(connectorId) {
 
 // OAuth-style connectors get the browser-redirect flow via phase21Api; everything
 // else (API keys, tokens, SMTP creds etc.) gets the vault setup form.
+// auth:discord and auth:apple were listed here but oauthIntegrationLayer.cjs's
+// _cfg() has no "discord" or "apple" config block — it only implements
+// google/github/slack/notion/microsoft/linkedin (see ExecutionConnectorCenter.jsx's
+// CONNECTOR_META, which correctly covers exactly those 6). Both were dead ends:
+// clicking "Connect" for auth:discord threw a 500 from getOAuthUrl("discord")
+// (cfg.clientId reads off undefined), and auth:apple wasn't even in
+// OAUTH_PROVIDER_ID below, so its button silently did nothing. Both connectors
+// are real, though — connectDiscordAuth()/connectAppleAuth() in
+// integrationConnectors.cjs verify DISCORD_CLIENT_ID/APPLE_TEAM_ID+co via live
+// probes, and both have ENV_MAP entries in secretVault.cjs — they just need the
+// vault SetupForm path (like auth:linkedin's siblings that aren't OAuth-login
+// providers), not the OAuth-redirect path.
 const OAUTH_CONNECTORS = new Set([
-  "auth:google", "auth:github", "auth:discord", "auth:linkedin", "auth:microsoft", "auth:apple",
+  "auth:google", "auth:github", "auth:linkedin", "auth:microsoft",
 ]);
 // phase21Api's OAuth provider ids are unnamespaced (google, github, ...) — map both ways.
-const OAUTH_PROVIDER_ID = { "auth:google": "google", "auth:github": "github", "auth:discord": "discord", "auth:linkedin": "linkedin", "auth:microsoft": "microsoft" };
+const OAUTH_PROVIDER_ID = { "auth:google": "google", "auth:github": "github", "auth:linkedin": "linkedin", "auth:microsoft": "microsoft" };
 
 const STATUS_COLOR = { connected: "var(--success)", missing: "var(--text-faint)", expiring: "var(--warning)", overdue: "var(--danger)" };
 
