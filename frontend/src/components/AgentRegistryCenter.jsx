@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listAgents } from "../phase18Api";
 import { listManagedAgents } from "../phase20Api";
+import { getWorkforceAgents } from "../workforceOSApi";
 import "./AgentRegistryCenter.css";
 
 const REG_KEY = "ooplix_agent_registry_v2";
@@ -265,35 +266,48 @@ export default function AgentRegistryCenter({ onNavigate }) {
 
   useEffect(() => { track.event("agent_registry_viewed"); }, []);
 
-  // Merge live agents from backend (p18 + p20) with local registry
+  // Merge live agents from backend (p18 runtime dispatch registry + p20
+  // managed-agent factory + workforce-os skill catalogue) with local registry.
+  // workforce-os agents (skillEngine's 36-entry AGENT_CATALOGUE) previously had
+  // a fully-built backend (36 routes: mission/team/capacity/performance) but no
+  // frontend caller anywhere in the app — merged in here the same way p18/p20
+  // already are, so they surface in the one existing agent-list UI instead of
+  // requiring a new dashboard.
   useEffect(() => {
     let cancelled = false;
-    Promise.all([listAgents(), listManagedAgents()])
-      .then(([p18Res, p20Res]) => {
+    Promise.all([listAgents(), listManagedAgents(), getWorkforceAgents({ limit: 100 })])
+      .then(([p18Res, p20Res, wfRes]) => {
         if (cancelled) return;
         const p18 = p18Res?.agents || [];
         const p20 = p20Res?.agents || [];
-        const all = [...p18, ...p20];
+        const wf  = wfRes?.agents  || [];
+        // p18/p20 already share one shape; workforce-os agents (skillEngine's
+        // AGENT_CATALOGUE) use a different shape (org/skills/specializations/
+        // successCount/failCount) — normalise all three into the one row shape
+        // this component renders.
+        const normalise = a => ({
+          id:          a.id,
+          name:        a.name || a.id,
+          type:        a.type || a.org || "runtime",
+          icon:        a.icon || "▷",
+          color:       a.color || "var(--accent)",
+          status:      a.status || (a.available === false ? "idle" : "active"),
+          description: a.description || (a.specializations ? `${a.specializations.join(", ")} — org: ${a.org}` : ""),
+          capabilities: a.capabilities || a.skills || [],
+          permissions: a.permissions || [],
+          model:       a.model || "—",
+          lastRun:     a.lastRun || a.lastActive || "—",
+          runsToday:   a.runsToday ?? a.successCount ?? 0,
+          errorRate:   a.errorRate || (a.failCount
+            ? `${Math.round((a.failCount / Math.max(1, (a.successCount || 0) + a.failCount)) * 100)}%`
+            : "0%"),
+          archived:    a.archived || false,
+        });
+        const all = [...p18, ...p20, ...wf].map(normalise);
         if (all.length > 0) {
-          const mapped = all.map(a => ({
-            id:          a.id,
-            name:        a.name || a.id,
-            type:        a.type || "runtime",
-            icon:        a.icon || "▷",
-            color:       a.color || "var(--accent)",
-            status:      a.status || "active",
-            description: a.description || "",
-            capabilities: a.capabilities || [],
-            permissions: a.permissions || [],
-            model:       a.model || "—",
-            lastRun:     a.lastRun || "—",
-            runsToday:   a.runsToday ?? 0,
-            errorRate:   a.errorRate || "0%",
-            archived:    a.archived || false,
-          }));
-          setAgents(mapped);
-          _save(REG_KEY, mapped);
-          setSelected(mapped[0]?.id || null);
+          setAgents(all);
+          _save(REG_KEY, all);
+          setSelected(all[0]?.id || null);
         }
       })
       .catch(err => { if (!cancelled) setApiError(err.message); });
