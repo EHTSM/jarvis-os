@@ -149,16 +149,55 @@ const _PRODUCTION_ORIGINS = [
 const _envOrigins = (process.env.ALLOWED_ORIGINS || "")
     .split(",").map(s => s.trim()).filter(Boolean);
 const _allowedOrigins = [...new Set([..._PRODUCTION_ORIGINS, ..._envOrigins])];
+// Real Productivity & Operator Experience Certification: `npm run dev`
+// (this project's own documented local-dev workflow — frontend on :3000,
+// backend on :5050, wired via CRA's "proxy" field in frontend/package.json)
+// was completely broken for every state-changing request (signup, login,
+// any POST). Root cause, confirmed by reading the installed
+// react-dev-utils source directly: CRA's dev-server proxy
+// (frontend/node_modules/react-dev-utils/WebpackDevServerUtils.js)
+// rewrites the Origin header of every proxied request to the proxy
+// TARGET's own address — i.e. it sends `Origin: http://localhost:5050`
+// to this very server — specifically to *avoid* CORS issues, per that
+// file's own comment. This backend's strict origin allowlist then
+// rejected that self-referential origin, so every proxied POST failed
+// with a 500 before ever reaching its route handler. Reproduced directly:
+// curl straight to :5050 always succeeded; the identical request through
+// the :3000 proxy always failed with the exact
+// `CORS: origin 'http://localhost:5050' not allowed` error logged here.
+//
+// Fix does NOT key off NODE_ENV — this repo's own checked-in .env hardcodes
+// NODE_ENV=production even for local development (a separate, real finding:
+// dev-only behaviors like error-detail passthrough never activate locally
+// either), so a NODE_ENV-gated fix would have been dead code in this
+// project's actual configuration. Instead: accept an Origin that is
+// self-referential — http://<the Host header this exact request carries>
+// — which is only ever possible for traffic that already reached this
+// process on localhost (an external attacker cannot make a victim's
+// browser send a request whose Origin equals this server's own address
+// unless they already control this machine, at which point CORS is not
+// the relevant boundary). This is materially the same trust boundary as
+// the existing `!origin` same-origin allowance three lines below, just
+// covering the one extra hop CRA's proxy introduces.
 app.use(cors({
     origin: (origin, cb) => {
         // Allow same-origin requests (origin === undefined in server-to-server or
-        // same-origin fetches) and any listed origin.
+        // same-origin fetches), any listed origin, or an origin that is
+        // self-referential (see comment above — covers CRA's dev-proxy rewrite).
         if (!origin || _allowedOrigins.includes(origin)) return cb(null, true);
+        try {
+            const originHost = new URL(origin).host; // e.g. "localhost:5050"
+            if (req_isSelfOrigin(originHost)) return cb(null, true);
+        } catch { /* malformed Origin header — fall through to reject */ }
         cb(new Error(`CORS: origin '${origin}' not allowed`));
     },
     credentials: true,
     methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
 }));
+function req_isSelfOrigin(originHost) {
+    const _selfPort = parseInt(process.env.PORT) || 5050;
+    return originHost === `localhost:${_selfPort}` || originHost === `127.0.0.1:${_selfPort}`;
+}
 
 // ── Response compression (gzip for JSON >= 1 KB) ─────────────────
 app.use(require("./middleware/compress"));
