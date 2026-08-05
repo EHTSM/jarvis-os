@@ -16,6 +16,17 @@ const g               = require("../services/distributionEngine.cjs");
 
 router.use("/distrib", requireAuth);
 
+// Tenant isolation — mirrors growthOS.js / contentSEO.js's req.orgId
+// middleware (see growthOS.cjs for the full incident writeup).
+const org = () => require("../services/organizationService.cjs");
+router.use("/distrib", (req, res, next) => {
+  try {
+    const ctx = org().resolveContext(req.user.sub);
+    req.orgId = ctx?.primaryOrg?.orgId || null;
+  } catch { req.orgId = null; }
+  next();
+});
+
 function _ok(res, data)           { res.json({ ok: true, ...data }); }
 function _err(res, e, code = 500) { res.status(code).json({ error: e.message || e }); }
 
@@ -29,32 +40,32 @@ router.get("/distrib/platforms",                  (req, res) => {
 });
 
 router.get("/distrib/publish/jobs",               (req, res) => {
-  try { _ok(res, { jobs: g.listPublishJobs(req.query.status, req.query.platform) }); }
+  try { _ok(res, { jobs: g.listPublishJobs(req.query.status, req.query.platform, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/publish/jobs",              (req, res) => {
-  try { _ok(res, { job: g.createPublishJob(req.body || {}) }); }
+  try { _ok(res, { job: g.createPublishJob(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/publish/jobs/:id",           (req, res) => {
   try {
-    const j = g.getPublishJob(req.params.id);
+    const j = g.getPublishJob(req.params.id, req.orgId);
     if (!j) return res.status(404).json({ error: "Job not found" });
     _ok(res, { job: j });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/publish/jobs/:id/publish",  (req, res) => {
-  try { _ok(res, { job: g.publishJob(req.params.id) }); }
+  try { _ok(res, { job: g.publishJob(req.params.id, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/publish/jobs/:id/approve",  (req, res) => {
   try {
     const { approvedBy } = req.body || {};
-    _ok(res, { job: g.approvePublishJob(req.params.id, approvedBy || req.user?.email || "operator") });
+    _ok(res, { job: g.approvePublishJob(req.params.id, approvedBy || req.user?.email || "operator", req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
@@ -62,12 +73,12 @@ router.post("/distrib/publish/jobs/:id/retry",    (req, res) => {
   try {
     const { platform } = req.body || {};
     if (!platform) return res.status(400).json({ error: "platform required" });
-    _ok(res, { job: g.retryPlatform(req.params.id, platform) });
+    _ok(res, { job: g.retryPlatform(req.params.id, platform, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/publish/stats",              (req, res) => {
-  try { _ok(res, { stats: g.getPublishStats() }); }
+  try { _ok(res, { stats: g.getPublishStats(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -76,29 +87,29 @@ router.get("/distrib/publish/stats",              (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/campaigns",                  (req, res) => {
-  try { _ok(res, { campaigns: g.listCampaigns(req.query.status) }); }
+  try { _ok(res, { campaigns: g.listCampaigns(req.query.status, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/campaigns",                 (req, res) => {
-  try { _ok(res, { campaign: g.createCampaign(req.body || {}) }); }
+  try { _ok(res, { campaign: g.createCampaign(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/distrib/campaigns/:id",            (req, res) => {
-  try { _ok(res, { campaign: g.updateCampaign(req.params.id, req.body || {}) }); }
+  try { _ok(res, { campaign: g.updateCampaign(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/campaigns/:id/approve",     (req, res) => {
   try {
     const { note } = req.body || {};
-    _ok(res, { campaign: g.approveCampaign(req.params.id, note) });
+    _ok(res, { campaign: g.approveCampaign(req.params.id, note, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/campaigns/:id/launch",      (req, res) => {
-  try { _ok(res, { campaign: g.launchCampaign(req.params.id) }); }
+  try { _ok(res, { campaign: g.launchCampaign(req.params.id, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -109,32 +120,32 @@ router.post("/distrib/campaigns/:id/launch",      (req, res) => {
 router.get("/distrib/influencers",                (req, res) => {
   try {
     const { tier, platform, status } = req.query;
-    _ok(res, { influencers: g.listInfluencers(tier, platform, status), intelligence: g.getInfluencerIntelligence(), tiers: g.INFLUENCER_TIERS });
+    _ok(res, { influencers: g.listInfluencers(tier, platform, status, req.orgId), intelligence: g.getInfluencerIntelligence(req.orgId), tiers: g.INFLUENCER_TIERS });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/influencers",               (req, res) => {
-  try { _ok(res, { influencer: g.addInfluencer(req.body || {}) }); }
+  try { _ok(res, { influencer: g.addInfluencer(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/distrib/influencers/:id",          (req, res) => {
-  try { _ok(res, { influencer: g.updateInfluencer(req.params.id, req.body || {}) }); }
+  try { _ok(res, { influencer: g.updateInfluencer(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/influencers/:id/draft",     (req, res) => {
-  try { _ok(res, { draft: g.buildOutreachDraft(req.params.id, req.body || {}) }); }
+  try { _ok(res, { draft: g.buildOutreachDraft(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/influencers/:id/outreach",  (req, res) => {
-  try { _ok(res, { influencer: g.logOutreach(req.params.id, req.body || {}) }); }
+  try { _ok(res, { influencer: g.logOutreach(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/influencers/intelligence",   (req, res) => {
-  try { _ok(res, { intelligence: g.getInfluencerIntelligence() }); }
+  try { _ok(res, { intelligence: g.getInfluencerIntelligence(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -143,27 +154,27 @@ router.get("/distrib/influencers/intelligence",   (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/communities",                (req, res) => {
-  try { _ok(res, { communities: g.listCommunities(req.query.platform), stats: g.getCommunityStats(), platforms: g.COMMUNITY_PLATFORMS }); }
+  try { _ok(res, { communities: g.listCommunities(req.query.platform, req.orgId), stats: g.getCommunityStats(req.orgId), platforms: g.COMMUNITY_PLATFORMS }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/communities",               (req, res) => {
-  try { _ok(res, { community: g.addCommunity(req.body || {}) }); }
+  try { _ok(res, { community: g.addCommunity(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/distrib/communities/:id",          (req, res) => {
-  try { _ok(res, { community: g.updateCommunity(req.params.id, req.body || {}) }); }
+  try { _ok(res, { community: g.updateCommunity(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/communities/:id/calendar",  (req, res) => {
-  try { _ok(res, { entry: g.addCommunityCalendarEntry(req.params.id, req.body || {}) }); }
+  try { _ok(res, { entry: g.addCommunityCalendarEntry(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/communities/:id/workflow",  (req, res) => {
-  try { _ok(res, { workflow: g.addCommunityWorkflow(req.params.id, req.body || {}) }); }
+  try { _ok(res, { workflow: g.addCommunityWorkflow(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -172,27 +183,27 @@ router.post("/distrib/communities/:id/workflow",  (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/referral-campaigns",         (req, res) => {
-  try { _ok(res, { campaigns: g.listReferralCampaigns(), fraudSignals: g.FRAUD_SIGNALS }); }
+  try { _ok(res, { campaigns: g.listReferralCampaigns(req.orgId), fraudSignals: g.FRAUD_SIGNALS }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/referral-campaigns",        (req, res) => {
-  try { _ok(res, { campaign: g.createReferralCampaign(req.body || {}) }); }
+  try { _ok(res, { campaign: g.createReferralCampaign(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/referral-campaigns/:id/invite", (req, res) => {
-  try { _ok(res, g.addReferralInvite(req.params.id, req.body || {})); }
+  try { _ok(res, g.addReferralInvite(req.params.id, req.body || {}, req.orgId)); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/referral-campaigns/:id/convert/:inviteId", (req, res) => {
-  try { _ok(res, g.convertReferralInvite(req.params.id, req.params.inviteId)); }
+  try { _ok(res, g.convertReferralInvite(req.params.id, req.params.inviteId, req.orgId)); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/referral-campaigns/:id/leaderboard", (req, res) => {
-  try { _ok(res, { leaderboard: g.getReferralLeaderboard(req.params.id) }); }
+  try { _ok(res, { leaderboard: g.getReferralLeaderboard(req.params.id, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -201,18 +212,18 @@ router.get("/distrib/referral-campaigns/:id/leaderboard", (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/launches",                   (req, res) => {
-  try { _ok(res, { launches: g.listLaunches(req.query.status), channels: g.LAUNCH_CHANNELS }); }
+  try { _ok(res, { launches: g.listLaunches(req.query.status, req.orgId), channels: g.LAUNCH_CHANNELS }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/distrib/launches",                  (req, res) => {
-  try { _ok(res, { launch: g.createLaunch(req.body || {}) }); }
+  try { _ok(res, { launch: g.createLaunch(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/launches/:id",               (req, res) => {
   try {
-    const l = g.getLaunch(req.params.id);
+    const l = g.getLaunch(req.params.id, req.orgId);
     if (!l) return res.status(404).json({ error: "Launch not found" });
     _ok(res, { launch: l });
   } catch (e) { _err(res, e); }
@@ -222,7 +233,7 @@ router.patch("/distrib/launches/:id/channel",     (req, res) => {
   try {
     const { channel, ...patch } = req.body || {};
     if (!channel) return res.status(400).json({ error: "channel required" });
-    _ok(res, { launch: g.updateLaunchChannel(req.params.id, channel, patch) });
+    _ok(res, { launch: g.updateLaunchChannel(req.params.id, channel, patch, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
@@ -230,7 +241,7 @@ router.patch("/distrib/launches/:id/checklist",   (req, res) => {
   try {
     const { itemId, done } = req.body || {};
     if (!itemId) return res.status(400).json({ error: "itemId required" });
-    _ok(res, { launch: g.updateLaunchChecklist(req.params.id, itemId, done !== false) });
+    _ok(res, { launch: g.updateLaunchChecklist(req.params.id, itemId, done !== false, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
@@ -239,12 +250,12 @@ router.patch("/distrib/launches/:id/checklist",   (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/analytics",                  (req, res) => {
-  try { _ok(res, { analytics: g.getDistributionAnalytics() }); }
+  try { _ok(res, { analytics: g.getDistributionAnalytics(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/analytics/campaigns/:id",    (req, res) => {
-  try { _ok(res, g.getCampaignAnalytics(req.params.id)); }
+  try { _ok(res, g.getCampaignAnalytics(req.params.id, req.orgId)); }
   catch (e) { _err(res, e); }
 });
 
@@ -253,17 +264,17 @@ router.get("/distrib/analytics/campaigns/:id",    (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.post("/distrib/performance/snapshot/:jobId", (req, res) => {
-  try { _ok(res, { snapshot: g.snapshotPerformance(req.params.jobId) }); }
+  try { _ok(res, { snapshot: g.snapshotPerformance(req.params.jobId, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/performance/top",            (req, res) => {
-  try { _ok(res, { top: g.getTopPerformers(Number(req.query.limit) || 5) }); }
+  try { _ok(res, { top: g.getTopPerformers(Number(req.query.limit) || 5, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/distrib/performance/recommendations",(req, res) => {
-  try { _ok(res, { recommendations: g.getRepublishRecommendations() }); }
+  try { _ok(res, { recommendations: g.getRepublishRecommendations(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -277,7 +288,7 @@ router.get("/distrib/performance/optimization",   (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/executive",                  (req, res) => {
-  try { _ok(res, { dashboard: g.getExecutiveDashboard() }); }
+  try { _ok(res, { dashboard: g.getExecutiveDashboard(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -286,7 +297,7 @@ router.get("/distrib/executive",                  (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/distrib/benchmark",                  (req, res) => {
-  try { _ok(res, g.runBenchmark()); }
+  try { _ok(res, g.runBenchmark(req.orgId)); }
   catch (e) { _err(res, e); }
 });
 
