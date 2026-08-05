@@ -14,8 +14,31 @@ const operatorAudit   = require("../middleware/operatorAudit");
 //   /test   used by smoke tests and CI
 //   /api/status used by external status pages
 router.get("/health",     (req, res) => {
+    // Security Hardening (Zero-Trust Competitor Remediation, Phase 1):
+    // `ai` previously meant only "GROQ_API_KEY is a non-empty string" —
+    // reproduced live: booting with an expired/rate-limited Groq key and
+    // every other provider unset/unreachable still reported `ai:true`,
+    // while the startup log directly above it showed all 14 providers
+    // failing. An operator watching this dashboard saw green while the
+    // product could not reach a single model.
+    //
+    // Fix: reuse aiService.getProviderStatus() — a real, already-existing,
+    // NON-probing (no network I/O, so /health stays fast) snapshot that
+    // combines "key present" with "no recently recorded call failure" for
+    // each of the 14 providers. `ai` is now true only if at least one
+    // provider is both configured AND has no known-recent failure — still
+    // optimistic between real calls (this endpoint intentionally does not
+    // make a live network probe on every health check, unlike the slower
+    // authenticated /ai/status route, which does), but no longer blind to
+    // failures the process has already observed firsthand.
+    let aiAvailable = !!process.env.GROQ_API_KEY; // conservative fallback if aiService fails to load
+    try {
+        const providerStatus = require("../services/aiService.js").getProviderStatus();
+        aiAvailable = Object.values(providerStatus).some(p => p.available);
+    } catch { /* aiService optional at this layer — fall back to key-presence */ }
+
     const services = {
-        ai:       !!process.env.GROQ_API_KEY,
+        ai:       aiAvailable,
         telegram: !!process.env.TELEGRAM_TOKEN,
         whatsapp: !!(process.env.WA_TOKEN || process.env.WHATSAPP_TOKEN),
         payments: !!((process.env.RAZORPAY_KEY || process.env.RAZORPAY_KEY_ID) && (process.env.RAZORPAY_SECRET || process.env.RAZORPAY_KEY_SECRET)),
