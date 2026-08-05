@@ -26,6 +26,34 @@ const crm  = require("./crmService.js");
 
 const DATA_FILE = path.join(__dirname, "../../data/growth-os.json");
 
+// Founder Journey Completion (Marketing/Website/Content pass) finding:
+// this entire service had zero org/tenant scoping — every campaign,
+// audience, automation, and dashboard aggregate was read from and written
+// to one global, unpartitioned store. Reproduced live: a brand-new
+// founder account's Growth Dashboard showed "64 Total Campaigns" and
+// pre-existing "Bench List"/"Bench Segment" audiences created by the
+// real, founder-triggerable "Run Benchmark" feature (GrowthOS.jsx's
+// BenchmarkPanel) run in prior sessions — genuine cross-tenant data
+// leakage (case C: real data, not fabricated, but visible across
+// tenants), not intentional demo content. Fixed by recovering the exact
+// same isolation pattern already established elsewhere in this codebase
+// (companyLifecycleEngine.cjs's listCompanies({ orgId }), organizationNetwork.js):
+// every record now carries an orgId set server-side at creation, and
+// every list/dashboard/analytics read filters by the caller's orgId.
+// _scopedRecords()/_ownedRecord() below are the two shared helpers every
+// list/get function in this file routes through — not a new isolation
+// model, the same filter-by-orgId shape repeated consistently.
+function _scopedRecords(recordsObj, orgId) {
+  const all = Object.values(recordsObj || {});
+  if (!orgId) return []; // no org context — never fall back to "all tenants'" data
+  return all.filter(r => r.orgId === orgId);
+}
+function _ownedRecord(recordsObj, id, orgId) {
+  const r = (recordsObj || {})[id];
+  if (!r || !orgId || r.orgId !== orgId) return null;
+  return r;
+}
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 function _load() {
@@ -62,17 +90,20 @@ const EMAIL_CAMPAIGN_SCHEMA = {
   variantBStats: { sent: 0, opened: 0, clicked: 0 },
 };
 
-function createEmailCampaign(opts) {
+function createEmailCampaign(opts, orgId) {
   const s  = _load();
   const id = _id("ecm");
-  s.campaigns[id] = { ...EMAIL_CAMPAIGN_SCHEMA, ...opts, id, type: "email", createdAt: _ts(), updatedAt: _ts() };
+  // orgId always comes from the authenticated caller's own context (route
+  // layer), never trusted from opts/req.body — same discipline as
+  // platformOrg.js's registerOrg fix.
+  s.campaigns[id] = { ...EMAIL_CAMPAIGN_SCHEMA, ...opts, id, type: "email", orgId, createdAt: _ts(), updatedAt: _ts() };
   _save(s);
   return s.campaigns[id];
 }
 
-function updateEmailCampaign(id, patch) {
+function updateEmailCampaign(id, patch, orgId) {
   const s = _load();
-  if (!s.campaigns[id]) throw new Error(`Campaign ${id} not found`);
+  if (!_ownedRecord(s.campaigns, id, orgId)) throw new Error(`Campaign ${id} not found`);
   Object.assign(s.campaigns[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.campaigns[id];
@@ -88,9 +119,9 @@ function updateEmailCampaign(id, patch) {
 // Rather than fabricate stats OR silently pretend a send happened,
 // this now fails honestly: building real email-address collection into
 // the CRM would be new capability expansion, out of scope for this fix.
-function sendEmailCampaign(id) {
+function sendEmailCampaign(id, orgId) {
   const s = _load();
-  const c = s.campaigns[id];
+  const c = _ownedRecord(s.campaigns, id, orgId);
   if (!c) throw new Error(`Campaign ${id} not found`);
   if (c.type !== "email") throw new Error("Not an email campaign");
 
@@ -103,14 +134,14 @@ function sendEmailCampaign(id) {
   throw err;
 }
 
-function listEmailCampaigns(status) {
+function listEmailCampaigns(status, orgId) {
   const s = _load();
-  return Object.values(s.campaigns).filter(c => c.type === "email" && (!status || c.status === status));
+  return _scopedRecords(s.campaigns, orgId).filter(c => c.type === "email" && (!status || c.status === status));
 }
 
 // Email Sequences
 
-function createSequence(opts) {
+function createSequence(opts, orgId) {
   const s  = _load();
   const id = _id("seq");
   s.sequences[id] = {
@@ -118,7 +149,7 @@ function createSequence(opts) {
     steps: opts.steps || [],
     audienceId: opts.audienceId || null,
     triggerEvent: opts.triggerEvent || "contact_created",
-    status: "active",
+    status: "active", orgId,
     stats: { enrolled: 0, completed: 0, dropped: 0 },
     createdAt: _ts(), updatedAt: _ts(),
   };
@@ -126,20 +157,20 @@ function createSequence(opts) {
   return s.sequences[id];
 }
 
-function updateSequence(id, patch) {
+function updateSequence(id, patch, orgId) {
   const s = _load();
-  if (!s.sequences[id]) throw new Error(`Sequence ${id} not found`);
+  if (!_ownedRecord(s.sequences, id, orgId)) throw new Error(`Sequence ${id} not found`);
   Object.assign(s.sequences[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.sequences[id];
 }
 
-function listSequences() { return Object.values(_load().sequences); }
-function getSequence(id) { return _load().sequences[id] || null; }
+function listSequences(orgId) { return _scopedRecords(_load().sequences, orgId); }
+function getSequence(id, orgId) { return _ownedRecord(_load().sequences, id, orgId); }
 
 // ── MODULE 2: SMS Marketing OS ────────────────────────────────────────────────
 
-function createSMSCampaign(opts) {
+function createSMSCampaign(opts, orgId) {
   const s  = _load();
   const id = _id("sms");
   s.campaigns[id] = {
@@ -153,7 +184,7 @@ function createSMSCampaign(opts) {
     bulk:       opts.bulk        !== false,
     templateId: opts.templateId  || null,
     unicode:    opts.unicode     || false,
-    status: "draft",
+    status: "draft", orgId,
     stats: { sent: 0, delivered: 0, failed: 0, replies: 0 },
     createdAt: _ts(), updatedAt: _ts(),
   };
@@ -161,9 +192,9 @@ function createSMSCampaign(opts) {
   return s.campaigns[id];
 }
 
-function updateSMSCampaign(id, patch) {
+function updateSMSCampaign(id, patch, orgId) {
   const s = _load();
-  if (!s.campaigns[id]) throw new Error(`Campaign ${id} not found`);
+  if (!_ownedRecord(s.campaigns, id, orgId)) throw new Error(`Campaign ${id} not found`);
   Object.assign(s.campaigns[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.campaigns[id];
@@ -176,9 +207,9 @@ function updateSMSCampaign(id, patch) {
 // one would be new capability expansion, out of scope for this fix. Fails
 // honestly instead of fabricating a delivery report for a channel that
 // was never actually connected to any provider.
-function sendSMSCampaign(id) {
+function sendSMSCampaign(id, orgId) {
   const s = _load();
-  const c = s.campaigns[id];
+  const c = _ownedRecord(s.campaigns, id, orgId);
   if (!c || c.type !== "sms") throw new Error(`SMS campaign ${id} not found`);
 
   const err = new Error("SMS campaign sending is not available: no SMS provider is configured in this deployment.");
@@ -186,9 +217,9 @@ function sendSMSCampaign(id) {
   throw err;
 }
 
-function scheduleSMSCampaign(id, scheduledAt) {
+function scheduleSMSCampaign(id, scheduledAt, orgId) {
   const s = _load();
-  const c = s.campaigns[id];
+  const c = _ownedRecord(s.campaigns, id, orgId);
   if (!c || c.type !== "sms") throw new Error(`SMS campaign ${id} not found`);
   c.scheduledAt = scheduledAt;
   c.status      = "scheduled";
@@ -210,14 +241,14 @@ function sendOTP(to, otp) {
   throw err;
 }
 
-function listSMSCampaigns(status) {
+function listSMSCampaigns(status, orgId) {
   const s = _load();
-  return Object.values(s.campaigns).filter(c => c.type === "sms" && (!status || c.status === status));
+  return _scopedRecords(s.campaigns, orgId).filter(c => c.type === "sms" && (!status || c.status === status));
 }
 
 // ── MODULE 3: WhatsApp Business OS ───────────────────────────────────────────
 
-function createWhatsAppBroadcast(opts) {
+function createWhatsAppBroadcast(opts, orgId) {
   const s  = _load();
   const id = _id("wa");
   s.campaigns[id] = {
@@ -232,7 +263,7 @@ function createWhatsAppBroadcast(opts) {
     scheduledAt:        opts.scheduledAt        || null,
     autoReply:          opts.autoReply          || {},
     leadQualification:  opts.leadQualification  || null,
-    status: "draft",
+    status: "draft", orgId,
     stats: { sent: 0, delivered: 0, read: 0, replied: 0, leads: 0, optOut: 0 },
     createdAt: _ts(), updatedAt: _ts(),
   };
@@ -251,14 +282,14 @@ function createWhatsAppBroadcast(opts) {
 // this module does not currently consume) — reported as null rather than
 // a fabricated number, honest about what genuinely cannot be known yet
 // rather than guessing.
-async function sendWhatsAppBroadcast(id) {
+async function sendWhatsAppBroadcast(id, orgId) {
   const s = _load();
-  const c = s.campaigns[id];
+  const c = _ownedRecord(s.campaigns, id, orgId);
   if (!c || c.type !== "whatsapp") throw new Error(`WhatsApp broadcast ${id} not found`);
 
-  const memberIds = c.audienceId && s.audiences[c.audienceId]
+  const memberIds = c.audienceId && _ownedRecord(s.audiences, c.audienceId, orgId)
     ? (s.audiences[c.audienceId].memberIds || [])
-    : crm.getLeads().map(l => l.phone).filter(Boolean);
+    : crm.getLeads(undefined, orgId).map(l => l.phone).filter(Boolean);
 
   const wa = require("./whatsappService.js");
   let delivered = 0, failed = 0;
@@ -289,9 +320,9 @@ async function sendWhatsAppBroadcast(id) {
   return c;
 }
 
-function syncWhatsAppCRM(campaignId) {
+function syncWhatsAppCRM(campaignId, orgId) {
   const s = _load();
-  const c = s.campaigns[campaignId];
+  const c = _ownedRecord(s.campaigns, campaignId, orgId);
   if (!c || c.type !== "whatsapp") throw new Error("Not a WhatsApp campaign");
   const leadsCount = c.stats?.leads || 0;
 
@@ -311,13 +342,13 @@ function syncWhatsAppCRM(campaignId) {
   return { synced, campaignId, syncedAt: _ts() };
 }
 
-function listWhatsAppCampaigns(status) {
+function listWhatsAppCampaigns(status, orgId) {
   const s = _load();
-  return Object.values(s.campaigns).filter(c => c.type === "whatsapp" && (!status || c.status === status));
+  return _scopedRecords(s.campaigns, orgId).filter(c => c.type === "whatsapp" && (!status || c.status === status));
 }
 
 // WA Flows — interactive multi-step conversation flows
-function createWAFlow(opts) {
+function createWAFlow(opts, orgId) {
   const s  = _load();
   if (!s.waFlows) s.waFlows = {};
   const id = _id("waf");
@@ -327,7 +358,7 @@ function createWAFlow(opts) {
     steps:   opts.steps   || [], // [{type: "text"|"buttons"|"list"|"input", content, options, variable}]
     trigger: opts.trigger || "keyword",
     keyword: opts.keyword || "",
-    active:  true,
+    active:  true, orgId,
     stats:  { initiated: 0, completed: 0, dropped: 0 },
     createdAt: _ts(), updatedAt: _ts(),
   };
@@ -335,22 +366,22 @@ function createWAFlow(opts) {
   return s.waFlows[id];
 }
 
-function listWAFlows() {
+function listWAFlows(orgId) {
   const s = _load();
-  return Object.values(s.waFlows || {});
+  return _scopedRecords(s.waFlows, orgId);
 }
 
-function updateWAFlow(id, patch) {
+function updateWAFlow(id, patch, orgId) {
   const s = _load();
   if (!s.waFlows) s.waFlows = {};
-  if (!s.waFlows[id]) throw new Error(`Flow ${id} not found`);
+  if (!_ownedRecord(s.waFlows, id, orgId)) throw new Error(`Flow ${id} not found`);
   Object.assign(s.waFlows[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.waFlows[id];
 }
 
 // WA Auto-reply rules
-function createAutoReplyRule(opts) {
+function createAutoReplyRule(opts, orgId) {
   const s = _load();
   if (!s.autoReplies) s.autoReplies = {};
   const id = _id("ar");
@@ -359,7 +390,7 @@ function createAutoReplyRule(opts) {
     keyword:   opts.keyword   || "",
     matchType: opts.matchType || "exact", // exact | contains | regex
     reply:     opts.reply     || "",
-    active:    true,
+    active:    true, orgId,
     stats:    { triggered: 0 },
     createdAt: _ts(),
   };
@@ -367,9 +398,9 @@ function createAutoReplyRule(opts) {
   return s.autoReplies[id];
 }
 
-function listAutoReplyRules() {
+function listAutoReplyRules(orgId) {
   const s = _load();
-  return Object.values(s.autoReplies || {});
+  return _scopedRecords(s.autoReplies, orgId);
 }
 
 // ── MODULE 4: Push Notification Center ───────────────────────────────────────
@@ -385,14 +416,14 @@ function registerPushToken(accountId, token, platform) {
   return { accountId, platform, registered: true };
 }
 
-function sendPushNotification(opts) {
+function sendPushNotification(opts, orgId) {
   const { title, body, icon, url, audienceId, accountIds, trigger, data, automationId } = opts;
   const s = _load();
 
   let targets = [];
   if (accountIds) {
     targets = accountIds;
-  } else if (audienceId && s.audiences[audienceId]) {
+  } else if (audienceId && _ownedRecord(s.audiences, audienceId, orgId)) {
     targets = s.audiences[audienceId].memberIds || [];
   }
 
@@ -406,7 +437,7 @@ function sendPushNotification(opts) {
     trigger: trigger || "manual",
     automationId: automationId || null,
     data: data || {},
-    status: "sent", sentAt: _ts(),
+    status: "sent", sentAt: _ts(), orgId,
     stats: { targeted: targets.length, sent, clicked: Math.round(sent * 0.06), dismissed: Math.round(sent * 0.12) },
     createdAt: _ts(),
   };
@@ -415,12 +446,12 @@ function sendPushNotification(opts) {
   return s.campaigns[id];
 }
 
-function listPushCampaigns() {
+function listPushCampaigns(orgId) {
   const s = _load();
-  return Object.values(s.campaigns).filter(c => c.type === "push");
+  return _scopedRecords(s.campaigns, orgId).filter(c => c.type === "push");
 }
 
-function createPushTriggerRule(opts) {
+function createPushTriggerRule(opts, orgId) {
   const s = _load();
   if (!s.pushTriggers) s.pushTriggers = {};
   const id = _id("pt");
@@ -430,7 +461,7 @@ function createPushTriggerRule(opts) {
     event:     opts.event     || "page_visit",
     conditions: opts.conditions || [],
     template: { title: opts.title || "", body: opts.body || "" },
-    active:   true,
+    active:   true, orgId,
     stats:   { fired: 0 },
     createdAt: _ts(),
   };
@@ -438,9 +469,9 @@ function createPushTriggerRule(opts) {
   return s.pushTriggers[id];
 }
 
-function listPushTriggerRules() {
+function listPushTriggerRules(orgId) {
   const s = _load();
-  return Object.values(s.pushTriggers || {});
+  return _scopedRecords(s.pushTriggers, orgId);
 }
 
 // ── MODULE 5: Marketing Automation Builder ────────────────────────────────────
@@ -460,7 +491,7 @@ const ACTION_TYPES = [
   "wait", "condition", "webhook",
 ];
 
-function createAutomation(opts) {
+function createAutomation(opts, orgId) {
   const s  = _load();
   const id = _id("auto");
   s.automations[id] = {
@@ -469,7 +500,7 @@ function createAutomation(opts) {
     description: opts.description || "",
     trigger:     opts.trigger     || { type: "contact_created", conditions: [] },
     steps:       opts.steps       || [],
-    status:      opts.status      || "active",
+    status:      opts.status      || "active", orgId,
     stats: { enrolled: 0, completed: 0, inProgress: 0, errors: 0 },
     createdAt: _ts(), updatedAt: _ts(),
   };
@@ -477,17 +508,17 @@ function createAutomation(opts) {
   return s.automations[id];
 }
 
-function updateAutomation(id, patch) {
+function updateAutomation(id, patch, orgId) {
   const s = _load();
-  if (!s.automations[id]) throw new Error(`Automation ${id} not found`);
+  if (!_ownedRecord(s.automations, id, orgId)) throw new Error(`Automation ${id} not found`);
   Object.assign(s.automations[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.automations[id];
 }
 
-function triggerAutomation(id, contactData) {
+function triggerAutomation(id, contactData, orgId) {
   const s = _load();
-  const a = s.automations[id];
+  const a = _ownedRecord(s.automations, id, orgId);
   if (!a || a.status !== "active") return null;
   a.stats.enrolled++;
   a.stats.inProgress++;
@@ -496,13 +527,13 @@ function triggerAutomation(id, contactData) {
   return { automationId: id, triggered: true, stepsCount: a.steps.length };
 }
 
-function listAutomations() { return Object.values(_load().automations); }
+function listAutomations(orgId) { return _scopedRecords(_load().automations, orgId); }
 function getTriggerTypes()  { return TRIGGER_TYPES; }
 function getActionTypes()   { return ACTION_TYPES; }
 
 // ── MODULE 6: Audience Manager ────────────────────────────────────────────────
 
-function createAudience(opts) {
+function createAudience(opts, orgId) {
   const s  = _load();
   const id = _id("aud");
   s.audiences[id] = {
@@ -514,25 +545,25 @@ function createAudience(opts) {
     memberIds:   opts.memberIds   || [],
     memberCount: opts.memberIds?.length || 0,
     filters:     opts.filters     || [],
-    syncFromCRM: opts.syncFromCRM || false,
+    syncFromCRM: opts.syncFromCRM || false, orgId,
     createdAt: _ts(), updatedAt: _ts(),
   };
   _save(s);
   return s.audiences[id];
 }
 
-function updateAudience(id, patch) {
+function updateAudience(id, patch, orgId) {
   const s = _load();
-  if (!s.audiences[id]) throw new Error(`Audience ${id} not found`);
+  if (!_ownedRecord(s.audiences, id, orgId)) throw new Error(`Audience ${id} not found`);
   Object.assign(s.audiences[id], patch, { updatedAt: _ts() });
   if (patch.memberIds) s.audiences[id].memberCount = patch.memberIds.length;
   _save(s);
   return s.audiences[id];
 }
 
-function addToAudience(audienceId, memberIds) {
+function addToAudience(audienceId, memberIds, orgId) {
   const s = _load();
-  const a = s.audiences[audienceId];
+  const a = _ownedRecord(s.audiences, audienceId, orgId);
   if (!a) throw new Error(`Audience ${audienceId} not found`);
   const existing = new Set(a.memberIds);
   for (const id of memberIds) existing.add(id);
@@ -543,9 +574,9 @@ function addToAudience(audienceId, memberIds) {
   return a;
 }
 
-function removeFromAudience(audienceId, memberIds) {
+function removeFromAudience(audienceId, memberIds, orgId) {
   const s = _load();
-  const a = s.audiences[audienceId];
+  const a = _ownedRecord(s.audiences, audienceId, orgId);
   if (!a) throw new Error(`Audience ${audienceId} not found`);
   const remove = new Set(memberIds);
   a.memberIds   = a.memberIds.filter(id => !remove.has(id));
@@ -555,26 +586,26 @@ function removeFromAudience(audienceId, memberIds) {
   return a;
 }
 
-function listAudiences(type) {
+function listAudiences(type, orgId) {
   const s = _load();
-  return Object.values(s.audiences).filter(a => !type || a.type === type);
+  return _scopedRecords(s.audiences, orgId).filter(a => !type || a.type === type);
 }
 
-function getAudience(id) { return _load().audiences[id] || null; }
+function getAudience(id, orgId) { return _ownedRecord(_load().audiences, id, orgId); }
 
-function syncCRMToAudience(audienceId) {
-  const leads = crm.getLeads();
+function syncCRMToAudience(audienceId, orgId) {
+  const leads = crm.getLeads(undefined, orgId);
   const ids   = leads.map(l => l.id).filter(Boolean);
-  return addToAudience(audienceId, ids);
+  return addToAudience(audienceId, ids, orgId);
 }
 
 // Dynamic audience evaluation: filter CRM contacts by field criteria
-function evaluateDynamicAudience(audienceId) {
+function evaluateDynamicAudience(audienceId, orgId) {
   const s = _load();
-  const a = s.audiences[audienceId];
+  const a = _ownedRecord(s.audiences, audienceId, orgId);
   if (!a || a.type !== "dynamic") throw new Error("Not a dynamic audience");
 
-  const leads   = crm.getLeads();
+  const leads   = crm.getLeads(undefined, orgId);
   const filters = a.filters || [];
 
   const matched = leads.filter(lead => {
@@ -597,47 +628,51 @@ function evaluateDynamicAudience(audienceId) {
   return a;
 }
 
-// Global tag management
-function createTag(name, color) {
+// Per-org tag management. The id used to be a bare name-derived slug
+// ("tag-vip"), meaning two different orgs both creating a "VIP" tag would
+// silently collide on the exact same record and share its `count`. Now
+// scoped by orgId into the id itself, same fix shape as every other
+// record in this file — no new isolation model.
+function createTag(name, color, orgId) {
   const s = _load();
   if (!s.tags) s.tags = {};
-  const id = `tag-${name.toLowerCase().replace(/\s+/g, "-")}`;
-  s.tags[id] = { id, name, color: color || "#7c6fff", count: 0, createdAt: _ts() };
+  const id = `tag-${orgId || "noorg"}-${name.toLowerCase().replace(/\s+/g, "-")}`;
+  s.tags[id] = { id, name, color: color || "#7c6fff", count: 0, orgId, createdAt: _ts() };
   _save(s);
   return s.tags[id];
 }
 
-function listTags() {
-  return Object.values(_load().tags || {});
+function listTags(orgId) {
+  return _scopedRecords(_load().tags, orgId);
 }
 
 // ── MODULE 7: Campaign Analytics ──────────────────────────────────────────────
 
-function _recordEvent(evt) {
+function _recordEvent(evt, orgId) {
   const s = _load();
-  s.events.push({ ...evt, ts: _ts() });
+  s.events.push({ ...evt, orgId, ts: _ts() });
   if (s.events.length > 10000) s.events = s.events.slice(-10000);
   _save(s);
 }
 
-function recordConversion(campaignId, { revenue, contactId }) {
+function recordConversion(campaignId, { revenue, contactId }, orgId) {
   const s = _load();
-  const c = s.campaigns[campaignId];
+  const c = _ownedRecord(s.campaigns, campaignId, orgId);
   if (c) {
     c.stats.converted = (c.stats.converted || 0) + 1;
     c.stats.revenue   = (c.stats.revenue   || 0) + (revenue || 0);
     _save(s);
   }
-  _recordEvent({ type: "conversion", campaignId, revenue, contactId });
+  _recordEvent({ type: "conversion", campaignId, revenue, contactId }, orgId);
   return { ok: true };
 }
 
-function getCampaignAnalytics(campaignId) {
+function getCampaignAnalytics(campaignId, orgId) {
   const s  = _load();
-  const c  = s.campaigns[campaignId];
+  const c  = _ownedRecord(s.campaigns, campaignId, orgId);
   if (!c) return null;
 
-  const events = s.events.filter(e => e.campaignId === campaignId);
+  const events = s.events.filter(e => e.campaignId === campaignId && e.orgId === orgId);
   const st     = c.stats || {};
 
   return {
@@ -672,9 +707,9 @@ function getCampaignAnalytics(campaignId) {
   };
 }
 
-function getOverallAnalytics() {
+function getOverallAnalytics(orgId) {
   const s = _load();
-  const camps = Object.values(s.campaigns);
+  const camps = _scopedRecords(s.campaigns, orgId);
 
   const byType = {};
   for (const c of camps) {
@@ -700,7 +735,7 @@ function getOverallAnalytics() {
     totalConverted,
     overallROAS: totalSent > 0 ? (totalRevenue / totalSent).toFixed(2) : "0.00",
     byType,
-    recentEvents: s.events.slice(-100),
+    recentEvents: s.events.filter(e => e.orgId === orgId).slice(-100),
     topCampaigns: camps
       .filter(c => (c.stats?.revenue || 0) > 0)
       .sort((a, b) => (b.stats?.revenue || 0) - (a.stats?.revenue || 0))
@@ -736,20 +771,24 @@ const BUILTIN_TEMPLATES = [
   { id: "tpl-push-milestone",   type: "push",     category: "Engagement",    name: "Milestone Push",        body: "🎯 You've reached {{milestone}}! Keep going.", variables: ["milestone"], builtin: true },
 ];
 
-function listTemplates(type, category) {
+// BUILTIN_TEMPLATES are the platform's own curated library — genuinely
+// global/shared by design, not tenant data, so they stay unscoped. Custom
+// templates (s.templates) are real per-org content and are now scoped
+// like every other record in this file.
+function listTemplates(type, category, orgId) {
   const s      = _load();
-  const custom = Object.values(s.templates || {});
+  const custom = _scopedRecords(s.templates, orgId);
   const all    = [...BUILTIN_TEMPLATES, ...custom];
   return all.filter(t => (!type || t.type === type) && (!category || t.category === category));
 }
 
-function getTemplate(id) {
+function getTemplate(id, orgId) {
   const builtin = BUILTIN_TEMPLATES.find(t => t.id === id);
   if (builtin) return builtin;
-  return _load().templates[id] || null;
+  return _ownedRecord(_load().templates, id, orgId);
 }
 
-function createTemplate(opts) {
+function createTemplate(opts, orgId) {
   const s  = _load();
   const id = _id("tpl");
   s.templates[id] = {
@@ -759,16 +798,16 @@ function createTemplate(opts) {
     name:      opts.name      || "Template",
     subject:   opts.subject   || "",
     body:      opts.body      || "",
-    variables: opts.variables || [],
+    variables: opts.variables || [], orgId,
     createdAt: _ts(),
   };
   _save(s);
   return s.templates[id];
 }
 
-function updateTemplate(id, patch) {
+function updateTemplate(id, patch, orgId) {
   const s = _load();
-  if (!s.templates[id]) throw new Error(`Template ${id} not found or built-in`);
+  if (!_ownedRecord(s.templates, id, orgId)) throw new Error(`Template ${id} not found or built-in`);
   Object.assign(s.templates[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.templates[id];
@@ -776,11 +815,11 @@ function updateTemplate(id, patch) {
 
 // ── MODULE 9: Growth Dashboard ────────────────────────────────────────────────
 
-function getGrowthDashboard() {
+function getGrowthDashboard(orgId) {
   const s     = _load();
-  const camps = Object.values(s.campaigns);
-  const auds  = Object.values(s.audiences);
-  const autos = Object.values(s.automations);
+  const camps = _scopedRecords(s.campaigns, orgId);
+  const auds  = _scopedRecords(s.audiences, orgId);
+  const autos = _scopedRecords(s.automations, orgId);
 
   const emailCamps = camps.filter(c => c.type === "email");
   const smsCamps   = camps.filter(c => c.type === "sms");
@@ -803,12 +842,12 @@ function getGrowthDashboard() {
       totalMembers:     auds.reduce((s, a) => s + (a.memberCount || 0), 0),
       totalAutomations: autos.length,
       activeAutomations: autos.filter(a => a.status === "active").length,
-      totalTemplates:   BUILTIN_TEMPLATES.length + Object.keys(s.templates || {}).length,
+      totalTemplates:   BUILTIN_TEMPLATES.length + _scopedRecords(s.templates, orgId).length,
       totalReach,
       totalRevenue,
       totalConverted,
       overallROAS:      totalReach > 0 ? (totalRevenue / totalReach).toFixed(2) : "0.00",
-      waFlows:          Object.keys(s.waFlows || {}).length,
+      waFlows:          _scopedRecords(s.waFlows, orgId).length,
     },
     email: {
       campaigns:   emailCamps.length,
@@ -817,7 +856,7 @@ function getGrowthDashboard() {
         ? (emailCamps.reduce((s, c) => s + (c.stats?.opened || 0), 0) /
            emailCamps.reduce((s, c) => s + (c.stats?.sent   || 0), 1) * 100).toFixed(1)
         : "0.0",
-      sequences:   Object.keys(s.sequences || {}).length,
+      sequences:   _scopedRecords(s.sequences, orgId).length,
       abTests:     emailCamps.filter(c => c.abTest).length,
     },
     sms: {
@@ -836,7 +875,7 @@ function getGrowthDashboard() {
            waCamps.reduce((s, c) => s + (c.stats?.sent || 0), 1) * 100).toFixed(1)
         : "0.0",
       totalLeads:  sumStat(waCamps, "leads"),
-      flows:       Object.keys(s.waFlows || {}).length,
+      flows:       _scopedRecords(s.waFlows, orgId).length,
     },
     push: {
       campaigns: pushCamps.length,
@@ -855,16 +894,24 @@ function getGrowthDashboard() {
 
 // ── MODULE 10: Commercial Benchmark ──────────────────────────────────────────
 
-function runBenchmark() {
+// Founder Journey Completion finding: this benchmark's own fixtures
+// ("Bench List", "Bench Segment", "Benchmark Email", etc.) were the exact
+// reproduced source of the cross-tenant leak — created with no orgId
+// (before this fix), they piled up in the shared store across every prior
+// invocation, and getGrowthDashboard()/listAudiences() etc. surfaced them
+// to any account. Threading orgId through every create/send call here is
+// the actual root-cause fix: it doesn't just isolate future runs, it's
+// the same call path the earlier leak came from.
+function runBenchmark(orgId) {
   const checks = [
     {
       id: "email_pipeline",
       label: "Email Marketing Pipeline (campaign → A/B → send → stats)",
       run: () => {
-        const id = createEmailCampaign({ name: "Benchmark Email", subject: "Test", fromName: "Ooplix", fromEmail: "test@ooplix.com", abTest: true, variantB: { subject: "Test B" } }).id;
-        const tpl = createTemplate({ type: "email", name: "Bench Tpl", body: "Hi {{name}}", category: "Test" });
-        updateEmailCampaign(id, { templateId: tpl.id });
-        const sent = sendEmailCampaign(id);
+        const id = createEmailCampaign({ name: "Benchmark Email", subject: "Test", fromName: "Ooplix", fromEmail: "test@ooplix.com", abTest: true, variantB: { subject: "Test B" } }, orgId).id;
+        const tpl = createTemplate({ type: "email", name: "Bench Tpl", body: "Hi {{name}}", category: "Test" }, orgId);
+        updateEmailCampaign(id, { templateId: tpl.id }, orgId);
+        const sent = sendEmailCampaign(id, orgId);
         return sent.status === "sent" && sent.stats.sent >= 0 && sent.variantBStats !== null;
       },
     },
@@ -872,8 +919,8 @@ function runBenchmark() {
       id: "email_sequence",
       label: "Email Sequence Pipeline",
       run: () => {
-        const seq = createSequence({ name: "Bench Seq", steps: [{ delayDays: 1, subject: "Follow up" }, { delayDays: 3, subject: "Final push" }] });
-        const got = getSequence(seq.id);
+        const seq = createSequence({ name: "Bench Seq", steps: [{ delayDays: 1, subject: "Follow up" }, { delayDays: 3, subject: "Final push" }] }, orgId);
+        const got = getSequence(seq.id, orgId);
         return got && got.steps.length === 2;
       },
     },
@@ -881,10 +928,10 @@ function runBenchmark() {
       id: "sms_pipeline",
       label: "SMS Marketing Pipeline (campaign + OTP + schedule)",
       run: () => {
-        const id   = createSMSCampaign({ name: "Benchmark SMS", body: "Test message" }).id;
-        scheduleSMSCampaign(id, new Date(Date.now() + 86400000).toISOString());
-        updateSMSCampaign(id, { status: "draft" }); // reset for send
-        const sent = sendSMSCampaign(id);
+        const id   = createSMSCampaign({ name: "Benchmark SMS", body: "Test message" }, orgId).id;
+        scheduleSMSCampaign(id, new Date(Date.now() + 86400000).toISOString(), orgId);
+        updateSMSCampaign(id, { status: "draft" }, orgId); // reset for send
+        const sent = sendSMSCampaign(id, orgId);
         const otp  = sendOTP("+911234567890");
         return sent.status === "sent" && otp.ok;
       },
@@ -893,10 +940,10 @@ function runBenchmark() {
       id: "whatsapp_pipeline",
       label: "WhatsApp Broadcast + Flow + Auto-reply",
       run: () => {
-        const id  = createWhatsAppBroadcast({ name: "Benchmark WA", body: "Hello {{name}}" }).id;
-        const sent = sendWhatsAppBroadcast(id);
-        const flow = createWAFlow({ name: "Bench Flow", steps: [{ type: "text", content: "Welcome!" }], keyword: "START" });
-        const ar   = createAutoReplyRule({ keyword: "HELP", reply: "Here to help!", matchType: "exact" });
+        const id  = createWhatsAppBroadcast({ name: "Benchmark WA", body: "Hello {{name}}" }, orgId).id;
+        const sent = sendWhatsAppBroadcast(id, orgId);
+        const flow = createWAFlow({ name: "Bench Flow", steps: [{ type: "text", content: "Welcome!" }], keyword: "START" }, orgId);
+        const ar   = createAutoReplyRule({ keyword: "HELP", reply: "Here to help!", matchType: "exact" }, orgId);
         return sent.status === "sent" && sent.stats.read >= 0 && flow.id && ar.id;
       },
     },
@@ -904,8 +951,8 @@ function runBenchmark() {
       id: "push_pipeline",
       label: "Push Notification + Trigger Rules",
       run: () => {
-        const result  = sendPushNotification({ title: "Test", body: "Bench push", trigger: "benchmark" });
-        const trigger = createPushTriggerRule({ name: "Page Visit", event: "page_visit", title: "You visited!", body: "Come back!" });
+        const result  = sendPushNotification({ title: "Test", body: "Bench push", trigger: "benchmark" }, orgId);
+        const trigger = createPushTriggerRule({ name: "Page Visit", event: "page_visit", title: "You visited!", body: "Come back!" }, orgId);
         return result.type === "push" && result.status === "sent" && trigger.id;
       },
     },
@@ -922,8 +969,8 @@ function runBenchmark() {
             { type: "condition", config: { field: "opened", op: "equals", value: true } },
             { type: "add_tag", config: { tag: "engaged" } },
           ],
-        });
-        const triggered = triggerAutomation(a.id, { id: "contact-bench" });
+        }, orgId);
+        const triggered = triggerAutomation(a.id, { id: "contact-bench" }, orgId);
         return triggered?.triggered === true && a.steps.length === 4;
       },
     },
@@ -931,12 +978,12 @@ function runBenchmark() {
       id: "audience_pipeline",
       label: "Audience Manager (list + segment + dynamic + tags)",
       run: () => {
-        const list    = createAudience({ name: "Bench List", type: "list" });
-        const seg     = createAudience({ name: "Bench Segment", type: "segment", filters: [{ field: "status", op: "equals", value: "new" }] });
-        const dynamic = createAudience({ name: "Bench Dynamic", type: "dynamic", filters: [{ field: "source", op: "equals", value: "web" }] });
-        addToAudience(list.id, ["c1", "c2", "c3"]);
-        const updated = getAudience(list.id);
-        const tag     = createTag("vip", "#22c55e");
+        const list    = createAudience({ name: "Bench List", type: "list" }, orgId);
+        const seg     = createAudience({ name: "Bench Segment", type: "segment", filters: [{ field: "status", op: "equals", value: "new" }] }, orgId);
+        const dynamic = createAudience({ name: "Bench Dynamic", type: "dynamic", filters: [{ field: "source", op: "equals", value: "web" }] }, orgId);
+        addToAudience(list.id, ["c1", "c2", "c3"], orgId);
+        const updated = getAudience(list.id, orgId);
+        const tag     = createTag("vip", "#22c55e", orgId);
         return updated.memberCount === 3 && seg.id && dynamic.id && tag.id;
       },
     },
@@ -944,10 +991,10 @@ function runBenchmark() {
       id: "analytics_pipeline",
       label: "Campaign Analytics (open/click/conversion/ROAS/funnel)",
       run: () => {
-        const cid = createEmailCampaign({ name: "Analytics Bench" }).id;
-        sendEmailCampaign(cid);
-        recordConversion(cid, { revenue: 999, contactId: "c1" });
-        const a = getCampaignAnalytics(cid);
+        const cid = createEmailCampaign({ name: "Analytics Bench" }, orgId).id;
+        sendEmailCampaign(cid, orgId);
+        recordConversion(cid, { revenue: 999, contactId: "c1" }, orgId);
+        const a = getCampaignAnalytics(cid, orgId);
         return a && a.converted >= 1 && a.revenue >= 999 && a.funnel?.length === 5 && parseFloat(a.roas) > 0;
       },
     },
@@ -955,11 +1002,11 @@ function runBenchmark() {
       id: "template_marketplace",
       label: "Template Marketplace (18+ built-in, all 4 channels)",
       run: () => {
-        const all   = listTemplates();
-        const email = listTemplates("email");
-        const sms   = listTemplates("sms");
-        const wa    = listTemplates("whatsapp");
-        const push  = listTemplates("push");
+        const all   = listTemplates(undefined, undefined, orgId);
+        const email = listTemplates("email", undefined, orgId);
+        const sms   = listTemplates("sms", undefined, orgId);
+        const wa    = listTemplates("whatsapp", undefined, orgId);
+        const push  = listTemplates("push", undefined, orgId);
         return all.length >= 18 && email.length >= 6 && sms.length >= 4 && wa.length >= 4 && push.length >= 4;
       },
     },
@@ -967,7 +1014,7 @@ function runBenchmark() {
       id: "growth_dashboard",
       label: "Growth Dashboard KPIs (7 channels, ROAS, WA flows)",
       run: () => {
-        const d = getGrowthDashboard();
+        const d = getGrowthDashboard(orgId);
         return d.kpis && typeof d.kpis.totalCampaigns === "number" && d.email && d.sms && d.whatsapp && d.push &&
                typeof d.kpis.overallROAS !== "undefined" && typeof d.kpis.waFlows !== "undefined";
       },
