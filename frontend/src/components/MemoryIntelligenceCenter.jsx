@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
-import { getMemoryIntelligence, getMemoryInsights, rankMemories } from "../phase20Api";
+import { getMemoryConflicts, rankMemories } from "../phase20Api";
 import { memoryStats } from "../phase18Api";
 import "./MemoryIntelligenceCenter.css";
 
@@ -38,13 +38,17 @@ function mapMemoryNode(n) {
   };
 }
 
-const GAPS = [
-  { text: "No pricing intelligence stored for top 3 competitors", severity: "critical", dot: "#ff6464" },
-  { text: "Customer persona data is 45+ days stale", severity: "critical", dot: "#ff6464" },
-  { text: "Product roadmap not in memory — agents guessing", severity: "moderate", dot: "var(--warning)" },
-  { text: "ICP (Ideal Customer Profile) only partially defined", severity: "moderate", dot: "var(--warning)" },
-  { text: "Team org chart missing for new hires", severity: "low", dot: "#00dc82" },
-];
+// Maps a real /p20/memory/conflicts entry → the gap-row shape this view renders.
+// Conflicts (same/near-identical key, diverging values) are the real signal the
+// backend can detect today — framed here as knowledge gaps needing review.
+function mapConflict(c) {
+  const severity = c.valueDivergence >= 80 ? "critical" : c.valueDivergence >= 50 ? "moderate" : "low";
+  const dot = severity === "critical" ? "#ff6464" : severity === "moderate" ? "var(--warning)" : "#00dc82";
+  return {
+    text: `"${c.keyA}" and "${c.keyB}" conflict — ${c.valueDivergence}% value divergence. ${c.recommendation}`,
+    severity, dot,
+  };
+}
 
 const REL_NODES = [
   { icon: "🏢", name: "Company",   links: 14 },
@@ -66,19 +70,19 @@ function score(val) {
 export default function MemoryIntelligenceCenter({ onNavigate }) {
   const [tab,     setTab]     = useState("overview");
   const [stats,   setStats]   = useState(null);
-  const [insights, setInsights] = useState([]);
+  const [gaps,    setGaps]    = useState([]);
   const [memories, setMemories] = useState([]);
   const [memLoading, setMemLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([memoryStats(), getMemoryIntelligence(), getMemoryInsights(), rankMemories({ limit: 100 })])
-      .then(([statsRes, intelRes, insightRes, rankRes]) => {
+    Promise.all([memoryStats(), getMemoryConflicts(), rankMemories({ limit: 100 })])
+      .then(([statsRes, conflictRes, rankRes]) => {
         if (cancelled) return;
         if (statsRes) setStats(statsRes);
-        const ins = insightRes?.insights || intelRes?.patterns || [];
-        if (Array.isArray(ins) && ins.length > 0) setInsights(ins);
+        const conflicts = conflictRes?.conflicts;
+        if (Array.isArray(conflicts)) setGaps(conflicts.map(mapConflict));
         const ranked = rankRes?.ranked;
         if (Array.isArray(ranked)) setMemories(ranked.map(mapMemoryNode));
       })
@@ -91,7 +95,7 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
   const avgImp    = memories.length ? Math.round(memories.reduce((s,m) => s + m.importance, 0) / memories.length) : 0;
   const avgConf   = memories.length ? Math.round(memories.reduce((s,m) => s + m.confidence, 0) / memories.length) : 0;
   const stale     = memories.filter(m => m.staleness > 20).length;
-  const gapCount  = GAPS.filter(g => g.severity === "critical").length;
+  const gapCount  = gaps.filter(g => g.severity === "critical").length;
 
   const TABS = ["overview","relationships","quality","decay","gaps"];
 
@@ -206,8 +210,12 @@ export default function MemoryIntelligenceCenter({ onNavigate }) {
 
       {tab === "gaps" && (
         <div className="mic-panel">
-          <div className="mic-panel-title">Knowledge Gaps</div>
-          {GAPS.map((g,i) => (
+          <div className="mic-panel-title">Knowledge Gaps &amp; Conflicts</div>
+          {memLoading ? (
+            <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>Loading…</div>
+          ) : gaps.length === 0 ? (
+            <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>No conflicting memory entries detected.</div>
+          ) : gaps.map((g,i) => (
             <div key={i} className="mic-gap-row">
               <div className="mic-gap-dot" style={{background:g.dot}} />
               <span className="mic-gap-text">{g.text}</span>

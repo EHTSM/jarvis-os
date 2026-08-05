@@ -29,23 +29,12 @@ export async function getAgentFactoryStats() {
 }
 
 // ── 20B Memory Intelligence Engine ───────────────────────────────────
-export async function getMemoryIntelligence(params = {}) {
-  const q = new URLSearchParams(params).toString();
-  return _fetch(`/p20/memory${q ? "?" + q : ""}`);
-}
-export async function analyzeMemoryPatterns() {
-  return _fetch("/p20/memory/analyze", { method: "POST" });
-}
-export async function getMemoryInsights(params = {}) {
-  const q = new URLSearchParams(params).toString();
-  return _fetch(`/p20/memory/insights${q ? "?" + q : ""}`);
-}
 export async function rankMemories(params = {}) {
   const q = new URLSearchParams(params).toString();
   return _fetch(`/p20/memory/rank${q ? "?" + q : ""}`);
 }
-export async function optimizeMemory() {
-  return _fetch("/p20/memory/optimize", { method: "POST" });
+export async function getMemoryConflicts() {
+  return _fetch("/p20/memory/conflicts");
 }
 
 // ── 20C Improvement Loop Engine ───────────────────────────────────────
