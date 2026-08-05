@@ -56,8 +56,9 @@ We will not pursue legal action against researchers who:
 - Rate limiting: auth routes limited to 10 requests/minute per IP
 
 ### Data Protection
-- All production secrets in `.env` — never committed to source control
-- `.env` gitignored at the repository root
+- Production secrets belong in `.env` only — never committed to source control
+- `.env` itself is gitignored at the repository root and has never been committed
+- **Known past incident:** a live-format Razorpay key pair and a Firebase web API key were pasted into tracked markdown documentation files (not `.env`) during earlier launch-readiness audits. Found and redacted 2026-08-05 (see Disclosure History below) — the Razorpay key was independently confirmed dead (401 from Razorpay's live API) before and after redaction. Docs must never contain literal credential values going forward; use a placeholder and point to `.env.example` or this file instead.
 - Webhook HMAC verification for Razorpay (`RAZORPAY_WEBHOOK_SECRET`)
 - Webhook verification token for WhatsApp (`WA_VERIFY_TOKEN`)
 
@@ -100,9 +101,15 @@ Run `bash deploy/validate-production.sh` to audit all of the above automatically
 
 ## Disclosure History
 
-| Date | CVE | Severity | Description | Status |
-|---|---|---|---|---|
-| — | — | — | No public disclosures yet | — |
+Internal findings from the Zero-Trust Competitor Remediation pass — no external report was received; these were found via independent code audit and confirmed by live reproduction before fixing.
+
+| Date | Severity | Description | Status |
+|---|---|---|---|
+| 2026-08-05 | Critical | Shell command injection in `desktopController.cjs` (launchApp/focusWindow/openPath/clipboardWrite) — any authenticated user could execute arbitrary OS commands via unescaped string interpolation into `execSync`. | Fixed — replaced with `execFileSync(bin, argvArray)`, no shell invocation. |
+| 2026-08-05 | Critical | Cross-tenant IDOR in `platformOrg.js` — any authenticated user could read/export/clone/retire any other account's private "Artificial Organization Platform" org by ID; `ownerId` was also spoofable via request body on creation. | Fixed — ownership bound server-side to `req.user.sub`, `_requireOrgOwner` gate added to all id-scoped routes. |
+| 2026-08-05 | Critical/High | Cross-tenant IDOR in `workforce.js`'s `GET /workforce/org/:orgId/workers` — disclosed any org's human+AI worker roster (real account ids, org roles) to any authenticated user. | Fixed — reuses existing `attachOrg`/`requireOrgMember` middleware. |
+| 2026-08-05 | Medium | Live-format Razorpay key pair and Firebase web API key committed in plaintext across 6 tracked markdown files. | Fixed — redacted from all 6 files. Razorpay key independently confirmed dead (HTTP 401) both before and after. Note: values remain in git history prior to this commit; history rewrite was not performed as part of this pass. |
+| — | — | No further disclosures | — |
 
 ---
 

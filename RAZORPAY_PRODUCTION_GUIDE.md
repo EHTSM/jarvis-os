@@ -161,7 +161,7 @@ Adjust if needed before launch.
 
 ```env
 # ── Already set ──────────────────────────────────────────────────────
-RAZORPAY_KEY_ID=rzp_live_Sefw02YRABlczU      ✓ live key
+RAZORPAY_KEY_ID=rzp_live_<REDACTED-see-SECURITY.md>      ✓ live key
 RAZORPAY_KEY_SECRET=<secret>                  ✓ set
 
 # ── Must set before launch ───────────────────────────────────────────

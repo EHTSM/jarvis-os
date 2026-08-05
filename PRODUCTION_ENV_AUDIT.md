@@ -61,13 +61,13 @@ Method: Live server validation at localhost:5050 + direct API tests + /oauth/sta
 
 | Variable | Status | Notes |
 |---|---|---|
-| `RAZORPAY_KEY_ID` | `rzp_live_Sefw02YRABlczU` | Set — live key format |
+| `RAZORPAY_KEY_ID` | `rzp_live_<REDACTED-see-SECURITY.md>` | Set — live key format |
 | `RAZORPAY_KEY_SECRET` | `id3u0…` (set) | Set |
 | `RAZORPAY_WEBHOOK_SECRET` | **NOT SET** | Webhooks rejected in production |
 
 **Live test:** `POST /payment/link {"amount":100,"leadName":"Test"}` → Razorpay API returns HTTP 401 `{"error":{"description":"Authentication failed"}}`
 
-**Root cause:** The `rzp_live_Sefw02YRABlczU` key is returning 401. Either:
+**Root cause:** The `rzp_live_<REDACTED-see-SECURITY.md>` key is returning 401. Either:
 1. Key has been deactivated/rotated in the Razorpay dashboard, or
 2. Key belongs to a different environment than the secret
 
