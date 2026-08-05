@@ -49,8 +49,23 @@ function _calcProgress(company) {
 
 // ── Main dashboard ────────────────────────────────────────────────────────────
 
-function getDashboard() {
-  const companies  = _cle_e()?.listCompanies?.({ limit: 100 })?.companies || [];
+// Workflow Simplification Certification finding: this function previously
+// called listCompanies({ limit: 100 }) with no orgId, returning EVERY
+// company across the entire platform's shared store (test/simulation data
+// accumulated across many prior sessions) as if it belonged to whichever
+// founder happened to be viewing /company-factory/dashboard — a real
+// account, brand new, with zero companies of their own, saw "74 COMPANIES
+// / 21 LAUNCHED / 40% AVG READINESS" in the summary cards directly above a
+// correctly-scoped "No companies yet" empty state in the list below it,
+// self-contradicting on one screen. listCompanies() already supported an
+// orgId filter (used correctly by the separate, already-existing
+// /company-factory/founder/dashboard route) — this just threads that same
+// existing parameter through the route the frontend actually calls.
+// blueprints/workspaces/workforce/perf stats below remain platform-wide
+// (their underlying services have no orgId concept to filter by without a
+// larger change than this fix's scope) — out of scope for this pass.
+function getDashboard(orgId) {
+  const companies  = _cle_e()?.listCompanies?.({ orgId, limit: 100 })?.companies || [];
   const blueprints = _cbe()?.listBlueprints?.({ limit: 100 })?.blueprints || [];
   const workspaces = _cwb()?.listWorkspaces?.({ limit: 100 })?.workspaces || [];
   const wfStats    = _wm()?.getStats?.()     || {};

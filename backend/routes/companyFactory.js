@@ -46,8 +46,15 @@ function _requireCompanyOrgPermission(req, res, action = "update_org") {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 
-router.get("/company-factory/dashboard", requireAuth, (req, res) =>
-  res.json(_cd()?.getDashboard?.() || { ok: false }));
+router.get("/company-factory/dashboard", requireAuth, (req, res) => {
+  // Scope to the caller's own org — see companyDashboard.cjs's getDashboard()
+  // comment for the full finding. resolveContext is the same primary-org
+  // lookup attachOrg itself uses elsewhere in this codebase, not a new
+  // resolution path.
+  const ctx = _org()?.resolveContext?.(req.user.sub);
+  const orgId = ctx?.primaryOrg?.orgId;
+  res.json(_cd()?.getDashboard?.(orgId) || { ok: false });
+});
 
 router.get("/company-factory/stats", requireAuth, (req, res) =>
   res.json({ ok: true, stats: _cf()?.getStats?.() || {} }));

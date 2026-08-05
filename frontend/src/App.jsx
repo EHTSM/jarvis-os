@@ -251,7 +251,7 @@ const MORE_TABS = [
   { id: "aiusage",    label: "AI Orchestration",   group: "Growth"       },
   // ── Enterprise & Platform
   { id: "business",   label: "CRM",                group: "Enterprise"   },
-  { id: "companies",  label: "Companies",          group: "Enterprise"   },
+  { id: "companies",  label: "Companies",          group: "Enterprise", alias: "business company" },
   { id: "team",       label: "Team",               group: "Enterprise", alias: "invite" },
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
