@@ -106,7 +106,16 @@ const QUICK_ACTIONS = [
   { id: "qa-agent",       label: "View Agents",           icon: "⬡", group: "Actions",  type: "nav", tab: "agents" },
 ];
 
-const ALL_ACTIONS = [...NAV_ACTIONS, ...QUICK_ACTIONS];
+// Desktop-only action — shell-open-terminal (real OS terminal app hand-off:
+// Terminal.app / cmd.exe / gnome-terminal) was fully implemented in
+// electron/main.cjs and exposed via preload as shellOpenTerminal, but had
+// zero frontend caller anywhere in the repo. Only shown inside Electron.
+const DESKTOP_ACTIONS = (typeof window !== "undefined" && window.electronAPI?.isElectron)
+  ? [{ id: "qa-terminal", label: "Open Terminal", icon: "▸", group: "Actions", type: "run",
+       run: () => window.electronAPI.shellOpenTerminal() }]
+  : [];
+
+const ALL_ACTIONS = [...NAV_ACTIONS, ...QUICK_ACTIONS, ...DESKTOP_ACTIONS];
 
 // ── Fuzzy scorer ───────────────────────────────────────────────────
 
@@ -248,6 +257,10 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
       if (query.trim() && query.trim().toLowerCase() !== "ask ooplix") {
         setTimeout(() => onAsk?.(query.trim()), 120);
       }
+      return;
+    }
+    if (action.type === "run") {
+      action.run?.();
       return;
     }
     if (action.tab) {
