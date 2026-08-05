@@ -1059,8 +1059,20 @@ ipcMain.handle("show-notification", (_e, { title, body, silent }) => {
 });
 
 // ── Clipboard ─────────────────────────────────────────────────────
+const _clipHistory = [];
+const MAX_CLIP_HISTORY = 50;
+function _pushClipHistory(text) {
+    if (!text || _clipHistory[0] === text) return;
+    _clipHistory.unshift(text);
+    if (_clipHistory.length > MAX_CLIP_HISTORY) _clipHistory.length = MAX_CLIP_HISTORY;
+}
+
 ipcMain.handle("clipboard-read",  () => ({ text: clipboard.readText() }));
-ipcMain.handle("clipboard-write", (_e, text) => { clipboard.writeText(String(text)); return { ok: true }; });
+ipcMain.handle("clipboard-write", (_e, text) => {
+    clipboard.writeText(String(text));
+    _pushClipHistory(String(text));
+    return { ok: true };
+});
 
 // ── File system ───────────────────────────────────────────────────
 // Restrict file access to paths the user owns — no absolute traversal to /etc, /System etc.
@@ -1630,13 +1642,10 @@ ipcMain.handle("screenshot-window", async () => {
 });
 
 // ── Clipboard history ─────────────────────────────────────────────
-const _clipHistory = [];
-const MAX_CLIP_HISTORY = 50;
-
+// (_clipHistory + _pushClipHistory declared above with clipboard-read/write
+// so clipboard-write can populate history too — see line ~1062)
 ipcMain.handle("clipboard-push-history", (_e, text) => {
-    if (!text || _clipHistory[0] === text) return { ok: true };
-    _clipHistory.unshift(text);
-    if (_clipHistory.length > MAX_CLIP_HISTORY) _clipHistory.length = MAX_CLIP_HISTORY;
+    _pushClipHistory(text);
     return { ok: true };
 });
 

@@ -224,7 +224,7 @@ function ClipboardHistory({ onClose }) {
 
   useEffect(() => {
     if (isElectron()) {
-      api()?.clipboardGetHistory().then(h => { setHistory(h || []); setLoading(false); });
+      api()?.clipboardGetHistory().then(r => { setHistory(r?.history || []); setLoading(false); });
     } else {
       setLoading(false);
     }
