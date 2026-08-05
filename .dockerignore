@@ -1,0 +1,37 @@
+# Packaging Certification: no .dockerignore previously existed, so every
+# `docker build` sent the full working tree (~1.78GB observed — node_modules,
+# .git, data/, logs/, backups/) into the build context. None of these are
+# ever COPY'd by Dockerfile.production; node_modules is reinstalled inside
+# the image, and data/logs/backups are runtime-generated, not source.
+# Excluding them here is a build-speed and secret-hygiene fix — an
+# unfiltered context still transmits .env-adjacent files to the Docker
+# daemon even though the Dockerfile itself never COPYs them in.
+
+node_modules
+.git
+data
+logs
+backups
+tmp
+scratchpad
+_archive
+tests
+
+# Never send real secrets into the build context, even though the
+# Dockerfile doesn't COPY them — matches package.json's build.files
+# exclusions for the Electron packaging path.
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Editor/OS cruft
+.DS_Store
+*.log
+
+# Platforms this Dockerfile does not build
+mobile
+flutter
+vscode-extension
+jarvis-ui
+electron
