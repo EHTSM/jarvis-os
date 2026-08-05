@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch, _isElectron } from "../_client";
 
-// Desktop Integrations panel — exposes four real Electron IPC handlers
-// (fs-show-save-dialog, printer-print-to-pdf, scanner-open-native-app,
-// folder-sync-*) that were fully implemented in electron/main.cjs +
-// preload.cjs but had zero frontend caller anywhere in the repo. Every
-// action here is a thin wrapper around the existing window.electronAPI
-// method — no new IPC handler, no new main-process logic.
+// Desktop Integrations panel — exposes real Electron IPC handlers
+// (printer-list, printer-print, fs-show-save-dialog, printer-print-to-pdf,
+// scanner-open-native-app, folder-sync-*) that were fully implemented in
+// electron/main.cjs + preload.cjs but had zero frontend caller anywhere in
+// the repo. Every action here is a thin wrapper around the existing
+// window.electronAPI method — no new IPC handler, no new main-process logic.
 
 function _fmtBytes(n) {
   if (!n && n !== 0) return "—";
@@ -45,6 +45,71 @@ function PrintToPdfCard() {
       <div className="k2-row-actions">
         <button className="k2-create-btn" onClick={handlePrint} disabled={busy}>{busy ? "Printing…" : "Print to PDF"}</button>
       </div>
+    </div>
+  );
+}
+
+// ── Printer list + direct print ──────────────────────────────────────
+function PrinterCard() {
+  const [printers, setPrinters] = useState(null);
+  const [loading, setLoading]   = useState(true);
+  const [printing, setPrinting] = useState(null);
+  const [result, setResult]     = useState(null);
+
+  useEffect(() => {
+    window.electronAPI.printerList()
+      .then(r => setPrinters(r?.ok ? r.printers : []))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handlePrint = async (deviceName) => {
+    setPrinting(deviceName);
+    setResult(null);
+    try {
+      const r = await window.electronAPI.printerPrint({ deviceName, silent: true });
+      setResult(r?.ok ? { ok: true, deviceName } : { ok: false, error: r?.error || "Print failed" });
+    } catch (e) {
+      setResult({ ok: false, error: e.message });
+    } finally {
+      setPrinting(null);
+    }
+  };
+
+  return (
+    <div className="k2-tokens-panel">
+      <div className="k2-tokens-header">
+        <span>Printers</span>
+      </div>
+      <p className="k2-row-sub" style={{ padding: "0 2px" }}>
+        Real OS printer enumeration and print jobs via Electron's webContents — no third-party driver.
+      </p>
+      {loading ? (
+        <div className="k2-loading">Loading…</div>
+      ) : !printers?.length ? (
+        <div className="k2-empty">No printers detected on this system.</div>
+      ) : (
+        <div className="k2-list">
+          {printers.map(p => (
+            <div key={p.name} className="k2-row">
+              <span className="k2-row-icon">🖨</span>
+              <div className="k2-row-meta">
+                <span className="k2-row-title">{p.displayName || p.name}{p.isDefault ? " (default)" : ""}</span>
+                <span className="k2-row-sub">{p.status !== undefined ? `status: ${p.status}` : p.name}</span>
+              </div>
+              <div className="k2-row-actions">
+                <button className="k2-create-btn" onClick={() => handlePrint(p.name)} disabled={printing === p.name}>
+                  {printing === p.name ? "Printing…" : "Print current view"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {result && (
+        <p className="k2-row-sub" style={{ padding: "0 2px", color: result.ok ? undefined : "var(--error)" }}>
+          {result.ok ? `Sent to ${result.deviceName}.` : `Failed: ${result.error}`}
+        </p>
+      )}
     </div>
   );
 }
@@ -236,6 +301,7 @@ export function DesktopIntegrationsPanel() {
   }
   return (
     <div className="k2-list">
+      <PrinterCard />
       <PrintToPdfCard />
       <ScannerCard />
       <SaveDialogCard />
