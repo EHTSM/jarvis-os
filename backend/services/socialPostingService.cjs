@@ -99,9 +99,13 @@ async function deletePost(postId, orgId = null) {
         const res = await axios.delete(`${X_API_BASE}/tweets/${postId}`, {
             headers: { Authorization: `Bearer ${token}` }, timeout: 12000,
         });
-        return { success: true, deleted: res.data?.data?.deleted === true };
+        const deleted = res.data?.data?.deleted === true;
+        logger.info(`[SocialPosting] Deleted X post ${postId} (deleted=${deleted})`);
+        return { success: true, deleted };
     } catch (err) {
-        return { success: false, error: err.response?.data?.detail || err.message };
+        const detail = err.response?.data?.detail || err.message;
+        logger.error(`[SocialPosting] X delete failed for ${postId}: ${detail}`);
+        return { success: false, error: detail };
     }
 }
 
