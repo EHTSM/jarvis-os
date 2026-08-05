@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { useLazyPanel } from '../hooks/useLazyPanel';
 import { useStableCallback } from '../hooks/useStableCallback';
+import { useElectronEvent } from '../hooks/useElectron';
 import ErrorBoundary from './ErrorBoundary';
 import GlobalSearch, { ClipboardHistoryPanel } from './GlobalSearch';
 import MissionControl from './operator-os/MissionControl';
@@ -356,7 +357,13 @@ function useRecentRepos() {
     });
   }, []);
 
-  return { repos, push };
+  const clear = useCallback(() => {
+    try { localStorage.removeItem(RECENT_REPOS_KEY); } catch {}
+    if (isElectron()) api()?.clearRecentProjects?.().catch(() => {});
+    setRepos([]);
+  }, []);
+
+  return { repos, push, clear };
 }
 
 // ── Quick Switcher (Cmd+P) ─────────────────────────────────────────────
@@ -507,7 +514,7 @@ export default function ElectronWorkspace({ children }) {
   const { pct: splitPct, containerRef: splitRef, onResizerMouseDown: onSplitResize } = useCenterSplitResize(55);
 
   const { recents: recentMissions, push: pushMission } = useRecentMissions();
-  const { repos: recentRepos, push: pushRepo }         = useRecentRepos();
+  const { repos: recentRepos, push: pushRepo, clear: clearRecentRepos } = useRecentRepos();
 
   // ── Git changed-files badge ─────────────────────────────────────────
   useEffect(() => {
@@ -688,6 +695,22 @@ export default function ElectronWorkspace({ children }) {
     setOsView('editor');
   });
 
+  // OS "Open With" file association — files double-clicked in Finder/Explorer
+  // or dropped on the dock icon. get-pending-open-files (files queued by the
+  // OS before this window finished loading) and the live open-file event were
+  // both fully implemented in electron/main.cjs but had no frontend caller.
+  useEffect(() => {
+    if (!isElectron()) return;
+    api()?.getPendingOpenFiles?.().then(r => {
+      const first = r?.files?.[0];
+      if (first) handleFileOpen(first);
+    }).catch(() => {});
+  }, [handleFileOpen]);
+
+  useElectronEvent('onOpenFile', useStableCallback((filePath) => {
+    if (filePath) handleFileOpen(filePath);
+  }), []);
+
   // J2: mission jump-to-line (from mission runtime events)
   useEffect(() => {
     const handler = (e) => {
@@ -842,7 +865,16 @@ export default function ElectronWorkspace({ children }) {
                     <div className="ew-explorer-wrap">
                       {recentRepos.length > 1 && (
                         <div className="ew-recent-repos">
-                          <span className="ew-recent-repos__label">Recent</span>
+                          <span className="ew-recent-repos__label">
+                            Recent
+                            <button
+                              className="ew-recent-repos__clear"
+                              title="Clear recent projects"
+                              onClick={clearRecentRepos}
+                            >
+                              Clear
+                            </button>
+                          </span>
                           <div className="ew-recent-repos__list">
                             {recentRepos.slice(0, 5).map(r => (
                               <button
