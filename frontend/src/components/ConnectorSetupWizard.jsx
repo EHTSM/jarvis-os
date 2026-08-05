@@ -8,8 +8,18 @@ import "./ConnectorSetupWizard.css";
 // /integrations/* and /vault/* routes. A customer's own WhatsApp/payment/
 // email credentials are private to their organization.
 
-const CATEGORY_LABEL = { messaging: "Messaging", payments: "Payments", email: "Email" };
-const CATEGORY_ICON  = { messaging: "💬", payments: "₹", email: "✉" };
+// myConnectors.js's PROVIDERS also includes productivity (notion),
+// project_management (jira, linear), and social (twitter) categories —
+// these fell back to the raw category key as a section heading and a
+// generic 🔌 icon since only the original 3 categories had labels here.
+const CATEGORY_LABEL = {
+  messaging: "Messaging", payments: "Payments", email: "Email",
+  productivity: "Productivity", project_management: "Project Management", social: "Social",
+};
+const CATEGORY_ICON = {
+  messaging: "💬", payments: "₹", email: "✉",
+  productivity: "🗂", project_management: "📋", social: "📣",
+};
 
 function ProviderCard({ provider, onSave, onRemove, onToast }) {
   const [expanded, setExpanded] = useState(false);
