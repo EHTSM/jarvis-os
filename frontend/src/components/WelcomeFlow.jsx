@@ -39,9 +39,21 @@ export function useWelcomeFlow() {
   }, []);
 
   const dismiss = (completed = false) => {
-    if (completed) {
-      try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
-    }
+    // Real Productivity & Operator Experience Certification: this
+    // localStorage write was previously gated behind `completed`, so
+    // clicking "Skip setup" (which calls onDismiss(false)) never
+    // persisted the dismissal — only finishing the full 3-step wizard
+    // did. Reproduced directly: click Skip setup, overlay disappears
+    // visually; reload the page, the same full-viewport wf-overlay
+    // (position:fixed, z-index:1000, pointer-events:auto) reappears and
+    // blocks every click in the app, on every future load, forever,
+    // since a real user who already said "skip" has no other way to
+    // reach the completion path. Persisting on every dismissal path —
+    // completed or skipped — is the fix; `completed` remains available
+    // as a parameter for anything that wants to distinguish the two
+    // going forward (e.g. analytics), it just no longer gates the one
+    // thing "Skip" is supposed to guarantee: not seeing this again.
+    try { localStorage.setItem(STORAGE_KEY, "1"); } catch {}
     setShow(false);
   };
 

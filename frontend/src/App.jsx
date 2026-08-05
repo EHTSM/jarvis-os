@@ -1085,7 +1085,21 @@ function AppInner() {
           {showWelcome && (
             <WelcomeFlow
               onDismiss={(completed) => {
-                if (completed) { try { localStorage.setItem("ooplix_welcome_done", "1"); } catch {} }
+                // Real Productivity & Operator Experience Certification:
+                // this write was previously gated behind `completed`, so
+                // clicking "Skip setup" (WelcomeFlow.jsx calls
+                // onDismiss(false)) never persisted the dismissal.
+                // Reproduced directly: skip the wizard, it disappears;
+                // reload the page, the identical full-viewport overlay
+                // (position:fixed, z-index:1000, pointer-events:auto)
+                // reappears and blocks every click in the app — every
+                // time, forever, since a user who already chose "skip"
+                // has no other route to the completion branch that used
+                // to be the only path that persisted dismissal. Persist
+                // on every dismissal path; only the post-dismiss tour
+                // offer stays completion-gated (skipping setup shouldn't
+                // also force the separate guided tour to auto-open).
+                try { localStorage.setItem("ooplix_welcome_done", "1"); } catch {}
                 setShowWelcome(false);
                 if (completed) setTimeout(() => setShowTour(true), 400);
               }}
