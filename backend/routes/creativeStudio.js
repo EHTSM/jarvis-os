@@ -527,31 +527,34 @@ router.post("/creative/social/generate", async (req, res) => {
     const request = socialEngine.buildGenerationRequest(platform, brief, { format, brandVoice: voice, audience, goal });
     if (!request.ok) return res.status(400).json({ error: request.error });
 
-    // Call AI with the prompt
-    let result = null;
-    try {
-      const ai = _ai();
-      if (ai?.callAI) {
-        const raw = await ai.callAI(request.prompt, { maxTokens: 1024 });
-        const text = raw?.content || raw?.text || "";
-        try {
-          const jsonMatch = text.match(/\{[\s\S]*\}/);
-          result = jsonMatch ? JSON.parse(jsonMatch[0]) : { caption: text, hashtags: [], hook: "", cta: "" };
-        } catch { result = { caption: text, hashtags: [] }; }
-      } else {
-        result = {
-          caption:      `Compelling ${platform} content for: ${brief}`,
-          hashtags:     ["#ooplix", "#ai", `#${platform}`],
-          hook:         `You won't believe this...`,
-          cta:          "Comment below!",
-          variations:   ["Alternative 1", "Alternative 2"],
-          bestTime:     "Tuesday 9am or Thursday 6pm",
-          carouselCopy: ["Slide 1", "Slide 2", "Slide 3"],
-        };
-      }
-    } catch {
-      result = { caption: `${platform} content for: ${brief}`, hashtags: [] };
+    // Call AI with the prompt. A.7 fix: callAI() always resolves to a plain
+    // string — every real provider branch in aiService.js's callAI (groq,
+    // openai, claude, etc.) returns `res.data.choices[0].message.content`
+    // directly, a string, never `{content}`/`{text}`. The old
+    // `raw?.content || raw?.text || ""` therefore always fell through to ""
+    // regardless of whether the AI call actually succeeded — reproduced
+    // live: a real agency account got back {ok:true, result:{caption:"",
+    // hashtags:[],...}}, a "successful" response with genuinely nothing
+    // generated and no error shown anywhere. Also removed the placeholder
+    // fallback branch (fabricated "Compelling {platform} content for..."
+    // copy) that fired whenever aiService failed to load — that's exactly
+    // the kind of fake-success content this pass forbids; when AI is
+    // unavailable, say so honestly instead.
+    const ai = _ai();
+    if (!ai?.callAI) {
+      return res.status(503).json({ error: "AI service is unavailable (aiService module failed to load)." });
     }
+
+    const raw = await ai.callAI(request.prompt, { maxTokens: 1024 });
+    if (typeof raw !== "string" || !raw.trim() || raw.startsWith("AI backend unavailable")) {
+      return res.status(502).json({ error: raw || "AI generation returned no content. Check provider API keys in your .env file." });
+    }
+
+    let result;
+    try {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      result = jsonMatch ? JSON.parse(jsonMatch[0]) : { caption: raw, hashtags: [], hook: "", cta: "" };
+    } catch { result = { caption: raw, hashtags: [] }; }
 
     const entry = socialEngine.storeGeneration(platform, brief, result, {
       accountId: _account(req), format,
