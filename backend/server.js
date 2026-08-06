@@ -903,7 +903,8 @@ _httpServer = app.listen(PORT, HOST, () => {
 
     // ── Phase 31: startup reconciliation ─────────────────────────
     // 1. Stale queue tasks: any task stuck in "running" state (crash recovery)
-    //    is reset to "pending" by recoverStale() (called below in diagnostics).
+    //    is reset to "pending" by recoverStale() (called once, inside
+    //    autonomousLoop.start(), above).
     // 2. Crash snapshots: logged by runtimeOrchestrator at module load time.
     // 3. Pending task count: surface in startup log so operator knows queue state.
     try {
@@ -1087,8 +1088,16 @@ _httpServer = app.listen(PORT, HOST, () => {
         const leads    = crm.getLeads ? crm.getLeads().length : "?";
         let   queueLen = "?";
         try {
+            // A.5.3 runtime-stability finding: recoverStale() was called
+            // here AND inside autonomousLoop.start() (agents/autonomousLoop.cjs,
+            // invoked earlier in this same boot sequence, above). Both ran on
+            // every boot — harmless in effect (the second call is a no-op,
+            // since the first already reset every "running" task to
+            // "pending"), but it produced a duplicate "recovered N stale
+            // running task(s)" log line on every restart, confirmed live.
+            // autonomousLoop.start() already guarantees this runs once per
+            // boot; removed the redundant second call here.
             const tq = require("../agents/taskQueue.cjs");
-            tq.recoverStale();
             tq.pruneOldTasks(50);
             const all = tq.getAll();
             queueLen = `${all.filter(t => t.status === "pending").length} pending / ${all.length} total`;
