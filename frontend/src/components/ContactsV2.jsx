@@ -44,6 +44,21 @@ function _fmtINR(v) {
   return `₹${n}`;
 }
 
+// A.6 business-owner-journey finding: the detail drawer reused _fmtINR's
+// abbreviated form (e.g. "₹9k" for an exact ₹8,500 deal) — fine for the
+// space-constrained list row, but the detail view is where a founder
+// checks an exact figure before writing a proposal or an invoice, and it
+// showed the same rounded value with no way to see the real number.
+// Exact formatter follows the same Intl.NumberFormat pattern already
+// established in BusinessOS.jsx for currency display — not a new
+// mechanism, just applied where precision actually matters.
+function _fmtINRExact(v) {
+  if (!v) return "";
+  const n = Number(String(v).replace(/[^\d.]/g, ""));
+  if (!n) return "";
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
+}
+
 const STATUS_META = {
   new:       { label: "New",       cls: "chip--new"  },
   hot:       { label: "Hot",       cls: "chip--hot"  },
@@ -363,7 +378,7 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpd
           ) : (
             <div className="cv2-drawer-detail-grid">
               {contact.service    && <><span className="cv2-detail-key">Service</span>   <span className="cv2-detail-val">{contact.service}</span></>}
-              {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINR(contact.dealValue)}</span></>}
+              {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINRExact(contact.dealValue)}</span></>}
               {contact.createdAt  && <><span className="cv2-detail-key">Added</span>     <span className="cv2-detail-val">{_timeAgo(contact.createdAt)}</span></>}
               {contact.notes      && <><span className="cv2-detail-key">Notes</span>     <span className="cv2-detail-val cv2-detail-val--notes">{contact.notes}</span></>}
               {!contact.service && !contact.dealValue && !contact.notes && (
