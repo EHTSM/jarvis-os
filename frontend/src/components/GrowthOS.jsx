@@ -190,6 +190,17 @@ function EmailPanel() {
     reloadCamps();
   };
 
+  // A.7 finding: there was no way to remove a mistaken/duplicate campaign —
+  // PATCH /growth/email/campaigns/:id already accepts any patch body
+  // (updateEmailCampaign() does a plain Object.assign), so archiving needs
+  // no new backend route, just a status flag + list-view filter, the same
+  // pattern this file already uses for "draft"/"sent" status everywhere else.
+  const archiveCampaign = async (id) => {
+    await patch(`/growth/email/campaigns/${id}`, { status: "archived" });
+    toast("Campaign archived");
+    reloadCamps();
+  };
+
   const createSeq = async () => {
     if (!seqForm.name) return;
     await post("/growth/email/sequences", { ...seqForm, steps: [] });
@@ -199,7 +210,7 @@ function EmailPanel() {
     setView("sequences"); // same fix as createCampaign — see its comment above
   };
 
-  const list    = camps?.campaigns || [];
+  const list    = (camps?.campaigns || []).filter(c => c.status !== "archived");
   const seqList = seqs?.sequences  || [];
   const tplList = tmpls?.templates || [];
 
@@ -249,6 +260,7 @@ function EmailPanel() {
                 )}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
                 {c.status === "draft" && <button className="gos-btn-sm" onClick={() => send(c.id)}>Send</button>}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveCampaign(c.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -358,6 +370,14 @@ function SMSPanel() {
     reload();
   };
 
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveCampaign = async (id) => {
+    await patch(`/growth/sms/campaigns/${id}`, { status: "archived" });
+    toast("Campaign archived");
+    reload();
+  };
+
   const sendOTP = async () => {
     if (!otp.to) return;
     const r = await post("/growth/sms/otp", otp);
@@ -366,7 +386,7 @@ function SMSPanel() {
     setOtp({ to: "" });
   };
 
-  const list    = camps?.campaigns || [];
+  const list    = (camps?.campaigns || []).filter(c => c.status !== "archived");
   const tplList = tmpls?.templates || [];
 
   return (
@@ -408,6 +428,7 @@ function SMSPanel() {
                     <button className="gos-btn-sm" onClick={() => setSched({ id: c.id, scheduledAt: sched.scheduledAt }) || setView("schedule")}>Schedule</button>
                   </>
                 )}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveCampaign(c.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -833,6 +854,7 @@ function AutomationPanel() {
     setSteps([]);
     toast("Automation created");
     reload();
+    setView("list"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
   };
 
   const toggleStatus = async (a) => {
@@ -840,7 +862,15 @@ function AutomationPanel() {
     reload();
   };
 
-  const list = autos?.automations || [];
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveAutomation = async (id) => {
+    await patch(`/growth/automations/${id}`, { status: "archived" });
+    toast("Automation archived");
+    reload();
+  };
+
+  const list = (autos?.automations || []).filter(a => a.status !== "archived");
 
   return (
     <div>
@@ -881,6 +911,7 @@ function AutomationPanel() {
                 <button className="gos-btn-sm" onClick={() => toggleStatus(a)}>
                   {a.status === "active" ? "Pause" : "Activate"}
                 </button>
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveAutomation(a.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -968,6 +999,7 @@ function AudiencePanel() {
     setForm({ name: "", type: "list", tags: "", syncFromCRM: false });
     toast("Audience created");
     reload();
+    setView("list"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
   };
 
   const syncCRM = async (id) => {
@@ -1006,7 +1038,15 @@ function AudiencePanel() {
     reloadT();
   };
 
-  const list    = auds?.audiences || [];
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveAudience = async (id) => {
+    await patch(`/growth/audiences/${id}`, { status: "archived" });
+    toast("Audience archived");
+    reload();
+  };
+
+  const list    = (auds?.audiences || []).filter(a => a.status !== "archived");
   const tagList = tags?.tags      || [];
 
   const TYPE_COLOR = { list: "#22c55e", segment: "#7c6fff", dynamic: "#4ecdc4" };
@@ -1053,6 +1093,7 @@ function AudiencePanel() {
                 {a.type !== "dynamic" && (
                   <button className="gos-btn-sm" onClick={() => { setImportTarget(a.id); setImportCsv(""); }}>Import CSV</button>
                 )}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveAudience(a.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -1261,9 +1302,21 @@ function TemplatesPanel() {
     setForm({ name: "", type: "email", category: "Custom", subject: "", body: "", variables: "" });
     toast("Template created");
     reload();
+    setView("marketplace"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
+  };
+
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed. Built-in templates are
+  // shipped defaults, not something a founder created — only custom ones
+  // (t.builtin === false) can be archived.
+  const archiveTemplate = async (id) => {
+    await patch(`/growth/templates/${id}`, { status: "archived" });
+    toast("Template archived");
+    reload();
   };
 
   const list = (templates?.templates || [])
+    .filter(t => t.status !== "archived")
     .filter(t => filter === "all" || t.type === filter)
     .filter(t => catFilter === "all" || t.category === catFilter);
 
@@ -1313,6 +1366,15 @@ function TemplatesPanel() {
                   <div className="gos-tag-cloud" style={{ marginTop: 6 }}>
                     {t.variables.map(v => <Chip key={v} color="purple">&#x7B;&#x7B;{v}&#x7D;&#x7D;</Chip>)}
                   </div>
+                )}
+                {!t.builtin && (
+                  <button
+                    className="gos-btn-sm gos-btn-sm--danger"
+                    style={{ marginTop: 8 }}
+                    onClick={(e) => { e.stopPropagation(); archiveTemplate(t.id); }}
+                  >
+                    Archive
+                  </button>
                 )}
               </div>
             ))}

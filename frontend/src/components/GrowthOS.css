@@ -259,6 +259,9 @@
 }
 .gos-btn-sm:hover { background: #0f2e1e; }
 
+.gos-btn-sm--danger { color: #ef4444; border-color: #3a2222; }
+.gos-btn-sm--danger:hover { background: #2e0f0f; }
+
 /* ── Chips ── */
 .gos-chip {
   display: inline-flex;
