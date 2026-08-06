@@ -588,7 +588,18 @@ export default function EngineeringWorkspace() {
                     })}
                   </div>
                 )}
-                {pipelineResult.error && <div style={{ fontSize: 10, color: "#f55b5b", marginTop: 4 }}>Error: {pipelineResult.error}</div>}
+                {/* A.5 finding: /runtime/pipeline/run's real failure shape is
+                    { success:false, summary:"Plan failed: ...", stages:{plan:{error:...}} }
+                    — there is no top-level `error` field, so this check was
+                    always false for every plan failure (e.g. AI credential-
+                    blocked). The engineer saw a permanently frozen "Plan"
+                    stage with zero explanation. Reading the fields the API
+                    actually returns, not inventing a new response shape. */}
+                {!pipelineResult.success && (pipelineResult.summary || pipelineResult.stages?.plan?.error) && (
+                  <div style={{ fontSize: 10, color: "#f55b5b", marginTop: 4 }}>
+                    Error: {pipelineResult.summary || pipelineResult.stages?.plan?.error}
+                  </div>
+                )}
               </>
             )}
           </Card>
