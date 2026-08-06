@@ -1013,7 +1013,14 @@ function AppInner() {
   const _screenFallback = <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",background:"#0a0a0a"}}><div className="sk-row sk-row--w75" style={{width:180,margin:"0 auto"}} /></div>;
   if (screen === "pricing")    return <Suspense fallback={_screenFallback}><PricingPage onBack={() => setScreen("landing")} onStart={handleStart} /></Suspense>;
   if (screen === "landing")    return <Suspense fallback={_screenFallback}><LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} /></Suspense>;
-  if (screen === "onboarding") return <Suspense fallback={_screenFallback}><Onboarding onComplete={handleOnboardingComplete} /></Suspense>;
+  // A.6 finding: a real, successful sign-out (screen resets to
+  // "onboarding" because jarvis_started stays "1" from any prior visit,
+  // and the auth-correction effect above only fires for a truthy user)
+  // left a signed-out visitor stuck on this wizard with no way back to
+  // login — reproduced live: real account, real sign out, reload →
+  // "Quick setup Step 1 of 3", no login link anywhere. onLogin reuses the
+  // same handleLogin already passed to LandingPage below, not a new screen.
+  if (screen === "onboarding") return <Suspense fallback={_screenFallback}><Onboarding onComplete={handleOnboardingComplete} onLogin={handleLogin} /></Suspense>;
 
   // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
   if (screen === "signup") {
