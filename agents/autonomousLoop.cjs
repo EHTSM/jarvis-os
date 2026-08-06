@@ -14,6 +14,18 @@ const _cronJobs     = {};       // task.id → cron.ScheduledTask
 const POLL_MS         = 10_000;   // check queue every 10 seconds
 const TASK_TIMEOUT_MS = 30_000;   // single task must complete within 30s
 const STUCK_AGE_HOURS = 2;        // abandon pending tasks older than this
+// A.5.2 runtime-stability finding: getDuePending() is unbounded — a real
+// backlog of 359 simultaneously-overdue tasks (traced to an unrelated
+// unclosed-verification-loop bug, since fixed at its source) made a single
+// _tick() run every one of them sequentially before yielding, at up to
+// TASK_TIMEOUT_MS each — sustained 100%+ CPU and an unresponsive server for
+// minutes per tick. This cap is defense-in-depth: even with today's
+// specific fan-out source closed, no future backlog (any cause) should be
+// able to block a tick for more than a bounded number of tasks. The
+// remainder stays "pending" and is naturally picked up by the very next
+// tick 10s later — reusing the loop's own existing polling cadence as the
+// drain mechanism rather than adding a second scheduler.
+const MAX_TASKS_PER_TICK = 20;
 
 // ── Self-healing counters ────────────────────────────────────────────
 let _consecutiveTickErrors = 0;
@@ -234,8 +246,9 @@ async function _tick() {
 
         const due = taskQueue.getDuePending();
         if (due.length === 0) return;
-        console.log(`[AutoLoop] tick — ${due.length} task(s) due`);
-        for (const task of due) {
+        const batch = due.slice(0, MAX_TASKS_PER_TICK);
+        console.log(`[AutoLoop] tick — ${due.length} task(s) due${due.length > batch.length ? ` (processing ${batch.length}, remainder picked up next tick)` : ""}`);
+        for (const task of batch) {
             await _runTask(task);
         }
     } finally {

@@ -63,12 +63,22 @@ function _st()     { try { return require("./engineeringOrgState.cjs");         
 
 // ── Shared helpers (mirrors patterns in agentRuntimeSupervisor) ───────────────
 
+// A.5.2 runtime-stability finding: same root cause as
+// agentRuntimeSupervisor.cjs's identically-named guard — objective strings
+// embedding a live count ("QA: 42 completed missions need verification" vs
+// "QA: 58...") were never recognized as duplicates. Digit runs normalized
+// to "#" before comparing.
+function _normalizeObjective(s) {
+  return (s || "").replace(/\d+/g, "#");
+}
+
 function _missionExists(objectivePrefix) {
   try {
     const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+    const target = _normalizeObjective(objectivePrefix?.slice(0, 50));
     return (all.missions || []).some(m =>
       (m.status === "active" || m.status === "pending" || m.status === "planned") &&
-      m.objective?.slice(0, 50) === objectivePrefix?.slice(0, 50)
+      _normalizeObjective(m.objective?.slice(0, 50)) === target
     );
   } catch { return false; }
 }
@@ -620,7 +630,8 @@ async function _qaEngTick(s) {
   let created = 0;
 
   try {
-    const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+    const mm = _mm();
+    const all = mm?.listMissions({ limit: 300 }) || { missions: [] };
     const recentCompleted = (all.missions || []).filter(m =>
       m.status === "completed" && !m.metadata?.qaVerified &&
       Date.now() - new Date(m.createdAt).getTime() < 7 * 24 * 3600_000
@@ -636,7 +647,19 @@ async function _qaEngTick(s) {
         ],
         metadata: { autoCreatedBy: s.id, domain: "qa", missionCount: recentCompleted.length },
       }, s);
-      if (m) created++;
+      if (m) {
+        created++;
+        // A.5.2 fix — same unclosed-loop pattern as agentRuntimeSupervisor.cjs's
+        // tester tick: mark the missions this check just counted so the same
+        // (growing) set isn't re-flagged and re-queued on every future tick.
+        for (const rc of recentCompleted) {
+          try {
+            mm.updateMission(rc.id, {
+              metadata: { ...(rc.metadata || {}), qaVerified: true, qaVerifiedAt: new Date().toISOString() },
+            });
+          } catch { /* one mission failing to update must not block the rest */ }
+        }
+      }
     }
 
     // Knowledge gaps (graph) = coverage gaps

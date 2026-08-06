@@ -190,12 +190,26 @@ function _publicState(s) {
 }
 
 // ── Mission dedup guard ───────────────────────────────────────────────────────
+// A.5.2 runtime-stability finding: this guard compared raw objective
+// prefixes, so two auto-created objectives that differ only in an embedded
+// live count ("Verify 169 recently completed missions" vs "Verify 220...")
+// were never recognized as duplicates of the same recurring check —
+// confirmed as one of the two root causes of an unbounded mission/task
+// fan-out (see _testerTick). Digit runs are normalized to "#" before
+// comparing so the same recurring objective shape is caught regardless of
+// its current count. Purely additive to the existing dedup mechanism —
+// no new guard, no architecture change.
+function _normalizeObjective(s) {
+    return (s || "").replace(/\d+/g, "#");
+}
+
 function _missionExists(objectivePrefix) {
     try {
         const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+        const target = _normalizeObjective(objectivePrefix?.slice(0, 50));
         return (all.missions || []).some(m =>
             (m.status === "active" || m.status === "pending") &&
-            m.objective?.slice(0, 50) === objectivePrefix?.slice(0, 50)
+            _normalizeObjective(m.objective?.slice(0, 50)) === target
         );
     } catch { return false; }
 }
@@ -480,8 +494,31 @@ async function _testerTick(s) {
     } catch {}
 
     // 2. Missions completed but never verified
+    //
+    // A.5.2 runtime-stability finding: nothing anywhere in the codebase ever
+    // set metadata.verified on a mission, so this check was permanently
+    // true — every 90s tester tick re-found the same (growing) unverified
+    // set and created ANOTHER "Verify N recently completed missions"
+    // mission via _createMission(). The existing dedup guard
+    // (_missionExists, above) never caught the duplicates because N changes
+    // every tick and the guard only compares the first 50 chars of the
+    // objective string — which for this short objective IS the whole
+    // string including the count. Confirmed live: 151 near-identical
+    // "Verify N..." missions (plus their Plan/Execute/Validate/Docs/
+    // Incident-generator fan-out) had accumulated in the task queue,
+    // driving CPU to 180%+ and making the server unresponsive to real
+    // requests within minutes of every restart.
+    //
+    // Fix reuses the exact snapshot this tick already computed (`unverified`)
+    // and the existing general-purpose missionMemory.updateMission() API to
+    // close the loop deterministically right here, rather than depending on
+    // the created mission's own (non-deterministic, AI-driven) subtask
+    // execution to eventually mark them — which is what silently never
+    // happened. Metadata is merged, not overwritten, to preserve whatever
+    // else is already stored per mission.
     try {
-        const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+        const mm = _mm();
+        const all = mm?.listMissions({ limit: 300 }) || { missions: [] };
         const unverified = (all.missions || []).filter(m =>
             m.status === "completed" &&
             !m.metadata?.verified &&
@@ -494,7 +531,16 @@ async function _testerTick(s) {
                 subtasks: [{ description: "Review outcomes against objectives" }, { description: "Mark verified and capture any anomalies" }],
                 metadata: { autoCreatedBy: "tester_agent", unverifiedCount: unverified.length, domain: "quality" },
             });
-            if (m) created++;
+            if (m) {
+                created++;
+                for (const um of unverified) {
+                    try {
+                        mm.updateMission(um.id, {
+                            metadata: { ...(um.metadata || {}), verified: true, verifiedAt: new Date().toISOString(), verifiedBy: "tester_agent" },
+                        });
+                    } catch { /* one mission failing to update must not block the rest */ }
+                }
+            }
         }
     } catch {}
 

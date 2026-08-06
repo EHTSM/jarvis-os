@@ -25,9 +25,10 @@
 
 const fs          = require("fs");
 const path        = require("path");
-const { execSync, exec } = require("child_process");
+const { exec }    = require("child_process");
 
 const logger = require("../utils/logger");
+function _getSafeExec() { try { return require("../core/safe-exec.js"); } catch { return null; } }
 
 // ── Lazy-load integrations (never throw at module load) ───────────────────
 function _getBus()  { try { return require("../../agents/runtime/runtimeEventBus.cjs"); } catch { return null; } }
@@ -66,8 +67,22 @@ function _wj(file, data) {
     fs.renameSync(tmp, file);
 }
 
-function _exec(cmd, opts = {}) {
-    return execSync(cmd, { timeout: 5000, encoding: "utf8", ...opts });
+// A.5.2 runtime-stability finding: was execSync — fully synchronous,
+// blocks the entire Node event loop for the command's duration. Called up
+// to 3x per discovered repo, every 5 minutes, from _repoObserver's
+// recursive (depth-3) git-dir scan — with more than one repo under the
+// workspace this stacks into a sustained event-loop stall, compounding
+// with every other poller in the process (see the identical fix + full
+// evidence in continuousRuntimeObserver.cjs's _observeGit). Switched to
+// the existing async SafeExec.run() (spawn-based, non-blocking) — same
+// mechanism already used elsewhere in this codebase for git calls.
+async function _exec(cmd, opts = {}) {
+    const safeExec = _getSafeExec();
+    if (!safeExec) throw new Error("safe-exec unavailable");
+    const [bin, ...args] = cmd.split(" ");
+    const result = await safeExec.run(bin, args, { timeoutMs: 5000, ...opts });
+    if (!result.ok) throw new Error(result.reason || `${cmd} exited ${result.exitCode}`);
+    return result.stdout;
 }
 
 // ── Recommendation store ──────────────────────────────────────────────────
@@ -209,8 +224,8 @@ async function _repoObserver() {
     for (const repo of unique) {
         let logOut   = "";
         let statusOut = "";
-        try { logOut    = _exec("git log --oneline -5", { cwd: repo }); } catch { /* git may not be available */ }
-        try { statusOut = _exec("git status --short",   { cwd: repo }); } catch { continue; }
+        try { logOut    = await _exec("git log --oneline -5", { cwd: repo }); } catch { /* git may not be available */ }
+        try { statusOut = await _exec("git status --short",   { cwd: repo }); } catch { continue; }
 
         const repoName = path.basename(repo);
         const lines    = statusOut.trim().split("\n").filter(Boolean);
@@ -241,7 +256,7 @@ async function _repoObserver() {
 
         // Diverged branch detection (both ahead and behind)
         try {
-            const branchOut = _exec("git status -b --short", { cwd: repo });
+            const branchOut = await _exec("git status -b --short", { cwd: repo });
             if (branchOut.includes("ahead") && branchOut.includes("behind")) {
                 issues.push({ repo, type: "diverged_branch" });
                 _emitRecommendation({

@@ -389,6 +389,7 @@ function _createRecord(opts) {
         originDecisionId,
         priority:         memPriority,
         orchStatus:       "planned",
+        _memStatus:       "planned", // A.5.2: last status synced to missionMemory — see _transition
         currentStage:     null,
         stages,
         progress:         { total: stages.length, completed: 0, failed: 0, pending: stages.length },
@@ -428,9 +429,26 @@ function _transition(missionId, nextStatus, patch = {}) {
     Object.assign(rec, patch);
 
     // Sync to missionMemory
+    //
+    // A.5.2 runtime-stability finding: TO_MEM_STATUS collapses several
+    // distinct orchestrator states onto the same missionMemory status
+    // (executing/waiting/retrying → "active") — a mission cycling between
+    // those states during normal stage advancement re-sent the SAME
+    // status on every transition. missionMemory.updateMission() always
+    // does a full read+parse+stringify+write of the entire mission store
+    // (46MB / 5,600+ missions live) even when the patch produces no actual
+    // field change, so this was a major contributor to sustained
+    // event-loop load (confirmed live: near-continuous "Updated mission
+    // X []" — empty changed-set — log lines during normal operation).
+    // rec._memStatus tracks what was last actually synced (purely
+    // in-memory, no extra read needed) so the sync call only fires when
+    // the mapped status genuinely changes.
     const memStatus = TO_MEM_STATUS[nextStatus];
-    if (memStatus) {
-        try { _getMem()?.updateMission(missionId, { status: memStatus }); } catch { /* non-fatal */ }
+    if (memStatus && memStatus !== rec._memStatus) {
+        try {
+            _getMem()?.updateMission(missionId, { status: memStatus });
+            rec._memStatus = memStatus;
+        } catch { /* non-fatal */ }
     }
 
     if (TERMINAL_STATES.has(nextStatus)) rec._terminalAt = Date.now();
@@ -585,8 +603,25 @@ async function _advance(missionId) {
                 stg.loopTaskId  = queued.id;
             }
             // Update missionMemory subtask
+            //
+            // A.5.2 runtime-stability finding: this block used to also call
+            // mm.updateMission(missionId, {}) "to touch updatedAt". Even an
+            // empty patch makes missionMemory.updateMission() do a full
+            // read+JSON.parse+JSON.stringify+write of the ENTIRE missions
+            // store (46MB / 5,600+ missions live) — updateMission() always
+            // sets updatedAt and calls _saveMissions() unconditionally,
+            // regardless of whether any field actually changed. Called once
+            // per ready stage per _advance() invocation, this was a major
+            // contributor to sustained event-loop blocking (confirmed live:
+            // ~90ms read + ~100ms parse + ~130ms stringify = ~300ms+ blocked
+            // per call, happening in bursts of 3 calls per mission across
+            // 100+ missions during catch-up sweeps). Nothing reads this
+            // specific updatedAt touch — every real mutation path
+            // (updateSubtaskStatus below, _stageComplete, _stageFailed,
+            // _transition, etc.) already sets its own updatedAt via a
+            // meaningful patch. Removed rather than optimized, since it did
+            // no useful work in the first place.
             try {
-                _getMem()?.updateMission(missionId, {});  // touch updatedAt
                 const rt = _getRT();
                 if (rt) rt.updateSubtaskStatus(missionId, stg.id, "running");
             } catch { /* non-fatal */ }

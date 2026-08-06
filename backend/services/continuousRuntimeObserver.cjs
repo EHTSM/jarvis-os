@@ -35,7 +35,7 @@
 const fs          = require("fs");
 const path        = require("path");
 const os          = require("os");
-const { execSync, exec } = require("child_process");
+const { exec } = require("child_process");
 const crypto      = require("crypto");
 
 const logger = require("../utils/logger");
@@ -43,6 +43,7 @@ const logger = require("../utils/logger");
 // ── Lazy service loaders — never throw at module load ─────────────────────
 function _getBus()        { try { return require("../../agents/runtime/runtimeEventBus.cjs"); } catch { return null; } }
 function _getObs()        { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
+function _getSafeExec()   { try { return require("../core/safe-exec.js"); } catch { return null; } }
 function _getLoop()       { try { return require("../../agents/autonomousLoop.cjs"); } catch { return null; } }
 function _getMissionRT()  { try { return require("../../agents/runtime/missionRuntime.cjs"); } catch { return null; } }
 function _getAgentReg()   { try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; } }
@@ -206,10 +207,26 @@ function _sourceErr(name, err) {
 // ── Source: git ────────────────────────────────────────────────────────────
 let _gitPrevStatus = null;
 
+// A.5.2 runtime-stability finding: this source used to call git via
+// execSync — fully synchronous, blocks the entire Node event loop for
+// the command's whole duration, on every 30s tick, forever. Standalone
+// the command itself is fast (~50ms measured live), but any time the
+// event loop was already under load from elsewhere (e.g. the mission
+// store's full-file read/write on every mutation, see missionMemory.cjs),
+// this call — plus every other execSync/synchronous poller — queued up
+// behind it, compounding a stall instead of yielding to it. Switched to
+// the existing SafeExec.run() (spawn-based, non-blocking, already used
+// by engineeringCapabilities.cjs/toolExecutionLayer.cjs for the same
+// purpose) so a slow or contended git call no longer blocks anything else
+// the process needs to do while it waits.
 async function _observeGit() {
     const src = "git";
     try {
-        const statusRaw = execSync("git status --porcelain=v2 --branch", { cwd: REPO_ROOT, timeout: 5000, encoding: "utf8" });
+        const safeExec = _getSafeExec();
+        if (!safeExec) { _sourceOk(src); return null; }
+        const result = await safeExec.run("git", ["status", "--porcelain=v2", "--branch"], { cwd: REPO_ROOT, timeoutMs: 5000 });
+        if (!result.ok) { _sourceErr(src, new Error(result.reason || `git exited ${result.exitCode}`)); return null; }
+        const statusRaw = result.stdout;
         const lines     = statusRaw.trim().split("\n");
         const changed   = lines.filter(l => l.startsWith("1 ") || l.startsWith("2 ") || l.startsWith("? ")).length;
         const branch    = (lines.find(l => l.startsWith("# branch.head"))?.split(" ")[2]) || "unknown";

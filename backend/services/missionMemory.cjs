@@ -373,6 +373,62 @@ function addSubtask(missionId, subtask = {}) {
 }
 
 /**
+ * updateSubtask(missionId, subtaskId, patch)
+ * patch: any subtask field except id (e.g. { status, startedAt, completedAt, output })
+ *
+ * A.5.2 runtime-stability finding: there was previously no dedicated way to
+ * mutate a subtask in place — the only path (missionRuntime.cjs's
+ * updateSubtaskStatus) went through updateMission(missionId, { subtasks }),
+ * but "subtasks" is in updateMission()'s own IMMUTABLE set, so that patch
+ * key was always silently dropped. Every subtask, on every mission, system
+ * -wide, was permanently stuck at its initial status. This was silent (no
+ * error, no log) and had real downstream effects beyond correctness: graphReasoningEngine.cjs's
+ * findBlockedMissions() flags any active mission whose subtasks are ALL
+ * still "pending" as stuck/blocked — which, because subtask status could
+ * never persist, was true of essentially every active mission with
+ * subtasks, including the very "Resolve blockers for mission: X" missions
+ * created to address it. That produced unbounded self-referential mission
+ * creation ("Resolve blockers for mission: Resolve blockers for mission:
+ * ..." nesting deeper each cycle), confirmed live in this session. Fixed
+ * at the actual source (real subtask persistence) rather than patched
+ * downstream, since the missing capability is what every symptom traced
+ * back to. Mirrors addSubtask's shape exactly — no new persistence
+ * mechanism, same load/mutate/save pattern already used throughout this
+ * file.
+ */
+function updateSubtask(missionId, subtaskId, patch = {}) {
+    if (!missionId)  throw new Error("updateSubtask: missionId is required");
+    if (!subtaskId)  throw new Error("updateSubtask: subtaskId is required");
+    if (!patch || typeof patch !== "object") throw new Error("updateSubtask: patch must be an object");
+
+    const store   = _loadMissions();
+    const mission = _findMission(store, missionId);
+    _assertMission(mission, missionId);
+
+    const st = (mission.subtasks || []).find(s => s.id === subtaskId);
+    if (!st) throw new Error(`updateSubtask: subtask ${subtaskId} not found in mission ${missionId}`);
+
+    const changed = {};
+    for (const [k, v] of Object.entries(patch)) {
+        if (k === "id") continue;
+        if (st[k] !== v) {
+            changed[k] = { from: st[k], to: v };
+            st[k] = v;
+        }
+    }
+
+    if (Object.keys(changed).length === 0) return { ...mission };
+
+    mission.metrics   = _recomputeMetrics(mission);
+    mission.updatedAt = new Date().toISOString();
+    _replaceMission(store, mission);
+    _saveMissions(store);
+
+    logger.info(`[MissionMemory] Subtask ${subtaskId} updated on mission ${missionId}`, Object.keys(changed));
+    return { ...mission };
+}
+
+/**
  * recordDecision(missionId, decision)
  * decision: { type, description, rationale, outcome }
  */
@@ -791,6 +847,7 @@ module.exports = {
     listMissions,
     updateMission,
     addSubtask,
+    updateSubtask,
     recordDecision,
     recordArtifact,
     recordFailure,

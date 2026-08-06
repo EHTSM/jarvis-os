@@ -153,6 +153,19 @@ function findBlockedMissions({ limit = 20 } = {}) {
         const all = _mm()?.listMissions({ limit: 1000 }) || { missions: [] };
         const blocked = [];
         for (const m of all.missions) {
+            // A.5.2 runtime-stability finding: a "Resolve blockers for
+            // mission: X" mission (created below by the caller) could
+            // itself be picked up as blocked on a later tick — while
+            // subtask persistence was broken (see missionMemory.cjs's
+            // updateSubtask, fixed this pass) EVERY active mission with
+            // subtasks looked stuck, so this compounded into confirmed-live
+            // unbounded self-nesting ("Resolve blockers for mission:
+            // Resolve blockers for mission: ..."). Excluding these
+            // self-referential missions from ever being treated as
+            // blockable is defense-in-depth: it holds even if some future
+            // change reintroduces a way for a mission's subtasks to look
+            // permanently stuck.
+            if (m.objective?.startsWith("Resolve blockers for mission:")) continue;
             // Check if any approval is pending
             const hasPendingApproval = (m.approvals || []).some(a => a.status === "pending");
             // Check if all subtasks are stuck (none started, none completed, mission active)

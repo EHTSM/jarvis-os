@@ -212,18 +212,31 @@ function updateSubtaskStatus(missionId, subtaskId, status, output = null) {
     if (!st) throw new Error(`Subtask not found: ${subtaskId} in mission ${missionId}`);
 
     const now = new Date().toISOString();
-    const patchedSubtasks = mission.subtasks.map(s => {
-        if (s.id !== subtaskId) return s;
-        const next = { ...s, status };
-        if (status === "running"   && !s.startedAt)   next.startedAt   = now;
-        if (status === "completed" || status === "failed") {
-            next.completedAt = now;
-            if (output !== null) next.output = output;
-        }
-        return next;
-    });
+    const patch = { status };
+    if (status === "running"   && !st.startedAt)   patch.startedAt   = now;
+    if (status === "completed" || status === "failed") {
+        patch.completedAt = now;
+        if (output !== null) patch.output = output;
+    }
 
-    const updated = memory.updateMission(missionId, { subtasks: patchedSubtasks });
+    // A.5.2 runtime-stability finding: this used to call
+    // memory.updateMission(missionId, { subtasks: patchedSubtasks }) —
+    // but missionMemory.cjs's updateMission() treats "subtasks" as an
+    // IMMUTABLE patch key (silently skipped in its patch loop), so this
+    // call could never actually persist the subtask change it computed.
+    // Every subtask on every mission was permanently stuck at its initial
+    // status, silently. That had a real downstream effect beyond
+    // correctness: graphReasoningEngine.cjs's findBlockedMissions() flags
+    // any active mission whose subtasks are ALL still "pending" as
+    // blocked, which — since subtask status could never persist — was
+    // true of virtually every active mission, including the very
+    // "Resolve blockers for mission: X" missions created to address it.
+    // That produced confirmed-live unbounded self-referential mission
+    // creation ("Resolve blockers for mission: Resolve blockers for
+    // mission: ..." nesting deeper each cycle). Fixed at the actual
+    // source: missionMemory.cjs now has a real updateSubtask() (mirrors
+    // addSubtask's existing shape, no new persistence mechanism).
+    const updated = memory.updateSubtask(missionId, subtaskId, patch);
 
     _emit("mission:subtask:updated", missionId, {
         subtaskId,
