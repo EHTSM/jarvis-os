@@ -187,7 +187,7 @@ const MORE_TABS = [
   // ── Account & Setup
   { id: "success",    label: "Getting Started",    group: "Account"      },
   { id: "billing",    label: "Billing",            group: "Account", alias: "finance" },
-  { id: "settings",   label: "Settings",           group: "Account"      },
+  { id: "settings",   label: "Settings",           group: "Account", alias: "notification notifications" },
   { id: "help",       label: "Help & Guides",      group: "Account"      },
   { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
   { id: "overview",   label: "Overview",           group: "Account"      },
@@ -611,7 +611,7 @@ const DESKTOP_TABS = [
 ];
 
 function AppInner() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
 
   // V6 Phase 8 (Personal JARVIS): overdue-task / pending-decision native
   // notifications — desktop-only (Electron), only once authenticated since
@@ -1181,6 +1181,7 @@ function AppInner() {
                 setTab("chat");
                 if (text) setTimeout(() => handleSend(text), 150);
               }}
+              onSignOut={logout}
             />
           )}
         </AnimatePresence>

@@ -35,14 +35,19 @@
  * users' muscle memory), no new UI/architecture was introduced.
  *
  * EXTENDED (Founder Journey Final Polish, Phase A.4.3): a full sweep of
- * every search term named in the A.4.2/A.4.3 missions found 10 more
+ * every search term named in the A.4.2/A.4.3 missions found 11 more
  * zero-result terms. Two classes of gap:
  *
  *   1. More MORE_TABS entries missing aliases — "website"/"forms" (real
  *      feature: Content & SEO, which hosts Landing Pages), "campaign"
  *      (real feature: Growth), "employee" (real feature: Team), "brand"
  *      (real feature: Creative Studio, which hosts a working Brand Kit
- *      builder — "Create Brand Kit" button, real kit list). Fixed the
+ *      builder — "Create Brand Kit" button, real kit list),
+ *      "notification"/"notifications" (real feature: a Notifications
+ *      sub-section inside Settings — confirmed by full top-bar element
+ *      enumeration that no dedicated bell/avatar icon exists anywhere in
+ *      the product; Settings is the correct, only real destination).
+ *      Fixed the
  *      same way as the original 3: additive `alias` field, no renames.
  *
  *   2. A structurally different gap: "lead"/"leads"/"lead capture"/
@@ -148,6 +153,7 @@ async function main() {
   assert(searchMatches(tabs, "campaign").some(m => m.label === "Growth"), `"campaign" search resolves to the real Growth module`, `no match found`);
   assert(searchMatches(tabs, "employee").some(m => m.label === "Team"), `"employee" search resolves to the real Team module`, `no match found`);
   assert(searchMatches(tabs, "brand").some(m => m.label === "Creative Studio"), `"brand" search resolves to the real Creative Studio module (hosts the Brand Kit builder)`, `no match found`);
+  assert(searchMatches(tabs, "notification").some(m => m.label === "Settings"), `"notification" search resolves to the real Settings module (Notifications is a real sub-section there — confirmed live, no dedicated top-bar bell/avatar icon exists anywhere in the product)`, `no match found`);
 
   section("Static (A.4.3) — TABS (the always-visible top bar) is now search-indexed via PRIMARY_TAB_ALIASES");
   const primaryTabs = parsePrimaryTabs();

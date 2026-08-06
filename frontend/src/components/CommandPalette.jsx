@@ -106,6 +106,20 @@ const QUICK_ACTIONS = [
   { id: "qa-agent",       label: "View Agents",           icon: "⬡", group: "Actions",  type: "nav", tab: "agents" },
 ];
 
+// A.4.3 finding: "logout"/"sign out" returned nothing anywhere search was
+// tried (More-menu search, this palette). The real Sign out button only
+// lived inside the ORG switcher dropdown (frontend/src/components/
+// OrgSwitcher.jsx) — reachable, but not findable by search, and "logout"
+// is an explicitly required focus term for this mission. Reusing the
+// palette's own existing type:"run" action mechanism (see DESKTOP_ACTIONS
+// below) rather than adding any new capability — this is the same pattern
+// already used for Open Terminal, just a second caller of it.
+function _signOutAction(onSignOut) {
+  return onSignOut
+    ? [{ id: "qa-signout", label: "Sign out", icon: "◻", group: "Actions", type: "run", run: onSignOut, keywords: "logout log out" }]
+    : [];
+}
+
 // Desktop-only action — shell-open-terminal (real OS terminal app hand-off:
 // Terminal.app / cmd.exe / gnome-terminal) was fully implemented in
 // electron/main.cjs and exposed via preload as shellOpenTerminal, but had
@@ -115,13 +129,13 @@ const DESKTOP_ACTIONS = (typeof window !== "undefined" && window.electronAPI?.is
        run: () => window.electronAPI.shellOpenTerminal() }]
   : [];
 
-const ALL_ACTIONS = [...NAV_ACTIONS, ...QUICK_ACTIONS, ...DESKTOP_ACTIONS];
+const STATIC_ACTIONS = [...NAV_ACTIONS, ...QUICK_ACTIONS, ...DESKTOP_ACTIONS];
 
 // ── Fuzzy scorer ───────────────────────────────────────────────────
 
-function _score(label, query) {
+function _scoreOne(label, query) {
   const l = label.toLowerCase();
-  const q = query.toLowerCase().trim();
+  const q = query;
   if (!q) return 1;
   if (l === q)           return 100;
   if (l.startsWith(q))   return 80;
@@ -133,6 +147,19 @@ function _score(label, query) {
   }
   if (qi === q.length) return 30 + (q.length / l.length) * 20;
   return 0;
+}
+
+// A.4.3 finding: "logout" (the exact word this mission names) doesn't
+// fuzzy-match the label "Sign out" — no shared substring/subsequence
+// close enough to score. Reused the same additive-synonym idea as
+// MoreMenu's `alias` field (App.jsx), applied to this scorer: an optional
+// `keywords` string on an action is checked too, and the best of the two
+// scores wins. No new matching system — same scorer, one more input.
+function _score(label, query, keywords) {
+  const q = query.toLowerCase().trim();
+  const labelScore = _scoreOne(label, q);
+  if (!keywords) return labelScore;
+  return Math.max(labelScore, _scoreOne(keywords, q));
 }
 
 function _highlight(label, query) {
@@ -177,7 +204,7 @@ function toggleStoredPin(id, setPins) {
 
 // ── Component ──────────────────────────────────────────────────────
 
-export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
+export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSignOut }) {
   const [query,   setQuery]   = useState("");
   const [active,  setActive]  = useState(0);
   const [recents, setRecents] = useState(getStoredRecents);
@@ -185,6 +212,8 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
   const [listKey, setListKey] = useState(0);
   const inputRef  = useRef(null);
   const listRef   = useRef(null);
+
+  const ALL_ACTIONS = useMemo(() => [...STATIC_ACTIONS, ..._signOutAction(onSignOut)], [onSignOut]);
 
   // Reset on open
   useEffect(() => {
@@ -207,7 +236,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
       .map(id => ALL_ACTIONS.find(a => a.id === id))
       .filter(Boolean)
       .map(a => ({ ...a, _recent: true }));
-  }, [recents, query]);
+  }, [recents, query, ALL_ACTIONS]);
 
   const pinnedActions = useMemo(() => {
     if (query.trim()) return [];
@@ -215,12 +244,12 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
       .map(id => ALL_ACTIONS.find(a => a.id === id))
       .filter(Boolean)
       .map(a => ({ ...a, _pinned: true }));
-  }, [pins, query]);
+  }, [pins, query, ALL_ACTIONS]);
 
 
   const results = useMemo(() => {
     const base = ALL_ACTIONS
-      .map(a => ({ ...a, score: _score(a.label, query) }))
+      .map(a => ({ ...a, score: _score(a.label, query, a.keywords) }))
       .filter(a => a.score > 0)
       .sort((a, b) => b.score - a.score);
     if (!query.trim()) {
@@ -234,7 +263,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk }) {
       ];
     }
     return base;
-  }, [query, recentActions, pinnedActions]);
+  }, [query, recentActions, pinnedActions, ALL_ACTIONS]);
 
   // Clamp active index when results change
   useEffect(() => {
