@@ -70,6 +70,23 @@ const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformC
 const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
 const LegalOSCenter            = lazy(() => import("./components/LegalOSCenter.jsx"));
 const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
+// A.8.3 recovery: LaunchPlatform.jsx (Dashboard/Onboarding/Workspaces/Docs/
+// Academy/Referral/Success/Feedback+Roadmap voting/Readiness/Benchmark/
+// reports) was already fully built, wired to real routes (launchPlatform.js)
+// and real data (data/feedback.json), but only ever mounted inside
+// ElectronWorkspace.jsx — which is a documented pure passthrough in web mode
+// (`if (!isElectron()) return children`), so it never rendered in the actual
+// web app. Recovering it here as a real, reachable tab — no new component,
+// no new route, same file already used by the Electron build.
+const LaunchPlatform           = lazy(() => import("./components/LaunchPlatform.jsx"));
+// A.8.3 recovery: productPlannerEngine.cjs + productReleaseEngine.cjs
+// (/product-factory/*) and engineeringOrgState.cjs (/engorg/v2/*) were both
+// fully built with real persisted data but had zero frontend consumers —
+// same situation as customer-org before CustomerSuccessCenter.jsx recovered
+// it. ProductOSCenter.jsx is a new minimal panel (no new backend, no new
+// storage) exposing product plans/roadmaps/releases and objectives/epics/
+// work items/blockers via their existing real routes.
+const ProductOSCenter          = lazy(() => import("./components/ProductOSCenter.jsx"));
 const DailyPlanningConsole     = lazy(() => import("./components/DailyPlanningConsole.jsx"));
 const FounderAssistant         = lazy(() => import("./components/FounderAssistant.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
@@ -237,6 +254,8 @@ const MORE_TABS = [
   // ── Engineering
   { id: "engineering",label: "Engineering",        group: "Engineering"  },
   { id: "workspace",  label: "Eng Workspace",      group: "Engineering"  },
+  // A.8.3 recovery — see ProductOSCenter's lazy import above.
+  { id: "productos",  label: "Product OS",         group: "Engineering", alias: "prd roadmap requirements backlog epic epics milestone feature request product planning task hierarchy dependency dependencies release planning objectives work items" },
   { id: "copilot",    label: "Copilot",            group: "Engineering", alias: "review debug test ci github pipeline commit repository project code review" },
   { id: "devops",     label: "DevOps",             group: "Engineering", alias: "docker deploy deployment rollback blue green canary" },
   { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
@@ -274,6 +293,10 @@ const MORE_TABS = [
   { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
   { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
   { id: "orgadmin",   label: "Organization",       group: "Enterprise"   },
+  // A.8.3 recovery — see LaunchPlatform's lazy import above for why this
+  // wasn't reachable before. alias covers the PM-vocabulary search terms
+  // Phase A.8.2 confirmed had zero hits anywhere in the app.
+  { id: "launchplatform", label: "Launch Platform", group: "Enterprise", alias: "feedback roadmap feature request vote prd release readiness onboarding academy" },
 ];
 
 // ── Tab metadata lookup — powers breadcrumbs + recent pages ─────────
@@ -1480,6 +1503,7 @@ function AppInner() {
         {tab === "copilot"       && <DeveloperCopilotV2 onNavigate={setTab} />}
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
         {tab === "workspace"     && <EngineeringWorkspace   onNavigate={setTab} />}
+        {tab === "productos"     && <ProductOSCenter                            />}
         {tab === "intel"         && <IntelligencePanel      onNavigate={setTab} />}
         {tab === "predict"       && <PredictionPanel        onNavigate={setTab} />}
         {tab === "guardrails"    && <GuardrailsDashboard    onNavigate={setTab} />}
@@ -1503,6 +1527,7 @@ function AppInner() {
         {tab === "mobile"        && <MobilePlatformCenter   onNavigate={setTab} />}
         {tab === "twin"          && <FounderTwinConsole                          />}
         {tab === "customersuccess" && <CustomerSuccessCenter                     />}
+        {tab === "launchplatform" && <LaunchPlatform                             />}
         {tab === "planning"      && <DailyPlanningConsole                        />}
         {tab === "assistant"     && <FounderAssistant onNavigate={setTab}          />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
