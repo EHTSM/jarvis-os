@@ -24,6 +24,27 @@ async function _post(path, body = {}) {
   return r.json();
 }
 
+// A.8 fix: runtimeOrchestrator.cjs's status() (backend/routes/runtime.js's
+// GET /runtime/status) never returns an `ok` or `healthy` field — its real
+// shape is { queue, agents, history, uptime, runaway, throttle, governor,
+// vitals, sse, emergency, degraded, drift }. The old `runtimeStatus?.ok ||
+// runtimeStatus?.healthy` check therefore always evaluated to false
+// whenever the call succeeded, so the Runtime tile showed "Degraded" 100%
+// of the time regardless of real health, AND the Observe pipeline stage's
+// own healthy flag (feeding the Heal stage's decision) was always false
+// too — a real functional defect, not just a cosmetic label. Derives
+// health from fields the backend actually returns: not explicitly
+// degraded, no runaway-failure pattern detected, and (when there's
+// execution history to judge) a reasonable success rate.
+function _isRuntimeHealthy(runtimeStatus) {
+  if (!runtimeStatus) return false;
+  if (runtimeStatus.degraded) return false;
+  if (runtimeStatus.runaway) return false;
+  const stats = runtimeStatus.history;
+  if (stats && stats.total > 0 && stats.successRate < 0.5) return false;
+  return true;
+}
+
 // ── constants ─────────────────────────────────────────────────────────
 
 const STAGE_ORDER = ["plan", "patch", "test", "apply", "deploy", "observe", "heal", "learn"];
@@ -396,7 +417,7 @@ export default function EngineeringWorkspace() {
       // ── Stage 6: Observe ──
       setStage("observe", { status: "running" });
       await refreshObs();
-      const runtimeOk = runtimeStatus?.ok || runtimeStatus?.healthy;
+      const runtimeOk = _isRuntimeHealthy(runtimeStatus);
       setStage("observe", { status: "done", healthy: runtimeOk });
 
       // ── Stage 7: Heal ──
@@ -740,8 +761,8 @@ export default function EngineeringWorkspace() {
             status={stgObs.status === "running" ? "running" : stgObs.status === "done" ? "ok" : undefined}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
               {[
-                { label: "Runtime",    val: runtimeStatus?.ok || runtimeStatus?.healthy ? "OK" : runtimeStatus ? "Degraded" : "—", color: runtimeStatus?.ok || runtimeStatus?.healthy ? "#52d68a" : "#f0b429" },
-                { label: "Queue",      val: runtimeStatus?.queue?.depth ?? runtimeStatus?.queueDepth ?? "—" },
+                { label: "Runtime",    val: _isRuntimeHealthy(runtimeStatus) ? "OK" : runtimeStatus ? "Degraded" : "—", color: _isRuntimeHealthy(runtimeStatus) ? "#52d68a" : "#f0b429" },
+                { label: "Queue",      val: runtimeStatus?.queue?.size ?? "—" },
                 { label: "DLQ",        val: dlqCount, color: dlqCount > 0 ? "#f55b5b" : "#52d68a" },
                 { label: "Incidents",  val: openIncCount, color: openIncCount > 0 ? "#f0b429" : "#52d68a" },
               ].map(s => (
