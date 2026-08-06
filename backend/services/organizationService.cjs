@@ -666,6 +666,19 @@ function createDepartment(orgId, { name, description = "", leadAccountId, compos
     const org   = _findOrg(store, orgId);
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
 
+    // A.6 business-owner-journey finding: createDepartment() had no
+    // name-collision check at all — confirmed live, two "Engineering"
+    // departments were created as distinct records with no warning,
+    // discovered via two real POST /orgs/:orgId/departments calls a
+    // minute apart. Mirrors the exact pattern createOrg() (above) already
+    // uses for its own name/slug collision — same Object.assign(Error,
+    // {status:409}) shape, no new mechanism. Case-insensitive since a
+    // founder thinks of "Engineering" and "engineering" as the same name.
+    const normalizedName = name.trim().toLowerCase();
+    if ((org.departments || []).some(d => d.name.trim().toLowerCase() === normalizedName)) {
+        throw Object.assign(new Error(`A department named "${name.trim()}" already exists in this organization`), { status: 409 });
+    }
+
     const dept = {
         id:            _id("dept"),
         name:          name.trim(),
