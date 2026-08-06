@@ -397,7 +397,11 @@ function ExecIntelPanel({ orgId, onToast }) {
     <div>
       {summary?.summary && (
         <div className="oac-panel" style={{ marginBottom: 16 }}>
-          {summary.summary.map((line, i) => <p key={i} style={{ margin: "4px 0", fontSize: 13 }}>{line}</p>)}
+          {/* A.9 fix: orgExecutiveIntelligence.cjs's getOperationalSummary()
+              returns `summary` as a single string (lines.join(" ")), not an
+              array — summary.summary.map() threw "summary.summary.map is
+              not a function" on every load. Render the real string. */}
+          <p style={{ margin: "4px 0", fontSize: 13 }}>{summary.summary}</p>
         </div>
       )}
 
