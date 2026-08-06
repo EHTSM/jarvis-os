@@ -168,7 +168,18 @@ export default function SharedMemoryCenter({ onNavigate }) {
             scope:       n.scope || n.type || "global",
             category:    n.category || n.type || "general",
             title:       n.title || n.key || "Memory",
-            body:        n.body || n.value || "",
+            // A.8 fix: real memory nodes store `value` as a structured
+            // object (e.g. {errorType, context, resolution,
+            // recurrenceCount}), not a string — confirmed via every one
+            // of the 2000 real entries in data/memory-store.json. The old
+            // `n.body || n.value || ""` picked up that object (truthy, so
+            // it never fell through to ""), and every later .slice()/
+            // .toLowerCase() call on it threw "n.body.slice is not a
+            // function", crashing the whole panel. Stringify non-string
+            // bodies once here so every downstream string op stays safe.
+            body:        typeof n.body === "string" ? n.body
+                        : typeof n.value === "string" ? n.value
+                        : n.value ? JSON.stringify(n.value) : "",
             importance:  n.importance || "medium",
             usedBy:      Array.isArray(n.usedBy) ? n.usedBy : [],
             accessCount: n.accessCount ?? 0,
