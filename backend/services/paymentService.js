@@ -108,8 +108,23 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
         return { success: true, link: link.short_url, id: link.id };
 
     } catch (err) {
-        logger.error("[Payment] createPaymentLink failed:", err.message);
-        return { success: false, error: err.message };
+        // A.6 business-owner-journey finding: the Razorpay SDK's own error
+        // normalizer (node_modules/razorpay/dist/api.js normalizeError())
+        // throws a plain object — { statusCode, error: { code, description } }
+        // — not an Error instance, so err.message here was always undefined.
+        // logger.error printed "createPaymentLink failed: undefined" and the
+        // route's res.json({ error: result.error }) serialized to a literal
+        // "{}" body (JSON.stringify drops undefined values), which is why
+        // the UI fell through to a bare "HTTP 500" with zero explanation —
+        // confirmed live: real Razorpay live keys configured, a real
+        // Contacts → Generate Payment Link submission, raw response body
+        // was exactly "{}". Extract the real detail from whichever shape
+        // the thrown value actually has, so a genuine Razorpay-side failure
+        // (bad keys, disabled account, etc.) surfaces its real reason
+        // instead of a blank message.
+        const detail = err?.error?.description || err?.message || String(err);
+        logger.error("[Payment] createPaymentLink failed:", detail);
+        return { success: false, error: detail };
     }
 }
 
