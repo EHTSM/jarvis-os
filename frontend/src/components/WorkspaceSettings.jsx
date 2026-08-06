@@ -791,8 +791,20 @@ export default function WorkspaceSettings({ onNavigate }) {
               <p className="ws-section-desc">Connect Ooplix to the tools your business already uses.</p>
               <div className="ws-integrations-list">
                 {INTEGRATIONS.map(integ => {
+                  // A.6 fix: Razorpay's badge previously relied solely on
+                  // connectorStatus, which only ever populates for operator
+                  // accounts (see the operatorOnly-gated fetch above) — every
+                  // regular founder saw "Not connected" right next to the
+                  // static "API key configured..." setup text, a direct
+                  // self-contradiction, even when RAZORPAY_KEY_ID/SECRET were
+                  // genuinely set in .env. settingsStatus.razorpay.configured
+                  // comes from GET /settings/status (requireAuth only, same
+                  // non-operator-safe env check WhatsApp already uses below),
+                  // so it reflects real credential presence for every account.
                   const liveConnected = integ.id === "whatsapp"
                     ? settingsStatus?.whatsapp?.configured
+                    : integ.id === "razorpay"
+                    ? (settingsStatus?.razorpay?.configured || connectorStatus[integ.connectorId]?.status === "CONNECTED")
                     : connectorStatus[integ.connectorId]?.status === "CONNECTED";
                   return (
                     <div key={integ.id} className={`ws-integ-card${liveConnected ? " ws-integ-card--connected" : ""}`}>
