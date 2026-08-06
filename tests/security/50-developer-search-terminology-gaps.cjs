@@ -104,6 +104,7 @@ async function main() {
     ["docker",       "DevOps"],
     ["deploy",       "DevOps"],
     ["rollback",     "DevOps"],
+    ["shortcut",     "Help & Guides"],
   ];
   for (const [term, expectedLabel] of expectations) {
     const matches = searchMatches(tabs, term);

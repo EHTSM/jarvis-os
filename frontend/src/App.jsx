@@ -188,7 +188,7 @@ const MORE_TABS = [
   { id: "success",    label: "Getting Started",    group: "Account"      },
   { id: "billing",    label: "Billing",            group: "Account", alias: "finance" },
   { id: "settings",   label: "Settings",           group: "Account", alias: "notification notifications" },
-  { id: "help",       label: "Help & Guides",      group: "Account"      },
+  { id: "help",       label: "Help & Guides",      group: "Account", alias: "shortcut shortcuts keyboard" },
   { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
   { id: "overview",   label: "Overview",           group: "Account"      },
   // ── Operations
