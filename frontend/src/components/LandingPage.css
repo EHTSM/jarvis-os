@@ -169,6 +169,16 @@
   color: rgba(255, 255, 255, 0.88);
 }
 
+.lp-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.lp-nav-login {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .lp-nav-cta {
   padding: 8px 18px;
   font-size: 13.5px;

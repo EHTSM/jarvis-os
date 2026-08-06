@@ -170,6 +170,18 @@ const TABS = [
   { id: "more",     label: "More ▾"     },
 ];
 
+// Founder Journey Final Polish (A.4.3) finding: "lead"/"leads"/"lead
+// capture" — words a founder actually searches for — returned 0 matches in
+// the More-menu search, because "Contacts" (the real CRM/lead-pipeline
+// feature) lives in the always-visible TABS bar, which MoreMenu's search
+// never looks at (only MORE_TABS is searched). The button is one click away
+// but invisible to search. Additive-only: aliases here don't touch TABS'
+// own rendering, only give MoreMenu.filtered() something to match against.
+const PRIMARY_TAB_ALIASES = {
+  clients:  "lead leads lead capture client sales",
+  payments: "invoice invoicing",
+};
+
 // Power-user overflow — all secondary modules, grouped by domain
 const MORE_TABS = [
   // ── Account & Setup
@@ -241,9 +253,9 @@ const MORE_TABS = [
   { id: "orglevel-auto", label: "Autonomous OS (L10)",  group: "Org Levels" },
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
-  { id: "creative",   label: "Creative Studio",    group: "Growth"       },
-  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing" },
-  { id: "contentseo", label: "Content & SEO",      group: "Growth"       },
+  { id: "creative",   label: "Creative Studio",    group: "Growth", alias: "brand brand kit" },
+  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing campaign" },
+  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page" },
   { id: "distribution",label:"Distribution",       group: "Growth"       },
   { id: "referral",   label: "Referral Engine",    group: "Growth"       },
   { id: "partners",   label: "Partners",           group: "Growth"       },
@@ -252,7 +264,7 @@ const MORE_TABS = [
   // ── Enterprise & Platform
   { id: "business",   label: "CRM",                group: "Enterprise"   },
   { id: "companies",  label: "Companies",          group: "Enterprise", alias: "business company" },
-  { id: "team",       label: "Team",               group: "Enterprise", alias: "invite" },
+  { id: "team",       label: "Team",               group: "Enterprise", alias: "invite employee" },
   { id: "integrations",label:"Integrations",       group: "Enterprise"   },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
   { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
@@ -328,6 +340,7 @@ function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
+    if (!q) return MORE_TABS;
     // Workflow Simplification Certification finding: a founder searching
     // the single most natural term for an entire category — "marketing"
     // (0 matches; the real module is labeled "Growth"), "finance" (0
@@ -336,7 +349,18 @@ function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
     // `alias` is an additive, invisible synonym field (no label/group
     // renamed, no risk to existing muscle memory) checked alongside the
     // visible label/group text.
-    return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q) || m.alias?.toLowerCase().includes(q)) : MORE_TABS;
+    const moreMatches = MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q) || m.alias?.toLowerCase().includes(q));
+    // A.4.3 finding (see PRIMARY_TAB_ALIASES above): the always-visible
+    // TABS bar (Contacts/Payments/Pipeline/AI) is invisible to this search,
+    // so a founder searching "lead" got nothing despite Contacts being
+    // exactly that feature one click away. Surfaced here, tagged with its
+    // own group so it reads as a quick-access shortcut, not an overflow
+    // module — TABS' own rendering in the main bar is untouched.
+    const primaryMatches = TABS.filter(t => t.id !== "more").filter(t => {
+      const alias = PRIMARY_TAB_ALIASES[t.id] || "";
+      return t.label.toLowerCase().includes(q) || alias.toLowerCase().includes(q);
+    }).map(t => ({ ...t, group: "Quick Access" }));
+    return [...primaryMatches, ...moreMatches];
   }, [query]);
 
   const pinnedItems = React.useMemo(

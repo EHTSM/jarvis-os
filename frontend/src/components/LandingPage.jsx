@@ -132,7 +132,7 @@ function InView({ children, delay = 0, className, style, y = 20 }) {
 // Nav
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Nav({ onAccess }) {
+function Nav({ onAccess, onPricing, onLogin }) {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
 
@@ -155,17 +155,41 @@ function Nav({ onAccess }) {
             <button className="lp-nav-link" onClick={() => _scrollTo(l.id)}>{l.label}</button>
           </li>
         ))}
+        {/* A.4.3 finding: PricingPage.jsx and the onPricing callback already
+            existed end-to-end (wired from App.jsx through LandingPage), but
+            Nav dropped the prop instead of rendering a trigger for it — a
+            founder deciding whether to trial the product had no way to see
+            pricing without signing up first. Recovered, not rebuilt: same
+            nav-link pattern as Features/How it works/Compare above. */}
+        {onPricing && (
+          <li>
+            <button className="lp-nav-link" onClick={onPricing}>Pricing</button>
+          </li>
+        )}
       </ul>
 
-      <motion.button
-        className="lp-btn-primary lp-nav-cta"
-        onClick={onAccess}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        transition={spring.snappy}
-      >
-        Start free trial
-      </motion.button>
+      <div className="lp-nav-actions">
+        {/* A.4.3 finding: a returning founder had NO way to log in from the
+            public site at all — App.jsx already builds and passes down a
+            real, working onLogin (routes to the real login screen, itself
+            already wired to a real ForgotPassword flow), but it was never
+            rendered anywhere in Nav/Hero/CTASection, and even a direct
+            /login URL fell through to onboarding instead. Recovered the
+            existing callback with a visible trigger — no new auth screen,
+            no new routing logic. */}
+        {onLogin && (
+          <button className="lp-nav-link lp-nav-login" onClick={onLogin}>Log in</button>
+        )}
+        <motion.button
+          className="lp-btn-primary lp-nav-cta"
+          onClick={onAccess}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          transition={spring.snappy}
+        >
+          Start free trial
+        </motion.button>
+      </div>
     </motion.nav>
   );
 }
@@ -634,7 +658,7 @@ export default function LandingPage({ onLogin, onStart, onLegal, onPricing }) {
 
   return (
     <div className="lp">
-      <Nav onAccess={handleAccess} onPricing={onPricing} />
+      <Nav onAccess={handleAccess} onPricing={onPricing} onLogin={onLogin} />
       <Hero onAccess={handleAccess} />
       <TrustStrip />
       <HowItWorks />
