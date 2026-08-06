@@ -623,6 +623,26 @@ function AppInner() {
   }, [user]);
 
   const [screen,   setScreen]   = useState(_initialScreen);
+
+  // A.6 business-owner-journey finding: _initialScreen() decides landing vs
+  // onboarding vs app purely from localStorage ("jarvis_started",
+  // "jarvis_biz_profile") before any auth check has run — those flags are
+  // per-browser and never synced to the account server-side. A genuinely
+  // authenticated returning user on a new browser/device (or with cleared
+  // storage) landed back on the onboarding wizard instead of their
+  // dashboard, confirmed live: real signup, real login, fresh browser
+  // context, reload → "Quick setup Step 1 of 3" despite zero auth failures.
+  // Once the async /auth/me check (already in flight via AuthProvider)
+  // resolves to a real user, correct course to "app" — reusing the same
+  // setScreen("app") escape hatch LoginPage's onSuccess already uses below,
+  // not a new mechanism. Only overrides landing/onboarding; explicit
+  // deep-link screens (reset-password etc.) and mid-flow screens
+  // (signup/login) are left alone.
+  useEffect(() => {
+    if (authLoading || !user) return;
+    setScreen(s => (s === "landing" || s === "onboarding") ? "app" : s);
+  }, [authLoading, user]);
+
   const [messages, setMessages] = useState(() => [{
     id: 1, role: "jarvis",
     text: _welcomeMessage(_loadProfile()),
