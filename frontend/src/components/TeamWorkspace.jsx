@@ -254,13 +254,27 @@ export default function TeamWorkspace({ onNavigate }) {
     if (!activeId) { toast("No active workspace"); return; }
     setInviting(true);
     try {
-      await _fetch("/workspace/invite", {
+      // A.6 business-owner-journey finding: this always showed "Invite
+      // sent to {email}" as soon as the invite RECORD was created,
+      // discarding the response body entirely — so it never actually
+      // checked whether the email itself sent. Confirmed live: with zero
+      // email provider credentials configured, the invite record was
+      // created (pending invite correctly appeared) but no email could
+      // possibly have been delivered, and the founder still saw "sent."
+      // The backend already returns the real emailSent/emailError fields
+      // (backend/routes/workspace.js) — this now reads and shows them
+      // instead of a hardcoded success message.
+      const res = await _fetch("/workspace/invite", {
         method: "POST",
         body: JSON.stringify({ workspaceId: activeId, email: data.email, role: data.role }),
       });
       setShowInvite(false);
-      toast(`Invite sent to ${data.email}`);
-      track.event("team_invite_sent", { role: data.role });
+      if (res?.emailSent === false) {
+        toast(`Invite created for ${data.email}, but the email could not be sent: ${res.emailError || "unknown error"}`);
+      } else {
+        toast(`Invite sent to ${data.email}`);
+      }
+      track.event("team_invite_sent", { role: data.role, emailSent: res?.emailSent !== false });
       load();
     } catch (e) { toast(e.message || "Invite failed"); }
     setInviting(false);

@@ -214,14 +214,27 @@ function createInvitation(workspaceId, { email, role = "Operator" }, requestingA
  * because of an email provider hiccup — mirrors betaReadiness.sendEmailVerification's
  * split between token generation and best-effort delivery.
  */
-function sendInvitationEmail({ email, token, role, workspaceName, invitedByName }) {
+// A.6 business-owner-journey finding: sendEmail() is async (real work —
+// picks a provider, opens a connection, sends) but was called here
+// without await, so this function always returned { sent: true }
+// immediately, before the real send had even started — regardless of
+// whether it later succeeded or failed. Confirmed live: real signup,
+// real "Invite team member" submission, zero email provider credentials
+// configured in this environment (no RESEND_API_KEY/SENDGRID_API_KEY/
+// POSTMARK_API_KEY/SMTP_*/AWS SES vars) — the founder saw "Invite sent
+// to colleague@..." even though sendEmail() would have returned
+// {ok:false, error:"No email provider configured"} had anyone actually
+// looked at it. This directly violates this pass's explicit rule: expose
+// the real infrastructure error, never a false success. Now async +
+// awaited, propagating the real { ok, error } result from sendEmail().
+async function sendInvitationEmail({ email, token, role, workspaceName, invitedByName }) {
   let emailSvc = null;
   try { emailSvc = require("./emailService.cjs"); } catch { return { sent: false, reason: "emailService unavailable" }; }
 
   const base = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
   const link = `${base}/accept-invite?token=${token}`;
   try {
-    emailSvc.sendEmail({
+    const result = await emailSvc.sendEmail({
       to: email,
       subject: `${invitedByName || "Someone"} invited you to join ${workspaceName || "a workspace"} on Ooplix`,
       html: `<p>You've been invited to join <strong>${workspaceName || "a workspace"}</strong> as <strong>${role}</strong>.</p>
@@ -229,6 +242,7 @@ function sendInvitationEmail({ email, token, role, workspaceName, invitedByName 
 <p>This invitation expires in 7 days. If you don't have an Ooplix account yet, you'll be asked to create one.</p>`,
       text: `You've been invited to join ${workspaceName || "a workspace"} as ${role}. Accept: ${link}`,
     });
+    if (!result.ok) return { sent: false, reason: result.error || "Email send failed", link };
     return { sent: true, link };
   } catch (e) {
     return { sent: false, reason: e.message, link };

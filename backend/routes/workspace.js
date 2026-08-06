@@ -100,12 +100,20 @@ router.post("/workspace/invite", async (req, res) => {
       if (inviter?.name) inviterName = inviter.name;
     } catch { /* non-fatal */ }
 
-    const delivery = svc.sendInvitationEmail({
+    // A.6 fix: sendInvitationEmail is now genuinely async (see
+    // workspaceService.cjs) — must be awaited for `delivery.sent` /
+    // `delivery.reason` to reflect the real send outcome instead of a
+    // value computed before the send even started.
+    const delivery = await svc.sendInvitationEmail({
       email: inv.email, token: inv.token, role: inv.role,
       workspaceName: inv.workspaceName, invitedByName: inviterName,
     });
 
-    res.json({ invitation: { email: inv.email, role: inv.role, expiresAt: inv.expiresAt }, emailSent: delivery.sent });
+    res.json({
+      invitation: { email: inv.email, role: inv.role, expiresAt: inv.expiresAt },
+      emailSent:  delivery.sent,
+      emailError: delivery.sent ? undefined : delivery.reason,
+    });
   } catch (e) {
     const status = e.message.includes("Insufficient") ? 403 : 400;
     res.status(status).json({ error: e.message });
