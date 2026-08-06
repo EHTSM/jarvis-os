@@ -351,11 +351,30 @@ function getRevenueStats({ dateFrom, dateTo, currency, orgId } = {}) {
 
 // ── Dashboard aggregate ───────────────────────────────────────────────────────
 
+// A.6 business-owner-journey finding: getDashboard() only ever counted
+// leads from this file's own biz-leads.json store. The CRM UI a founder
+// actually uses (ContactsV2.jsx → POST /crm/lead) writes to a completely
+// separate store — crmService.js's data/leads.json — so a real lead added
+// through the CRM never appeared in Reports/Executive Dashboard leads
+// counts, confirmed live: added one real contact via Contacts → still
+// showed "TOTAL LEADS: 0" while the same page's Pipeline Breakdown
+// (a different, correctly-wired widget) showed "Hot: 1". Two independent
+// lead stores already exist in this codebase; recovering crmService's own
+// real getStats(orgId) here — additive, merged into the existing leads
+// aggregate — is the minimal fix, not a data-model merge or new storage.
+function _crmLeadStats(orgId) {
+    try {
+        const crm = require("./crmService.js");
+        return crm.getStats(orgId);
+    } catch { return { total: 0, new: 0, hot: 0 }; }
+}
+
 function getDashboard(orgId = null) {
     const leads = listLeads({ limit: 1000, orgId });
     const opps  = listOpportunities({ limit: 1000, orgId });
     const camps = listCampaigns({ limit: 100, orgId });
     const rev   = listRevenue({ limit: 1000, orgId });
+    const crmLeads = _crmLeadStats(orgId);
 
     const totalRevenue    = rev.items.reduce((s, r) => s + r.amount, 0);
     const openOpps        = opps.items.filter(o => !["closed-won", "closed-lost"].includes(o.stage));
@@ -363,10 +382,14 @@ function getDashboard(orgId = null) {
     const wonThisMonth    = opps.items.filter(o => o.stage === "closed-won" && (o.closedAt || "").startsWith(new Date().toISOString().slice(0, 7)));
 
     return {
-        leads:         { total: leads.total, new: leads.items.filter(l => l.status === "new").length, qualified: leads.items.filter(l => l.status === "qualified").length },
+        leads: {
+            total:     leads.total + crmLeads.total,
+            new:       leads.items.filter(l => l.status === "new").length + crmLeads.new,
+            qualified: leads.items.filter(l => l.status === "qualified").length + (crmLeads.hot || 0),
+        },
         opportunities: { total: opps.total, open: openOpps.length, pipelineValue, wonThisMonth: wonThisMonth.length },
         campaigns:     { total: camps.total, active: camps.items.filter(c => c.status === "active").length },
-        revenue:       { total: totalRevenue, count: rev.total },
+        revenue:       { total: totalRevenue + (crmLeads.revenue || 0), count: rev.total },
     };
 }
 

@@ -217,11 +217,22 @@ function SystemPerf({ opsData, metrics, loading }) {
   const dlq        = opsData?.queue?.dlq ?? 0;
   const avgResp    = metrics?.avg_response_ms ?? null;
 
+  // A.6 business-owner-journey finding: "Avg response" unconditionally said
+  // "Backend unavailable" whenever avgResp was null — which, per the
+  // Workflow Coverage Completion fix a few lines above (isOperator gate on
+  // getMetrics()), is ALWAYS true for every non-operator founder account.
+  // The backend is not unavailable; this metric is simply operator-only
+  // data a founder account never fetches. Confirmed live: real signup,
+  // non-operator account, Reports page showed "Backend unavailable" next
+  // to a correctly-loading page with real lead/pipeline data everywhere
+  // else on it. The sibling "Memory usage" row above already handles its
+  // own null case honestly (empty sub-label, not a false claim) — matched
+  // that existing pattern instead of inventing new copy.
   const rows = [
     { label: "System uptime",    value: _fmtUptime(uptime),                     sub: _uptimePct(uptime) + " of 7-day window" },
     { label: "Tasks completed",  value: completed.toLocaleString(),              sub: failed > 0 ? `${failed} failed · ${dlq} in DLQ` : "All healthy" },
     { label: "Memory usage",     value: memory !== null ? `${memory} MB` : "—", sub: memory !== null ? (memory > memWarn ? "High" : "Normal") : "" },
-    { label: "Avg response",     value: avgResp !== null ? `${avgResp}ms` : "—", sub: avgResp !== null ? (avgResp > 1000 ? "Slow" : "Normal") : "Backend unavailable" },
+    { label: "Avg response",     value: avgResp !== null ? `${avgResp}ms` : "—", sub: avgResp !== null ? (avgResp > 1000 ? "Slow" : "Normal") : "" },
   ];
 
   return (
@@ -352,8 +363,31 @@ export default function ReportsV2({ online = false, onNavigate }) {
   const yearStr   = now.getFullYear();
 
   const totalActions  = Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0);
-  const convRate      = stats?.total > 0 && stats?.paid > 0
-    ? `${Math.round((stats.paid / stats.total) * 100)}%`
+
+  // A.6 business-owner-journey finding: the 4 KPI cards below (Total
+  // Leads, Revenue, Close Rate, and the "leads tracked" sub-label) all
+  // read from `stats`, which is only ever populated for operator
+  // accounts (see the isOperator gate on getStats() above) — every
+  // non-operator founder always sees stats === null, so these cards
+  // showed "0"/"₹0"/"0%" regardless of real lead activity. Confirmed
+  // live: a real signup, one real lead added via Contacts, and these
+  // cards still read zero while the Pipeline Breakdown panel below —
+  // which already derives its numbers from the real `leads` array
+  // instead of `stats` — correctly showed it. leadStats mirrors
+  // crmService.js's own getStats(orgId) formula (same total/hot/paid/
+  // revenue shape) computed client-side from the same `leads` array
+  // PipelineChart already uses successfully — no new data source, just
+  // consulting the array that was already being fetched and displayed
+  // correctly one panel down.
+  const leadStats = useMemo(() => {
+    const items = leads || [];
+    const hot   = items.filter(l => l.status === "hot").length;
+    const paid  = items.filter(l => l.status === "paid" || l.paymentStatus === "paid").length;
+    return { total: items.length, hot, paid };
+  }, [leads]);
+
+  const convRate      = leadStats.total > 0 && leadStats.paid > 0
+    ? `${Math.round((leadStats.paid / leadStats.total) * 100)}%`
     : "0%";
 
   return (
@@ -393,16 +427,16 @@ export default function ReportsV2({ online = false, onNavigate }) {
         <KpiCard
           icon="◈"
           label="Total Leads"
-          value={stats?.total ?? 0}
-          sub={`${stats?.hot ?? 0} hot · ${stats?.paid ?? 0} paid`}
+          value={leadStats.total}
+          sub={`${leadStats.hot} hot · ${leadStats.paid} paid`}
           accent="var(--accent)"
           loading={loading}
         />
         <KpiCard
           icon="₹"
           label="Revenue"
-          value={_fmtINR(stats?.revenue)}
-          sub={`${stats?.paid ?? 0} paying clients`}
+          value={stats ? _fmtINR(stats.revenue) : "—"}
+          sub={`${leadStats.paid} paying clients`}
           accent="var(--success)"
           loading={loading}
         />
@@ -418,7 +452,7 @@ export default function ReportsV2({ online = false, onNavigate }) {
           icon="◎"
           label="Close Rate"
           value={convRate}
-          sub={`${stats?.total ?? 0} leads tracked`}
+          sub={`${leadStats.total} leads tracked`}
           accent={parseFloat(convRate) >= 20 ? "var(--success)" : "var(--warning)"}
           loading={loading}
         />
