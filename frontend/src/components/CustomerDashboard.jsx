@@ -46,9 +46,16 @@ function StatCard({ label, value, sub, accent }) {
 }
 
 function QuickActions({ onNavigate }) {
+  // A.5 finding: "AI Chat" routed to "jarvisbrain" — a real, but purely
+  // read-only monitoring dashboard (live mission/loop-cycle counters,
+  // zero <input>/<textarea> anywhere on the page) — not the real chat
+  // interface. The actual chat UI (Chat.jsx, a real message input +
+  // send flow) lives at tab id "chat" (the top-level "AI" tab), which
+  // this button never pointed to. An engineer clicking a button
+  // literally labeled "AI Chat" had no way to type a message.
   const actions = [
     { icon: "✦", label: "New Mission",  tab: "mission" },
-    { icon: "◎", label: "AI Chat",      tab: "jarvisbrain" },
+    { icon: "◎", label: "AI Chat",      tab: "chat" },
     { icon: "◈", label: "CRM",          tab: "business" },
     { icon: "⬡", label: "Automation",   tab: "workflowautomation" },
     { icon: "🔌", label: "Connectors",   tab: "integrations" },

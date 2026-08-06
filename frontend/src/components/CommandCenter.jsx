@@ -1695,7 +1695,11 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
       >
         {[
           { icon: "✦", label: "New Mission",  tab: "mission"          },
-          { icon: "◎", label: "AI Chat",      tab: "jarvisbrain"      },
+          // A.5 finding (see CustomerDashboard.jsx for full writeup):
+          // "AI Chat" must route to "chat" (Chat.jsx's real message
+          // input), not "jarvisbrain" (a read-only monitoring dashboard
+          // with zero <input>/<textarea> anywhere on the page).
+          { icon: "◎", label: "AI Chat",      tab: "chat"             },
           { icon: "⌥", label: "Analytics",    tab: "analyticscenter"  },
           { icon: "⬡", label: "Automation",   tab: "workflowautomation" },
           { icon: "◈", label: "CRM",          tab: "business"         },
