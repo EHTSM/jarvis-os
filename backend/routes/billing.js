@@ -24,6 +24,13 @@ router.get("/billing/status", requireAuth, (req, res) => {
     allowed:     access.allowed,
     daysLeft:    access.daysLeft,
     graceActive: access.graceActive,
+    // A.6 business-owner-journey finding: trialStart was set on the real
+    // billing record at creation (createTrial(), below) but never included
+    // in this response — the Billing page's "Trial started" row always
+    // showed "—" for every account, confirmed live on a real signup made
+    // seconds earlier. Additive: the field already exists on `record`,
+    // this just stops dropping it before it reaches the frontend.
+    trialStart:  record.trialStart,
     trialEnd:    record.trialEnd,
     activatedAt: record.activatedAt,
     prices:      billing.PLAN_PRICES,
