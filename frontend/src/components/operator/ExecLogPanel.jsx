@@ -401,7 +401,22 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
     });
   }, []);
 
+  const logRef  = useRef(null);
+  const prevLen = useRef(0);
+  const [filter, _setFilter] = useState(initialFilter);
+  const [search, _setSearch] = useState(initialSearch);
+
+  const setFilter = React.useCallback((v) => { _setFilter(v); onFilterChange?.(v); }, [onFilterChange]);
+  const setSearch = React.useCallback((v) => { _setSearch(v); onSearchChange?.(v); }, [onSearchChange]);
+
   // Phase 133: saved filters + timeline collapse
+  // A.8 fix: this block previously sat above the filter/search useState
+  // declarations, but saveCurrentFilter's body and dependency array both
+  // reference filter/search — the dependency array is evaluated during
+  // render itself (not deferred like the callback body), so it read
+  // filter/search before their `const` declarations had run, throwing
+  // "Cannot access 'filter' before initialization" on every mount. Moved
+  // below the referenced declarations; logic is unchanged.
   const [savedFilters, setSavedFilters] = useState(_loadSavedFilters);
   const [collapsed,    setCollapsed]    = useState(false); // timeline collapse
   const saveCurrentFilter = React.useCallback(() => {
@@ -422,14 +437,6 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
       return next;
     });
   }, []);
-
-  const logRef  = useRef(null);
-  const prevLen = useRef(0);
-  const [filter, _setFilter] = useState(initialFilter);
-  const [search, _setSearch] = useState(initialSearch);
-
-  const setFilter = React.useCallback((v) => { _setFilter(v); onFilterChange?.(v); }, [onFilterChange]);
-  const setSearch = React.useCallback((v) => { _setSearch(v); onSearchChange?.(v); }, [onSearchChange]);
   const [workflowChains, setWorkflowChains] = useState({});
   const [activeChain, setActiveChain] = useState(null);
 

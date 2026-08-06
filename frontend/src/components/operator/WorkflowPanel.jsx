@@ -322,6 +322,24 @@ function _saveWorkflows(workflows) {
   }, 500);
 }
 export default function WorkflowPanel({ onRefresh, addNotification, onAction, externalInput, onClearExternal, repoSearch }) {
+  // A.8 fix: debouncedInput and dispatchHist were previously declared much
+  // further down this function, but useWorkflowReasoning(debouncedInput)
+  // and the _recentCmds useMemo below both reference them immediately —
+  // a hook's argument/dependency array is evaluated during render itself
+  // (not deferred like an effect body), so it read these before their
+  // `const` declarations had run, throwing "Cannot access 'debouncedInput'
+  // before initialization" on every mount. Moved both declarations above
+  // their first use; every other line's relative order is unchanged.
+  const [input, setInput] = useState("");
+  const [debouncedInput, setDebouncedInput] = useState("");
+  const _debounceRef = React.useRef(null);
+  useEffect(() => {
+    clearTimeout(_debounceRef.current);
+    _debounceRef.current = setTimeout(() => setDebouncedInput(input), 300);
+    return () => clearTimeout(_debounceRef.current);
+  }, [input]);
+  const [dispatchHist, setDispatchHist] = useState(_loadHistory);
+
   const {
     recordDispatchStart, recordDispatchEnd, recordRetry, recordAbandonment,
     recordHesitationStart, recordHesitationCancel, recordReconnectConfusion,
@@ -338,25 +356,9 @@ export default function WorkflowPanel({ onRefresh, addNotification, onAction, ex
   const [focusMode, setFocusMode] = useState(false);
   const [focusModeManual, setFocusModeManual] = useState(false); // operator can pin it on
 
-  const [input, setInput] = useState("");
   const inputRef = React.useRef(null);
   const wasActiveRef = React.useRef(false);
   const lastSuccessfulCmdRef = React.useRef(null); // Phase 262: for graph edge recording
-
-  // Phase 304: auto focus mode — activates when dispatch starts, deactivates on completion
-  React.useEffect(() => {
-    if (busy) setFocusMode(true);
-    else if (!focusModeManual) setFocusMode(false);
-  }, [busy, focusModeManual]);
-
-  // Phase 281: debounced input for expensive reasoning/analysis hooks — 300ms prevents per-keystroke recompute
-  const [debouncedInput, setDebouncedInput] = useState("");
-  const _debounceRef = React.useRef(null);
-  useEffect(() => {
-    clearTimeout(_debounceRef.current);
-    _debounceRef.current = setTimeout(() => setDebouncedInput(input), 300);
-    return () => clearTimeout(_debounceRef.current);
-  }, [input]);
 
   // Phase 310: stable external-input focus debounce — uses ref to avoid timer leaks across re-renders
   const _extInputTimerRef = React.useRef(null);
@@ -417,6 +419,16 @@ export default function WorkflowPanel({ onRefresh, addNotification, onAction, ex
     return await _apiDispatch(cmd, t);
   };
   const [busy,           setBusy]          = useState(false);
+
+  // Phase 304: auto focus mode — activates when dispatch starts, deactivates
+  // on completion. A.8 fix: moved below `busy`'s declaration — this effect's
+  // dependency array previously referenced `busy` (declared much further
+  // down the function) and was evaluated during render, throwing "Cannot
+  // access 'busy' before initialization" on every mount.
+  React.useEffect(() => {
+    if (busy) setFocusMode(true);
+    else if (!focusModeManual) setFocusMode(false);
+  }, [busy, focusModeManual]);
   const [execStart,      setExecStart]     = useState(null);
   const [elapsed,        setElapsed]       = useState(0);
   const [showHistory,    setShowHistory]   = useState(false);
@@ -429,7 +441,6 @@ export default function WorkflowPanel({ onRefresh, addNotification, onAction, ex
     completionTimerRef.current = setTimeout(() => setLastCompletion(null), ok ? 5000 : 10000);
   }, []);
   React.useEffect(() => () => clearTimeout(completionTimerRef.current), []);
-  const [dispatchHist, setDispatchHist] = useState(_loadHistory);
   const [savedMacros, setSavedMacros] = useState(_loadMacros);
   const [workflowProgressPct, setWorkflowProgressPct] = useState(0);
   const [showMacroEditor, setShowMacroEditor] = useState(false);
