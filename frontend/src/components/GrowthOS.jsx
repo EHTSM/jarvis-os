@@ -169,6 +169,14 @@ function EmailPanel() {
     setForm({ name: "", subject: "", fromName: "Ooplix", fromEmail: "", abTest: false, variantB: null });
     toast("Campaign created");
     reloadCamps();
+    // A.7 finding: the "+ New" form stayed open after a successful create
+    // (view never left "create"), so the fields reset but the founder was
+    // left staring at a fresh, still-active create form with no visible
+    // confirmation beyond a toast — reproduced live: this created two
+    // near-identical duplicate campaigns from what looked like one submit
+    // that "didn't seem to work." Returning to the list mirrors every other
+    // create flow in this app (e.g. Contacts' "+ New").
+    setView("campaigns");
   };
 
   const send = async (id) => {
@@ -188,6 +196,7 @@ function EmailPanel() {
     setSeqForm({ name: "", description: "", triggerEvent: "contact_created" });
     toast("Sequence created");
     reloadSeqs();
+    setView("sequences"); // same fix as createCampaign — see its comment above
   };
 
   const list    = camps?.campaigns || [];
@@ -331,6 +340,7 @@ function SMSPanel() {
     setForm({ name: "", body: "", senderId: "OOPLIX", bulk: true, unicode: false });
     toast("Campaign created");
     reload();
+    setView("campaigns"); // same "+New" form stayed open after create fix as GrowthOS Email — see its comment
   };
 
   const send = async (id) => {
@@ -479,6 +489,7 @@ function WhatsAppPanel() {
     setForm({ name: "", body: "", flowId: null, leadQualification: false });
     toast("Broadcast created");
     reload();
+    setView("broadcasts"); // same "+New" form stayed open after create fix as GrowthOS Email — see its comment
   };
 
   const send = async (id) => {
