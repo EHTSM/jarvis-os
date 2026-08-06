@@ -117,10 +117,11 @@ function CompareTable() {
 
 // ── Root modal ────────────────────────────────────────────────────────
 export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
-  const [selected,  setSelected]  = useState("growth"); // pre-select recommended
-  const [loading,   setLoading]   = useState(false);
-  const [error,     setError]     = useState(null);
-  const [showTable, setShowTable] = useState(false);
+  const [selected,    setSelected]    = useState("growth"); // pre-select recommended
+  const [loading,     setLoading]     = useState(false);
+  const [error,       setError]       = useState(null);
+  const [isAuthError, setIsAuthError] = useState(false);
+  const [showTable,   setShowTable]   = useState(false);
 
   // Track open
   useEffect(() => {
@@ -137,6 +138,7 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
     if (planId === "scale") return; // handled by mailto link in card
     setLoading(true);
     setError(null);
+    setIsAuthError(false);
     setSelected(planId);
 
     track.event("upgrade_plan_selected", { plan: planId });
@@ -150,15 +152,25 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
       onSuccess?.();
       onClose?.();
     } else {
-      // Surface actionable error — Razorpay keys may need regeneration
-      const isAuthErr = (res?.error || "").toLowerCase().includes("authentication") ||
-                        (res?.error || "").toLowerCase().includes("401") ||
-                        (res?.error || "").toLowerCase().includes("not configured");
-      setError(
-        isAuthErr
-          ? "payment_auth_failed"   // sentinel — rendered as rich block below
-          : (res?.error || "Could not initiate payment. Please try again or contact support.")
-      );
+      // A.6 business-owner-journey finding: this used to replace the real
+      // backend error with the literal sentinel string "payment_auth_failed"
+      // for any auth-class failure, discarding res?.error entirely before
+      // it ever reached the UI — the founder saw only "Payment processing
+      // is temporarily unavailable," never the real reason. Confirmed
+      // live: a real upgrade attempt against real (but invalid) Razorpay
+      // keys returned {"error":"Authentication failed"} from the backend
+      // (the exact detail paymentService.js's own catch-block fix now
+      // correctly surfaces), and this modal still showed nothing but the
+      // generic message. Per this pass's explicit rule — expose the real
+      // infrastructure error, never convert it to a generic one — the
+      // real message is now kept and shown alongside the actionable
+      // "email us" guidance, not replaced by it.
+      const rawErr = res?.error || "Could not initiate payment. Please try again or contact support.";
+      const isAuthErr = rawErr.toLowerCase().includes("authentication") ||
+                        rawErr.toLowerCase().includes("401") ||
+                        rawErr.toLowerCase().includes("not configured");
+      setError(rawErr);
+      setIsAuthError(isAuthErr);
     }
   }, [onClose, onSuccess]);
 
@@ -220,12 +232,19 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
           ))}
         </div>
 
-        {/* Error — rich block for payment auth failure, plain text for others */}
-        {error && error === "payment_auth_failed" && (
+        {/* Error — rich block for payment auth failure, plain text for others.
+            Both now include the real error text (see handleUpgrade) — the
+            rich block adds actionable "email us" guidance on top of the
+            real reason, it no longer replaces the real reason with generic
+            copy. */}
+        {error && isAuthError && (
           <div className="um-error um-error--rich" role="alert">
             <span className="um-error-icon">⚠</span>
             <div>
               <div style={{ fontWeight: 700, marginBottom: 4 }}>Payment processing is temporarily unavailable.</div>
+              <div style={{ fontSize: "0.82rem", lineHeight: 1.55, marginBottom: 4, opacity: 0.85 }}>
+                Reason: {error}
+              </div>
               <div style={{ fontSize: "0.82rem", lineHeight: 1.55 }}>
                 To upgrade now, email us and we'll send you a payment link directly:
                 {" "}<a href="mailto:billing@ooplix.com?subject=Upgrade request&body=Plan: " className="um-error-link">billing@ooplix.com</a>
@@ -233,7 +252,7 @@ export default function UpgradeModal({ open, onClose, onSuccess, billing }) {
             </div>
           </div>
         )}
-        {error && error !== "payment_auth_failed" && (
+        {error && !isAuthError && (
           <div className="um-error" role="alert">
             <span className="um-error-icon">⚠</span>
             {error}
