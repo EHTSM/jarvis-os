@@ -630,12 +630,16 @@ router.get("/creative/workspace", (req, res) => {
   try {
     const accountId = _account(req);
     const jobSummary = jobQueue.getSummary();
-    const assetStats = assets.getStats();
+    // Phase A.11.3 — same fix as GET /creative/assets: these three were global
+    // while recentAssets/favoriteAssets below are account-scoped, so the
+    // Workspace tab rendered other accounts' totals next to this account's own
+    // (empty) asset list. Scope them the same way.
+    const assetStats = assets.getStats(accountId);
     const recentJobs = jobQueue.listJobs({ accountId, limit: 10 });
     const recentAssets = assets.listAssets({ accountId, limit: 12 });
     const favoriteAssets = assets.listAssets({ accountId, favorite: true, limit: 10 });
-    const folders = assets.getFolders();
-    const tags    = assets.getTags().slice(0, 20);
+    const folders = assets.getFolders(accountId);
+    const tags    = assets.getTags(accountId).slice(0, 20);
     const brandKits = brandStudio.listKits(accountId);
 
     res.json({
@@ -672,7 +676,8 @@ router.get("/creative/workspace/recent", (req, res) => {
 
 router.get("/creative/workspace/collections", (req, res) => {
   try {
-    const folders = assets.getFolders();
+    // Phase A.11.3 — account-scoped, matching listAssets() everywhere else.
+    const folders = assets.getFolders(_account(req));
     res.json({ ok: true, collections: folders });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -708,18 +713,25 @@ router.get("/creative/assets", (req, res) => {
       limit:      parseInt(req.query.limit || "50"),
     };
     const list  = assets.listAssets(opts);
-    const stats = assets.getStats();
+    // Phase A.11.3 — getStats() used to count every account's assets, so this
+    // response paired an account-scoped `assets` list with a global `stats`
+    // block; the Assets tab renders both together and showed other accounts'
+    // totals above its own honest empty state. Scope it the same way the list
+    // above is already scoped.
+    const stats = assets.getStats(opts.accountId);
     res.json({ ok: true, assets: list, stats });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.get("/creative/assets/folders", (req, res) => {
-  try { res.json({ ok: true, folders: assets.getFolders() }); }
+  // Phase A.11.3 — account-scoped, matching listAssets() everywhere else.
+  try { res.json({ ok: true, folders: assets.getFolders(_account(req)) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.get("/creative/assets/tags", (req, res) => {
-  try { res.json({ ok: true, tags: assets.getTags() }); }
+  // Phase A.11.3 — account-scoped, matching listAssets() everywhere else.
+  try { res.json({ ok: true, tags: assets.getTags(_account(req)) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 

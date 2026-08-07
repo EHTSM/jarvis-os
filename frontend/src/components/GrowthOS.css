@@ -445,6 +445,11 @@
   margin-left: 8px;
   animation: gos-fade-in 0.2s ease;
 }
+/* Phase A.11.3 — real backend error text is surfaced through this same toast
+   (send / OTP / CSV-import handlers), so a failure must not render in the
+   success green above. Uses this file's own already-established error red
+   (#ef4444 — the same value .gos-chip-red and .gos-btn-sm--danger use). */
+.gos-toast--error { color: #ef4444; }
 @keyframes gos-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── Misc ── */

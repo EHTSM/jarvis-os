@@ -189,29 +189,48 @@ function deleteAsset(id) {
   return true;
 }
 
-function getFolders() {
-  const idx = _loadIndex();
-  return Object.entries(idx.folders).map(([name, ids]) => ({ name, count: ids.length }));
+// Phase A.11.3 — getFolders()/getStats() counted EVERY asset in the shared
+// index regardless of owner, while listAssets() has always filtered by
+// `opts.accountId` (see its filter above). The Assets tab renders both on the
+// same screen, so a real account with zero assets of its own displayed
+// "33 Total assets / image (20) / exports (10)" above the honest
+// "No assets yet. Generate something!" empty state — counts belonging to other
+// accounts entirely. These now take the SAME optional accountId that
+// listAssets() already accepts and filter identically; passing no accountId
+// preserves the previous global behavior for any internal/unscoped caller.
+function _scoped(list, accountId) {
+  return accountId ? list.filter(a => a.accountId === accountId) : list;
 }
 
-function getTags() {
+function getFolders(accountId) {
   const idx = _loadIndex();
-  return Object.entries(idx.tags).map(([tag, ids]) => ({ tag, count: ids.length }))
-    .sort((a, b) => b.count - a.count);
+  return Object.entries(idx.folders).map(([name, ids]) => ({
+    name,
+    count: _scoped(ids.map(id => idx.assets[id]).filter(Boolean), accountId).length,
+  }));
 }
 
-function getStats() {
+function getTags(accountId) {
+  const idx = _loadIndex();
+  return Object.entries(idx.tags).map(([tag, ids]) => ({
+    tag,
+    count: _scoped(ids.map(id => idx.assets[id]).filter(Boolean), accountId).length,
+  })).sort((a, b) => b.count - a.count);
+}
+
+function getStats(accountId) {
   const idx  = _loadIndex();
-  const list = Object.values(idx.assets);
+  const list = _scoped(Object.values(idx.assets), accountId);
   const byType = {};
   for (const a of list) {
     byType[a.type] = (byType[a.type] || 0) + 1;
   }
+  const favorites = _scoped(idx.favorites.map(id => idx.assets[id]).filter(Boolean), accountId);
   return {
     total:     list.length,
-    favorites: idx.favorites.length,
-    folders:   Object.keys(idx.folders).length,
-    tags:      Object.keys(idx.tags).length,
+    favorites: favorites.length,
+    folders:   new Set(list.map(a => a.folder).filter(Boolean)).size,
+    tags:      new Set(list.flatMap(a => a.tags || [])).size,
     byType,
   };
 }

@@ -77,10 +77,21 @@ function useGrowth(path, deps = []) {
   return [data, load];
 }
 
+// Phase A.11.3 — this toast is used for BOTH success confirmations and real
+// backend error text (send/OTP/import handlers all do `toast(r.error)`), but
+// `.gos-toast` was hardcoded to the success green (#22c55e), so a genuine
+// failure — e.g. the real 400 "Email campaign sending is not available: CRM
+// leads in this deployment have no email address field…" — rendered in the
+// exact same green as "Campaign created". The optional second argument lets a
+// caller mark a message as an error so it renders with this file's OWN
+// already-defined red (the same #ef4444 `.gos-chip-red`/`.gos-btn-sm--danger`
+// use), matching the sibling DistributionOS/CreativeStudio surfaces which
+// already distinguish failure from success. Default stays "success", so every
+// existing single-argument call site is unchanged.
 function useToast() {
-  const [msg, setMsg] = useState("");
-  const toast = (m) => { setMsg(m); setTimeout(() => setMsg(""), 3000); };
-  const Toast = msg ? <span className="gos-toast">{msg}</span> : null;
+  const [msg, setMsg] = useState(null);
+  const toast = (m, type = "success") => { setMsg({ m, type }); setTimeout(() => setMsg(null), 3000); };
+  const Toast = msg ? <span className={`gos-toast${msg.type === "error" ? " gos-toast--error" : ""}`}>{msg.m}</span> : null;
   return [toast, Toast];
 }
 
@@ -185,7 +196,7 @@ function EmailPanel() {
     // checks response.ok, so a real backend error (e.g. "no email address
     // data for this deployment") resolves as JSON like any success — this
     // was silently reporting "Campaign sent!" for a call that failed.
-    if (r?.error) { toast(r.error); return; }
+    if (r?.error) { toast(r.error, "error"); return; }
     toast("Campaign sent!");
     reloadCamps();
   };
@@ -357,7 +368,7 @@ function SMSPanel() {
 
   const send = async (id) => {
     const r = await post(`/growth/sms/campaigns/${id}/send`, {});
-    if (r?.error) { toast(r.error); return; }
+    if (r?.error) { toast(r.error, "error"); return; }
     toast("SMS campaign sent!");
     reload();
   };
@@ -381,7 +392,7 @@ function SMSPanel() {
   const sendOTP = async () => {
     if (!otp.to) return;
     const r = await post("/growth/sms/otp", otp);
-    if (r?.error) { toast(r.error); return; }
+    if (r?.error) { toast(r.error, "error"); return; }
     toast(`OTP sent to ${otp.to}`);
     setOtp({ to: "" });
   };
@@ -515,7 +526,7 @@ function WhatsAppPanel() {
 
   const send = async (id) => {
     const r = await post(`/growth/whatsapp/broadcasts/${id}/send`, {});
-    if (r?.error) { toast(r.error); return; }
+    if (r?.error) { toast(r.error, "error"); return; }
     const c = r?.campaign;
     // Production Completion Week: this now makes real per-recipient sends
     // via whatsappService.js, so a partial failure (some recipients
@@ -1019,14 +1030,14 @@ function AudiencePanel() {
     setImporting(true);
     try {
       const r = await post(`/growth/audiences/${importTarget}/import`, { csv: importCsv });
-      if (r?.error) { toast(r.error); }
+      if (r?.error) { toast(r.error, "error"); }
       else {
         toast(`Imported ${r.imported} · ${r.duplicates} duplicates · ${r.failed} failed`);
         setImportTarget(null);
         setImportCsv("");
         reload();
       }
-    } catch (e) { toast(e.message || "Import failed"); }
+    } catch (e) { toast(e.message || "Import failed", "error"); }
     finally { setImporting(false); }
   };
 
