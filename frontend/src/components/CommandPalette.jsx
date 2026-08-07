@@ -17,7 +17,13 @@ const NAV_ACTIONS = [
 
   // Runtime & Ops
   { id: "nav-workflowautomation", label: "Workflow Automation", icon: "⚡", group: "Runtime & Ops", tab: "workflowautomation" },
-  { id: "nav-analyticscenter", label: "Analytics",         icon: "◎", group: "Runtime & Ops",       tab: "analyticscenter" },
+  // Phase A.10.7 finding: a founder searching "kpi" — the page's own
+  // subtitle literally reads "Executive KPIs, workspace health,
+  // automation ROI, AI usage, and runtime capacity" — got zero results
+  // anywhere (More menu or ⌘K), despite this being the real, correctly-
+  // wired destination. Same additive `keywords` mechanism already used
+  // for "Sign out"/"logout" above (A.4.3) and MoreMenu's `alias` field.
+  { id: "nav-analyticscenter", label: "Analytics",         icon: "◎", group: "Runtime & Ops",       tab: "analyticscenter", keywords: "kpi kpis" },
   { id: "nav-runtime",    label: "Execution Engine",      icon: "⬡", group: "Runtime & Ops",       tab: "runtime"    },
   { id: "nav-execution",  label: "Execution Monitor",     icon: "⬡", group: "Runtime & Ops",       tab: "execution"  },
   { id: "nav-operations", label: "Operations",            icon: "◉", group: "Runtime & Ops",       tab: "operations" },

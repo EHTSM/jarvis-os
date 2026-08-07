@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { getStats, getOpsData, getMetrics } from "../telemetryApi";
-import { getLeads } from "../api";
+import { getLeadsV5 } from "../businessApi";
 import JourneyBanner from "./JourneyBanner";
 import EmptyState from "./EmptyState";
 import "./ReportsV2.css";
@@ -46,13 +46,19 @@ function _timeAgo(isoStr) {
 const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 const STATUS_META = {
-  new:       { label: "New",       color: "var(--accent, #7c6fff)" },
-  hot:       { label: "Hot",       color: "var(--warning, #f0b429)" },
-  qualified: { label: "Qualified", color: "var(--accent2, #4ecdc4)" },
-  won:       { label: "Won",       color: "var(--success, #52d68a)" },
-  paid:      { label: "Paid",      color: "var(--success, #52d68a)" },
-  lost:      { label: "Lost",      color: "var(--text-faint, #4a5470)" },
-  onboarded: { label: "Onboarded", color: "var(--success, #52d68a)" },
+  new:          { label: "New",          color: "var(--accent, #7c6fff)" },
+  hot:          { label: "Hot",          color: "var(--warning, #f0b429)" },
+  contacted:    { label: "Contacted",    color: "var(--accent, #7c6fff)" },
+  qualified:    { label: "Qualified",    color: "var(--accent2, #4ecdc4)" },
+  disqualified: { label: "Disqualified", color: "var(--text-faint, #4a5470)" },
+  // Real /business/leads status values (businessDataService.cjs's
+  // LEAD_STATUSES) — added alongside the legacy crmService statuses below
+  // when this chart's data source was pointed at /business/leads (A.10.7).
+  converted:    { label: "Converted",    color: "var(--success, #52d68a)" },
+  won:          { label: "Won",          color: "var(--success, #52d68a)" },
+  paid:         { label: "Paid",         color: "var(--success, #52d68a)" },
+  lost:         { label: "Lost",         color: "var(--text-faint, #4a5470)" },
+  onboarded:    { label: "Onboarded",    color: "var(--success, #52d68a)" },
 };
 
 // ── Skeleton ───────────────────────────────────────────────────────────────────
@@ -308,17 +314,34 @@ export default function ReportsV2({ online = false, onNavigate }) {
       // calls entirely for non-operators (rather than letting them resolve
       // to null and be misread as an outage) fixes the false positive while
       // preserving the real check for an actual operator-session outage.
+      //
+      // Phase A.10.7 finding: getLeads() (-> /crm/leads) reads the OLD,
+      // disconnected crmService.js store, filtered by userId — not orgId.
+      // Live-confirmed on a real 5-lead account: /crm/leads returned []
+      // (zero of those 40 leads.json records carry this account's userId),
+      // while the Dashboard (CustomerDashboard.jsx -> /business/dashboard
+      // -> businessDataService.getDashboard(orgId)) correctly showed "5
+      // leads, 4 new" from the newer, org-scoped business-leads.json store
+      // — via an A.6-documented merge fix already applied there but never
+      // applied here. Every KPI card on this page (Total Leads, Revenue's
+      // "N paying clients" sub-label, Close Rate) plus the entire Pipeline
+      // Breakdown chart derive from this one `leads` array, so all of them
+      // silently showed 0/empty for every non-operator founder with real
+      // CRM activity. getLeadsV5() (-> /business/leads, already used
+      // elsewhere in the app) reads the same org-scoped store the Dashboard
+      // uses — same org-attach middleware, no new backend route, no schema
+      // change.
       const isOperator = user?.role === "operator";
-      const [st, ops, met, leds] = await Promise.all([
+      const [st, ops, met, ledsResp] = await Promise.all([
         isOperator ? getStats()   : Promise.resolve(undefined),
         isOperator ? getOpsData() : Promise.resolve(undefined),
         isOperator ? getMetrics() : Promise.resolve(undefined),
-        getLeads(),
+        getLeadsV5({ limit: 1000 }),
       ]);
       setStats(st ?? null);
       setOpsData(ops ?? null);
       setMetrics(met ?? null);
-      setLeads(Array.isArray(leds) ? leds : []);
+      setLeads(Array.isArray(ledsResp?.leads) ? ledsResp.leads : []);
       if (isOperator && st == null && ops == null && met == null) {
         setError("Backend unavailable — reports data could not be loaded.");
       } else {
@@ -331,26 +354,46 @@ export default function ReportsV2({ online = false, onNavigate }) {
 
   useEffect(() => { refresh(); }, [refresh]);
 
+  // Phase A.10.7 finding: this button sits on a page titled "Reports —
+  // Executive summary" showing Total Leads/Revenue/Messages Sent/Close
+  // Rate/Pipeline Breakdown, but clicking it downloaded
+  // /runtime/export/analytics — a real, working endpoint, but for a
+  // completely different domain (engineering workflow-chain/recovery
+  // telemetry, e.g. "chain-0: 12 runs, 67% success") with zero mention of
+  // leads/revenue/CRM anywhere in it. A founder exporting "their report"
+  // got the wrong report. Its own error-path fallback (below, now the only
+  // path) already builds a payload from real on-page state, but never ran
+  // because the primary fetch always succeeded (200), and even the
+  // fallback never included the `leads` array the KPI cards and Pipeline
+  // Breakdown chart are actually built from. Exporting what's genuinely on
+  // screen — no new backend route, no new data source.
   async function handleExport() {
     setExporting(true);
     try {
-      const res = await fetch("/runtime/export/analytics", { credentials: "include" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const blob = await res.blob();
+      const items = leads || [];
+      const hot   = items.filter(l => l.status === "hot" || l.status === "qualified").length;
+      const paid  = items.filter(l => l.status === "paid" || l.status === "converted" || l.paymentStatus === "paid").length;
+      const rate  = items.length > 0 && paid > 0 ? `${Math.round((paid / items.length) * 100)}%` : "0%";
+      const byStatus = items.reduce((acc, l) => { const s = l.status || "new"; acc[s] = (acc[s] || 0) + 1; return acc; }, {});
+      const payload = {
+        exportedAt:   new Date().toISOString(),
+        summary: {
+          totalLeads:   items.length,
+          hotLeads:     hot,
+          paidLeads:    paid,
+          closeRate:    rate,
+          messagesSent: Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0),
+          revenue:      stats?.revenue ?? null,
+        },
+        pipelineBreakdown: byStatus,
+        leads,
+        opsAutomation: opsData?.automation ?? null,
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement("a");
       a.href     = url;
-      a.download = `ooplix-analytics-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (e) {
-      // Fallback: export current stats as JSON
-      const payload = { stats, opsData, metrics, exportedAt: new Date().toISOString() };
-      const blob    = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-      const url     = URL.createObjectURL(blob);
-      const a       = document.createElement("a");
-      a.href        = url;
-      a.download    = `ooplix-report-${new Date().toISOString().slice(0,10)}.json`;
+      a.download = `ooplix-report-${new Date().toISOString().slice(0,10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
     } finally {
@@ -379,10 +422,19 @@ export default function ReportsV2({ online = false, onNavigate }) {
   // PipelineChart already uses successfully — no new data source, just
   // consulting the array that was already being fetched and displayed
   // correctly one panel down.
+  //
+  // Phase A.10.7: `leads` now comes from /business/leads (see refresh()
+  // above), whose real status vocabulary (businessDataService.cjs's
+  // LEAD_STATUSES: new/contacted/qualified/disqualified/converted) never
+  // contains "hot" or "paid" — the legacy crmService statuses this filter
+  // was written against. Without this, hot/paid — and therefore Close
+  // Rate, which divides by paid — would silently read 0 again under the
+  // new data source. "qualified" is the real model's closest hot-lead
+  // signal; "converted" is its closest won/paid signal.
   const leadStats = useMemo(() => {
     const items = leads || [];
-    const hot   = items.filter(l => l.status === "hot").length;
-    const paid  = items.filter(l => l.status === "paid" || l.paymentStatus === "paid").length;
+    const hot   = items.filter(l => l.status === "hot" || l.status === "qualified").length;
+    const paid  = items.filter(l => l.status === "paid" || l.status === "converted" || l.paymentStatus === "paid").length;
     return { total: items.length, hot, paid };
   }, [leads]);
 

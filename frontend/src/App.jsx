@@ -210,7 +210,7 @@ const MORE_TABS = [
   { id: "overview",   label: "Overview",           group: "Account"      },
   // ── Operations
   { id: "workflowautomation", label: "Workflow Automation", group: "Operations" },
-  { id: "analyticscenter", label: "Analytics",       group: "Operations"   },
+  { id: "analyticscenter", label: "Analytics",       group: "Operations", alias: "kpi kpis" },
   { id: "activity",   label: "History",            group: "Operations", alias: "logs" },
   { id: "reports",    label: "Reports",            group: "Operations"   },
   { id: "mission",    label: "Mission Control",    group: "Operations"   },
