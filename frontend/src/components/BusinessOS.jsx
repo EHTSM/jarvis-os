@@ -274,7 +274,7 @@ function LeadsView({ onToast }) {
 
   const openEdit = (lead) => {
     setForm({ name: lead.name, email: lead.email || "", phone: lead.phone || "", company: lead.company || "", source: lead.source, score: lead.score, notes: lead.notes || "" });
-    setEditing(lead.leadId); setShowForm(true);
+    setEditing(lead.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -290,20 +290,26 @@ function LeadsView({ onToast }) {
 
   const handleQualify = async (leadId) => {
     const r = await qualifyBizLead(leadId);
-    if (r.ok) { onToast?.("success", "Lead qualified"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead qualified"); load(); }
+    else onToast?.("error", r.error || "Failed to qualify lead");
   };
 
   const handleDisqualify = async (leadId) => {
     const r = await disqualifyBizLead(leadId, "Not a fit");
-    if (r.ok) { onToast?.("success", "Lead disqualified"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead disqualified"); load(); }
+    else onToast?.("error", r.error || "Failed to disqualify lead");
+  };
+
+  const handleConvert = async (leadId) => {
+    const r = await updateBizLead(leadId, { status: "converted" });
+    if (r.success !== false) { onToast?.("success", "Lead converted to customer"); load(); }
+    else onToast?.("error", r.error || "Failed to convert lead");
   };
 
   const handleDelete = async (leadId) => {
     const r = await deleteBizLead(leadId);
-    if (r.ok) { onToast?.("success", "Lead deleted"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead deleted"); load(); }
+    else onToast?.("error", r.error || "Failed to delete lead");
   };
 
   return (
@@ -357,7 +363,7 @@ function LeadsView({ onToast }) {
           <thead><tr><th>Name</th><th>Company</th><th>Source</th><th>Score</th><th>Status</th><th>Created</th><th></th></tr></thead>
           <tbody>
             {leads.map(l => (
-              <tr key={l.leadId}>
+              <tr key={l.id}>
                 <td className="bos-td-name">{l.name}</td>
                 <td className="bos-td-dim">{l.company || "—"}</td>
                 <td className="bos-td-dim">{l.source}</td>
@@ -366,12 +372,14 @@ function LeadsView({ onToast }) {
                 <td className="bos-td-dim">{_fmtDate(l.createdAt)}</td>
                 <td className="bos-td-actions">
                   {l.status === "new" || l.status === "contacted"
-                    ? <button className="bos-icon-btn" title="Qualify" onClick={() => handleQualify(l.leadId)}>✓</button>
+                    ? <button className="bos-icon-btn" title="Qualify" onClick={() => handleQualify(l.id)}>✓</button>
                     : l.status === "qualified"
-                    ? <button className="bos-icon-btn warn" title="Disqualify" onClick={() => handleDisqualify(l.leadId)}>✗</button>
+                    ? <button className="bos-icon-btn warn" title="Disqualify" onClick={() => handleDisqualify(l.id)}>✗</button>
                     : null}
+                  {l.status === "qualified" &&
+                    <button className="bos-icon-btn" title="Convert to Customer" onClick={() => handleConvert(l.id)}>⇒</button>}
                   <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(l)}>✎</button>
-                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(l.leadId)}>🗑</button>
+                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(l.id)}>🗑</button>
                 </td>
               </tr>
             ))}
