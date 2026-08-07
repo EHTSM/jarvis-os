@@ -116,6 +116,27 @@ export function PreActionWarning({ action, patchId, filePath, task, pipelineName
       .then(setData).catch(e => setData({ error: e.message })).finally(() => setLoading(false));
   }, [action, patchId, filePath, task, pipelineName]);
 
+  // A.10.4 fix: this useRef + useEffect pair used to sit below two early
+  // `return` statements (loading, then data?.error||!data), so on the
+  // render where `loading` first flips false with no error, React saw 2
+  // MORE hooks called than on the previous (loading) render — a real,
+  // reproducible "Rendered more hooks than during the previous render"
+  // crash, confirmed live by clicking a pending patch's "Run" button
+  // (Manual patch → auto-pipeline → this modal's low-risk/auto-proceed
+  // path). Rules of Hooks requires every hook called unconditionally, in
+  // the same order, every render — matching the already-correct sibling
+  // component PreDeployGuard below, whose two useEffects both sit above
+  // its own early `if (loading)` return. Moved here, above every early
+  // return; the conditional logic now lives inside the effect body instead
+  // of gating the hook call itself.
+  const didProceedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (data && !data.error && !data.shouldWarn && !didProceedRef.current) {
+      didProceedRef.current = true;
+      onProceed?.();
+    }
+  }, [data, onProceed]);
+
   if (loading) {
     return (
       <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -141,15 +162,8 @@ export function PreActionWarning({ action, patchId, filePath, task, pipelineName
     );
   }
 
-  // If no risk — auto-proceed via effect to avoid calling during render
-  const didProceedRef = React.useRef(false);
-  React.useEffect(() => {
-    if (!data.shouldWarn && !didProceedRef.current) {
-      didProceedRef.current = true;
-      onProceed?.();
-    }
-  }, [data.shouldWarn, onProceed]);
-
+  // Auto-proceed for the no-risk case is now handled by the useEffect
+  // declared above (before the early returns) — see the A.10.4 fix note.
   if (!data.shouldWarn) return null;
 
   const col = rc(data.riskLevel);

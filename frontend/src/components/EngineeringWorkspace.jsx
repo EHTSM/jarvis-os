@@ -213,6 +213,25 @@ const INIT_STAGES = STAGE_ORDER.reduce((acc, s) => ({ ...acc, [s]: { status: "id
 
 export default function EngineeringWorkspace() {
   const [prompt,      setPrompt]      = useState("");
+  // A.10.4 fix: IncidentPreventionBanner/RegressionBanner below were fed the
+  // raw `prompt` state directly as `task`/`description` props. Their own
+  // useEffect deps include that prop, so every keystroke past 10 chars
+  // re-fired both /runtime/guard/incident-check and /runtime/guard/
+  // regression-check (each rate-limited to 20 req/60s per IP). A normal
+  // ~80-character task description typed at human speed produced well over
+  // 100 guard calls in a few seconds, exhausting the quota before "Run Full
+  // Loop" was even clicked and surfacing a confusing "Too many requests"
+  // failure on the *next* real action. Debouncing the value fed to the
+  // banners (300ms silence, same idiom already used by
+  // operator/WorkflowPanel.jsx's `debouncedInput`) fixes this without
+  // touching the banners, the guard endpoints, or the rate limiter itself.
+  const [debouncedPrompt, setDebouncedPrompt] = useState("");
+  const _promptDebounceRef = useRef(null);
+  useEffect(() => {
+    clearTimeout(_promptDebounceRef.current);
+    _promptDebounceRef.current = setTimeout(() => setDebouncedPrompt(prompt), 300);
+    return () => clearTimeout(_promptDebounceRef.current);
+  }, [prompt]);
   const [activeStage, setActiveStage] = useState(null);
   const [stages,      setStages]      = useState(INIT_STAGES);
   const [running,     setRunning]     = useState(false);
@@ -558,11 +577,13 @@ export default function EngineeringWorkspace() {
           rows={3}
           style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, color: "#e6edf3", fontSize: 13, fontFamily: "inherit", resize: "vertical", lineHeight: 1.5 }}
         />
-        {/* B7 — incident prevention + regression banners */}
-        {prompt.trim().length > 10 && !running && (
+        {/* B7 — incident prevention + regression banners.
+            A.10.4 fix: use the debounced value (see debouncedPrompt above)
+            so these fire once per pause in typing, not once per keystroke. */}
+        {debouncedPrompt.trim().length > 10 && !running && (
           <>
-            <IncidentPreventionBanner task={prompt} filePath={activePatch?.filePath || ""} />
-            <RegressionBanner filePath={activePatch?.filePath || ""} description={prompt} patchId={activePatch?.patchId || ""} />
+            <IncidentPreventionBanner task={debouncedPrompt} filePath={activePatch?.filePath || ""} />
+            <RegressionBanner filePath={activePatch?.filePath || ""} description={debouncedPrompt} patchId={activePatch?.patchId || ""} />
           </>
         )}
         <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center" }}>
