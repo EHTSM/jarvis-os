@@ -709,9 +709,22 @@ function ResultCard({ result }) {
   if (!result) return null;
   if (!result.ok) return <div className="cs-result-error">{result.error || "Request failed"}</div>;
   const hasMedia = !!result.asset?.url;
+  // The route always threads the real generator's error through as
+  // result.output.generationError (e.g. a genuine DALL-E 401/quota failure)
+  // when a provider IS wired up but the live call itself failed — that's a
+  // materially different, more actionable situation for a founder than "no
+  // provider connected", so surface it verbatim when present instead of the
+  // generic connector-setup message.
+  const genError = result.output && typeof result.output === "object" ? result.output.generationError : null;
   return (
     <div className="cs-result-card">
-      {!hasMedia && (
+      {!hasMedia && genError && (
+        <div className="cs-result-noconnector">
+          ⚠ Generation failed: {genError}. Credits were still charged ({result.creditsUsed ?? "—"}).
+          Check the connected provider's API key/quota — below is a text description only.
+        </div>
+      )}
+      {!hasMedia && !genError && (
         <div className="cs-result-noconnector">
           ⚠ No connected provider produced a real file for this request. Credits were still charged
           ({result.creditsUsed ?? "—"}). Connect a provider (Stability AI, ElevenLabs, Runway, etc.)

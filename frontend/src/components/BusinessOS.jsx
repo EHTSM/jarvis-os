@@ -222,7 +222,7 @@ function DashboardView({ onToast }) {
         <div className="bos-dash-block">
           <h4 className="bos-block-title">Active Campaigns</h4>
           {dash.campaigns.list.map(c => (
-            <div key={c.campaignId} className="bos-camp-compact">
+            <div key={c.id} className="bos-camp-compact">
               <span className="bos-camp-name">{c.name}</span>
               <span className="bos-camp-channel">{c.channel}</span>
               <span className="bos-camp-budget">Budget: {_fmtAmt(c.budget)}</span>
@@ -836,7 +836,7 @@ function CampaignsView({ onToast }) {
 
   const openEdit = (c) => {
     setForm({ name: c.name, channel: c.channel, budget: String(c.budget || ""), startDate: c.startDate?.slice(0,10) || "", endDate: c.endDate?.slice(0,10) || "", notes: c.notes || "" });
-    setEditing(c.campaignId); setShowForm(true);
+    setEditing(c.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -845,24 +845,27 @@ function CampaignsView({ onToast }) {
     setSaving(true);
     const payload = { ...form, budget: Number(form.budget) || 0 };
     const r = editing ? await updateCampaign(editing, payload) : await createCampaign(payload);
-    if (r.ok === false || r.success === false) onToast?.("error", r.error || "Save failed");
+    if (r.success === false) onToast?.("error", r.error || "Save failed");
     else { onToast?.("success", editing ? "Campaign updated" : "Campaign created"); setShowForm(false); load(); }
     setSaving(false);
   };
 
   const handleActivate = async (c) => {
-    const r = await updateCampaign(c.campaignId, { status: "active" });
-    if (r.ok) { onToast?.("success", "Campaign activated"); load(); }
+    const r = await updateCampaign(c.id, { status: "active" });
+    if (r.success !== false) { onToast?.("success", "Campaign activated"); load(); }
+    else onToast?.("error", r.error || "Activate failed");
   };
 
   const handleComplete = async (campaignId) => {
     const r = await completeCampaign(campaignId);
-    if (r.ok) { onToast?.("success", "Campaign completed"); load(); }
+    if (r.success !== false) { onToast?.("success", "Campaign completed"); load(); }
+    else onToast?.("error", r.error || "Complete failed");
   };
 
   const handleEvent = async (campaignId, type) => {
     const r = await recordCampaignEvent(campaignId, { type, value: 1 });
-    if (r.ok) { onToast?.("success", `${type} recorded`); load(); }
+    if (r.success !== false) { onToast?.("success", `${type} recorded`); load(); }
+    else onToast?.("error", r.error || "Failed to record event");
   };
 
   return (
@@ -908,7 +911,7 @@ function CampaignsView({ onToast }) {
       ) : (
         <div className="bos-camp-list">
           {camps.map(c => (
-            <div key={c.campaignId} className="bos-camp-card">
+            <div key={c.id} className="bos-camp-card">
               <div className="bos-camp-card-top">
                 <div>
                   <span className="bos-camp-card-name">{c.name}</span>
@@ -930,10 +933,10 @@ function CampaignsView({ onToast }) {
               <div className="bos-camp-card-actions">
                 {c.status === "draft"  && <button className="bos-btn success bos-btn--xs" onClick={() => handleActivate(c)}>Activate</button>}
                 {c.status === "active" && <>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "click")}>+Click</button>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "lead")}>+Lead</button>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "conversion")}>+Conv</button>
-                  <button className="bos-btn danger  bos-btn--xs" onClick={() => handleComplete(c.campaignId)}>Complete</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "click")}>+Click</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "lead")}>+Lead</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "conversion")}>+Conv</button>
+                  <button className="bos-btn danger  bos-btn--xs" onClick={() => handleComplete(c.id)}>Complete</button>
                 </>}
                 <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(c)}>✎</button>
               </div>
