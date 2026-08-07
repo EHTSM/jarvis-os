@@ -10,6 +10,7 @@ import {
   getCustomers, createCustomer,
   getBusinessRecommendations, acceptBusinessRecommendation, dismissBusinessRecommendation,
 } from "../businessApi";
+import { useConfirm } from "./ConfirmDialog";
 import "./BusinessOS.css";
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -208,7 +209,7 @@ function DashboardView({ onToast }) {
         <div className="bos-dash-block">
           <h4 className="bos-block-title">High-Probability Deals</h4>
           {dash.urgentOpportunities.map(o => (
-            <div key={o.oppId} className="bos-opp-compact">
+            <div key={o.id} className="bos-opp-compact">
               <span className="bos-opp-title">{o.title}</span>
               <span className="bos-opp-val">{_fmtAmt(o.value, o.currency)}</span>
               <Badge label={o.stage} color={STAGE_COLOR[o.stage]} />
@@ -250,6 +251,7 @@ function LeadsView({ onToast }) {
   const [saving,   setSaving]  = useState(false);
   const [showForm, setShowForm]= useState(false);
   const nameRef = useRef(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -307,6 +309,7 @@ function LeadsView({ onToast }) {
   };
 
   const handleDelete = async (leadId) => {
+    if (!await confirm({ title: "Delete this lead?", message: "This cannot be undone.", danger: true, confirmLabel: "Delete" })) return;
     const r = await deleteBizLead(leadId);
     if (r.success !== false) { onToast?.("success", "Lead deleted"); load(); }
     else onToast?.("error", r.error || "Failed to delete lead");
@@ -314,6 +317,7 @@ function LeadsView({ onToast }) {
 
   return (
     <div className="bos-section">
+      {ConfirmUI}
       <div className="bos-section-header">
         <h3 className="bos-section-title">Leads</h3>
         <button className="bos-btn primary" onClick={openNew}>+ New Lead</button>
@@ -405,6 +409,7 @@ function ContactsView({ onToast }) {
   const [saving,   setSaving]   = useState(false);
   const [showForm, setShowForm] = useState(false);
   const nameRef = useRef(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -427,7 +432,7 @@ function ContactsView({ onToast }) {
 
   const openEdit = (c) => {
     setForm({ name: c.name, email: c.email || "", phone: c.phone || "", company: c.company || "", title: c.title || "", notes: c.notes || "" });
-    setEditing(c.contactId); setShowForm(true);
+    setEditing(c.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -441,13 +446,15 @@ function ContactsView({ onToast }) {
   };
 
   const handleDelete = async (contactId) => {
+    if (!await confirm({ title: "Delete this contact?", message: "This cannot be undone.", danger: true, confirmLabel: "Delete" })) return;
     const r = await deleteContact(contactId);
-    if (r.ok) { onToast?.("success", "Contact deleted"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Contact deleted"); load(); }
+    else onToast?.("error", r.error || "Failed to delete contact");
   };
 
   return (
     <div className="bos-section">
+      {ConfirmUI}
       <div className="bos-section-header">
         <h3 className="bos-section-title">Contacts</h3>
         <button className="bos-btn primary" onClick={openNew}>+ New Contact</button>
@@ -481,7 +488,7 @@ function ContactsView({ onToast }) {
           <thead><tr><th>Name</th><th>Title</th><th>Company</th><th>Email</th><th>Opportunities</th><th></th></tr></thead>
           <tbody>
             {contacts.map(c => (
-              <tr key={c.contactId}>
+              <tr key={c.id}>
                 <td className="bos-td-name">{c.name}</td>
                 <td className="bos-td-dim">{c.title || "—"}</td>
                 <td className="bos-td-dim">{c.company || "—"}</td>
@@ -489,7 +496,7 @@ function ContactsView({ onToast }) {
                 <td className="bos-td-dim">{c.opportunityIds?.length ?? 0}</td>
                 <td className="bos-td-actions">
                   <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(c)}>✎</button>
-                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(c.contactId)}>🗑</button>
+                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(c.id)}>🗑</button>
                 </td>
               </tr>
             ))}
@@ -540,7 +547,7 @@ function OpportunitiesView({ onToast }) {
 
   const openEdit = (o) => {
     setForm({ title: o.title, value: String(o.value), currency: o.currency, stage: o.stage, company: o.company || "", assignee: o.assignee || "", notes: o.notes || "" });
-    setEditing(o.oppId); setShowForm(true);
+    setEditing(o.id); setShowForm(true);
     setTimeout(() => titleRef.current?.focus(), 50);
   };
 
@@ -558,20 +565,20 @@ function OpportunitiesView({ onToast }) {
     const idx  = STAGE_ORDER.indexOf(currentStage);
     const next = STAGE_ORDER[Math.min(idx + 1, 3)];   // max advance to negotiation
     const r = await advanceOppStage(oppId, next);
-    if (r.ok) { onToast?.("success", `Advanced to ${next}`); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", `Advanced to ${next}`); load(); }
+    else onToast?.("error", r.error || "Failed to advance deal");
   };
 
   const handleCloseWon = async (oppId) => {
     const r = await closeWon(oppId, { notes: "Closed from UI" });
-    if (r.ok) { onToast?.("success", "Deal closed — won! 🎉"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Deal closed — won! 🎉"); load(); }
+    else onToast?.("error", r.error || "Failed to close deal");
   };
 
   const handleCloseLost = async (oppId) => {
     const r = await closeLost(oppId, "Closed from UI");
-    if (r.ok) { onToast?.("success", "Deal marked closed-lost"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Deal marked closed-lost"); load(); }
+    else onToast?.("error", r.error || "Failed to close deal");
   };
 
   const openDeals = opps?.filter(o => !["closed-won","closed-lost"].includes(o.stage));
@@ -626,7 +633,7 @@ function OpportunitiesView({ onToast }) {
           {opps.map(o => {
             const isOpen = !["closed-won","closed-lost"].includes(o.stage);
             return (
-              <div key={o.oppId} className={`bos-opp-card ${o.stage}`}>
+              <div key={o.id} className={`bos-opp-card ${o.stage}`}>
                 <div className="bos-opp-card-top">
                   <div className="bos-opp-card-left">
                     <span className="bos-opp-card-title">{o.title}</span>
@@ -645,9 +652,9 @@ function OpportunitiesView({ onToast }) {
                 {isOpen && (
                   <div className="bos-opp-card-actions">
                     {STAGE_ORDER.indexOf(o.stage) < 3 &&
-                      <button className="bos-btn outline bos-btn--xs" onClick={() => handleAdvance(o.oppId, o.stage)}>Advance →</button>}
-                    <button className="bos-btn success bos-btn--xs" onClick={() => handleCloseWon(o.oppId)}>Won ✓</button>
-                    <button className="bos-btn danger  bos-btn--xs" onClick={() => handleCloseLost(o.oppId)}>Lost ✗</button>
+                      <button className="bos-btn outline bos-btn--xs" onClick={() => handleAdvance(o.id, o.stage)}>Advance →</button>}
+                    <button className="bos-btn success bos-btn--xs" onClick={() => handleCloseWon(o.id)}>Won ✓</button>
+                    <button className="bos-btn danger  bos-btn--xs" onClick={() => handleCloseLost(o.id)}>Lost ✗</button>
                     <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(o)}>✎</button>
                   </div>
                 )}
@@ -989,7 +996,7 @@ function RevenueView({ onToast }) {
     if (!form.amount || isNaN(Number(form.amount))) { onToast?.("error", "Valid amount is required"); return; }
     setSaving(true);
     const r = await recordRevenue({ ...form, amount: Number(form.amount) });
-    if (!r.ok) onToast?.("error", r.error || "Could not record revenue");
+    if (r.success === false) onToast?.("error", r.error || "Could not record revenue");
     else { onToast?.("success", "Revenue recorded"); setForm(EMPTY_REV); setShowForm(false); load(); }
     setSaving(false);
   };
