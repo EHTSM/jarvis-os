@@ -673,7 +673,15 @@ async function _monitorStage(missionId, stg) {
             if (!task) { _stageComplete(missionId, stg, null); return; }
 
             if (task.status === "completed") {
-                _stageComplete(missionId, stg, task.result || null);
+                // autonomousLoop's _runTask() never writes a top-level task.result —
+                // the real execution summary is appended to task.executionLog as a
+                // "completed" entry's `output` field (agents/autonomousLoop.cjs).
+                // Read that instead of the nonexistent task.result so a stage's real
+                // AI-produced output actually reaches the mission record.
+                const lastCompletedLog = Array.isArray(task.executionLog)
+                    ? [...task.executionLog].reverse().find(e => e.event === "completed" && e.output != null)
+                    : null;
+                _stageComplete(missionId, stg, task.result ?? lastCompletedLog?.output ?? null);
                 return;
             }
             if (task.status === "failed") {

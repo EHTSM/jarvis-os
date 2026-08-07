@@ -119,6 +119,34 @@ function _timeAgo(iso) {
   } catch { return "—"; }
 }
 
+// Real /p18/memory nodes (backend/services/semanticMemory) have no title/body/
+// content fields — only `key` (a slug) and `value` (an object, typically
+// {errorType, context, resolution, recurrenceCount} for insight nodes, or an
+// arbitrary payload for other types). Reading e.title/e.body/e.content — which
+// never exist on this shape — silently fell through to "Untitled" for every
+// real entry. Prefer legacy title/body fields if present (for any other
+// caller of this component that might still supply them), otherwise build a
+// readable title/snippet from the real value object.
+function _entryTitle(e) {
+  if (e.title) return e.title;
+  if (typeof e.body === "string" && e.body) return e.body.slice(0, 60);
+  if (e.value && typeof e.value === "object") {
+    return e.value.errorType || e.value.context || e.key || "Untitled";
+  }
+  if (typeof e.value === "string" && e.value) return e.value.slice(0, 60);
+  return e.key || "Untitled";
+}
+
+function _entrySnippet(e) {
+  if (typeof e.body === "string" && e.body) return e.body;
+  if (typeof e.content === "string" && e.content) return e.content;
+  if (e.value && typeof e.value === "object") {
+    return e.value.resolution || e.value.context || "";
+  }
+  if (typeof e.value === "string") return e.value;
+  return e.title || "";
+}
+
 function TypeChip({ type }) {
   const m = TYPE_META[type] || TYPE_META.context;
   return (
@@ -151,7 +179,11 @@ function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
   const filtered = entries.filter(e => {
     const matchType = typeF === "all" || e.type === typeF;
     const q = search.toLowerCase();
-    const matchQ = !q || (e.title || "").toLowerCase().includes(q) || (e.body || "").toLowerCase().includes(q) || (e.tags || []).some(t => t.includes(q));
+    const matchQ = !q
+      || _entryTitle(e).toLowerCase().includes(q)
+      || _entrySnippet(e).toLowerCase().includes(q)
+      || (e.key || "").toLowerCase().includes(q)
+      || (e.tags || []).some(t => t.includes(q));
     return matchType && matchQ;
   });
 
@@ -215,17 +247,19 @@ function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
       ) : (
         <>
           <div className="mov2-index-list">
-            {shown.map(e => (
+            {shown.map(e => {
+              const rowId = e.id || e.nodeId;
+              return (
               <div
-                key={e.id}
-                className={`mov2-entry-row${expanded === e.id ? " mov2-entry-row--open" : ""}`}
-                onClick={() => setExpanded(v => v === e.id ? null : e.id)}
+                key={rowId}
+                className={`mov2-entry-row${expanded === rowId ? " mov2-entry-row--open" : ""}`}
+                onClick={() => setExpanded(v => v === rowId ? null : rowId)}
               >
                 <TypeChip type={e.type} />
                 <div className="mov2-entry-main">
-                  <span className="mov2-entry-title">{e.title || e.body?.slice(0, 60) || "Untitled"}</span>
-                  {expanded === e.id && (
-                    <p className="mov2-entry-body">{e.body || e.content || e.title}</p>
+                  <span className="mov2-entry-title">{_entryTitle(e)}</span>
+                  {expanded === rowId && (
+                    <p className="mov2-entry-body">{_entrySnippet(e) || _entryTitle(e)}</p>
                   )}
                   {(e.tags?.length > 0) && (
                     <div className="mov2-entry-tags">
@@ -245,7 +279,8 @@ function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
                   </button>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
           {hasMore && (
             <button className="mov2-load-more" onClick={() => setPage(p => p + 1)}>
@@ -582,7 +617,11 @@ function TabSearch({ allEntries }) {
     setResults(null);
     try {
       const r = await searchMemory(q);
-      const hits = Array.isArray(r) ? r : (r?.results || r?.entries || []);
+      // Real /p18/memory/search response shape is {success, nodes, total} —
+      // not .results/.entries (neither exists on this endpoint's real
+      // payload), which silently discarded every real search hit and fell
+      // through to the local fallback on every query.
+      const hits = Array.isArray(r) ? r : (r?.nodes || r?.results || r?.entries || []);
       setResults(hits.length > 0 ? hits : _localSearch(q));
     } catch {
       setResults(_localSearch(q));
@@ -595,8 +634,9 @@ function TabSearch({ allEntries }) {
   function _localSearch(q) {
     const lq = q.toLowerCase();
     return allEntries.filter(e =>
-      (e.title || "").toLowerCase().includes(lq) ||
-      (e.body || "").toLowerCase().includes(lq) ||
+      _entryTitle(e).toLowerCase().includes(lq) ||
+      _entrySnippet(e).toLowerCase().includes(lq) ||
+      (e.key || "").toLowerCase().includes(lq) ||
       (e.tags || []).some(t => t.includes(lq))
     );
   }
@@ -684,12 +724,14 @@ function TabSearch({ allEntries }) {
             </div>
           ) : (
             <div className="mov2-sr-list">
-              {results.map((e, i) => (
-                <div key={e.id || i} className="mov2-sr-row">
+              {results.map((e, i) => {
+                const snippet = _entrySnippet(e);
+                return (
+                <div key={e.id || e.nodeId || i} className="mov2-sr-row">
                   <TypeChip type={e.type || "context"} />
                   <div className="mov2-sr-body">
-                    <p className="mov2-sr-title">{e.title || e.key || "Untitled"}</p>
-                    <p className="mov2-sr-snippet">{(e.body || e.content || "").slice(0, 120)}{(e.body || e.content || "").length > 120 ? "…" : ""}</p>
+                    <p className="mov2-sr-title">{_entryTitle(e)}</p>
+                    <p className="mov2-sr-snippet">{snippet.slice(0, 120)}{snippet.length > 120 ? "…" : ""}</p>
                     {(e.tags?.length > 0) && (
                       <div className="mov2-entry-tags" style={{ marginTop: 4 }}>
                         {e.tags.map(t => <span key={t} className="mov2-tag">{t}</span>)}
@@ -698,7 +740,8 @@ function TabSearch({ allEntries }) {
                   </div>
                   <span className="mov2-sr-ts">{_timeAgo(e.created || e.createdAt)}</span>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

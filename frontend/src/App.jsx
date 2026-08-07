@@ -752,6 +752,8 @@ function AppInner() {
 
   const endRef   = useRef(null);
   const inputRef = useRef(null);
+  const wasOnlineRef     = useRef(false);
+  const connectedOnceRef = useRef(false); // only announce "Connected to Ooplix." once per session
 
   const push = useCallback((role, text) => {
     setMessages(prev => [...prev, {
@@ -789,21 +791,25 @@ function AppInner() {
   }, [screen, user]);
 
   // ── Health + data polling (only when in app screen) ───────────────
+  // wasOnline/connectedOnce live in refs (not effect-local closure vars) so
+  // they survive this effect re-running whenever `user` changes identity —
+  // which happens several times during a real signup/onboarding flow (each
+  // getAuthStatus()-driven setUser() call produces a new object reference).
+  // Effect-local vars used to reset to wasOnline=false/connectedOnce=false
+  // on every one of those re-runs, so a single real signup session could
+  // fire "Connected to Ooplix." 2-3 times in a row — refs fix that without
+  // changing the effect's actual polling behavior at all.
   useEffect(() => {
     if (screen !== "app") return;
-    let wasOnline    = false;
-    let connectedOnce = false; // only announce connected once per session
 
     const poll = async () => {
       const healthy = await checkHealth();
-      if (!wasOnline && healthy && !connectedOnce) {
+      if (!wasOnlineRef.current && healthy && !connectedOnceRef.current) {
         push("system", "Connected to Ooplix.");
-        connectedOnce = true;
+        connectedOnceRef.current = true;
       }
-      if (wasOnline && !healthy) push("system", "Connection lost — reconnecting…");
-      // Re-arm so next reconnect after a drop also announces
-      if (!healthy) connectedOnce = false;
-      wasOnline = healthy;
+      if (wasOnlineRef.current && !healthy) push("system", "Connection lost — reconnecting…");
+      wasOnlineRef.current = healthy;
       setOnline(healthy);
 
       // /stats and /ops are operator-only (platform-wide founder data —
