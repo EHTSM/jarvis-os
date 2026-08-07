@@ -41,6 +41,18 @@ const NAV_ACTIONS = [
   { id: "nav-agentruntime",label:"Agent Runtime",         icon: "⬡", group: "Runtime & Ops",       tab: "agentruntime"},
   { id: "nav-globalactivity",label:"Global Activity",     icon: "◻", group: "Runtime & Ops",       tab: "globalactivity"},
   { id: "nav-systemhealth",label:"System Health",         icon: "◈", group: "Runtime & Ops",       tab: "systemhealth"},
+  // A.11.1 UX consistency fix: these 12 destinations are real, working,
+  // reachable via the More-menu search (App.jsx's MORE_TABS, which
+  // MoreMenu.filtered() searches in full) but were absent from this
+  // separately-maintained NAV_ACTIONS list — so ⌘K returned zero results
+  // for their own exact names (e.g. "Daily Planning", "Knowledge Base")
+  // while the More menu found them instantly. Same two-search-surfaces-
+  // should-behave-the-same issue this file's own A.10.7/A.4.3 comments
+  // above already document and fixed for other terms — this closes the
+  // remaining gap. Group + keywords carried over from MORE_TABS' own
+  // group/alias fields where present; tab ids and labels copied verbatim
+  // from App.jsx, no new destinations invented.
+  { id: "nav-mobile",     label: "Mobile Platform",       icon: "◻", group: "Runtime & Ops",       tab: "mobile"     },
   // A.10.1 recovery — App.jsx's setTab() already special-cases tab id "eod"
   // to open EndOfDayReview.jsx (a real, fully-wired closing-summary modal)
   // instead of switching tabs; this was the only reachable entrypoint
@@ -58,6 +70,7 @@ const NAV_ACTIONS = [
   { id: "nav-agentactions",label:"Agent Actions",         icon: "⚡", group: "Engineering",         tab: "agentactions"},
   { id: "nav-execconnector",label:"Exec Connectors",      icon: "◇", group: "Engineering",         tab: "execconnector"},
   { id: "nav-agentfactory",label:"Agent Factory",         icon: "◉", group: "Engineering",         tab: "agentfactory"},
+  { id: "nav-productos",  label: "Product OS",            icon: "◈", group: "Engineering",         tab: "productos", keywords: "prd roadmap requirements backlog epic epics milestone feature request product planning task hierarchy dependency dependencies release planning objectives work items" },
 
   // AI & Intelligence
   { id: "nav-intel",      label: "Intelligence",          icon: "◈", group: "AI & Intelligence",   tab: "intel"      },
@@ -73,6 +86,12 @@ const NAV_ACTIONS = [
   { id: "nav-execloop",   label: "Executive Loop",        icon: "◉", group: "AI & Intelligence",   tab: "execloop"   },
   { id: "nav-inteloverlay",label:"Reasoning & Risk",      icon: "◈", group: "AI & Intelligence",   tab: "inteloverlay"},
   { id: "nav-agentcollab",label: "Live Agent Roster",     icon: "⬡", group: "AI & Intelligence",   tab: "agentcollab"},
+  { id: "nav-memory",     label: "Memory OS",             icon: "◎", group: "AI & Intelligence",   tab: "memory"     },
+  { id: "nav-knowledge",  label: "Knowledge Base",        icon: "◇", group: "AI & Intelligence",   tab: "knowledge"  },
+  { id: "nav-twin",       label: "Digital Twin",          icon: "◈", group: "AI & Intelligence",   tab: "twin"       },
+  { id: "nav-planning",   label: "Daily Planning",        icon: "◉", group: "AI & Intelligence",   tab: "planning"   },
+  { id: "nav-assistant",  label: "Founder Assistant",     icon: "◎", group: "AI & Intelligence",   tab: "assistant"  },
+  { id: "nav-orglevel-ako", label: "Knowledge Org (L4)",  icon: "◈", group: "Org Levels",          tab: "orglevel-ako" },
 
   // Memory & Data
   { id: "nav-sharedmem",  label: "Memory Fabric",         icon: "◻", group: "Memory & Data",       tab: "sharedmem"  },
@@ -90,6 +109,7 @@ const NAV_ACTIONS = [
   { id: "nav-referral",   label: "Referral Engine",       icon: "★", group: "Growth & Revenue",    tab: "referral"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost"     },
+  { id: "nav-aiusage",    label: "AI Orchestration",      icon: "◎", group: "Growth & Revenue",    tab: "aiusage"    },
 
   // Enterprise
   { id: "nav-companies",  label: "Companies",             icon: "◈", group: "Enterprise",          tab: "companies"  },
@@ -100,6 +120,9 @@ const NAV_ACTIONS = [
   { id: "nav-marketplace",label: "Marketplace",           icon: "◈", group: "Enterprise",          tab: "marketplace"},
   { id: "nav-trust",      label: "Trust & Compliance",    icon: "✦", group: "Enterprise",          tab: "trustcompliance"},
   { id: "nav-supportos",  label: "Support OS",            icon: "◻", group: "Enterprise",          tab: "supportos"  },
+  { id: "nav-legalos",    label: "Legal OS",              icon: "✦", group: "Enterprise",          tab: "legalos"    },
+  { id: "nav-customersuccess", label: "Customer Success", icon: "◈", group: "Enterprise",          tab: "customersuccess" },
+  { id: "nav-launchplatform", label: "Launch Platform",   icon: "◉", group: "Enterprise",          tab: "launchplatform", keywords: "feedback roadmap feature request vote prd release readiness onboarding academy" },
 
   // Settings
   { id: "nav-settings",   label: "Settings",              icon: "◈", group: "Settings",            tab: "settings"   },

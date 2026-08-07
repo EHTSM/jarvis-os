@@ -25,6 +25,19 @@ export default function EndOfDayReview({ onClose }) {
     });
   }, []);
 
+  // A.11.1 UX consistency fix: every other real dismissible overlay in the
+  // app (CommandPalette.jsx's handleKey, ConfirmDialog.jsx's onKey) closes
+  // on Escape. This modal already closes on backdrop click and the ✕/Close
+  // Review buttons, but had no Escape handler at all — the one interaction
+  // a founder is most likely to reach for muscle-memory-first after using
+  // ⌘K or any confirm dialog elsewhere in the same session. Same pattern,
+  // same event, no new UI.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   const suggestions = [
     "Review open missions and close any stale ones.",
     "Write a commit message that summarizes today's work.",

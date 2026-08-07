@@ -615,12 +615,19 @@ export default function ExecutiveDashboard({ onNavigate }) {
         </div>
       )}
 
-      {/* ── Header ── */}
+      {/* ── Header ──
+          A.11.1 UX consistency fix: this block used to re-render the exact
+          same "Executive Dashboard" title + subtitle the <PageHeader> above
+          already renders (verbatim duplicate <h1>, same string) — the only
+          real, non-duplicated content here is the refresh timestamp + LIVE
+          badge, which every other PageHeader-based screen in this audit's
+          scope keeps as the page's own status strip. Kept exactly that,
+          removed the redundant second title/subtitle so this screen matches
+          the established single-title pattern used by ExecutionCenter,
+          GuardrailsDashboard, IntelligencePanel, RecommendationCenter,
+          PredictionPanel, and ReliabilityCenter (6 of 9 PageHeader
+          consumers) — not restyled, not redesigned, just de-duplicated. */}
       <motion.div className="ed-header" {...fadeUp(0)}>
-        <div>
-          <h1 className="ed-header__title">Executive Dashboard</h1>
-          <p className="ed-header__subtitle">CEO-level view of missions, engineering throughput, runtime health and strategic intelligence.</p>
-        </div>
         <div className="ed-header__right">
           <span className="ed-ts">Refreshed {lastRefresh}</span>
           <div className="ed-live-badge">
