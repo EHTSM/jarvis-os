@@ -6,6 +6,7 @@ import { listAgents, memoryStats, cycleStats } from "../phase18Api";
 import { getAutonomyScore } from "../phase20Api";
 import { getBillingStatus } from "../billingApi";
 import { _fetch } from "../_client";
+import MissionOrchestratorPanel from "./MissionOrchestratorPanel.jsx";
 import "./MissionControlV1.css";
 
 const REFRESH_INTERVAL = 30_000;
@@ -842,6 +843,17 @@ export default function MissionControlV1({ onNavigate }) {
   const [resumePending, setResumePending] = useState(false);
   const [actionMsg, setActionMsg] = useState(null);
   const [stopConfirm, setStopConfirm]   = useState(false);
+  // A.10.1 finding: every "New Mission" entrypoint in the web app (Dashboard
+  // quick action, CommandCenter quick action, CommandPalette ⌘K) navigates
+  // to tab:"mission" (this component) — but this component is a read-only
+  // ops/health monitoring dashboard with zero create-mission UI anywhere on
+  // the page. The real create form (goal input -> POST /missions/orchestrator
+  // /create) already exists in MissionOrchestratorPanel.jsx, fully wired,
+  // but that component was only ever mounted inside ElectronWorkspace.jsx
+  // (the desktop shell), unreachable from the web app's tab router. Rather
+  // than build a new create UI, this toggle surfaces the existing panel
+  // in place — recovering existing capability, not adding new architecture.
+  const [showCreate, setShowCreate] = useState(false);
   // Tracks which underlying fetches actually failed — a rejected promise must
   // not render identically to real data ("—" from a failure looks the same as
   // "—" from an empty/absent value otherwise, and every MetricCard used to
@@ -1002,9 +1014,22 @@ export default function MissionControlV1({ onNavigate }) {
               refreshed {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
             </span>
           )}
+          <button
+            className="mc-btn mc-btn--resume"
+            onClick={() => setShowCreate(v => !v)}
+            aria-expanded={showCreate}
+          >
+            {showCreate ? "✕ Close" : "＋ New Mission"}
+          </button>
           <button className="mc-btn mc-btn--ghost" onClick={load} title="Refresh">↻</button>
         </div>
       </div>
+
+      {showCreate && (
+        <div className="mc-card" style={{ height: 420, padding: 0, overflow: "hidden", marginBottom: 16 }}>
+          <MissionOrchestratorPanel />
+        </div>
+      )}
 
       <AlertBanner warnings={warnings} />
 

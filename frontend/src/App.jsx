@@ -222,6 +222,15 @@ const MORE_TABS = [
   { id: "globalactivity", label:"Global Activity", group: "Operations"   },
   { id: "systemhealth",   label:"System Health",   group: "Operations"   },
   { id: "mobile",         label:"Mobile Platform", group: "Operations"   },
+  // A.10.1 finding: EndOfDayReview.jsx (real component — today's missions,
+  // lessons learned, closing suggestions, all from real fetches) and its
+  // trigger (setTab("eod") already special-cased above to open the modal
+  // instead of switching tabs) both existed, fully wired, but "eod" was
+  // referenced nowhere else in the entire frontend — no button, no palette
+  // entry, no keyboard shortcut. A founder had no way to ever open it.
+  // setTab already handles the "eod" id correctly; this entry is the only
+  // missing piece — an entrypoint, not new architecture.
+  { id: "eod",            label:"End of Day Review", group: "Operations", alias: "shutdown close day daily summary wrap up end my day" },
   // ── AI & Agents
   { id: "agents",     label: "Agents",             group: "AI & Agents"  },
   { id: "agentruntime", label: "Agent Runtime",    group: "AI & Agents"  },

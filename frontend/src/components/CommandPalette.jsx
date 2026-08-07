@@ -35,6 +35,11 @@ const NAV_ACTIONS = [
   { id: "nav-agentruntime",label:"Agent Runtime",         icon: "⬡", group: "Runtime & Ops",       tab: "agentruntime"},
   { id: "nav-globalactivity",label:"Global Activity",     icon: "◻", group: "Runtime & Ops",       tab: "globalactivity"},
   { id: "nav-systemhealth",label:"System Health",         icon: "◈", group: "Runtime & Ops",       tab: "systemhealth"},
+  // A.10.1 recovery — App.jsx's setTab() already special-cases tab id "eod"
+  // to open EndOfDayReview.jsx (a real, fully-wired closing-summary modal)
+  // instead of switching tabs; this was the only reachable entrypoint
+  // missing anywhere in the app. Same mechanism as every other row here.
+  { id: "nav-eod",        label: "End of Day Review",     icon: "◻", group: "Runtime & Ops",       tab: "eod"        },
   { id: "nav-collab",     label: "Collaboration",         icon: "◈", group: "Runtime & Ops",       tab: "collab"     },
   { id: "nav-registry",   label: "Registry",              icon: "◻", group: "Runtime & Ops",       tab: "registry"   },
   { id: "nav-toolfabric", label: "Tool Fabric",           icon: "⚡", group: "Runtime & Ops",       tab: "toolfabric" },
