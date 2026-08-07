@@ -199,6 +199,20 @@ export default function CustomerDashboard({ onNavigate }) {
 
   useEffect(() => { load(); }, [load]);
 
+  // Real, observed friction (Phase A.10.5): this component fetches org/
+  // pipeline data once on mount only. OrgSwitcher.jsx's dropdown lets a
+  // founder switch organizations in-session, but nothing told this dashboard
+  // to re-fetch — the header pill would update while this panel kept showing
+  // the previous org's name and pipeline numbers until a full page reload.
+  // OrgSwitcher now dispatches a real 'org-switched' window event on a
+  // successful switch (existing app-wide CustomEvent idiom); listen for it
+  // here and re-run the same load() already used on mount.
+  useEffect(() => {
+    const onOrgSwitched = () => load();
+    window.addEventListener("org-switched", onOrgSwitched);
+    return () => window.removeEventListener("org-switched", onOrgSwitched);
+  }, [load]);
+
   if (loading) {
     return <div className="customer-dashboard cd-loading">Loading your dashboard…</div>;
   }

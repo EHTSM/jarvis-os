@@ -58,6 +58,15 @@ export default function OrgSwitcher({ onNavigate }) {
       if (r.ok === false) { setError(r.error || "Switch failed"); return; }
       setActiveId(orgId);
       setOpen(false);
+      // Real, observed friction (Phase A.10.5): CustomerDashboard.jsx (and any
+      // other org-scoped panel) fetches org/pipeline data once on mount and
+      // never re-fetches — after switching here the header pill updated but
+      // the dashboard body kept showing the previous org's data indefinitely,
+      // with no reload. Reusing the existing window CustomEvent idiom already
+      // used elsewhere in this codebase (e.g. CodeEditorPane.jsx's
+      // 'symbol-index-update', ElectronWorkspace.jsx's 'jarvis-os-nav') so any
+      // listening component can re-fetch without prop drilling or new state.
+      window.dispatchEvent(new CustomEvent("org-switched", { detail: { orgId } }));
     } catch (e) { setError(e.message || "Switch failed"); }
   }
 

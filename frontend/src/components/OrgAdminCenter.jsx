@@ -541,6 +541,13 @@ function InviteTeamPanel({ onToast }) {
   const [showInvite, setShowInvite] = useState(false);
   const [form, setForm] = useState({ email: "", role: "Operator" });
   const [busy, setBusy] = useState(false);
+  // Phase A.10.5 fix: when email delivery fails, the backend now returns the
+  // real accept-invite link (see backend/routes/workspace.js) instead of
+  // silently discarding it. The success toast already told founders to
+  // "share the link manually" — there was previously no link anywhere in the
+  // UI to actually share, only that promise. Held per-invite so a founder
+  // can still copy an older pending invite's link, not just the latest one.
+  const [inviteLinks, setInviteLinks] = useState({});
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -569,9 +576,21 @@ function InviteTeamPanel({ onToast }) {
     setBusy(false);
     if (r.error) { onToast?.("error", r.error); return; }
     onToast?.("success", r.emailSent ? "Invite sent" : "Invite created (email delivery unavailable — share the link manually)");
+    if (!r.emailSent && r.inviteLink) {
+      setInviteLinks(links => ({ ...links, [form.email.trim()]: r.inviteLink }));
+    }
     setForm({ email: "", role: "Operator" });
     setShowInvite(false);
     load();
+  };
+
+  const copyInviteLink = async (email, link) => {
+    try {
+      await navigator.clipboard.writeText(link);
+      onToast?.("success", "Invite link copied");
+    } catch {
+      onToast?.("error", "Could not copy — link: " + link);
+    }
   };
 
   const handleRemove = async (accountId) => {
@@ -625,18 +644,188 @@ function InviteTeamPanel({ onToast }) {
         <>
           <h3 className="oac-section-title" style={{ marginTop: 8 }}>Pending invites</h3>
           <table className="oac-table">
-            <thead><tr><th>Email</th><th>Role</th><th>Expires</th></tr></thead>
+            <thead><tr><th>Email</th><th>Role</th><th>Expires</th><th></th></tr></thead>
             <tbody>
               {pending.map((inv, i) => (
                 <tr key={i}>
                   <td className="oac-td-name">{inv.email}</td>
                   <td className="oac-td-dim">{inv.role}</td>
                   <td className="oac-td-dim">{new Date(inv.expiresAt).toLocaleDateString()}</td>
+                  <td className="oac-td-actions">
+                    {inviteLinks[inv.email] && (
+                      <button className="oac-btn" onClick={() => copyInviteLink(inv.email, inviteLinks[inv.email])}>
+                        Copy invite link
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </>
+      )}
+    </div>
+  );
+}
+
+// ── Policies (Phase A.10.5 recovery) ─────────────────────────────────────
+// backend/routes/enterprisePolicy.js's GET/PUT /enterprise/policy/:orgId
+// (real org-scoped password/MFA/session/provider/connector/IP policy,
+// backend/services/policyService.cjs, data/org-policies.json) is real and
+// fully working, gated on manage_policy — but had zero frontend consumer.
+// frontend/src/components/EnterpriseOS.jsx has its own "Policies" tab, but
+// it calls a different, never-implemented API shape (plural
+// /enterprise/policies list-CRUD with per-policy enforce/archive) that has
+// no matching backend route anywhere in this codebase, and EnterpriseOS.jsx
+// itself is never imported by App.jsx or CommandPalette.jsx — unreachable
+// either way. This panel is new UI (the mission's "no duplicate UI" rule is
+// about not re-building what already has a reachable surface; this
+// singular real policy document had none), but it calls only the existing,
+// real, already-working route — no new backend, no new service, no schema
+// change.
+const POLICY_FIELDS = [
+  { key: "password.minLength", label: "Minimum password length", type: "number" },
+  { key: "password.requireUppercase", label: "Require uppercase letter", type: "bool" },
+  { key: "password.requireNumber", label: "Require number", type: "bool" },
+  { key: "password.requireSymbol", label: "Require symbol", type: "bool" },
+  { key: "mfa.required", label: "Require MFA for all members", type: "bool" },
+  { key: "sessionTimeoutSeconds", label: "Session timeout (seconds, blank = default)", type: "number" },
+];
+
+function _getAtPath(obj, path) {
+  return path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
+}
+function _setAtPath(obj, path, value) {
+  const parts = path.split(".");
+  const out = JSON.parse(JSON.stringify(obj || {}));
+  let cur = out;
+  for (let i = 0; i < parts.length - 1; i++) {
+    cur[parts[i]] = cur[parts[i]] || {};
+    cur = cur[parts[i]];
+  }
+  cur[parts[parts.length - 1]] = value;
+  return out;
+}
+
+function PolicyPanel({ orgId, canManage, onToast }) {
+  const [policy, setPolicy] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const r = await _fetch(`/enterprise/policy/${orgId}`).catch(e => ({ ok: false, error: e.message }));
+    setLoading(false);
+    if (r.ok === false) { setError(r.error || "Failed to load policy"); return; }
+    setError(null);
+    setPolicy(r.policy || {});
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleChange = (key, type, rawValue) => {
+    const value = type === "number" ? (rawValue === "" ? null : Number(rawValue)) : rawValue;
+    setPolicy(p => _setAtPath(p, key, value));
+  };
+
+  const handleSave = async () => {
+    setBusy(true);
+    const r = await _fetch(`/enterprise/policy/${orgId}`, { method: "PUT", body: JSON.stringify(policy) }).catch(e => ({ ok: false, error: e.message }));
+    setBusy(false);
+    if (r.ok === false) { onToast?.("error", r.error || "Failed to save policy"); return; }
+    onToast?.("success", "Policy updated");
+    load();
+  };
+
+  if (loading) return <div className="oac-loading">Loading policy…</div>;
+  if (error) return <Empty title="Could not load policy" sub={error} />;
+
+  return (
+    <div className="oac-section">
+      <div className="oac-section-header">
+        <h3 className="oac-section-title">Organization policy</h3>
+        {canManage && <button className="oac-btn primary" onClick={handleSave} disabled={busy}>{busy ? "Saving…" : "Save changes"}</button>}
+      </div>
+      <p className="oac-card-desc">Password, MFA, and session rules enforced for every member of this organization.</p>
+
+      <div className="oac-form-card" style={{ flexDirection: "column", alignItems: "stretch", gap: 12 }}>
+        {POLICY_FIELDS.map(f => {
+          const value = _getAtPath(policy, f.key);
+          return (
+            <label key={f.key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, fontSize: 13, color: "var(--text-dim)" }}>
+              {f.label}
+              {f.type === "bool" ? (
+                <input type="checkbox" checked={!!value} disabled={!canManage} onChange={e => handleChange(f.key, f.type, e.target.checked)} />
+              ) : (
+                <input className="oac-input" style={{ maxWidth: 120 }} type="number" value={value ?? ""} disabled={!canManage}
+                  onChange={e => handleChange(f.key, f.type, e.target.value)} />
+              )}
+            </label>
+          );
+        })}
+      </div>
+      {!canManage && <p className="oac-card-desc" style={{ marginTop: 8 }}>Only an org owner or admin can change these settings.</p>}
+      {policy?.updatedAt && <p className="oac-td-dim" style={{ marginTop: 8 }}>Last updated {new Date(policy.updatedAt).toLocaleString()}</p>}
+    </div>
+  );
+}
+
+// ── Audit log (Phase A.10.5 recovery) ────────────────────────────────────
+// backend/routes/enterpriseAudit.js's GET /enterprise/audit/:orgId/search
+// (real event log — role changes, member adds, org creation, login history,
+// etc. — backend/services/enterpriseAuditService.cjs) is real, live, and
+// already gated on view_audit_log — but had zero frontend consumer.
+// EnterpriseOS.jsx's own "Audit" tab (also unreachable — see PolicyPanel's
+// comment above) calls a different, never-implemented bare /enterprise/audit
+// GET/POST pair with no matching backend route. This panel calls only the
+// existing, real, already-working search route.
+function AuditLogPanel({ orgId, onToast }) {
+  const [entries, setEntries] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const r = await _fetch(`/enterprise/audit/${orgId}/search?limit=50`).catch(e => ({ ok: false, error: e.message }));
+    setLoading(false);
+    if (r.ok === false) { setError(r.error || "Failed to load audit log"); return; }
+    setError(null);
+    setEntries(r.entries || []);
+  }, [orgId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  if (loading) return <div className="oac-loading">Loading audit log…</div>;
+  if (error) return <Empty title="Could not load audit log" sub={error} />;
+
+  return (
+    <div className="oac-section">
+      <div className="oac-section-header">
+        <h3 className="oac-section-title">Audit log</h3>
+        <button className="oac-btn" onClick={load}>Refresh</button>
+      </div>
+      <p className="oac-card-desc">Recent security-relevant events for this organization: role changes, membership, and access.</p>
+
+      {!entries?.length ? <Empty title="No audit events yet" /> : (
+        <table className="oac-table">
+          <thead><tr><th>When</th><th>Event</th><th>Actor</th><th>Detail</th></tr></thead>
+          <tbody>
+            {entries.map(e => (
+              <tr key={e.seq}>
+                <td className="oac-td-dim">{new Date(e.ts).toLocaleString()}</td>
+                <td className="oac-td-name">{e.type}</td>
+                <td className="oac-td-dim">{e.actorId}</td>
+                <td className="oac-td-dim">
+                  {e.type === "permission.role_changed" && `${e.targetAccountId}: ${e.previousRole} → ${e.newRole}`}
+                  {e.type === "permission.member_added" && `${e.targetAccountId} added as ${e.orgRole}`}
+                  {e.type === "permission.org_created" && `org created (${e.orgRole})`}
+                  {!["permission.role_changed", "permission.member_added", "permission.org_created"].includes(e.type) && (e.targetAccountId || "—")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
@@ -809,6 +998,8 @@ const VIEWS = [
   { id: "members",     label: "Roles"       },
   { id: "departments", label: "Departments" },
   { id: "grants",      label: "Cross-org access" },
+  { id: "policy",      label: "Policies" },
+  { id: "auditlog",    label: "Audit" },
   { id: "execintel",   label: "Executive Intelligence" },
   { id: "knowledgegraph", label: "Knowledge Graph" },
   { id: "aiworkspace", label: "AI Workspace" },
@@ -878,6 +1069,8 @@ export default function OrgAdminCenter({ onToast }) {
         {view === "members"     && <MembersPanel orgId={orgId} myRole={primary.orgRole} canManage={canManage} onToast={onToast} />}
         {view === "departments" && <DepartmentsPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
         {view === "grants"      && <GrantsPanel orgId={orgId} isOwner={primary.orgRole === "org_owner"} onToast={onToast} />}
+        {view === "policy"      && <PolicyPanel orgId={orgId} canManage={canManage} onToast={onToast} />}
+        {view === "auditlog"    && <AuditLogPanel orgId={orgId} onToast={onToast} />}
         {view === "execintel"   && <ExecIntelPanel orgId={orgId} onToast={onToast} />}
         {view === "knowledgegraph" && <KnowledgeGraphPanel orgId={orgId} onToast={onToast} />}
         {view === "aiworkspace" && <AiWorkspacePanel orgId={orgId} onToast={onToast} />}

@@ -113,6 +113,15 @@ router.post("/workspace/invite", async (req, res) => {
       invitation: { email: inv.email, role: inv.role, expiresAt: inv.expiresAt },
       emailSent:  delivery.sent,
       emailError: delivery.sent ? undefined : delivery.reason,
+      // Phase A.10.5 fix: sendInvitationEmail() already computes and returns
+      // this real accept-invite link (workspaceService.cjs, both the sent
+      // and failed-delivery paths) — it was being discarded here. The
+      // frontend's own success toast already promises "share the link
+      // manually" when email delivery fails, but had no link to share
+      // because this route never forwarded it. Only surfaced when delivery
+      // did NOT succeed — a normal successful send doesn't need the raw
+      // token exposed back to the inviter.
+      inviteLink: delivery.sent ? undefined : delivery.link,
     });
   } catch (e) {
     const status = e.message.includes("Insufficient") ? 403 : 400;
