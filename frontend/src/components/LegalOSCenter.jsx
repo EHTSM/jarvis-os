@@ -54,8 +54,20 @@ export default function LegalOSCenter() {
 
   return (
     <div style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <h2 style={{ margin: 0, fontSize: 18 }}>Legal OS</h2>
+      {/* Phase A.11.8 — page header recovered to the app-wide baseline, exactly
+          as A.11.7 did for the identically-shaped CustomerSuccessCenter header
+          in this same inline-styled family. Measured here before the fix:
+          18px / 700 / normal tracking, no subtitle. The baseline measured across
+          .oac-/.tw-/.ws-/.bd-/.launch-/.sc-/.mc-title is
+          22px / 800 / -0.3px / var(--text) with a 13.5px var(--text-dim)
+          subtitle. Values copied from that baseline; nothing redesigned. */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+        <div>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, letterSpacing: "-0.3px", color: "var(--text)" }}>Legal OS</h2>
+          <p style={{ margin: "4px 0 0", fontSize: 13.5, color: "var(--text-dim)" }}>
+            Generate and track NDAs, DPAs, service agreements, and offer letters.
+          </p>
+        </div>
         <button onClick={refresh} disabled={loading}>{loading ? "Refreshing…" : "Refresh"}</button>
       </div>
 

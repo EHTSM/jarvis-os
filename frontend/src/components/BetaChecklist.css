@@ -23,15 +23,22 @@
   flex-direction: column;
   gap: 2px;
 }
+/* Phase A.11.8 — recovered to the app-wide page-header baseline
+   (22px / 800 / var(--text) / -0.3px + 13.5px / var(--text-dim) subtitle), the
+   same recovery A.11.7 applied to Launch Platform and Customer Success. This
+   header also had two hardcoded hex colours where every conformant sibling uses
+   the theme tokens, so it did not follow the light/dark toggle at all. */
 .bc-title {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #f4f4f5;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  margin: 0;
 }
 .bc-subtitle {
-  font-size: 11px;
-  color: #71717a;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  margin: 4px 0 0;
 }
 .bc-header-right {
   display: flex;

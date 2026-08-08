@@ -10,15 +10,21 @@
 .cap-header {
   margin-bottom: 28px;
 }
+/* Phase A.11.8 — recovered to the app-wide page-header baseline measured across
+   .oac-title / .tw-title / .ws-title / .bd-title / .launch-title / .sc-title /
+   .mc-title and the rest: 22px / 800 / var(--text) / -0.3px title with a
+   13.5px / var(--text-dim) subtitle. This surface was already 96% of the way
+   there (same colour, same tracking, same element shape) and only its size and
+   weight had drifted — the identical drift A.11.6 recovered on Reports. */
 .cap-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   color: var(--text);
   letter-spacing: -0.3px;
   margin-bottom: 6px;
 }
 .cap-sub {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-dim);
   line-height: 1.5;
 }

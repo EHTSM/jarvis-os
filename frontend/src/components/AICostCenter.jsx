@@ -139,6 +139,15 @@ export default function AICostCenter({ onNavigate }) {
   const totalRequests  = callCount ?? providers.flatMap(p=>p.models).reduce((a,m)=>a+m.requests, 0);
   const totalTokens    = providers.flatMap(p=>p.models).reduce((a,m)=>a+m.tokens, 0);
   const localProviders = providers.filter(p=>p.type==="local");
+  // Phase A.11.8 — `hostedProviders` was referenced by the "Local vs Hosted"
+  // comparison card below but was never defined anywhere in this file, so the
+  // whole AI Costs tab crashed on render with "hostedProviders is not defined"
+  // and the ErrorBoundary replaced it with "Something went wrong". Measured live
+  // before the fix. Derived here with the exact counterpart of the line above —
+  // the established pattern in this component — rather than inventing anything.
+  // PROVIDERS carries exactly two type values, "local" and "hosted", so this is
+  // the precise complement of localProviders, not a catch-all.
+  const hostedProviders = providers.filter(p=>p.type==="hosted");
   const localReqs      = localProviders.flatMap(p=>p.models).reduce((a,m)=>a+m.requests,0);
   const localPct       = totalRequests > 0 ? Math.round(localReqs/totalRequests*100) : 0;
   const forecastTotal  = providers.reduce((a,p)=>a+p.monthlyForecast, 0);

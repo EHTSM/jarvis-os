@@ -11,7 +11,7 @@ const NAV_ACTIONS = [
   { id: "nav-insights",   label: "Pipeline",              icon: "◇", group: "Navigate",            tab: "insights"   },
   { id: "nav-clients",    label: "Contacts",              icon: "◈", group: "Navigate",            tab: "clients"    },
   { id: "nav-payments",   label: "Payments",              icon: "◻", group: "Navigate",            tab: "payments"   },
-  { id: "nav-activity",   label: "History",               icon: "◻", group: "Navigate",            tab: "activity"   },
+  { id: "nav-activity",   label: "History",               icon: "◻", group: "Navigate",            tab: "activity"   , keywords: "logs" },
   { id: "nav-success",    label: "Getting Started",       icon: "◇", group: "Navigate",            tab: "success"    },
   { id: "nav-overview",   label: "Overview",              icon: "◻", group: "Navigate",            tab: "overview"   },
 
@@ -34,11 +34,11 @@ const NAV_ACTIONS = [
   // "kpi"/"logout" above — label left unchanged so nothing that already worked
   // moves, the destination's own real display name simply becomes findable.
   { id: "nav-runtime",    label: "Execution Engine",      icon: "⬡", group: "Runtime & Ops",       tab: "runtime", keywords: "runtime console operator console" },
-  { id: "nav-execution",  label: "Execution Monitor",     icon: "⬡", group: "Runtime & Ops",       tab: "execution"  },
+  { id: "nav-execution",  label: "Execution Monitor",     icon: "⬡", group: "Runtime & Ops",       tab: "execution"  , keywords: "execution" },
   { id: "nav-operations", label: "Operations",            icon: "◉", group: "Runtime & Ops",       tab: "operations" },
-  { id: "nav-reliability",label: "Reliability",           icon: "◈", group: "Runtime & Ops",       tab: "reliability"},
+  { id: "nav-reliability",label: "Reliability",           icon: "◈", group: "Runtime & Ops",       tab: "reliability", keywords: "incident alert monitoring" },
   { id: "nav-selfhealing",label: "Self-Healing",          icon: "✦", group: "Runtime & Ops",       tab: "selfhealing"},
-  { id: "nav-observer",   label: "Runtime Observer",      icon: "◉", group: "Runtime & Ops",       tab: "observer"   },
+  { id: "nav-observer",   label: "Runtime Observer",      icon: "◉", group: "Runtime & Ops",       tab: "observer"   , keywords: "observability monitoring git logs" },
   { id: "nav-orglevel-eos",  label: "Executive OS (L6)",     icon: "◈", group: "Org Levels", tab: "orglevel-eos"  },
   { id: "nav-orglevel-ent",  label: "Enterprise OS (L7)",    icon: "◈", group: "Org Levels", tab: "orglevel-ent"  },
   { id: "nav-orglevel-eco",  label: "Ecosystem OS (L8)",     icon: "◈", group: "Org Levels", tab: "orglevel-eco"  },
@@ -66,7 +66,7 @@ const NAV_ACTIONS = [
   // to open EndOfDayReview.jsx (a real, fully-wired closing-summary modal)
   // instead of switching tabs; this was the only reachable entrypoint
   // missing anywhere in the app. Same mechanism as every other row here.
-  { id: "nav-eod",        label: "End of Day Review",     icon: "◻", group: "Runtime & Ops",       tab: "eod"        },
+  { id: "nav-eod",        label: "End of Day Review",     icon: "◻", group: "Runtime & Ops",       tab: "eod"        , keywords: "shutdown close day daily summary wrap up end my day" },
   { id: "nav-collab",     label: "Collaboration",         icon: "◈", group: "Runtime & Ops",       tab: "collab"     },
   { id: "nav-registry",   label: "Registry",              icon: "◻", group: "Runtime & Ops",       tab: "registry"   },
   { id: "nav-toolfabric", label: "Tool Fabric",           icon: "⚡", group: "Runtime & Ops",       tab: "toolfabric" },
@@ -74,8 +74,8 @@ const NAV_ACTIONS = [
   // Engineering
   { id: "nav-engineering",label: "Engineering",           icon: "◈", group: "Engineering",         tab: "engineering"},
   { id: "nav-workspace",  label: "Eng Workspace",         icon: "◇", group: "Engineering",         tab: "workspace"  },
-  { id: "nav-copilot",    label: "Copilot",               icon: "◎", group: "Engineering",         tab: "copilot"    },
-  { id: "nav-devops",     label: "DevOps",                icon: "⬡", group: "Engineering",         tab: "devops"     },
+  { id: "nav-copilot",    label: "Copilot",               icon: "◎", group: "Engineering",         tab: "copilot"    , keywords: "review debug test ci github pipeline commit repository project code review" },
+  { id: "nav-devops",     label: "DevOps",                icon: "⬡", group: "Engineering",         tab: "devops"     , keywords: "docker deploy deployment rollback blue green canary" },
   { id: "nav-agentactions",label:"Agent Actions",         icon: "⚡", group: "Engineering",         tab: "agentactions"},
   { id: "nav-execconnector",label:"Exec Connectors",      icon: "◇", group: "Engineering",         tab: "execconnector"},
   { id: "nav-agentfactory",label:"Agent Factory",         icon: "◉", group: "Engineering",         tab: "agentfactory"},
@@ -87,7 +87,7 @@ const NAV_ACTIONS = [
   { id: "nav-recommend",  label: "Recommendations",       icon: "✦", group: "AI & Intelligence",   tab: "recommend"  },
   { id: "nav-guardrails", label: "Guardrails",            icon: "◻", group: "AI & Intelligence",   tab: "guardrails" },
   { id: "nav-jarvisbrain",label: "Jarvis Brain",          icon: "◎", group: "AI & Intelligence",   tab: "jarvisbrain"},
-  { id: "nav-memoryintel",label: "Memory Intelligence",   icon: "◈", group: "AI & Intelligence",   tab: "memoryintel"},
+  { id: "nav-memoryintel",label: "Memory Intelligence",   icon: "◈", group: "AI & Intelligence",   tab: "memoryintel", keywords: "memory intel" },
   { id: "nav-selfimprove",label: "Self-Improve",          icon: "⬡", group: "AI & Intelligence",   tab: "selfimprove"},
   { id: "nav-autonomyscore",label:"Autonomy Score",       icon: "◉", group: "AI & Intelligence",   tab: "autonomyscore"},
   { id: "nav-autonomouswf",label:"Auto Workflows",        icon: "⚡", group: "AI & Intelligence",   tab: "autonomouswf"},
@@ -107,13 +107,13 @@ const NAV_ACTIONS = [
 
   // Executive
   { id: "nav-mission",    label: "Mission Control",       icon: "◎", group: "Executive",           tab: "mission"    },
-  { id: "nav-executivedash",label:"Executive Dashboard",  icon: "◈", group: "Executive",           tab: "executivedash"},
+  { id: "nav-executivedash",label:"Executive Dashboard",  icon: "◈", group: "Executive",           tab: "executivedash", keywords: "executive dash" },
   { id: "nav-oroplix",    label: "Ooplix Runs Ooplix",    icon: "✦", group: "Executive",           tab: "oroplix"    },
 
   // Growth & Revenue
-  { id: "nav-creative",   label: "Creative Studio",       icon: "✦", group: "Growth & Revenue",    tab: "creative"   },
-  { id: "nav-growth",     label: "Growth",                icon: "◇", group: "Growth & Revenue",    tab: "growth"     },
-  { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" },
+  { id: "nav-creative",   label: "Creative Studio",       icon: "✦", group: "Growth & Revenue",    tab: "creative"   , keywords: "brand brand kit" },
+  { id: "nav-growth",     label: "Growth",                icon: "◇", group: "Growth & Revenue",    tab: "growth"     , keywords: "marketing campaign" },
+  { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" , keywords: "website forms landing page" },
   { id: "nav-distribution",label:"Distribution",          icon: "◉", group: "Growth & Revenue",    tab: "distribution"},
   { id: "nav-referral",   label: "Referral Engine",       icon: "★", group: "Growth & Revenue",    tab: "referral"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners"   },
@@ -121,13 +121,19 @@ const NAV_ACTIONS = [
   { id: "nav-aiusage",    label: "AI Orchestration",      icon: "◎", group: "Growth & Revenue",    tab: "aiusage"    },
 
   // Enterprise
-  { id: "nav-companies",  label: "Companies",             icon: "◈", group: "Enterprise",          tab: "companies"  },
+  { id: "nav-companies",  label: "Companies",             icon: "◈", group: "Enterprise",          tab: "companies"  , keywords: "business company" },
   { id: "nav-orgadmin",   label: "Organization",          icon: "◈", group: "Enterprise",          tab: "orgadmin"   },
   { id: "nav-business",   label: "CRM",                   icon: "◉", group: "Enterprise",          tab: "business"   },
-  { id: "nav-team",       label: "Team",                  icon: "◈", group: "Enterprise",          tab: "team"       },
-  { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations"},
+  { id: "nav-team",       label: "Team",                  icon: "◈", group: "Enterprise",          tab: "team"       , keywords: "invite employee" },
+  // Phase A.11.8: the provider names are the words a founder actually types, and
+  // Integrations is the real destination for every one of them, yet "whatsapp",
+  // "razorpay" and "stripe" all returned "No commands found". The list below is
+  // not invented — it is exactly the nine provider ids the live backend returns
+  // from GET /my-connectors (whatsapp, razorpay, stripe, smtp, teams, notion,
+  // jira, linear, twitter), which are the nine cards this destination renders.
+  { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations", keywords: "gitlab github bitbucket connector connectors whatsapp razorpay stripe smtp email teams notion jira linear twitter payment gateway" },
   { id: "nav-marketplace",label: "Marketplace",           icon: "◈", group: "Enterprise",          tab: "marketplace"},
-  { id: "nav-trust",      label: "Trust & Compliance",    icon: "✦", group: "Enterprise",          tab: "trustcompliance"},
+  { id: "nav-trust",      label: "Trust & Compliance",    icon: "✦", group: "Enterprise",          tab: "trustcompliance", keywords: "trust" },
   // Phase A.11.7 finding: this destination is wired correctly, but it carries
   // three different names — ⌘K calls it "Support OS", App.jsx's MORE_TABS calls
   // it "Support", and the page's own <h1> reads "Support Center". Measured live:
@@ -140,11 +146,15 @@ const NAV_ACTIONS = [
   // Tracking / Analytics), not invented ones.
   { id: "nav-supportos",  label: "Support OS",            icon: "◻", group: "Enterprise",          tab: "supportos", keywords: "support center ticket tickets sla knowledge base escalation helpdesk" },
   { id: "nav-legalos",    label: "Legal OS",              icon: "✦", group: "Enterprise",          tab: "legalos"    },
-  { id: "nav-customersuccess", label: "Customer Success", icon: "◈", group: "Enterprise",          tab: "customersuccess" },
+  // Phase A.11.8: "churn" and "customer health" returned "No commands found"
+  // even though this destination's own tabs are literally named "Customer Health"
+  // and its KPI tiles read "CHURN RISK", "AT RISK" and "EXPANSION OPPS". Words
+  // taken verbatim from the surface's own rendered labels, not invented.
+  { id: "nav-customersuccess", label: "Customer Success", icon: "◈", group: "Enterprise",          tab: "customersuccess", keywords: "churn customer health at risk retention expansion support tickets" },
   { id: "nav-launchplatform", label: "Launch Platform",   icon: "◉", group: "Enterprise",          tab: "launchplatform", keywords: "feedback roadmap feature request vote prd release readiness onboarding academy" },
 
   // Settings
-  { id: "nav-settings",   label: "Settings",              icon: "◈", group: "Settings",            tab: "settings"   },
+  { id: "nav-settings",   label: "Settings",              icon: "◈", group: "Settings",            tab: "settings"   , keywords: "notification notifications" },
   // Phase A.11.6: App.jsx's MORE_TABS `billing` entry already carries
   // `alias: "finance"` (a prior-phase fix), so the More menu resolves "finance"
   // -> Billing correctly. This parallel registry never got the equivalent
@@ -154,7 +164,7 @@ const NAV_ACTIONS = [
   // 12-missing-destinations fix, using the identical mechanism already
   // established one entry away at `nav-analyticscenter`.
   { id: "nav-billing",    label: "Billing",               icon: "◇", group: "Settings",            tab: "billing", keywords: "finance" },
-  { id: "nav-help",       label: "Help & Guides",         icon: "◎", group: "Settings",            tab: "help"       },
+  { id: "nav-help",       label: "Help & Guides",         icon: "◎", group: "Settings",            tab: "help"       , keywords: "shortcut shortcuts keyboard" },
   { id: "nav-reports",    label: "Reports",               icon: "◻", group: "Settings",            tab: "reports"    },
   { id: "nav-betachecklist",label:"Beta Checklist",       icon: "◇", group: "Settings",            tab: "betachecklist"},
 ];

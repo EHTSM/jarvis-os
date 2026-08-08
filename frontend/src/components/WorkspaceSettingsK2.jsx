@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch } from "../_client";
+import { useConfirm } from "./ConfirmDialog.jsx";
 import { Toggle, FieldRow } from "./WorkspaceSettingsShared";
 
 // ── K2 Security helpers ───────────────────────────────────────────
@@ -64,6 +65,7 @@ function SessionsPanel() {
   const [error,    setError]    = useState(null);
   const [toast,    setToast]    = useState(null);
   const [retryToken, setRetryToken] = useState(0);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
@@ -72,7 +74,19 @@ function SessionsPanel() {
     _fetch("/security/sessions").then(d => setSessions(d.sessions || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, [retryToken]);
 
+  // Phase A.11.8 — destructive-action confirmation recovered in place, using the
+  // app's established ConfirmDialog/useConfirm pattern (OrgAdminCenter A.11.5,
+  // CRM A.11.2, connector Disconnect A.11.7, TeamWorkspace A.11.8). Revoking a
+  // session immediately signs that device out and cannot be undone; it was
+  // previously a single unguarded click.
   async function revoke(id) {
+    const s = sessions.find(x => x.id === id);
+    if (!await confirm({
+      title: "Revoke this session?",
+      message: `${s?.userAgent || "That device"} will be signed out immediately. This cannot be undone.`,
+      danger: true,
+      confirmLabel: "Revoke",
+    })) return;
     try {
       await _fetch(`/security/session/${id}`, { method: "DELETE" });
       setSessions(s => s.filter(x => x.id !== id));
@@ -84,6 +98,7 @@ function SessionsPanel() {
   if (error) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   return (
     <div className="k2-list">
+      {ConfirmUI}
       {toast && <div className="tw-toast">{toast}</div>}
       {sessions.length === 0 && <div className="k2-empty">No active sessions recorded.</div>}
       {sessions.map(s => (
@@ -109,6 +124,7 @@ function DevicesPanel() {
   const [error,    setError]    = useState(null);
   const [toast,    setToast]    = useState(null);
   const [retryToken, setRetryToken] = useState(0);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const doToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
@@ -125,7 +141,16 @@ function DevicesPanel() {
     } catch (e) { doToast(e.message || "Failed"); }
   }
 
+  // Phase A.11.8 — same in-place destructive-confirmation recovery as the
+  // sessions panel above. Removing a device revokes its trust and cannot be undone.
   async function remove(id) {
+    const d = devices.find(x => x.id === id);
+    if (!await confirm({
+      title: "Remove this device?",
+      message: `${d?.name || d?.userAgent || "That device"} will lose its trusted status and must be re-registered on next login.`,
+      danger: true,
+      confirmLabel: "Remove",
+    })) return;
     try {
       await _fetch(`/security/device/${id}`, { method: "DELETE" });
       setDevices(s => s.filter(x => x.id !== id));
@@ -137,6 +162,7 @@ function DevicesPanel() {
   if (error) return <K2ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   return (
     <div className="k2-list">
+      {ConfirmUI}
       {toast && <div className="tw-toast">{toast}</div>}
       {devices.length === 0 && <div className="k2-empty">No devices registered. Devices are registered on login.</div>}
       {devices.map(d => (

@@ -218,9 +218,14 @@ export default function BetaChecklist({ onNavigate }) {
         </div>
       )}
       <div className="bc-header">
+        {/* Phase A.11.8 — the page title was a <span>, so this surface rendered
+            no heading element at all (measured live: zero h1/h2/h3 in the pane).
+            Every conformant sibling uses a real <h1> + <p>; recovered to that
+            same shape so the page is navigable by heading like the rest of the
+            app. Class names, layout and text are unchanged. */}
         <div className="bc-header-left">
-          <span className="bc-title">Beta Launch Checklist</span>
-          <span className="bc-subtitle">{allItems.length} checks · {autoItems.length} automated</span>
+          <h1 className="bc-title">Beta Launch Checklist</h1>
+          <p className="bc-subtitle">{allItems.length} checks · {autoItems.length} automated</p>
         </div>
         <div className="bc-header-right">
           <div className="bc-score">

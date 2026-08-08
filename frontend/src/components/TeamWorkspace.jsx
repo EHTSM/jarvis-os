@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { _fetch } from "../_client";
+import { useConfirm } from "./ConfirmDialog.jsx";
 import "./TeamWorkspace.css";
 
 // ── Role definitions ─────────────────────────────────────────────────
@@ -207,6 +208,7 @@ export default function TeamWorkspace({ onNavigate }) {
   const [inviting,    setInviting]    = useState(false);
   const [toastMsg,    setToastMsg]    = useState(null);
   const [retryToken,  setRetryToken]  = useState(0);
+  const [confirm, ConfirmUI]          = useConfirm();
 
   React.useEffect(() => { track.event("team_workspace_viewed"); }, []);
 
@@ -280,17 +282,37 @@ export default function TeamWorkspace({ onNavigate }) {
     setInviting(false);
   }, [activeId, load]);
 
+  // Phase A.11.8 — destructive-action confirmation recovered in place.
+  // This is the app's established pattern for irreversible actions:
+  // ConfirmDialog/useConfirm, already used by OrgAdminCenter's five sites
+  // (A.11.5), the CRM (A.11.2), connector Disconnect (A.11.7) and
+  // WorkspaceSettingsL1. A.11.5 deliberately left THIS site unfixed because it
+  // was treated as part of that phase's UNKNOWN-A (TeamWorkspace's local toast
+  // subsystem, which genuinely does require re-wiring `onToast` through
+  // App.jsx). Re-evaluated here as instructed: the two are separable. useConfirm
+  // is entirely self-contained — a hook plus a rendered element, no prop
+  // threading, no call-signature change in App.jsx, nothing deleted — so gating
+  // this DELETE is an in-place recovery of an existing pattern, not the toast
+  // re-architecture. The toast subsystem is left exactly as it was.
   const handleRemove = useCallback(async (accountId) => {
     if (!activeId) return;
+    const member = members.find(m => m.accountId === accountId);
+    if (!await confirm({
+      title: `Remove ${member?.name || member?.email || "this member"}?`,
+      message: "They will immediately lose access to this workspace. You can invite them again later.",
+      danger: true,
+      confirmLabel: "Remove",
+    })) return;
     try {
       await _fetch(`/workspace/${activeId}/members/${accountId}`, { method: "DELETE" });
       setMembers(prev => prev.filter(m => m.accountId !== accountId));
       toast("Member removed");
     } catch (e) { toast(e.message || "Remove failed"); }
-  }, [activeId]);
+  }, [activeId, members, confirm]);
 
   return (
     <div className="team-workspace page-enter">
+      {ConfirmUI}
       {toastMsg && <div className="tw-toast">{toastMsg}</div>}
 
       <div className="tw-header">
