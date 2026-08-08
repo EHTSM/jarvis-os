@@ -135,7 +135,15 @@ const NAV_ACTIONS = [
 
   // Settings
   { id: "nav-settings",   label: "Settings",              icon: "◈", group: "Settings",            tab: "settings"   },
-  { id: "nav-billing",    label: "Billing",               icon: "◇", group: "Settings",            tab: "billing"    },
+  // Phase A.11.6: App.jsx's MORE_TABS `billing` entry already carries
+  // `alias: "finance"` (a prior-phase fix), so the More menu resolves "finance"
+  // -> Billing correctly. This parallel registry never got the equivalent
+  // `keywords` field, so ⌘K "finance" returned Launch Platform and Product OS
+  // (fuzzy noise) and never Billing — measured live, both surfaces, same term.
+  // Same registry-drift class as A.10.7's `kpi`/`kpis` fix and A.11.1's
+  // 12-missing-destinations fix, using the identical mechanism already
+  // established one entry away at `nav-analyticscenter`.
+  { id: "nav-billing",    label: "Billing",               icon: "◇", group: "Settings",            tab: "billing", keywords: "finance" },
   { id: "nav-help",       label: "Help & Guides",         icon: "◎", group: "Settings",            tab: "help"       },
   { id: "nav-reports",    label: "Reports",               icon: "◻", group: "Settings",            tab: "reports"    },
   { id: "nav-betachecklist",label:"Beta Checklist",       icon: "◇", group: "Settings",            tab: "betachecklist"},

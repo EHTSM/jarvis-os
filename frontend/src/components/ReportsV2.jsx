@@ -121,9 +121,16 @@ function PipelineChart({ leads, loading }) {
     </div>
   );
 
+  // Phase A.11.6: `leads === null` means the fetch genuinely failed, which is
+  // NOT the same as a real account with no leads. Telling a founder whose data
+  // just failed to load to "Add contacts" asserts something false about their
+  // own account. A real, loaded, genuinely-empty account (leads === []) still
+  // gets the original copy.
   if (!bars.length) return (
     <div className="rv2-empty-inline">
-      <p>No lead data yet. Add contacts to see pipeline distribution.</p>
+      <p>{leads === null
+        ? "Pipeline data unavailable — couldn't load leads."
+        : "No lead data yet. Add contacts to see pipeline distribution."}</p>
     </div>
   );
 
@@ -234,9 +241,17 @@ function SystemPerf({ opsData, metrics, loading }) {
   // else on it. The sibling "Memory usage" row above already handles its
   // own null case honestly (empty sub-label, not a false claim) — matched
   // that existing pattern instead of inventing new copy.
+  // Phase A.11.6: same operator-gated-/ops root cause as ServiceHealth below.
+  // "Tasks completed" read `opsData?.queue?.counts?.completed ?? 0` and then
+  // asserted the sub-label "All healthy" — so every founder was told, as fact,
+  // that zero tasks had run and everything was healthy, from data the account
+  // is never allowed to fetch (403). Uptime already degraded honestly to "—"
+  // (via _fmtUptime(0)); this row now matches that existing behaviour instead
+  // of asserting a queue state it cannot see.
+  const queueKnown = opsData?.queue?.counts != null;
   const rows = [
-    { label: "System uptime",    value: _fmtUptime(uptime),                     sub: _uptimePct(uptime) + " of 7-day window" },
-    { label: "Tasks completed",  value: completed.toLocaleString(),              sub: failed > 0 ? `${failed} failed · ${dlq} in DLQ` : "All healthy" },
+    { label: "System uptime",    value: _fmtUptime(uptime),                     sub: uptime ? _uptimePct(uptime) + " of 7-day window" : "" },
+    { label: "Tasks completed",  value: queueKnown ? completed.toLocaleString() : "—", sub: queueKnown ? (failed > 0 ? `${failed} failed · ${dlq} in DLQ` : "All healthy") : "" },
     { label: "Memory usage",     value: memory !== null ? `${memory} MB` : "—", sub: memory !== null ? (memory > memWarn ? "High" : "Normal") : "" },
     { label: "Avg response",     value: avgResp !== null ? `${avgResp}ms` : "—", sub: avgResp !== null ? (avgResp > 1000 ? "Slow" : "Normal") : "" },
   ];
@@ -263,12 +278,25 @@ function SystemPerf({ opsData, metrics, loading }) {
 // ── Service Health Row ─────────────────────────────────────────────────────────
 
 function ServiceHealth({ opsData, online, loading }) {
+  // Phase A.11.6 finding: `opsData` comes from GET /ops, which is operatorOnly
+  // server-side (backend/routes/ops.js line 74) — confirmed live, a real
+  // founder account gets 403. So `svcs` is ALWAYS {} for every founder, and
+  // these rows asserted "AI Engine: Not configured", "WhatsApp: Not set up",
+  // "Payments: Not configured" as fact on every single load. Cross-checked
+  // against the real, unauthenticated GET /health on this same running
+  // backend: `{"ai":false,"telegram":true,"whatsapp":true,"payments":true}` —
+  // so two of those three claims were not merely unknown, they were FALSE.
+  // The page already uses the app-wide "—" unknown placeholder for exactly
+  // this purpose (System Performance's Memory usage / Avg response rows right
+  // above). `Runtime` is unaffected: `online` is real, live health-poll state
+  // owned by App.jsx, not operator-gated telemetry, so it keeps its real value.
+  const known = !!opsData;
   const svcs = opsData?.services || {};
   const rows = [
-    { label: "AI Engine",  ok: !!(svcs.ai || svcs.groq), detail: (svcs.ai || svcs.groq) ? "Active" : "Not configured" },
-    { label: "WhatsApp",   ok: !!svcs.whatsapp,          detail: svcs.whatsapp ? "Connected" : "Not set up" },
-    { label: "Payments",   ok: !!svcs.payments,          detail: svcs.payments ? "Razorpay live" : "Not configured" },
-    { label: "Runtime",    ok: online,                   detail: online ? "Online" : "Reconnecting…" },
+    { label: "AI Engine",  known, ok: !!(svcs.ai || svcs.groq), detail: known ? ((svcs.ai || svcs.groq) ? "Active" : "Not configured") : "—" },
+    { label: "WhatsApp",   known, ok: !!svcs.whatsapp,          detail: known ? (svcs.whatsapp ? "Connected" : "Not set up") : "—" },
+    { label: "Payments",   known, ok: !!svcs.payments,          detail: known ? (svcs.payments ? "Razorpay live" : "Not configured") : "—" },
+    { label: "Runtime",    known: true, ok: online,             detail: online ? "Online" : "Reconnecting…" },
   ];
 
   return (
@@ -277,9 +305,13 @@ function ServiceHealth({ opsData, online, loading }) {
         ? [0,1,2,3].map(i => <div key={i} className="rv2-health-row"><Skeleton h={16} /></div>)
         : rows.map(r => (
           <div key={r.label} className="rv2-health-row">
-            <span className={`rv2-health-dot dot--${r.ok ? "ok" : "warn"} dot--live`} />
+            {/* Phase A.11.6: an unknown service renders the app's existing
+                `dot--dim` neutral state (index.css: "Use with a color class:
+                .dot--ok / .dot--warn / .dot--crit / .dot--dim"), not a warning
+                colour that would assert a problem we cannot actually see. */}
+            <span className={`rv2-health-dot dot--${!r.known ? "dim" : r.ok ? "ok" : "warn"}${r.known ? " dot--live" : ""}`} />
             <span className="rv2-health-label">{r.label}</span>
-            <span className={`rv2-health-detail${!r.ok ? " rv2-health-detail--warn" : ""}`}>{r.detail}</span>
+            <span className={`rv2-health-detail${r.known && !r.ok ? " rv2-health-detail--warn" : ""}`}>{r.detail}</span>
           </div>
         ))
       }
@@ -341,8 +373,28 @@ export default function ReportsV2({ online = false, onNavigate }) {
       setStats(st ?? null);
       setOpsData(ops ?? null);
       setMetrics(met ?? null);
-      setLeads(Array.isArray(ledsResp?.leads) ? ledsResp.leads : []);
-      if (isOperator && st == null && ops == null && met == null) {
+
+      // Phase A.11.6 finding: getLeadsV5() does NOT throw on a failed fetch —
+      // businessApi.js catches and returns `{ success: false, error, leads: [] }`.
+      // The old check here (`Array.isArray(ledsResp?.leads)`) is satisfied by
+      // that empty array, so a total failure of the ONE fetch every KPI card
+      // and the Pipeline Breakdown chart depend on was indistinguishable from a
+      // genuinely empty account: refresh()'s catch never ran, setError(null)
+      // was called, and the page asserted "TOTAL LEADS 0 / CLOSE RATE 0% /
+      // 0 leads tracked / No lead data yet. Add contacts to see pipeline
+      // distribution." with no error banner at all. Proven live by aborting the
+      // real request at the transport layer. The real backend
+      // (backend/routes/business.js's `_ok` -> `{ success: true, ... }`)
+      // genuinely sends `success`, so it is the correct discriminator here —
+      // the same read-the-real-envelope rule A.11.5 applied to `/orgs/*`'s
+      // `{ok:true}`. A real failure now sets the page's existing, already-built
+      // error banner instead of silently claiming zero pipeline.
+      const leadsFailed = ledsResp?.success === false || !Array.isArray(ledsResp?.leads);
+      setLeads(leadsFailed ? null : ledsResp.leads);
+
+      if (leadsFailed) {
+        setError(ledsResp?.error || "Lead data could not be loaded.");
+      } else if (isOperator && st == null && ops == null && met == null) {
         setError("Backend unavailable — reports data could not be loaded.");
       } else {
         setError(null);
@@ -370,23 +422,31 @@ export default function ReportsV2({ online = false, onNavigate }) {
   async function handleExport() {
     setExporting(true);
     try {
-      const items = leads || [];
+      // Phase A.11.6: if the leads fetch genuinely failed, `leads` is null.
+      // Exporting `totalLeads: 0 / closeRate: "0%"` in that state would write a
+      // false claim into a file a founder may hand to a stakeholder — the same
+      // "wrong deliverable" risk class A.10.7 fixed on this button, in a
+      // different form. `leadsAvailable` makes the unknown explicit in the file
+      // itself rather than silently exporting zeros.
+      const known = Array.isArray(leads);
+      const items = known ? leads : [];
       const hot   = items.filter(l => l.status === "hot" || l.status === "qualified").length;
       const paid  = items.filter(l => l.status === "paid" || l.status === "converted" || l.paymentStatus === "paid").length;
       const rate  = items.length > 0 && paid > 0 ? `${Math.round((paid / items.length) * 100)}%` : "0%";
       const byStatus = items.reduce((acc, l) => { const s = l.status || "new"; acc[s] = (acc[s] || 0) + 1; return acc; }, {});
       const payload = {
         exportedAt:   new Date().toISOString(),
+        leadsAvailable: known,
         summary: {
-          totalLeads:   items.length,
-          hotLeads:     hot,
-          paidLeads:    paid,
-          closeRate:    rate,
-          messagesSent: Object.values(opsData?.automation || {}).reduce((s, d) => s + (d.sent || 0), 0),
+          totalLeads:   known ? items.length : null,
+          hotLeads:     known ? hot : null,
+          paidLeads:    known ? paid : null,
+          closeRate:    known ? rate : null,
+          messagesSent: opsData ? Object.values(opsData.automation || {}).reduce((s, d) => s + (d.sent || 0), 0) : null,
           revenue:      stats?.revenue ?? null,
         },
-        pipelineBreakdown: byStatus,
-        leads,
+        pipelineBreakdown: known ? byStatus : null,
+        leads:         known ? leads : null,
         opsAutomation: opsData?.automation ?? null,
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -431,16 +491,26 @@ export default function ReportsV2({ online = false, onNavigate }) {
   // Rate, which divides by paid — would silently read 0 again under the
   // new data source. "qualified" is the real model's closest hot-lead
   // signal; "converted" is its closest won/paid signal.
+  //
+  // Phase A.11.6: `leads` is now null (not []) when the fetch genuinely failed,
+  // so `known` distinguishes "we don't know" from "we know it's zero". A real,
+  // successfully-loaded empty account still yields known === true and therefore
+  // still renders a real `0` — the guard is conditional, not a blanket
+  // suppression, which would be its own dishonesty (same anti-over-correction
+  // rule A.11.5 applied to TeamWorkspace's summary tiles).
   const leadStats = useMemo(() => {
-    const items = leads || [];
+    const known = Array.isArray(leads);
+    const items = known ? leads : [];
     const hot   = items.filter(l => l.status === "hot" || l.status === "qualified").length;
     const paid  = items.filter(l => l.status === "paid" || l.status === "converted" || l.paymentStatus === "paid").length;
-    return { total: items.length, hot, paid };
+    return { known, total: items.length, hot, paid };
   }, [leads]);
 
-  const convRate      = leadStats.total > 0 && leadStats.paid > 0
-    ? `${Math.round((leadStats.paid / leadStats.total) * 100)}%`
-    : "0%";
+  const convRate      = !leadStats.known
+    ? "—"
+    : leadStats.total > 0 && leadStats.paid > 0
+      ? `${Math.round((leadStats.paid / leadStats.total) * 100)}%`
+      : "0%";
 
   return (
     <div className="rv2-root page-enter">
@@ -479,8 +549,8 @@ export default function ReportsV2({ online = false, onNavigate }) {
         <KpiCard
           icon="◈"
           label="Total Leads"
-          value={leadStats.total}
-          sub={`${leadStats.hot} hot · ${leadStats.paid} paid`}
+          value={leadStats.known ? leadStats.total : "—"}
+          sub={leadStats.known ? `${leadStats.hot} hot · ${leadStats.paid} paid` : "Lead data unavailable"}
           accent="var(--accent)"
           loading={loading}
         />
@@ -488,15 +558,15 @@ export default function ReportsV2({ online = false, onNavigate }) {
           icon="₹"
           label="Revenue"
           value={stats ? _fmtINR(stats.revenue) : "—"}
-          sub={`${leadStats.paid} paying clients`}
+          sub={leadStats.known ? `${leadStats.paid} paying clients` : "Lead data unavailable"}
           accent="var(--success)"
           loading={loading}
         />
         <KpiCard
           icon="✉"
           label="Messages Sent"
-          value={totalActions.toLocaleString()}
-          sub="automated follow-ups"
+          value={opsData ? totalActions.toLocaleString() : "—"}
+          sub={opsData ? "automated follow-ups" : "Automation data unavailable"}
           accent="var(--accent2)"
           loading={loading}
         />
@@ -504,7 +574,7 @@ export default function ReportsV2({ online = false, onNavigate }) {
           icon="◎"
           label="Close Rate"
           value={convRate}
-          sub={`${leadStats.total} leads tracked`}
+          sub={leadStats.known ? `${leadStats.total} leads tracked` : "Lead data unavailable"}
           accent={parseFloat(convRate) >= 20 ? "var(--success)" : "var(--warning)"}
           loading={loading}
         />
