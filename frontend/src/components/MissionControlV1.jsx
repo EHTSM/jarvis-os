@@ -889,7 +889,20 @@ export default function MissionControlV1({ onNavigate }) {
       if (o.status === "fulfilled")    setOps(o.value);
       if (s.status === "fulfilled")    setStats(s.value);
       if (rt.status === "fulfilled")   setRuntime(rt.value);
-      if (hist.status === "fulfilled") setHistory(hist.value?.history || hist.value || []);
+      // A.11.4 fix: getRuntimeHistory() → GET /runtime/history really responds
+      // { success: true, entries: [...] } (measured live: top-level keys are
+      // exactly ["success","entries"], with 10 real records present). Reading
+      // `.history` matched nothing, so this fell through to `hist.value` — the
+      // whole response OBJECT, not an array — whose `.length` is undefined, so
+      // the `history.length > 0` render guard below was always false and the
+      // Recent Activity panel claimed "No recent activity" while 10 real
+      // executions existed. Reads the real field, keeps the legacy `.history`
+      // check first for any other shape, and guarantees an array so `.length`
+      // and `.slice()` stay meaningful.
+      if (hist.status === "fulfilled") {
+        const _h = hist.value?.history ?? hist.value?.entries ?? hist.value;
+        setHistory(Array.isArray(_h) ? _h : []);
+      }
       if (ag.status === "fulfilled")   setAgents(ag.value?.agents || ag.value || []);
       if (ms.status === "fulfilled")   setMemStat(ms.value);
       if (cy.status === "fulfilled")   setCycles(cy.value);
@@ -1210,16 +1223,26 @@ export default function MissionControlV1({ onNavigate }) {
         {history.length > 0 ? (
           <div className="mc-activity-list">
             {history.slice(0, 8).map((item, i) => {
-              const ts  = item.completedAt || item.startedAt || item.createdAt;
-              const ok  = item.status === "done" || item.status === "completed" || item.status === "success";
-              const err = item.status === "failed" || item.status === "error";
+              // A.11.4 fix: real /runtime/history records carry `ts` (epoch ms) and a
+              // boolean `success` — never `completedAt`/`startedAt`/`createdAt`, and
+              // never a `status` string (measured live on 20/20 REST records and
+              // 30/30 live SSE frames). Every row therefore rendered with an empty
+              // status label and the neutral "warn" dot even for genuinely successful
+              // executions. Derives status the same way this codebase already does for
+              // the same class of record in SelfHealingCenter.jsx:
+              // `h.status || (h.success ? "success" : "failed")` — real status wins
+              // when genuinely present, otherwise fall back to the real boolean.
+              const ts  = item.completedAt || item.startedAt || item.createdAt || item.ts;
+              const _st = item.status || (item.success === undefined ? undefined : (item.success ? "success" : "failed"));
+              const ok  = _st === "done" || _st === "completed" || _st === "success";
+              const err = _st === "failed" || _st === "error";
               return (
                 <div key={i} className="mc-activity-row">
                   <StatusDot ok={ok} warn={!ok && !err} />
                   <span className="mc-activity-text">
                     {(item.input || item.task || item.name || "task").slice(0, 60)}
                   </span>
-                  <span className="mc-activity-status">{item.status}</span>
+                  <span className="mc-activity-status">{_st}</span>
                   {ts && (
                     <span className="mc-activity-time">
                       {new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}

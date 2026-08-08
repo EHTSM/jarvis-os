@@ -24,7 +24,16 @@ const NAV_ACTIONS = [
   // wired destination. Same additive `keywords` mechanism already used
   // for "Sign out"/"logout" above (A.4.3) and MoreMenu's `alias` field.
   { id: "nav-analyticscenter", label: "Analytics",         icon: "◎", group: "Runtime & Ops",       tab: "analyticscenter", keywords: "kpi kpis" },
-  { id: "nav-runtime",    label: "Execution Engine",      icon: "⬡", group: "Runtime & Ops",       tab: "runtime"    },
+  // Phase A.11.4 finding: this entry is wired to the right tab, but it is the
+  // only in-scope destination whose ⌘K label does not match the name the app
+  // itself shows everywhere else — App.jsx's MORE_TABS calls tab "runtime"
+  // "Runtime Console", and so do the nav button and the breadcrumb
+  // (Dashboard › Operations › Runtime Console). Measured live: ⌘K "runtime
+  // console" returned the literal "No commands found" empty state while the
+  // More menu found it on the first try. Same additive `keywords` mechanism as
+  // "kpi"/"logout" above — label left unchanged so nothing that already worked
+  // moves, the destination's own real display name simply becomes findable.
+  { id: "nav-runtime",    label: "Execution Engine",      icon: "⬡", group: "Runtime & Ops",       tab: "runtime", keywords: "runtime console operator console" },
   { id: "nav-execution",  label: "Execution Monitor",     icon: "⬡", group: "Runtime & Ops",       tab: "execution"  },
   { id: "nav-operations", label: "Operations",            icon: "◉", group: "Runtime & Ops",       tab: "operations" },
   { id: "nav-reliability",label: "Reliability",           icon: "◈", group: "Runtime & Ops",       tab: "reliability"},

@@ -296,14 +296,31 @@ function TabRegistry({ agents, onNavigate, onRun, running, onView }) {
   const [typeF,    setTypeF]    = useState("all");
   const [statusF,  setStatusF]  = useState("all");
 
-  const types    = ["all", ...new Set(agents.map(a => a.type))];
+  // A.11.4 fix: the real GET /p18/agents record is
+  // { id, name, capabilities[], totalRuns, succeeded, failed, successRate, lastRunAt, lastStatus }
+  // — measured live across all 42 real agents: `type`, `description` and `status`
+  // are present on ZERO of them. Consequences, both reproduced live:
+  //   1. `a.description.toLowerCase()` threw "Cannot read properties of undefined
+  //      (reading 'toLowerCase')" on the FIRST keystroke in the search box,
+  //      crashing <TabRegistry> into its ErrorBoundary — 42 rows → 0.
+  //   2. `new Set(agents.map(a => a.type))` yielded [undefined], rendering an
+  //      empty <option> with key={undefined} — the "unique key" warning A.10.6
+  //      recorded as unresolved on this exact component.
+  // Reads the fields the backend really sends, using this file's own established
+  // `(agent.capabilities || [])` idiom (line ~169) and StatusChip's own `lastStatus`
+  // vocabulary, and guards every string read so no absent field can throw.
+  const _agentType = a => a.type || (a.capabilities && a.capabilities[0]) || "";
+  const _agentStatus = a => a.status || a.lastStatus || "";
+  const types    = ["all", ...new Set(agents.map(_agentType).filter(Boolean))];
   const statuses = ["all", "active", "idle", "paused", "error"];
   const hasFilter = !!search || typeF !== "all" || statusF !== "all";
 
   const filtered = useMemo(() => agents.filter(a => {
     const q = search.toLowerCase();
-    const matchQ = !q || a.name.toLowerCase().includes(q) || a.description.toLowerCase().includes(q) || a.type.includes(q);
-    return matchQ && (typeF === "all" || a.type === typeF) && (statusF === "all" || a.status === statusF);
+    const hay = [a.name, a.description, _agentType(a), ...(a.capabilities || [])]
+      .filter(v => typeof v === "string").join(" ").toLowerCase();
+    const matchQ = !q || hay.includes(q);
+    return matchQ && (typeF === "all" || _agentType(a) === typeF) && (statusF === "all" || _agentStatus(a) === statusF);
   }), [agents, search, typeF, statusF]);
 
   if (agents.length === 0) {
