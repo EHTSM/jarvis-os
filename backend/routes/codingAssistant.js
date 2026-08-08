@@ -57,6 +57,25 @@ function _clean(str, max = 8000) {
     return str.trim().slice(0, max);
 }
 
+/**
+ * A.10 fix: aiService.callAI() does not throw when every provider fails — it
+ * resolves to the sentinel string "AI backend unavailable...". Every route in
+ * this file used to return that sentinel as { ok: true, reply }, so a total
+ * provider outage (expired key, exhausted rate limit) was rendered to the
+ * developer as if the Copilot had actually answered with that sentence.
+ * Throwing here routes it into each handler's existing catch block, which
+ * already returns an honest 500 with the real message — no per-call-site
+ * changes needed. Same sentinel check creativeStudio.js (A.7) and ai.js
+ * (A.10) already use.
+ */
+async function _callAI(prompt, opts) {
+    const reply = await ai.callAI(prompt, opts);
+    if (typeof reply !== "string" || !reply.trim() || reply.startsWith("AI backend unavailable")) {
+        throw new Error(reply || "AI generation returned no content. Check provider API keys in your .env file.");
+    }
+    return reply;
+}
+
 /** Run git log in cwd, return last N commit subjects. Silently fails. */
 function _gitLog(cwd, n = 10) {
     if (!cwd) return "";
@@ -177,7 +196,7 @@ router.post("/coding/ask", async (req, res) => {
 
         const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedFiles });
 
-        const reply = await ai.callAI(_clean(question, 2000), {
+        const reply = await _callAI(_clean(question, 2000), {
             system,
             history: history.slice(-10).map(h => ({ role: h.role, content: h.content })),
         });
@@ -211,7 +230,7 @@ router.post("/coding/action", async (req, res) => {
         const system = _buildRepoContext({ cwd, filePath, symbolContext});
 
         const prompt = `${instruction}\n\nLanguage: ${language}\n\`\`\`${language}\n${_clean(code, 6000)}\n\`\`\``;
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
 
         // Extract patch if action is refactor/fix
         let patch = null;
@@ -241,7 +260,7 @@ router.post("/coding/explain-file", async (req, res) => {
         const system = _buildRepoContext({ cwd, filePath, fileContent});
         const prompt = `Explain this file comprehensively:\n- What it does\n- Key functions/classes and their roles\n- Dependencies and what they provide\n- Non-obvious design decisions\n- How it fits into the broader codebase`;
 
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -271,7 +290,7 @@ router.post("/coding/find-impl", async (req, res) => {
         }
 
         const prompt = `The developer is asking: "${_clean(query, 400)}"\n\nBased on the repository context and symbol index, answer: where is this implemented? Provide specific file paths and line numbers if available.${symbolCtx}`;
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -293,7 +312,7 @@ router.post("/coding/summarize", async (req, res) => {
         const system = _buildRepoContext({ cwd});
         const prompt = `Summarize this module${moduleName ? ` (${moduleName})` : ""}:\n- Purpose\n- Public API surface\n- Key dependencies\n- Architecture decisions\n\n${contentBlock}`;
 
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -320,7 +339,7 @@ router.post("/coding/review", async (req, res) => {
             ? `Review these changes before commit. Check for bugs, security issues, missing tests, style violations:\n\`\`\`diff\n${_clean(diffContent, 8000)}\n\`\`\``
             : "Describe the current state of uncommitted changes and suggest what to review before committing.";
 
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
         const issues = [];
         const lines  = reply.split("\n");
         for (const line of lines) {
@@ -343,7 +362,7 @@ router.post("/coding/refactor", async (req, res) => {
         const system = _buildRepoContext({ cwd});
         const prompt = `Perform this refactor: "${_clean(goal, 500)}"\n\nFiles involved:\n${files.map(f => `- ${f}`).join("\n")}\n\nProvide: 1) Summary of changes, 2) For each file: the full new content in a fenced code block labelled with the file path.`;
 
-        const reply   = await ai.callAI(prompt, { system });
+        const reply   = await _callAI(prompt, { system });
         const patches = [];
         const re      = /```(?:\w+)?(?:\s*\/\/\s*(.+?))?\n([\s\S]+?)```/g;
         let   m;
@@ -403,7 +422,7 @@ router.post("/coding/explain-error", async (req, res) => {
         const engineeringCtx = rules ? `\n\nKnown engineering rules:\n${rules}` : "";
 
         const prompt = `Explain this error and provide a fix:\n\`\`\`\n${_clean(errorText, 3000)}\n\`\`\`${engineeringCtx}`;
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
 
         const fixMatch = reply.match(/(?:fix|solution|resolution)[:\s]+([^.]+\.)/i);
         const fix      = fixMatch ? fixMatch[1].trim() : null;
@@ -454,7 +473,7 @@ Respond with ONLY valid JSON matching this schema (no markdown fences, no preamb
 
 If you cannot produce a safe, targeted patch (e.g. the change requires understanding files you don't have), set patchSpecs to [] and explain in the explanation field.`;
 
-        const raw = await ai.callAI(prompt, { system });
+        const raw = await _callAI(prompt, { system });
 
         let proposal;
         try {
@@ -818,7 +837,7 @@ router.get("/coding/smells", async (req, res) => {
   "explanation": "one line"
 }
 If you cannot produce a safe, targeted single-string replacement, respond with {"patchTarget":null}.`;
-                    const raw   = await ai.callAI(prompt, { system });
+                    const raw   = await _callAI(prompt, { system });
                     const m     = raw.match(/\{[\s\S]+\}/);
                     if (m) {
                         const parsed = JSON.parse(m[0]);
@@ -916,7 +935,7 @@ ${symbolContext ? `\nSymbol context: ${symbolContext}` : ''}`;
 
         const prompt = `Complete this code:\n\`\`\`\n${_clean(prefix, 1200)}\n\`\`\`\nCompletion (continue from last character, no prefix repeat):`;
 
-        const raw = await ai.callAI(prompt, { system });
+        const raw = await _callAI(prompt, { system });
 
         // Strip any accidental fence
         const completion = raw
@@ -959,7 +978,7 @@ router.post("/coding/hover", async (req, res) => {
             fix:      `This line may have a bug:\n\`${codeLine}\`\nReturn: 1) what the bug is, 2) the fixed line.`,
         };
 
-        const reply = await ai.callAI(ACTION_PROMPTS[action], { system });
+        const reply = await _callAI(ACTION_PROMPTS[action], { system });
 
         // For refactor/tests/optimize/document/fix — extract patchSpec if applicable
         let patchSpec = null;

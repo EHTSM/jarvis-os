@@ -13,6 +13,25 @@ router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsa
         const { prompt, system, history, provider, model } = req.body;
         if (!prompt) return res.status(400).json({ error: "prompt required" });
         const reply = await ai.callAI(prompt, { system, history, provider, model });
+
+        // A.10 fix: callAI() does not throw when every provider fails — it
+        // resolves to the sentinel string below (aiService.js's last line).
+        // This route used to return it as { success: true, reply }, so a
+        // total provider outage was rendered to the founder as if the AI had
+        // replied with that sentence, and was recorded in usage metering as a
+        // successful call. Detect it the same way creativeStudio.js already
+        // does (A.7 fix) and surface the real failure instead.
+        if (typeof reply !== "string" || !reply.trim() || reply.startsWith("AI backend unavailable")) {
+            usageMetering.record({
+                accountId: req.user?.sub || req.user?.id, provider: provider || "unknown",
+                model: model || "unknown", requestType: "chat", latencyMs: Date.now() - t0,
+                success: false, errorCode: "all_providers_failed",
+            });
+            return res.status(502).json({
+                error: reply || "AI generation returned no content. Check provider API keys in your .env file.",
+            });
+        }
+
         usageMetering.record({
             accountId: req.user?.sub || req.user?.id, provider: provider || "unknown",
             model: model || "unknown", requestType: "chat", latencyMs: Date.now() - t0, success: true,
