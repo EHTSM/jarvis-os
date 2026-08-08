@@ -149,11 +149,64 @@ function _getSystemPrompt() {
 
 // ── Provider priority ─────────────────────────────────────────────────────────
 // Respects LLM_PROVIDER env var as the primary; others follow in fixed order.
+// Each key-based provider's credential env var. Local providers (ollama,
+// lmstudio) are deliberately absent — they have no key and are already
+// fail-fast guarded by _assertLocalServerUp() above.
+const _PROVIDER_KEY_ENV = {
+    groq:       "GROQ_API_KEY",
+    openrouter: "OPENROUTER_API_KEY",
+    openai:     "OPENAI_API_KEY",
+    claude:     "ANTHROPIC_API_KEY",
+    gemini:     "GEMINI_API_KEY",
+    deepseek:   "DEEPSEEK_API_KEY",
+    together:   "TOGETHER_API_KEY",
+    fireworks:  "FIREWORKS_API_KEY",
+    cohere:     "COHERE_API_KEY",
+    nvidia:     "NVIDIA_API_KEY",
+    grok:       "GROK_API_KEY",
+    qwen:       "DASHSCOPE_API_KEY",
+};
+
+/**
+ * True when a provider is *statically* unusable — it needs an API key and no
+ * key is configured. This is knowable without any network call.
+ *
+ * B.1 P1 measurement: with no keys configured, callAI() attempted all 14
+ * providers on every request and each key-less one threw "X_API_KEY not set"
+ * only after being entered. Measured on the running server, that produced
+ * 8,358 WARN lines out of 13,541 total log lines — 62% of all backend logging
+ * was the same statically-knowable failure repeated, with ten providers
+ * failing 592 times each. The autonomous AutoLoop drives this continuously,
+ * so it burned CPU in bursts (measured 80-100% during every stall) on work
+ * that could never succeed.
+ *
+ * NOTE ON HONESTY: this skips only providers with NO key configured. A
+ * provider that HAS a key and fails authentication or rate limits (the
+ * measured OpenAI 401 and Groq 429) is still attempted and still reported
+ * exactly as before — real credential failures must never be hidden.
+ */
+function _isUnconfigured(provider) {
+    const env = _PROVIDER_KEY_ENV[provider];
+    if (!env) return false;                       // local provider — not key-gated
+    return !String(process.env[env] || "").trim();
+}
+
 function _providerOrder() {
     const preferred = (process.env.LLM_PROVIDER || "").toLowerCase().trim();
     const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"];
-    if (!preferred || !defaults.includes(preferred)) return defaults;
-    return [preferred, ...defaults.filter(p => p !== preferred)];
+    const ordered = (!preferred || !defaults.includes(preferred))
+        ? defaults
+        : [preferred, ...defaults.filter(p => p !== preferred)];
+
+    const usable = ordered.filter(p => !_isUnconfigured(p));
+    // Never return an empty list: callAI() must still run, still fail, and
+    // still return its real "AI backend unavailable" sentinel. Skipping every
+    // provider silently would turn a reported failure into a silent one.
+    // In practice the local providers are never key-gated, so this list is
+    // non-empty even with zero API keys configured — they are attempted and
+    // fail loudly via _assertLocalServerUp(). The guard stays as a correctness
+    // backstop in case the provider list ever becomes fully key-gated.
+    return usable.length ? usable : ordered;
 }
 
 // ── Per-provider timeout (ms) ─────────────────────────────────────────────────
