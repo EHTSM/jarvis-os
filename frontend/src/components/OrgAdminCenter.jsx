@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
+import { useConfirm } from "./ConfirmDialog";
 import "./OrgAdminCenter.css";
 
 // Real multi-tenant org management UI — the first frontend consumer of
@@ -28,12 +29,18 @@ function Empty({ title, sub }) {
 
 function OverviewPanel({ org, myRole, onToast, onReload }) {
   const [busy, setBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
   if (!org) return <Empty title="No organization selected" sub="Use the organization switcher in the header to select or create one." />;
 
   const isArchived = org.status === "archived";
 
   const handleArchive = async () => {
-    if (!window.confirm(`Archive "${org.name}"? Members will lose access until it's restored. Data is preserved and this can be undone.`)) return;
+    if (!await confirm({
+      title: `Archive "${org.name}"?`,
+      message: "Members will lose access until it's restored. Data is preserved and this can be undone.",
+      danger: true,
+      confirmLabel: "Archive",
+    })) return;
     setBusy(true);
     const r = await _fetch(`/orgs/${org.id}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
     setBusy(false);
@@ -51,6 +58,7 @@ function OverviewPanel({ org, myRole, onToast, onReload }) {
 
   return (
     <div className="oac-section">
+      {ConfirmUI}
       {isArchived && (
         <div className="oac-empty" style={{ borderColor: "var(--warning)", padding: "16px 20px" }}>
           <p className="oac-empty-title" style={{ color: "var(--warning)" }}>This organization is archived</p>
@@ -115,6 +123,7 @@ function MembersPanel({ orgId, myRole, canManage, onToast }) {
   const [addForm, setAddForm] = useState({ accountId: "", orgRole: "member" });
   const [showAdd, setShowAdd] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -141,6 +150,14 @@ function MembersPanel({ orgId, myRole, canManage, onToast }) {
   };
 
   const handleRemove = async (accountId) => {
+    // organizationService.removeMember() filters the member out of org.members
+    // permanently — there is no restore route for it, unlike archiveOrg().
+    if (!await confirm({
+      title: "Remove this member?",
+      message: "They lose access to this organization immediately. This cannot be undone.",
+      danger: true,
+      confirmLabel: "Remove",
+    })) return;
     const r = await _fetch(`/orgs/${orgId}/members/${accountId}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
     if (r.ok === false) onToast?.("error", r.error || "Failed to remove member");
     else { onToast?.("success", "Member removed"); load(); }
@@ -150,6 +167,7 @@ function MembersPanel({ orgId, myRole, canManage, onToast }) {
 
   return (
     <div className="oac-section">
+      {ConfirmUI}
       <div className="oac-section-header">
         <h3 className="oac-section-title">Members</h3>
         {canManage && <button className="oac-btn primary" onClick={() => setShowAdd(s => !s)}>{showAdd ? "Cancel" : "+ Add member"}</button>}
@@ -204,6 +222,7 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
   const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -224,6 +243,14 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
   };
 
   const handleDelete = async (deptId) => {
+    // organizationService.deleteDepartment() splices the department out of the
+    // org permanently — there is no restore route for it, unlike archiveOrg().
+    if (!await confirm({
+      title: "Delete this department?",
+      message: "Its teams are removed with it. This cannot be undone.",
+      danger: true,
+      confirmLabel: "Delete",
+    })) return;
     const r = await _fetch(`/orgs/${orgId}/departments/${deptId}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
     if (r.ok === false) onToast?.("error", r.error || "Failed to delete department");
     else { onToast?.("success", "Department deleted"); load(); }
@@ -233,6 +260,7 @@ function DepartmentsPanel({ orgId, canManage, onToast }) {
 
   return (
     <div className="oac-section">
+      {ConfirmUI}
       <div className="oac-section-header">
         <h3 className="oac-section-title">Departments</h3>
         {canManage && <button className="oac-btn primary" onClick={() => setShowAdd(s => !s)}>{showAdd ? "Cancel" : "+ New department"}</button>}
@@ -443,6 +471,7 @@ function GrantsPanel({ orgId, isOwner, onToast }) {
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ granteeAccountId: "", permissions: ["view_missions"] });
   const [busy, setBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -473,6 +502,12 @@ function GrantsPanel({ orgId, isOwner, onToast }) {
   };
 
   const handleRevoke = async (accountId) => {
+    if (!await confirm({
+      title: "Revoke this access grant?",
+      message: "That account loses cross-org access to this organization immediately. This cannot be undone.",
+      danger: true,
+      confirmLabel: "Revoke",
+    })) return;
     const r = await _fetch(`/orgs/${orgId}/grants/${accountId}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
     if (r.ok === false) onToast?.("error", r.error || "Failed to revoke access");
     else { onToast?.("success", "Access revoked"); load(); }
@@ -482,6 +517,7 @@ function GrantsPanel({ orgId, isOwner, onToast }) {
 
   return (
     <div className="oac-section">
+      {ConfirmUI}
       <div className="oac-section-header">
         <h3 className="oac-section-title">Cross-org access</h3>
         <button className="oac-btn primary" onClick={() => setShowAdd(s => !s)}>{showAdd ? "Cancel" : "+ Grant access"}</button>
@@ -541,6 +577,7 @@ function InviteTeamPanel({ onToast }) {
   const [showInvite, setShowInvite] = useState(false);
   const [form, setForm] = useState({ email: "", role: "Operator" });
   const [busy, setBusy] = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
   // Phase A.10.5 fix: when email delivery fails, the backend now returns the
   // real accept-invite link (see backend/routes/workspace.js) instead of
   // silently discarding it. The success toast already told founders to
@@ -594,6 +631,12 @@ function InviteTeamPanel({ onToast }) {
   };
 
   const handleRemove = async (accountId) => {
+    if (!await confirm({
+      title: "Remove this teammate?",
+      message: "They lose access to this workspace immediately. This cannot be undone.",
+      danger: true,
+      confirmLabel: "Remove",
+    })) return;
     const r = await _fetch(`/workspace/${workspaceId}/members/${accountId}`, { method: "DELETE" }).catch(e => ({ error: e.message }));
     if (r.error) onToast?.("error", r.error);
     else { onToast?.("success", "Member removed"); load(); }
@@ -607,6 +650,7 @@ function InviteTeamPanel({ onToast }) {
 
   return (
     <div className="oac-section">
+      {ConfirmUI}
       <div className="oac-section-header">
         <h3 className="oac-section-title">{workspaceName || "Team"}</h3>
         <button className="oac-btn primary" onClick={() => setShowInvite(s => !s)}>{showInvite ? "Cancel" : "+ Invite teammate"}</button>

@@ -301,13 +301,21 @@ export default function TeamWorkspace({ onNavigate }) {
         <button className="tw-invite-btn" onClick={() => setShowInvite(true)}>+ Invite member</button>
       </div>
 
-      {/* Summary strip */}
+      {/* Summary strip.
+          The tiles sit ABOVE the `error` guard on .tw-content, so when the load
+          genuinely fails they still render — and used to assert "0 MEMBERS /
+          0 ROLES / 0 WORKSPACES" as fact while the banner below said the data
+          couldn't load. Measured live: a real account with 1 real member, 1 real
+          role and 1 real workspace displayed 0/0/0/0 under a request timeout.
+          When the truth is unknown, show the app's established "—" unknown
+          placeholder (MissionControlV1.jsx's metric cards, BillingDashboard's
+          own summary row) instead of a confident, false zero. */}
       <div className="tw-summary-strip">
         {[
-          { label: "Members",         value: members.length },
-          { label: "Pending invites", value: pendingInvs.length },
-          { label: "Roles",           value: [...new Set(members.map(m => m.role))].length },
-          { label: "Workspaces",      value: workspaces.length },
+          { label: "Members",         value: error || loading ? "—" : members.length },
+          { label: "Pending invites", value: error || loading ? "—" : pendingInvs.length },
+          { label: "Roles",           value: error || loading ? "—" : [...new Set(members.map(m => m.role))].length },
+          { label: "Workspaces",      value: error || loading ? "—" : workspaces.length },
         ].map(s => (
           <div key={s.label} className="tw-summary-item">
             <span className="tw-summary-value">{s.value}</span>

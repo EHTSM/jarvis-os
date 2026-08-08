@@ -146,6 +146,20 @@ export default function BillingDashboard({ onUpgrade }) {
   return (
     <div className="billing-dashboard">
 
+      {/* Page header — every other Account/Enterprise surface in this scope
+          (OrgAdminCenter .oac-header, TeamWorkspace .tw-header,
+          WorkspaceSettings .ws-header) renders an h1 title + subtitle here.
+          Billing was the only one with no page title at any heading level:
+          measured live as h1/h2/h3 count 0 for a page title, its largest text
+          being the 20px .bd-plan-name value. Same markup shape and the same
+          22px/800 + 13.5px token values its three siblings already use. */}
+      <div className="bd-header">
+        <div>
+          <h1 className="bd-title">Billing</h1>
+          <p className="bd-subtitle">Your plan, trial status, and payment method.</p>
+        </div>
+      </div>
+
       {/* ── Subscription status card ──────────────────────────────── */}
       <div className="bd-card">
         <div className="bd-card-header">
