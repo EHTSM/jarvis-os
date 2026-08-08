@@ -1347,6 +1347,21 @@ export default function LaunchPlatform() {
 
   return (
     <div className="launch-platform">
+      {/* Phase A.11.7 — this was the only surface surveyed in this phase with
+          no page header of any kind: measured live, its pane contained no <h1>
+          or <h2> at all, so a founder arriving here saw a bare row of 14 tabs
+          with nothing naming the screen. Every sibling measured in this phase
+          (Support Center, Connectors, Referral Engine, Marketplace, Partner
+          Program) and the A.11.1–A.11.6 reference set (.oac-/.tw-/.ws-/.bd-/
+          .analytics-/.rv2-page-title) renders 22px/800/-0.3px/var(--text) with
+          a 13.5px var(--text-dim) subtitle. Values copied from that measured
+          baseline; the title is the destination's own existing name from
+          App.jsx's MORE_TABS entry, and the subtitle names the real sub-tabs
+          already rendered below. No redesign, no new component. */}
+      <div className="launch-header">
+        <h1 className="launch-title">Launch Platform</h1>
+        <p className="launch-subtitle">Beta metrics, onboarding, docs, academy, referrals, feedback, and launch readiness.</p>
+      </div>
       <div className="launch-tabs">
         {TABS.map(t => (
           <button key={t.id} className={`launch-tab${tab === t.id ? " active" : ""}`} onClick={() => setTab(t.id)}>

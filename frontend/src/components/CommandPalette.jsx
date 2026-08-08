@@ -128,7 +128,17 @@ const NAV_ACTIONS = [
   { id: "nav-integrations",label:"Integrations",          icon: "⬡", group: "Enterprise",          tab: "integrations"},
   { id: "nav-marketplace",label: "Marketplace",           icon: "◈", group: "Enterprise",          tab: "marketplace"},
   { id: "nav-trust",      label: "Trust & Compliance",    icon: "✦", group: "Enterprise",          tab: "trustcompliance"},
-  { id: "nav-supportos",  label: "Support OS",            icon: "◻", group: "Enterprise",          tab: "supportos"  },
+  // Phase A.11.7 finding: this destination is wired correctly, but it carries
+  // three different names — ⌘K calls it "Support OS", App.jsx's MORE_TABS calls
+  // it "Support", and the page's own <h1> reads "Support Center". Measured live:
+  // ⌘K "Support Center" returned the literal "No commands found" empty state,
+  // i.e. the one name the screen actually shows itself was the one name that
+  // could not find it. Exactly the A.11.4 `nav-runtime` case ("Execution Engine"
+  // vs "Runtime Console"), fixed the same additive way: `keywords` only, label
+  // left unchanged so nothing that already worked moves. Terms are the surface's
+  // own real vocabulary (its tab bar reads Tickets / Knowledge Base / SLA
+  // Tracking / Analytics), not invented ones.
+  { id: "nav-supportos",  label: "Support OS",            icon: "◻", group: "Enterprise",          tab: "supportos", keywords: "support center ticket tickets sla knowledge base escalation helpdesk" },
   { id: "nav-legalos",    label: "Legal OS",              icon: "✦", group: "Enterprise",          tab: "legalos"    },
   { id: "nav-customersuccess", label: "Customer Success", icon: "◈", group: "Enterprise",          tab: "customersuccess" },
   { id: "nav-launchplatform", label: "Launch Platform",   icon: "◉", group: "Enterprise",          tab: "launchplatform", keywords: "feedback roadmap feature request vote prd release readiness onboarding academy" },

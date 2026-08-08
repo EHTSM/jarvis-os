@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { track } from "../analytics";
 import { _fetch } from "../_client";
+import SampleDataNotice from "./SampleDataNotice";
 import "./SupportCenter.css";
 
 const TKT_KEY = "ooplix_support_tickets";
@@ -142,6 +143,20 @@ function TicketDetail({ ticket, onReply, onResolve, onEscalate }) {
 
 export default function SupportCenter({ onNavigate }) {
   const [tickets,  setTickets]  = useState(() => _load(TKT_KEY, SEED_TICKETS));
+  // Phase A.11.7 — nothing written to localStorage yet means the 8 rows below
+  // are still SEED_TICKETS: illustrative examples with invented subjects,
+  // invented user ids (u_1019…) and invented wait times, from which the summary
+  // strip's Open/Escalated/SLA-breached/Avg-wait figures and the whole Analytics
+  // tab are then computed. The existing "stored locally" beta banner explains
+  // WHERE tickets live but not that these particular ones are fabricated, so
+  // they were visually indistinguishable from a real queue.
+  // ExecutionOrchestratorCenter.jsx — structurally the same component (same
+  // `_load(KEY, SEED)` idiom, same section/toast shape) — already discloses its
+  // own seed data with exactly this flag and this shared component; SupportCenter
+  // was the sibling that drifted. Tracked separately from `tickets` so that a
+  // real localStorage write unambiguously switches it off, rather than being
+  // inferred from array identity.
+  const [isSample, setIsSample] = useState(() => localStorage.getItem(TKT_KEY) === null);
   const [section,  setSection]  = useState("tickets");
   const [selected, setSelected] = useState("t001");
   const [priFilter,setPriFilter] = useState("all");
@@ -150,7 +165,11 @@ export default function SupportCenter({ onNavigate }) {
 
   React.useEffect(() => { track.event("support_center_viewed"); }, []);
   const showToast = m => { setToast(m); setTimeout(()=>setToast(null),2400); };
-  const persist = next => { _save(TKT_KEY,next); setTickets(next); };
+  // A real write means these are now the operator's own edited tickets, not the
+  // untouched illustrative seed set — same transition ExecutionOrchestratorCenter
+  // makes. Anti-over-correction: the notice is cleared here and nowhere else, so
+  // it cannot linger over genuinely operator-owned data.
+  const persist = next => { _save(TKT_KEY,next); setTickets(next); setIsSample(false); };
 
   const handleResolve = useCallback((id, reply) => {
     persist(tickets.map(t => t.id===id ? {...t, status:"resolved", reply: reply||t.reply} : t));
@@ -194,6 +213,8 @@ export default function SupportCenter({ onNavigate }) {
           <p className="sc-subtitle">Tickets, knowledge base, SLA tracking, escalations, and resolution analytics.</p>
         </div>
       </div>
+
+      {isSample && <SampleDataNotice label="sample tickets — the counts and SLA figures below are derived from them" />}
 
       <div className="sc-summary-strip">
         {[

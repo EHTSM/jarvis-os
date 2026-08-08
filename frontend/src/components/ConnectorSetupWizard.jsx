@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
+import { useConfirm } from "./ConfirmDialog";
 import "./ConnectorSetupWizard.css";
 
 // Real customer-facing connector setup — backed by /my-connectors/* (org-
@@ -80,7 +81,7 @@ function ProviderCard({ provider, onSave, onRemove, onToast }) {
               {busy ? "Saving…" : provider.connected ? "Update" : "Connect"}
             </button>
             {provider.connected && (
-              <button className="csw-btn danger" onClick={() => onRemove(provider.id)}>Disconnect</button>
+              <button className="csw-btn danger" onClick={() => onRemove(provider.id, provider.label)}>Disconnect</button>
             )}
           </div>
         </div>
@@ -93,6 +94,15 @@ export default function ConnectorSetupWizard({ onToast }) {
   const [providers, setProviders] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  // Phase A.11.7 — Disconnect permanently deletes this organization's stored
+  // third-party credentials from the vault (DELETE /my-connectors/:id), for the
+  // whole org, with no undo. Measured live: a single click removed a real
+  // stored WhatsApp credential with `confirmDialog: false` and no native
+  // dialog either. Every other destructive action in the app already routes
+  // through this same shared hook — A.11.2 wired CRM's deletes, A.11.5 wired
+  // OrgAdminCenter's five sites (replacing raw window.confirm). Reusing the
+  // existing ConfirmDialog/useConfirm, not a new component.
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -114,7 +124,14 @@ export default function ConnectorSetupWizard({ onToast }) {
     return true;
   };
 
-  const handleRemove = async (providerId) => {
+  const handleRemove = async (providerId, providerLabel) => {
+    const okToRemove = await confirm({
+      title: `Disconnect ${providerLabel || providerId}?`,
+      message: `This permanently removes your organization's stored ${providerLabel || providerId} credentials. Anything Ooplix runs through ${providerLabel || providerId} will stop working until you connect it again.`,
+      danger: true,
+      confirmLabel: "Disconnect",
+    });
+    if (!okToRemove) return;
     const r = await _fetch(`/my-connectors/${providerId}`, { method: "DELETE" }).catch(e => ({ ok: false, error: e.message }));
     if (r.ok === false) { onToast?.("error", r.error || "Failed to disconnect"); return; }
     onToast?.("success", "Disconnected");
@@ -153,6 +170,7 @@ export default function ConnectorSetupWizard({ onToast }) {
           </div>
         </div>
       ))}
+      {ConfirmUI}
     </div>
   );
 }

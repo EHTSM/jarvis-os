@@ -1,6 +1,19 @@
 /* LaunchPlatform.css */
 .launch-platform { display:flex; flex-direction:column; height:100%; background:var(--bg,#0f0f13); color:var(--text,#e2e2e8); font-family:var(--font-mono,'JetBrains Mono',monospace); }
 
+/* ── Page header (Phase A.11.7) ──
+   Byte-identical to the measured app-wide baseline shared by .sc-title /
+   .csw-title / .ref-title / .mc-title / .pp-title / .oac-title / .tw-title /
+   .rv2-page-title: 22px / 800 / var(--text) / -0.3px, with a 13.5px
+   var(--text-dim) subtitle. font-family is reset off .launch-platform's
+   monospace so the title matches those siblings rather than the tab row —
+   the stack is copied verbatim from index.css's own `body` rule (there is
+   no --font-ui token in this codebase; inventing one was avoided). */
+.launch-header   { padding:16px 20px 0; flex-shrink:0;
+                   font-family:-apple-system,'SF Pro Text','Segoe UI Variable','Segoe UI',system-ui,sans-serif; }
+.launch-title    { font-size:22px; font-weight:800; color:var(--text); letter-spacing:-0.3px; margin:0; }
+.launch-subtitle { font-size:13.5px; color:var(--text-dim); margin:4px 0 0; }
+
 /* ── Tabs ── */
 .launch-tabs { display:flex; gap:2px; padding:8px 12px 0; border-bottom:1px solid var(--border,#2a2a3a); flex-shrink:0; overflow-x:auto; }
 .launch-tab  { padding:7px 14px; border-radius:6px 6px 0 0; border:1px solid transparent; border-bottom:none; font-size:11px; font-weight:600; letter-spacing:.04em; cursor:pointer; background:transparent; color:#888; transition:all .15s; white-space:nowrap; }
