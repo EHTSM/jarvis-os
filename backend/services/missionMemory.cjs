@@ -90,10 +90,37 @@ function _loadMissions() {
 // queue would be a larger architectural change, out of scope here) — it
 // eliminates the file-corruption/ENOENT-crash class, which is what was
 // actually observed and reproduced.
+// B.1 runtime stabilization: missions.json had no retention cap and had
+// grown to 76.8 MB / 10,370 missions. Measured consequences on the running
+// server: every write invalidates the mtime cache above, so the next read
+// re-parses the whole file — 483 ms of blocked event loop (158 ms read +
+// 325 ms JSON.parse). Writes were measured at 16/minute, i.e. ~7.7 s of
+// event-loop stall per minute (~13% of wall-clock frozen). That is the
+// measured root cause of Phase A's 33% /health failure rate and 5,800x
+// latency variance at only 31% CPU — it was never CPU exhaustion.
+//
+// 90% of the file is terminal history (9,320 completed / 394 failed /
+// 12 cancelled vs 644 live). Capping retained TERMINAL missions bounds the
+// file while preserving every active/planned mission untouched. Uses the
+// same slice(-N) retention pattern already used by productPlannerEngine
+// (200 plans) and growthOS (10,000 events) — no new architecture.
+const TERMINAL_STATUSES = new Set(["completed", "failed", "cancelled"]);
+const MAX_TERMINAL_MISSIONS = 1000;
+
+function _capTerminalMissions(missions) {
+    if (!Array.isArray(missions) || missions.length <= MAX_TERMINAL_MISSIONS) return missions;
+    const live = [], terminal = [];
+    for (const m of missions) (TERMINAL_STATUSES.has(m?.status) ? terminal : live).push(m);
+    if (terminal.length <= MAX_TERMINAL_MISSIONS) return missions;
+    // Keep every live mission plus the most recent terminal ones (array order
+    // is append-order, so the tail is newest).
+    return live.concat(terminal.slice(-MAX_TERMINAL_MISSIONS));
+}
+
 function _saveMissions(store) {
     const dir = path.dirname(MISSIONS_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const updated = { missions: store.missions, lastUpdated: new Date().toISOString() };
+    const updated = { missions: _capTerminalMissions(store.missions), lastUpdated: new Date().toISOString() };
     const tmp = `${MISSIONS_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     try {
         fs.writeFileSync(tmp, JSON.stringify(updated, null, 2), "utf8");
