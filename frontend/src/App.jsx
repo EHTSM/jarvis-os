@@ -204,12 +204,17 @@ const MORE_TABS = [
   // ── Account & Setup
   { id: "success",    label: "Getting Started",    group: "Account"      },
   { id: "billing",    label: "Billing",            group: "Account", alias: "finance" },
-  { id: "settings",   label: "Settings",           group: "Account", alias: "notification notifications" },
+  // A.13 benchmark recovery: Settings hosts many real sub-surfaces (API
+  // Tokens, Audit Log, Policies, Sessions, Devices, Compliance, Governance)
+  // that were undiscoverable by their own names — searching "api token",
+  // "webhook" or "audit" returned zero hits even though each exists. Alias
+  // only; no new UI, no new backend.
+  { id: "settings",   label: "Settings",           group: "Account", alias: "notification notifications api token tokens webhook audit log policy policies session sessions device devices compliance governance security sso scim" },
   { id: "help",       label: "Help & Guides",      group: "Account", alias: "shortcut shortcuts keyboard" },
   { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
   { id: "overview",   label: "Overview",           group: "Account"      },
   // ── Operations
-  { id: "workflowautomation", label: "Workflow Automation", group: "Operations" },
+  { id: "workflowautomation", label: "Workflow Automation", group: "Operations", alias: "rule rules trigger triggers zapier recipe automation builder" },
   { id: "analyticscenter", label: "Analytics",       group: "Operations", alias: "kpi kpis" },
   { id: "activity",   label: "History",            group: "Operations", alias: "logs" },
   { id: "reports",    label: "Reports",            group: "Operations"   },
@@ -282,23 +287,23 @@ const MORE_TABS = [
   { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth", alias: "brand brand kit" },
-  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing campaign" },
-  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page" },
+  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing campaign email sms push broadcast audience segment newsletter whatsapp message messaging chat outreach" },
+  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page docs documentation doc blog article keyword calendar" },
   { id: "distribution",label:"Distribution",       group: "Growth"       },
   { id: "referral",   label: "Referral Engine",    group: "Growth"       },
   { id: "partners",   label: "Partners",           group: "Growth"       },
   { id: "aicost",     label: "AI Costs",           group: "Growth"       },
   { id: "aiusage",    label: "AI Orchestration",   group: "Growth"       },
   // ── Enterprise & Platform
-  { id: "business",   label: "CRM",                group: "Enterprise"   },
+  { id: "business",   label: "CRM",                group: "Enterprise", alias: "deal deals opportunity account customer" },
   { id: "companies",  label: "Companies",          group: "Enterprise", alias: "business company" },
   { id: "team",       label: "Team",               group: "Enterprise", alias: "invite employee" },
-  { id: "integrations",label:"Integrations",       group: "Enterprise", alias: "gitlab github bitbucket" },
+  { id: "integrations",label:"Integrations",       group: "Enterprise", alias: "gitlab github bitbucket webhook api connector oauth developer platform" },
   { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
   { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
   { id: "legalos",    label: "Legal OS",           group: "Enterprise"   },
-  { id: "supportos",  label: "Support",            group: "Enterprise"   },
-  { id: "customersuccess", label: "Customer Success", group: "Enterprise" },
+  { id: "supportos",  label: "Support",            group: "Enterprise", alias: "ticket tickets helpdesk help desk inbox escalation" },
+  { id: "customersuccess", label: "Customer Success", group: "Enterprise", alias: "churn retention health score onboarding csm" },
   { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
   { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
   { id: "orgadmin",   label: "Organization",       group: "Enterprise"   },
