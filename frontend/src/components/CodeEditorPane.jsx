@@ -238,6 +238,26 @@ const TabBar = memo(function TabBar({ tabs, activeId, onSelect, onClose, onPin }
           key={tab.id}
           role="tab"
           aria-selected={tab.id === activeId}
+          /* B19.2.3: these role="tab" nodes had no tabIndex and no key handler,
+             so the tab bar was unreachable by keyboard. Roving tabindex per the
+             WAI-ARIA tabs pattern: only the active tab is in the tab order;
+             Arrow keys move between tabs, Home/End jump to the ends. */
+          tabIndex={tab.id === activeId ? 0 : -1}
+          data-tab-id={tab.id}
+          onKeyDown={e => {
+            const i = tabs.findIndex(t => t.id === tab.id);
+            let next = null;
+            if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+            else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+            else if (e.key === 'Home') next = tabs[0];
+            else if (e.key === 'End') next = tabs[tabs.length - 1];
+            else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(tab.id); return; }
+            if (!next) return;
+            e.preventDefault();
+            onSelect(next.id);
+            const el = e.currentTarget.parentElement?.querySelector(`[data-tab-id="${next.id}"]`);
+            if (el) el.focus();
+          }}
           className={[
             'cep-tab',
             tab.id === activeId ? 'cep-tab--active' : '',

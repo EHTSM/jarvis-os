@@ -1375,8 +1375,16 @@ const handleQueue = async () => {
             aria-label="Command or task input"
             aria-describedby="cmd-risk-hint"
           />
-          {isDangerous && (
-            <div style={{
+          {/* B19.2.3: the input's aria-describedby="cmd-risk-hint" pointed at
+              an element that never existed, so assistive tech announced no risk
+              context at all. This is that element. It is always rendered (empty
+              when the command is safe) so the reference is never dangling, and
+              role="status" announces the warning when it appears. */}
+          <div
+            id="cmd-risk-hint"
+            role="status"
+            aria-live="polite"
+            style={isDangerous ? {
               position: "absolute",
               right: 8,
               top: 32,
@@ -1387,10 +1395,10 @@ const handleQueue = async () => {
               padding: "2px 6px",
               borderRadius: 2,
               border: "1px solid var(--op-red)"
-            }}>
-              🚨 DANGER
-            </div>
-          )}
+            } : undefined}
+          >
+            {isDangerous ? "🚨 DANGER — this command is destructive" : ""}
+          </div>
           {/* inline repo path suggestions — surfaces when input contains a path-like token */}
           {(() => {
             if (!repoSearch || !debouncedInput.trim()) return null;
