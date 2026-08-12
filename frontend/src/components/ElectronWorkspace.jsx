@@ -283,7 +283,7 @@ const BottomTabBtn = memo(function BottomTabBtn({ active, onClick, icon, label, 
         <span
           className="ew-dock-btn"
           title="Dock to floating window"
-          onClick={(e) => { e.stopPropagation(); onDock(); }}
+          {...clickableProps((e) => { e.stopPropagation(); onDock(); })}
         >⧉</span>
       )}
     </button>
@@ -454,7 +454,7 @@ const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, rec
             <div
               key={item.id}
               className={`ew-qs-item${i === cursor ? ' ew-qs-item--active' : ''}`}
-              onClick={() => { onSelect(item); onClose(); }}
+              {...clickableProps(() => { onSelect(item); onClose(); })}
               onMouseEnter={() => setCursor(i)}
             >
               <span className="ew-qs-item__icon">{item.icon}</span>

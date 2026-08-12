@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
 import { getAutonomyStatus, getAutonomyScore, getAutonomyHistory, listOoplixTasks } from "../phase20Api";
 import "./OoplixRunsOoplixCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // Real /p20/ooplix/tasks data only covers `marketing` and `support` task
 // types (content/seo tasks route to "marketing" domain here since both feed
@@ -223,7 +224,7 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
 
             <div className="oro-domain-cards">
               {DOMAINS.map(d=>(
-                <div key={d.id} className="oro-domain-card" onClick={()=>{setActiveDomain(d.id);setSection("flow");}}>
+                <div key={d.id} className="oro-domain-card" {...clickableProps(()=>{setActiveDomain(d.id);setSection("flow");})}>
                   <div className="oro-domain-icon" style={{background:d.color+"22",color:d.color}}>{d.icon}</div>
                   <div className="oro-domain-info">
                     <span className="oro-domain-name">{d.label}</span>

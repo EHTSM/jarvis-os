@@ -2133,7 +2133,7 @@ function WorkflowCard({ item, isFav, isTrending, isNew, onToggleFav, onSelect, o
       <div className="bap-card-desc">{item.description}</div>
       <div className="bap-card-tags">
         {tags.map(tag => (
-          <span key={tag} className="bap-inline-tag" onClick={e=>{e.stopPropagation();onTagClick(tag);}}>#{tag}</span>
+          <span key={tag} className="bap-inline-tag" {...clickableProps(e=>{e.stopPropagation();onTagClick(tag);})}>#{tag}</span>
         ))}
       </div>
       <div className="bap-card-footer">
@@ -3706,7 +3706,7 @@ function HistoryView({ history, loading, running, sysHealth, onReplay, onRefresh
             const lastFailExplain = lastFail ? explainError(lastFail.error) : null;
             return (
               <div key={wf.name} className="bap-hist-wf-group">
-                <div className="bap-hist-wf-header" onClick={()=>setExpanded(isOpen?null:`wf:${wf.name}`)}>
+                <div className="bap-hist-wf-header" {...clickableProps(()=>setExpanded(isOpen?null:`wf:${wf.name}`))}>
                   <div className="bap-hist-wf-header-left">
                     <span className="bap-hist-wf-name">{wf.name}</span>
                     {/* Pass-rate bar */}

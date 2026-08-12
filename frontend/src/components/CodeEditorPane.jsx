@@ -269,7 +269,7 @@ const TabBar = memo(function TabBar({ tabs, activeId, onSelect, onClose, onPin }
           title={tab.path}
         >
           {tab.pinned && (
-            <span className="cep-tab__pin" title="Unpin" onClick={e => { e.stopPropagation(); onPin(tab.id, false); }}>
+            <span className="cep-tab__pin" title="Unpin" {...clickableProps(e => { e.stopPropagation(); onPin(tab.id, false); })}>
               ◈
             </span>
           )}
@@ -1236,7 +1236,7 @@ export default function CodeEditorPane({
                       <div
                         key={i}
                         className="cep-refs__row"
-                        onClick={() => { openFile(r.filePath); setTimeout(() => jumpToLine(r.line), 200); }}
+                        {...clickableProps(() => { openFile(r.filePath); setTimeout(() => jumpToLine(r.line), 200); })}
                       >
                         <span className="cep-refs__file">{r.file}</span>
                         <span className="cep-refs__line">:{r.line}</span>

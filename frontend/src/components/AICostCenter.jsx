@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
 import { _fetch } from "../_client";
 import "./AICostCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const PROVIDERS = [
   {
@@ -247,7 +248,7 @@ export default function AICostCenter({ onNavigate }) {
                 const reqs = p.models.reduce((a,m)=>a+m.requests,0);
                 const toks = p.models.reduce((a,m)=>a+m.tokens,0);
                 return (
-                  <div key={p.id} className="acc-prov-row" onClick={()=>{setSection("providers");setSelProvider(p.id);}}>
+                  <div key={p.id} className="acc-prov-row" {...clickableProps(()=>{setSection("providers");setSelProvider(p.id);})}>
                     <div className="acc-prov-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</div>
                     <div className="acc-prov-info">
                       <span className="acc-prov-name">{p.name}</span>

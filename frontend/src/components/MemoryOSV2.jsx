@@ -685,7 +685,7 @@ function TabSearch({ allEntries }) {
                 <div
                   key={i}
                   className="mov2-recent-row"
-                  onClick={() => { setQuery(r.q); doSearch(r.q); }}
+                  {...clickableProps(() => { setQuery(r.q); doSearch(r.q); })}
                 >
                   <span className="mov2-recent-q">🕐 {r.q}</span>
                   <span className="mov2-recent-meta">{r.ts}</span>

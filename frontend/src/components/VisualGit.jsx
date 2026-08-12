@@ -723,7 +723,7 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
         <div
           key={i}
           className={`vg-mission-commit${selected === i ? ' vg-mission-commit--selected' : ''}`}
-          onClick={() => { setSelected(i); viewDiff(h.commitHash); }}
+          {...clickableProps(() => { setSelected(i); viewDiff(h.commitHash); })}
         >
           <div className="vg-mission-commit__header">
             <span className="vg-mission-commit__hash">{(h.commitHash || '').slice(0, 7)}</span>

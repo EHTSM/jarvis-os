@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { safeDispatch as _apiDispatch, queueTask } from "../../api";
 import PatchApprovalPanel from "./PatchApprovalPanel";
+import { clickableProps } from "../../hooks/useClickableProps";
 import { useProductivityAnalytics, generateSessionNarrative } from "../../hooks/useProductivityAnalytics"; // Phase 329
 import { useExecutionMemory } from "../../hooks/useExecutionMemory"; // Phase 242
 import { useWorkflowAssistant } from "../../hooks/useWorkflowAssistant"; // Phase 243 + 266
@@ -1132,7 +1133,7 @@ const handleQueue = async () => {
           {dispatchHist.map((h, i) => (
             <div
               key={i}
-              onClick={() => { setInput(h.cmd); setShowHistory(false); }}
+              {...clickableProps(() => { setInput(h.cmd); setShowHistory(false); })}
               title={h.cmd}
               className="op-hist-entry"
             >

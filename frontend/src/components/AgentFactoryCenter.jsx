@@ -4,6 +4,7 @@ import { listManagedAgents, createManagedAgent, getAgentFactoryStats } from "../
 import { getPlugins, getCapabilities, getCapabilityMap, getTemplates, getManifest } from "../phase26Api";
 import EmptyState from "./EmptyState";
 import "./AgentFactoryCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const KEY = "ooplix_agent_factory_v1";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -135,7 +136,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       <div className="afc-section-title">Agent Templates</div>
       <div className="afc-templates">
         {TEMPLATES.map(t => (
-          <div key={t.id} className="afc-tmpl-card" onClick={() => { setForm({ name: t.name, template: t.id, model: "claude-sonnet-4-6", description: t.desc }); setModal("create"); }}>
+          <div key={t.id} className="afc-tmpl-card" {...clickableProps(() => { setForm({ name: t.name, template: t.id, model: "claude-sonnet-4-6", description: t.desc }); setModal("create"); })}>
             <div className="afc-tmpl-icon">{t.icon}</div>
             <div className="afc-tmpl-name">{t.name}</div>
             <div className="afc-tmpl-desc">{t.desc}</div>
