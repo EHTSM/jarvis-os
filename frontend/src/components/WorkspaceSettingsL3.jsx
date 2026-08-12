@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { _fetch } from "../_client";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Shared panel constants ────────────────────────────────────────
 const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
@@ -35,6 +36,8 @@ function ExtRuntimePanel() {
   const [detail,  setDetail]  = useState(null);
   const [loadForm, setLoadForm] = useState(false);
   const [loadOpts, setLoadOpts] = useState({ extId: "", hooks: "", subscriptions: "", restartPolicy: "on_crash" });
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setDetail(null));
 
   const reload = () => {
     setLoading(true); setError(null);

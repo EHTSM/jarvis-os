@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { _fetch } from '../_client';
 import './BetaChecklist.css';
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Checklist definition ──────────────────────────────────────────────────────
 const SECTIONS = [
@@ -140,6 +141,8 @@ export default function BetaChecklist({ onNavigate }) {
   const [feedbackText,  setFeedbackText]  = useState('');
   const [feedbackSent,  setFeedbackSent]  = useState(false);
   const [feedbackSending, setFeedbackSending] = useState(false);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setFeedbackOpen(false));
 
   const runAll = useCallback(async () => {
     setRunning(true);

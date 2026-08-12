@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import "./KnowledgeCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Persistence ───────────────────────────────────────────────────────
 const DOCS_KEY = "ooplix_knowledge_docs";
@@ -77,6 +78,8 @@ function AddDocModal({ collections, onAdd, onClose }) {
   const [type, setType] = useState("pdf");
   const [col,  setCol]  = useState(collections[0]?.name || "product");
   const [tags, setTags] = useState("");
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -8,6 +8,7 @@ import {
 } from "./operatorApi";
 import { useIntervalCleanup } from "../../hooks/useResourceManager";
 import "./MissionEngine.css";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 
 const TICK_MS = 6_000;
 
@@ -159,6 +160,8 @@ export default function MissionEngine() {
   const [creating,     setCreating]     = useState(false);
   const [execMsg,      setExecMsg]      = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
 
   const textRef = useRef(null);
 

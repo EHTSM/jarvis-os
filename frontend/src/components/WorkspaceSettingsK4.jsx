@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── K4 Governance helpers ─────────────────────────────────────────
 const RISK_COLOR  = { critical: "var(--error)", high: "#ff6b35", medium: "var(--warning)", low: "var(--success)" };
@@ -247,6 +248,8 @@ function RiskMatrixPanel() {
   const [editing, setEditing] = useState(null);
   const [toast,   setToast]   = useState(null);
   const [error,   setError]   = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setEditing(null));
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 

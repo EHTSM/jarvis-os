@@ -7,6 +7,7 @@ import { getOpsData, getHealStatus } from "../telemetryApi";
 import { startCycle, listCycles, cycleStats, listAgents, getAgentHistory } from "../phase18Api";
 import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -493,6 +494,8 @@ function TabRunning({ addToast }) {
   const [stopping, setStopping] = useState(false);
   const [elapsed,  setElapsed]  = useState({});
   const [logItem,  setLogItem]  = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setLogItem(null));
   const timerRef = useRef(null);
 
   useEffect(() => {

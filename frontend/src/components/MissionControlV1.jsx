@@ -8,6 +8,7 @@ import { getBillingStatus } from "../billingApi";
 import { _fetch } from "../_client";
 import MissionOrchestratorPanel from "./MissionOrchestratorPanel.jsx";
 import "./MissionControlV1.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const REFRESH_INTERVAL = 30_000;
 
@@ -859,6 +860,8 @@ export default function MissionControlV1({ onNavigate }) {
   // "—" from an empty/absent value otherwise, and every MetricCard used to
   // hardcode status="ok" regardless of whether its own source succeeded).
   const [failed, setFailed] = useState({});
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setStopConfirm(false));
 
   const load = useCallback(async () => {
     try {

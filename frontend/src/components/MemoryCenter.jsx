@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listMemoryNodes, searchMemory, saveMemoryNode, archiveMemoryNode, memoryStats } from "../phase18Api";
 import "./MemoryCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Persistence ───────────────────────────────────────────────────────
 const MEM_KEY = "ooplix_memory_entries";
@@ -114,6 +115,8 @@ export default function MemoryCenter({ onNavigate }) {
   const [selected,    setSelected]    = useState(null);
   const [toast,       setToast]       = useState(null);
   const [apiError,    setApiError]    = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setEditing(null));
 
   useEffect(() => { track.event("memory_center_viewed"); }, []);
 

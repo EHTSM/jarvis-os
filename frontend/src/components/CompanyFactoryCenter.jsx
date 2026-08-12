@@ -8,6 +8,7 @@ import {
 } from "../companyFactoryApi";
 import "./IntegrationCenter.css";
 import "./CompanyFactoryCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const STAGE_COLOR = {
   planning:    "var(--text-faint)",
@@ -78,6 +79,8 @@ function CreateCompanyModal({ templates, onClose, onCreated }) {
   const [templateId, setTemplateId] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
 
   const submit = useCallback(async () => {
     if (!name.trim() && !idea.trim()) { setErr("Provide a name or a one-line idea."); return; }

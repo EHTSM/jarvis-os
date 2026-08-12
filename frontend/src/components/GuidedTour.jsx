@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./GuidedTour.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const TOUR_KEY = "ooplix_tour_done";
 
@@ -64,6 +65,8 @@ export default function GuidedTour({ onFinish }) {
   const [step,    setStep]    = useState(0);
   const [rect,    setRect]    = useState(null);
   const [visible, setVisible] = useState(false);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, skip);
 
   const current = STEPS[step];
 

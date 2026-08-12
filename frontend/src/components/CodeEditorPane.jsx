@@ -238,7 +238,7 @@ const TabBar = memo(function TabBar({ tabs, activeId, onSelect, onClose, onPin }
           key={tab.id}
           role="tab"
           aria-selected={tab.id === activeId}
-          /* B19.2.3: these role="tab" nodes had no tabIndex and no key handler,
+          /* B19.2.3: these tab nodes had no tabIndex and no key handler,
              so the tab bar was unreachable by keyboard. Roving tabindex per the
              WAI-ARIA tabs pattern: only the active tab is in the tab order;
              Arrow keys move between tabs, Home/End jump to the ends. */

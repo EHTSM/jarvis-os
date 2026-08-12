@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── L2 Marketplace Panels ─────────────────────────────────────────
 const STAR_COLOR = "#f5a623";
@@ -68,6 +69,8 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   const [newRating, setNewRating] = useState(5);
   const [newBody, setNewBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
 
   useEffect(() => {
     if (!plugin) return;

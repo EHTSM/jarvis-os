@@ -4,6 +4,7 @@ import { listAgents } from "../phase18Api";
 import { listManagedAgents } from "../phase20Api";
 import { getWorkforceAgents } from "../workforceOSApi";
 import "./AgentRegistryCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const REG_KEY = "ooplix_agent_registry_v2";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -205,6 +206,8 @@ function AgentDetail({ agent, onClone, onArchive, onToggle }) {
 
 function CreateModal({ onSave, onClose }) {
   const [form, setForm] = useState({ name: "", type: "support", model: "claude-sonnet-4-6", description: "", capabilities: "", tools: "", permissions: "" });
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
   const handleSubmit = e => {
     e.preventDefault();
     if (!form.name.trim()) return;
