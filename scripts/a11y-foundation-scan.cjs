@@ -373,8 +373,16 @@ for (const file of files) {
     const isDialogOverlay = roleVal === 'dialog' || roleVal === 'alertdialog' || wrapsADialog;
     const isStopPropagationOnly = /onClick\s*=\s*\{\s*(\(?\s*e\s*\)?|\(\s*\))\s*=>\s*e?\.?stopPropagation\(\)\s*\}/.test(raw)
       || /onClick\s*=\s*\{\s*\(\s*e\s*\)\s*=>\s*e\.stopPropagation\(\)\s*\}/.test(raw);
+    // B19.3: an element spreading clickableProps()/overlayProps() already
+    // carries the role, tabIndex and key handler those helpers return. The
+    // identifier `onClick` also appears as the ARGUMENT (`clickableProps(onClick)`),
+    // which `has(raw,'onClick')` matched as though it were the attribute —
+    // reporting accessible elements as keyboard traps.
+    const usesA11yHelper = /\{\s*\.\.\.\s*(clickableProps|overlayProps)\s*\(/.test(raw);
+    // The attribute form specifically: `onClick=` rather than a bare mention.
+    const hasOnClickAttr = /\bonClick\s*=/.test(raw);
     if ((lower === 'div' || lower === 'span' || lower === 'li' || lower === 'tr' || lower === 'td')
-        && has(raw, 'onClick') && !isDialogOverlay && !isStopPropagationOnly) {
+        && hasOnClickAttr && !usesA11yHelper && !isDialogOverlay && !isStopPropagationOnly) {
       const isInteractiveRole = roleVal && roleVal !== 'presentation' && roleVal !== 'none';
       const hasTab = has(raw, 'tabIndex');
       const hasKey = has(raw, 'onKeyDown') || has(raw, 'onKeyPress') || has(raw, 'onKeyUp');

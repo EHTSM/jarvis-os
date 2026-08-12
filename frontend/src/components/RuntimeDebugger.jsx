@@ -90,7 +90,7 @@ function APIMonitor() {
               <tr
                 key={i}
                 className={`rd-table-row${selected === i ? ' rd-table-row--selected' : ''}`}
-                onClick={() => setSelected(i === selected ? null : i)}
+                {...clickableProps(() => setSelected(i === selected ? null : i))}
               >
                 <td><span className={`rd-method rd-method--${(r.method||'GET').toLowerCase()}`}>{r.method}</span></td>
                 <td className="rd-path">{r.path}</td>

@@ -988,7 +988,10 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
                 <span
                   style={{ fontSize: 7, color: "var(--op-amber)", opacity: 0.8, cursor: "pointer" }}
                   title="Analysis is >6h old — click to re-analyze"
-                  onClick={e => { e.stopPropagation(); analyze?.(); }}
+                  {...clickableProps(
+                    e => { e.stopPropagation(); analyze?.(); },
+                    { label: "Re-analyze — analysis is over 6 hours old" },
+                  )}
                 >⟳ stale</span>
               )}
             </div>
