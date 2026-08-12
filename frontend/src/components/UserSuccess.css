@@ -62,7 +62,7 @@
 .us-section-hdr   { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .us-section-title { font-size: 13px; font-weight: 700; color: var(--us-text); flex: 1; }
 
-.us-btn { background: var(--us-accent); border: none; border-radius: 5px; color: #fff; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
+.us-btn { background: var(--us-accent); border: none; border-radius: 5px; color: var(--on-info); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
 .us-btn:hover    { opacity: 0.85; }
 .us-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .us-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--us-border); border-radius: 4px; color: var(--us-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }

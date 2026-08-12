@@ -280,7 +280,7 @@
   background:  var(--do-accent);
   border:      none;
   border-radius: 5px;
-  color:       #fff;
+  color: var(--on-accent);
   cursor:      pointer;
   padding:     6px 14px;
   font-size:   12px;

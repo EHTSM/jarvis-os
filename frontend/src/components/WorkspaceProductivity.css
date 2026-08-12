@@ -36,7 +36,7 @@
 .wp-btn { padding: 4px 12px; border-radius: 4px; border: 1px solid #374151; background: var(--surface-raised); color: var(--text-dim); font-size: 12px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
 .wp-btn:hover { background: var(--surface-hover); color: #e5e7eb; }
 .wp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.wp-btn--primary { background: #059669; border-color: #059669; color: #fff; }
+.wp-btn--primary { background: var(--success); border-color: #059669; color: var(--on-success); }
 .wp-btn--primary:hover { background: var(--success); }
 .wp-btn--green   { background: #05271820; border-color: #059669; color: #34d399; }
 .wp-btn--green:hover { background: #052e16; }

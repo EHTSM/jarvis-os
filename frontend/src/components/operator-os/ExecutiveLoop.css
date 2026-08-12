@@ -129,7 +129,7 @@
 
 .el-phase-arrow {
   font-size: 14px;
-  color: #1e2130;
+  color: var(--text-faint);
   flex-shrink: 0;
   transition: color 0.2s;
 }

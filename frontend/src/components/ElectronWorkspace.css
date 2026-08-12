@@ -646,8 +646,10 @@
   min-width: 14px;
   height: 14px;
   padding: 0 3px;
-  background: #f97316;
-  color: #fff;
+  /* B19.2.2: white on this orange measured 2.80:1. The fill is a notification
+     accent, so it keeps its hue and takes the dark on-fill label instead. */
+  background: var(--warning);
+  color: var(--on-warning);
   font-size: 9px;
   font-weight: 700;
   border-radius: 7px;

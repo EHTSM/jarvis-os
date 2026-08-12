@@ -47,7 +47,10 @@
   /* ── Typography ── */
   --op-text:         #e3ebf5;
   --op-text2:        #98aac2;
-  --op-text3:        #5c6e88;
+  /* B19.2.2: was #5c6e88 — 3.88:1 on --bg, below AA. This token carries real
+     content (timestamps, section labels, session age), so it must clear 4.5.
+     Hue preserved; lightness raised. Now 4.93:1. */
+  --op-text3:        #6b7f9c;
   --op-text-soft:    #c8d4df;
   --op-text-xs:      8px;
   --op-text-sm:      9px;
@@ -3412,7 +3415,7 @@ body.op-long-session .op-notif-item {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   padding: 2px 0 0 2px;
   user-select: none;
 }
@@ -3486,7 +3489,7 @@ body.op-long-session .op-notif-item {
 }
 .op-table th {
   text-align: left;
-  color: rgba(145,163,184,0.6);
+  color: var(--op-text3);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -3552,7 +3555,7 @@ body.op-long-session .op-notif-item {
 /* Long-session: workspace continuity badge */
 .op-session-age {
   font-size: 8px;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   letter-spacing: 0.04em;
 }
 
@@ -3792,7 +3795,7 @@ body.op-long-session .op-notif-item {
 /* Listener leak indicator: operational safety signal */
 .op-listener-count {
   font-size: 8px;
-  color: rgba(145,163,184,0.4);
+  color: var(--op-text3);
   font-variant-numeric: tabular-nums;
 }
 
@@ -3923,7 +3926,7 @@ body.op-animation-budget-exhausted .op-panel[data-loaded="true"] {
 .op-workflow-body .op-field-label {
   font-size: 8px;
   letter-spacing: 0.12em;
-  color: rgba(145,163,184,0.5);
+  color: var(--op-text3);
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -7465,7 +7468,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   padding: 0 2px;
   margin-bottom: -2px;
 }
@@ -7590,7 +7593,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.42);
+  color: var(--op-text3);
   margin-bottom: 8px;
 }
 
@@ -7616,7 +7619,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.40);
+  color: var(--op-text3);
   padding: 8px 0 4px;
   margin-bottom: 2px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -7690,7 +7693,7 @@ body.op-long-session .op-badge.running {
   line-height: 1;
 }
 
-.op-sidebar-onboard-dismiss:hover { color: rgba(145,163,184,0.65); }
+.op-sidebar-onboard-dismiss:hover { color: var(--op-text3); }
 
 /* ── [6] Demo + showcase quality ──────────────────────────────────────── */
 
@@ -7710,7 +7713,7 @@ body.op-long-session .op-badge.running {
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.38);
+  color: var(--op-text3);
   font-weight: 600;
   line-height: 1;
 }

@@ -82,8 +82,8 @@
 }
 
 .cdialog-confirm {
-  background: #7c6af7;
-  color: #fff;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: #7c6af7;
 }
 

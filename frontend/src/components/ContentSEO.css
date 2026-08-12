@@ -118,7 +118,7 @@
 .cseo-check-label { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--cseo-muted); cursor: pointer; white-space: nowrap; }
 
 /* ── Buttons ── */
-.cseo-btn     { background: var(--cseo-accent); color: #fff; border: none; border-radius: 4px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.cseo-btn     { background: var(--cseo-accent); color: var(--on-accent); border: none; border-radius: 4px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
 .cseo-btn:hover    { background: #8d7fff; }
 .cseo-btn:disabled { background: #444; cursor: default; }
 .cseo-btn-sm  { background: none; border: 1px solid var(--cseo-border); color: var(--cseo-muted); border-radius: 4px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: inherit; white-space: nowrap; }

@@ -1,13 +1,15 @@
 /* Production Wiring Sprint 2 — ProductionWiring2.css */
 :root {
-  --pw2-bg:      #09090c;
-  --pw2-surface: #101015;
-  --pw2-border:  #1a1a24;
-  --pw2-text:    #e0e0ea;
-  --pw2-muted:   #5a5a72;
-  --pw2-accent:  #34d399; /* emerald */
-  --pw2-green:   #22c55e;
-  --pw2-red:     #ef4444;
+  /* B19.2.2: private dark palette aliased onto the real tokens —
+     --pw2-muted (#5a5a72) measured 2.52:1 on --bg and never themed. */
+  --pw2-bg:      var(--bg);
+  --pw2-surface: var(--surface);
+  --pw2-border:  var(--border);
+  --pw2-text:    var(--text);
+  --pw2-muted:   var(--text-dim);
+  --pw2-accent:  var(--accent2);
+  --pw2-green:   var(--success);
+  --pw2-red:     var(--danger);
   --pw2-yellow:  #f59e0b;
   --pw2-blue:    #60a5fa;
   --pw2-purple:  #a78bfa;

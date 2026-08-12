@@ -108,7 +108,7 @@
 .fo-tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 
 /* buttons */
-.fo-btn { background: var(--fo-accent); border: none; border-radius: 5px; color: #fff; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
+.fo-btn { background: var(--fo-accent); border: none; border-radius: 5px; color: var(--on-accent); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
 .fo-btn:hover    { opacity: 0.85; }
 .fo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .fo-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--fo-border); border-radius: 4px; color: var(--fo-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }

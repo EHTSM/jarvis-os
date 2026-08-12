@@ -156,7 +156,7 @@
 }
 .aipp-btn:hover   { background: var(--surface-hover); color: #e5e7eb; }
 .aipp-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
-.aipp-btn--primary{ background: #059669; border-color: #059669; color: #fff; }
+.aipp-btn--primary{ background: var(--success); border-color: #059669; color: var(--on-success); }
 .aipp-btn--primary:hover{ background: var(--success); }
 .aipp-btn--green  { background: #05271820; border-color: #059669; color: #34d399; }
 .aipp-btn--green:hover{ background: #052e16; }

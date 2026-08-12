@@ -46,18 +46,63 @@ const perFile = {};
 for (const f of files) {
   const src = fs.readFileSync(f, 'utf8');
   let n = 0;
+
+  /**
+   * Local alias map for this file: `--do-accent: var(--accent)` means a fill of
+   * --do-accent is really --accent, so its label needs --on-accent. Also
+   * resolves aliases still written as the brand literal.
+   */
+  const LITERAL_ROLE = {
+    '#7c6fff': '--accent',  '#7c6af7': '--accent',  '#6152ff': '--accent',
+    '#4ecdc4': '--accent2', '#22c55e': '--success', '#52d68a': '--success',
+    '#059669': '--success', '#10b981': '--success', '#ef4444': '--danger',
+    '#f55b5b': '--danger',  '#f59e0b': '--warning', '#f0b429': '--warning',
+    '#5dc8f5': '--info',    '#44a2ff': '--info',    '#3b82f6': '--info',
+  };
+  const aliases = {};
+  for (const m of src.matchAll(/(--[a-z0-9-]+)\s*:\s*var\((--[a-z0-9-]+)\)/gi)) {
+    aliases[m[1].toLowerCase()] = m[2].toLowerCase();
+  }
+  for (const m of src.matchAll(/(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{6})\b/gi)) {
+    const role = LITERAL_ROLE[m[2].toLowerCase()];
+    if (role) aliases[m[1].toLowerCase()] = role;
+  }
   // Walk rule blocks so background and colour are matched within one rule.
+  /** Brand/semantic fills still written as literals resolve to the same role. */
+  const LITERAL_FILL = {
+    '#7c6fff': '--accent',  '#7c6af7': '--accent',  '#6152ff': '--accent',
+    '#4ecdc4': '--accent2', '#22c55e': '--success', '#52d68a': '--success',
+    '#059669': '--success', '#10b981': '--success', '#ef4444': '--danger',
+    '#f55b5b': '--danger',  '#f59e0b': '--warning', '#f0b429': '--warning',
+    '#5dc8f5': '--info',    '#44a2ff': '--info',    '#3b82f6': '--info',
+  };
+
   const out = src.replace(/\{[^{}]*\}/g, block => {
-    const bg = /background(?:-color)?:\s*var\((--[a-z0-9-]+)/i.exec(block);
-    if (!bg) return block;
-    const pair = PAIRS.find(([fill]) => fill === bg[1].toLowerCase());
+    let role = null;
+    const bgVar = /background(?:-color)?:\s*var\((--[a-z0-9-]+)/i.exec(block);
+    // Component-local fill tokens (--do-accent, --cseo-accent …) alias onto a
+    // canonical role; resolve through the alias so their labels are covered too.
+    if (bgVar) role = aliases[bgVar[1].toLowerCase()] || bgVar[1].toLowerCase();
+    if (!role) {
+      const bgLit = /background(?:-color)?:\s*(#[0-9a-fA-F]{6})\b/i.exec(block);
+      if (bgLit) role = LITERAL_FILL[bgLit[1].toLowerCase()] || null;
+    }
+    if (!role) return block;
+    const pair = PAIRS.find(([fill]) => fill === role);
     if (!pair) return block;
-    return block.replace(/(^|[;{\s])color:\s*(#[0-9a-fA-F]{3,6})\s*(?=[;}])/g,
+    let next = block.replace(/(^|[;{\s])color:\s*(#[0-9a-fA-F]{3,6})\s*(?=[;}])/g,
       (m, lead, lit) => {
         if (!WHITE.test(lit)) return m;
         n++; total++;
         return `${lead}color: var(${pair[1]})`;
       });
+    // If the label was rewritten, the fill must theme with it — otherwise the
+    // pair splits again in the other theme.
+    if (next !== block && !bgVar) {
+      next = next.replace(/(background(?:-color)?):\s*#[0-9a-fA-F]{6}\b/i,
+        (_, prop) => `${prop}: var(${role})`);
+    }
+    return next;
   });
   if (n) {
     perFile[path.relative(ROOT, f)] = n;

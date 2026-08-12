@@ -1,7 +1,7 @@
 .terminal-panel {
   display: flex;
   flex-direction: column;
-  background: #0d0d0d;
+  background: var(--surface-base);
   border-radius: 6px;
   overflow: hidden;
   height: 100%;
@@ -38,8 +38,8 @@
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
 }
-.terminal-tab:hover { background: #1a1a1a; color: var(--text); }
-.terminal-tab--active { background: #0d0d0d; color: var(--success); }
+.terminal-tab:hover { background: var(--surface-hover); color: var(--text); }
+.terminal-tab--active { background: var(--surface-base); color: var(--success); }
 
 .terminal-tab__dot {
   width: 6px;
@@ -102,7 +102,7 @@
 }
 .terminal-panel__search-input {
   flex: 1;
-  background: #1a1a1a;
+  background: var(--surface-hover);
   border: 1px solid #374151;
   border-radius: 4px;
   padding: 4px 8px;

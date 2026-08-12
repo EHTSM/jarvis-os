@@ -207,7 +207,7 @@
 .ai-action-btn--green:hover { background: #052e16; color: #6ee7b7; }
 .ai-action-btn--gray { background: var(--surface-base); color: var(--text-dim); border-color: #1f2937; }
 .ai-action-btn--gray:hover { background: var(--surface-raised); color: var(--text-dim); }
-.ai-action-btn--primary { background: #059669; color: #fff; border-color: #059669; }
+.ai-action-btn--primary { background: var(--success); color: var(--on-success); border-color: #059669; }
 .ai-action-btn--primary:hover { background: var(--success); }
 
 /* Suggestions */
@@ -235,7 +235,7 @@
   cursor: pointer;
   transition: background 0.15s;
 }
-.ai-suggestion__header:hover { background: #1a1a1a; }
+.ai-suggestion__header:hover { background: var(--surface-hover); }
 
 .ai-suggestion__icon { font-size: 14px; flex-shrink: 0; }
 

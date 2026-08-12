@@ -140,7 +140,7 @@
   cursor: pointer; border: 1px solid; transition: background 0.15s, color 0.15s;
 }
 .ppp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.ppp-btn--apply  { background: #059669; border-color: #059669; color: #fff; }
+.ppp-btn--apply  { background: var(--success); border-color: #059669; color: var(--on-success); }
 .ppp-btn--apply:hover:not(:disabled) { background: var(--success); }
 .ppp-btn--mission { background: #1e3a5f30; border-color: #1d4ed8; color: #60a5fa; }
 .ppp-btn--mission:hover:not(:disabled) { background: #1e3a5f60; }

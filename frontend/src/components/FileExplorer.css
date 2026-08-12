@@ -167,7 +167,7 @@
   transition: color 0.15s, background 0.15s;
   white-space: nowrap;
 }
-.file-explorer__tab:hover { color: var(--text-dim); background: #1a1a1a; }
+.file-explorer__tab:hover { color: var(--text-dim); background: var(--surface-hover); }
 .file-explorer__tab--active { color: var(--success); border-bottom: 2px solid var(--success); }
 
 /* Search */
@@ -183,7 +183,7 @@
 
 .file-explorer__search-input {
   flex: 1;
-  background: #1a1a1a;
+  background: var(--surface-hover);
   border: 1px solid #374151;
   border-radius: 4px;
   padding: 5px 8px;
@@ -371,5 +371,5 @@
 .file-explorer__open-folder-btn:hover { background: rgba(59,130,246,0.28); }
 .file-explorer__no-project-hint {
   font-size: 11px;
-  color: #3f3f46;
+  color: var(--text-faint);
 }

@@ -1,15 +1,17 @@
 /* Production Wiring Sprint 1 — ProductionWiring.css */
 :root {
-  --pw-bg:      #0a0a0d;
-  --pw-surface: #111116;
-  --pw-border:  #1c1c26;
-  --pw-text:    #e2e2ea;
-  --pw-muted:   #666;
-  --pw-accent:  #818cf8; /* indigo */
-  --pw-green:   #22c55e;
-  --pw-red:     #ef4444;
-  --pw-yellow:  #f59e0b;
-  --pw-blue:    #60a5fa;
+  /* B19.2.2: private dark palette aliased onto the real tokens —
+     --pw-muted (#666) measured 2.79:1 on --bg and never themed. */
+  --pw-bg:      var(--bg);
+  --pw-surface: var(--surface);
+  --pw-border:  var(--border);
+  --pw-text:    var(--text);
+  --pw-muted:   var(--text-dim);
+  --pw-accent:  var(--accent);
+  --pw-green:   var(--success);
+  --pw-red:     var(--danger);
+  --pw-yellow:  var(--warning);
+  --pw-blue:    var(--info);
 }
 
 .pw-root { background: var(--pw-bg); color: var(--pw-text); min-height: 100%; font-family: "Inter", system-ui, sans-serif; font-size: 13px; }
@@ -69,7 +71,7 @@
 .pw-score-sub { font-size: 12px; color: var(--pw-text); }
 
 /* Buttons */
-.pw-btn    { background: var(--pw-accent); border: none; border-radius: 5px; color: #fff; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
+.pw-btn    { background: var(--pw-accent); border: none; border-radius: 5px; color: var(--on-accent); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
 .pw-btn:hover    { opacity: 0.85; }
 .pw-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pw-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--pw-border); border-radius: 4px; color: var(--pw-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }

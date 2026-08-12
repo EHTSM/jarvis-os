@@ -234,7 +234,7 @@
 .vg-btn { padding: 6px 14px; border-radius: 5px; font-size: 12px; cursor: pointer; border: 1px solid #374151; background: var(--surface-raised); color: var(--text-dim); transition: background 0.15s, color 0.15s; }
 .vg-btn:hover    { background: var(--surface-hover); color: #e5e7eb; }
 .vg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.vg-btn--primary { background: #059669; border-color: #059669; color: #fff; }
+.vg-btn--primary { background: var(--success); border-color: #059669; color: var(--on-success); }
 .vg-btn--primary:hover { background: var(--success); }
 .vg-btn-sm      { padding: 3px 10px; font-size: 11px; border-radius: 4px; border: 1px solid #374151; background: var(--surface-raised); color: var(--text-dim); cursor: pointer; transition: background 0.15s; }
 .vg-btn-sm:hover       { background: var(--surface-hover); color: #e5e7eb; }

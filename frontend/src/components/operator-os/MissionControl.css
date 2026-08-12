@@ -1,17 +1,19 @@
 /* ── MissionControl (Operator OS) ── */
 :root {
-  --mc2-bg:        #0a0c10;
-  --mc2-surface:   #0f1117;
-  --mc2-border:    rgba(255,255,255,0.07);
-  --mc2-border-hi: rgba(255,255,255,0.12);
-  --mc2-green:     #22c55e;
-  --mc2-green-dim: rgba(34,197,94,0.12);
-  --mc2-yellow:    #eab308;
-  --mc2-red:       #ef4444;
-  --mc2-blue:      #3b82f6;
-  --mc2-text:      #e2e8f0;
-  --mc2-muted:     #64748b;
-  --mc2-dim:       #1e2130;
+  /* B19.2.2: private dark palette aliased onto the real tokens — --mc2-muted
+     (#64748b) measured 3.28:1 on --bg and the surface never themed. */
+  --mc2-bg:        var(--bg);
+  --mc2-surface:   var(--surface);
+  --mc2-border:    var(--border);
+  --mc2-border-hi: var(--border-strong);
+  --mc2-green:     var(--success);
+  --mc2-green-dim: var(--success-muted);
+  --mc2-yellow:    var(--warning);
+  --mc2-red:       var(--danger);
+  --mc2-blue:      var(--info);
+  --mc2-text:      var(--text);
+  --mc2-muted:     var(--text-dim);
+  --mc2-dim:       var(--text-faint);
 }
 
 /* ── Root ── */
