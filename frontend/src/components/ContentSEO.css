@@ -128,7 +128,7 @@
 .cseo-sub-title { font-size: 10px; font-weight: 600; color: var(--cseo-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 5px; }
 
 /* ── Prompt box ── */
-.cseo-prompt-box      { margin-top: 12px; background: #0a0a10; border: 1px solid var(--cseo-accent); border-radius: 6px; padding: 12px 14px; }
+.cseo-prompt-box      { margin-top: 12px; background: var(--surface-base); border: 1px solid var(--cseo-accent); border-radius: 6px; padding: 12px 14px; }
 .cseo-prompt-system   { font-size: 10px; color: var(--cseo-muted); margin-bottom: 8px; }
 .cseo-prompt-body     { font-size: 11px; color: var(--cseo-text); white-space: pre-wrap; font-family: "JetBrains Mono", monospace; line-height: 1.5; max-height: 300px; overflow-y: auto; margin: 0; }
 
@@ -153,7 +153,7 @@
 .cseo-platform-len { font-size: 9px; color: inherit; opacity: 0.6; }
 
 /* ── Code ── */
-.cseo-code { font-family: "JetBrains Mono", monospace; font-size: 11px; background: #0a0a10; padding: 1px 5px; border-radius: 3px; color: var(--cseo-teal); }
+.cseo-code { font-family: "JetBrains Mono", monospace; font-size: 11px; background: var(--surface-base); padding: 1px 5px; border-radius: 3px; color: var(--cseo-teal); }
 
 /* ── Misc ── */
 .cseo-empty   { font-size: 12px; color: var(--cseo-muted); padding: 20px 0; text-align: center; }

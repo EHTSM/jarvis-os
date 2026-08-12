@@ -32,7 +32,7 @@
 .va-btn:hover { background: var(--surface-hover); color: #e5e7eb; }
 
 .va-canvas {
-  flex: 1; width: 100%; background: #070b12;
+  flex: 1; width: 100%; background: var(--surface-base);
   cursor: grab; user-select: none;
   min-height: 300px;
 }
@@ -45,7 +45,7 @@
 .va-node-detail__header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .va-node-detail__header strong { color: var(--text); font-size: 13px; }
 .va-node-type { font-size: 10px; background: var(--surface-raised); color: var(--text-dim); padding: 1px 6px; border-radius: 3px; }
-.va-node-detail__meta { margin: 0; padding: 6px; background: #070b12; border: 1px solid #1f2937; border-radius: 3px; font-family: monospace; font-size: 11px; color: var(--text-dim); overflow: auto; max-height: 100px; }
+.va-node-detail__meta { margin: 0; padding: 6px; background: var(--surface-base); border: 1px solid var(--border); border-radius: 3px; font-family: monospace; font-size: 11px; color: var(--text-dim); overflow: auto; max-height: 100px; }
 
 /* Health map */
 .va-health-map { display: flex; flex-direction: column; height: 100%; overflow: hidden; }

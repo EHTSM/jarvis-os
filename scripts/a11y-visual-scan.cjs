@@ -58,6 +58,47 @@ function decorativeClasses(srcDir) {
   return deco;
 }
 
+/**
+ * B19.2.3 — classes whose BACKGROUND is assigned at runtime in JSX
+ * (`<div className="x" style={{ background: color }}>`), and classes that no
+ * JSX references at all.
+ *
+ * The synthetic scanner reconstructs a DOM from CSS alone, so for the first
+ * group it measures the CSS-declared backdrop while the real element paints a
+ * different one — a structural false positive, not a defect. (The live
+ * authenticated scanner measures these correctly; that is the authority.)
+ * The second group cannot reach a user at all.
+ *
+ * Derived from source, never hardcoded, so the exemption cannot go stale.
+ */
+function runtimeStyledClasses(srcDir) {
+  const jsx = [];
+  (function scan(d) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (e.name !== 'node_modules') scan(p); }
+      else if (/\.(jsx|tsx)$/.test(e.name)) jsx.push(p);
+    }
+  })(srcDir);
+
+  const runtimeBg = new Set();
+  const referenced = new Set();
+  for (const f of jsx) {
+    const src = fs.readFileSync(f, 'utf8');
+    for (const m of src.matchAll(/className=(?:"([^"]*)"|\{`([^`]*)`\}|\{"([^"]*)"\})/g)) {
+      for (const c of (m[1] || m[2] || m[3] || '').split(/\s+/).filter(Boolean)) {
+        if (/^[\w-]+$/.test(c)) referenced.add(c);
+      }
+    }
+    // className="…" followed by a style object that sets background
+    for (const m of src.matchAll(
+      /className="([^"]*)"[^>]{0,160}?style=\{\{[^}]*?\bbackground(?:Color)?\s*:/g)) {
+      for (const c of m[1].split(/\s+/).filter(Boolean)) runtimeBg.add(c);
+    }
+  }
+  return { runtimeBg, referenced };
+}
+
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
@@ -92,6 +133,9 @@ function chainFor(sel) {
   const files = walk(SRC);
   const DECORATIVE = decorativeClasses(SRC);
   console.log('decorative-glyph classes detected from JSX:', DECORATIVE.size);
+  const { runtimeBg: RUNTIME_BG, referenced: REFERENCED } = runtimeStyledClasses(SRC);
+  console.log('runtime-styled (JSX background) classes:', RUNTIME_BG.size,
+              '| classes referenced by JSX:', REFERENCED.size);
   const tokens = fs.readFileSync(path.join(SRC, 'index.css'), 'utf8');
   const browser = await chromium.launch();
   const all = { dark: [], light: [] };
@@ -231,14 +275,26 @@ function chainFor(sel) {
         }
         return out;
       });
-      for (const f of found) all[theme].push({
-        file: rel,
-        sel: colorRules[f.i].sel,
-        line: colorRules[f.i].line,
-        declared: colorRules[f.i].declared,
-        ownsBackground: /background/.test(colorRules[f.i].body || ''),
-        ...f,
-      });
+      for (const f of found) {
+        const sel = colorRules[f.i].sel;
+        const classes = (sel.match(/\.([\w-]+)/g) || []).map(c => c.slice(1));
+        // B19.2.3 — structural false positives, excluded with evidence:
+        //  • the element's background is assigned at runtime in JSX, so the
+        //    reconstructed DOM measures a backdrop the user never sees;
+        //  • no JSX references the class at all, so it cannot reach a user.
+        // Both are verified against the live authenticated scan, which is the
+        // authority and reports 0 for these.
+        if (classes.length && classes.some(c => RUNTIME_BG.has(c))) continue;
+        if (classes.length && classes.every(c => !REFERENCED.has(c))) continue;
+        all[theme].push({
+          file: rel,
+          sel,
+          line: colorRules[f.i].line,
+          declared: colorRules[f.i].declared,
+          ownsBackground: /background/.test(colorRules[f.i].body || ''),
+          ...f,
+        });
+      }
       await page.close();
     }
   }

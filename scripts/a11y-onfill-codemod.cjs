@@ -32,8 +32,12 @@ const PAIRS = [
  * between a bright (dark-theme) and a darkened (light-theme) variant, so only
  * `--on-*` tracks it. Near-black values are the same bug as white.
  */
-const PINNED_LABEL = /^#(fff|ffffff|000|000000|0a0c14|06080e|06100a|120d02|05100f|04121a|0f0f13)$/i;
-const FIXED_DARK = /LandingPage\.css$|ShortcutsOverlay\.css$|PublicLaunch\.css$/;
+const PINNED_LABEL = /^#(fff|ffffff|000|000000|0a0c14|06080e|06100a|120d02|05100f|04121a|0f0f13|0f172a|06080f|0d1117|111827)$/i;
+// B19.2.3: PublicLaunch.css was removed from this list. It is NOT a fixed-dark
+// surface — it renders inside the themed app shell (ElectronWorkspace.jsx:1231)
+// as an ordinary tab, and merely carried a private palette. Excluding it hid 21
+// real findings. Only genuinely self-canvassing surfaces belong here.
+const FIXED_DARK = /LandingPage\.css$|ShortcutsOverlay\.css$/;
 
 const files = [];
 (function walk(d) {
@@ -95,7 +99,11 @@ for (const f of files) {
     if (!role) return block;
     const pair = PAIRS.find(([fill]) => fill === role);
     if (!pair) return block;
-    let next = block.replace(/(^|[;{\s])color:\s*(#[0-9a-fA-F]{3,6})\s*(?=[;}])/g,
+    // `color: white` / `color: black` are the same pinned-label bug spelled as
+    // CSS keywords rather than hex.
+    let next = block.replace(/(^|[;{\s])color:\s*(white|black)\s*(?=[;}])/gi,
+      (m, lead) => { n++; total++; return `${lead}color: var(${pair[1]})`; });
+    next = next.replace(/(^|[;{\s])color:\s*(#[0-9a-fA-F]{3,6})\s*(?=[;}])/g,
       (m, lead, lit) => {
         if (!PINNED_LABEL.test(lit)) return m;
         n++; total++;

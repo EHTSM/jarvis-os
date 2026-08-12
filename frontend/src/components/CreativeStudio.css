@@ -156,7 +156,7 @@
 .cs-asset-type-badge {
   font-size: 10px;
   background: var(--accent, #7c6af7);
-  color: white;
+  color: var(--on-accent);
   padding: 2px 6px;
   border-radius: 99px;
 }
@@ -226,7 +226,7 @@
   background: var(--accent, #7c6af7);
   border: none;
   border-radius: var(--radius-sm, 6px);
-  color: white;
+  color: var(--on-accent);
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;

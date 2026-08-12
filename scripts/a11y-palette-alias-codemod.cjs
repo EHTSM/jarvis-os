@@ -41,7 +41,11 @@ const ROLE = {
   purple: '--accent',
 };
 
-const FIXED_DARK = /LandingPage\.css$|ShortcutsOverlay\.css$|PublicLaunch\.css$/;
+// B19.2.3: PublicLaunch.css was removed from this list. It is NOT a fixed-dark
+// surface — it renders inside the themed app shell (ElectronWorkspace.jsx:1231)
+// as an ordinary tab, and merely carried a private palette. Excluding it hid 21
+// real findings. Only genuinely self-canvassing surfaces belong here.
+const FIXED_DARK = /LandingPage\.css$|ShortcutsOverlay\.css$/;
 
 /**
  * The design-system source of truth. Its :root block DEFINES the canonical

@@ -85,7 +85,7 @@
 .us-textarea { resize: vertical; min-height: 70px; width: 100%; box-sizing: border-box; display: block; margin-top: 8px; }
 .us-label  { font-size: 11px; color: var(--us-muted); white-space: nowrap; }
 
-.us-toast { background: rgba(6,182,212,.18); border: 1px solid rgba(6,182,212,.4); border-radius: 5px; color: var(--us-accent); font-size: 11px; padding: 4px 10px; font-weight: 600; }
+.us-toast { background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.4); border-radius: 5px; color: var(--us-accent); font-size: 11px; padding: 4px 10px; font-weight: 600; }
 
 .us-overall { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 .us-overall-score { font-size: 42px; font-weight: 800; line-height: 1; }

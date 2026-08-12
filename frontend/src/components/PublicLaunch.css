@@ -1,18 +1,24 @@
 /* OP-1 Ooplix Public Launch — PublicLaunch.css */
 :root {
-  --pl-bg:      #0a0a0d;
-  --pl-surface: #111116;
-  --pl-border:  #1c1c26;
-  --pl-text:    #e2e2ea;
-  --pl-muted:   #666;
-  --pl-accent:  #f59e0b;
-  --pl-green:   #22c55e;
-  --pl-teal:    #4ecdc4;
-  --pl-yellow:  #f59e0b;
-  --pl-red:     #ef4444;
-  --pl-orange:  #f97316;
-  --pl-blue:    #60a5fa;
-  --pl-purple:  #a78bfa;
+  /* B19.2.3: B19.2.2 excluded this file as a "fixed-dark marketing surface".
+     That was a MISCLASSIFICATION — PublicLaunch renders inside the themed app
+     shell (ElectronWorkspace.jsx:1231), as an ordinary tab. It simply carried
+     a private palette pinned to dark literals, so the whole surface ignored
+     the theme (--pl-muted #666 measured 2.79:1 on --bg in light mode).
+     Aliased onto the canonical tokens like every other private palette. */
+  --pl-bg:      var(--bg);
+  --pl-surface: var(--surface);
+  --pl-border:  var(--border);
+  --pl-text:    var(--text);
+  --pl-muted:   var(--text-dim);
+  --pl-accent:  var(--warning);
+  --pl-green:   var(--success);
+  --pl-teal:    var(--accent2);
+  --pl-yellow:  var(--warning);
+  --pl-red:     var(--danger);
+  --pl-orange:  var(--warning);
+  --pl-blue:    var(--info);
+  --pl-purple:  var(--accent);
 }
 
 .pl-root { background: var(--pl-bg); color: var(--pl-text); min-height: 100%; font-family: "Inter", system-ui, sans-serif; font-size: 13px; }
@@ -60,7 +66,7 @@
 .pl-check-item.critical { border-left: 3px solid rgba(245,158,11,.35); }
 .pl-check-item.done.critical { border-left: 3px solid var(--pl-green) !important; }
 .pl-check-box  { width: 16px; height: 16px; border: 1.5px solid var(--pl-border); border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 10px; }
-.pl-check-box.done { background: var(--pl-green); border-color: var(--pl-green); color: #000; }
+.pl-check-box.done { background: var(--pl-green); border-color: var(--pl-green); color: var(--on-success); }
 .pl-check-lbl  { font-size: 12px; font-weight: 500; color: var(--pl-text); flex: 1; }
 .pl-check-note { font-size: 10px; color: var(--pl-muted); margin-top: 2px; font-style: italic; }
 
@@ -99,7 +105,7 @@
 .pl-section-title { font-size: 13px; font-weight: 700; color: var(--pl-text); flex: 1; }
 
 /* Buttons */
-.pl-btn { background: var(--pl-accent); border: none; border-radius: 5px; color: #000; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
+.pl-btn { background: var(--pl-accent); border: none; border-radius: 5px; color: var(--on-warning); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
 .pl-btn:hover    { opacity: 0.85; }
 .pl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pl-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--pl-border); border-radius: 4px; color: var(--pl-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }
