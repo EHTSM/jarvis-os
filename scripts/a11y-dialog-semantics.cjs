@@ -44,6 +44,10 @@ const TARGETS = [
   // TeamWorkspace's title sits in a <form> nested inside the .tw-modal panel.
   ['components/WorkspaceSettingsK4.jsx',  'ws-modal k3-edit-modal', 'k3-modal-title',  'k3-modal-title'],
   ['components/TeamWorkspace.jsx',        'tw-modal',   'tw-invite-title',  'tw-invite-title'],
+  // Second pass — each heading verified in source before being cited here.
+  ['components/MemoryCenter.jsx',         'mc-modal',   'mc-form-heading',  'mc-form-heading'],
+  ['components/WorkspaceSettingsL2.jsx',  'ws-modal',   'l2-detail-name',   'l2-detail-name'],
+  ['components/WorkspaceSettingsK3.jsx',  'ws-modal k3-edit-modal', 'k3-member-title', 'k3-member-title'],
 ];
 
 let changed = 0;

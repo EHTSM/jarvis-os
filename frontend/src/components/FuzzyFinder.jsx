@@ -9,6 +9,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import './FuzzyFinder.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -109,7 +110,7 @@ export default function FuzzyFinder({ mode, cwd, wsSymbols = [], onSelect, onClo
   const placeholder = mode === 'file' ? 'Type a filename to search…' : 'Type a symbol name…';
 
   return (
-    <div className="ff-overlay" onClick={onClose}>
+    <div className="ff-overlay" {...overlayProps(onClose)}>
       <div className="ff-dialog" {...clickableProps(e => e.stopPropagation())}>
         <div className="ff-header">
           <span className="ff-title">{title}</span>

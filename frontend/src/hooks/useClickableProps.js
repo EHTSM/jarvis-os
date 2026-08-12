@@ -50,13 +50,28 @@ export function clickableProps(onClick, opts = {}) {
 /**
  * Backdrop/overlay dismissal. An overlay is not a control: it must not take
  * focus or appear in the tab order. Its keyboard equivalent is Escape, which
- * `useEscapeKey` binds. Marked aria-hidden so the backdrop itself is not
- * announced; the dialog above it carries the accessible content.
+ * `useEscapeKey` binds.
+ *
+ * B19.3 — `aria-hidden: true` was REMOVED from this helper. The original
+ * comment read "the dialog above it carries the accessible content", which
+ * assumes the dialog is a SIBLING of the backdrop. Every modal in this codebase
+ * nests the panel INSIDE the overlay:
+ *
+ *   <div className="…-modal-overlay">        ← this element
+ *     <div className="…-modal" role="dialog"> ← its child
+ *
+ * `aria-hidden` is inherited by descendants, so setting it here removed the
+ * dialog — title, fields and all — from the accessibility tree entirely. That
+ * is a worse defect than the one the helper exists to fix, and it silently
+ * defeats the role="dialog" semantics. The click behaviour (dismiss only when
+ * the backdrop itself is the target) is unchanged and is the whole point.
+ *
+ * If a future overlay really is a bare sibling backdrop with no content, mark
+ * that element `aria-hidden` at the call site, where the structure is visible.
  */
 export function overlayProps(onDismiss) {
   return {
     onClick: (e) => { if (e.target === e.currentTarget) onDismiss?.(e); },
-    'aria-hidden': true,
   };
 }
 

@@ -4,6 +4,7 @@ import { generatePaymentLink } from "../paymentApi";
 import JourneyBanner from "./JourneyBanner";
 import EmptyState from "./EmptyState";
 import "./ContactsV2.css";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -136,7 +137,7 @@ function AddContactModal({ onClose, onSaved }) {
   };
 
   return (
-    <div className="cv2-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className="cv2-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && onClose())}>
       <div className="cv2-modal" role="dialog" aria-modal="true" aria-label="New Contact">
         <div className="cv2-modal-header">
           <h2 className="cv2-modal-title">New Contact</h2>
@@ -226,7 +227,7 @@ function PaymentLinkModal({ prefill, onClose }) {
     : null;
 
   return (
-    <div className="cv2-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className="cv2-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && onClose())}>
       <div className="cv2-modal" role="dialog" aria-modal="true" aria-label="Generate Payment Link">
         <div className="cv2-modal-header">
           <h2 className="cv2-modal-title">Generate Payment Link</h2>
@@ -343,7 +344,7 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpd
   };
 
   return (
-    <div className="cv2-drawer-overlay" onClick={e => e.target.classList.contains("cv2-drawer-overlay") && onClose()}>
+    <div className="cv2-drawer-overlay" {...overlayProps(e => e.target.classList.contains("cv2-drawer-overlay") && onClose())}>
       <aside className="cv2-drawer" role="complementary" aria-label="Contact details">
         <div className="cv2-drawer-header">
           <button className="cv2-drawer-back" onClick={onClose} aria-label="Close drawer">← Back</button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './GlobalSearch.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const BACKEND = process.env.REACT_APP_API_URL || '';
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -477,7 +478,7 @@ export default function GlobalSearch({ open, onClose, onAction, recentMissions =
   const flatForCursor = results;
 
   return (
-    <div className="gs-backdrop" onClick={onClose}>
+    <div className="gs-backdrop" {...overlayProps(onClose)}>
       <div className="gs-modal" {...clickableProps(e => e.stopPropagation())}>
         <div className="gs-input-row">
           <span className="gs-search-icon">⌕</span>

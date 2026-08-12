@@ -238,15 +238,15 @@ export default function MemoryCenter({ onNavigate }) {
       {/* Add form */}
       {adding && (
         <div className="mc-form-card">
-          <h3 className="mc-form-heading">New memory</h3>
+          <h3 className="mc-form-heading" id="mc-form-heading">New memory</h3>
           <MemoryForm onSave={handleAdd} onCancel={() => setAdding(false)} />
         </div>
       )}
 
       {/* Edit form */}
       {editing && (
-        <div className="mc-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="mc-modal" {...clickableProps(e=>e.stopPropagation())}>
+        <div className="mc-modal-overlay" {...overlayProps(() => setEditing(null))}>
+          <div className="mc-modal" role="dialog" aria-modal="true" aria-labelledby="mc-form-heading" {...clickableProps(e=>e.stopPropagation())}>
             <h3 className="mc-form-heading">Edit memory</h3>
             <MemoryForm
               initial={{ ...editing, tags: editing.tags.join(", ") }}

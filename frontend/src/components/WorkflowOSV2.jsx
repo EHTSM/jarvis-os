@@ -9,6 +9,7 @@ import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -598,7 +599,7 @@ function TabRunning({ addToast }) {
       })}
 
       {logItem && (
-        <div className="wov2-log-overlay" onClick={() => setLogItem(null)}>
+        <div className="wov2-log-overlay" {...overlayProps(() => setLogItem(null))}>
           <div className="wov2-log-modal" {...clickableProps(e => e.stopPropagation())}>
             <div className="wov2-log-modal-header">
               <span className="wov2-log-modal-title">Log — {logItem.input || logItem.goal || logItem.id}</span>

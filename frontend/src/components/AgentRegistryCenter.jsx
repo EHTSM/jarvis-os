@@ -6,6 +6,7 @@ import { getWorkforceAgents } from "../workforceOSApi";
 import "./AgentRegistryCenter.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const REG_KEY = "ooplix_agent_registry_v2";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -222,7 +223,7 @@ function CreateModal({ onSave, onClose }) {
     });
   };
   return (
-    <div className="arc-modal-overlay" onClick={onClose}>
+    <div className="arc-modal-overlay" {...overlayProps(onClose)}>
       <div className="arc-modal" role="dialog" aria-modal="true" aria-labelledby="arc-modal-title" {...clickableProps(e=>e.stopPropagation())}>
         <h3 className="arc-modal-title" id="arc-modal-title">Create agent</h3>
         <form onSubmit={handleSubmit} className="arc-modal-form">

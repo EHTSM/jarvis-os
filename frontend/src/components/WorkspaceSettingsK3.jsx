@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── K3 Admin helpers ─────────────────────────────────────────────
 const STATUS_COLOR = { active: "var(--success)", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
@@ -159,7 +160,7 @@ function TeamDirectoryPanel() {
             <div className="k3-member-info">
               <span className="k3-member-name">{m.name || m.accountId}</span>
               <span className="k3-member-email">{m.email || ""}</span>
-              {m.title && <span className="k3-member-title">{m.title}</span>}
+              {m.title && <span className="k3-member-title" id="k3-member-title">{m.title}</span>}
             </div>
             <span className="k3-role-chip">{m.role}</span>
             {m.deptId && <span className="k3-dept-chip">{depts.find(d => d.id === m.deptId)?.name || m.deptId}</span>}
@@ -172,8 +173,8 @@ function TeamDirectoryPanel() {
       </div>
 
       {editing && (
-        <div className="ws-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="ws-modal k3-edit-modal" {...clickableProps(e => e.stopPropagation())}>
+        <div className="ws-modal-overlay" {...overlayProps(() => setEditing(null))}>
+          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-member-title" {...clickableProps(e => e.stopPropagation())}>
             <h3 className="k3-modal-title">Edit Member</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Job Title

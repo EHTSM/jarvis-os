@@ -12,6 +12,7 @@ import {
 import { useIntervalCleanup } from "../../hooks/useResourceManager";
 import "./MissionControl.css";
 import { clickableProps } from "../../hooks/useClickableProps";
+import { overlayProps } from "../../hooks/useClickableProps";
 
 const TICK_MS = 8_000;
 
@@ -309,7 +310,7 @@ export default function MissionControl({ onNavigate }) {
 
       {/* ── Emergency stop confirmation modal ── */}
       {stopConfirm && (
-        <div className="mc2-stop-overlay" onClick={() => setStopConfirm(false)}>
+        <div className="mc2-stop-overlay" {...overlayProps(() => setStopConfirm(false))}>
           <div className="mc2-stop-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="mc2-stop-icon">⛔</div>
             <div className="mc2-stop-title">Emergency Stop</div>

@@ -10,6 +10,7 @@ import "./IntegrationCenter.css";
 import "./CompanyFactoryCenter.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const STAGE_COLOR = {
   planning:    "var(--text-faint)",
@@ -94,7 +95,7 @@ function CreateCompanyModal({ templates, onClose, onCreated }) {
   }, [name, idea, templateId, onCreated]);
 
   return createPortal(
-    <div className="cfc-modal-overlay" onClick={onClose}>
+    <div className="cfc-modal-overlay" {...overlayProps(onClose)}>
       <div className="cfc-modal" role="dialog" aria-modal="true" aria-labelledby="cfc-modal-title" {...clickableProps(e => e.stopPropagation())}>
         <div className="cfc-modal-header">
           <h3 className="cfc-modal-title" id="cfc-modal-title">Launch a new company</h3>

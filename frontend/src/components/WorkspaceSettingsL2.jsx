@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── L2 Marketplace Panels ─────────────────────────────────────────
 const STAR_COLOR = "#f5a623";
@@ -96,11 +97,11 @@ function PluginDetail({ plugin, onClose, onInstall }) {
 
   if (!plugin) return null;
   return (
-    <div className="ws-modal-overlay" onClick={onClose}>
-      <div className="ws-modal" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
+    <div className="ws-modal-overlay" {...overlayProps(onClose)}>
+      <div className="ws-modal" role="dialog" aria-modal="true" aria-labelledby="l2-detail-name" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
         <div className="l2-detail-header">
           <div>
-            <div className="l2-detail-name">{plugin.name}</div>
+            <div className="l2-detail-name" id="l2-detail-name">{plugin.name}</div>
             <div className="l2-detail-meta">{plugin.author} · v{plugin.version} · {plugin.category}</div>
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>

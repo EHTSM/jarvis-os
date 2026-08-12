@@ -14,6 +14,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useMissionGit } from '../hooks/useMissionGit';
 import './VisualGit.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const api        = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -646,7 +647,7 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
   return (
     <div className="vg-mission-panel">
       {rollbackTarget && (
-        <div className="vg-rb-overlay" onClick={() => setRollbackTarget(null)}>
+        <div className="vg-rb-overlay" {...overlayProps(() => setRollbackTarget(null))}>
           <div className="vg-rb-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="vg-rb-title">Rollback to {rollbackTarget.slice(0, 8)}</div>
             <input className="vg-rb-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') doRollbackConfirm(); if (e.key === 'Escape') setRollbackTarget(null); }} placeholder="Reason for rollback…" />

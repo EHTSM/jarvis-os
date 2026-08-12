@@ -10,6 +10,7 @@ import GlobalSearch, { ClipboardHistoryPanel } from './GlobalSearch';
 import MissionControl from './operator-os/MissionControl';
 import './ElectronWorkspace.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Lazy imports — none of these load until first activated ───────────
 const TerminalPanel           = lazy(() => import('./TerminalPanel'));
@@ -427,7 +428,7 @@ const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, rec
   if (!open) return null;
 
   return (
-    <div className="ew-qs-backdrop" onClick={onClose}>
+    <div className="ew-qs-backdrop" {...overlayProps(onClose)}>
       <div className="ew-qs-modal" {...clickableProps(e => e.stopPropagation())}>
         <div className="ew-qs-header">
           <span className="ew-qs-icon">⌘</span>
@@ -1342,7 +1343,7 @@ function WorkspaceShortcutsOverlay({ onClose }) {
   }, [onClose]);
 
   return (
-    <div className="ew-shortcuts-overlay" onClick={onClose}>
+    <div className="ew-shortcuts-overlay" {...overlayProps(onClose)}>
       <div className="ew-shortcuts-panel" {...clickableProps(e => e.stopPropagation())}>
         <div className="ew-shortcuts-header">
           <span className="ew-shortcuts-title">Workspace Keyboard Shortcuts</span>

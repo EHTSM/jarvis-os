@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { _fetch } from "../_client";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Shared panel constants ────────────────────────────────────────
 const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
@@ -134,7 +135,7 @@ function ExtRuntimePanel() {
       )}
 
       {detail && (
-        <div className="ws-modal-overlay" onClick={() => setDetail(null)}>
+        <div className="ws-modal-overlay" {...overlayProps(() => setDetail(null))}>
           <div className="ws-modal" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <strong style={{ fontSize: 15 }}>{detail.id}</strong>

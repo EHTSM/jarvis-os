@@ -5,6 +5,7 @@ import { getPlugins, getCapabilities, getCapabilityMap, getTemplates, getManifes
 import EmptyState from "./EmptyState";
 import "./AgentFactoryCenter.css";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const KEY = "ooplix_agent_factory_v1";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -168,7 +169,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       </div>
 
       {(modal === "create" || modal === "clone") && (
-        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && setModal(null)}>
+        <div className="afc-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && setModal(null))}>
           <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-modal-title">
             <h2 className="afc-modal-title" id="afc-modal-title">{modal === "clone" ? `Clone: ${cloneSource?.name}` : "Create Agent"}</h2>
             <div className="afc-modal-form">
@@ -286,7 +287,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       )}
 
       {modal === "train" && cloneSource && (
-        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && (setModal(null), setTrainMsg(""))}>
+        <div className="afc-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && (setModal(null), setTrainMsg("")))}>
           <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-train-title">
             <h2 className="afc-modal-title" id="afc-train-title">Train: {cloneSource.name}</h2>
             <div className="afc-modal-form">

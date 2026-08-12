@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useIpcCleanup } from '../hooks/useResourceManager';
 import './FileExplorer.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -17,7 +18,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
     }, 30);
   }, []);
   return (
-    <div className="fe-name-prompt-overlay" onClick={onCancel}>
+    <div className="fe-name-prompt-overlay" {...overlayProps(onCancel)}>
       <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
         <div className="fe-name-prompt__label">{prompt}</div>
         <input
@@ -42,7 +43,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
 // ── Inline delete confirmation ────────────────────────────────────────
 function DeleteConfirm({ name, onConfirm, onCancel }) {
   return (
-    <div className="fe-name-prompt-overlay" onClick={onCancel}>
+    <div className="fe-name-prompt-overlay" {...overlayProps(onCancel)}>
       <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
         <div className="fe-name-prompt__label">Delete <strong>{name}</strong>?</div>
         <div className="fe-name-prompt__hint">This cannot be undone.</div>

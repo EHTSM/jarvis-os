@@ -3,6 +3,7 @@ import { _fetch } from '../_client';
 import './BetaChecklist.css';
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Checklist definition ──────────────────────────────────────────────────────
 const SECTIONS = [
@@ -192,7 +193,7 @@ export default function BetaChecklist({ onNavigate }) {
   return (
     <div className="bc-root">
       {feedbackOpen && (
-        <div className="bc-feedback-overlay" onClick={() => setFeedbackOpen(false)}>
+        <div className="bc-feedback-overlay" {...overlayProps(() => setFeedbackOpen(false))}>
           <div className="bc-feedback-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="bc-feedback-header">
               <span className="bc-feedback-title">Send Beta Feedback</span>

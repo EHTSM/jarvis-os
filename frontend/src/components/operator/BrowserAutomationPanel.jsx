@@ -10,6 +10,7 @@ import {
 } from "../../browserApi";
 import "./browser-automation.css";
 import { clickableProps } from "../../hooks/useClickableProps";
+import { overlayProps } from "../../hooks/useClickableProps";
 
 // ── Design data ───────────────────────────────────────────────────────────────
 
@@ -535,7 +536,7 @@ function ScreenshotLightbox({ src, onClose }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
   return (
-    <div className="bap-lightbox-overlay" onClick={onClose}>
+    <div className="bap-lightbox-overlay" {...overlayProps(onClose)}>
       <div className="bap-lightbox-inner" {...clickableProps(e=>e.stopPropagation())}>
         <button className="bap-lightbox-close" onClick={onClose}>✕ Close</button>
         <img src={src} alt="Execution screenshot" className="bap-lightbox-img" />
@@ -1454,7 +1455,7 @@ function ImportModal({ onImport, onClose }) {
   }
 
   return (
-    <div className="bap-modal-overlay" onClick={e=>{ if(e.target===e.currentTarget) onClose(); }}>
+    <div className="bap-modal-overlay" {...overlayProps(e=>{ if(e.target===e.currentTarget) onClose(); })}>
       <div className="bap-modal">
         <div className="bap-modal-header">
           <span className="bap-modal-title">Import Workflow</span>
@@ -2338,7 +2339,7 @@ function SavedView({ templates, wfHealthMap, favorites, pins, notes, confirmDele
   return (
     <div className="bap-marketplace">
       {showVarManager && (
-        <div className="bap-modal-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowVarManager(false);}}>
+        <div className="bap-modal-overlay" {...overlayProps(e=>{if(e.target===e.currentTarget)setShowVarManager(false);})}>
           <div className="bap-modal bap-varman-modal">
             <VariableManager vars={vars||{}} onUpdateVar={onUpdateVar} onClose={()=>setShowVarManager(false)} />
           </div>
@@ -2740,7 +2741,7 @@ document.querySelectorAll('YOUR_SELECTOR_HERE').length
   }
 
   return (
-    <div className="bap-modal-overlay" onClick={e=>{if(e.target===e.currentTarget) onClose();}}>
+    <div className="bap-modal-overlay" {...overlayProps(e=>{if(e.target===e.currentTarget) onClose();})}>
       <div className="bap-modal bap-picker-modal">
 
         {/* Header */}
@@ -4336,7 +4337,7 @@ function EditorView({ editName, setEditName, editCategory, setEditCat, editSteps
 
       {/* Selector teach card modal */}
       {showTeach && (
-        <div className="bap-modal-overlay" onClick={e=>{if(e.target===e.currentTarget)setShowTeach(false);}}>
+        <div className="bap-modal-overlay" {...overlayProps(e=>{if(e.target===e.currentTarget)setShowTeach(false);})}>
           <div className="bap-modal bap-teach-modal">
             <SelectorTeachCard onClose={()=>setShowTeach(false)} />
           </div>

@@ -85,14 +85,12 @@ for (const file of files) {
     // skipped is an element that is already interactive or already spreads props.
     if (/\brole=|\btabIndex=|\bonKeyDown=|\{\.\.\./.test(fullTag)) { skipped++; continue; }
 
-    // B19.3: overlays are NOT converted. `overlayProps` sets aria-hidden on the
-    // element it is spread onto, and its doc-comment assumes the dialog is a
-    // SIBLING ("the dialog above it carries the accessible content"). In this
-    // codebase every modal nests the panel INSIDE the overlay, so spreading it
-    // here would hide the dialog — including the role="dialog" semantics — from
-    // assistive tech. Recorded as a finding instead of propagated.
-    if (OVERLAY.test(fullTag)) { skipped++; continue; }
-    const helper = 'clickableProps';
+    // Overlays take `overlayProps` (dismiss-on-self-click, no focus stop);
+    // real controls take `clickableProps` (focus stop + Enter/Space).
+    // Converting overlays was unsafe until B19.3 removed the inherited
+    // `aria-hidden` from overlayProps — see hooks/useClickableProps.js.
+    const isOverlay = OVERLAY.test(fullTag);
+    const helper = isOverlay ? 'overlayProps' : 'clickableProps';
     const ocStart = src.indexOf('onClick=', tagStart);
     const replaced = src.slice(tagStart, ocStart)
       + `{...${helper}(${h.expr.trim()})}`
@@ -102,7 +100,7 @@ for (const file of files) {
     cursor = tagEnd + 1;
     tagRe.lastIndex = tagEnd + 1;
     n++;
-    nClick++;
+    if (isOverlay) nOverlay++; else nClick++;
   }
   if (!n) continue;
   out += src.slice(cursor);

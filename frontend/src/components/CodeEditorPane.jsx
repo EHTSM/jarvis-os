@@ -28,6 +28,7 @@ import FuzzyFinder from './FuzzyFinder';
 import LSPStatus from './LSPStatus';
 import './CodeEditorPane.css';
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -293,7 +294,7 @@ function RenameDialog({ path, onConfirm, onCancel }) {
   const inputRef = useRef(null);
   useEffect(() => { inputRef.current?.select(); }, []);
   return (
-    <div className="cep-rename-overlay" onClick={onCancel}>
+    <div className="cep-rename-overlay" {...overlayProps(onCancel)}>
       <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
         <div className="cep-rename-title">Rename File</div>
         <input
@@ -1011,7 +1012,7 @@ export default function CodeEditorPane({
     <div className={`cep-shell ${className}`}>
       {/* Delete confirmation modal */}
       {confirmDeleteTab && (
-        <div className="cep-delete-overlay" onClick={() => setDeleteConfirm(null)}>
+        <div className="cep-delete-overlay" {...overlayProps(() => setDeleteConfirm(null))}>
           <div className="cep-delete-modal" {...clickableProps(e => e.stopPropagation())}>
             <div className="cep-delete-icon">🗑</div>
             <div className="cep-delete-title">Delete "{confirmDeleteTab.name}"?</div>
@@ -1103,7 +1104,7 @@ export default function CodeEditorPane({
 
       {/* Go-to-line overlay */}
       {gotoLine && (
-        <div className="cep-goto-overlay" onClick={() => setGotoLine(false)}>
+        <div className="cep-goto-overlay" {...overlayProps(() => setGotoLine(false))}>
           <div className="cep-goto-dialog" {...clickableProps(e => e.stopPropagation())}>
             <span className="cep-goto-label">Go to line</span>
             <input
@@ -1302,7 +1303,7 @@ export default function CodeEditorPane({
 
       {/* Rename Symbol dialog */}
       {renameSymbol && (
-        <div className="cep-rename-overlay" onClick={() => setRenameSymbol(null)}>
+        <div className="cep-rename-overlay" {...overlayProps(() => setRenameSymbol(null))}>
           <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="cep-rename-title">Rename Symbol: <strong>{renameSymbol.name}</strong></div>
             <input

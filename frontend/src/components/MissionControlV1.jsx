@@ -10,6 +10,7 @@ import MissionOrchestratorPanel from "./MissionOrchestratorPanel.jsx";
 import "./MissionControlV1.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const REFRESH_INTERVAL = 30_000;
 
@@ -1001,7 +1002,7 @@ export default function MissionControlV1({ onNavigate }) {
   return (
     <div className="mc-root">
       {stopConfirm && (
-        <div className="mc-stop-overlay" onClick={() => setStopConfirm(false)}>
+        <div className="mc-stop-overlay" {...overlayProps(() => setStopConfirm(false))}>
           <div className="mc-stop-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="mc-stop-icon">⛔</div>
             <div className="mc-stop-title">Emergency Stop</div>

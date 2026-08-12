@@ -7,6 +7,7 @@ import { getRuntimeHistory, dispatchTask, emergencyStop, emergencyResume } from 
 import { sendMessage, checkHealth } from "../api";
 import EmptyState from "./EmptyState";
 import "./AgentOSV2.css";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -150,7 +151,7 @@ function AgentDrawer({ agent, onClose, onRun, running }) {
   };
 
   return (
-    <div className="av2-drawer-overlay" onClick={e => e.target.classList.contains("av2-drawer-overlay") && onClose()}>
+    <div className="av2-drawer-overlay" {...overlayProps(e => e.target.classList.contains("av2-drawer-overlay") && onClose())}>
       <aside className="av2-drawer">
         <div className="av2-drawer-header">
           <span className="av2-drawer-icon" style={{ color: agent.color }}>{agent.icon}</span>
