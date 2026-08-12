@@ -95,14 +95,17 @@ function CreateCompanyModal({ templates, onClose, onCreated }) {
 
   return createPortal(
     <div className="cfc-modal-overlay" onClick={onClose}>
-      <div className="cfc-modal" {...clickableProps(e => e.stopPropagation())}>
+      <div className="cfc-modal" role="dialog" aria-modal="true" aria-labelledby="cfc-modal-title" {...clickableProps(e => e.stopPropagation())}>
         <div className="cfc-modal-header">
-          <h3 className="cfc-modal-title">Launch a new company</h3>
+          <h3 className="cfc-modal-title" id="cfc-modal-title">Launch a new company</h3>
           <button className="ic-detail-close" onClick={onClose} aria-label="Close">✕</button>
         </div>
         <p className="cfc-modal-sub">The factory generates a blueprint, workspace, and lifecycle roadmap automatically.</p>
         <label className="cfc-field-label">Company name</label>
-        <input className="ic-setup-input" placeholder="e.g. Northwind Analytics" value={name} onChange={e => setName(e.target.value)} />
+        {/* B19.3: initial focus, matching the autoFocus already used by the
+            sibling modals (AgentRegistryCenter, KnowledgeCenter, TeamWorkspace).
+            Without it, opening this dialog left focus on the trigger behind it. */}
+        <input className="ic-setup-input" autoFocus placeholder="e.g. Northwind Analytics" value={name} onChange={e => setName(e.target.value)} />
         <label className="cfc-field-label">One-line idea (optional — helps template inference)</label>
         <textarea className="ic-setup-input" placeholder="e.g. Subscription analytics dashboard for e-commerce sellers" value={idea} onChange={e => setIdea(e.target.value)} />
         <label className="cfc-field-label">Template</label>

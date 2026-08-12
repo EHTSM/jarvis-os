@@ -223,8 +223,8 @@ function CreateModal({ onSave, onClose }) {
   };
   return (
     <div className="arc-modal-overlay" onClick={onClose}>
-      <div className="arc-modal" {...clickableProps(e=>e.stopPropagation())}>
-        <h3 className="arc-modal-title">Create agent</h3>
+      <div className="arc-modal" role="dialog" aria-modal="true" aria-labelledby="arc-modal-title" {...clickableProps(e=>e.stopPropagation())}>
+        <h3 className="arc-modal-title" id="arc-modal-title">Create agent</h3>
         <form onSubmit={handleSubmit} className="arc-modal-form">
           <label className="arc-fl">Name</label>
           <input className="arc-fi" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} placeholder="My Agent" autoFocus required />

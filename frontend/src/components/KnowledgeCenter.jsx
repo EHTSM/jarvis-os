@@ -95,8 +95,8 @@ function AddDocModal({ collections, onAdd, onClose }) {
 
   return (
     <div className="kc-modal-overlay" onClick={onClose}>
-      <div className="kc-modal" {...clickableProps(e => e.stopPropagation())}>
-        <h3 className="kc-modal-title">Add document</h3>
+      <div className="kc-modal" role="dialog" aria-modal="true" aria-labelledby="kc-modal-title" {...clickableProps(e => e.stopPropagation())}>
+        <h3 className="kc-modal-title" id="kc-modal-title">Add document</h3>
         <form onSubmit={handleSubmit} className="kc-modal-form">
           <label className="kc-form-label">Document name / filename</label>
           <input className="kc-form-input" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Product Brief Q3.pdf" autoFocus />

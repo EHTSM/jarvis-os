@@ -92,7 +92,7 @@ function InviteForm({ onInvite, onCancel, submitting }) {
   };
   return (
     <form className="tw-invite-form" onSubmit={handleSubmit}>
-      <h3 className="tw-invite-title">Invite team member</h3>
+      <h3 className="tw-invite-title" id="tw-invite-title">Invite team member</h3>
       <div className="tw-invite-fields">
         <div className="tw-invite-field">
           <label className="tw-field-label">Email address</label>
@@ -384,7 +384,7 @@ export default function TeamWorkspace({ onNavigate }) {
             {/* Invite modal */}
             {showInvite && (
               <div className="tw-modal-overlay" onClick={() => setShowInvite(false)}>
-                <div className="tw-modal" {...clickableProps(e => e.stopPropagation())}>
+                <div className="tw-modal" role="dialog" aria-modal="true" aria-labelledby="tw-invite-title" {...clickableProps(e => e.stopPropagation())}>
                   <InviteForm onInvite={handleInvite} onCancel={() => setShowInvite(false)} submitting={inviting} />
                 </div>
               </div>
