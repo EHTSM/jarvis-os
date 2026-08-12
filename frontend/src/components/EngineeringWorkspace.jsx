@@ -8,6 +8,7 @@ import { track } from "../analytics";
 import { BASE_URL } from "../_client";
 import { getRuntimeStatus, getDLQ, listPatches, getRuntimeHistory } from "../runtimeApi";
 import { PreActionWarning, PreDeployGuard, IncidentPreventionBanner, RegressionBanner } from "./GuardrailsDashboard";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── fetch helpers ─────────────────────────────────────────────────────
 
@@ -670,7 +671,7 @@ export default function EngineeringWorkspace() {
                 <div style={{ fontSize: 9, color: "var(--text-dim)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>All patches</div>
                 {patchList.slice(0, 5).map(p => (
                   <div key={p.id} style={{ display: "flex", gap: 6, alignItems: "center", padding: "3px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }}
-                    onClick={() => setActivePatch({ patchId: p.id, diff: p.diff, filePath: p.filePath })}>
+                    {...clickableProps(() => setActivePatch({ patchId: p.id, diff: p.diff, filePath: p.filePath }))}>
                     <StatusDot s={p.status === "applied" ? "ok" : p.status === "rolled_back" ? "error" : "pending"} />
                     <span style={{ fontSize: 10, color: "var(--text)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.filePath?.split("/").pop() || p.id?.slice(0, 12)}</span>
                     <Tag label={p.status} color={sc(p.status)} />

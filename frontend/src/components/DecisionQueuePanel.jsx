@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch } from "../_client";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const ACTION_COLOR = {
   Ignore:         "#444",
@@ -40,7 +41,7 @@ function DecisionRow({ d }) {
   return (
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "5px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", flexWrap: "nowrap" }}
-        onClick={() => setExpanded(e => !e)}>
+        {...clickableProps(() => setExpanded(e => !e))}>
         <span style={{ color: "#444", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
         <PriorityDot priority={d.priority} />
         <ActionBadge action={d.recommendedAction} />

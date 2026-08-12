@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch } from "../_client";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const STATUS_COLOR = {
   running:   "#4caf50", completed: "#8bc34a", failed:    "#f44336",
@@ -24,7 +25,7 @@ function ExecRow({ e, onRetry, onCancel, onRollback }) {
   return (
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "5px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
-        onClick={() => setExpanded(x => !x)}>
+        {...clickableProps(() => setExpanded(x => !x))}>
         <span style={{ color: "#444", fontSize: 10, minWidth: 58, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
         <StatusBadge status={e.status} />
         <span style={{ color: "#607d8b", fontSize: 10, minWidth: 80, flexShrink: 0 }}>{e.capability}</span>

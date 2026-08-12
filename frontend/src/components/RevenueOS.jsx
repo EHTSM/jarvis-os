@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./RevenueOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -512,7 +513,7 @@ function CustomerSuccessPanel() {
             <div className="ro-list" style={{ marginTop: 8 }}>
               {!list && <div className="ro-hint">Click "Load All" to see all customer health scores.</div>}
               {list?.slice(0,8).map(h => (
-                <div key={h.accountId} className="ro-row" onClick={() => { setAccountId(h.accountId); setHealth(h); }} style={{ cursor: "pointer" }}>
+                <div key={h.accountId} className="ro-row" {...clickableProps(() => { setAccountId(h.accountId); setHealth(h); })} style={{ cursor: "pointer" }}>
                   <div style={{ fontSize: 18, fontWeight: 900, color: GRADE_COLOR[h.grade], width: 24, flexShrink: 0 }}>{h.grade}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="ro-row-name">{h.accountId}</div>

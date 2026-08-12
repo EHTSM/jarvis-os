@@ -8,6 +8,7 @@ import { track } from "../analytics";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── fetch ─────────────────────────────────────────────────────────────
 
@@ -81,7 +82,7 @@ function Skel({ w = "100%", h = 12 }) {
 
 function Row({ children, style, onClick }) {
   return (
-    <div onClick={onClick}
+    <div {...clickableProps(onClick)}
       style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "8px 12px",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
         cursor: onClick ? "pointer" : undefined,

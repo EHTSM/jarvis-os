@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { track } from "../analytics";
 import "./HelpHub.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Quick-start guides ───────────────────────────────────────────────
 const GUIDES = [
@@ -212,7 +213,7 @@ const TROUBLESHOOT = [
 // ── Video card ────────────────────────────────────────────────────────
 function VideoCard({ title, duration, desc, onRequest }) {
   return (
-    <div className="hh-video-card" onClick={onRequest} style={{ cursor: "pointer" }} title="Request this walkthrough">
+    <div className="hh-video-card" {...clickableProps(onRequest)} style={{ cursor: "pointer" }} title="Request this walkthrough">
       <div className="hh-video-thumb" aria-label={`Video: ${title}`}>
         <div className="hh-video-play">▶</div>
         <div className="hh-video-duration">{duration}</div>

@@ -8,6 +8,7 @@ import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
 import ContextSidebar from "./ContextSidebar";
 import WorkflowStagePanel from "./WorkflowStagePanel";
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -48,7 +49,7 @@ function SkeletonBlock() {
 
 function StatCard({ label, value, color, sub, onClick }) {
   return (
-    <div onClick={onClick} style={{ flex: "1 1 80px", background: "rgba(255,255,255,0.03)",
+    <div {...clickableProps(onClick)} style={{ flex: "1 1 80px", background: "rgba(255,255,255,0.03)",
       border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "10px 12px",
       textAlign: "center", cursor: onClick ? "pointer" : "default",
       transition: "border-color 0.15s" }}>

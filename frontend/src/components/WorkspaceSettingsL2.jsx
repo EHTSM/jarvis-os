@@ -97,7 +97,7 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   if (!plugin) return null;
   return (
     <div className="ws-modal-overlay" onClick={onClose}>
-      <div className="ws-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
+      <div className="ws-modal" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
         <div className="l2-detail-header">
           <div>
             <div className="l2-detail-name">{plugin.name}</div>

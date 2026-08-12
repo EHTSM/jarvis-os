@@ -6,6 +6,7 @@ import { listDeployments } from '../phase25Api';
 import { listPatches, getRuntimeHistory } from '../runtimeApi';
 import { getLeads } from '../api';
 import './GlobalActivityFeed.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Domain colours / icons ────────────────────────────────────────────────────
 const DOMAIN = {
@@ -152,7 +153,7 @@ function EventRow({ ev, onNavigate }) {
   return (
     <div
       className="gaf-row"
-      onClick={() => ev.tab && onNavigate?.(ev.tab)}
+      {...clickableProps(() => ev.tab && onNavigate?.(ev.tab))}
       title={ev.tab ? `Navigate to ${ev.tab}` : undefined}
       style={{ cursor: ev.tab ? 'pointer' : 'default' }}
     >

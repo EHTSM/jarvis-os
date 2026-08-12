@@ -8,6 +8,7 @@ import { track } from "../analytics";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── fetch ─────────────────────────────────────────────────────────────
 
@@ -488,7 +489,7 @@ function TabCrossProject() {
                 const col    = sourceColors[source] || "var(--text-dim)";
                 return (
                   <div key={i}>
-                    <div onClick={() => setExpanded(isOpen ? null : `${source}-${i}`)}
+                    <div {...clickableProps(() => setExpanded(isOpen ? null : `${source}-${i}`))}
                       style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}
                       onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
                       onMouseLeave={e => e.currentTarget.style.background = ""}>

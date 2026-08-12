@@ -992,7 +992,7 @@ function TabAutonomous({ addToast }) {
               key={dept.id}
               className={`wov2-dept-card${selected === dept.id ? " wov2-dept-card--selected" : ""}`}
               style={{ borderColor: selected === dept.id ? dept.color + "40" : undefined }}
-              onClick={() => setSelected(v => v === dept.id ? null : dept.id)}
+              {...clickableProps(() => setSelected(v => v === dept.id ? null : dept.id))}
             >
               <div className="wov2-dept-header">
                 <span className="wov2-dept-icon" style={{ color: dept.color }}>{dept.icon}</span>

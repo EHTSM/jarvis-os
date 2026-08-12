@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./AIMarketplace.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -82,7 +83,7 @@ function CapabilitySection({ item, onSelect, selected }) {
 
   return (
     <div className={`am-cap-section${active ? " am-cap-section--active" : ""}`}
-         onClick={() => onSelect(active ? null : item.capability)}
+         {...clickableProps(() => onSelect(active ? null : item.capability))}
          style={{ "--cap-color": color }}>
       <div className="am-cap-header">
         <span className="am-cap-icon">{icon}</span>

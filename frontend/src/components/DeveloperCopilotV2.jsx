@@ -15,6 +15,7 @@ import {
   getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl,
 } from "../phase21Api";
 import "./DeveloperCopilotV2.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -993,7 +994,7 @@ function TabArchitecture({ addToast }) {
             key={svc.name}
             className={`dcv2-arch-node${selected === svc.name ? " dcv2-arch-node--selected" : ""}`}
             style={{ borderColor: selected === svc.name ? H_COLORS[svc.health] + "50" : undefined }}
-            onClick={() => setSelected(v => v === svc.name ? null : svc.name)}
+            {...clickableProps(() => setSelected(v => v === svc.name ? null : svc.name))}
           >
             <div className="dcv2-an-top">
               <span className="dcv2-an-dot" style={{ background: H_COLORS[svc.health] }} />

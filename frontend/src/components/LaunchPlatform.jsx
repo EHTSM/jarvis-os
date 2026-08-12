@@ -1279,7 +1279,7 @@ function OP2ReportPanel() {
               <div
                 className="check-row"
                 style={{ cursor: "pointer", borderLeft: `3px solid ${scoreColor(dim.score.pct)}` }}
-                onClick={() => setExpanded(expanded === dim.dimension ? null : dim.dimension)}
+                {...clickableProps(() => setExpanded(expanded === dim.dimension ? null : dim.dimension))}
               >
                 <span className="check-label" style={{ flex: 1, display: "flex", alignItems: "center", gap: 8 }}>
                   <span>{DIM_ICONS[dim.dimension] || "◈"}</span>

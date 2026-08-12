@@ -7,6 +7,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function _get(path) {
   const r = await fetch(`${BASE_URL}${path}`, { credentials: "include" });
@@ -228,7 +229,7 @@ function TabRecommendedFixes() {
         return (
           <div key={inc.incidentId} style={{ marginBottom: 12, border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8, overflow: "hidden" }}>
             {/* Incident header */}
-            <div onClick={() => setExpanded(isOpen ? null : inc.incidentId)}
+            <div {...clickableProps(() => setExpanded(isOpen ? null : inc.incidentId))}
               style={{ display: "flex", gap: 8, alignItems: "center", padding: "10px 14px", cursor: "pointer",
                 background: isOpen ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.015)" }}>
               <Chip label={inc.severity?.toUpperCase() || "UNKNOWN"} color={col} />

@@ -456,7 +456,7 @@ function KPIPanel() {
               </div>
             ) : (
               <div className="pl-kpi-val" style={{ color: k.met ? "var(--pl-green)" : sc(k.progressPct), cursor: "pointer" }}
-                onClick={() => { setEditing(k.id); setVal(String(k.current)); }}>
+                {...clickableProps(() => { setEditing(k.id); setVal(String(k.current)); })}>
                 {k.unit === "₹" ? `₹${(k.current || 0).toLocaleString("en-IN")}` : `${k.current ?? "—"}${k.unit === "%" ? "%" : ""}`}
               </div>
             )}

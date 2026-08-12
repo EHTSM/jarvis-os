@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { track } from "../analytics";
 import { listCoordSessions, getCoordStats, agentCollaborate, agentHandoff, agentDelegate } from "../phase19Api";
 import "./AgentCollaborationCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Agent roster ─────────────────────────────────────────────────────
 const AGENTS = {
@@ -381,7 +382,7 @@ export default function AgentCollaborationCenter({ onNavigate }) {
 
       {showCoord && (
         <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
-          onClick={e => e.target === e.currentTarget && setShowCoord(false)}>
+          {...clickableProps(e => e.target === e.currentTarget && setShowCoord(false))}>
           <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(480px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
             <h3 style={{ margin:0, fontSize:16, fontWeight:700 }}>Start Coordination Session</h3>
             <div style={{ display:"flex", gap:8 }}>

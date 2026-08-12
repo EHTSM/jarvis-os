@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch } from "../_client";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // Severity badge colour — reuses existing design token naming pattern
 const SEV_COLOR = { INFO: "#4caf50", WARN: "#ff9800", ERROR: "#f44336", CRITICAL: "#9c27b0" };
@@ -51,7 +52,7 @@ function EventRow({ ev }) {
   return (
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "4px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
-        onClick={() => setExpanded(e => !e)}>
+        {...clickableProps(() => setExpanded(e => !e))}>
         <span style={{ color: "#444", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums" }}>{ts}</span>
         <SevBadge severity={ev.severity} />
         <span style={{ color: "#888", fontSize: 11, minWidth: 80 }}>{CAT_ICON[ev.category] || "·"} {ev.source}</span>

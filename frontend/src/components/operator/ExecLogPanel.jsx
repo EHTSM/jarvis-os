@@ -6,6 +6,7 @@ import { useDebugSession } from "../../hooks/useDebugSession";
 import { useEngineeringAssistant } from "../../hooks/useEngineeringAssistant";
 import { useOperatorIntelligence } from "../../hooks/useOperatorIntelligence";
 import { useCollaborativeWorkflows } from "../../hooks/useCollaborativeWorkflows";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 const WORKFLOW_HIST_KEY = "jarvis_workflow_execution_hist";
 const PINNED_CMDS_KEY   = "jarvis_pinned_cmds";
@@ -171,7 +172,7 @@ function EntryRow({ entry, onPopulateInput, onRetry, onCancel, onTogglePin, isPi
       )}
       <div
         className={`op-exec-entry${entry._new || isNew ? " new-entry" : ""}${justDone ? " entry-flash-ok" : ""}${justFailed ? " entry-flash-fail" : ""}`}
-        onClick={() => isLong && setExpanded(!expanded)}
+        {...clickableProps(() => isLong && setExpanded(!expanded))}
         style={{
           cursor: isLong ? "pointer" : "default",
           borderLeft: failed ? "2px solid var(--op-red)" : running ? "2px solid var(--op-blue)" : isBookmarked ? "2px solid var(--op-amber)" : ok && justDone ? "2px solid var(--op-green)" : undefined,
@@ -939,7 +940,7 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
         <div style={{ borderBottom: "1px solid var(--op-border)", flexShrink: 0 }}>
           {/* Collapsed header — always visible when there's something to show */}
           <div
-            onClick={() => setAssistantOpen(o => !o)}
+            {...clickableProps(() => setAssistantOpen(o => !o))}
             style={{
               display: "flex", alignItems: "center", gap: 8,
               padding: "4px 10px", cursor: "pointer",

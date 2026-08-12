@@ -112,7 +112,7 @@ function ExtRuntimePanel() {
       ) : (
         <div className="l3-ext-list">
           {exts.map(ext => (
-            <div key={ext.id} className="l3-ext-row" onClick={() => openDetail(ext)} style={{ cursor: "pointer" }}>
+            <div key={ext.id} className="l3-ext-row" {...clickableProps(() => openDetail(ext))} style={{ cursor: "pointer" }}>
               <span className="l3-ext-dot" style={{ background: EXT_STATE_COLOR[ext.state] || "var(--text-faint)" }} />
               <div className="l3-ext-meta">
                 <span className="l3-ext-name">{ext.id}</span>
@@ -135,7 +135,7 @@ function ExtRuntimePanel() {
 
       {detail && (
         <div className="ws-modal-overlay" onClick={() => setDetail(null)}>
-          <div className="ws-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
+          <div className="ws-modal" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <strong style={{ fontSize: 15 }}>{detail.id}</strong>
               <button onClick={() => setDetail(null)} style={{ background: "none", border: "none", color: "var(--text-faint)", cursor: "pointer", fontSize: 18 }}>✕</button>

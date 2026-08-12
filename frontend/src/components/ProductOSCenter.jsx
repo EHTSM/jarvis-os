@@ -9,6 +9,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as pf from "../productFactoryApi";
 import * as eo from "../engOrgApi";
+import { clickableProps } from "../hooks/useClickableProps";
 
 function Kpi({ value, label, color }) {
   return (
@@ -148,7 +149,7 @@ export default function ProductOSCenter() {
           </div>
           {plans.length === 0 ? <div style={EMPTY}>No product plans yet.</div> : plans.map(p => (
             <div key={p.id} style={{ marginBottom: 6 }}>
-              <div style={{ ...ROW, cursor: "pointer" }} onClick={() => setExpandedPlan(expandedPlan === p.id ? null : p.id)}>
+              <div style={{ ...ROW, cursor: "pointer" }} {...clickableProps(() => setExpandedPlan(expandedPlan === p.id ? null : p.id))}>
                 <span>{p.objective}</span>
                 <span style={{ color: p.status === "approved" ? "var(--success)" : "var(--warning)" }}>{p.status} · {p.complexity?.level || "—"}</span>
               </div>

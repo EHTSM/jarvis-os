@@ -80,7 +80,10 @@ for (const file of files) {
     const tagEnd = src.indexOf('>', h.end);
     if (tagEnd === -1) { skipped++; continue; }
     const fullTag = src.slice(tagStart, tagEnd + 1);
-    if (/\brole=|\btabIndex=|\bonKeyDown=|\{\.\.\.|=\{\{/.test(fullTag)) { skipped++; continue; }
+    // `style={{…}}` is safe: only the onClick attribute is replaced, and the
+    // balanced-brace reader already located its exact bounds. What must still be
+    // skipped is an element that is already interactive or already spreads props.
+    if (/\brole=|\btabIndex=|\bonKeyDown=|\{\.\.\./.test(fullTag)) { skipped++; continue; }
 
     // B19.3: overlays are NOT converted. `overlayProps` sets aria-hidden on the
     // element it is spread onto, and its doc-comment assumes the dialog is a

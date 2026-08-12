@@ -164,7 +164,7 @@ function TreeNode({ node, depth, selected, onSelect, onOpen, onContextMenu }) {
       <div
         className={`file-tree-row${selected === node.path ? ' file-tree-row--selected' : ''}`}
         style={{ paddingLeft: indent + 8 }}
-        onClick={toggle}
+        {...clickableProps(toggle)}
         onContextMenu={handleContextMenu}
         draggable={!node.isDir}
         onDragStart={handleDragStart}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./DistributionOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE  = process.env.REACT_APP_API_URL || "";
 const api   = (path, opts = {}) =>
@@ -570,7 +571,7 @@ function CommunityPanel() {
             {list.length === 0 && <div className="do-empty">No communities. Add Discord, Telegram, Reddit, or GitHub Discussions to your hub.</div>}
             {list.map(c => (
               <div key={c.id}>
-                <div className="do-row" onClick={() => setActiveCom(activeCom?.id === c.id ? null : c)} style={{ cursor: "pointer" }}>
+                <div className="do-row" {...clickableProps(() => setActiveCom(activeCom?.id === c.id ? null : c))} style={{ cursor: "pointer" }}>
                   <span style={{ fontSize: 14, color: "var(--accent)" }}>{PLATFORM_ICONS[c.platform] || "◎"}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="do-row-name">{c.name}</div>
@@ -802,7 +803,7 @@ function LaunchPanel() {
           {list.length === 0 && <div className="do-empty">No launches. Coordinate your next product launch across website, email, social, community, docs, and press.</div>}
           {list.map(l => (
             <div key={l.id}>
-              <div className="do-row" onClick={() => setActive(active?.id === l.id ? null : l)} style={{ cursor: "pointer" }}>
+              <div className="do-row" {...clickableProps(() => setActive(active?.id === l.id ? null : l))} style={{ cursor: "pointer" }}>
                 <StatusDot status={l.status} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="do-row-name">{l.name} <span style={{ color: "#666" }}>{l.version}</span></div>

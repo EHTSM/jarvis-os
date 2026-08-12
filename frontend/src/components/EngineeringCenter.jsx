@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { getRuntimeHistory, getRuntimeStatus, listPatches, getDLQ, recoverDLQ } from "../runtimeApi";
 import { BASE_URL } from "../_client";
 import WorkflowStagePanel from "./WorkflowStagePanel";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Shared fetch ──────────────────────────────────────────────────────
 
@@ -79,7 +80,7 @@ function Skel({ w = "100%", h = 12 }) {
 
 function Row({ children, style, onClick }) {
   return (
-    <div onClick={onClick} style={{
+    <div {...clickableProps(onClick)} style={{
       display: "flex", gap: 8, alignItems: "center",
       padding: "7px 10px", borderBottom: "1px solid rgba(255,255,255,0.05)",
       cursor: onClick ? "pointer" : undefined, ...style

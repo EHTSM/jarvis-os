@@ -55,8 +55,14 @@ const HealthBar = memo(({ value, max = 100, warn = 60, crit = 85 }) => {
 });
 
 // ── Stat tile ──────────────────────────────────────────────────────────
+// B19.3: the tile had role="button" + tabIndex but no key handler — focusable
+// yet not activatable by Enter/Space. clickableProps supplies the handler; the
+// non-interactive case (no onClick) keeps its plain div semantics.
 const Tile = memo(({ label, value, sub, dot, onClick }) => (
-  <div className={`mc2-tile${onClick ? " mc2-tile--link" : ""}`} onClick={onClick} role={onClick ? "button" : undefined} tabIndex={onClick ? 0 : undefined}>
+  <div
+    className={`mc2-tile${onClick ? " mc2-tile--link" : ""}`}
+    {...(onClick ? clickableProps(onClick) : {})}
+  >
     <div className="mc2-tile-head">
       {dot !== undefined && <Dot s={dot} />}
       <span className="mc2-tile-label">{label}</span>

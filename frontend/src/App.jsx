@@ -436,11 +436,16 @@ function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
     >
       <span className="tab-more-item-label">{m.label}</span>
       {m.group && !hideGroup && <span className="tab-more-item-group">{m.group}</span>}
+      {/* B19.3: had role="button" + aria-label but no tabIndex and no key
+          handler, so the pin control was announced as a button yet could not
+          be reached or activated from the keyboard. clickableProps supplies
+          both, and carries the existing label through. */}
       <span
         className={`tab-more-item-pin${pinned?.includes(m.id) ? " tab-more-item-pin--active" : ""}`}
-        role="button"
-        aria-label={pinned?.includes(m.id) ? `Unpin ${m.label}` : `Pin ${m.label}`}
-        onClick={(e) => { e.stopPropagation(); onTogglePin?.(m.id); }}
+        {...clickableProps(
+          (e) => { e.stopPropagation(); onTogglePin?.(m.id); },
+          { label: pinned?.includes(m.id) ? `Unpin ${m.label}` : `Pin ${m.label}` },
+        )}
       >
         {pinned?.includes(m.id) ? "📌" : "📍"}
       </span>

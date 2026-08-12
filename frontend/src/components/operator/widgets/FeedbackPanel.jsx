@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { getRecentTelemetry } from "../../../hooks/useBetaTelemetry";
+import { clickableProps } from "../../../hooks/useClickableProps";
 import { getProductivitySummary, getFrictionSummary, detectConfusionPatterns, generateIncidentSummary } from "../../../hooks/useProductivityAnalytics"; // Phase 169 + 176 + 249
 
 // Phase 193: categorize crash/error messages into human-readable groups
@@ -255,7 +256,7 @@ export const FeedbackPanel = React.memo(({ onClose, connectionState, runtimeDegr
     <div style={{
       position: "fixed", inset: 0, background: "rgba(6,8,10,0.88)", zIndex: 8500,
       display: "flex", alignItems: "center", justifyContent: "center"
-    }} onClick={onClose}>
+    }} {...clickableProps(onClose)}>
       <div
         style={{
           width: "min(400px, 94vw)", background: "var(--op-surface)",
@@ -263,7 +264,7 @@ export const FeedbackPanel = React.memo(({ onClose, connectionState, runtimeDegr
           padding: "20px 22px", fontFamily: "var(--op-mono)",
           display: "flex", flexDirection: "column", gap: 12
         }}
-        onClick={e => e.stopPropagation()}
+        {...clickableProps(e => e.stopPropagation())}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{ fontSize: 12, fontWeight: "bold", color: "var(--op-text)" }}>Send Feedback</span>
