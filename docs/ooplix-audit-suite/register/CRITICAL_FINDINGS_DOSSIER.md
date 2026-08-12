@@ -35,6 +35,8 @@ verify that the summary is true should read this.
 | 8 | B.15 | `D1` | 🔴 CRITICAL | [Support tickets had no ownership; any account could read and close another's](#b15-d1) |
 | 9 | B.17 | `D1` | 🔴 CRITICAL | [The sole org owner could demote themselves, stranding the company permanently](#b17-d1) |
 | 10 | B.19.3 | `F3` | 🔴 CRITICAL | [B19.1's keyboard recovery had silently regressed in full](#b19.3-f3) |
+| 11 | B.19.4 | `F2` | 🔴 CRITICAL | [`overlayProps` carried a latent defect that would have hidden every dialog](#b19.4-f2) |
+| 12 | B.19.4 | `F3` | 🔴 CRITICAL | [77 keyboard findings, all recoverable with the existing helper](#b19.4-f3) |
 | — | A.1 | — | 🔴 CRITICAL | Two authorization gaps closed during recertification variant sweep. *(commit-evidenced, no certification document)* |
 | — | A.4 | — | 🔴 CRITICAL | 'More' dropdown was inert — 74 of ~79 surfaces unreachable. *(commit-evidenced, no certification document)* |
 | — | A.5 | — | 🔴 CRITICAL | Unbounded mission-fanout loops blocked the event loop; Engineering Workspace swallowed every pipeline failure. *(commit-evidenced, no certification document)* |
@@ -42,7 +44,7 @@ verify that the summary is true should read this.
 | — | A.9 | — | 🔴 CRITICAL | Cross-org tenant isolation confirmed with real accounts; Executive Intelligence crash fixed. *(commit-evidenced, no certification document)* |
 | — | B.1 | — | 🔴 CRITICAL | Mission store retention cap removed a measured 483 ms event-loop block. *(commit-evidenced, no certification document)* |
 
-**10 critical findings** extracted from 18 certification documents.
+**12 critical findings** extracted from 19 certification documents.
 **6 further critical findings** are commit-evidenced only and recorded in the register.
 
 ---
@@ -444,6 +446,83 @@ findings 931 → 843; runtime 144/144; live scan unchanged at 0/0.
 
 ---
 
+<a id="b19.4-f2"></a>
+
+### 11. B.19.4 `F2` — `overlayProps` carried a latent defect that would have hidden every dialog
+
+**Severity:** 🔴 CRITICAL  ·  **Phase:** B.19.4 — Keyboard & ARIA Recovery Certification  ·  **Source:** `PHASE_B19_4_KEYBOARD_ARIA_CERTIFICATION.md`
+
+**Reproduction.** Converting overlays to the repo's own `overlayProps()` helper
+was the obvious recovery for 28 findings. Reading the helper before applying it:
+
+```js
+// "Marked aria-hidden so the backdrop itself is not announced;
+//  the dialog above it carries the accessible content."
+export function overlayProps(onDismiss) {
+  return { onClick: …, 'aria-hidden': true };
+}
+```
+
+**Measured evidence.** The comment assumes the dialog is a **sibling** of the
+backdrop. Every modal in this codebase nests the panel **inside** the overlay:
+
+```
+<div className="arc-modal-overlay">            ← overlayProps would go here
+  <div className="arc-modal" role="dialog">    ← its CHILD
+```
+
+`aria-hidden` is inherited by descendants. Spreading this helper would have
+removed all 15 dialogs — title, fields and all — from the accessibility tree,
+silently defeating the `role="dialog"` semantics recovered in F1. That is a
+worse defect than the one the helper exists to fix.
+
+**Root cause.** The helper was written against an assumed DOM shape that does
+not occur anywhere in this repository.
+
+**Fix.** Removed the inherited `aria-hidden`; the click behaviour (dismiss only
+when the backdrop itself is the target) is unchanged and is the helper's actual
+purpose. A call-site note records how to mark a genuinely bare backdrop.
+
+**Regression.** `tests/runtime/28` — "overlayProps does not set aria-hidden",
+negative-tested against a reintroduction.
+
+---
+
+---
+
+<a id="b19.4-f3"></a>
+
+### 12. B.19.4 `F3` — 77 keyboard findings, all recoverable with the existing helper
+
+**Severity:** 🔴 CRITICAL  ·  **Phase:** B.19.4 — Keyboard & ARIA Recovery Certification  ·  **Source:** `PHASE_B19_4_KEYBOARD_ARIA_CERTIFICATION.md`
+
+**Reproduction.** 75 `KBD-CLICK-NO-KEYBOARD` plus two singletons: rows, cards
+and overlays carrying `onClick` on a plain `<div>`/`<span>` — real controls to a
+mouse, non-existent to a keyboard.
+
+**Measured evidence.** `hooks/useClickableProps.js` already provides exactly the
+two helpers needed, and documents which applies where. B19.2.3 recovered 115
+sites but deliberately skipped the ambiguous shapes.
+
+**Fix — recovery only, in four passes.**
+
+| Pass | Shape | Helper | Count |
+|---|---|---|---:|
+| 1 | multi-statement handlers (balanced-brace reader) | `clickableProps` | 12 |
+| 2 | elements also carrying `style={{…}}` | `clickableProps` | 20 |
+| 3 | overlay/backdrop containers (unblocked by F2) | `overlayProps` | 40 |
+| 4 | multi-line openings, hand-verified | `clickableProps` | 2 |
+
+Two half-implemented ARIA patterns were also completed: the `App.jsx` pin
+control had `role="button"` + `aria-label` but no `tabIndex` or key handler, and
+`MissionControl`'s `Tile` had `role` + `tabIndex` but no key handler.
+
+**Result.** All three keyboard rules at **0**.
+
+---
+
+---
+
 ## High-Severity Findings — Index
 
 Full bodies are in the source certifications; this index exists so the dossier is a complete
@@ -467,8 +546,10 @@ map of what was found rather than only the worst of it.
 | B.19 | `D1` | Primary navigation was invisible in light mode (**HIGH**, WCAG 1.4.3 + 2.5.8) | `PHASE_B19_ACCESSIBILITY_CERTIFICATION.md` |
 | B.19.3 | `F1` | A B19.2.2 whitelist entry hid 21 real contrast defects | `PHASE_B19_3_ACCESSIBILITY_CLOSURE_CERTIFICATION.md` |
 | B.19.3 | `F2` | "Fixed-dark" was being used to excuse failing contrast | `PHASE_B19_3_ACCESSIBILITY_CLOSURE_CERTIFICATION.md` |
+| B.19.4 | `F1` | Dialog semantics existed in five components and were absent from ten | `PHASE_B19_4_KEYBOARD_ARIA_CERTIFICATION.md` |
+| B.19.4 | `F5` | Form labelling is a GENUINE CAPABILITY GAP, not recoverable | `PHASE_B19_4_KEYBOARD_ARIA_CERTIFICATION.md` |
 
-**16 high-severity findings** recorded across the certification set.
+**18 high-severity findings** recorded across the certification set.
 
 ---
 
@@ -492,7 +573,7 @@ assertions fail when the fix is reverted.
 | B.13 | `D1` | `tests/runtime/19-automation-dryrun.test.cjs` | 7 | **3 fail** without the fix |
 | B.19.3 | `F1` | `tests/runtime/27-visual-accessibility` | 16 | see source |
 
-**Baseline:** 144/144 runtime regression, plus phase-specific suites. Independently re-executed 2026-08-13: 144/144 runtime; accessibility suites 25 (9/9), 26 (20/22 — 2 open, pre-existing keyboard/ARIA), 27 (16/16).
+**Baseline:** 144/144 runtime regression, plus phase-specific suites. Independently re-executed 2026-08-13: 144/144 runtime; accessibility suites 25 (9/9), 26 (21/22 — the single form-labelling gap), 27 (16/16), 28 (14/14, new).
 
 ---
 
@@ -534,6 +615,7 @@ an ownership dimension.** They are one remediation programme, not three tickets.
 | `PHASE_B18_BUSINESS_CONTINUITY_CERTIFICATION.md` | B.18 — Business Continuity & Operational Resilience Certification |
 | `PHASE_B19_2_VISUAL_ACCESSIBILITY_CERTIFICATION.md` | — |
 | `PHASE_B19_3_ACCESSIBILITY_CLOSURE_CERTIFICATION.md` | B.19.3 — Accessibility Final Closure Certification |
+| `PHASE_B19_4_KEYBOARD_ARIA_CERTIFICATION.md` | B.19.4 — Keyboard & ARIA Recovery Certification |
 | `PHASE_B19_ACCESSIBILITY_CERTIFICATION.md` | B.19 — Accessibility & Inclusive UX Certification |
 
 Verify any figure by opening the named certification. Verify the A-phase findings via

@@ -146,7 +146,7 @@ Covers the 17 critical findings in full and the 6 highest-impact high-severity f
 | 7.3 | Maturity model and current position | 2 |
 | 7.4 | Why 29 audits carry no score | 1 |
 
-**§7.4 matters.** Only 6 of 33 executed audits produced weighted dimension scores; the rest were pass/fail against defined criteria. Averaging across both would fabricate precision.
+**§7.4 matters.** Only 6 of 34 executed audits produced weighted dimension scores; the rest were pass/fail against defined criteria. Averaging across both would fabricate precision.
 
 ---
 

@@ -226,7 +226,8 @@ Figures below are measurements, each traceable to its source audit.
 | Version | Date | Change | Author |
 |---|---|---|---|
 | 1.0.0 | 2026-08-09 | Initial register: 31 audits recorded as executed from committed evidence; 7 planned audits recorded without scores. *(Historical figure — superseded by 1.1.0 below; the R7 integrity rule checks live totals only.)* | Audit Programme |
-| 1.1.0 | 2026-08-13 | Added B.19.2.2 (Design Token Completion) and B.19.2.3 (Accessibility Final Closure). Register now carries **33 executed audits**; 127 findings; mean 8.59/10 across 10 scored audits. B.19.2.3 certifies colour/contrast only — live and synthetic scans agree at 0, while 843 pre-existing keyboard/ARIA findings remain OPEN and are recorded, not closed. | Audit Programme |
+| 1.1.0 | 2026-08-13 | Added B.19.2.2 (Design Token Completion) and B.19.2.3 (Accessibility Final Closure). Register carried 33 rows recorded as executed; 127 findings; mean 8.59/10 across 10 scored audits. B.19.2.3 certifies colour/contrast only — live and synthetic scans agree at 0, while 843 pre-existing keyboard/ARIA findings remain OPEN. *(Historical figures — superseded by 1.2.0 below.)* | Audit Programme |
+| 1.2.0 | 2026-08-13 | Added B.19.4 (Keyboard & ARIA Recovery). Register now carries **34 executed audits**; 132 findings; mean 8.63/10 across 11 scored audits. All 77 keyboard findings closed and dialog semantics recovered (7→15). The 766 remaining form-labelling findings are reclassified from "pre-existing" to a **GENUINE CAPABILITY GAP** with per-finding evidence (`G1-B193`), and a new regression suite (`tests/runtime/28`) guards the recovered capability. | Audit Programme |
 
 **Amendment rule.** A PLANNED row may only move to EXECUTED when accompanied by a committed certification document containing measured evidence. Scores may not be added to a PLANNED row under any circumstance. A NOT CERTIFIED verdict may not be revised without a new dated audit.
 

@@ -1,0 +1,38 @@
+{
+  "dark": {
+    "failures": [],
+    "visitedTabs": 8,
+    "reachable": {
+      "els": 121,
+      "withText": 43,
+      "authed": true,
+      "onLanding": false
+    },
+    "errors": [
+      "Not a member of this workspace"
+    ],
+    "coverage": {
+      "elementsSeen": 2361,
+      "textSeen": 994
+    },
+    "valid": true
+  },
+  "light": {
+    "failures": [],
+    "visitedTabs": 8,
+    "reachable": {
+      "els": 122,
+      "withText": 43,
+      "authed": true,
+      "onLanding": false
+    },
+    "errors": [
+      "Not a member of this workspace"
+    ],
+    "coverage": {
+      "elementsSeen": 3013,
+      "textSeen": 1403
+    },
+    "valid": true
+  }
+}
