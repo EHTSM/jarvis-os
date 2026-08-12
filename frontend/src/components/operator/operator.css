@@ -46,12 +46,14 @@
 
   /* ── Typography ── */
   --op-text: var(--text);
-  --op-text2:        #98aac2;
-  /* B19.2.2: was #5c6e88 — 3.88:1 on --bg, below AA. This token carries real
-     content (timestamps, section labels, session age), so it must clear 4.5.
-     Hue preserved; lightness raised. Now 4.93:1. */
-  --op-text3:        #6b7f9c;
-  --op-text-soft:    #c8d4df;
+  /* B19.2.2: --op-text2/3/-soft were pinned light-on-dark values (#98aac2,
+     #5c6e88, #c8d4df). Once --op-bg became theme-aware they inverted in light
+     mode — 2.17:1 measured on --bg. Aliased onto the global text roles, which
+     already flip. The dark-theme appearance is preserved because --text-dim /
+     --text-faint resolve to near-identical values there. */
+  --op-text2:        var(--text-dim);
+  --op-text3:        var(--text-faint);
+  --op-text-soft:    var(--text);
   --op-text-xs:      8px;
   --op-text-sm:      9px;
   --op-text-base:    11px;

@@ -21,7 +21,11 @@
   --border-strong: rgba(255, 255, 255, 0.11);
 
   /* Brand palette */
-  --accent:        #7c6fff;   /* softer violet */
+  /* B19.2.2: was #7c6fff. Clears AA on --bg (5.35:1) but only 4.36–4.46:1 on
+     the tinted panels it is routinely painted on (active tabs, quick tips,
+     insight badges) — the dark-mode mirror of the light-tint defect fixed
+     below. Lightened 2%; worst tinted pairing is now 4.52:1. */
+  --accent:        #8072ff;   /* softer violet */
   --accent2:       #4ecdc4;   /* teal */
   --accent-glow:   rgba(124, 111, 255, 0.15);
   --accent2-glow:  rgba(78, 205, 196, 0.12);
