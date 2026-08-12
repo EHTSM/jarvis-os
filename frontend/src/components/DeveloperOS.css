@@ -1,4 +1,4 @@
-:root { --dos-muted: #6b7080; }
+:root { --dos-muted: var(--text-dim); }
 
 .dos-root {
   display: flex;

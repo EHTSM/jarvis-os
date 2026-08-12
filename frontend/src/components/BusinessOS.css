@@ -1,6 +1,6 @@
 /* Business OS — scoped under .bos-* namespace */
 
-:root { --bos-muted: #6b7080; }
+:root { --bos-muted: var(--text-dim); }
 
 .bos-root {
   display: flex;

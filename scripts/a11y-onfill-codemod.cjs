@@ -27,7 +27,12 @@ const PAIRS = [
   ['--info',    '--on-info'],
 ];
 
-const WHITE = /^#(fff|ffffff)$/i;
+/**
+ * A label pinned to either extreme is wrong on a themed fill: the fill flips
+ * between a bright (dark-theme) and a darkened (light-theme) variant, so only
+ * `--on-*` tracks it. Near-black values are the same bug as white.
+ */
+const PINNED_LABEL = /^#(fff|ffffff|000|000000|0a0c14|06080e|06100a|120d02|05100f|04121a|0f0f13)$/i;
 const FIXED_DARK = /LandingPage\.css$|ShortcutsOverlay\.css$|PublicLaunch\.css$/;
 
 const files = [];
@@ -92,7 +97,7 @@ for (const f of files) {
     if (!pair) return block;
     let next = block.replace(/(^|[;{\s])color:\s*(#[0-9a-fA-F]{3,6})\s*(?=[;}])/g,
       (m, lead, lit) => {
-        if (!WHITE.test(lit)) return m;
+        if (!PINNED_LABEL.test(lit)) return m;
         n++; total++;
         return `${lead}color: var(${pair[1]})`;
       });

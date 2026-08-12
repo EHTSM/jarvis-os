@@ -139,7 +139,7 @@
 .acc-opt-saving{font-size:14px;font-weight:800;}
 .acc-opt-effort{font-size:11.5px;font-weight:700;}
 .acc-opt-detail{font-size:13px;color:var(--text-dim);margin:0;line-height:1.55;}
-.acc-opt-btn{align-self:flex-start;padding:5px 16px;background:var(--accent2);color:#000;border:none;border-radius:var(--radius-sm);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity var(--dur-fast) var(--ease-out);}
+.acc-opt-btn{align-self:flex-start;padding:5px 16px;background:var(--accent2);color: var(--on-accent2);border:none;border-radius:var(--radius-sm);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity var(--dur-fast) var(--ease-out);}
 .acc-opt-btn:hover{opacity:.85;}
 
 @media(max-width:680px){

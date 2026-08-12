@@ -1,5 +1,5 @@
 /* ── DOP-2 Real Production Deployment Dashboard ──────────────────── */
-:root { --dop2-accent: #a78bfa; } /* violet */
+:root { --dop2-accent: var(--accent); } /* violet */
 
 .dop2-root     { display: flex; flex-direction: column; height: 100%; background: var(--surface-base); color: #e2e8f0; font-family: system-ui, sans-serif; overflow: hidden; }
 .dop2-header   { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }

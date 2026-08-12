@@ -10,10 +10,10 @@
   --pw2-accent:  var(--accent2);
   --pw2-green:   var(--success);
   --pw2-red:     var(--danger);
-  --pw2-yellow:  #f59e0b;
-  --pw2-blue:    #60a5fa;
-  --pw2-purple:  #a78bfa;
-  --pw2-orange:  #f97316;
+  --pw2-yellow: var(--warning);
+  --pw2-blue: var(--info);
+  --pw2-purple: var(--accent);
+  --pw2-orange: var(--warning);
 }
 
 .pw2-root { background: var(--pw2-bg); color: var(--pw2-text); min-height: 100%; font-family: "Inter", system-ui, sans-serif; font-size: 13px; }
@@ -91,7 +91,7 @@
 .pw2-section-title { font-size: 13px; font-weight: 700; color: var(--pw2-text); flex: 1; }
 
 /* Buttons */
-.pw2-btn { background: var(--pw2-accent); border: none; border-radius: 5px; color: #000; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
+.pw2-btn { background: var(--pw2-accent); border: none; border-radius: 5px; color: var(--on-accent2); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: opacity 0.15s; }
 .pw2-btn:hover    { opacity: 0.85; }
 .pw2-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pw2-btn-sm { background: rgba(255,255,255,.05); border: 1px solid var(--pw2-border); border-radius: 4px; color: var(--pw2-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }

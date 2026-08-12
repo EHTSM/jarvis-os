@@ -9,7 +9,7 @@
    ──────────────────────────────────────────────────────────────────────── */
 :root {
   /* ── Canvas ── */
-  --op-bg:             #04070f;
+  --op-bg: var(--bg);
   --op-surface:        rgba(8, 14, 26, 0.94);
   --op-surface2:       rgba(12, 20, 34, 0.86);
   --op-surface3:       rgba(16, 28, 44, 0.88);
@@ -24,16 +24,16 @@
   --op-border-hi: rgba(92, 214, 255, 0.22);
 
   /* ── Brand palette ── */
-  --op-accent:    #73b7ff;
+  --op-accent: var(--accent);
   --op-accent2:   #5de2d5;
-  --op-purple:    #9f7ffd;
-  --op-blue:      #44a2ff;
+  --op-purple: var(--accent);
+  --op-blue: var(--info);
 
   /* ── Status colors ── */
-  --op-green:   #4bf0b1;
+  --op-green: var(--success);
   --op-green2:  #22c88a;
   --op-amber:   #f7b34f;
-  --op-red:     #ff6f7d;
+  --op-red: var(--danger);
   --op-red2:    #e0576d;
 
   /* ── Semantic aliases (frozen) ── */
@@ -42,10 +42,10 @@
   --op-warn:    #f7b34f;
   --op-danger:  #ff6f7d;
   --op-info:    #44a2ff;
-  --op-muted:   #98aac2;
+  --op-muted: var(--text-dim);
 
   /* ── Typography ── */
-  --op-text:         #e3ebf5;
+  --op-text: var(--text);
   --op-text2:        #98aac2;
   /* B19.2.2: was #5c6e88 — 3.88:1 on --bg, below AA. This token carries real
      content (timestamps, section labels, session age), so it must clear 4.5.
@@ -2473,11 +2473,11 @@ select:focus-visible {
 /* High-contrast mode support */
 @media (prefers-contrast: more) {
   :root {
-    --op-border:  #3a5068;
-    --op-text:    #ffffff;
+    --op-border: var(--border);
+    --op-text: var(--text);
     --op-text2:   #c0d0e0;
-    --op-bg:      #000000;
-    --op-surface: #0a0f14;
+    --op-bg: var(--bg);
+    --op-surface: var(--surface);
   }
 }
 
@@ -2718,7 +2718,7 @@ select:focus-visible {
   top: -40px;
   left: 0;
   background: var(--op-accent);
-  color: #000;
+  color: var(--on-accent);
   padding: 4px 8px;
   font-size: 11px;
   font-weight: bold;

@@ -1,5 +1,5 @@
 /* ── PCS-2 External Platform Dashboard ──────────────────────────── */
-:root { --ep-accent: #fb923c; } /* amber */
+:root { --ep-accent: var(--accent); } /* amber */
 
 .ep-root    { display: flex; flex-direction: column; height: 100%; background: var(--surface-base); color: #e2e8f0; font-family: system-ui, sans-serif; overflow: hidden; }
 .ep-header  { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }

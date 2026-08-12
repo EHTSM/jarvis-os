@@ -1,16 +1,16 @@
 /* CO1 Production Infrastructure — ProductionOps.css */
 :root {
-  --po-bg:      #0d0d11;
-  --po-surface: #141418;
-  --po-border:  #1e1e28;
-  --po-text:    #e0e0e8;
-  --po-muted:   #888;
-  --po-accent:  #7c6fff;
-  --po-green:   #22c55e;
-  --po-teal:    #4ecdc4;
-  --po-yellow:  #f59e0b;
-  --po-red:     #ef4444;
-  --po-orange:  #f97316;
+  --po-bg: var(--bg);
+  --po-surface: var(--surface);
+  --po-border: var(--border);
+  --po-text: var(--text);
+  --po-muted: var(--text-dim);
+  --po-accent: var(--accent);
+  --po-green: var(--success);
+  --po-teal: var(--accent2);
+  --po-yellow: var(--warning);
+  --po-red: var(--danger);
+  --po-orange: var(--warning);
 }
 
 .po-root {
@@ -95,7 +95,7 @@
 .po-checklist-item.critical    { border-left: 3px solid rgba(239,68,68,.4); }
 .po-checklist-item.done.critical { border-left: 3px solid var(--po-green) !important; }
 .po-check-box  { width: 16px; height: 16px; border: 1.5px solid var(--po-border); border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 10px; }
-.po-check-box.done { background: var(--po-green); border-color: var(--po-green); color: #000; }
+.po-check-box.done { background: var(--po-green); border-color: var(--po-green); color: var(--on-success); }
 .po-check-lbl  { font-size: 12px; font-weight: 500; color: var(--po-text); }
 .po-check-cat  { font-size: 10px; color: var(--po-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 .po-check-note { font-size: 10px; color: var(--po-muted); margin-top: 2px; font-style: italic; }

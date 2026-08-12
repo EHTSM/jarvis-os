@@ -68,7 +68,7 @@
   background: var(--accent2, #4ecdc4);
   border: none;
   border-radius: var(--radius-pill);
-  color: #000;
+  color: var(--on-accent2);
   font-size: 12px;
   font-weight: 800;
   font-family: inherit;

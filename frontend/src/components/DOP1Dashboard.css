@@ -1,5 +1,5 @@
 /* ── DOP-1 Production Infrastructure Validation Dashboard ──────── */
-:root { --dop-accent: #38bdf8; } /* sky blue */
+:root { --dop-accent: var(--accent); } /* sky blue */
 
 .dop-root     { display: flex; flex-direction: column; height: 100%; background: var(--surface-base); color: #e2e8f0; font-family: system-ui, sans-serif; overflow: hidden; }
 .dop-header   { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }

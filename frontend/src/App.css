@@ -1084,7 +1084,7 @@
   cursor: pointer; font-family: inherit; border: 1px solid var(--border);
 }
 .org-create-btn--cancel { background: none; color: var(--text-dim); }
-.org-create-btn--confirm { background: var(--accent2); border-color: var(--accent2); color: #06080e; }
+.org-create-btn--confirm { background: var(--accent2); border-color: var(--accent2); color: var(--on-accent2); }
 .org-create-btn--confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .org-switcher-create {
