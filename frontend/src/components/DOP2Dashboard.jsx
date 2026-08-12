@@ -349,7 +349,7 @@ function BenchmarkPanel({ onRun, loading }) {
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 13, fontWeight: 700 }}>Deployment Benchmark</div>
-          <div style={{ fontSize: 11, color: "#64748b" }}>20 deployment gates — validates full production readiness</div>
+          <div style={{ fontSize: 11, color: "var(--text-dim)" }}>20 deployment gates — validates full production readiness</div>
         </div>
         <button className="dop2-btn-primary" onClick={runBench} disabled={busy}>{busy ? "Running…" : "Run Benchmark"}</button>
       </div>
@@ -408,8 +408,8 @@ function HistoryPanel() {
           <ScoreRing score={h.productionScore} size={36} />
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 600 }}><VerdictBadge verdict={h.verdict} /></div>
-            {h.vpsHost && <div style={{ color: "#64748b" }}>VPS: {h.vpsHost}</div>}
-            {h.baseUrl && <div style={{ color: "#64748b" }}>URL: {h.baseUrl}</div>}
+            {h.vpsHost && <div style={{ color: "var(--text-dim)" }}>VPS: {h.vpsHost}</div>}
+            {h.baseUrl && <div style={{ color: "var(--text-dim)" }}>URL: {h.baseUrl}</div>}
           </div>
           <div style={{ color: "#475569", fontSize: 10 }}>{h.runAt ? new Date(h.runAt).toLocaleString() : "—"}</div>
         </div>

@@ -122,7 +122,7 @@
 
 /* ── AI draft button ────────────────────────── */
 .sc-td-reply-header  { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-.sc-td-ai-btn        { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid rgba(124,111,255,.4); background:rgba(124,111,255,.08); color:#7c6fff; cursor:pointer; transition:opacity .15s; }
+.sc-td-ai-btn        { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid rgba(124,111,255,.4); background:rgba(124,111,255,.08); color:var(--accent); cursor:pointer; transition:opacity .15s; }
 .sc-td-ai-btn:hover  { opacity:.8; }
 .sc-td-ai-btn:disabled { opacity:.4; cursor:default; }
 

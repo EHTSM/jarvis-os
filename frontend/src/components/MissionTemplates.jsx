@@ -12,8 +12,8 @@ const TEMPLATES = [
   { id: "audit",    icon: "◇", label: "Code Audit",         goal: "Audit the repository for code smells, dead code, and architectural risks. Generate a prioritized report.",           color: "#eab308" },
   { id: "tests",    icon: "⬡", label: "Write Tests",        goal: "Analyze all modules with <50% test coverage. Generate comprehensive unit and integration tests.",                      color: "#3b82f6" },
   { id: "refactor", icon: "◈", label: "Refactor",           goal: "Identify the top 3 most complex modules and refactor them for clarity and maintainability.",                           color: "#a855f7" },
-  { id: "docs",     icon: "◉", label: "Generate Docs",      goal: "Read all public APIs and generate OpenAPI spec + inline JSDoc comments for every exported function.",                  color: "#22c55e" },
-  { id: "security", icon: "✦", label: "Security Scan",      goal: "Scan all routes, inputs, and dependencies for OWASP Top 10 vulnerabilities. Generate a risk report.",                 color: "#ef4444" },
+  { id: "docs",     icon: "◉", label: "Generate Docs",      goal: "Read all public APIs and generate OpenAPI spec + inline JSDoc comments for every exported function.",                  color: "var(--success)" },
+  { id: "security", icon: "✦", label: "Security Scan",      goal: "Scan all routes, inputs, and dependencies for OWASP Top 10 vulnerabilities. Generate a risk report.",                 color: "var(--danger)" },
   { id: "perf",     icon: "⚡", label: "Performance",        goal: "Profile the most critical code paths for performance bottlenecks and generate an optimization plan.",                  color: "#f97316" },
 ];
 
@@ -74,7 +74,7 @@ export default function MissionTemplates({ onNavigate }) {
               whileHover={{ y: -2, transition: { duration: 0.12 } }}
               whileTap={{ scale: 0.97 }}
             >
-              <span className="mt-icon" style={{ color: isError ? "#ef4444" : isDone ? "#22c55e" : tpl.color }}>
+              <span className="mt-icon" style={{ color: isError ? "var(--danger)" : isDone ? "var(--success)" : tpl.color }}>
                 {isDone ? "✓" : isError ? "✕" : tpl.icon}
               </span>
               <span className="mt-label">{tpl.label}</span>

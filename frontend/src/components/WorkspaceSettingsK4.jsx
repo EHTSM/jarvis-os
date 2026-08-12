@@ -3,7 +3,7 @@ import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
 
 // ── K4 Governance helpers ─────────────────────────────────────────
-const RISK_COLOR  = { critical: "var(--error)", high: "#ff6b35", medium: "var(--warning)", low: "#52d68a" };
+const RISK_COLOR  = { critical: "var(--error)", high: "#ff6b35", medium: "var(--warning)", low: "var(--success)" };
 const ENF_COLOR   = { blocking: "var(--error)", advisory: "var(--warning)", logging: "var(--text-dim)" };
 const POLICY_TYPES = ["approval","change","deployment","environment","retention","audit_retention","access"];
 const ENFORCEMENT  = ["advisory","blocking","logging"];
@@ -343,7 +343,7 @@ function GovernanceOverviewPanel() {
   if (!report)  return <div className="k2-empty">No governance data.</div>;
 
   const { policies, compliance, risk } = report;
-  const scoreColor = s => s >= 85 ? "#52d68a" : s >= 70 ? "var(--warning)" : s >= 55 ? "#ffaa00" : "var(--error)";
+  const scoreColor = s => s >= 85 ? "var(--success)" : s >= 70 ? "var(--warning)" : s >= 55 ? "#ffaa00" : "var(--error)";
 
   return (
     <div className="k4-overview-panel">

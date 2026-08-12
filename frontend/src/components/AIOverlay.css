@@ -30,7 +30,7 @@
 .ai-overlay__title {
   font-size: 12px;
   font-weight: 700;
-  color: #10b981;
+  color: var(--success);
   white-space: nowrap;
   letter-spacing: 0.03em;
 }
@@ -65,7 +65,7 @@
   transition: color 0.15s, background 0.15s;
 }
 .ai-overlay__tab:hover { color: #9ca3af; background: #1f2937; }
-.ai-overlay__tab--active { color: #10b981; background: #10b98115; border-color: #10b98130; }
+.ai-overlay__tab--active { color: var(--success); background: #10b98115; border-color: #10b98130; }
 
 .ai-overlay__toggle {
   background: transparent;
@@ -78,7 +78,7 @@
   flex-shrink: 0;
   transition: color 0.15s, background 0.15s;
 }
-.ai-overlay__toggle:hover { color: #10b981; background: #10b98115; }
+.ai-overlay__toggle:hover { color: var(--success); background: #10b98115; }
 
 /* Body */
 .ai-overlay__body {
@@ -134,7 +134,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #10b981;
+  background: var(--success);
   animation: typing-bounce 1.2s infinite;
 }
 .ai-typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -180,7 +180,7 @@
   font-family: inherit;
   line-height: 1.4;
 }
-.ai-chat__input:focus { border-color: #10b981; }
+.ai-chat__input:focus { border-color: var(--success); }
 .ai-chat__input::placeholder { color: #374151; }
 
 .ai-chat__send {
@@ -205,10 +205,10 @@
 .ai-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .ai-action-btn--green { background: #05271840; color: #34d399; border-color: #059669; }
 .ai-action-btn--green:hover { background: #052e16; color: #6ee7b7; }
-.ai-action-btn--gray { background: #111; color: #6b7280; border-color: #1f2937; }
+.ai-action-btn--gray { background: #111; color: var(--text-dim); border-color: #1f2937; }
 .ai-action-btn--gray:hover { background: #1f2937; color: #9ca3af; }
 .ai-action-btn--primary { background: #059669; color: #fff; border-color: #059669; }
-.ai-action-btn--primary:hover { background: #10b981; }
+.ai-action-btn--primary:hover { background: var(--success); }
 
 /* Suggestions */
 .ai-suggestions-list {
@@ -255,7 +255,7 @@
 
 .ai-suggestion__reason {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-dim);
   margin: 8px 0;
   line-height: 1.5;
 }
@@ -289,7 +289,7 @@
   resize: vertical;
   box-sizing: border-box;
 }
-.ai-error-input:focus { border-color: #10b981; }
+.ai-error-input:focus { border-color: var(--success); }
 .ai-error-input::placeholder { color: #374151; font-family: system-ui; }
 
 .ai-error-result {
@@ -335,7 +335,7 @@
   padding: 0 8px;
   line-height: 1.5;
   white-space: pre;
-  color: #6b7280;
+  color: var(--text-dim);
 }
 .diff-line--add  { background: #05271820; color: #34d399; }
 .diff-line--del  { background: #450a0a20; color: #f87171; }
@@ -366,7 +366,7 @@
   color: #f87171;
   font-size: 12px;
   background: #450a0a20;
-  border-left: 3px solid #ef4444;
+  border-left: 3px solid var(--danger);
   margin: 10px;
   border-radius: 3px;
 }

@@ -19,7 +19,7 @@ const PROVIDERS = [
   },
   {
     id:"ollama", name:"Ollama", type:"local", logo:"OL",
-    color:"#52d68a",
+    color:"var(--success)",
     models:[
       {name:"llama3:8b",        requests:3120, tokens:4_640_000, cost:0, rpm:120},
       {name:"mistral:7b",       requests:1880, tokens:2_210_000, cost:0, rpm:90},
@@ -32,7 +32,7 @@ const PROVIDERS = [
   },
   {
     id:"deepseek", name:"DeepSeek", type:"hosted", logo:"DS",
-    color:"#4ecdc4",
+    color:"var(--accent2)",
     models:[
       {name:"deepseek-chat",    requests:480,  tokens:1_120_000, cost:0.17, rpm:60},
       {name:"deepseek-coder",   requests:210,  tokens:480_000,   cost:0.07, rpm:40},
@@ -44,7 +44,7 @@ const PROVIDERS = [
   },
   {
     id:"qwen", name:"Qwen", type:"hosted", logo:"QW",
-    color:"#f0b429",
+    color:"var(--warning)",
     models:[
       {name:"qwen2-72b-instruct",requests:320, tokens:860_000,   cost:0.26, rpm:40},
       {name:"qwen2-7b-instruct", requests:180, tokens:340_000,   cost:0.04, rpm:80},
@@ -173,8 +173,8 @@ export default function AICostCenter({ onNavigate }) {
           { label:"Monthly forecast",   value:`$${forecastTotal.toFixed(2)}`,   color:"var(--accent2)" },
           { label:"Total savings",      value:`$${totalSavings.toFixed(2)}`,    color:"var(--success)" },
           { label:"Total requests",     value:fmt(totalRequests),               color:"var(--accent)"  },
-          { label:"Total tokens",       value:fmtTok(totalTokens),             color:"#7c6fff"        },
-          { label:"Local inference",    value:`${localPct}%`,                   color:"#52d68a"        },
+          { label:"Total tokens",       value:fmtTok(totalTokens),             color:"var(--accent)"        },
+          { label:"Local inference",    value:`${localPct}%`,                   color:"var(--success)"        },
         ].map(s=>(
           <div key={s.label} className="acc-summary-tile">
             <span className="acc-sv" style={{color:s.color}}>{s.value}</span>
@@ -199,7 +199,7 @@ export default function AICostCenter({ onNavigate }) {
                 <div className="acc-compare-grid">
                   <div className="acc-compare-col acc-compare-col--local">
                     <span className="acc-compare-label">Local</span>
-                    <span className="acc-compare-cost" style={{color:"#52d68a"}}>$0.00</span>
+                    <span className="acc-compare-cost" style={{color:"var(--success)"}}>$0.00</span>
                     <span className="acc-compare-reqs">{fmt(localReqs)} req</span>
                     <span className="acc-compare-pct">{localPct}% of traffic</span>
                     <ul className="acc-compare-list">
@@ -255,7 +255,7 @@ export default function AICostCenter({ onNavigate }) {
                     </div>
                     <span className="acc-prov-reqs">{fmt(reqs)} req</span>
                     <span className="acc-prov-toks">{fmtTok(toks)}</span>
-                    <span className="acc-prov-cost" style={{color:p.monthlyCost===0?"#52d68a":"var(--text)"}}>
+                    <span className="acc-prov-cost" style={{color:p.monthlyCost===0?"var(--success)":"var(--text)"}}>
                       {p.monthlyCost===0?"Free":`$${p.monthlyCost.toFixed(2)}`}
                     </span>
                     <span className="acc-prov-savings" style={{color:"var(--success)"}}>-${p.savings.toFixed(2)} saved</span>
@@ -286,10 +286,10 @@ export default function AICostCenter({ onNavigate }) {
                   <div className="acc-pc-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</div>
                   <div>
                     <span className="acc-pc-name">{p.name}</span>
-                    <span className="acc-pc-type-badge" style={{background:p.type==="local"?"#52d68a22":"var(--accent2)22",color:p.type==="local"?"#52d68a":"var(--accent2)"}}>{p.type}</span>
+                    <span className="acc-pc-type-badge" style={{background:p.type==="local"?"#52d68a22":"var(--accent2)22",color:p.type==="local"?"var(--success)":"var(--accent2)"}}>{p.type}</span>
                   </div>
                   <div className="acc-pc-cost-block">
-                    <span className="acc-pc-cost-val" style={{color:p.monthlyCost===0?"#52d68a":"var(--text)"}}>
+                    <span className="acc-pc-cost-val" style={{color:p.monthlyCost===0?"var(--success)":"var(--text)"}}>
                       {p.monthlyCost===0?"$0.00 (Free)":`$${p.monthlyCost.toFixed(2)}`}
                     </span>
                     <span className="acc-pc-cost-label">MTD cost</span>
@@ -305,7 +305,7 @@ export default function AICostCenter({ onNavigate }) {
                       <span className="acc-pc-model-name">{m.name}</span>
                       <span className="acc-pc-model-req">{fmt(m.requests)} req</span>
                       <span className="acc-pc-model-tok">{fmtTok(m.tokens)} tokens</span>
-                      <span className="acc-pc-model-cost" style={{color:m.cost===0?"#52d68a":"var(--text)"}}>
+                      <span className="acc-pc-model-cost" style={{color:m.cost===0?"var(--success)":"var(--text)"}}>
                         {m.cost===0?"Free":`$${m.cost.toFixed(2)}`}
                       </span>
                       <span className="acc-pc-model-rpm">{m.rpm} rpm</span>
@@ -341,7 +341,7 @@ export default function AICostCenter({ onNavigate }) {
             </div>
             <div className="acc-routing-stats">
               <div className="acc-routing-stat">
-                <span className="acc-routing-stat-val" style={{color:"#52d68a"}}>{localPct}%</span>
+                <span className="acc-routing-stat-val" style={{color:"var(--success)"}}>{localPct}%</span>
                 <span className="acc-routing-stat-label">routed to local</span>
               </div>
               <div className="acc-routing-stat">

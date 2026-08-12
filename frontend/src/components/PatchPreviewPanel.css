@@ -17,7 +17,7 @@
   cursor: pointer; transition: color 0.15s;
 }
 .ppp-view-btn:hover { color: #9ca3af; }
-.ppp-view-btn--active { color: #10b981; border-bottom-color: #10b981; }
+.ppp-view-btn--active { color: var(--success); border-bottom-color: var(--success); }
 
 /* Meta row */
 .ppp-meta {
@@ -40,13 +40,13 @@
   flex: 1; height: 5px; background: #1f2937; border-radius: 3px; overflow: hidden;
 }
 .ppp-conf__fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-.conf--high   { background: #10b981; }
-.conf--medium { background: #f59e0b; }
-.conf--low    { background: #ef4444; }
-.ppp-conf__label { font-size: 10px; color: #6b7280; white-space: nowrap; }
+.conf--high   { background: var(--success); }
+.conf--medium { background: var(--warning); }
+.conf--low    { background: var(--danger); }
+.ppp-conf__label { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
 
 .ppp-risk-reason-btn {
-  background: transparent; border: none; color: #6b7280; font-size: 10px;
+  background: transparent; border: none; color: var(--text-dim); font-size: 10px;
   cursor: pointer; text-decoration: underline;
 }
 .ppp-risk-reason-btn:hover { color: #9ca3af; }
@@ -80,7 +80,7 @@
   border-top: 1px solid #111827; border-bottom: 1px solid #111827;
   max-height: 320px; overflow-y: auto;
 }
-.ppp-diff__line { padding: 0 10px; white-space: pre; color: #6b7280; }
+.ppp-diff__line { padding: 0 10px; white-space: pre; color: var(--text-dim); }
 .diff-add    { background: #05271820; color: #34d399; }
 .diff-del    { background: #450a0a20; color: #f87171; }
 .diff-meta   { background: #1e3a5f20; color: #60a5fa; }
@@ -99,14 +99,14 @@
 .ppp-spec__file {
   font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px; color: #60a5fa; flex: 1;
 }
-.ppp-spec__ok    { color: #10b981; font-size: 12px; }
+.ppp-spec__ok    { color: var(--success); font-size: 12px; }
 .ppp-spec__error { color: #f87171; font-size: 10px; }
-.ppp-spec__desc  { color: #6b7280; font-size: 10px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ppp-spec__desc  { color: var(--text-dim); font-size: 10px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ppp-spec__body  { border-top: 1px solid #111827; }
 
 .ppp-empty { padding: 20px; text-align: center; color: #374151; font-size: 12px; }
 .ppp-no-apply {
-  font-size: 11px; color: #6b7280; padding: 6px 0; line-height: 1.5;
+  font-size: 11px; color: var(--text-dim); padding: 6px 0; line-height: 1.5;
 }
 
 /* Commit msg */
@@ -130,9 +130,9 @@
 }
 .ppp-approval-check {
   display: flex; align-items: center; gap: 6px;
-  font-size: 11px; color: #6b7280; cursor: pointer; user-select: none;
+  font-size: 11px; color: var(--text-dim); cursor: pointer; user-select: none;
 }
-.ppp-approval-check input { accent-color: #10b981; cursor: pointer; }
+.ppp-approval-check input { accent-color: var(--success); cursor: pointer; }
 .ppp-action-row { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .ppp-btn {
@@ -141,10 +141,10 @@
 }
 .ppp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .ppp-btn--apply  { background: #059669; border-color: #059669; color: #fff; }
-.ppp-btn--apply:hover:not(:disabled) { background: #10b981; }
+.ppp-btn--apply:hover:not(:disabled) { background: var(--success); }
 .ppp-btn--mission { background: #1e3a5f30; border-color: #1d4ed8; color: #60a5fa; }
 .ppp-btn--mission:hover:not(:disabled) { background: #1e3a5f60; }
-.ppp-btn--reject { background: transparent; border-color: #374151; color: #6b7280; }
+.ppp-btn--reject { background: transparent; border-color: #374151; color: var(--text-dim); }
 .ppp-btn--reject:hover { color: #f87171; border-color: #7f1d1d; }
 
 .ppp-error {
@@ -164,14 +164,14 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 6px 10px; background: #0a0e17; border-bottom: 1px solid #1f2937;
 }
-.ppp-pipeline__title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
+.ppp-pipeline__title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
 .ppp-pipeline__status { font-size: 10px; font-weight: 600; text-transform: uppercase; }
-.ppp-pipeline__status--running   { color: #f59e0b; }
-.ppp-pipeline__status--completed { color: #10b981; }
-.ppp-pipeline__status--failed    { color: #ef4444; }
-.ppp-pipeline__status--cancelled { color: #6b7280; }
+.ppp-pipeline__status--running   { color: var(--warning); }
+.ppp-pipeline__status--completed { color: var(--success); }
+.ppp-pipeline__status--failed    { color: var(--danger); }
+.ppp-pipeline__status--cancelled { color: var(--text-dim); }
 .ppp-pipeline__label { padding: 8px 10px; font-size: 11px; color: #4b5563; }
-.ppp-pipeline__commit { padding: 4px 10px; font-size: 10px; color: #10b981; font-family: monospace; }
+.ppp-pipeline__commit { padding: 4px 10px; font-size: 10px; color: var(--success); font-family: monospace; }
 
 .ppp-pipeline__stages {
   display: flex; flex-direction: column;
@@ -183,11 +183,11 @@
 }
 .ppp-stage__icon { width: 14px; font-size: 12px; }
 .ppp-stage--pending   .ppp-stage__icon { color: #374151; }
-.ppp-stage--running   .ppp-stage__icon { color: #f59e0b; animation: ppp-spin 1s linear infinite; }
-.ppp-stage--completed .ppp-stage__icon { color: #10b981; }
-.ppp-stage--failed    .ppp-stage__icon { color: #ef4444; }
+.ppp-stage--running   .ppp-stage__icon { color: var(--warning); animation: ppp-spin 1s linear infinite; }
+.ppp-stage--completed .ppp-stage__icon { color: var(--success); }
+.ppp-stage--failed    .ppp-stage__icon { color: var(--danger); }
 .ppp-stage--skipped   .ppp-stage__icon { color: #374151; }
-.ppp-stage__label { flex: 1; color: #6b7280; }
+.ppp-stage__label { flex: 1; color: var(--text-dim); }
 .ppp-stage--completed .ppp-stage__label { color: #9ca3af; }
 .ppp-stage--running   .ppp-stage__label { color: #d1d5db; font-weight: 500; }
 .ppp-stage__error { font-size: 10px; color: #f87171; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
@@ -206,13 +206,13 @@
 .ppp-hist-status { font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; }
 .ppp-hist-status--staged          { background: #1e3a5f30; color: #60a5fa; }
 .ppp-hist-status--pipeline_running{ background: #451a0330; color: #fbbf24; }
-.ppp-hist-status--undone          { background: #1f293730; color: #6b7280; }
+.ppp-hist-status--undone          { background: #1f293730; color: var(--text-dim); }
 .ppp-hist-status--completed       { background: #05271830; color: #34d399; }
-.ppp-hist-files { font-size: 10px; color: #6b7280; }
+.ppp-hist-files { font-size: 10px; color: var(--text-dim); }
 .ppp-hist-time  { font-size: 10px; color: #374151; margin-left: auto; }
 .ppp-undo-btn {
   align-self: flex-start; padding: 2px 8px; font-size: 10px;
   background: transparent; border: 1px solid #374151; border-radius: 3px;
-  color: #6b7280; cursor: pointer;
+  color: var(--text-dim); cursor: pointer;
 }
 .ppp-undo-btn:hover { color: #f87171; border-color: #7f1d1d; }

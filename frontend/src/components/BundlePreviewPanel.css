@@ -11,7 +11,7 @@
 }
 .bpp-header__title {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: #6b7280; flex: 1;
+  letter-spacing: 0.08em; color: var(--text-dim); flex: 1;
 }
 .bpp-header__tabs { display: flex; gap: 2px; }
 .bpp-hdr-tab {
@@ -23,7 +23,7 @@
 .bpp-hdr-tab--active   { background: #1f2937; color: #d1d5db; border-color: #374151; }
 .bpp-hdr-btn {
   padding: 4px 10px; border-radius: 4px; font-size: 11px;
-  border: 1px solid #1f2937; background: transparent; color: #6b7280; cursor: pointer;
+  border: 1px solid #1f2937; background: transparent; color: var(--text-dim); cursor: pointer;
 }
 
 /* Goal area */
@@ -78,7 +78,7 @@
 .bpp-plan-summary { padding: 8px 12px; border-bottom: 1px solid #111827; background: #0a0e17; }
 .bpp-plan-summary__text { font-size: 12px; color: #9ca3af; line-height: 1.5; margin-bottom: 6px; }
 .bpp-plan-summary__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.bpp-plan-summary__conf   { font-size: 10px; color: #10b981; }
+.bpp-plan-summary__conf   { font-size: 10px; color: var(--success); }
 .bpp-plan-summary__commit { font-size: 10px; color: #4b5563; font-family: 'JetBrains Mono', monospace; }
 
 .bpp-risk-badge {
@@ -87,7 +87,7 @@
 }
 .bpp-risk--high   { background: #450a0a; color: #f87171; }
 .bpp-risk--medium { background: #451a03; color: #fbbf24; }
-.bpp-risk--low    { background: #1f2937; color: #6b7280; }
+.bpp-risk--low    { background: #1f2937; color: var(--text-dim); }
 
 /* Metrics bar */
 .bpp-metrics-bar {
@@ -96,8 +96,8 @@
 }
 .bpp-metric { display: flex; flex-direction: column; align-items: center; }
 .bpp-metric__n       { font-size: 16px; font-weight: 700; color: #d1d5db; }
-.bpp-metric__n--good { color: #10b981; }
-.bpp-metric__n--bad  { color: #ef4444; }
+.bpp-metric__n--good { color: var(--success); }
+.bpp-metric__n--bad  { color: var(--danger); }
 .bpp-metric__l       { font-size: 9px; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* Apply order */
@@ -114,7 +114,7 @@
 .bpp-depgraph { padding: 6px 12px; border-bottom: 1px solid #111827; }
 .bpp-depgraph-empty { padding: 4px 12px; font-size: 10px; color: #374151; }
 .bpp-depgraph__row  { display: flex; align-items: center; gap: 6px; font-size: 10px; padding: 1px 0; }
-.bpp-depgraph__from { color: #f59e0b; font-family: monospace; }
+.bpp-depgraph__from { color: var(--warning); font-family: monospace; }
 .bpp-depgraph__arrow{ color: #374151; }
 .bpp-depgraph__to   { color: #60a5fa; font-family: monospace; }
 
@@ -126,22 +126,22 @@
   border: 1px solid #1f2937; border-radius: 5px; margin-bottom: 6px; overflow: hidden;
   border-left: 3px solid #374151;
 }
-.bpp-file-card--valid   { border-left-color: #10b981; }
-.bpp-file-card--invalid { border-left-color: #ef4444; }
+.bpp-file-card--valid   { border-left-color: var(--success); }
+.bpp-file-card--invalid { border-left-color: var(--danger); }
 .bpp-file-card__header {
   display: flex; align-items: center; gap: 6px; padding: 6px 10px;
   background: #0a0e17; cursor: pointer;
 }
 .bpp-file-card__idx  { font-size: 10px; color: #374151; width: 20px; flex-shrink: 0; }
-.bpp-dot--valid      { width: 6px; height: 6px; border-radius: 50%; background: #10b981; flex-shrink: 0; }
-.bpp-dot--invalid    { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; flex-shrink: 0; }
+.bpp-dot--valid      { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+.bpp-dot--invalid    { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); flex-shrink: 0; }
 .bpp-file-card__path { flex: 1; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; color: #60a5fa; }
 .bpp-file-card__new-tag {
   font-size: 8px; font-weight: 700; padding: 1px 4px;
   background: #1e3a5f; border: 1px solid #1d4ed8; border-radius: 3px; color: #60a5fa;
 }
 .bpp-file-card__count { font-size: 10px; color: #4b5563; }
-.bpp-file-card__conf  { font-size: 10px; color: #10b981; }
+.bpp-file-card__conf  { font-size: 10px; color: var(--success); }
 .bpp-file-card__expand{ background: none; border: none; color: #374151; cursor: pointer; font-size: 11px; }
 .bpp-file-card__error { font-size: 11px; color: #f87171; padding: 4px 10px; background: #450a0a20; }
 
@@ -149,7 +149,7 @@
   padding: 8px 10px; display: flex; flex-direction: column; gap: 6px;
   background: #0d1117;
 }
-.bpp-file-card__explanation { font-size: 11px; color: #6b7280; line-height: 1.4; }
+.bpp-file-card__explanation { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
 
 /* Patch diff */
 .bpp-patch-diff { }
@@ -194,7 +194,7 @@
   border-radius: 5px;
 }
 .bpp-apply-result__head { font-size: 12px; font-weight: 700; color: #34d399; margin-bottom: 4px; }
-.bpp-apply-result__changelog { font-size: 11px; color: #6b7280; }
+.bpp-apply-result__changelog { font-size: 11px; color: var(--text-dim); }
 
 /* Bundle actions */
 .bpp-bundle-actions {
@@ -203,9 +203,9 @@
 }
 .bpp-approval-check {
   display: flex; align-items: center; gap: 5px;
-  font-size: 11px; color: #6b7280; cursor: pointer;
+  font-size: 11px; color: var(--text-dim); cursor: pointer;
 }
-.bpp-approval-check input { accent-color: #f59e0b; cursor: pointer; }
+.bpp-approval-check input { accent-color: var(--warning); cursor: pointer; }
 .bpp-apply-btn {
   padding: 6px 14px; background: #052e16; border: 1px solid #059669;
   border-radius: 5px; color: #34d399; font-size: 12px; font-weight: 600;

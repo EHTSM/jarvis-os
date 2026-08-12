@@ -3,7 +3,7 @@ import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
 
 // ── K3 Admin helpers ─────────────────────────────────────────────
-const STATUS_COLOR = { active: "#52d68a", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
+const STATUS_COLOR = { active: "var(--success)", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
 const STATUS_LABEL = { active: "Active", invited: "Invited", suspended: "Suspended", archived: "Archived" };
 
 // A real fetch failure is tracked as a distinct error state instead of
@@ -20,7 +20,7 @@ function K3ErrorState({ error, onRetry }) {
 
 function QuotaBar({ label, used, limit }) {
   const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
-  const color = pct >= 90 ? "var(--error)" : pct >= 70 ? "var(--warning)" : "#52d68a";
+  const color = pct >= 90 ? "var(--error)" : pct >= 70 ? "var(--warning)" : "var(--success)";
   return (
     <div className="k3-quota-row">
       <div className="k3-quota-meta">
@@ -347,7 +347,7 @@ function StatisticsPanel() {
 
   const cards = [
     { label: "Total members",     value: stats.members?.total        || 0, color: "var(--accent)" },
-    { label: "Active",            value: stats.members?.active       || 0, color: "#52d68a" },
+    { label: "Active",            value: stats.members?.active       || 0, color: "var(--success)" },
     { label: "Pending invites",   value: stats.members?.pendingInvites || 0, color: "var(--warning)" },
     { label: "Suspended",         value: stats.members?.suspended    || 0, color: "var(--error)" },
     { label: "Departments",       value: stats.departments?.total    || 0, color: "var(--accent2)" },

@@ -25,20 +25,20 @@ async function _post(path, body = {}) {
 
 // ── colour helpers ────────────────────────────────────────────────────
 
-const TIER_COLOR  = { auto: "#52d68a", review: "#f0b429", block: "#f55b5b" };
-const RISK_COLOR  = { low: "#52d68a", moderate: "#f0b429", high: "#f0a028", critical: "#f55b5b" };
-const DEC_COLOR   = { approve: "#52d68a", reject: "#f55b5b", defer: "#f0b429" };
-const LEVEL_COLOR = { fully_autonomous: "#52d68a", mostly_autonomous: "#44a2ff", supervised: "#f0b429", manual: "#f55b5b" };
+const TIER_COLOR  = { auto: "var(--success)", review: "var(--warning)", block: "var(--danger)" };
+const RISK_COLOR  = { low: "var(--success)", moderate: "var(--warning)", high: "#f0a028", critical: "var(--danger)" };
+const DEC_COLOR   = { approve: "var(--success)", reject: "var(--danger)", defer: "var(--warning)" };
+const LEVEL_COLOR = { fully_autonomous: "var(--success)", mostly_autonomous: "#44a2ff", supervised: "var(--warning)", manual: "var(--danger)" };
 
-function tc(t)  { return TIER_COLOR[t]  || "#8994b0"; }
-function rc(r)  { return RISK_COLOR[r]  || "#8994b0"; }
-function dc(d)  { return DEC_COLOR[d]   || "#8994b0"; }
-function lc(l)  { return LEVEL_COLOR[l] || "#8994b0"; }
+function tc(t)  { return TIER_COLOR[t]  || "var(--text-dim)"; }
+function rc(r)  { return RISK_COLOR[r]  || "var(--text-dim)"; }
+function dc(d)  { return DEC_COLOR[d]   || "var(--text-dim)"; }
+function lc(l)  { return LEVEL_COLOR[l] || "var(--text-dim)"; }
 
 // ── micro components ──────────────────────────────────────────────────
 
 function Chip({ label, color }) {
-  const c = color || "#8994b0";
+  const c = color || "var(--text-dim)";
   return <span style={{ fontSize: 9, fontWeight: 700, padding: "1px 6px", borderRadius: 3,
     color: c, background: c + "18", border: `1px solid ${c}30`, whiteSpace: "nowrap" }}>{label}</span>;
 }
@@ -52,8 +52,8 @@ function Section({ title, children, count, action }) {
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "#8994b0" }}>{title}</span>
-        {count != null && <span style={{ fontSize: 9, color: "#8994b0", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
+        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--text-dim)" }}>{title}</span>
+        {count != null && <span style={{ fontSize: 9, color: "var(--text-dim)", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
         {action && <div style={{ marginLeft: "auto" }}>{action}</div>}
       </div>
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, overflow: "hidden" }}>
@@ -70,9 +70,9 @@ function Row({ children, style }) {
 
 function Empty({ icon = "◌", title, sub }) {
   return (
-    <div style={{ textAlign: "center", padding: "32px 20px", color: "#8994b0" }}>
+    <div style={{ textAlign: "center", padding: "32px 20px", color: "var(--text-dim)" }}>
       <div style={{ fontSize: 26, marginBottom: 8 }}>{icon}</div>
-      <div style={{ fontSize: 12, fontWeight: 600, color: "#c8cdd8", marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>{title}</div>
       {sub && <div style={{ fontSize: 10 }}>{sub}</div>}
     </div>
   );
@@ -80,20 +80,20 @@ function Empty({ icon = "◌", title, sub }) {
 
 function RefBtn({ onClick, loading }) {
   return <button onClick={onClick} disabled={loading}
-    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
+    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "var(--text-dim)" }}>
     {loading ? "…" : "⟳"}
   </button>;
 }
 
 function EvidenceBar({ score, label }) {
-  const col = score >= 75 ? "#52d68a" : score >= 50 ? "#f0b429" : "#f55b5b";
+  const col = score >= 75 ? "var(--success)" : score >= 50 ? "var(--warning)" : "var(--danger)";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
       <div style={{ width: 56, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
         <div style={{ width: `${score}%`, height: "100%", borderRadius: 2, background: col, transition: "width 0.4s ease" }} />
       </div>
       <span style={{ fontSize: 9, color: col, fontWeight: 700 }}>{score}%</span>
-      {label && <span style={{ fontSize: 8, color: "#8994b0" }}>{label}</span>}
+      {label && <span style={{ fontSize: 8, color: "var(--text-dim)" }}>{label}</span>}
     </div>
   );
 }
@@ -113,19 +113,19 @@ function ScoreGauge({ score, level, size = 88 }) {
       <text x={size/2} y={size/2 + 1} textAnchor="middle" dominantBaseline="middle"
         style={{ fontSize: 17, fontWeight: 700, fill: col }}>{score}</text>
       <text x={size/2} y={size/2 + 14} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 8, fill: "#8994b0" }}>/ 100</text>
+        style={{ fontSize: 8, fill: "var(--text-dim)" }}>/ 100</text>
     </svg>
   );
 }
 
 function SignalBar({ name, score, weight, rawValue, detail }) {
-  const col = score >= 80 ? "#52d68a" : score >= 60 ? "#f0b429" : "#f55b5b";
+  const col = score >= 80 ? "var(--success)" : score >= 60 ? "var(--warning)" : "var(--danger)";
   return (
     <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-        <span style={{ fontSize: 10, color: "#c8cdd8", flex: 1 }}>{name}</span>
+        <span style={{ fontSize: 10, color: "var(--text)", flex: 1 }}>{name}</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{score}%</span>
-        <span style={{ fontSize: 8, color: "#8994b0" }}>w={Math.round(weight * 100)}%</span>
+        <span style={{ fontSize: 8, color: "var(--text-dim)" }}>w={Math.round(weight * 100)}%</span>
       </div>
       <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
         <div style={{ width: `${score}%`, height: "100%", background: col, borderRadius: 2, transition: "width 0.5s ease" }} />
@@ -181,11 +181,11 @@ function ApprovalButtons({ id, queueType, recommendation, onDecide, compact = fa
   return (
     <div>
       <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-        <button onClick={() => decide("approve")} disabled={deciding} style={btnStyle("#52d68a")}>Approve</button>
-        <button onClick={() => decide("defer")}   disabled={deciding} style={btnStyle("#f0b429")}>Defer</button>
-        <button onClick={() => decide("reject")}  disabled={deciding} style={btnStyle("#f55b5b")}>Reject</button>
+        <button onClick={() => decide("approve")} disabled={deciding} style={btnStyle("var(--success)")}>Approve</button>
+        <button onClick={() => decide("defer")}   disabled={deciding} style={btnStyle("var(--warning)")}>Defer</button>
+        <button onClick={() => decide("reject")}  disabled={deciding} style={btnStyle("var(--danger)")}>Reject</button>
       </div>
-      {decideErr && <div role="alert" style={{ color: "#f55b5b", fontSize: 10, marginTop: 4 }}>{decideErr}</div>}
+      {decideErr && <div role="alert" style={{ color: "var(--danger)", fontSize: 10, marginTop: 4 }}>{decideErr}</div>}
     </div>
   );
 }
@@ -211,12 +211,12 @@ function TabRecommendedFixes() {
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "#8994b0" }}>Top-3 ranked fixes per open incident, scored from KB + engineering memory + patch history</span>
+        <span style={{ fontSize: 11, color: "var(--text-dim)" }}>Top-3 ranked fixes per open incident, scored from KB + engineering memory + patch history</span>
         <RefBtn onClick={load} loading={loading} />
       </div>
 
       {loading && [0,1,2].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {!loading && incidents.length === 0 && (
         <Empty icon="✓" title="No open incidents" sub="All incidents resolved — or none detected yet." />
@@ -233,27 +233,27 @@ function TabRecommendedFixes() {
                 background: isOpen ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.015)" }}>
               <Chip label={inc.severity?.toUpperCase() || "UNKNOWN"} color={col} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#c8cdd8" }}>{inc.type || "Incident"}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginTop: 1 }}>{inc.context || "(no context)"}</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text)" }}>{inc.type || "Incident"}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginTop: 1 }}>{inc.context || "(no context)"}</div>
               </div>
               <Chip label={inc.tierLabel || inc.tier} color={tc(inc.tier)} />
-              <span style={{ fontSize: 11, color: "#8994b0" }}>{isOpen ? "▲" : "▼"}</span>
+              <span style={{ fontSize: 11, color: "var(--text-dim)" }}>{isOpen ? "▲" : "▼"}</span>
             </div>
 
             {/* Ranked fixes */}
             {isOpen && (
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
                 {inc.fixes?.length === 0
-                  ? <Row><span style={{ fontSize: 11, color: "#8994b0" }}>No ranked fixes available yet.</span></Row>
+                  ? <Row><span style={{ fontSize: 11, color: "var(--text-dim)" }}>No ranked fixes available yet.</span></Row>
                   : inc.fixes?.map((f, fi) => (
                     <Row key={fi} style={{ alignItems: "center" }}>
-                      <span style={{ fontSize: 11, color: "#8994b0", width: 18, flexShrink: 0 }}>#{fi + 1}</span>
+                      <span style={{ fontSize: 11, color: "var(--text-dim)", width: 18, flexShrink: 0 }}>#{fi + 1}</span>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, color: "#c8cdd8", marginBottom: 2 }}>{f.fix}</div>
-                        {f.description && <div style={{ fontSize: 9, color: "#8994b0" }}>{f.description.slice(0, 100)}</div>}
+                        <div style={{ fontSize: 10, fontWeight: 600, color: "var(--text)", marginBottom: 2 }}>{f.fix}</div>
+                        {f.description && <div style={{ fontSize: 9, color: "var(--text-dim)" }}>{f.description.slice(0, 100)}</div>}
                         <div style={{ marginTop: 3, display: "flex", gap: 5, flexWrap: "wrap" }}>
-                          <Chip label={f.source?.replace(/_/g, " ")} color="#8994b0" />
-                          {f.kind && <Chip label={f.kind} color="#7c6fff" />}
+                          <Chip label={f.source?.replace(/_/g, " ")} color="var(--text-dim)" />
+                          {f.kind && <Chip label={f.kind} color="var(--accent)" />}
                         </div>
                       </div>
                       <EvidenceBar score={f.evidenceScore} label="evidence" />
@@ -264,8 +264,8 @@ function TabRecommendedFixes() {
                 {/* Safest path callout */}
                 {inc.topFix && (
                   <div style={{ padding: "8px 14px", background: "rgba(82,214,138,0.04)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                    <span style={{ fontSize: 9, fontWeight: 700, color: "#52d68a", marginRight: 6 }}>SAFEST PATH →</span>
-                    <span style={{ fontSize: 10, color: "#c8cdd8" }}>{inc.topFix.fix}</span>
+                    <span style={{ fontSize: 9, fontWeight: 700, color: "var(--success)", marginRight: 6 }}>SAFEST PATH →</span>
+                    <span style={{ fontSize: 10, color: "var(--text)" }}>{inc.topFix.fix}</span>
                   </div>
                 )}
               </div>
@@ -298,12 +298,12 @@ function TabRecommendedDeploys() {
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "#8994b0" }}>Applied patches ranked by safety score — approve to trigger deploy pipeline</span>
+        <span style={{ fontSize: 11, color: "var(--text-dim)" }}>Applied patches ranked by safety score — approve to trigger deploy pipeline</span>
         <RefBtn onClick={load} loading={loading} />
       </div>
 
       {loading && [0,1,2].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {!loading && deploys.length === 0 && (
         <Empty icon="⇪" title="No applied patches" sub="Apply patches through the Engineering Workspace to see deploy recommendations." />
@@ -314,12 +314,12 @@ function TabRecommendedDeploys() {
           <Row key={d.id} style={{ alignItems: "center" }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: rc(d.riskLevel), flexShrink: 0, marginTop: 3 }} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.filePath || "(unknown file)"}</div>
-              <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{d.reason?.slice(0, 80) || "—"} · applied {_ago(d.appliedAt)}</div>
+              <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{d.filePath || "(unknown file)"}</div>
+              <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{d.reason?.slice(0, 80) || "—"} · applied {_ago(d.appliedAt)}</div>
               <div style={{ marginTop: 3, display: "flex", gap: 5, flexWrap: "wrap" }}>
                 <Chip label={`Safety ${d.safetyScore}/100`} color={rc(d.riskLevel)} />
                 <Chip label={d.tierLabel || d.tier} color={tc(d.tier)} />
-                {d.tierReason && <span style={{ fontSize: 8, color: "#8994b0" }}>{d.tierReason}</span>}
+                {d.tierReason && <span style={{ fontSize: 8, color: "var(--text-dim)" }}>{d.tierReason}</span>}
               </div>
             </div>
             {decided[d.id]
@@ -360,7 +360,7 @@ function TabPendingApprovals() {
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "#8994b0" }}>Approve / Reject / Defer — all decisions are logged and fed back into the learning system</span>
+        <span style={{ fontSize: 11, color: "var(--text-dim)" }}>Approve / Reject / Defer — all decisions are logged and fed back into the learning system</span>
         <RefBtn onClick={load} loading={loading} />
       </div>
 
@@ -368,15 +368,15 @@ function TabPendingApprovals() {
       {q.summary && (
         <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
           {[
-            { label: "Total pending", value: q.summary.totalPending, color: "#c8cdd8" },
-            { label: "Auto-apply",    value: q.summary.autoApplyCandidates, color: "#52d68a" },
-            { label: "Review needed", value: q.summary.reviewNeeded, color: "#f0b429" },
-            { label: "Blocked",       value: q.summary.blocked, color: "#f55b5b" },
+            { label: "Total pending", value: q.summary.totalPending, color: "var(--text)" },
+            { label: "Auto-apply",    value: q.summary.autoApplyCandidates, color: "var(--success)" },
+            { label: "Review needed", value: q.summary.reviewNeeded, color: "var(--warning)" },
+            { label: "Blocked",       value: q.summary.blocked, color: "var(--danger)" },
             { label: "Open incidents", value: q.summary.fixCount, color: "#f0a028" },
           ].map(s => (
             <div key={s.label} style={{ flex: "1 1 70px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "8px 10px", textAlign: "center" }}>
               <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.value ?? "—"}</div>
-              <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>{s.label}</div>
+              <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -391,12 +391,12 @@ function TabPendingApprovals() {
           : (q.pendingPatches || []).map(p => (
             <Row key={p.id}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.filePath}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{p.reason?.slice(0, 80)} · proposed {_ago(p.proposedAt)}</div>
+                <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.filePath}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{p.reason?.slice(0, 80)} · proposed {_ago(p.proposedAt)}</div>
                 <div style={{ marginTop: 4, display: "flex", gap: 5, flexWrap: "wrap" }}>
                   <Chip label={`Safety ${p.safetyScore}/100`} color={rc(p.riskLevel)} />
                   <Chip label={TIER_BADGE[p.tier] || p.tierLabel} color={tc(p.tier)} />
-                  {p.explanation?.length > 0 && <span style={{ fontSize: 8, color: "#8994b0" }}>{p.explanation[0]}</span>}
+                  {p.explanation?.length > 0 && <span style={{ fontSize: 8, color: "var(--text-dim)" }}>{p.explanation[0]}</span>}
                 </div>
               </div>
               {decided[p.id]
@@ -405,7 +405,7 @@ function TabPendingApprovals() {
                   ? <ApprovalButtons id={p.id} queueType="patch"
                       recommendation={`Patch ${p.filePath} — safety ${p.safetyScore}/100 — ${p.tierLabel}`}
                       onDecide={onDecide} compact />
-                  : <Chip label="BLOCKED" color="#f55b5b" />
+                  : <Chip label="BLOCKED" color="var(--danger)" />
               }
             </Row>
           ))
@@ -419,10 +419,10 @@ function TabPendingApprovals() {
           : (q.pendingFixes || []).map(inc => (
             <Row key={inc.id}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, color: "#c8cdd8" }}>{inc.type || "Incident"}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{inc.context?.slice(0, 80)} · {_ago(inc.detectedAt)}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "var(--text)" }}>{inc.type || "Incident"}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{inc.context?.slice(0, 80)} · {_ago(inc.detectedAt)}</div>
                 <div style={{ marginTop: 4 }}>
-                  <Chip label={inc.severity?.toUpperCase() || "UNKNOWN"} color={inc.severity === "critical" ? "#f55b5b" : "#f0b429"} />
+                  <Chip label={inc.severity?.toUpperCase() || "UNKNOWN"} color={inc.severity === "critical" ? "var(--danger)" : "var(--warning)"} />
                 </div>
               </div>
               {decided[inc.id]
@@ -470,15 +470,15 @@ function TabDecisionHistory() {
       {stats.total > 0 && (
         <div style={{ display: "flex", gap: 10, marginBottom: 18, flexWrap: "wrap" }}>
           {[
-            { label: "Total decisions", value: stats.total,       color: "#c8cdd8" },
-            { label: "Approved",        value: stats.approved,    color: "#52d68a" },
-            { label: "Rejected",        value: stats.rejected,    color: "#f55b5b" },
-            { label: "Deferred",        value: stats.deferred,    color: "#f0b429" },
-            { label: "Success rate",    value: stats.successRate != null ? `${stats.successRate}%` : "—", color: stats.successRate >= 70 ? "#52d68a" : "#f0b429" },
+            { label: "Total decisions", value: stats.total,       color: "var(--text)" },
+            { label: "Approved",        value: stats.approved,    color: "var(--success)" },
+            { label: "Rejected",        value: stats.rejected,    color: "var(--danger)" },
+            { label: "Deferred",        value: stats.deferred,    color: "var(--warning)" },
+            { label: "Success rate",    value: stats.successRate != null ? `${stats.successRate}%` : "—", color: stats.successRate >= 70 ? "var(--success)" : "var(--warning)" },
           ].map(s => (
             <div key={s.label} style={{ flex: "1 1 70px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "8px 10px", textAlign: "center" }}>
               <div style={{ fontSize: 18, fontWeight: 700, color: s.color }}>{s.value ?? "—"}</div>
-              <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>{s.label}</div>
+              <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -491,7 +491,7 @@ function TabDecisionHistory() {
             style={{ padding: "3px 10px", fontSize: 10, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
               background: filterDec === d ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
               border: `1px solid ${filterDec === d ? "rgba(68,162,255,0.35)" : "rgba(255,255,255,0.08)"}`,
-              color: filterDec === d ? "#44a2ff" : "#8994b0" }}>
+              color: filterDec === d ? "#44a2ff" : "var(--text-dim)" }}>
             {d || "All decisions"}
           </button>
         ))}
@@ -499,7 +499,7 @@ function TabDecisionHistory() {
       </div>
 
       {loading && [0,1,2,3].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {!loading && entries.length === 0 && (
         <Empty icon="◎" title="No decisions recorded yet" sub="Use the Pending Approvals tab to approve/reject items — decisions are logged here." />
@@ -511,18 +511,18 @@ function TabDecisionHistory() {
             <Chip label={e.decision?.toUpperCase()} color={dc(e.decision)} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 2 }}>
-                <span style={{ fontSize: 10, color: "#c8cdd8", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: 10, color: "var(--text)", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {e.itemId?.slice(0, 16)}…
                 </span>
-                <Chip label={e.queueType || "unknown"} color="#8994b0" />
+                <Chip label={e.queueType || "unknown"} color="var(--text-dim)" />
               </div>
-              {e.reason && <div style={{ fontSize: 9, color: "#8994b0" }}>{e.reason.slice(0, 100)}</div>}
-              {e.recommendation && <div style={{ fontSize: 9, color: "#7c6fff" }}>{e.recommendation.slice(0, 100)}</div>}
-              <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>{e.operatorId} · {_ago(e.createdAt)}</div>
+              {e.reason && <div style={{ fontSize: 9, color: "var(--text-dim)" }}>{e.reason.slice(0, 100)}</div>}
+              {e.recommendation && <div style={{ fontSize: 9, color: "var(--accent)" }}>{e.recommendation.slice(0, 100)}</div>}
+              <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>{e.operatorId} · {_ago(e.createdAt)}</div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
-              <Chip label={e.outcome || "—"} color={e.outcome === "applied" ? "#52d68a" : e.outcome === "failed" ? "#f55b5b" : "#8994b0"} />
-              {e.actionSuccess === false && <Chip label="action failed" color="#f55b5b" />}
+              <Chip label={e.outcome || "—"} color={e.outcome === "applied" ? "var(--success)" : e.outcome === "failed" ? "var(--danger)" : "var(--text-dim)"} />
+              {e.actionSuccess === false && <Chip label="action failed" color="var(--danger)" />}
             </div>
           </Row>
         ))}
@@ -558,16 +558,16 @@ function TabAutomationCandidates() {
           border: `1px solid ${data.platformReady ? "rgba(82,214,138,0.2)" : "rgba(240,164,40,0.2)"}`,
           borderRadius: 8, flexWrap: "wrap" }}>
           <div style={{ textAlign: "center", minWidth: 80 }}>
-            <div style={{ fontSize: 26, fontWeight: 800, color: data.platformReady ? "#52d68a" : "#f0b429" }}>{data.platformScore ?? "—"}%</div>
-            <div style={{ fontSize: 9, color: "#8994b0" }}>platform score</div>
+            <div style={{ fontSize: 26, fontWeight: 800, color: data.platformReady ? "var(--success)" : "var(--warning)" }}>{data.platformScore ?? "—"}%</div>
+            <div style={{ fontSize: 9, color: "var(--text-dim)" }}>platform score</div>
           </div>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: data.platformReady ? "#52d68a" : "#f0b429", marginBottom: 4 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: data.platformReady ? "var(--success)" : "var(--warning)", marginBottom: 4 }}>
               {data.platformReady ? "Platform ready for automation" : "Platform not ready for full automation"}
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-              <span style={{ fontSize: 10, color: "#8994b0" }}>Rollback rate: <span style={{ color: data.rollbackRate > 30 ? "#f55b5b" : "#52d68a" }}>{data.rollbackRate}%</span></span>
-              {data.healRate != null && <span style={{ fontSize: 10, color: "#8994b0" }}>Heal rate: <span style={{ color: data.healRate > 70 ? "#52d68a" : "#f0b429" }}>{data.healRate}%</span></span>}
+              <span style={{ fontSize: 10, color: "var(--text-dim)" }}>Rollback rate: <span style={{ color: data.rollbackRate > 30 ? "var(--danger)" : "var(--success)" }}>{data.rollbackRate}%</span></span>
+              {data.healRate != null && <span style={{ fontSize: 10, color: "var(--text-dim)" }}>Heal rate: <span style={{ color: data.healRate > 70 ? "var(--success)" : "var(--warning)" }}>{data.healRate}%</span></span>}
             </div>
           </div>
           <RefBtn onClick={load} loading={loading} />
@@ -575,7 +575,7 @@ function TabAutomationCandidates() {
       )}
 
       {loading && [0,1,2].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {!loading && candidates.length === 0 && (
         <Empty icon="⧗" title="No auto-apply candidates" sub="Candidates appear when patches reach safety ≥ 80%, risk < 30%, confidence ≥ 70%." />
@@ -587,12 +587,12 @@ function TabAutomationCandidates() {
           {candidates.filter(c => c.type === "patch").map(c => (
             <Row key={c.id} style={{ alignItems: "center" }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{c.reason?.slice(0, 80)} · {_ago(c.proposedAt)}</div>
+                <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{c.reason?.slice(0, 80)} · {_ago(c.proposedAt)}</div>
                 <div style={{ marginTop: 3, display: "flex", gap: 5, flexWrap: "wrap" }}>
-                  <Chip label={`Safety ${c.safetyScore}/100`} color="#52d68a" />
+                  <Chip label={`Safety ${c.safetyScore}/100`} color="var(--success)" />
                   <Chip label={`Conf ${c.confidenceScore}%`} color="#44a2ff" />
-                  <span style={{ fontSize: 8, color: "#8994b0" }}>{c.tierReason}</span>
+                  <span style={{ fontSize: 8, color: "var(--text-dim)" }}>{c.tierReason}</span>
                 </div>
               </div>
               {decided[c.id]
@@ -612,10 +612,10 @@ function TabAutomationCandidates() {
           {candidates.filter(c => c.type === "deploy").map(c => (
             <Row key={c.id} style={{ alignItems: "center" }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>Applied {_ago(c.appliedAt)}</div>
+                <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>Applied {_ago(c.appliedAt)}</div>
                 <div style={{ marginTop: 3 }}>
-                  <Chip label={`Safety ${c.safetyScore}/100`} color="#52d68a" />
+                  <Chip label={`Safety ${c.safetyScore}/100`} color="var(--success)" />
                 </div>
               </div>
               {decided[c.id]
@@ -659,12 +659,12 @@ function TabAutonomousReadiness() {
         <ScoreGauge score={data.compositeScore} level={data.level} size={110} />
         <div>
           <div style={{ fontSize: 22, fontWeight: 800, color: col, marginBottom: 4 }}>{data.badge || data.level?.replace(/_/g, " ").toUpperCase()}</div>
-          <div style={{ fontSize: 12, color: "#8994b0", marginBottom: 8 }}>
+          <div style={{ fontSize: 12, color: "var(--text-dim)", marginBottom: 8 }}>
             Based on {data.meta?.patchTotal ?? "—"} patches · {data.meta?.decisionTotal ?? "—"} decisions · {data.meta?.healTotal ?? "—"} healing events
           </div>
           {data.strengths?.length > 0 && (
             <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-              {data.strengths.map((s, i) => <Chip key={i} label={`✓ ${s}`} color="#52d68a" />)}
+              {data.strengths.map((s, i) => <Chip key={i} label={`✓ ${s}`} color="var(--success)" />)}
             </div>
           )}
         </div>
@@ -683,18 +683,18 @@ function TabAutonomousReadiness() {
         <Section title="Blockers to higher autonomy" count={data.blockers.length}>
           {data.blockers.map((b, i) => (
             <Row key={i}>
-              <span style={{ fontSize: 11, color: "#f55b5b" }}>✗</span>
+              <span style={{ fontSize: 11, color: "var(--danger)" }}>✗</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 11, color: "#c8cdd8", fontWeight: 600 }}>{b.signal}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 2 }}>{b.recommendation}</div>
+                <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 600 }}>{b.signal}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 2 }}>{b.recommendation}</div>
               </div>
-              <Chip label={`${b.score}%`} color="#f55b5b" />
+              <Chip label={`${b.score}%`} color="var(--danger)" />
             </Row>
           ))}
         </Section>
       )}
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right", marginTop: 8 }}>Generated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right", marginTop: 8 }}>Generated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -714,7 +714,7 @@ export default function RecommendationCenter({ onNavigate }) {
   const [tab, setTab] = useState("approvals");
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#0d1117", color: "var(--text)", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes rc-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
       <PageHeader
         icon="✦"
@@ -737,7 +737,7 @@ export default function RecommendationCenter({ onNavigate }) {
               style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",
-                color: tab === t.id ? "#44a2ff" : "#8994b0",
+                color: tab === t.id ? "#44a2ff" : "var(--text-dim)",
                 marginBottom: -1, whiteSpace: "nowrap", fontFamily: "inherit" }}>
               {t.label}
             </button>

@@ -75,7 +75,7 @@ export default function AutonomousRevenueCenter({ onNavigate }) {
           { label:"Actions today",     value:actionsToday,                      color:"var(--accent)"  },
           { label:"Deals today",       value:dealsToday,                        color:"var(--warning)" },
           { label:"Pipeline value",    value:"₹74.9L",                          color:"var(--success)" },
-          { label:"Revenue (MTD)",     value:"₹8.8L",                           color:"#52d68a"        },
+          { label:"Revenue (MTD)",     value:"₹8.8L",                           color:"var(--success)"        },
         ].map(s=>(
           <div key={s.label} className="arc-summary-tile">
             <span className="arc-sv" style={{color:s.color}}>{s.value}</span>

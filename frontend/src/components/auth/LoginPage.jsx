@@ -354,8 +354,8 @@ export default function LoginPage({ onSuccess, onSignup, onForgot, context } = {
               background: "rgba(82,214,138,0.07)",
               border: "1px solid rgba(82,214,138,0.20)",
             }}>
-              <span style={{ color: "#52d68a", fontSize: 13 }}>✓</span>
-              <span style={{ fontSize: 12.5, color: "#dde2ec" }}>Account created — sign in to access your workspace.</span>
+              <span style={{ color: "var(--success)", fontSize: 13 }}>✓</span>
+              <span style={{ fontSize: 12.5, color: "var(--text)" }}>Account created — sign in to access your workspace.</span>
             </div>
             <h1 className="auth-heading">Sign in</h1>
           </>

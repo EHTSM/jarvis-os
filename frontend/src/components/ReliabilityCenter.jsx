@@ -17,20 +17,20 @@ async function _get(path) {
 
 // ── palette ──────────────────────────────────────────────────────────
 
-const H_COLOR = { Healthy: "#52d68a", Good: "#44a2ff", Fair: "#f0b429", "Needs Attention": "#f55b5b" };
-const T_COLOR = { high: "#52d68a", medium: "#44a2ff", low: "#f0b429", critical: "#f55b5b" };
-const L_COLOR = { high_autonomy: "#52d68a", growing_autonomy: "#44a2ff", supervised: "#f0b429", manual: "#f55b5b", unknown: "#8994b0" };
-const A_COLOR = { critical: "#f55b5b", warn: "#f0b429", info: "#44a2ff" };
+const H_COLOR = { Healthy: "var(--success)", Good: "#44a2ff", Fair: "var(--warning)", "Needs Attention": "var(--danger)" };
+const T_COLOR = { high: "var(--success)", medium: "#44a2ff", low: "var(--warning)", critical: "var(--danger)" };
+const L_COLOR = { high_autonomy: "var(--success)", growing_autonomy: "#44a2ff", supervised: "var(--warning)", manual: "var(--danger)", unknown: "var(--text-dim)" };
+const A_COLOR = { critical: "var(--danger)", warn: "var(--warning)", info: "#44a2ff" };
 
 function scoreColor(v) {
-  if (v == null) return "#8994b0";
-  return v >= 80 ? "#52d68a" : v >= 60 ? "#44a2ff" : v >= 40 ? "#f0b429" : "#f55b5b";
+  if (v == null) return "var(--text-dim)";
+  return v >= 80 ? "var(--success)" : v >= 60 ? "#44a2ff" : v >= 40 ? "var(--warning)" : "var(--danger)";
 }
 
 // ── micro components ──────────────────────────────────────────────────
 
 function Chip({ label, color }) {
-  const c = color || "#8994b0";
+  const c = color || "var(--text-dim)";
   return <span style={{ fontSize: 9, fontWeight: 700, padding: "1px 6px", borderRadius: 3,
     color: c, background: c + "18", border: `1px solid ${c}30`, whiteSpace: "nowrap" }}>{label}</span>;
 }
@@ -52,9 +52,9 @@ function StatCard({ label, value, color, sub, onClick }) {
       border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "10px 12px",
       textAlign: "center", cursor: onClick ? "pointer" : "default",
       transition: "border-color 0.15s" }}>
-      <div style={{ fontSize: 20, fontWeight: 800, color: color || "#e6edf3" }}>{value ?? "—"}</div>
-      <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2, lineHeight: 1.3 }}>{label}</div>
-      {sub != null && <div style={{ fontSize: 9, color: color || "#8994b0", marginTop: 2 }}>{sub}</div>}
+      <div style={{ fontSize: 20, fontWeight: 800, color: color || "var(--text)" }}>{value ?? "—"}</div>
+      <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2, lineHeight: 1.3 }}>{label}</div>
+      {sub != null && <div style={{ fontSize: 9, color: color || "var(--text-dim)", marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }
@@ -64,8 +64,8 @@ function Section({ title, children, count, accent }) {
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
         {accent && <div style={{ width: 3, height: 14, borderRadius: 2, background: accent, flexShrink: 0 }} />}
-        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "#8994b0" }}>{title}</span>
-        {count != null && <span style={{ fontSize: 9, color: "#8994b0", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
+        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--text-dim)" }}>{title}</span>
+        {count != null && <span style={{ fontSize: 9, color: "var(--text-dim)", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
       </div>
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, overflow: "hidden" }}>
         {children}
@@ -85,13 +85,13 @@ function RateBar({ label, value, color, note }) {
   return (
     <div style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-        <span style={{ fontSize: 10, color: "#c8cdd8" }}>{label}</span>
+        <span style={{ fontSize: 10, color: "var(--text)" }}>{label}</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{value != null ? `${value}%` : "—"}</span>
       </div>
       <div style={{ height: 5, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
         <div style={{ width: `${pct}%`, height: "100%", borderRadius: 2, background: col, transition: "width 0.5s ease" }} />
       </div>
-      {note && <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>{note}</div>}
+      {note && <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>{note}</div>}
     </div>
   );
 }
@@ -109,18 +109,18 @@ function BigGauge({ score, label, color, size = 112 }) {
         transform={`rotate(-90 ${size/2} ${size/2})`}
         style={{ transition: "stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1)" }} />
       <text x={size/2} y={size/2+1} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 19, fontWeight: 700, fill: score != null ? col : "#8994b0" }}>
+        style={{ fontSize: 19, fontWeight: 700, fill: score != null ? col : "var(--text-dim)" }}>
         {score != null ? score : "—"}
       </text>
       <text x={size/2} y={size/2+15} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 8, fill: "#8994b0" }}>{label}</text>
+        style={{ fontSize: 8, fill: "var(--text-dim)" }}>{label}</text>
     </svg>
   );
 }
 
 function RefBtn({ onClick, loading }) {
   return <button onClick={onClick} disabled={loading}
-    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
+    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "var(--text-dim)" }}>
     {loading ? "…" : "⟳"}
   </button>;
 }
@@ -150,7 +150,7 @@ function _ago(ts) {
 
 function DataNote({ msg }) {
   if (!msg) return null;
-  return <div style={{ margin: "12px 0", padding: "8px 12px", background: "rgba(68,162,255,0.06)", border: "1px solid rgba(68,162,255,0.18)", borderRadius: 5, fontSize: 10, color: "#8994b0" }}>
+  return <div style={{ margin: "12px 0", padding: "8px 12px", background: "rgba(68,162,255,0.06)", border: "1px solid rgba(68,162,255,0.18)", borderRadius: 5, fontSize: 10, color: "var(--text-dim)" }}>
     ℹ {msg}
   </div>;
 }
@@ -161,7 +161,7 @@ function TabExecSuccess() {
   const { data, loading, reload } = useData("/runtime/reliability/exec-success");
 
   if (loading) return <SkeletonBlock />;
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error || "Failed to load"}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error || "Failed to load"}</div>;
 
   const { patches: pm, healing: hs, agents: am, execLog: el, decisions: dec } = data;
 
@@ -173,60 +173,60 @@ function TabExecSuccess() {
       <Section title="Patch execution" accent="#44a2ff">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
           <StatCard label="Total patches"  value={pm.total}      />
-          <StatCard label="Applied"        value={pm.applied}    color="#52d68a" sub={`${pm.applyRate}%`} />
-          <StatCard label="Rolled back"    value={pm.rolled}     color="#f55b5b" sub={`${pm.rollbackRate}%`} />
-          <StatCard label="Pending"        value={pm.pending}    color="#f0b429" />
+          <StatCard label="Applied"        value={pm.applied}    color="var(--success)" sub={`${pm.applyRate}%`} />
+          <StatCard label="Rolled back"    value={pm.rolled}     color="var(--danger)" sub={`${pm.rollbackRate}%`} />
+          <StatCard label="Pending"        value={pm.pending}    color="var(--warning)" />
           <StatCard label="Patch success"  value={pm.successRate != null ? `${pm.successRate}%` : "—"} color={scoreColor(pm.successRate)} />
         </div>
-        <RateBar label="Apply rate"     value={pm.applyRate}    color="#52d68a" />
-        <RateBar label="Rollback rate"  value={pm.rollbackRate} color="#f55b5b" />
+        <RateBar label="Apply rate"     value={pm.applyRate}    color="var(--success)" />
+        <RateBar label="Rollback rate"  value={pm.rollbackRate} color="var(--danger)" />
       </Section>
 
       {/* Heal layer */}
-      <Section title="Healing engine" accent="#52d68a">
+      <Section title="Healing engine" accent="var(--success)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
           <StatCard label="Total heals"   value={hs.total}   />
-          <StatCard label="Success"       value={hs.success} color="#52d68a" sub={`${hs.rate}%`} />
-          <StatCard label="Failed"        value={hs.fail}    color="#f55b5b" />
+          <StatCard label="Success"       value={hs.success} color="var(--success)" sub={`${hs.rate}%`} />
+          <StatCard label="Failed"        value={hs.fail}    color="var(--danger)" />
         </div>
         <RateBar label="Healing success rate" value={hs.rate} color={scoreColor(hs.rate)} />
       </Section>
 
       {/* Deploy / auto-fix */}
-      <Section title="Deploys & auto-fix" accent="#7c6fff">
+      <Section title="Deploys & auto-fix" accent="var(--accent)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
-          <StatCard label="Deployments"   value={pm.deployCount}  color="#7c6fff" />
-          <StatCard label="Auto-fixes"    value={pm.autoFixed}    color="#52d68a" />
+          <StatCard label="Deployments"   value={pm.deployCount}  color="var(--accent)" />
+          <StatCard label="Auto-fixes"    value={pm.autoFixed}    color="var(--success)" />
         </div>
       </Section>
 
       {/* Agent layer */}
-      <Section title="Agent runs & cycles" accent="#f0b429">
+      <Section title="Agent runs & cycles" accent="var(--warning)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
           <StatCard label="Agent runs"      value={am.total}        />
-          <StatCard label="Run success"     value={am.success}      color="#52d68a" sub={`${am.rate}%`} />
-          <StatCard label="Run failed"      value={am.failed}       color="#f55b5b" />
+          <StatCard label="Run success"     value={am.success}      color="var(--success)" sub={`${am.rate}%`} />
+          <StatCard label="Run failed"      value={am.failed}       color="var(--danger)" />
           <StatCard label="Cycles"          value={am.cycleTotal}   />
-          <StatCard label="Cycle success"   value={am.cycleOk}      color="#52d68a" sub={`${am.cycleRate}%`} />
+          <StatCard label="Cycle success"   value={am.cycleOk}      color="var(--success)" sub={`${am.cycleRate}%`} />
         </div>
         <RateBar label="Agent run success rate"  value={am.rate}      color={scoreColor(am.rate)} />
         <RateBar label="Cycle success rate"      value={am.cycleRate} color={scoreColor(am.cycleRate)} />
-        {am.rate === 0 && <div style={{ padding: "8px 14px", fontSize: 9, color: "#8994b0" }}>Agent runs are failing due to missing CRM capability handlers — this is a known platform gap, not a Track-B issue.</div>}
+        {am.rate === 0 && <div style={{ padding: "8px 14px", fontSize: 9, color: "var(--text-dim)" }}>Agent runs are failing due to missing CRM capability handlers — this is a known platform gap, not a Track-B issue.</div>}
       </Section>
 
       {/* B9 exec log layer */}
-      <Section title="B9 execution log" accent="#8994b0">
+      <Section title="B9 execution log" accent="var(--text-dim)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
           <StatCard label="Executions"  value={el.total} />
-          <StatCard label="Success"     value={el.success} color="#52d68a" sub={el.successRate != null ? `${el.successRate}%` : undefined} />
+          <StatCard label="Success"     value={el.success} color="var(--success)" sub={el.successRate != null ? `${el.successRate}%` : undefined} />
           <StatCard label="Rolled back" value={el.rolled}  color="#f0a028" />
-          <StatCard label="Failed"      value={el.failed}  color="#f55b5b" />
+          <StatCard label="Failed"      value={el.failed}  color="var(--danger)" />
           <StatCard label="Decisions"   value={dec.total}  />
         </div>
         {el.total === 0 && <DataNote msg="Execution log populates as you use the Execution Center → Execute tab to approve and run items." />}
       </Section>
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -237,7 +237,7 @@ function TabAccuracy() {
   const { data, loading, reload } = useData("/runtime/reliability/accuracy");
 
   if (loading) return <SkeletonBlock />;
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error}</div>;
 
   const metrics = [
     { label: "Healing accuracy",        value: data.healingAccuracy,        note: "Heal success / total heals",                color: scoreColor(data.healingAccuracy) },
@@ -255,8 +255,8 @@ function TabAccuracy() {
         {metrics.map(m => (
           <div key={m.label} style={{ textAlign: "center" }}>
             <BigGauge score={m.value} label="" color={m.color} size={90} />
-            <div style={{ fontSize: 9, color: "#8994b0", marginTop: 4, maxWidth: 80 }}>{m.label}</div>
-            <div style={{ fontSize: 8, color: "#8994b0", marginTop: 1 }}>{m.note}</div>
+            <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 4, maxWidth: 80 }}>{m.label}</div>
+            <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 1 }}>{m.note}</div>
           </div>
         ))}
       </div>
@@ -267,12 +267,12 @@ function TabAccuracy() {
         ))}
       </Section>
 
-      <Section title="Learning engine" accent="#7c6fff">
+      <Section title="Learning engine" accent="var(--accent)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
           <StatCard label="Failure patterns known"  value={data.patternCount}   color="#44a2ff" />
           <StatCard label="Agent success rate"      value={`${data.agentSuccessRate}%`} color={scoreColor(data.agentSuccessRate)} />
           <StatCard label="Patterns ingested"       value={data.learningEngine?.totalIngested ?? 0} />
-          <StatCard label="Unique patterns"         value={data.learningEngine?.uniquePatterns ?? 0} color="#7c6fff" />
+          <StatCard label="Unique patterns"         value={data.learningEngine?.uniquePatterns ?? 0} color="var(--accent)" />
         </div>
       </Section>
 
@@ -280,7 +280,7 @@ function TabAccuracy() {
       {data.tierSamples === 0 && (
         <DataNote msg="Prediction & recommendation accuracy will populate as operator decisions are made through the Execution Center. Healing accuracy is computed from 2,000 real heal events." />
       )}
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right", marginTop: 8 }}>Updated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right", marginTop: 8 }}>Updated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -294,19 +294,19 @@ function ScorecardWindow({ label, data }) {
     <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
         <div style={{ textAlign: "center", minWidth: 80 }}>
-          <div style={{ fontSize: 24, fontWeight: 800, color: data.autonomyScore != null ? col : "#8994b0" }}>
+          <div style={{ fontSize: 24, fontWeight: 800, color: data.autonomyScore != null ? col : "var(--text-dim)" }}>
             {data.autonomyScore ?? "—"}
           </div>
-          <div style={{ fontSize: 8, color: "#8994b0" }}>Autonomy Score</div>
+          <div style={{ fontSize: 8, color: "var(--text-dim)" }}>Autonomy Score</div>
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: "#e6edf3", marginBottom: 6 }}>{label}</div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "var(--text)", marginBottom: 6 }}>{label}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {data.heals       > 0 && <Chip label={`${data.heals} heals (${data.healRate ?? 0}%)`}          color={scoreColor(data.healRate)} />}
             {data.patches     > 0 && <Chip label={`${data.patches} patches (${data.patchRate ?? 0}%)`}      color={scoreColor(data.patchRate)} />}
-            {data.deploys     > 0 && <Chip label={`${data.deploys} deploys`}                               color="#52d68a" />}
+            {data.deploys     > 0 && <Chip label={`${data.deploys} deploys`}                               color="var(--success)" />}
             {data.recoveries  > 0 && <Chip label={`${data.recoveries} recoveries`}                         color="#44a2ff" />}
-            {data.heals === 0 && data.patches === 0 && <span style={{ fontSize: 9, color: "#8994b0" }}>No activity in this window</span>}
+            {data.heals === 0 && data.patches === 0 && <span style={{ fontSize: 9, color: "var(--text-dim)" }}>No activity in this window</span>}
           </div>
         </div>
       </div>
@@ -323,9 +323,9 @@ function TabScorecard() {
   const { data, loading, reload } = useData("/runtime/reliability/scorecard");
 
   if (loading) return <SkeletonBlock />;
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error}</div>;
 
-  const lCol = L_COLOR[data.level] || "#8994b0";
+  const lCol = L_COLOR[data.level] || "var(--text-dim)";
 
   return (
     <div>
@@ -337,12 +337,12 @@ function TabScorecard() {
         <BigGauge score={data.lifetime?.autonomyScore} label="Lifetime" color={lCol} size={110} />
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 22, fontWeight: 800, color: lCol, marginBottom: 4 }}>{data.levelLabel}</div>
-          <div style={{ fontSize: 11, color: "#8994b0", marginBottom: 10 }}>
+          <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 10 }}>
             Measured across {data.lifetime?.heals ?? 0} heal events and {data.lifetime?.patches ?? 0} patches
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <Chip label={`Trust score ${data.trustMetrics?.trustScore ?? "—"}`} color={T_COLOR[data.trustMetrics?.trustScore >= 60 ? "high" : "low"]} />
-            {data.trustMetrics?.chainOk > 0 && <Chip label={`${data.trustMetrics.chainOk} chains completed`} color="#52d68a" />}
+            {data.trustMetrics?.chainOk > 0 && <Chip label={`${data.trustMetrics.chainOk} chains completed`} color="var(--success)" />}
           </div>
         </div>
       </div>
@@ -355,16 +355,16 @@ function TabScorecard() {
 
       <Section title="Trust metrics" accent="#44a2ff">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
-          <StatCard label="Patch applied"     value={data.trustMetrics?.approved}    color="#52d68a" />
-          <StatCard label="Patch rejected"    value={data.trustMetrics?.rejected}    color="#f55b5b" />
+          <StatCard label="Patch applied"     value={data.trustMetrics?.approved}    color="var(--success)" />
+          <StatCard label="Patch rejected"    value={data.trustMetrics?.rejected}    color="var(--danger)" />
           <StatCard label="Bad approvals"     value={data.trustMetrics?.badApproval} color="#f0a028" />
-          <StatCard label="Deploy success"    value={data.trustMetrics?.deployOk}    color="#7c6fff" />
+          <StatCard label="Deploy success"    value={data.trustMetrics?.deployOk}    color="var(--accent)" />
           <StatCard label="Recoveries"        value={data.trustMetrics?.recoveries}  color="#44a2ff" />
-          <StatCard label="Chain success"     value={data.trustMetrics?.chainOk}     color="#52d68a" />
+          <StatCard label="Chain success"     value={data.trustMetrics?.chainOk}     color="var(--success)" />
         </div>
       </Section>
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -377,7 +377,7 @@ function MiniBar({ value, max, color }) {
     <div style={{ width: 60, height: 6, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
       <div style={{ width: `${pct}%`, height: "100%", borderRadius: 2, background: color, transition: "width 0.4s ease" }} />
     </div>
-    <span style={{ fontSize: 9, color: "#8994b0", width: 28 }}>{value}</span>
+    <span style={{ fontSize: 9, color: "var(--text-dim)", width: 28 }}>{value}</span>
   </div>;
 }
 
@@ -385,7 +385,7 @@ function TabTrends() {
   const { data, loading, reload } = useData("/runtime/reliability/trends");
 
   if (loading) return <SkeletonBlock />;
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error}</div>;
 
   const { trendByDay, deployEvents, summary } = data;
   const maxHeals = Math.max(...(trendByDay || []).map(d => d.heals), 1);
@@ -397,32 +397,32 @@ function TabTrends() {
       {/* Summary cards */}
       <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
         <StatCard label="MTTR (proxy)"          value={summary.mttrProxyLabel}        color="#44a2ff" />
-        <StatCard label="Incidents / day"       value={`~${summary.avgIncidentsPerDay}`} color="#f0b429" />
+        <StatCard label="Incidents / day"       value={`~${summary.avgIncidentsPerDay}`} color="var(--warning)" />
         <StatCard label="Healing success"       value={`${summary.healSuccessRate}%`} color={scoreColor(summary.healSuccessRate)} />
-        <StatCard label="Avg attempts / heal"   value={summary.avgAttempts}           color="#8994b0" />
+        <StatCard label="Avg attempts / heal"   value={summary.avgAttempts}           color="var(--text-dim)" />
         <StatCard label="Agent runs"            value={summary.agentRunTotal}         />
-        <StatCard label="Agent fail rate"       value={`${summary.agentFailRate}%`}   color="#f55b5b" />
+        <StatCard label="Agent fail rate"       value={`${summary.agentFailRate}%`}   color="var(--danger)" />
       </div>
 
       {/* Daily healing trend */}
-      <Section title={`Daily healing trend (${trendByDay?.length ?? 0} days)`} accent="#52d68a">
+      <Section title={`Daily healing trend (${trendByDay?.length ?? 0} days)`} accent="var(--success)">
         {(trendByDay || []).length === 0
-          ? <div style={{ padding: 20, textAlign: "center", fontSize: 11, color: "#8994b0" }}>No daily data</div>
+          ? <div style={{ padding: 20, textAlign: "center", fontSize: 11, color: "var(--text-dim)" }}>No daily data</div>
           : (trendByDay || []).map(d => (
             <div key={d.date} style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 4 }}>
-                <span style={{ fontSize: 10, color: "#c8cdd8", width: 86, flexShrink: 0 }}>{d.date}</span>
+                <span style={{ fontSize: 10, color: "var(--text)", width: 86, flexShrink: 0 }}>{d.date}</span>
                 <Chip label={`${d.successRate}% success`} color={scoreColor(d.successRate)} />
-                <span style={{ fontSize: 9, color: "#8994b0" }}>{d.success} ok · {d.fail} fail</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{d.success} ok · {d.fail} fail</span>
               </div>
               <div style={{ display: "flex", gap: 4 }}>
-                <div title="success" style={{ flex: d.success, height: 6, background: "#52d68a", borderRadius: "2px 0 0 2px", opacity: 0.8 }} />
-                <div title="fail"    style={{ flex: d.fail,    height: 6, background: "#f55b5b", borderRadius: "0 2px 2px 0", opacity: 0.8 }} />
+                <div title="success" style={{ flex: d.success, height: 6, background: "var(--success)", borderRadius: "2px 0 0 2px", opacity: 0.8 }} />
+                <div title="fail"    style={{ flex: d.fail,    height: 6, background: "var(--danger)", borderRadius: "0 2px 2px 0", opacity: 0.8 }} />
               </div>
               {Object.keys(d.strategies || {}).length > 0 && (
                 <div style={{ marginTop: 3, display: "flex", gap: 4, flexWrap: "wrap" }}>
                   {Object.entries(d.strategies).map(([k, v]) => (
-                    <span key={k} style={{ fontSize: 8, color: "#8994b0" }}>{k}: {v}</span>
+                    <span key={k} style={{ fontSize: 8, color: "var(--text-dim)" }}>{k}: {v}</span>
                   ))}
                 </div>
               )}
@@ -432,22 +432,22 @@ function TabTrends() {
       </Section>
 
       {/* Deploy events */}
-      <Section title={`Deploy events (${deployEvents?.length ?? 0})`} accent="#7c6fff">
+      <Section title={`Deploy events (${deployEvents?.length ?? 0})`} accent="var(--accent)">
         {(deployEvents || []).length === 0
-          ? <div style={{ padding: "12px 14px", fontSize: 10, color: "#8994b0" }}>No deploy telemetry recorded.</div>
+          ? <div style={{ padding: "12px 14px", fontSize: 10, color: "var(--text-dim)" }}>No deploy telemetry recorded.</div>
           : (deployEvents || []).map((e, i) => (
             <div key={i} style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)",
               display: "flex", gap: 8, alignItems: "center" }}>
-              <span style={{ fontSize: 11, color: e.ok ? "#52d68a" : "#f55b5b" }}>{e.ok ? "✓" : "✗"}</span>
-              <Chip label={e.phase} color={e.ok ? "#52d68a" : "#f55b5b"} />
-              <span style={{ fontSize: 9, color: "#8994b0" }}>{e.ts ? new Date(e.ts).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "—"}</span>
-              {e.elapsedMs != null && <span style={{ fontSize: 9, color: "#8994b0" }}>{e.elapsedMs}ms</span>}
+              <span style={{ fontSize: 11, color: e.ok ? "var(--success)" : "var(--danger)" }}>{e.ok ? "✓" : "✗"}</span>
+              <Chip label={e.phase} color={e.ok ? "var(--success)" : "var(--danger)"} />
+              <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{e.ts ? new Date(e.ts).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "—"}</span>
+              {e.elapsedMs != null && <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{e.elapsedMs}ms</span>}
             </div>
           ))
         }
       </Section>
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right" }}>Updated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -455,7 +455,7 @@ function TabTrends() {
 // ── B10.5 Operator Trust Score ────────────────────────────────────────
 
 function TrustMeter({ score, level }) {
-  const col = T_COLOR[level] || "#8994b0";
+  const col = T_COLOR[level] || "var(--text-dim)";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 20, padding: 20,
       background: col + "08", border: `1px solid ${col}25`, borderRadius: 8, marginBottom: 20 }}>
@@ -464,7 +464,7 @@ function TrustMeter({ score, level }) {
         <div style={{ fontSize: 22, fontWeight: 800, color: col, marginBottom: 4 }}>
           {level ? level.charAt(0).toUpperCase() + level.slice(1) : "—"} Trust
         </div>
-        <div style={{ fontSize: 11, color: "#8994b0" }}>Based on operator approval history and recovery outcomes</div>
+        <div style={{ fontSize: 11, color: "var(--text-dim)" }}>Based on operator approval history and recovery outcomes</div>
       </div>
     </div>
   );
@@ -474,7 +474,7 @@ function TabTrustScore() {
   const { data, loading, reload } = useData("/runtime/reliability/trust-score");
 
   if (loading) return <SkeletonBlock />;
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error}</div>;
 
   const ft = data.fromTrustLog   || {};
   const fd = data.fromDecisionLog || {};
@@ -486,15 +486,15 @@ function TabTrustScore() {
 
       <TrustMeter score={data.trustScore} level={data.trustLevel} />
 
-      <Section title="From operational trust log (real data)" accent="#52d68a">
+      <Section title="From operational trust log (real data)" accent="var(--success)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
-          <StatCard label="Patches applied"  value={ft.approved}         color="#52d68a" />
-          <StatCard label="Patches rejected" value={ft.rejected}         color="#f55b5b" />
-          <StatCard label="Good approvals"   value={ft.successApprovals} color="#52d68a"
+          <StatCard label="Patches applied"  value={ft.approved}         color="var(--success)" />
+          <StatCard label="Patches rejected" value={ft.rejected}         color="var(--danger)" />
+          <StatCard label="Good approvals"   value={ft.successApprovals} color="var(--success)"
             sub={ft.approvalQuality != null ? `${ft.approvalQuality}% quality` : undefined} />
           <StatCard label="Bad approvals"    value={ft.badApproval}      color="#f0a028"
             sub="rolled back" />
-          <StatCard label="Deploys ok"       value={ft.deployOk}         color="#7c6fff" />
+          <StatCard label="Deploys ok"       value={ft.deployOk}         color="var(--accent)" />
           <StatCard label="Recoveries"       value={ft.recoveries}       color="#44a2ff" />
         </div>
         {ft.approvalQuality != null && (
@@ -503,11 +503,11 @@ function TabTrustScore() {
         )}
       </Section>
 
-      <Section title="From B9 decision log" accent="#f0b429">
+      <Section title="From B9 decision log" accent="var(--warning)">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px", flexWrap: "wrap" }}>
-          <StatCard label="Approved"  value={fd.approved} color="#52d68a" />
-          <StatCard label="Rejected"  value={fd.rejected} color="#f55b5b" />
-          <StatCard label="Good"      value={fd.good}     color="#52d68a"
+          <StatCard label="Approved"  value={fd.approved} color="var(--success)" />
+          <StatCard label="Rejected"  value={fd.rejected} color="var(--danger)" />
+          <StatCard label="Good"      value={fd.good}     color="var(--success)"
             sub={fd.quality != null ? `${fd.quality}% quality` : undefined} />
           <StatCard label="Bad"       value={fd.bad}      color="#f0a028" />
         </div>
@@ -516,8 +516,8 @@ function TabTrustScore() {
 
       <Section title="Chain / workflow metrics" accent="#44a2ff">
         <div style={{ display: "flex", gap: 8, padding: "10px 12px" }}>
-          <StatCard label="Chains completed"   value={ch.ok}   color="#52d68a" />
-          <StatCard label="Chains interrupted" value={ch.fail} color="#f55b5b" />
+          <StatCard label="Chains completed"   value={ch.ok}   color="var(--success)" />
+          <StatCard label="Chains interrupted" value={ch.fail} color="var(--danger)" />
           {(ch.ok + ch.fail) > 0 && (
             <StatCard label="Chain success rate"
               value={`${Math.round(ch.ok / (ch.ok + ch.fail) * 100)}%`}
@@ -526,7 +526,7 @@ function TabTrustScore() {
         </div>
       </Section>
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right" }}>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right" }}>
         Based on {data.totalTrustEvents} trust events · Updated {_ago(data.generatedAt)}
       </div>
     </div>
@@ -536,14 +536,14 @@ function TabTrustScore() {
 // ── B10.6 Health Report ───────────────────────────────────────────────
 
 function AlertItem({ level, msg }) {
-  const col = A_COLOR[level] || "#8994b0";
+  const col = A_COLOR[level] || "var(--text-dim)";
   return (
     <div style={{ padding: "8px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)",
       display: "flex", gap: 8, alignItems: "flex-start" }}>
       <span style={{ fontSize: 10, color: col, flexShrink: 0 }}>
         {level === "critical" ? "✗" : level === "warn" ? "⚠" : "ℹ"}
       </span>
-      <span style={{ fontSize: 10, color: col === "#8994b0" ? "#c8cdd8" : col }}>{msg}</span>
+      <span style={{ fontSize: 10, color: col === "var(--text-dim)" ? "var(--text)" : col }}>{msg}</span>
     </div>
   );
 }
@@ -553,9 +553,9 @@ function SignalRow({ name, score, weight }) {
   return (
     <div style={{ padding: "7px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
-        <span style={{ fontSize: 10, color: "#c8cdd8", flex: 1 }}>{name}</span>
+        <span style={{ fontSize: 10, color: "var(--text)", flex: 1 }}>{name}</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{score}%</span>
-        <span style={{ fontSize: 8, color: "#8994b0" }}>w={Math.round(weight * 100)}%</span>
+        <span style={{ fontSize: 8, color: "var(--text-dim)" }}>w={Math.round(weight * 100)}%</span>
       </div>
       <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
         <div style={{ width: `${score}%`, height: "100%", borderRadius: 2, background: col, transition: "width 0.5s ease" }} />
@@ -569,21 +569,21 @@ function TabHealthReport() {
 
   if (loading) return (
     <div style={{ padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-      <div style={{ fontSize: 12, color: "#8994b0" }}>Generating system health report…</div>
+      <div style={{ fontSize: 12, color: "var(--text-dim)" }}>Generating system health report…</div>
       <SkeletonBlock />
     </div>
   );
-  if (!data || data.error) return <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data?.error}</div>;
+  if (!data || data.error) return <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data?.error}</div>;
 
-  const healthCol = H_COLOR[data.healthLabel] || "#8994b0";
-  const trajCol = data.trajectory === "improving" ? "#52d68a" : data.trajectory === "declining" ? "#f55b5b" : "#8994b0";
+  const healthCol = H_COLOR[data.healthLabel] || "var(--text-dim)";
+  const trajCol = data.trajectory === "improving" ? "var(--success)" : data.trajectory === "declining" ? "var(--danger)" : "var(--text-dim)";
   const trajIcon = data.trajectory === "improving" ? "↑" : data.trajectory === "declining" ? "↓" : "→";
   const sec = data.sections || {};
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <div style={{ fontSize: 11, color: "#8994b0" }}>One-click system health snapshot across all Track-B systems</div>
+        <div style={{ fontSize: 11, color: "var(--text-dim)" }}>One-click system health snapshot across all Track-B systems</div>
         <button onClick={reload} disabled={loading}
           style={{ padding: "6px 16px", fontSize: 11, fontWeight: 700, borderRadius: 4, cursor: "pointer", fontFamily: "inherit",
             background: "rgba(68,162,255,0.12)", border: "1px solid rgba(68,162,255,0.3)", color: "#44a2ff" }}>
@@ -602,19 +602,19 @@ function TabHealthReport() {
           </div>
           <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
             <Chip label={`MTTR ${data.mttr}`} color="#44a2ff" />
-            <Chip label={`Incidents ${data.incidentFrequency}`} color="#f0b429" />
-            <Chip label={`Autonomy ${data.autonomyScore ?? "—"}`} color="#7c6fff" />
+            <Chip label={`Incidents ${data.incidentFrequency}`} color="var(--warning)" />
+            <Chip label={`Autonomy ${data.autonomyScore ?? "—"}`} color="var(--accent)" />
           </div>
           {/* Strengths */}
           {(data.strengths || []).map((s, i) => (
-            <div key={i} style={{ fontSize: 10, color: "#52d68a", marginBottom: 2 }}>✓ {s}</div>
+            <div key={i} style={{ fontSize: 10, color: "var(--success)", marginBottom: 2 }}>✓ {s}</div>
           ))}
         </div>
       </div>
 
       {/* Alerts */}
       {(data.alerts || []).length > 0 && (
-        <Section title="System alerts" count={data.alerts.length} accent="#f0b429">
+        <Section title="System alerts" count={data.alerts.length} accent="var(--warning)">
           {data.alerts.map((a, i) => <AlertItem key={i} level={a.level} msg={a.msg} />)}
         </Section>
       )}
@@ -636,19 +636,19 @@ function TabHealthReport() {
         ].map(({ title, items }) => (
           <div key={title} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8, overflow: "hidden" }}>
             <div style={{ padding: "7px 12px", borderBottom: "1px solid rgba(255,255,255,0.07)",
-              fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "#8994b0" }}>{title}</div>
+              fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--text-dim)" }}>{title}</div>
             {items.map(([k, v]) => (
               <div key={k} style={{ padding: "5px 12px", borderBottom: "1px solid rgba(255,255,255,0.04)",
                 display: "flex", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 9, color: "#8994b0" }}>{k}</span>
-                <span style={{ fontSize: 9, fontWeight: 600, color: "#c8cdd8" }}>{v ?? "—"}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{k}</span>
+                <span style={{ fontSize: 9, fontWeight: 600, color: "var(--text)" }}>{v ?? "—"}</span>
               </div>
             ))}
           </div>
         ))}
       </div>
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right" }}>Report generated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right" }}>Report generated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -668,7 +668,7 @@ export default function ReliabilityCenter({ onNavigate }) {
   const [tab, setTab] = useState("report");
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "var(--text)", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes rc-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
       <div style={{ flex: 1, minWidth: 0 }}>
       <PageHeader
@@ -693,10 +693,10 @@ export default function ReliabilityCenter({ onNavigate }) {
               style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",
-                color: tab === t.id ? "#44a2ff" : "#8994b0",
+                color: tab === t.id ? "#44a2ff" : "var(--text-dim)",
                 marginBottom: -1, whiteSpace: "nowrap", fontFamily: "inherit" }}>
               {t.label}
-              {t.id === "report" && <span style={{ marginLeft: 4, fontSize: 8, color: "#52d68a", fontWeight: 800 }}>●</span>}
+              {t.id === "report" && <span style={{ marginLeft: 4, fontSize: 8, color: "var(--success)", fontWeight: 800 }}>●</span>}
             </button>
           ))}
         </div>

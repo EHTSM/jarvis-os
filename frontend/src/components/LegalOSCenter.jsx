@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as legalApi from "../legalApi";
 
-const STATUS_COLOR = { draft: "#8994b0", under_review: "#f0b429", approved: "#5dc8f5", signed: "#52d68a", archived: "#666" };
+const STATUS_COLOR = { draft: "var(--text-dim)", under_review: "var(--warning)", approved: "var(--info)", signed: "var(--success)", archived: "#666" };
 
 export default function LegalOSCenter() {
   const [types, setTypes] = useState([]);
@@ -71,7 +71,7 @@ export default function LegalOSCenter() {
         <button onClick={refresh} disabled={loading}>{loading ? "Refreshing…" : "Refresh"}</button>
       </div>
 
-      {error && <div style={{ color: "#f55b5b", marginBottom: 12, fontSize: 12 }}>⚠ {error}</div>}
+      {error && <div style={{ color: "var(--danger)", marginBottom: 12, fontSize: 12 }}>⚠ {error}</div>}
 
       <div style={{ fontSize: 11, color: "var(--text-dim, #8994b0)", marginBottom: 16, background: "rgba(240,180,41,0.08)", padding: "8px 10px", borderRadius: 5 }}>
         AI-drafted documents are a starting point, not legal advice — have a real lawyer review before use.
@@ -92,7 +92,7 @@ export default function LegalOSCenter() {
         ) : documents.map(d => (
           <div key={d.docId} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
             <span>{d.title || d.type}</span>
-            <span style={{ color: STATUS_COLOR[d.status] || "#8994b0" }}>{d.status}</span>
+            <span style={{ color: STATUS_COLOR[d.status] || "var(--text-dim)" }}>{d.status}</span>
             <div style={{ display: "flex", gap: 4 }}>
               {(d.status === "draft") && <button disabled={busy === d.docId} onClick={() => advance(d.docId, "under_review")}>Send for review</button>}
               {(d.status === "under_review") && <button disabled={busy === d.docId} onClick={() => advance(d.docId, "approved")}>Approve</button>}

@@ -43,7 +43,7 @@ function StatCard({ label, value, sub, accent }) {
 
 function Bar({ value, max = 100, color }) {
   const pct = Math.min(100, max > 0 ? Math.round((value / max) * 100) : 0);
-  const col = color || (pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#7c6af7");
+  const col = color || (pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "#7c6af7");
   return (
     <div className="gos-bar-track">
       <div className="gos-bar-fill" style={{ width: `${pct}%`, background: col }} />
@@ -112,10 +112,10 @@ function DashboardPanel() {
       </div>
 
       <div className="gos-stats-grid" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(130px,1fr))" }}>
-        <StatCard label="Total Campaigns" value={k.totalCampaigns} accent="#22c55e" />
+        <StatCard label="Total Campaigns" value={k.totalCampaigns} accent="var(--success)" />
         <StatCard label="Total Reach"     value={(k.totalReach || 0).toLocaleString()} />
-        <StatCard label="Revenue"         value={`₹${(k.totalRevenue || 0).toLocaleString()}`} accent="#7c6fff" />
-        <StatCard label="Overall ROAS"    value={`${k.overallROAS}x`} accent="#4ecdc4" />
+        <StatCard label="Revenue"         value={`₹${(k.totalRevenue || 0).toLocaleString()}`} accent="var(--accent)" />
+        <StatCard label="Overall ROAS"    value={`${k.overallROAS}x`} accent="var(--accent2)" />
         <StatCard label="Audiences"       value={k.totalAudiences} sub={`${(k.totalMembers || 0).toLocaleString()} members`} />
         <StatCard label="Automations"     value={k.totalAutomations} sub={`${k.activeAutomations} active`} />
         <StatCard label="Templates"       value={k.totalTemplates} />
@@ -124,10 +124,10 @@ function DashboardPanel() {
 
       <div className="gos-channel-grid">
         {[
-          { label: "Email",    ch: d.email,    icon: "✉", color: "#7c6fff", meta: `${d.email?.avgOpenRate}% open · ${d.email?.sequences} seq · ${d.email?.abTests} A/B` },
-          { label: "SMS",      ch: d.sms,      icon: "◻", color: "#22c55e", meta: `${d.sms?.deliveryRate}% delivery · ${d.sms?.scheduled} scheduled` },
-          { label: "WhatsApp", ch: d.whatsapp, icon: "⬡", color: "#4ecdc4", meta: `${d.whatsapp?.avgReadRate}% read · ${d.whatsapp?.totalLeads} leads · ${d.whatsapp?.flows} flows` },
-          { label: "Push",     ch: d.push,     icon: "◈", color: "#f59e0b", meta: `${d.push?.avgClickRate}% CTR` },
+          { label: "Email",    ch: d.email,    icon: "✉", color: "var(--accent)", meta: `${d.email?.avgOpenRate}% open · ${d.email?.sequences} seq · ${d.email?.abTests} A/B` },
+          { label: "SMS",      ch: d.sms,      icon: "◻", color: "var(--success)", meta: `${d.sms?.deliveryRate}% delivery · ${d.sms?.scheduled} scheduled` },
+          { label: "WhatsApp", ch: d.whatsapp, icon: "⬡", color: "var(--accent2)", meta: `${d.whatsapp?.avgReadRate}% read · ${d.whatsapp?.totalLeads} leads · ${d.whatsapp?.flows} flows` },
+          { label: "Push",     ch: d.push,     icon: "◈", color: "var(--warning)", meta: `${d.push?.avgClickRate}% CTR` },
         ].map(({ label, ch, icon, color, meta }) => (
           <div key={label} className="gos-channel-card" style={{ borderTop: `2px solid ${color}` }}>
             <div className="gos-channel-icon" style={{ color }}>{icon}</div>
@@ -149,7 +149,7 @@ function DashboardPanel() {
                 <span className="gos-campaign-name">{c.name}</span>
                 <Chip>{c.type}</Chip>
                 <span className="gos-campaign-sent">{(c.sent || 0).toLocaleString()} sent</span>
-                {c.revenue > 0 && <span className="gos-campaign-sent" style={{ color: "#4ecdc4" }}>₹{c.revenue.toLocaleString()}</span>}
+                {c.revenue > 0 && <span className="gos-campaign-sent" style={{ color: "var(--accent2)" }}>₹{c.revenue.toLocaleString()}</span>}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
               </div>
             ))}
@@ -240,11 +240,11 @@ function EmailPanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"    value={list.length} />
-            <StatCard label="Sent"     value={list.filter(c => c.status === "sent").length} accent="#22c55e" />
+            <StatCard label="Sent"     value={list.filter(c => c.status === "sent").length} accent="var(--success)" />
             <StatCard label="Draft"    value={list.filter(c => c.status === "draft").length} />
             <StatCard label="Reach"    value={list.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
             <StatCard label="Opens"    value={list.reduce((s,c)=>s+(c.stats?.opened||0),0).toLocaleString()} />
-            <StatCard label="A/B Tests" value={list.filter(c => c.abTest).length} accent="#7c6fff" />
+            <StatCard label="A/B Tests" value={list.filter(c => c.abTest).length} accent="var(--accent)" />
           </div>
           <div className="gos-list">
             {list.length === 0 && <div className="gos-empty">No email campaigns yet. Create one to get started.</div>}
@@ -264,7 +264,7 @@ function EmailPanel() {
                   </div>
                 )}
                 {c.variantBStats?.sent > 0 && (
-                  <div className="gos-campaign-stats" style={{ color: "#7c6fff" }}>
+                  <div className="gos-campaign-stats" style={{ color: "var(--accent)" }}>
                     <span>B: {c.variantBStats.sent} sent</span>
                     <span>{c.variantBStats.opened} opened ({c.variantBStats.sent ? (c.variantBStats.opened/c.variantBStats.sent*100).toFixed(0) : 0}%)</span>
                   </div>
@@ -415,8 +415,8 @@ function SMSPanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"     value={list.length} />
-            <StatCard label="Sent"      value={list.filter(c => c.status === "sent").length} accent="#22c55e" />
-            <StatCard label="Scheduled" value={list.filter(c => c.status === "scheduled").length} accent="#f59e0b" />
+            <StatCard label="Sent"      value={list.filter(c => c.status === "sent").length} accent="var(--success)" />
+            <StatCard label="Scheduled" value={list.filter(c => c.status === "scheduled").length} accent="var(--warning)" />
             <StatCard label="Total Sent" value={list.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
           </div>
           <div className="gos-list">
@@ -427,7 +427,7 @@ function SMSPanel() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="gos-campaign-name">{c.name}</div>
                   <div className="gos-campaign-meta">{c.body?.slice(0, 70)}{c.body?.length > 70 ? "…" : ""}</div>
-                  {c.scheduledAt && c.status === "scheduled" && <div className="gos-campaign-meta" style={{ color: "#f59e0b" }}>Scheduled: {new Date(c.scheduledAt).toLocaleString()}</div>}
+                  {c.scheduledAt && c.status === "scheduled" && <div className="gos-campaign-meta" style={{ color: "var(--warning)" }}>Scheduled: {new Date(c.scheduledAt).toLocaleString()}</div>}
                 </div>
                 {c.bulk && <Chip>bulk</Chip>}
                 {c.unicode && <Chip color="purple">unicode</Chip>}
@@ -586,8 +586,8 @@ function WhatsAppPanel() {
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Broadcasts"  value={campList.length} />
             <StatCard label="Total Sent"  value={campList.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
-            <StatCard label="Total Read"  value={campList.reduce((s,c)=>s+(c.stats?.read||0),0).toLocaleString()} accent="#4ecdc4" />
-            <StatCard label="Leads Gen'd" value={campList.reduce((s,c)=>s+(c.stats?.leads||0),0).toLocaleString()} accent="#22c55e" />
+            <StatCard label="Total Read"  value={campList.reduce((s,c)=>s+(c.stats?.read||0),0).toLocaleString()} accent="var(--accent2)" />
+            <StatCard label="Leads Gen'd" value={campList.reduce((s,c)=>s+(c.stats?.leads||0),0).toLocaleString()} accent="var(--success)" />
           </div>
           <div className="gos-list">
             {campList.length === 0 && <div className="gos-empty">No WhatsApp broadcasts yet.</div>}
@@ -601,9 +601,9 @@ function WhatsAppPanel() {
                 {c.stats?.sent > 0 && (
                   <div className="gos-campaign-stats">
                     <span>{c.stats.sent} sent</span>
-                    <span style={{ color: "#4ecdc4" }}>{c.stats.read} read</span>
+                    <span style={{ color: "var(--accent2)" }}>{c.stats.read} read</span>
                     <span>{c.stats.replied} replied</span>
-                    <span style={{ color: "#22c55e" }}>{c.stats.leads} leads</span>
+                    <span style={{ color: "var(--success)" }}>{c.stats.leads} leads</span>
                   </div>
                 )}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
@@ -743,10 +743,10 @@ function PushPanel() {
     <div>
       <div className="gos-push-platforms">
         {[
-          { icon: "◉", label: "Desktop",       desc: "Electron app push notifications", color: "#7c6fff" },
-          { icon: "◈", label: "Mobile-ready",  desc: "FCM-compatible payload structure", color: "#22c55e" },
-          { icon: "⬡", label: "Browser",        desc: "Web Push API (service worker)", color: "#4ecdc4" },
-          { icon: "⚡", label: "Auto Triggers",  desc: `${tlist.length} automation trigger rules`, color: "#f59e0b" },
+          { icon: "◉", label: "Desktop",       desc: "Electron app push notifications", color: "var(--accent)" },
+          { icon: "◈", label: "Mobile-ready",  desc: "FCM-compatible payload structure", color: "var(--success)" },
+          { icon: "⬡", label: "Browser",        desc: "Web Push API (service worker)", color: "var(--accent2)" },
+          { icon: "⚡", label: "Auto Triggers",  desc: `${tlist.length} automation trigger rules`, color: "var(--warning)" },
         ].map(p => (
           <div key={p.label} className="gos-push-platform-card" style={{ borderTop: `2px solid ${p.color}` }}>
             <span className="gos-push-icon" style={{ color: p.color }}>{p.icon}</span>
@@ -987,7 +987,7 @@ function AudiencePanel() {
   const [auds,  reload]  = useGrowth("/growth/audiences");
   const [tags,  reloadT] = useGrowth("/growth/tags");
   const [form,  setForm] = useState({ name: "", type: "list", tags: "", syncFromCRM: false });
-  const [tagForm, setTagForm] = useState({ name: "", color: "#7c6fff" });
+  const [tagForm, setTagForm] = useState({ name: "", color: "var(--accent)" });
   const [dynFilter, setDynFilter] = useState({ field: "source", op: "equals", value: "" });
   const [view,  setView] = useState("list");
   const [toast, Toast]   = useToast();
@@ -1044,7 +1044,7 @@ function AudiencePanel() {
   const createTag = async () => {
     if (!tagForm.name) return;
     await post("/growth/tags", tagForm);
-    setTagForm({ name: "", color: "#7c6fff" });
+    setTagForm({ name: "", color: "var(--accent)" });
     toast("Tag created");
     reloadT();
   };
@@ -1060,7 +1060,7 @@ function AudiencePanel() {
   const list    = (auds?.audiences || []).filter(a => a.status !== "archived");
   const tagList = tags?.tags      || [];
 
-  const TYPE_COLOR = { list: "#22c55e", segment: "#7c6fff", dynamic: "#4ecdc4" };
+  const TYPE_COLOR = { list: "var(--success)", segment: "var(--accent)", dynamic: "var(--accent2)" };
 
   return (
     <div>
@@ -1077,9 +1077,9 @@ function AudiencePanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"   value={list.length} />
-            <StatCard label="Lists"    value={list.filter(a => a.type === "list").length} accent="#22c55e" />
-            <StatCard label="Segments" value={list.filter(a => a.type === "segment").length} accent="#7c6fff" />
-            <StatCard label="Dynamic"  value={list.filter(a => a.type === "dynamic").length} accent="#4ecdc4" />
+            <StatCard label="Lists"    value={list.filter(a => a.type === "list").length} accent="var(--success)" />
+            <StatCard label="Segments" value={list.filter(a => a.type === "segment").length} accent="var(--accent)" />
+            <StatCard label="Dynamic"  value={list.filter(a => a.type === "dynamic").length} accent="var(--accent2)" />
             <StatCard label="Members" value={list.reduce((s,a)=>s+(a.memberCount||0),0).toLocaleString()} />
           </div>
           <div className="gos-list">
@@ -1221,9 +1221,9 @@ function AnalyticsPanel() {
         <>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total Sent"    value={(overall.totalSent     || 0).toLocaleString()} />
-            <StatCard label="Total Conversions" value={(overall.totalConverted || 0).toLocaleString()} accent="#22c55e" />
-            <StatCard label="Total Revenue" value={`₹${(overall.totalRevenue  || 0).toLocaleString()}`} accent="#7c6fff" />
-            <StatCard label="Overall ROAS"  value={`${overall.overallROAS}x`} accent="#4ecdc4" />
+            <StatCard label="Total Conversions" value={(overall.totalConverted || 0).toLocaleString()} accent="var(--success)" />
+            <StatCard label="Total Revenue" value={`₹${(overall.totalRevenue  || 0).toLocaleString()}`} accent="var(--accent)" />
+            <StatCard label="Overall ROAS"  value={`${overall.overallROAS}x`} accent="var(--accent2)" />
           </div>
 
           <div className="gos-sub-title">By Channel</div>
@@ -1236,8 +1236,8 @@ function AnalyticsPanel() {
                   <span className="gos-campaign-meta">{(s.sent || 0).toLocaleString()} sent</span>
                   {s.opened  > 0 && <span className="gos-campaign-meta">{s.opened} opened ({s.sent ? (s.opened/s.sent*100).toFixed(1) : 0}%)</span>}
                   {s.clicked > 0 && <span className="gos-campaign-meta">{s.clicked} clicked</span>}
-                  {s.converted > 0 && <span className="gos-campaign-meta" style={{ color: "#22c55e" }}>{s.converted} conv.</span>}
-                  {s.revenue > 0 && <span className="gos-campaign-meta" style={{ color: "#7c6fff" }}>₹{s.revenue.toLocaleString()}</span>}
+                  {s.converted > 0 && <span className="gos-campaign-meta" style={{ color: "var(--success)" }}>{s.converted} conv.</span>}
+                  {s.revenue > 0 && <span className="gos-campaign-meta" style={{ color: "var(--accent)" }}>₹{s.revenue.toLocaleString()}</span>}
                 </div>
                 <Bar value={s.sent} max={overall?.totalSent || 1} />
               </div>
@@ -1253,7 +1253,7 @@ function AnalyticsPanel() {
                   <div key={c.id} className="gos-campaign-row">
                     <Chip>{c.type}</Chip>
                     <span className="gos-campaign-name">{c.name}</span>
-                    <span className="gos-campaign-sent" style={{ color: "#7c6fff" }}>₹{c.revenue.toLocaleString()}</span>
+                    <span className="gos-campaign-sent" style={{ color: "var(--accent)" }}>₹{c.revenue.toLocaleString()}</span>
                     <Chip color="purple">ROAS {c.roas}x</Chip>
                   </div>
                 ))}
@@ -1274,16 +1274,16 @@ function AnalyticsPanel() {
           <div className="gos-stats-grid">
             <StatCard label="Sent"        value={campAna.sent.toLocaleString()} />
             <StatCard label="Delivered"   value={campAna.delivered.toLocaleString()} />
-            <StatCard label="Open Rate"   value={`${campAna.openRate}%`}   accent="#22c55e" />
-            <StatCard label="Click Rate"  value={`${campAna.clickRate}%`}  accent="#7c6fff" />
-            <StatCard label="Conv. Rate"  value={`${campAna.conversionRate}%`} accent="#4ecdc4" />
-            <StatCard label="Revenue"     value={`₹${campAna.revenue.toLocaleString()}`} accent="#f59e0b" />
-            <StatCard label="ROAS"        value={`${campAna.roas}x`} accent="#7c6fff" />
+            <StatCard label="Open Rate"   value={`${campAna.openRate}%`}   accent="var(--success)" />
+            <StatCard label="Click Rate"  value={`${campAna.clickRate}%`}  accent="var(--accent)" />
+            <StatCard label="Conv. Rate"  value={`${campAna.conversionRate}%`} accent="var(--accent2)" />
+            <StatCard label="Revenue"     value={`₹${campAna.revenue.toLocaleString()}`} accent="var(--warning)" />
+            <StatCard label="ROAS"        value={`${campAna.roas}x`} accent="var(--accent)" />
           </div>
           {campAna.abTest && campAna.variantBStats && (
             <div className="gos-stats-grid" style={{ marginTop: 8 }}>
               <StatCard label="Variant B Sent"   value={campAna.variantBStats.sent} />
-              <StatCard label="Variant B Opens"  value={campAna.variantBStats.opened} accent="#7c6fff" />
+              <StatCard label="Variant B Opens"  value={campAna.variantBStats.opened} accent="var(--accent)" />
               <StatCard label="Variant B Clicks" value={campAna.variantBStats.clicked} />
             </div>
           )}
@@ -1454,7 +1454,7 @@ function BenchmarkPanel() {
     setRunning(false);
   };
 
-  const READINESS_COLOR = { production_ready: "#22c55e", nearly_ready: "#f59e0b", needs_work: "#ef4444" };
+  const READINESS_COLOR = { production_ready: "var(--success)", nearly_ready: "var(--warning)", needs_work: "var(--danger)" };
 
   return (
     <div>
@@ -1468,17 +1468,17 @@ function BenchmarkPanel() {
         <>
           <div className="gos-stats-grid" style={{ marginBottom: 16 }}>
             <StatCard label="Score"     value={`${result.score}%`}              accent={READINESS_COLOR[result.marketingReadiness]} />
-            <StatCard label="Passed"    value={`${result.passing}/${result.total}`} accent="#22c55e" />
+            <StatCard label="Passed"    value={`${result.passing}/${result.total}`} accent="var(--success)" />
             <StatCard label="Readiness" value={result.marketingReadiness?.replace(/_/g," ")} accent={READINESS_COLOR[result.marketingReadiness]} />
-            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "#22c55e" : "#ef4444"} />
+            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "var(--success)" : "var(--danger)"} />
           </div>
 
           <div className="gos-list">
             {(result.checks || []).map(c => (
               <div key={c.id} className={`gos-campaign-row ${c.ok ? "" : "gos-row-fail"}`}>
-                <span style={{ color: c.ok ? "#22c55e" : "#ef4444", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
+                <span style={{ color: c.ok ? "var(--success)" : "var(--danger)", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
                 <span className="gos-campaign-name">{c.label}</span>
-                {c.error && <span className="gos-campaign-meta" style={{ color: "#ef4444" }}>{c.error}</span>}
+                {c.error && <span className="gos-campaign-meta" style={{ color: "var(--danger)" }}>{c.error}</span>}
                 <Chip color={c.ok ? "green" : "red"}>{c.ok ? "pass" : "fail"}</Chip>
               </div>
             ))}

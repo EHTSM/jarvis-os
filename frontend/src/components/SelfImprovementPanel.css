@@ -27,7 +27,7 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    color: #6b7280;
+    color: var(--text-dim);
     text-transform: uppercase;
     margin-bottom: 10px;
 }
@@ -54,7 +54,7 @@
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
-    color: #6b7280;
+    color: var(--text-dim);
     cursor: pointer;
     padding: 6px 14px;
     font-size: 12px;
@@ -78,14 +78,14 @@
     padding: 20px;
 }
 
-.sip-loading { color: #6b7280; padding: 20px; text-align: center; }
+.sip-loading { color: var(--text-dim); padding: 20px; text-align: center; }
 .sip-empty   { color: #4b5563; padding: 24px; text-align: center; font-size: 12px; }
-.sip-err     { color: #ef4444; padding: 12px; background: #ef444410; border-radius: 6px; }
+.sip-err     { color: var(--danger); padding: 12px; background: #ef444410; border-radius: 6px; }
 
 .sip-section-label {
     font-size: 11px;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 12px;
@@ -102,7 +102,7 @@
 }
 
 .sip-evolve-title { font-size: 16px; font-weight: 700; color: #f1f5f9; }
-.sip-evolve-sub   { font-size: 11px; color: #6b7280; font-style: italic; }
+.sip-evolve-sub   { font-size: 11px; color: var(--text-dim); font-style: italic; }
 .sip-evolve-last  { font-size: 11px; color: #4b5563; }
 
 .sip-run-btn {
@@ -139,7 +139,7 @@
 }
 
 .sip-cum-val  { font-size: 22px; font-weight: 700; color: #f1f5f9; }
-.sip-cum-key  { font-size: 10px; color: #6b7280; text-transform: uppercase; margin-top: 4px; }
+.sip-cum-key  { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
 
 .sip-cycle-result {
     background: #111827;
@@ -156,7 +156,7 @@
     margin-bottom: 14px;
 }
 .sip-cycle-title    { font-weight: 700; color: #f1f5f9; }
-.sip-cycle-duration { font-size: 11px; color: #6b7280; }
+.sip-cycle-duration { font-size: 11px; color: var(--text-dim); }
 
 .sip-cycle-kpis {
     display: flex;
@@ -182,8 +182,8 @@
 }
 .sip-stage-dot  { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .sip-stage-name { color: #d1d5db; flex: 1; }
-.sip-stage-ok   { color: #10b981; }
-.sip-stage-err  { color: #ef4444; font-size: 11px; }
+.sip-stage-ok   { color: var(--success); }
+.sip-stage-err  { color: var(--danger); font-size: 11px; }
 
 .sip-recent-cycles { margin-top: 16px; }
 
@@ -196,7 +196,7 @@
     font-size: 12px;
     color: #9ca3af;
 }
-.sip-recent-ts   { flex: 1; color: #6b7280; }
+.sip-recent-ts   { flex: 1; color: var(--text-dim); }
 .sip-recent-stat { min-width: 28px; text-align: center; }
 .sip-recent-ms   { min-width: 50px; text-align: right; color: #4b5563; }
 
@@ -233,8 +233,8 @@
     margin-bottom: 12px;
     font-size: 12px;
 }
-.sip-prom-ok   { color: #10b981; }
-.sip-prom-skip { color: #f59e0b; }
+.sip-prom-ok   { color: var(--success); }
+.sip-prom-skip { color: var(--warning); }
 
 .sip-candidates {
     background: #111827;
@@ -290,7 +290,7 @@
 }
 .sip-pattern-evidence {
     font-size: 11px;
-    color: #6b7280;
+    color: var(--text-dim);
 }
 .sip-action-badge {
     background: #1f2937;
@@ -324,7 +324,7 @@
 
 .sip-gauge-label {
     font-size: 10px;
-    color: #6b7280;
+    color: var(--text-dim);
     text-align: center;
     white-space: pre-line;
     text-transform: uppercase;
@@ -363,9 +363,9 @@
     border-radius: 0 8px 8px 0;
     padding: 12px;
 }
-.sip-arch-card--high   { border-left-color: #ef4444; }
-.sip-arch-card--medium { border-left-color: #f59e0b; }
-.sip-arch-card--low    { border-left-color: #6b7280; }
+.sip-arch-card--high   { border-left-color: var(--danger); }
+.sip-arch-card--medium { border-left-color: var(--warning); }
+.sip-arch-card--low    { border-left-color: var(--text-dim); }
 
 .sip-arch-head {
     display: flex;
@@ -383,7 +383,7 @@
     padding: 1px 6px;
     text-transform: uppercase;
 }
-.sip-arch-category { font-size: 11px; color: #6b7280; }
+.sip-arch-category { font-size: 11px; color: var(--text-dim); }
 .sip-arch-effort   { font-size: 10px; color: #4b5563; margin-left: auto; }
 .sip-arch-roi      { font-size: 10px; color: #059669; }
 .sip-arch-title    { font-size: 13px; font-weight: 600; color: #f1f5f9; margin-bottom: 6px; }
@@ -395,7 +395,7 @@
 .sip-conf { display: flex; flex-direction: column; gap: 16px; }
 
 .sip-weights-section { display: flex; flex-direction: column; gap: 8px; }
-.sip-weights-label   { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.sip-weights-label   { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
 
 .sip-weight-row {
     display: flex;
@@ -431,9 +431,9 @@
     border-radius: 8px;
     padding: 10px 12px;
 }
-.sip-conf-update--increase_weight { border-left: 3px solid #10b981; }
-.sip-conf-update--decrease_weight { border-left: 3px solid #ef4444; }
-.sip-conf-update--sustain         { border-left: 3px solid #6b7280; }
+.sip-conf-update--increase_weight { border-left: 3px solid var(--success); }
+.sip-conf-update--decrease_weight { border-left: 3px solid var(--danger); }
+.sip-conf-update--sustain         { border-left: 3px solid var(--text-dim); }
 
 .sip-conf-update-head {
     display: flex;
@@ -444,7 +444,7 @@
 }
 .sip-conf-src       { color: #d1d5db; font-weight: 600; font-size: 12px; }
 .sip-conf-rate      { color: #9ca3af; font-size: 11px; }
-.sip-conf-action    { font-size: 10px; color: #6b7280; text-transform: uppercase; }
+.sip-conf-action    { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
 .sip-conf-suggested { color: #60a5fa; font-size: 11px; margin-left: auto; }
 .sip-conf-rec       { font-size: 11px; color: #9ca3af; font-style: italic; }
 
@@ -473,7 +473,7 @@
     text-align: center;
 }
 .sip-bench-kpi-val   { font-size: 20px; font-weight: 700; }
-.sip-bench-kpi-label { font-size: 10px; color: #6b7280; text-transform: uppercase; margin-top: 4px; }
+.sip-bench-kpi-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
 
 .sip-bench-rows { display: flex; flex-direction: column; gap: 4px; }
 
@@ -492,4 +492,4 @@
 .sip-bench-goal { flex: 1; color: #d1d5db; }
 .sip-bench-val  { color: #9ca3af; font-size: 11px; min-width: 160px; text-align: right; }
 .sip-bench-ms   { color: #4b5563; font-size: 11px; min-width: 55px; text-align: right; }
-.sip-bench-err  { color: #ef4444; font-size: 10px; flex-shrink: 0; }
+.sip-bench-err  { color: var(--danger); font-size: 10px; flex-shrink: 0; }

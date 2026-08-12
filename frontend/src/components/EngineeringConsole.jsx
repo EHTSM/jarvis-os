@@ -353,11 +353,11 @@ const COLLAB_SUB_TABS = [
 ];
 
 const PIPELINE_STATUS_COLOR = {
-  completed: '#22c55e',
+  completed: 'var(--success)',
   running:   '#3b82f6',
-  failed:    '#ef4444',
-  escalated: '#f59e0b',
-  skipped:   '#6b7280',
+  failed:    'var(--danger)',
+  escalated: 'var(--warning)',
+  skipped:   'var(--text-dim)',
   pending:   '#374151',
   idle:      '#1f2937',
 };
@@ -391,7 +391,7 @@ function AgentStatusMatrix({ missionId }) {
           </div>
           <div
             className="ec-collab-agent__status"
-            style={{ color: PIPELINE_STATUS_COLOR[agent.nodeStatus] || '#6b7280' }}
+            style={{ color: PIPELINE_STATUS_COLOR[agent.nodeStatus] || 'var(--text-dim)' }}
           >
             {agent.nodeStatus}
             {agent.durationMs ? ` ${(agent.durationMs / 1000).toFixed(1)}s` : ''}
@@ -459,10 +459,10 @@ function AgentConversation({ missionId }) {
 
   const TYPE_COLOR = {
     message:    '#60a5fa',
-    delegation: '#f59e0b',
+    delegation: 'var(--warning)',
     feedback:   '#a78bfa',
-    approval:   '#22c55e',
-    override:   '#ef4444',
+    approval:   'var(--success)',
+    override:   'var(--danger)',
     claim:      '#34d399',
   };
 
@@ -480,7 +480,7 @@ function AgentConversation({ missionId }) {
               <span className="ec-collab-msg__to">{msg.to}</span>
               <span
                 className="ec-collab-msg__type"
-                style={{ color: TYPE_COLOR[msg.type] || '#6b7280' }}
+                style={{ color: TYPE_COLOR[msg.type] || 'var(--text-dim)' }}
               >
                 {msg.type}
               </span>
@@ -587,17 +587,17 @@ function DelegationTimeline({ missionId }) {
 
 const LC_EVT_COLOR = {
   'lifecycle:started':        '#34d399',
-  'lifecycle:completed':      '#22c55e',
-  'lifecycle:paused':         '#f59e0b',
+  'lifecycle:completed':      'var(--success)',
+  'lifecycle:paused':         'var(--warning)',
   'lifecycle:resumed':        '#60a5fa',
   'lifecycle:retry':          '#fb923c',
   'lifecycle:stage:start':    '#60a5fa',
   'lifecycle:stage:complete': '#34d399',
-  'lifecycle:stage:failed':   '#ef4444',
+  'lifecycle:stage:failed':   'var(--danger)',
   'lifecycle:stage:next':     '#a78bfa',
   'stage:start':              '#60a5fa',
   'stage:complete':           '#34d399',
-  'stage:failed':             '#ef4444',
+  'stage:failed':             'var(--danger)',
   'stage:next':               '#a78bfa',
 };
 
@@ -666,7 +666,7 @@ function LifecycleEventStream({ missionId }) {
               <span className="ec-collab-lc__evt-ts">{new Date(evt.ts).toLocaleTimeString()}</span>
               <span
                 className="ec-collab-lc__evt-type"
-                style={{ color: LC_EVT_COLOR[evt.type] || '#6b7280' }}
+                style={{ color: LC_EVT_COLOR[evt.type] || 'var(--text-dim)' }}
               >
                 {evt.type}
               </span>
@@ -693,9 +693,9 @@ const COLLAB_ACTION_COLORS = {
   explain_risk:           '#f87171',
   explain_confidence:     '#fbbf24',
   compare_alternatives:   '#fb923c',
-  accept_recommendation:  '#22c55e',
-  reject_recommendation:  '#ef4444',
-  request_replan:         '#f59e0b',
+  accept_recommendation:  'var(--success)',
+  reject_recommendation:  'var(--danger)',
+  request_replan:         'var(--warning)',
   escalate_operator:      '#e11d48',
 };
 
@@ -806,7 +806,7 @@ function CollaborationPanel({ missionId }) {
         {timeline.map((item, i) => {
           const color = item._kind === 'message'
             ? (item.to === 'jarvis-ai' ? '#60a5fa' : '#a78bfa')
-            : (COLLAB_ACTION_COLORS[item.action] || '#64748b');
+            : (COLLAB_ACTION_COLORS[item.action] || 'var(--text-dim)');
           return (
             <div key={item.id || i} style={{ padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
@@ -843,7 +843,7 @@ function CollaborationPanel({ missionId }) {
           {result}
         </div>
       )}
-      {err && <div style={{ fontSize: 10, color: '#ef4444', padding: '4px 8px' }}>{err}</div>}
+      {err && <div style={{ fontSize: 10, color: 'var(--danger)', padding: '4px 8px' }}>{err}</div>}
 
       {/* Input bar */}
       <div style={{ display: 'flex', gap: 4, padding: '6px 8px', borderTop: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
@@ -995,7 +995,7 @@ function ActiveAgentMatrix() {
       {/* Active alerts */}
       {alerts.length > 0 && (
         <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Active Alerts ({alerts.length})
           </div>
           {alerts.slice(0, 4).map((a, i) => (
@@ -1018,7 +1018,7 @@ function ActiveAgentMatrix() {
             const status = a.status || a.state || 'idle';
             const ok     = status === 'active' || status === 'running';
             const warn   = status === 'idle' || status === 'waiting';
-            const color  = ok ? '#22c55e' : warn ? '#f59e0b' : '#ef4444';
+            const color  = ok ? 'var(--success)' : warn ? 'var(--warning)' : 'var(--danger)';
             return (
               <div key={a.id || a.name || i} style={{
                 background: 'rgba(255,255,255,0.03)', border: `1px solid ${color}22`,

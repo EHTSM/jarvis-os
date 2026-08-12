@@ -58,7 +58,7 @@ function ScoreRing({ score, size = 70, label = null }) {
         transform={`rotate(-90 ${size/2} ${size/2})`}/>
       <text x={size/2} y={size/2 + 5} textAnchor="middle" fill={color}
         fontSize={size * 0.22} fontWeight="bold">{score}%</text>
-      {label && <text x={size/2} y={size/2 + size*0.28} textAnchor="middle" fill="#64748b" fontSize={size*0.13}>{label}</text>}
+      {label && <text x={size/2} y={size/2 + size*0.28} textAnchor="middle" fill="var(--text-dim)" fontSize={size*0.13}>{label}</text>}
     </svg>
   );
 }

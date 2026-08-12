@@ -52,7 +52,7 @@ const SEED_AGENTS = [
     name:        "Support Agent",
     type:        "support",
     icon:        "◎",
-    color:       "#52d68a",
+    color:       "var(--success)",
     status:      "active",
     description: "Handles inbound support queries, triages tickets, drafts responses from the knowledge base, and escalates critical issues.",
     capabilities:["Query triage","Response drafting","Escalation logic","FAQ generation","Ticket summarisation"],
@@ -84,7 +84,7 @@ const SEED_AGENTS = [
     name:        "Dev Agent",
     type:        "engineering",
     icon:        "⬡",
-    color:       "#e6edf3",
+    color:       "var(--text)",
     status:      "idle",
     description: "Writes code, reviews PRs, generates tests, debugs failures, and maintains documentation across the engineering stack.",
     capabilities:["Code generation","PR review","Test writing","Debugging","Documentation","Refactoring"],
@@ -128,9 +128,9 @@ const SEED_ACTIVITY = [
 
 const TYPE_COLORS = {
   marketing:   "var(--warning)",
-  support:     "#52d68a",
+  support:     "var(--success)",
   content:     "var(--accent)",
-  engineering: "#e6edf3",
+  engineering: "var(--text)",
 };
 
 const STATUS_CONFIG = {
@@ -488,9 +488,9 @@ export default function AgentCenter({ onNavigate }) {
           <div className="ac-types-section">
             {[
               { type: "marketing",   label: "Marketing Agents",   desc: "Handle SEO, email, social, ad copy, and campaign scheduling. Read CRM and analytics data.",          color: "var(--warning)" },
-              { type: "support",     label: "Support Agents",     desc: "Triage tickets, draft responses from the knowledge base, escalate critical issues.",                  color: "#52d68a"        },
+              { type: "support",     label: "Support Agents",     desc: "Triage tickets, draft responses from the knowledge base, escalate critical issues.",                  color: "var(--success)"        },
               { type: "content",     label: "Content Agents",     desc: "Write blog posts, docs, newsletters, and case studies. Enforce brand voice consistency.",             color: "var(--accent)"  },
-              { type: "engineering", label: "Engineering Agents", desc: "Write and review code, run tests, monitor deployments, and maintain documentation.",                  color: "#e6edf3"        },
+              { type: "engineering", label: "Engineering Agents", desc: "Write and review code, run tests, monitor deployments, and maintain documentation.",                  color: "var(--text)"        },
             ].map(t => {
               const typeAgents = agents.filter(a => a.type === t.type);
               return (

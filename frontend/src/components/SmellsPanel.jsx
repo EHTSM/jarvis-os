@@ -13,21 +13,21 @@ async function get(path) {
 
 // ── Type badge ─────────────────────────────────────────────────────────
 const TYPE_META = {
-  todo_fixme:         { icon: '📝', label: 'TODO/FIXME',       color: '#6b7280' },
-  duplicate_literal:  { icon: '©',  label: 'Dup Literal',      color: '#6b7280' },
-  empty_catch:        { icon: '⚠',  label: 'Empty Catch',      color: '#f59e0b' },
-  console_log_prod:   { icon: '🖨', label: 'console.log',      color: '#6b7280' },
-  sync_fs:            { icon: '⛔', label: 'Sync FS',          color: '#f59e0b' },
-  blocking_crypto:    { icon: '🔐', label: 'Blocking Crypto',  color: '#ef4444' },
-  long_function:      { icon: '📏', label: 'Long Function',    color: '#f59e0b' },
-  stale_feature_flag: { icon: '🚩', label: 'Stale Flag',       color: '#6b7280' },
-  stale_mission:      { icon: '⏰', label: 'Stale Mission',    color: '#f59e0b' },
-  build_failure:      { icon: '🔴', label: 'Build Failure',    color: '#ef4444' },
-  benchmark_decline:  { icon: '📉', label: 'Perf Decline',     color: '#f59e0b' },
+  todo_fixme:         { icon: '📝', label: 'TODO/FIXME',       color: 'var(--text-dim)' },
+  duplicate_literal:  { icon: '©',  label: 'Dup Literal',      color: 'var(--text-dim)' },
+  empty_catch:        { icon: '⚠',  label: 'Empty Catch',      color: 'var(--warning)' },
+  console_log_prod:   { icon: '🖨', label: 'console.log',      color: 'var(--text-dim)' },
+  sync_fs:            { icon: '⛔', label: 'Sync FS',          color: 'var(--warning)' },
+  blocking_crypto:    { icon: '🔐', label: 'Blocking Crypto',  color: 'var(--danger)' },
+  long_function:      { icon: '📏', label: 'Long Function',    color: 'var(--warning)' },
+  stale_feature_flag: { icon: '🚩', label: 'Stale Flag',       color: 'var(--text-dim)' },
+  stale_mission:      { icon: '⏰', label: 'Stale Mission',    color: 'var(--warning)' },
+  build_failure:      { icon: '🔴', label: 'Build Failure',    color: 'var(--danger)' },
+  benchmark_decline:  { icon: '📉', label: 'Perf Decline',     color: 'var(--warning)' },
 };
 
 function TypeBadge({ type }) {
-  const meta = TYPE_META[type] || { icon: '◦', label: type, color: '#6b7280' };
+  const meta = TYPE_META[type] || { icon: '◦', label: type, color: 'var(--text-dim)' };
   return (
     <span className="smell-type-badge" style={{ borderColor: meta.color, color: meta.color }}>
       {meta.icon} {meta.label}

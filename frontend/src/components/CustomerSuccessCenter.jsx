@@ -68,7 +68,7 @@ export default function CustomerSuccessCenter() {
   if (loading && !dashboard) return <div style={{ padding: 24, color: "var(--text-dim, #8994b0)" }}>Loading customer success dashboard…</div>;
   if (error && !dashboard) return (
     <div style={{ padding: 24 }}>
-      <div style={{ color: "#f55b5b", marginBottom: 8 }}>⚠ {error}</div>
+      <div style={{ color: "var(--danger)", marginBottom: 8 }}>⚠ {error}</div>
       <button onClick={refresh}>Retry</button>
     </div>
   );
@@ -107,12 +107,12 @@ export default function CustomerSuccessCenter() {
       {tab === "overview" && (
         <>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 10, marginBottom: 24 }}>
-            <Kpi value={s.totalCustomers ?? "—"} label="Total Customers" color="#7c6fff" />
-            <Kpi value={s.avgHealthScore ?? "—"} label="Avg Health Score" color="#52d68a" />
-            <Kpi value={s.atRiskCount ?? "—"} label="At Risk" color="#f0b429" />
-            <Kpi value={s.churnRiskCount ?? "—"} label="Churn Risk" color="#f55b5b" />
-            <Kpi value={s.expansionOpportunities ?? "—"} label="Expansion Opps" color="#4ecdc4" />
-            <Kpi value={s.supportTicketsOpen ?? "—"} label="Open Tickets" color="#5dc8f5" />
+            <Kpi value={s.totalCustomers ?? "—"} label="Total Customers" color="var(--accent)" />
+            <Kpi value={s.avgHealthScore ?? "—"} label="Avg Health Score" color="var(--success)" />
+            <Kpi value={s.atRiskCount ?? "—"} label="At Risk" color="var(--warning)" />
+            <Kpi value={s.churnRiskCount ?? "—"} label="Churn Risk" color="var(--danger)" />
+            <Kpi value={s.expansionOpportunities ?? "—"} label="Expansion Opps" color="var(--accent2)" />
+            <Kpi value={s.supportTicketsOpen ?? "—"} label="Open Tickets" color="var(--info)" />
           </div>
 
           {dashboard?.founderTimeSaved && (
@@ -130,7 +130,7 @@ export default function CustomerSuccessCenter() {
                 {dashboard.customerHealth.topAtRisk.map(r => (
                   <div key={r.customerId} style={{ display: "flex", justifyContent: "space-between", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
                     <span style={{ fontFamily: "monospace" }}>{r.customerId}</span>
-                    <span style={{ color: r.risk === "critical" ? "#f55b5b" : "#f0b429" }}>{r.overall} · {r.risk}</span>
+                    <span style={{ color: r.risk === "critical" ? "var(--danger)" : "var(--warning)" }}>{r.overall} · {r.risk}</span>
                   </div>
                 ))}
               </div>
@@ -142,14 +142,14 @@ export default function CustomerSuccessCenter() {
       {tab === "health" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {health === null ? (
-            <div style={{ fontSize: 12, color: "#f0b429" }}>⚠ Couldn't load health records — the request failed. Use Refresh to retry.</div>
+            <div style={{ fontSize: 12, color: "var(--warning)" }}>⚠ Couldn't load health records — the request failed. Use Refresh to retry.</div>
           ) : health.length === 0 ? (
             <div style={{ fontSize: 12, color: "var(--text-dim, #8994b0)" }}>No health records yet.</div>
           ) : health.map(h => (
             <div key={h.customerId} style={{ display: "flex", justifyContent: "space-between", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
               <span style={{ fontFamily: "monospace" }}>{h.customerId}</span>
               <span>{h.grade} · {h.overall}</span>
-              <span style={{ color: h.risk === "critical" ? "#f55b5b" : h.risk === "high" ? "#f0b429" : "#52d68a" }}>{h.risk}</span>
+              <span style={{ color: h.risk === "critical" ? "var(--danger)" : h.risk === "high" ? "var(--warning)" : "var(--success)" }}>{h.risk}</span>
             </div>
           ))}
         </div>
@@ -158,13 +158,13 @@ export default function CustomerSuccessCenter() {
       {tab === "tickets" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {tickets === null ? (
-            <div style={{ fontSize: 12, color: "#f0b429" }}>⚠ Couldn't load support tickets — the request failed. Use Refresh to retry.</div>
+            <div style={{ fontSize: 12, color: "var(--warning)" }}>⚠ Couldn't load support tickets — the request failed. Use Refresh to retry.</div>
           ) : tickets.length === 0 ? (
             <div style={{ fontSize: 12, color: "var(--text-dim, #8994b0)" }}>No support tickets yet.</div>
           ) : tickets.map(t => (
             <div key={t.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
               <span>{t.subject || t.issue || t.id}</span>
-              <span style={{ color: t.status === "resolved" ? "#52d68a" : "#f0b429" }}>{t.status}</span>
+              <span style={{ color: t.status === "resolved" ? "var(--success)" : "var(--warning)" }}>{t.status}</span>
               {t.status !== "resolved" && (
                 <button disabled={busy === t.id} onClick={() => resolve(t.id)}>{busy === t.id ? "…" : "Resolve"}</button>
               )}

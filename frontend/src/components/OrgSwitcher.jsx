@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 const ROLE_COLOR = {
   org_owner: "var(--warning)",
   org_admin: "var(--accent)",
-  dept_lead: "#52d68a",
+  dept_lead: "var(--success)",
   team_lead: "var(--accent2)",
   member:    "var(--text-dim)",
   viewer:    "var(--text-faint)",

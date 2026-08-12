@@ -13,12 +13,12 @@ import "./OperationsCenter.css";
 // hourly breakdown). Kept as clearly-labeled illustrative data rather than
 // fabricating a mapping onto unrelated real metrics.
 const AGENT_THROUGHPUT = [
-  { agent: "Support Agent",   color: "#52d68a",          tasksToday: 31, avgDuration: "8s",  successRate: "98.8%", errorRate: "1.2%", queueDepth: 2  },
+  { agent: "Support Agent",   color: "var(--success)",          tasksToday: 31, avgDuration: "8s",  successRate: "98.8%", errorRate: "1.2%", queueDepth: 2  },
   { agent: "Analytics Agent", color: "#38bdf8",          tasksToday: 18, avgDuration: "22s", successRate: "99.7%", errorRate: "0.3%", queueDepth: 0  },
   { agent: "SEO Agent",       color: "var(--accent2)",   tasksToday: 14, avgDuration: "45s", successRate: "100%",  errorRate: "0.0%", queueDepth: 3  },
   { agent: "Marketing Agent", color: "var(--warning)",   tasksToday: 8,  avgDuration: "1m12s",successRate:"99.8%", errorRate: "0.2%", queueDepth: 0  },
   { agent: "Sales Agent",     color: "#da552f",          tasksToday: 5,  avgDuration: "2m4s", successRate:"99.5%", errorRate: "0.5%", queueDepth: 1  },
-  { agent: "Dev Agent",       color: "#e6edf3",          tasksToday: 7,  avgDuration: "4m30s",successRate:"97.9%", errorRate: "2.1%", queueDepth: 2  },
+  { agent: "Dev Agent",       color: "var(--text)",          tasksToday: 7,  avgDuration: "4m30s",successRate:"97.9%", errorRate: "2.1%", queueDepth: 2  },
   { agent: "Content Agent",   color: "var(--accent)",    tasksToday: 3,  avgDuration: "8m00s",successRate:"100%",  errorRate: "0.0%", queueDepth: 1  },
   { agent: "Research Agent",  color: "#a78bfa",          tasksToday: 2,  avgDuration: "12m",  successRate:"100%",  errorRate: "0.0%", queueDepth: 0  },
   { agent: "DevOps Agent",    color: "#fc6d26",          tasksToday: 5,  avgDuration: "1m22s",successRate:"99.5%", errorRate: "0.5%", queueDepth: 0  },
@@ -36,9 +36,9 @@ const HOURLY_TASKS = [
 // Illustrative per-agent queue breakdown — real queue depth (aggregate) comes
 // from getOpsData().queue below; no backend splits queue depth per named agent.
 const QUEUE_STATUS = [
-  { name: "Support queue",   depth: 2,  max: 20, agent: "Support Agent",   color: "#52d68a",        urgent: 1 },
+  { name: "Support queue",   depth: 2,  max: 20, agent: "Support Agent",   color: "var(--success)",        urgent: 1 },
   { name: "SEO queue",       depth: 3,  max: 10, agent: "SEO Agent",       color: "var(--accent2)", urgent: 0 },
-  { name: "Dev queue",       depth: 2,  max: 5,  agent: "Dev Agent",       color: "#e6edf3",        urgent: 1 },
+  { name: "Dev queue",       depth: 2,  max: 5,  agent: "Dev Agent",       color: "var(--text)",        urgent: 1 },
   { name: "Content queue",   depth: 1,  max: 5,  agent: "Content Agent",   color: "var(--accent)",  urgent: 0 },
   { name: "Sales queue",     depth: 1,  max: 10, agent: "Sales Agent",     color: "#da552f",        urgent: 0 },
 ];

@@ -82,7 +82,7 @@ export default function FounderAssistant({ onNavigate } = {}) {
           </div>
         ))}
         {sending && <div style={{ fontSize: 12, color: "var(--text-dim, #8994b0)" }}>Thinking…</div>}
-        {error && <div style={{ fontSize: 12, color: "#f55b5b" }}>⚠ {error}</div>}
+        {error && <div style={{ fontSize: 12, color: "var(--danger)" }}>⚠ {error}</div>}
         <div ref={bottomRef} />
       </div>
 

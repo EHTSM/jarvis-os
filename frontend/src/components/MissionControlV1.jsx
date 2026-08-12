@@ -139,7 +139,7 @@ function ApprovalQueuePanel() {
         <div className="mc-approvals-list">
           {items.map(item => {
             const isExpanded = expanded === item.id;
-            const riskColor  = APPROVAL_RISK_COLOR[item.risk] || '#6b7280';
+            const riskColor  = APPROVAL_RISK_COLOR[item.risk] || 'var(--text-dim)';
             const isBusy     = busyId === item.id;
             return (
               <div key={item.id} className="mc-approval-item">
@@ -243,12 +243,12 @@ function MissionTimelineStrip() {
     <section className="mc-section">
       <div className="mc-section-head">
         <h2>Mission Timeline</h2>
-        <span style={{ fontSize: 10, color: '#22c55e', fontWeight: 700 }}>● LIVE</span>
+        <span style={{ fontSize: 10, color: 'var(--success)', fontWeight: 700 }}>● LIVE</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {missions.map(m => {
           const stage = stages[m.id];
-          const color = stage ? (MC_LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+          const color = stage ? (MC_LC_STAGE_COLORS[stage.stage] || 'var(--text-dim)') : '#374151';
           const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
           return (
             <div key={m.id} style={{ background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 5, padding: '8px 10px' }}>
@@ -280,8 +280,8 @@ function MissionTimelineStrip() {
 const MC_COLLAB_ACTION_COLORS = {
   ask_ai: '#60a5fa', ask_agent: '#a78bfa', explain_decision: '#34d399',
   explain_risk: '#f87171', explain_confidence: '#fbbf24',
-  compare_alternatives: '#fb923c', accept_recommendation: '#22c55e',
-  reject_recommendation: '#ef4444', request_replan: '#f59e0b', escalate_operator: '#e11d48',
+  compare_alternatives: '#fb923c', accept_recommendation: 'var(--success)',
+  reject_recommendation: 'var(--danger)', request_replan: 'var(--warning)', escalate_operator: '#e11d48',
 };
 
 function MissionCollaborationPanel() {
@@ -394,7 +394,7 @@ function MissionCollaborationPanel() {
           <div style={{ maxHeight: 180, overflowY: 'auto', background: '#0c0e14', borderRadius: 5, border: '1px solid rgba(255,255,255,0.07)', padding: '6px 8px', marginBottom: 8 }}>
             {timeline.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No collaboration history.</div>}
             {timeline.slice(-20).map((item, i) => {
-              const color = item._kind === 'message' ? '#60a5fa' : (MC_COLLAB_ACTION_COLORS[item.action] || '#64748b');
+              const color = item._kind === 'message' ? '#60a5fa' : (MC_COLLAB_ACTION_COLORS[item.action] || 'var(--text-dim)');
               return (
                 <div key={item.id || i} style={{ padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11 }}>
                   <span style={{ fontSize: 9, color: '#475569', marginRight: 6 }}>{new Date(item.ts || item.timestamp).toLocaleTimeString()}</span>
@@ -405,7 +405,7 @@ function MissionCollaborationPanel() {
                     {item._kind === 'message' ? item.body?.slice(0, 60) : (item.result?.type || '')}
                   </span>
                   {item._kind === 'message' && item.reply && (
-                    <div style={{ color: '#64748b', paddingLeft: 12, fontSize: 10, marginTop: 1 }}>↳ {item.reply.slice(0, 100)}</div>
+                    <div style={{ color: 'var(--text-dim)', paddingLeft: 12, fontSize: 10, marginTop: 1 }}>↳ {item.reply.slice(0, 100)}</div>
                   )}
                 </div>
               );
@@ -419,7 +419,7 @@ function MissionCollaborationPanel() {
               <span style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, marginRight: 6 }}>AI</span>{aiReply}
             </div>
           )}
-          {err && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 6 }}>{err}</div>}
+          {err && <div style={{ fontSize: 10, color: 'var(--danger)', marginBottom: 6 }}>{err}</div>}
 
           {/* Input */}
           <div style={{ display: 'flex', gap: 6 }}>
@@ -442,8 +442,8 @@ function MissionCollaborationPanel() {
 }
 
 const MC_WF_STATUS_COLORS = {
-  pending: '#94a3b8', in_progress: '#60a5fa', awaiting_approval: '#f59e0b',
-  completed: '#10b981', escalated: '#ef4444',
+  pending: '#94a3b8', in_progress: '#60a5fa', awaiting_approval: 'var(--warning)',
+  completed: 'var(--success)', escalated: 'var(--danger)',
 };
 
 function MissionWorkforcePanel() {
@@ -505,7 +505,7 @@ function MissionWorkforcePanel() {
         <button className="mc-btn mc-btn--sm" onClick={attach} disabled={!inputId.trim()}>Attach</button>
       </div>
 
-      {err && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 6 }}>{err}</div>}
+      {err && <div style={{ fontSize: 10, color: 'var(--danger)', marginBottom: 6 }}>{err}</div>}
 
       {missionId && wf && !wf.plan && (
         <p className="mc-empty">No collaboration plan for this mission.</p>
@@ -529,7 +529,7 @@ function MissionWorkforcePanel() {
             {steps.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No steps in plan.</div>}
             {steps.map((step) => (
               <div key={step.stepId} style={{ padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontWeight: 700, color: MC_WF_STATUS_COLORS[step.status] || '#64748b', minWidth: 100, textTransform: 'uppercase', fontSize: 9 }}>
+                <span style={{ fontWeight: 700, color: MC_WF_STATUS_COLORS[step.status] || 'var(--text-dim)', minWidth: 100, textTransform: 'uppercase', fontSize: 9 }}>
                   {step.status}
                 </span>
                 <span style={{ flex: 1, color: '#e2e8f0' }}>{step.name || step.description || step.stepId}</span>
@@ -583,7 +583,7 @@ function RecommendationConfidence() {
       <div className="mc-section-head">
         <h2>Recommendation Confidence</h2>
         {summary && (
-          <span className="mc-badge" style={{ fontSize: 10, color: '#64748b' }}>
+          <span className="mc-badge" style={{ fontSize: 10, color: 'var(--text-dim)' }}>
             avg {summary.avgConfidence}% · {summary.total} recs
           </span>
         )}
@@ -591,7 +591,7 @@ function RecommendationConfidence() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 6 }}>
         {recs.slice(0, 6).map((r, i) => {
           const conf = r.confidence ?? 0;
-          const color = conf >= 80 ? '#22c55e' : conf >= 60 ? '#eab308' : '#ef4444';
+          const color = conf >= 80 ? 'var(--success)' : conf >= 60 ? '#eab308' : 'var(--danger)';
           return (
             <div key={r.id ?? i} style={{
               background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)',
@@ -689,7 +689,7 @@ function LifecyclePanel() {
     finally { setRetrying(false); }
   }, [missionId, retrying, loadStage]);
 
-  const stageColor = stage ? (LC_STAGE_COLOR[stage.stage] || '#6b7280') : '#374151';
+  const stageColor = stage ? (LC_STAGE_COLOR[stage.stage] || 'var(--text-dim)') : '#374151';
 
   return (
     <section className="mc-section mc-lifecycle">
@@ -804,7 +804,7 @@ function MissionReasoningPanel() {
             <div key={i} className="mc-activity-row">
               <StatusDot ok={false} warn={d.risk !== 'critical'} />
               <span className="mc-activity-text"><code>{d.type}:{d.id}</code></span>
-              <span className="mc-activity-status" style={{ color: d.risk === 'critical' ? '#ef4444' : '#f59e0b' }}>{d.inDegree} deps</span>
+              <span className="mc-activity-status" style={{ color: d.risk === 'critical' ? 'var(--danger)' : 'var(--warning)' }}>{d.inDegree} deps</span>
             </div>
           ))}
         </div>
@@ -816,7 +816,7 @@ function MissionReasoningPanel() {
             <div key={i} className="mc-activity-row">
               <StatusDot ok={false} warn={false} />
               <span className="mc-activity-text"><code>{s.type}:{s.id}</code></span>
-              <span className="mc-activity-status" style={{ color: '#ef4444' }}>SPOF</span>
+              <span className="mc-activity-status" style={{ color: 'var(--danger)' }}>SPOF</span>
             </div>
           ))}
         </div>

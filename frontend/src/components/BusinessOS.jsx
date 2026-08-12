@@ -1227,14 +1227,14 @@ function ReasoningView({ onNavigate }) {
   const gaps    = data.topKnowledgeGaps || [];
   const rList   = recs?.recommendations || [];
 
-  const riskColor = r => r.risk === 'critical' || r.severity === 'critical' ? '#ef4444' : r.risk === 'high' || r.severity === 'warning' ? '#f59e0b' : '#3b82f6';
+  const riskColor = r => r.risk === 'critical' || r.severity === 'critical' ? 'var(--danger)' : r.risk === 'high' || r.severity === 'warning' ? 'var(--warning)' : '#3b82f6';
 
   return (
     <div className="bos-section">
       <div className="bos-section-header">
         <h3 className="bos-section-title">Graph Reasoning Engine</h3>
         {health != null && (
-          <span style={{ fontSize: 12, fontWeight: 600, color: health >= 70 ? '#22c55e' : health >= 40 ? '#f59e0b' : '#ef4444' }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: health >= 70 ? 'var(--success)' : health >= 40 ? 'var(--warning)' : 'var(--danger)' }}>
             System Health: {health}/100
           </span>
         )}
@@ -1259,7 +1259,7 @@ function ReasoningView({ onNavigate }) {
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Blocked Missions</div>
           {blocked.map((b, i) => (
-            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid #f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
               <span>
                 <strong>{b.objective || b.missionId}</strong>
                 {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
@@ -1277,7 +1277,7 @@ function ReasoningView({ onNavigate }) {
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Recommended Actions</div>
           {rList.slice(0, 6).map((r, i) => (
             <div key={i} style={{ fontSize: 12, padding: '8px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-              <span style={{ background: r.priority === 'critical' ? '#ef4444' : r.priority === 'high' ? '#f59e0b' : '#3b82f6', borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
+              <span style={{ background: r.priority === 'critical' ? 'var(--danger)' : r.priority === 'high' ? 'var(--warning)' : '#3b82f6', borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
                 {r.priority}
               </span>
               <div>

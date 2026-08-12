@@ -28,7 +28,7 @@ const ROLES = [
   {
     id:    "Operator",
     label: "Operator",
-    color: "#52d68a",
+    color: "var(--success)",
     icon:  "▷",
     desc:  "Execute tasks, send messages, update lead status. Cannot manage other users.",
     perms: ["Execute tasks", "Send messages", "Update leads", "View pipeline"],

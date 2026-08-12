@@ -9,11 +9,11 @@ async function api(method, path, body) {
 
 // ── Role badge ─────────────────────────────────────────────────────────
 const ROLE_META = {
-  primary:   { color: '#f59e0b', label: 'primary'   },
+  primary:   { color: 'var(--warning)', label: 'primary'   },
   affected:  { color: '#60a5fa', label: 'affected'  },
-  test:      { color: '#10b981', label: 'test'      },
+  test:      { color: 'var(--success)', label: 'test'      },
   docs:      { color: '#a78bfa', label: 'docs'      },
-  changelog: { color: '#6b7280', label: 'changelog' },
+  changelog: { color: 'var(--text-dim)', label: 'changelog' },
 };
 
 function RoleBadge({ role }) {
@@ -27,12 +27,12 @@ function RoleBadge({ role }) {
 
 function StatusBadge({ status }) {
   const map = {
-    planning:    '#6b7280', planned: '#60a5fa', ready: '#10b981',
-    applying:    '#f59e0b', applied: '#10b981',
-    failed:      '#ef4444', rolled_back: '#a78bfa',
+    planning:    'var(--text-dim)', planned: '#60a5fa', ready: 'var(--success)',
+    applying:    'var(--warning)', applied: 'var(--success)',
+    failed:      'var(--danger)', rolled_back: '#a78bfa',
   };
   return (
-    <span className="bpp-status-badge" style={{ color: map[status] || '#6b7280', borderColor: map[status] || '#374151' }}>
+    <span className="bpp-status-badge" style={{ color: map[status] || 'var(--text-dim)', borderColor: map[status] || '#374151' }}>
       {status?.replace('_', ' ')}
     </span>
   );
@@ -150,7 +150,7 @@ function PipelineStatus({ pipelineId }) {
   }, [pipelineId]);
 
   if (!run) return null;
-  const statusColor = run.status === 'completed' ? '#10b981' : run.status === 'failed' ? '#ef4444' : '#f59e0b';
+  const statusColor = run.status === 'completed' ? 'var(--success)' : run.status === 'failed' ? 'var(--danger)' : 'var(--warning)';
   return (
     <div className="bpp-pipeline" style={{ borderColor: statusColor }}>
       <span className="bpp-pipeline__label">Pipeline</span>
@@ -279,13 +279,13 @@ export default function BundlePreviewPanel({ cwd, onApplied }) {
         <div className="bpp-stats-grid">
           {[
             { label: 'Total Bundles',      val: stats.total,              color: '#d1d5db' },
-            { label: 'Applied',            val: stats.applied,            color: '#10b981' },
+            { label: 'Applied',            val: stats.applied,            color: 'var(--success)' },
             { label: 'Rolled Back',        val: stats.rolledBack,         color: '#a78bfa' },
             { label: 'Files Touched',      val: stats.totalFilesTouched,  color: '#60a5fa' },
-            { label: 'Patch Success Rate', val: `${stats.patchSuccessRate}%`, color: '#10b981' },
-            { label: 'Dep Confidence',     val: `${stats.avgDepConfidence}%`, color: '#f59e0b' },
-            { label: 'Replace Cursor',     val: `${stats.replaceCursorScore}/100`, color: '#f59e0b' },
-            { label: 'Build Ooplix Score', val: `${stats.buildOoplixScore}/100`,   color: '#10b981' },
+            { label: 'Patch Success Rate', val: `${stats.patchSuccessRate}%`, color: 'var(--success)' },
+            { label: 'Dep Confidence',     val: `${stats.avgDepConfidence}%`, color: 'var(--warning)' },
+            { label: 'Replace Cursor',     val: `${stats.replaceCursorScore}/100`, color: 'var(--warning)' },
+            { label: 'Build Ooplix Score', val: `${stats.buildOoplixScore}/100`,   color: 'var(--success)' },
           ].map(({ label, val, color }) => (
             <div key={label} className="bpp-stats-tile">
               <div className="bpp-stats-tile__val" style={{ color }}>{val}</div>

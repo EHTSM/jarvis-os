@@ -36,7 +36,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #7c6fff;
+  color: var(--accent);
   margin-bottom: 14px;
 }
 
@@ -62,7 +62,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #7c6fff;
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -245,7 +245,7 @@
   font-weight: 600;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: #7c6fff;
+  color: var(--accent);
   border: 1px solid rgba(124, 111, 255, 0.22);
   border-radius: 999px;
   padding: 6px 16px;
@@ -257,7 +257,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #7c6fff;
+  background: var(--accent);
   flex-shrink: 0;
 }
 
@@ -662,8 +662,8 @@
 }
 
 .lp-feed-badge--running  { background: rgba(124, 111, 255, 0.15); color: #9685ff; }
-.lp-feed-badge--thinking { background: rgba(78, 205, 196, 0.14);  color: #4ecdc4; }
-.lp-feed-badge--done     { background: rgba(82, 214, 138, 0.12);  color: #52d68a; }
+.lp-feed-badge--thinking { background: rgba(78, 205, 196, 0.14);  color: var(--accent2); }
+.lp-feed-badge--done     { background: rgba(82, 214, 138, 0.12);  color: var(--success); }
 
 /* ── Comparison section ──────────────────────────────────────────────────────── */
 
@@ -708,7 +708,7 @@
 }
 
 .lp-compare-col--after .lp-compare-head {
-  color: #7c6fff;
+  color: var(--accent);
 }
 
 .lp-compare-list {
@@ -749,7 +749,7 @@
 }
 
 .lp-compare-item--after .lp-compare-icon {
-  color: #52d68a;
+  color: var(--success);
 }
 
 /* ── CTA section ─────────────────────────────────────────────────────────────── */

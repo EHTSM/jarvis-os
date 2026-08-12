@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 
 // ── K6 Analytics helpers ──────────────────────────────────────────
-const GRADE_COLOR = { A: "#52d68a", B: "var(--accent)", C: "var(--warning)", D: "var(--error)" };
+const GRADE_COLOR = { A: "var(--success)", B: "var(--accent)", C: "var(--warning)", D: "var(--error)" };
 
 // Shared fetch-state hook: a real fetch failure (network error, 4xx/5xx from
 // _fetch) is tracked as a distinct `error` state, never silently discarded
@@ -63,10 +63,10 @@ function ExecutivePanel() {
     <div className="k6-panel">
       <K6Section title="Platform KPIs" />
       <div className="k6-stat-grid">
-        <K6Stat label="Health Score"    value={`${kpis.healthScore}%`}        color={kpis.healthScore >= 80 ? "#52d68a" : kpis.healthScore >= 60 ? "var(--warning)" : "var(--error)"} />
+        <K6Stat label="Health Score"    value={`${kpis.healthScore}%`}        color={kpis.healthScore >= 80 ? "var(--success)" : kpis.healthScore >= 60 ? "var(--warning)" : "var(--error)"} />
         <K6Stat label="Uptime"          value={`${Math.round(kpis.uptimeSeconds / 3600)}h`} />
         <K6Stat label="Total Requests"  value={kpis.totalRequests} />
-        <K6Stat label="Error Rate"      value={`${kpis.errorRate}%`}          color={kpis.errorRate > 5 ? "var(--error)" : kpis.errorRate > 1 ? "var(--warning)" : "#52d68a"} />
+        <K6Stat label="Error Rate"      value={`${kpis.errorRate}%`}          color={kpis.errorRate > 5 ? "var(--error)" : kpis.errorRate > 1 ? "var(--warning)" : "var(--success)"} />
         <K6Stat label="Active Agents"   value={kpis.activeAgents} />
         <K6Stat label="AI Providers Up" value={kpis.aiProvidersUp} />
         <K6Stat label="Runtime Recs"    value={kpis.runtimeRecs} />
@@ -141,9 +141,9 @@ function AutomationROIPanel() {
     <div className="k6-panel">
       <K6Section title="ROI Estimate" />
       <div className="k6-stat-grid">
-        <K6Stat label="Est. Hours Saved"  value={roi.estimatedHoursSaved} sub="@ 5 min/task" color="#52d68a" />
+        <K6Stat label="Est. Hours Saved"  value={roi.estimatedHoursSaved} sub="@ 5 min/task" color="var(--success)" />
         <K6Stat label="Automation Runs"   value={roi.automationRunsTotal} />
-        <K6Stat label="Success Rate"      value={`${execution.successRate}%`} color={execution.successRate >= 90 ? "#52d68a" : "var(--warning)"} />
+        <K6Stat label="Success Rate"      value={`${execution.successRate}%`} color={execution.successRate >= 90 ? "var(--success)" : "var(--warning)"} />
         <K6Stat label="Active Rules"      value={rules.active} />
         <K6Stat label="Last 24h Runs"     value={execution.last24h} />
         <K6Stat label="Last 7d Runs"      value={execution.last7d} />
@@ -156,7 +156,7 @@ function AutomationROIPanel() {
               <div key={r.id} className="k6-row">
                 <span className="k6-row-name">{r.name}</span>
                 <span className="k6-row-meta">{r.runCount} runs</span>
-                <span className="k6-row-val" style={{ color: r.lastOutcome === "success" ? "#52d68a" : "var(--text-faint)" }}>{r.lastOutcome || "—"}</span>
+                <span className="k6-row-val" style={{ color: r.lastOutcome === "success" ? "var(--success)" : "var(--text-faint)" }}>{r.lastOutcome || "—"}</span>
               </div>
             ))}
           </div>
@@ -186,7 +186,7 @@ function AIUtilizationPanel() {
           <div key={p.name} className="k6-row">
             <span className="k6-row-name" style={{ textTransform: "capitalize" }}>{p.name}</span>
             <span className="k6-row-meta">{p.callCount} calls</span>
-            <span className="k6-badge" style={{ background: p.available ? "rgba(82,214,138,0.12)" : "rgba(255,80,80,0.12)", color: p.available ? "#52d68a" : "var(--error)" }}>
+            <span className="k6-badge" style={{ background: p.available ? "rgba(82,214,138,0.12)" : "rgba(255,80,80,0.12)", color: p.available ? "var(--success)" : "var(--error)" }}>
               {p.available ? "up" : p.hasKey ? "down" : "no key"}
             </span>
           </div>
@@ -227,7 +227,7 @@ function RuntimeCapacityPanel() {
               <div key={t.type} className="k6-row">
                 <span className="k6-row-name">{t.type}</span>
                 <span className="k6-row-meta">{t.count} runs · avg {t.avg_ms}ms</span>
-                <span className="k6-row-val" style={{ color: t.success_rate >= 90 ? "#52d68a" : "var(--warning)" }}>{t.success_rate}%</span>
+                <span className="k6-row-val" style={{ color: t.success_rate >= 90 ? "var(--success)" : "var(--warning)" }}>{t.success_rate}%</span>
               </div>
             ))}
           </div>

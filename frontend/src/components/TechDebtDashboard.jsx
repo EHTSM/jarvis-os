@@ -25,11 +25,11 @@ function Sparkline({ data, color, height = 36 }) {
       <polyline
         points={pts.join(' ')}
         fill="none"
-        stroke={color || '#10b981'}
+        stroke={color || 'var(--success)'}
         strokeWidth="1.5"
         strokeLinejoin="round"
       />
-      <circle cx={lx} cy={ly} r="3" fill={color || '#10b981'} />
+      <circle cx={lx} cy={ly} r="3" fill={color || 'var(--success)'} />
     </svg>
   );
 }
@@ -41,9 +41,9 @@ function DebtGauge({ value, max = 100, label, color }) {
     <div className="tdd-gauge">
       <div className="tdd-gauge__label">{label}</div>
       <div className="tdd-gauge__bar-wrap">
-        <div className="tdd-gauge__bar" style={{ width: `${pct}%`, background: color || '#10b981' }} />
+        <div className="tdd-gauge__bar" style={{ width: `${pct}%`, background: color || 'var(--success)' }} />
       </div>
-      <div className="tdd-gauge__val" style={{ color: color || '#10b981' }}>{value}</div>
+      <div className="tdd-gauge__val" style={{ color: color || 'var(--success)' }}>{value}</div>
     </div>
   );
 }
@@ -52,7 +52,7 @@ function DebtGauge({ value, max = 100, label, color }) {
 function MetricTile({ label, value, sub, color, icon }) {
   return (
     <div className="tdd-tile">
-      {icon && <div className="tdd-tile__icon" style={{ color: color || '#10b981' }}>{icon}</div>}
+      {icon && <div className="tdd-tile__icon" style={{ color: color || 'var(--success)' }}>{icon}</div>}
       <div className="tdd-tile__value" style={{ color: color || '#d1d5db' }}>{value ?? '—'}</div>
       <div className="tdd-tile__label">{label}</div>
       {sub && <div className="tdd-tile__sub">{sub}</div>}
@@ -66,14 +66,14 @@ function ByTypeBar({ byType }) {
   const entries = Object.entries(byType).sort((a, b) => b[1] - a[1]);
   const total   = entries.reduce((s, [, n]) => s + n, 0);
   const TYPE_COLOR = {
-    blocking_crypto:   '#ef4444',
+    blocking_crypto:   'var(--danger)',
     build_failure:     '#f87171',
-    long_function:     '#f59e0b',
+    long_function:     'var(--warning)',
     empty_catch:       '#fbbf24',
     sync_fs:           '#fb923c',
     benchmark_decline: '#a78bfa',
     stale_mission:     '#60a5fa',
-    console_log_prod:  '#6b7280',
+    console_log_prod:  'var(--text-dim)',
     todo_fixme:        '#4b5563',
     duplicate_literal: '#374151',
     stale_feature_flag:'#374151',
@@ -153,12 +153,12 @@ function BurndownChart({ snapshots }) {
       <line x1={pad.l} y1={pad.t} x2={pad.l} y2={pad.t + iH}
         stroke="#1f2937" strokeWidth="1" />
 
-      <polyline points={smellPts.join(' ')} fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinejoin="round" />
-      <polyline points={hourPts.join(' ')} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeLinejoin="round" />
+      <polyline points={smellPts.join(' ')} fill="none" stroke="var(--danger)" strokeWidth="1.5" strokeLinejoin="round" />
+      <polyline points={hourPts.join(' ')} fill="none" stroke="var(--warning)" strokeWidth="1.5" strokeLinejoin="round" />
 
       {/* Last point dots */}
-      {smellPts.length > 0 && (() => { const [x,y] = smellPts[smellPts.length-1].split(','); return <circle cx={x} cy={y} r="3" fill="#ef4444" />; })()}
-      {hourPts.length > 0 && (() => { const [x,y] = hourPts[hourPts.length-1].split(','); return <circle cx={x} cy={y} r="3" fill="#f59e0b" />; })()}
+      {smellPts.length > 0 && (() => { const [x,y] = smellPts[smellPts.length-1].split(','); return <circle cx={x} cy={y} r="3" fill="var(--danger)" />; })()}
+      {hourPts.length > 0 && (() => { const [x,y] = hourPts[hourPts.length-1].split(','); return <circle cx={x} cy={y} r="3" fill="var(--warning)" />; })()}
 
       {/* X labels */}
       <text x={pad.l} y={H - 4} fontSize="8" fill="#4b5563" textAnchor="start">{first}</text>
@@ -247,7 +247,7 @@ export default function TechDebtDashboard() {
   const hoursTrend = history.map(h => h.totalHours || 0);
   const critTrend  = history.map(h => h.criticalCount || 0);
 
-  const trendColor = s.trend === 'improving' ? '#10b981' : s.trend === 'worsening' ? '#ef4444' : '#6b7280';
+  const trendColor = s.trend === 'improving' ? 'var(--success)' : s.trend === 'worsening' ? 'var(--danger)' : 'var(--text-dim)';
 
   return (
     <div className="tdd-root">
@@ -261,12 +261,12 @@ export default function TechDebtDashboard() {
 
       {/* KPI tiles */}
       <div className="tdd-tiles">
-        <MetricTile label="Hours to Green"    value={`${s.totalHours || 0}h`}     color="#f59e0b" icon="⏱" />
-        <MetricTile label="Critical Smells"   value={s.criticalCount || 0}        color="#ef4444" icon="🔴" />
-        <MetricTile label="Avg Confidence"    value={`${s.avgConfidence || 0}%`}  color="#10b981" icon="◎" />
-        <MetricTile label="Prod Risk"         value={s.productionRisk || '—'}     color={s.productionRisk === 'high' ? '#ef4444' : s.productionRisk === 'medium' ? '#f59e0b' : '#10b981'} icon="⚠" />
+        <MetricTile label="Hours to Green"    value={`${s.totalHours || 0}h`}     color="var(--warning)" icon="⏱" />
+        <MetricTile label="Critical Smells"   value={s.criticalCount || 0}        color="var(--danger)" icon="🔴" />
+        <MetricTile label="Avg Confidence"    value={`${s.avgConfidence || 0}%`}  color="var(--success)" icon="◎" />
+        <MetricTile label="Prod Risk"         value={s.productionRisk || '—'}     color={s.productionRisk === 'high' ? 'var(--danger)' : s.productionRisk === 'medium' ? 'var(--warning)' : 'var(--success)'} icon="⚠" />
         <MetricTile label="Open Decisions"    value={s.open || 0}                 icon="◐" />
-        <MetricTile label="Approved"          value={s.approved || 0}             color="#10b981" icon="✓" />
+        <MetricTile label="Approved"          value={s.approved || 0}             color="var(--success)" icon="✓" />
       </div>
 
       {/* Trend + burn-down */}
@@ -293,17 +293,17 @@ export default function TechDebtDashboard() {
           <div className="tdd-section-title">Burn-down</div>
           <BurndownChart snapshots={history} />
           <div className="tdd-burndown-legend">
-            <span className="tdd-bd-dot" style={{ background: '#ef4444' }} /> Smells
-            <span className="tdd-bd-dot" style={{ background: '#f59e0b', marginLeft: 12 }} /> Hours
+            <span className="tdd-bd-dot" style={{ background: 'var(--danger)' }} /> Smells
+            <span className="tdd-bd-dot" style={{ background: 'var(--warning)', marginLeft: 12 }} /> Hours
           </div>
         </div>
       </div>
 
       {/* Gauges */}
       <div className="tdd-gauges">
-        <DebtGauge label="Avg Debt Score"       value={s.avgDebt || 0}        color="#ef4444" />
-        <DebtGauge label="High ROI Count"        value={s.highROICount || 0}   max={s.totalOpportunities || 1} color="#10b981" />
-        <DebtGauge label="Total Opportunities"   value={s.totalOpportunities || 0} max={200} color="#6b7280" />
+        <DebtGauge label="Avg Debt Score"       value={s.avgDebt || 0}        color="var(--danger)" />
+        <DebtGauge label="High ROI Count"        value={s.highROICount || 0}   max={s.totalOpportunities || 1} color="var(--success)" />
+        <DebtGauge label="Total Opportunities"   value={s.totalOpportunities || 0} max={200} color="var(--text-dim)" />
       </div>
 
       {/* Type breakdown */}

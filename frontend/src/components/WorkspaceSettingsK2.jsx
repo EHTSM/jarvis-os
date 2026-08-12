@@ -4,7 +4,7 @@ import { useConfirm } from "./ConfirmDialog.jsx";
 import { Toggle, FieldRow } from "./WorkspaceSettingsShared";
 
 // ── K2 Security helpers ───────────────────────────────────────────
-const SCORE_COLOR = s => s >= 85 ? "#52d68a" : s >= 70 ? "var(--warning)" : s >= 55 ? "#ffaa00" : "var(--error)";
+const SCORE_COLOR = s => s >= 85 ? "var(--success)" : s >= 70 ? "var(--warning)" : s >= 55 ? "#ffaa00" : "var(--error)";
 function _fmtTs(ts) {
   if (!ts) return "—";
   const d = new Date(ts);
@@ -198,7 +198,7 @@ function AuditPanel() {
     "session":  "var(--accent)",
     "device":   "var(--accent2)",
     "token":    "var(--warning)",
-    "policy":   "#52d68a",
+    "policy":   "var(--success)",
     "workspace":"var(--text-dim)",
   };
   const color = (action) => {

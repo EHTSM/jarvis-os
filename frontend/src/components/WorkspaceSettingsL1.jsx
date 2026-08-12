@@ -124,7 +124,7 @@ function PluginsPanel() {
               </div>
               <div className="l1-plugin-actions">
                 <span className="l1-health-dot" style={{ background: HEALTH_COLOR[p.health?.status || "unknown"] }} title={p.health?.message || "unknown"} />
-                <span className="k2-badge" style={{ background: p.enabled ? "rgba(82,214,138,0.1)" : "var(--surface)", color: p.enabled ? "#52d68a" : "var(--text-faint)" }}>{p.enabled ? "enabled" : "disabled"}</span>
+                <span className="k2-badge" style={{ background: p.enabled ? "rgba(82,214,138,0.1)" : "var(--surface)", color: p.enabled ? "var(--success)" : "var(--text-faint)" }}>{p.enabled ? "enabled" : "disabled"}</span>
                 <button className="k5-toggle-btn" onClick={() => toggle(p)}>{p.enabled ? "Disable" : "Enable"}</button>
                 <button className="k2-revoke-btn" onClick={() => uninstall(p.id)}>Uninstall</button>
               </div>

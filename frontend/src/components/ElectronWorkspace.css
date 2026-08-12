@@ -97,9 +97,9 @@
   position: relative;
 }
 .ew-activity-btn:hover { background: #1f2937; color: #9ca3af; }
-.ew-activity-btn--active { background: #10b98120; color: #10b981; border: 1px solid #10b98130; }
+.ew-activity-btn--active { background: #10b98120; color: var(--success); border: 1px solid #10b98130; }
 .ew-activity-btn:focus-visible {
-  outline: 2px solid #10b981;
+  outline: 2px solid var(--success);
   outline-offset: 1px;
 }
 
@@ -251,7 +251,7 @@
   flex-shrink: 0;
   transition: background 0.15s;
 }
-.ew-bottom-resizer:hover { background: #10b981; }
+.ew-bottom-resizer:hover { background: var(--success); }
 
 .ew-bottom {
   height: 340px;
@@ -285,7 +285,7 @@
   font-family: system-ui, sans-serif;
 }
 .ew-bottom-tab:hover { color: #9ca3af; }
-.ew-bottom-tab--active { color: #10b981; border-bottom-color: #10b981; }
+.ew-bottom-tab--active { color: var(--success); border-bottom-color: var(--success); }
 
 .ew-bottom-close {
   background: transparent;
@@ -315,7 +315,7 @@
   z-index: 10;
 }
 .ew-sidebar-resizer:hover,
-.ew-sidebar-resizer:active { background: #10b981; }
+.ew-sidebar-resizer:active { background: var(--success); }
 
 /* AI sidebar */
 .ew-ai-sidebar {
@@ -342,7 +342,7 @@
   flex-shrink: 0;
   transition: background 0.15s;
 }
-.ew-split-resizer:hover { background: #7c6fff; }
+.ew-split-resizer:hover { background: var(--accent); }
 
 .ew-split-tab-bar {
   display: flex;
@@ -367,7 +367,7 @@
   font-family: system-ui, sans-serif;
 }
 .ew-split-tab:hover { color: #9ca3af; }
-.ew-split-tab--active { color: #7c6fff; border-bottom-color: #7c6fff; }
+.ew-split-tab--active { color: var(--accent); border-bottom-color: var(--accent); }
 .ew-split-close {
   margin-left: auto;
   background: transparent;
@@ -412,7 +412,7 @@
 }
 .ew-qs-icon {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-dim);
   font-family: monospace;
 }
 .ew-qs-input {
@@ -428,7 +428,7 @@
 .ew-qs-close {
   background: transparent;
   border: 1px solid #374151;
-  color: #6b7280;
+  color: var(--text-dim);
   font-size: 11px;
   cursor: pointer;
   padding: 2px 8px;
@@ -448,7 +448,7 @@
 .ew-qs-item__icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
 .ew-qs-item__text { flex: 1; min-width: 0; }
 .ew-qs-item__label { font-size: 13px; color: #e5e7eb; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ew-qs-item__sub   { font-size: 11px; color: #6b7280; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ew-qs-item__sub   { font-size: 11px; color: var(--text-dim); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ew-qs-item__type  { font-size: 10px; color: #374151; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
 .ew-qs-empty { padding: 20px; text-align: center; color: #4b5563; font-size: 13px; }
 .ew-qs-empty__hint { font-size: 11px; color: #374151; margin-top: 4px; }
@@ -473,7 +473,7 @@
   cursor: pointer;
   vertical-align: middle;
 }
-.ew-dock-btn:hover { opacity: 1; color: #10b981; }
+.ew-dock-btn:hover { opacity: 1; color: var(--success); }
 
 /* ── Operator OS home breadcrumb button ── */
 .ew-os-home-btn {
@@ -484,7 +484,7 @@
   background: rgba(16,185,129,0.08);
   border: none;
   border-bottom: 1px solid rgba(16,185,129,0.15);
-  color: #10b981;
+  color: var(--success);
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 600;
@@ -518,7 +518,7 @@
 }
 .ew-topbar__view {
   font-size: 11px;
-  color: #8994b0;
+  color: var(--text-dim);
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.04em;
 }

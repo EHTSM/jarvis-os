@@ -959,11 +959,11 @@ const EVT_TYPE_COLOR = {
   'collaboration:action': '#a78bfa',
   'collaboration:message': '#60a5fa',
   'lifecycle:stage:start': '#fbbf24',
-  'lifecycle:stage:complete': '#22c55e',
-  'lifecycle:stage:failed':  '#ef4444',
-  'mission:started':    '#22c55e',
-  'mission:completed':  '#22c55e',
-  'mission:failed':     '#ef4444',
+  'lifecycle:stage:complete': 'var(--success)',
+  'lifecycle:stage:failed':  'var(--danger)',
+  'mission:started':    'var(--success)',
+  'mission:completed':  'var(--success)',
+  'mission:failed':     'var(--danger)',
   'telemetry':          '#374151',
   'heartbeat':          '#1f2937',
 };
@@ -1006,7 +1006,7 @@ function LiveActivityStream() {
           </div>
         )}
         {events.map((evt, i) => {
-          const color = EVT_TYPE_COLOR[evt.type] || '#64748b';
+          const color = EVT_TYPE_COLOR[evt.type] || 'var(--text-dim)';
           return (
             <div key={i} style={{ display: 'flex', gap: 6, padding: '2px 0', borderBottom: '1px solid rgba(255,255,255,0.03)', alignItems: 'flex-start' }}>
               <span style={{ color: '#374151', flexShrink: 0 }}>
@@ -1087,7 +1087,7 @@ function MissionTimelineStrip() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
       {missions.map(m => {
         const stage = stages[m.id];
-        const color = stage ? (LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+        const color = stage ? (LC_STAGE_COLORS[stage.stage] || 'var(--text-dim)') : '#374151';
         const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
         return (
           <div key={m.id} style={{ padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 5, border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -1120,10 +1120,10 @@ function QueueOverview({ opsData }) {
   const queue = opsData?.queue || {};
   const counts = queue.counts || {};
   const items = [
-    { label: 'Pending',   value: counts.pending  ?? '—', color: '#f59e0b' },
-    { label: 'Running',   value: counts.running  ?? '—', color: '#22c55e' },
-    { label: 'Done',      value: counts.done     ?? '—', color: '#6b7280' },
-    { label: 'Failed',    value: counts.failed   ?? '—', color: '#ef4444' },
+    { label: 'Pending',   value: counts.pending  ?? '—', color: 'var(--warning)' },
+    { label: 'Running',   value: counts.running  ?? '—', color: 'var(--success)' },
+    { label: 'Done',      value: counts.done     ?? '—', color: 'var(--text-dim)' },
+    { label: 'Failed',    value: counts.failed   ?? '—', color: 'var(--danger)' },
   ];
 
   return (
@@ -1135,7 +1135,7 @@ function QueueOverview({ opsData }) {
         </div>
       ))}
       {queue.oldestPendingMins > 0 && (
-        <div style={{ gridColumn: '1 / -1', fontSize: 10, color: queue.oldestPendingMins > 30 ? '#ef4444' : '#f59e0b', textAlign: 'center', marginTop: 2 }}>
+        <div style={{ gridColumn: '1 / -1', fontSize: 10, color: queue.oldestPendingMins > 30 ? 'var(--danger)' : 'var(--warning)', textAlign: 'center', marginTop: 2 }}>
           Oldest pending: {queue.oldestPendingMins}m
         </div>
       )}
@@ -1179,12 +1179,12 @@ function RevenuePulse({ onNavigate }) {
 
   const fmtINR = (n) => `₹${Math.round(n || 0).toLocaleString('en-IN')}`;
   const items = [
-    { label: 'MRR',        value: fmtINR(data.mrr),   color: '#52d68a' },
-    { label: 'ARR',        value: fmtINR(data.arr),   color: '#4ecdc4' },
-    { label: 'Paid',       value: data.paidCount ?? '—',  color: '#7c6fff' },
-    { label: 'Trials',     value: data.trialCount ?? '—', color: '#f0b429' },
-    { label: 'Churn',      value: `${data.churnRate ?? 0}%`, color: (data.churnRate ?? 0) > 5 ? '#f55b5b' : '#8994b0' },
-    { label: 'Avg LTV',    value: fmtINR(data.ltv),  color: '#5dc8f5' },
+    { label: 'MRR',        value: fmtINR(data.mrr),   color: 'var(--success)' },
+    { label: 'ARR',        value: fmtINR(data.arr),   color: 'var(--accent2)' },
+    { label: 'Paid',       value: data.paidCount ?? '—',  color: 'var(--accent)' },
+    { label: 'Trials',     value: data.trialCount ?? '—', color: 'var(--warning)' },
+    { label: 'Churn',      value: `${data.churnRate ?? 0}%`, color: (data.churnRate ?? 0) > 5 ? 'var(--danger)' : 'var(--text-dim)' },
+    { label: 'Avg LTV',    value: fmtINR(data.ltv),  color: 'var(--info)' },
   ];
 
   return (
@@ -1238,12 +1238,12 @@ function FounderTwinPulse({ onNavigate }) {
   );
 
   const items = [
-    { label: 'Trust Score',   value: `${data.trustScore ?? 0}`,       color: '#7c6fff' },
-    { label: 'Accuracy',      value: `${data.accuracy ?? 0}%`,        color: '#52d68a' },
-    { label: 'Decisions',     value: data.totalDecisions ?? '—',      color: '#4ecdc4' },
-    { label: 'Auto-Resolved', value: data.autoResolved ?? '—',        color: '#5dc8f5' },
-    { label: 'Escalated',     value: data.founderRequired ?? '—',     color: '#f0b429' },
-    { label: 'Min Saved',     value: data.minutesSaved ?? '—',        color: '#8994b0' },
+    { label: 'Trust Score',   value: `${data.trustScore ?? 0}`,       color: 'var(--accent)' },
+    { label: 'Accuracy',      value: `${data.accuracy ?? 0}%`,        color: 'var(--success)' },
+    { label: 'Decisions',     value: data.totalDecisions ?? '—',      color: 'var(--accent2)' },
+    { label: 'Auto-Resolved', value: data.autoResolved ?? '—',        color: 'var(--info)' },
+    { label: 'Escalated',     value: data.founderRequired ?? '—',     color: 'var(--warning)' },
+    { label: 'Min Saved',     value: data.minutesSaved ?? '—',        color: 'var(--text-dim)' },
   ];
 
   return (
@@ -1300,7 +1300,7 @@ function ConnectorHealthPulse({ onNavigate }) {
   );
 
   const score    = health.score ?? 100;
-  const scoreColor = score >= 90 ? '#52d68a' : score >= 70 ? '#f0b429' : '#f55b5b';
+  const scoreColor = score >= 90 ? 'var(--success)' : score >= 70 ? 'var(--warning)' : 'var(--danger)';
 
   return (
     <div>
@@ -1313,15 +1313,15 @@ function ConnectorHealthPulse({ onNavigate }) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
         <div style={{ background: 'rgba(82,214,138,0.08)', border: '1px solid rgba(82,214,138,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#52d68a', fontFamily: 'monospace' }}>{health.ok ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--success)', fontFamily: 'monospace' }}>{health.ok ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>OK</div>
         </div>
         <div style={{ background: 'rgba(240,180,41,0.08)', border: '1px solid rgba(240,180,41,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#f0b429', fontFamily: 'monospace' }}>{health.expiring ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--warning)', fontFamily: 'monospace' }}>{health.expiring ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Expiring</div>
         </div>
         <div style={{ background: 'rgba(245,91,91,0.08)', border: '1px solid rgba(245,91,91,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#f55b5b', fontFamily: 'monospace' }}>{health.overdue ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--danger)', fontFamily: 'monospace' }}>{health.overdue ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Overdue</div>
         </div>
       </div>
@@ -1376,19 +1376,19 @@ function DeploymentPulse({ onNavigate }) {
           ))}
         </div>
       ) : (
-        <div style={{ fontSize: 11, color: '#52d68a', textAlign: 'center', padding: '4px 0 8px' }}>No active deployments</div>
+        <div style={{ fontSize: 11, color: 'var(--success)', textAlign: 'center', padding: '4px 0 8px' }}>No active deployments</div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
         <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#52d68a', fontFamily: 'monospace' }}>{stats.completed ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--success)', fontFamily: 'monospace' }}>{stats.completed ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Completed</div>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#f55b5b', fontFamily: 'monospace' }}>{stats.failed ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--danger)', fontFamily: 'monospace' }}>{stats.failed ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Failed</div>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#f0b429', fontFamily: 'monospace' }}>{stats.rolledBack ?? 0}</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--warning)', fontFamily: 'monospace' }}>{stats.rolledBack ?? 0}</div>
           <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Rolled Back</div>
         </div>
       </div>
@@ -1429,7 +1429,7 @@ function ProviderHealth() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
       {providers.map((p, i) => {
         const ok    = p.status === 'active' || p.status === 'healthy' || p.available === true;
-        const color = ok ? '#22c55e' : p.status === 'degraded' ? '#eab308' : '#ef4444';
+        const color = ok ? 'var(--success)' : p.status === 'degraded' ? '#eab308' : 'var(--danger)';
         return (
           <div key={p.id || p.name || i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
@@ -1453,12 +1453,12 @@ function ProviderHealth() {
 function RuntimeAlerts({ opsData }) {
   const warnings = opsData?.warnings || [];
   if (!warnings.length) return (
-    <div style={{ fontSize: 11, color: '#22c55e', textAlign: 'center', padding: '6px 0' }}>All systems operational</div>
+    <div style={{ fontSize: 11, color: 'var(--success)', textAlign: 'center', padding: '6px 0' }}>All systems operational</div>
   );
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       {warnings.slice(0, 5).map((w, i) => {
-        const color = w.level === 'critical' ? '#ef4444' : w.level === 'warn' ? '#f59e0b' : '#6b7280';
+        const color = w.level === 'critical' ? 'var(--danger)' : w.level === 'warn' ? 'var(--warning)' : 'var(--text-dim)';
         return (
           <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '5px 8px', background: color + '0d', border: `1px solid ${color}33`, borderRadius: 4 }}>
             <span style={{ fontSize: 9, fontWeight: 800, color, flexShrink: 0, marginTop: 1 }}>{w.level?.toUpperCase()}</span>

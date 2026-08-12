@@ -406,7 +406,7 @@
   padding: 0;
   flex-shrink: 0;
 }
-.cs-fav-btn.active { color: #f59e0b; }
+.cs-fav-btn.active { color: var(--warning); }
 
 /* ── History ── */
 .cs-hist-item {

@@ -41,12 +41,12 @@ const ROUTING_RULES = [
 ];
 
 const ROUTER_AGENTS = [
-  { id: "ag_seo",       name: "SEO Agent",       icon: "⌕", color: "#4ecdc4" },
-  { id: "ag_marketing", name: "Marketing",        icon: "◉", color: "#f0b429" },
-  { id: "ag_content",   name: "Content Agent",    icon: "◈", color: "#7c6fff" },
-  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "#52d68a" },
+  { id: "ag_seo",       name: "SEO Agent",       icon: "⌕", color: "var(--accent2)" },
+  { id: "ag_marketing", name: "Marketing",        icon: "◉", color: "var(--warning)" },
+  { id: "ag_content",   name: "Content Agent",    icon: "◈", color: "var(--accent)" },
+  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "var(--success)" },
   { id: "ag_sales",     name: "Sales Agent",      icon: "◇", color: "#da552f" },
-  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "#dde2ec" },
+  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "var(--text)" },
   { id: "ag_devops",    name: "DevOps Agent",     icon: "⬟", color: "#fc6d26" },
   { id: "ag_analytics", name: "Analytics Agent",  icon: "▣", color: "#38bdf8" },
 ];
@@ -75,28 +75,28 @@ const DEPARTMENTS = [
     outcomes: ["3 leads qualified as hot this week", "₹7,497 pipeline added", "1 deal closed at ₹2,499/mo"],
   },
   {
-    id: "marketing", name: "Marketing", icon: "◉", color: "#f0b429",
+    id: "marketing", name: "Marketing", icon: "◉", color: "var(--warning)",
     mission: "Run campaigns, manage content distribution, track channel performance.",
     activeWork: ["LinkedIn post: Phase 9 AI OS release", "Keyword gap analysis vs competitors", "Email subject line review — CTR drop -12%"],
     metrics: { throughput: 22, rate: "99%", open: 5, closed: 18 },
     outcomes: ["12 keywords tracked, 3 moved to page 1", "Email: 24.1% open rate", "LinkedIn: 840 impressions, 42 clicks"],
   },
   {
-    id: "support", name: "Support", icon: "◎", color: "#52d68a",
+    id: "support", name: "Support", icon: "◎", color: "var(--success)",
     mission: "Triage tickets, draft responses from knowledge base, escalate critical issues.",
     activeWork: ["Ticket #1024: WhatsApp QR not scanning", "Ticket #1025: Payment confirmation missing", "FAQ update: 4 new entries"],
     metrics: { throughput: 31, rate: "98.8%", open: 2, closed: 28 },
     outcomes: ["28 tickets resolved (avg 8 min TTR)", "2 bugs escalated to Dev Agent", "1 upsell routed to Sales"],
   },
   {
-    id: "operations", name: "Operations", icon: "⬟", color: "#7c6fff",
+    id: "operations", name: "Operations", icon: "⬟", color: "var(--accent)",
     mission: "System health, deploy pipelines, infrastructure monitoring, incident response.",
     activeWork: ["Monitor v9.4.0 deploy health", "DB query optimisation pass", "Scale review: API rate limits"],
     metrics: { throughput: 12, rate: "100%", open: 1, closed: 9 },
     outcomes: ["Zero incidents this week", "Deploy automation: 4 pushes shipped", "API uptime: 99.97%"],
   },
   {
-    id: "engineering", name: "Engineering", icon: "⬡", color: "#dde2ec",
+    id: "engineering", name: "Engineering", icon: "⬡", color: "var(--text)",
     mission: "Code review, PR management, architecture decisions, dev tooling.",
     activeWork: ["Review PR #48: DevOps monitoring improvements", "Research: AI model cost benchmarks", "Phase 44 Memory OS implementation"],
     metrics: { throughput: 7, rate: "92%", open: 4, closed: 6 },
@@ -545,7 +545,7 @@ function TabRunning({ addToast }) {
 
   if (running.length === 0) return (
     <div className="wov2-empty" style={{ flex: 1 }}>
-      <span className="wov2-empty-icon" style={{ color: "#52d68a" }}>✓</span>
+      <span className="wov2-empty-icon" style={{ color: "var(--success)" }}>✓</span>
       <p className="wov2-empty-title">No workflows currently running</p>
       <p className="wov2-empty-sub">All workflows are idle. Trigger one from the Library tab.</p>
     </div>
@@ -835,17 +835,17 @@ function TabRouter({ addToast }) {
     <div className="wov2-router-root">
       <div className="wov2-queue-strip">
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#7c6fff" }}>{running}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--accent)" }}>{running}</span>
           <span className="wov2-qs-label">Running</span>
         </div>
         <div className="wov2-qs-sep" />
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#f0b429" }}>{queued}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--warning)" }}>{queued}</span>
           <span className="wov2-qs-label">Queued</span>
         </div>
         <div className="wov2-qs-sep" />
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#f55b5b" }}>{failed}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--danger)" }}>{failed}</span>
           <span className="wov2-qs-label">Failed</span>
         </div>
         <div className="wov2-qs-sep" />
@@ -905,7 +905,7 @@ function TabRouter({ addToast }) {
           </div>
         ) : filtered.length === 0 ? (
           <div className="wov2-empty" style={{ padding: "24px" }}>
-            <span className="wov2-empty-icon" style={{ color: "#52d68a", fontSize: 22 }}>✓</span>
+            <span className="wov2-empty-icon" style={{ color: "var(--success)", fontSize: 22 }}>✓</span>
             <p className="wov2-empty-title">Queue is clear</p>
             <p className="wov2-empty-sub">No agent task history yet. Dispatch a task above to get started.</p>
           </div>
@@ -965,9 +965,9 @@ function TabAutonomous({ addToast }) {
         <p className="wov2-lt-title">Live Today</p>
         <div className="wov2-live-cards">
           {[
-            { icon: "●", title: "Self-healing agent monitor", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Restarts crashed agents automatically", stat: healStatus ? `${healStatus.healedTotal ?? 0} healed total` : "—" },
-            { icon: "●", title: "Retry logic with exponential backoff", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: healStatus ? `${healStatus.failedTotal ?? 0} unrecovered` : "—" },
-            { icon: "○", title: "Evolution scoring engine", status: "MONITORING", color: "#f0b429", detail: "Scoring system improvement opportunities", stat: `Score: ${opsData?.evolution?.score ?? 72}/100` },
+            { icon: "●", title: "Self-healing agent monitor", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "var(--success)" : "#4a5470", detail: "Restarts crashed agents automatically", stat: healStatus ? `${healStatus.healedTotal ?? 0} healed total` : "—" },
+            { icon: "●", title: "Retry logic with exponential backoff", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "var(--success)" : "#4a5470", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: healStatus ? `${healStatus.failedTotal ?? 0} unrecovered` : "—" },
+            { icon: "○", title: "Evolution scoring engine", status: "MONITORING", color: "var(--warning)", detail: "Scoring system improvement opportunities", stat: `Score: ${opsData?.evolution?.score ?? 72}/100` },
           ].map(item => (
             <div key={item.title} className="wov2-live-card">
               <div className="wov2-lc-top">
@@ -1009,7 +1009,7 @@ function TabAutonomous({ addToast }) {
                     <p className="wov2-dept-work-title">Active Work</p>
                     {dept.activeWork.map((w, i) => (
                       <div key={i} className="wov2-dept-work-row">
-                        <span style={{ color: "#7c6fff", fontSize: 11 }}>⟳</span>
+                        <span style={{ color: "var(--accent)", fontSize: 11 }}>⟳</span>
                         <span className="wov2-dept-work-text">{w}</span>
                       </div>
                     ))}
@@ -1018,7 +1018,7 @@ function TabAutonomous({ addToast }) {
                     <p className="wov2-dept-work-title">Outcomes This Week</p>
                     {dept.outcomes.map((o, i) => (
                       <div key={i} className="wov2-dept-work-row">
-                        <span style={{ color: "#52d68a", fontSize: 11 }}>✓</span>
+                        <span style={{ color: "var(--success)", fontSize: 11 }}>✓</span>
                         <span className="wov2-dept-work-text">{o}</span>
                       </div>
                     ))}
@@ -1092,7 +1092,7 @@ export default function WorkflowOSV2({ onNavigate }) {
             </div>
             <div className="wov2-hstat-sep" />
             <div className="wov2-hstat">
-              <span className="wov2-hstat-val" style={{ color: "#52d68a" }}>{successRate}%</span>
+              <span className="wov2-hstat-val" style={{ color: "var(--success)" }}>{successRate}%</span>
               <span className="wov2-hstat-label">Success</span>
             </div>
           </div>

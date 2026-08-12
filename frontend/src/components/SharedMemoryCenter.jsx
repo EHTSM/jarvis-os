@@ -27,8 +27,8 @@ const SCOPE_COLORS = { global: "var(--warning)", company: "var(--accent)", agent
 const IMP_COLORS   = { critical: "var(--danger)", high: "var(--warning)", medium: "var(--accent2)", low: "var(--text-faint)" };
 const AGENT_MAP    = {
   ag_seo: { name: "SEO", color: "var(--accent2)" }, ag_marketing: { name: "Marketing", color: "var(--warning)" },
-  ag_content: { name: "Content", color: "var(--accent)" }, ag_support: { name: "Support", color: "#52d68a" },
-  ag_sales: { name: "Sales", color: "#da552f" }, ag_dev: { name: "Dev", color: "#e6edf3" },
+  ag_content: { name: "Content", color: "var(--accent)" }, ag_support: { name: "Support", color: "var(--success)" },
+  ag_sales: { name: "Sales", color: "#da552f" }, ag_dev: { name: "Dev", color: "var(--text)" },
   ag_devops: { name: "DevOps", color: "#fc6d26" }, ag_research: { name: "Research", color: "#a78bfa" },
   ag_analytics: { name: "Analytics", color: "#38bdf8" },
 };

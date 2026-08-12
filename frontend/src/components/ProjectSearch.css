@@ -5,7 +5,7 @@
   flex-direction: column;
   height: 100%;
   background: #161928;
-  color: #c8cdd8;
+  color: var(--text);
   font-family: inherit;
   overflow: hidden;
 }
@@ -30,7 +30,7 @@
   overflow: hidden;
   transition: border-color 0.12s;
 }
-.ps-input-wrap:focus-within { border-color: #7c6fff; }
+.ps-input-wrap:focus-within { border-color: var(--accent); }
 
 .ps-input {
   flex: 1;
@@ -57,7 +57,7 @@
   background: none;
   border: 1px solid transparent;
   border-radius: 3px;
-  color: #8994b0;
+  color: var(--text-dim);
   font-size: 11px;
   font-weight: 700;
   width: 20px;
@@ -69,7 +69,7 @@
   transition: background 0.1s, color 0.1s;
   font-family: inherit;
 }
-.ps-flag-btn:hover { background: rgba(255,255,255,0.08); color: #c8cdd8; }
+.ps-flag-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 .ps-flag-btn--on {
   background: rgba(124, 111, 255, 0.2);
   border-color: rgba(124, 111, 255, 0.4);
@@ -100,7 +100,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
-  color: #8994b0;
+  color: var(--text-dim);
   font-size: 13px;
   cursor: pointer;
   display: flex;
@@ -109,11 +109,11 @@
   flex-shrink: 0;
   transition: background 0.12s, color 0.12s;
 }
-.ps-replace-toggle:hover { background: rgba(255,255,255,0.08); color: #c8cdd8; }
+.ps-replace-toggle:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 .ps-replace-toggle--on {
   background: rgba(240, 180, 41, 0.12);
   border-color: rgba(240, 180, 41, 0.3);
-  color: #f0b429;
+  color: var(--warning);
 }
 
 /* ── Replace row ─────────────────────────────────────────────────────────── */
@@ -132,7 +132,7 @@
   background: rgba(240, 180, 41, 0.12);
   border: 1px solid rgba(240, 180, 41, 0.3);
   border-radius: 5px;
-  color: #f0b429;
+  color: var(--warning);
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
@@ -148,7 +148,7 @@
 .ps-status {
   padding: 3px 10px;
   font-size: 11px;
-  color: #8994b0;
+  color: var(--text-dim);
   background: rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
@@ -198,13 +198,13 @@
 }
 .ps-group__header:hover { background: rgba(255, 255, 255, 0.05); }
 
-.ps-group__arrow { color: #8994b0; font-size: 9px; flex-shrink: 0; }
+.ps-group__arrow { color: var(--text-dim); font-size: 9px; flex-shrink: 0; }
 .ps-group__file {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #c8cdd8;
+  color: var(--text);
   font-family: 'SF Mono', monospace;
 }
 .ps-group__count {
@@ -241,7 +241,7 @@
   flex: 1;
   font-family: 'SF Mono', monospace;
   font-size: 11px;
-  color: #8994b0;
+  color: var(--text-dim);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -251,7 +251,7 @@
   background: none;
   border: 1px solid rgba(240, 180, 41, 0.3);
   border-radius: 3px;
-  color: #f0b429;
+  color: var(--warning);
   font-size: 11px;
   padding: 0 4px;
   cursor: pointer;
@@ -263,7 +263,7 @@
 
 .ps-match mark {
   background: rgba(240, 180, 41, 0.25);
-  color: #f0b429;
+  color: var(--warning);
   border-radius: 2px;
   padding: 0 1px;
 }

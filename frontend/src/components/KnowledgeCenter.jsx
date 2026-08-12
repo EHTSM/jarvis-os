@@ -43,7 +43,7 @@ const SEED_COLLECTIONS = [
   { id: "c1", name: "product",     label: "Product",      color: "var(--accent)",  count: 0 },
   { id: "c2", name: "sales",       label: "Sales",        color: "var(--warning)", count: 0 },
   { id: "c3", name: "engineering", label: "Engineering",  color: "var(--accent2)", count: 0 },
-  { id: "c4", name: "support",     label: "Support",      color: "#52d68a",        count: 0 },
+  { id: "c4", name: "support",     label: "Support",      color: "var(--success)",        count: 0 },
   { id: "c5", name: "legal",       label: "Legal",        color: "var(--danger)",  count: 0 },
 ];
 

@@ -310,7 +310,7 @@
 .tw-ws-card-info { font-size: 11px; color: var(--text-faint); }
 .tw-ws-active-badge {
   padding: 3px 10px; background: rgba(82,214,138,0.12); border: 1px solid rgba(82,214,138,0.3);
-  border-radius: var(--radius-pill); color: #52d68a; font-size: 11px; font-weight: 700;
+  border-radius: var(--radius-pill); color: var(--success); font-size: 11px; font-weight: 700;
 }
 .tw-ws-switch-btn {
   padding: 5px 12px; background: none; border: 1px solid var(--border);

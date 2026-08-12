@@ -22,7 +22,7 @@ function taskToAction(t) {
 
 const DOMAINS = [
   {
-    id:"revenue",     label:"Revenue",     icon:"$",  color:"#52d68a",
+    id:"revenue",     label:"Revenue",     icon:"$",  color:"var(--success)",
     score:88,
     goal:"Close ₹10L MRR autonomously",
     agents:["Lead Prospector","Follow-Up Sequencer","Proposal Generator","Contract Closer"],
@@ -37,7 +37,7 @@ const DOMAINS = [
     result:"₹8.8L MTD · 11 deals closed · 312 leads in pipeline",
   },
   {
-    id:"marketing",   label:"Marketing",   icon:"★",  color:"#7c6fff",
+    id:"marketing",   label:"Marketing",   icon:"★",  color:"var(--accent)",
     score:74,
     goal:"Generate 2,500 organic visits/mo with zero ad spend",
     agents:["Blog Writer","SEO Optimizer","Social Poster","Campaign Executor"],
@@ -52,7 +52,7 @@ const DOMAINS = [
     result:"2,340 visits/mo · 47 ranking gains · 142 articles published",
   },
   {
-    id:"support",     label:"Support",     icon:"?",  color:"#f0b429",
+    id:"support",     label:"Support",     icon:"?",  color:"var(--warning)",
     score:92,
     goal:"Resolve 90% of tickets autonomously, CSAT > 4.5",
     agents:["KB Search Agent","WA Debug Agent","Pipeline Debugger","Escalation Router"],
@@ -67,7 +67,7 @@ const DOMAINS = [
     result:"84% auto-resolved · 4.8/5 CSAT · 4 KB articles auto-created",
   },
   {
-    id:"operations",  label:"Operations",  icon:"⚙",  color:"#4ecdc4",
+    id:"operations",  label:"Operations",  icon:"⚙",  color:"var(--accent2)",
     score:81,
     goal:"Zero-downtime platform with self-healing and auto-recovery",
     agents:["Health Monitor","Self-Healing Agent","Alert Router","Recovery Orchestrator"],
@@ -195,7 +195,7 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
           { label:"Human dependency",      value:`${humanDependency}%`,       color:"var(--warning)" },
           { label:"Autonomous exec score", value:`${autonomousExecScore}%`,   color:"var(--accent2)" },
           { label:"Domains automated",     value:`${DOMAINS.filter(d=>d.score>=80).length}/${DOMAINS.length}`, color:"var(--accent)" },
-          { label:"Agents running 24/7",   value:"31",                        color:"#52d68a"        },
+          { label:"Agents running 24/7",   value:"31",                        color:"var(--success)"        },
           { label:"Human interventions/d", value:"2",                         color:"var(--text-faint)" },
         ].map(s=>(
           <div key={s.label} className="oro-summary-tile">
@@ -218,7 +218,7 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
             <div className="oro-score-row">
               <ScoreGauge value={automationScore}      color="var(--success)" label="Automation" />
               <ScoreGauge value={100-humanDependency}  color="var(--accent2)" label="Autonomous Exec" />
-              <ScoreGauge value={autonomousExecScore}  color="#52d68a"        label="Domain Coverage" />
+              <ScoreGauge value={autonomousExecScore}  color="var(--success)"        label="Domain Coverage" />
             </div>
 
             <div className="oro-domain-cards">

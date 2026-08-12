@@ -17,10 +17,10 @@ function ScoreRing({ value, label, color }) {
     <div className="score-ring-wrap">
       <svg width="44" height="44" viewBox="0 0 44 44">
         <circle cx="22" cy="22" r={r} fill="none" stroke="#1f2937" strokeWidth="4" />
-        <circle cx="22" cy="22" r={r} fill="none" stroke={color || '#10b981'}
+        <circle cx="22" cy="22" r={r} fill="none" stroke={color || 'var(--success)'}
           strokeWidth="4" strokeDasharray={circ} strokeDashoffset={fill}
           strokeLinecap="round" transform="rotate(-90 22 22)" />
-        <text x="22" y="26" textAnchor="middle" fontSize="10" fontWeight="700" fill={color || '#10b981'}>
+        <text x="22" y="26" textAnchor="middle" fontSize="10" fontWeight="700" fill={color || 'var(--success)'}>
           {value || 0}
         </text>
       </svg>
@@ -91,9 +91,9 @@ function OpportunityCard({ opp, onApprove, onSchedule, onIgnore, onConvert, onPa
 
       {/* Score bar */}
       <div className="dec-card__scores">
-        <ScoreRing value={opp.priority}    label="Priority" color="#f59e0b" />
-        <ScoreRing value={opp.roiScore}    label="ROI"      color="#10b981" />
-        <ScoreRing value={opp.debtScore}   label="Debt"     color="#ef4444" />
+        <ScoreRing value={opp.priority}    label="Priority" color="var(--warning)" />
+        <ScoreRing value={opp.roiScore}    label="ROI"      color="var(--success)" />
+        <ScoreRing value={opp.debtScore}   label="Debt"     color="var(--danger)" />
         <ScoreRing value={opp.userImpact}  label="Users"    color="#60a5fa" />
         <RiskBadge risk={opp.regressionRisk} />
         <div className="dec-card__meta-col">

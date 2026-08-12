@@ -39,13 +39,13 @@ function _ms(n) {
 }
 
 const SC = {
-  ok: "#52d68a", success: "#52d68a", applied: "#52d68a", resolved: "#52d68a", healthy: "#52d68a",
-  warn: "#f0b429", warning: "#f0b429", pending: "#f0b429", degraded: "#f0b429",
-  fail: "#f55b5b", failed: "#f55b5b", error: "#f55b5b", critical: "#f55b5b", rolled_back: "#f55b5b",
-  running: "#7c6fff", executing: "#7c6fff", active: "#52d68a",
-  unknown: "#8994b0",
+  ok: "var(--success)", success: "var(--success)", applied: "var(--success)", resolved: "var(--success)", healthy: "var(--success)",
+  warn: "var(--warning)", warning: "var(--warning)", pending: "var(--warning)", degraded: "var(--warning)",
+  fail: "var(--danger)", failed: "var(--danger)", error: "var(--danger)", critical: "var(--danger)", rolled_back: "var(--danger)",
+  running: "var(--accent)", executing: "var(--accent)", active: "var(--success)",
+  unknown: "var(--text-dim)",
 };
-function statusColor(s) { return SC[s] || "#8994b0"; }
+function statusColor(s) { return SC[s] || "var(--text-dim)"; }
 
 function Badge({ s, label }) {
   const col = statusColor(s);
@@ -59,9 +59,9 @@ function Badge({ s, label }) {
 
 function EmptyState({ icon = "◌", title, sub }) {
   return (
-    <div style={{ textAlign: "center", padding: "40px 20px", color: "#8994b0" }}>
+    <div style={{ textAlign: "center", padding: "40px 20px", color: "var(--text-dim)" }}>
       <div style={{ fontSize: 28, marginBottom: 8 }}>{icon}</div>
-      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4, color: "#c8cdd8" }}>{title}</div>
+      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4, color: "var(--text)" }}>{title}</div>
       {sub && <div style={{ fontSize: 11 }}>{sub}</div>}
     </div>
   );
@@ -93,7 +93,7 @@ function Section({ title, children, action }) {
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: "#8994b0" }}>{title}</span>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-dim)" }}>{title}</span>
         {action}
       </div>
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, overflow: "hidden" }}>
@@ -106,7 +106,7 @@ function Section({ title, children, action }) {
 function RefreshBtn({ onClick, loading }) {
   return (
     <button onClick={onClick} disabled={loading}
-      style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
+      style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "var(--text-dim)" }}>
       {loading ? "…" : "⟳"}
     </button>
   );
@@ -115,8 +115,8 @@ function RefreshBtn({ onClick, loading }) {
 function StatCard({ label, val, color }) {
   return (
     <div style={{ flex: "1 1 80px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "8px 12px", textAlign: "center" }}>
-      <div style={{ fontSize: 18, fontWeight: 700, color: color || "#c8cdd8" }}>{val}</div>
-      <div style={{ fontSize: 9, color: "#8994b0", marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: color || "var(--text)" }}>{val}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -156,8 +156,8 @@ function TabMemory() {
       {stats && (
         <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
           <StatCard label="Total entries" val={stats.total ?? "—"} />
-          <StatCard label="Successful" val={stats.succeeded ?? "—"} color="#52d68a" />
-          <StatCard label="Failed" val={stats.failed ?? "—"} color={stats.failed > 0 ? "#f55b5b" : "#8994b0"} />
+          <StatCard label="Successful" val={stats.succeeded ?? "—"} color="var(--success)" />
+          <StatCard label="Failed" val={stats.failed ?? "—"} color={stats.failed > 0 ? "var(--danger)" : "var(--text-dim)"} />
           <StatCard label="Agents" val={stats.uniqueAgents ?? "—"} />
         </div>
       )}
@@ -168,7 +168,7 @@ function TabMemory() {
           onChange={e => setGoal(e.target.value)}
           onKeyDown={e => e.key === "Enter" && handleSearch()}
           placeholder="Search memory by goal or task description…"
-          style={{ flex: 1, padding: "7px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, color: "#c8cdd8", fontSize: 12, fontFamily: "inherit" }}
+          style={{ flex: 1, padding: "7px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, color: "var(--text)", fontSize: 12, fontFamily: "inherit" }}
         />
         <button onClick={handleSearch} disabled={!goal.trim() || loading}
           style={{ padding: "7px 16px", background: "rgba(68,162,255,0.15)", border: "1px solid rgba(68,162,255,0.3)", borderRadius: 5, color: "#44a2ff", fontSize: 12, cursor: "pointer", fontWeight: 600 }}>
@@ -181,7 +181,7 @@ function TabMemory() {
           {sugg.slice(0, 4).map((s, i) => (
             <Row key={i}>
               <span style={{ fontSize: 10, color: "#44a2ff" }}>→</span>
-              <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1 }}>{typeof s === "string" ? s : (s.chain || JSON.stringify(s))}</span>
+              <span style={{ fontSize: 11, color: "var(--text)", flex: 1 }}>{typeof s === "string" ? s : (s.chain || JSON.stringify(s))}</span>
             </Row>
           ))}
         </Section>
@@ -194,15 +194,15 @@ function TabMemory() {
             <Row key={i}>
               <Badge s={e.success !== false ? "ok" : "fail"} label={e.success !== false ? "ok" : "fail"} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 11, color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div style={{ fontSize: 11, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {e.input || e.goal || e.description || "(no description)"}
                 </div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>
                   {e.agentId || e.agent || "—"} · {_ago(e.ts)} · {_ms(e.durationMs)}
                 </div>
               </div>
               {e.error && (
-                <span style={{ fontSize: 9, color: "#f55b5b", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={e.error}>
+                <span style={{ fontSize: 9, color: "var(--danger)", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={e.error}>
                   {e.error.slice(0, 40)}
                 </span>
               )}
@@ -219,12 +219,12 @@ function TabMemory() {
             : execHist.slice(0, 12).map((e, i) => (
               <Row key={i}>
                 <Badge s={e.success !== false ? "ok" : "fail"} label={e.success !== false ? "ok" : "fail"} />
-                <span style={{ fontSize: 10, color: "#8994b0", width: 60, flexShrink: 0 }}>{e.agentId || "—"}</span>
-                <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: 10, color: "var(--text-dim)", width: 60, flexShrink: 0 }}>{e.agentId || "—"}</span>
+                <span style={{ fontSize: 11, color: "var(--text)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {e.input || e.description || "(unknown)"}
                 </span>
-                <span style={{ fontSize: 9, color: "#8994b0", flexShrink: 0 }}>{_ago(e.ts)}</span>
-                <span style={{ fontSize: 9, color: "#8994b0", flexShrink: 0, minWidth: 36, textAlign: "right" }}>{_ms(e.durationMs)}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)", flexShrink: 0 }}>{_ago(e.ts)}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)", flexShrink: 0, minWidth: 36, textAlign: "right" }}>{_ms(e.durationMs)}</span>
               </Row>
             ))
         }
@@ -274,15 +274,15 @@ function TabHistory() {
               padding: "3px 10px", fontSize: 10, borderRadius: 3, cursor: "pointer",
               background: filter === f ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
               border: `1px solid ${filter === f ? "rgba(68,162,255,0.35)" : "rgba(255,255,255,0.09)"}`,
-              color: filter === f ? "#44a2ff" : "#8994b0", fontWeight: filter === f ? 600 : 400
+              color: filter === f ? "#44a2ff" : "var(--text-dim)", fontWeight: filter === f ? 600 : 400
             }}>
             {f}
           </button>
         ))}
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search tasks…"
-          style={{ flex: 1, minWidth: 120, padding: "3px 8px", fontSize: 10, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 3, color: "#c8cdd8", fontFamily: "inherit" }} />
+          style={{ flex: 1, minWidth: 120, padding: "3px 8px", fontSize: 10, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 3, color: "var(--text)", fontFamily: "inherit" }} />
         <RefreshBtn onClick={load} loading={loading} />
-        <span style={{ fontSize: 9, color: "#8994b0" }}>{visible.length} / {entries.length}</span>
+        <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{visible.length} / {entries.length}</span>
       </div>
 
       <Section title="Execution timeline">
@@ -296,19 +296,19 @@ function TabHistory() {
                 <div key={i}>
                   <Row onClick={() => setExpanded(isOpen ? null : i)}>
                     <Badge s={e.success !== false ? "ok" : "fail"} label={e.success !== false ? "ok" : "fail"} />
-                    <span style={{ fontSize: 9, color: "#8994b0", width: 64, flexShrink: 0, fontFamily: "monospace" }}>{e.agentId?.slice(0, 8) || "—"}</span>
-                    <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)", width: 64, flexShrink: 0, fontFamily: "monospace" }}>{e.agentId?.slice(0, 8) || "—"}</span>
+                    <span style={{ fontSize: 11, color: "var(--text)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {e.input || e.description || "(unknown)"}
                     </span>
-                    <span style={{ fontSize: 9, color: "#8994b0", flexShrink: 0 }}>{_ms(e.durationMs)}</span>
-                    <span style={{ fontSize: 9, color: "#8994b0", flexShrink: 0, marginLeft: 4 }}>{_ago(e.ts)}</span>
-                    <span style={{ fontSize: 9, color: "#8994b0", marginLeft: 4 }}>{isOpen ? "▲" : "▼"}</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)", flexShrink: 0 }}>{_ms(e.durationMs)}</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)", flexShrink: 0, marginLeft: 4 }}>{_ago(e.ts)}</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)", marginLeft: 4 }}>{isOpen ? "▲" : "▼"}</span>
                   </Row>
                   {isOpen && (
                     <div style={{ padding: "8px 10px", background: "rgba(0,0,0,0.15)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                      {e.output && <div style={{ fontSize: 10, color: "#8994b0", marginBottom: 4 }}><strong style={{ color: "#c8cdd8" }}>Output:</strong> {e.output}</div>}
-                      {e.error  && <div style={{ fontSize: 10, color: "#f55b5b" }}><strong>Error:</strong> {e.error}</div>}
-                      <div style={{ fontSize: 9, color: "#8994b0", marginTop: 4, display: "flex", gap: 16 }}>
+                      {e.output && <div style={{ fontSize: 10, color: "var(--text-dim)", marginBottom: 4 }}><strong style={{ color: "var(--text)" }}>Output:</strong> {e.output}</div>}
+                      {e.error  && <div style={{ fontSize: 10, color: "var(--danger)" }}><strong>Error:</strong> {e.error}</div>}
+                      <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 4, display: "flex", gap: 16 }}>
                         <span>Task: {e.taskId || e.taskType || "—"}</span>
                         <span>Duration: {_ms(e.durationMs)}</span>
                         <span>Agent: {e.agentId || "—"}</span>
@@ -356,9 +356,9 @@ function TabDeploy() {
     <div>
       {surv && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <StatCard label="Health" val={(surv.healthScore ?? surv.score ?? "—") + (surv.healthScore != null ? "%" : "")} color="#52d68a" />
+          <StatCard label="Health" val={(surv.healthScore ?? surv.score ?? "—") + (surv.healthScore != null ? "%" : "")} color="var(--success)" />
           <StatCard label="Deployments" val={surv.totalDeployments ?? "—"} />
-          <StatCard label="Rollbacks" val={surv.totalRollbacks ?? "—"} color={surv.totalRollbacks > 0 ? "#f0b429" : "#8994b0"} />
+          <StatCard label="Rollbacks" val={surv.totalRollbacks ?? "—"} color={surv.totalRollbacks > 0 ? "var(--warning)" : "var(--text-dim)"} />
           <StatCard label="MTTR" val={surv.mttr ? _ms(surv.mttr) : "—"} />
         </div>
       )}
@@ -372,10 +372,10 @@ function TabDeploy() {
               <Row key={i}>
                 <Badge s={d.status || d.state || "unknown"} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 11, color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ fontSize: 11, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {d.name || d.pipeline || d.request || d.id?.slice(0, 20) || "deployment"}
                   </div>
-                  <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{_ago(d.startedAt || d.ts)} · {d.environment || d.env || "—"}</div>
+                  <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{_ago(d.startedAt || d.ts)} · {d.environment || d.env || "—"}</div>
                 </div>
                 {d.rolledBack      && <Badge s="rolled_back" label="rolled back" />}
                 {d.healthOk === false && <Badge s="fail" label="health fail" />}
@@ -390,8 +390,8 @@ function TabDeploy() {
           {(chains.chains || chains.active || []).map((ch, i) => (
             <Row key={i}>
               <Badge s={ch.status || "unknown"} />
-              <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1 }}>{ch.name || ch.id || "chain"}</span>
-              <span style={{ fontSize: 9, color: "#8994b0" }}>{ch.steps || 0} steps</span>
+              <span style={{ fontSize: 11, color: "var(--text)", flex: 1 }}>{ch.name || ch.id || "chain"}</span>
+              <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{ch.steps || 0} steps</span>
             </Row>
           ))}
         </Section>
@@ -400,7 +400,7 @@ function TabDeploy() {
       {snap && Object.keys(snap).length > 1 && (
         <Section title="Deploy center snapshot">
           <div style={{ padding: "8px 10px" }}>
-            <pre style={{ fontSize: 9, color: "#8994b0", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 160, overflow: "auto", margin: 0 }}>
+            <pre style={{ fontSize: 9, color: "var(--text-dim)", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 160, overflow: "auto", margin: 0 }}>
               {JSON.stringify(snap, null, 2).slice(0, 1000)}
             </pre>
           </div>
@@ -462,8 +462,8 @@ function TabTests() {
       {hasTests && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
           <StatCard label="Tested patches" val={Object.keys(testOut).length} />
-          <StatCard label="Total passed" val={totPass} color="#52d68a" />
-          <StatCard label="Total failed" val={totFail} color={totFail > 0 ? "#f55b5b" : "#8994b0"} />
+          <StatCard label="Total passed" val={totPass} color="var(--success)" />
+          <StatCard label="Total failed" val={totFail} color={totFail > 0 ? "var(--danger)" : "var(--text-dim)"} />
         </div>
       )}
 
@@ -474,7 +474,7 @@ function TabTests() {
               padding: "3px 10px", fontSize: 10, borderRadius: 3, cursor: "pointer",
               background: filter === f ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
               border: `1px solid ${filter === f ? "rgba(68,162,255,0.35)" : "rgba(255,255,255,0.09)"}`,
-              color: filter === f ? "#44a2ff" : "#8994b0"
+              color: filter === f ? "#44a2ff" : "var(--text-dim)"
             }}>
             {f}
           </button>
@@ -489,16 +489,16 @@ function TabTests() {
             ? <EmptyState title="No patches in this view" sub={filter === "untested" ? "All patches tested" : "Ask JARVIS to fix a file to create patches"} />
             : visible.map(p => {
               const out = testOut[p.id];
-              const col = out ? (out.fail > 0 ? "#f55b5b" : "#52d68a") : "#8994b0";
+              const col = out ? (out.fail > 0 ? "var(--danger)" : "var(--success)") : "var(--text-dim)";
               return (
                 <div key={p.id}>
                   <Row>
                     <Badge s={p.status || "pending"} />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 11, color: "#c8cdd8", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontSize: 11, color: "var(--text)", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {p.filePath || p.id?.slice(0, 20)}
                       </div>
-                      <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>
+                      <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>
                         +{p.diff?.linesAdded || 0} / −{p.diff?.linesRemoved || 0} · {_ago(p.proposedAt)}
                       </div>
                     </div>
@@ -514,16 +514,16 @@ function TabTests() {
                     <div style={{ padding: "6px 10px", background: "rgba(0,0,0,0.12)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
                       <div style={{ fontSize: 9, fontWeight: 600, color: col, marginBottom: 4 }}>
                         {out.pass ?? 0} pass · {out.fail ?? 0} fail
-                        {out.rolledBack && <span style={{ marginLeft: 8, color: "#f0b429" }}>auto-rolled back</span>}
-                        {out.error && <span style={{ marginLeft: 8, color: "#f55b5b" }}>{out.error}</span>}
+                        {out.rolledBack && <span style={{ marginLeft: 8, color: "var(--warning)" }}>auto-rolled back</span>}
+                        {out.error && <span style={{ marginLeft: 8, color: "var(--danger)" }}>{out.error}</span>}
                       </div>
                       {out.output && (
-                        <pre style={{ fontSize: 8, color: "#8994b0", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 100, overflowY: "auto", margin: 0, fontFamily: "monospace" }}>
+                        <pre style={{ fontSize: 8, color: "var(--text-dim)", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 100, overflowY: "auto", margin: 0, fontFamily: "monospace" }}>
                           {out.output.slice(0, 800)}{out.output.length > 800 ? "\n…" : ""}
                         </pre>
                       )}
                       <button onClick={() => handleVerify(p)} disabled={running === p.id}
-                        style={{ marginTop: 5, fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
+                        style={{ marginTop: 5, fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 3, cursor: "pointer", color: "var(--text-dim)" }}>
                         {running === p.id ? "…" : "Re-run"}
                       </button>
                     </div>
@@ -578,8 +578,8 @@ function TabHealing() {
     <div>
       {summary && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <StatCard label="Open critical" val={summary.openCritical ?? 0} color={summary.openCritical > 0 ? "#f55b5b" : "#52d68a"} />
-          <StatCard label="Open high"    val={summary.openHigh     ?? 0} color={summary.openHigh > 0 ? "#f0b429" : "#8994b0"} />
+          <StatCard label="Open critical" val={summary.openCritical ?? 0} color={summary.openCritical > 0 ? "var(--danger)" : "var(--success)"} />
+          <StatCard label="Open high"    val={summary.openHigh     ?? 0} color={summary.openHigh > 0 ? "var(--warning)" : "var(--text-dim)"} />
           <StatCard label="Heal runs"    val={runs.length} />
           <StatCard label="History"      val={history.length} />
         </div>
@@ -597,19 +597,19 @@ function TabHealing() {
                   <Row onClick={() => setExpanded(isOpen ? null : inc.id)}>
                     <Badge s={inc.severity || "unknown"} />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 11, color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ fontSize: 11, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {inc.title || inc.message || inc.type || inc.id}
                       </div>
-                      <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{inc.service || inc.component || "—"} · {_ago(inc.detectedAt || inc.ts)}</div>
+                      <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{inc.service || inc.component || "—"} · {_ago(inc.detectedAt || inc.ts)}</div>
                     </div>
                     <Badge s={inc.status || "open"} />
-                    <span style={{ fontSize: 9, color: "#8994b0" }}>{isOpen ? "▲" : "▼"}</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{isOpen ? "▲" : "▼"}</span>
                   </Row>
                   {isOpen && (
                     <div style={{ padding: "8px 10px", background: "rgba(0,0,0,0.12)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                      {inc.description && <p style={{ fontSize: 10, color: "#8994b0", marginBottom: 6, marginTop: 0 }}>{inc.description}</p>}
+                      {inc.description && <p style={{ fontSize: 10, color: "var(--text-dim)", marginBottom: 6, marginTop: 0 }}>{inc.description}</p>}
                       {inc.rca && (
-                        <div style={{ fontSize: 10, color: "#c8cdd8", marginBottom: 6 }}>
+                        <div style={{ fontSize: 10, color: "var(--text)", marginBottom: 6 }}>
                           <strong>RCA:</strong> {typeof inc.rca === "string" ? inc.rca : JSON.stringify(inc.rca)}
                         </div>
                       )}
@@ -634,8 +634,8 @@ function TabHealing() {
             <Row key={i}>
               <Badge s={r.status || "unknown"} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 11, color: "#c8cdd8" }}>{r.planId || r.id?.slice(0, 20) || "run"}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{r.mode || "approval_required"} · {_ago(r.startedAt || r.ts)}</div>
+                <div style={{ fontSize: 11, color: "var(--text)" }}>{r.planId || r.id?.slice(0, 20) || "run"}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{r.mode || "approval_required"} · {_ago(r.startedAt || r.ts)}</div>
               </div>
               {r.rolledBack && <Badge s="rolled_back" label="rolled back" />}
             </Row>
@@ -652,8 +652,8 @@ function TabHealing() {
               <Row key={i}>
                 <Badge s={h.success !== false ? "ok" : "fail"} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 11, color: "#c8cdd8" }}>{h.strategy || h.action || h.recId || "heal"}</div>
-                  <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>
+                  <div style={{ fontSize: 11, color: "var(--text)" }}>{h.strategy || h.action || h.recId || "heal"}</div>
+                  <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>
                     {h.targetType || "—"} · attempt {h.attempt || 1} · {_ago(h.ts)}
                   </div>
                 </div>
@@ -668,10 +668,10 @@ function TabHealing() {
             <Row key={i}>
               <Badge s={p.status || "pending"} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 11, color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <div style={{ fontSize: 11, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {p.title || p.description || p.id || "plan"}
                 </div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{p.steps?.length || 0} steps · risk: {p.risk || "—"} · {_ago(p.createdAt)}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{p.steps?.length || 0} steps · risk: {p.risk || "—"} · {_ago(p.createdAt)}</div>
               </div>
               <Badge s={p.risk || "unknown"} label={`risk: ${p.risk || "?"}`} />
             </Row>
@@ -731,10 +731,10 @@ function TabObservability() {
   return (
     <div>
       <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-        <StatCard label="Runtime"       val={runtimeOk ? "Healthy" : (status ? "Degraded" : "Unknown")} color={runtimeOk ? "#52d68a" : "#f0b429"} />
-        <StatCard label="Queue depth"   val={queueDepth} color={queueDepth > 50 ? "#f55b5b" : queueDepth > 10 ? "#f0b429" : "#52d68a"} />
-        <StatCard label="Pending patches" val={pendingPatches.length} color={pendingPatches.length > 0 ? "#f0b429" : "#8994b0"} />
-        <StatCard label="DLQ failures"  val={dlqCount} color={dlqCount > 0 ? "#f55b5b" : "#52d68a"} />
+        <StatCard label="Runtime"       val={runtimeOk ? "Healthy" : (status ? "Degraded" : "Unknown")} color={runtimeOk ? "var(--success)" : "var(--warning)"} />
+        <StatCard label="Queue depth"   val={queueDepth} color={queueDepth > 50 ? "var(--danger)" : queueDepth > 10 ? "var(--warning)" : "var(--success)"} />
+        <StatCard label="Pending patches" val={pendingPatches.length} color={pendingPatches.length > 0 ? "var(--warning)" : "var(--text-dim)"} />
+        <StatCard label="DLQ failures"  val={dlqCount} color={dlqCount > 0 ? "var(--danger)" : "var(--success)"} />
       </div>
 
       {status?.activePipelines?.length > 0 && (
@@ -742,8 +742,8 @@ function TabObservability() {
           {status.activePipelines.map((p, i) => (
             <Row key={i}>
               <Badge s={p.status || "running"} />
-              <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1 }}>{p.name || p.id || "pipeline"}</span>
-              <span style={{ fontSize: 9, color: "#8994b0" }}>{_ago(p.startedAt)}</span>
+              <span style={{ fontSize: 11, color: "var(--text)", flex: 1 }}>{p.name || p.id || "pipeline"}</span>
+              <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{_ago(p.startedAt)}</span>
             </Row>
           ))}
         </Section>
@@ -757,11 +757,11 @@ function TabObservability() {
             : pendingPatches.map(p => (
               <Row key={p.id}>
                 <Badge s="pending" />
-                <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1, fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: 11, color: "var(--text)", flex: 1, fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {p.filePath || p.id?.slice(0, 20)}
                 </span>
-                <span style={{ fontSize: 9, color: "#8994b0" }}>+{p.diff?.linesAdded || 0} / −{p.diff?.linesRemoved || 0}</span>
-                <span style={{ fontSize: 9, color: "#8994b0", marginLeft: 6 }}>{_ago(p.proposedAt)}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)" }}>+{p.diff?.linesAdded || 0} / −{p.diff?.linesRemoved || 0}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)", marginLeft: 6 }}>{_ago(p.proposedAt)}</span>
               </Row>
             ))
         }
@@ -777,11 +777,11 @@ function TabObservability() {
                 {(dlq?.entries || []).slice(0, 6).map((e, i) => (
                   <Row key={i}>
                     <Badge s="fail" label="failed" />
-                    <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: 11, color: "var(--text)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {(e.task?.input || e.input || e.taskId || "").slice(0, 60)}
                     </span>
-                    <span style={{ fontSize: 9, color: "#8994b0" }}>{e.attempts || 0}×</span>
-                    <span style={{ fontSize: 9, color: "#8994b0", marginLeft: 4 }}>{_ago(e.failedAt || e.ts)}</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{e.attempts || 0}×</span>
+                    <span style={{ fontSize: 9, color: "var(--text-dim)", marginLeft: 4 }}>{_ago(e.failedAt || e.ts)}</span>
                   </Row>
                 ))}
                 <div style={{ padding: "8px 10px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
@@ -800,15 +800,15 @@ function TabObservability() {
           <div style={{ padding: "8px 10px" }}>
             {(failIntel.topErrors || []).slice(0, 3).map((e, i) => (
               <div key={i} style={{ display: "flex", gap: 8, padding: "3px 0", borderTop: i > 0 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#f55b5b", width: 20, flexShrink: 0 }}>#{i + 1}</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "var(--danger)", width: 20, flexShrink: 0 }}>#{i + 1}</span>
                 <div>
-                  <div style={{ fontSize: 10, color: "#c8cdd8" }}>{e.message || e.pattern || e}</div>
-                  {e.count && <div style={{ fontSize: 9, color: "#8994b0" }}>{e.count} occurrences</div>}
+                  <div style={{ fontSize: 10, color: "var(--text)" }}>{e.message || e.pattern || e}</div>
+                  {e.count && <div style={{ fontSize: 9, color: "var(--text-dim)" }}>{e.count} occurrences</div>}
                 </div>
               </div>
             ))}
             {!failIntel.topErrors?.length && (
-              <div style={{ fontSize: 10, color: "#8994b0" }}>
+              <div style={{ fontSize: 10, color: "var(--text-dim)" }}>
                 {failIntel.totalFailures != null ? `${failIntel.totalFailures} total failures tracked` : "No failure data yet"}
               </div>
             )}
@@ -819,7 +819,7 @@ function TabObservability() {
       {health && !health.error && (
         <Section title="Runtime health detail">
           <div style={{ padding: "8px 10px" }}>
-            <pre style={{ fontSize: 9, color: "#8994b0", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 160, overflowY: "auto", margin: 0 }}>
+            <pre style={{ fontSize: 9, color: "var(--text-dim)", whiteSpace: "pre-wrap", wordBreak: "break-all", maxHeight: 160, overflowY: "auto", margin: 0 }}>
               {JSON.stringify(health, null, 2).slice(0, 1000)}
             </pre>
           </div>
@@ -846,7 +846,7 @@ export default function EngineeringCenter({ onNavigate }) {
   useEffect(() => { track.event("engineering_center_viewed"); }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#0d1117", color: "var(--text)", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <WorkflowStagePanel currentTab="engineering" onNavigate={onNavigate} compact />
       <style>{`
         @keyframes ec-pulse {
@@ -856,8 +856,8 @@ export default function EngineeringCenter({ onNavigate }) {
       `}</style>
 
       <div style={{ padding: "24px 24px 0" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#e6edf3" }}>Engineering Center</h1>
-        <p style={{ fontSize: 12, color: "#8994b0", margin: "0 0 20px" }}>
+        <h1 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "var(--text)" }}>Engineering Center</h1>
+        <p style={{ fontSize: 12, color: "var(--text-dim)", margin: "0 0 20px" }}>
           Task → Plan → Patch → Test → Deploy → Verify → Heal → Learn
         </p>
 
@@ -868,7 +868,7 @@ export default function EngineeringCenter({ onNavigate }) {
                 padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",
-                color: tab === t.id ? "#44a2ff" : "#8994b0",
+                color: tab === t.id ? "#44a2ff" : "var(--text-dim)",
                 marginBottom: -1, whiteSpace: "nowrap",
               }}>
               {t.label}

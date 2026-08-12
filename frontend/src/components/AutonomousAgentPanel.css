@@ -11,7 +11,7 @@
 }
 .aap-header-title {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: #6b7280; flex: 1;
+  letter-spacing: 0.08em; color: var(--text-dim); flex: 1;
   display: flex; align-items: center; gap: 8px;
 }
 .aap-running-badge {
@@ -30,7 +30,7 @@
 
 .aap-back-btn {
   padding: 4px 10px; border-radius: 4px; font-size: 11px;
-  border: 1px solid #1f2937; background: transparent; color: #6b7280; cursor: pointer;
+  border: 1px solid #1f2937; background: transparent; color: var(--text-dim); cursor: pointer;
 }
 .aap-back-btn:hover { color: #9ca3af; border-color: #374151; }
 
@@ -74,12 +74,12 @@
 .aap-item-goal     { font-size: 12px; color: #9ca3af; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .aap-item-meta     { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #374151; }
 .aap-item-stage    { color: #60a5fa; }
-.aap-item-repairs  { color: #f59e0b; }
-.aap-item-conf     { color: #10b981; }
+.aap-item-repairs  { color: var(--warning); }
+.aap-item-conf     { color: var(--success); }
 
 /* Pulse animation for running */
 .aap-pulse {
-  width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--success);
   animation: aap-pulse 1.5s ease-in-out infinite;
 }
 @keyframes aap-pulse {
@@ -127,15 +127,15 @@
   border: 2px solid #374151; z-index: 1; position: relative; flex-shrink: 0;
 }
 .aap-step-label { font-size: 8px; color: #4b5563; text-align: center; white-space: nowrap; }
-.aap-step--done .aap-step-dot  { background: #10b981; border-color: #10b981; }
-.aap-step--done .aap-step-label{ color: #10b981; }
+.aap-step--done .aap-step-dot  { background: var(--success); border-color: var(--success); }
+.aap-step--done .aap-step-label{ color: var(--success); }
 .aap-step--active .aap-step-dot {
   background: #60a5fa; border-color: #60a5fa;
   animation: aap-pulse 1.5s ease-in-out infinite;
 }
 .aap-step--active .aap-step-label { color: #60a5fa; }
-.aap-step--fail .aap-step-dot  { background: #ef4444; border-color: #ef4444; }
-.aap-step--fail .aap-step-label{ color: #ef4444; }
+.aap-step--fail .aap-step-dot  { background: var(--danger); border-color: var(--danger); }
+.aap-step--fail .aap-step-label{ color: var(--danger); }
 
 .aap-error {
   margin: 8px 12px; padding: 7px 10px;
@@ -169,12 +169,12 @@
 .aap-repair-row--fail { background: rgba(69,10,10,0.2); border-left: 2px solid #7f1d1d; }
 .aap-repair-attempt { font-weight: 600; color: #9ca3af; }
 .aap-repair-pipe    { color: #4b5563; font-family: monospace; font-size: 10px; }
-.aap-repair-reason  { flex: 1; color: #6b7280; font-size: 10px; }
+.aap-repair-reason  { flex: 1; color: var(--text-dim); font-size: 10px; }
 .aap-repair-ts      { color: #374151; font-size: 10px; }
 .aap-repair-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-.aap-dot--ok  { background: #10b981; }
-.aap-dot--err { background: #ef4444; }
+.aap-dot--ok  { background: var(--success); }
+.aap-dot--err { background: var(--danger); }
 
 /* Pipeline ids */
 .aap-pipeline-ids { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -197,7 +197,7 @@
 .aap-btn--pause  { background: #1c1a0a; border-color: #b45309; color: #fbbf24; }
 .aap-btn--resume { background: #052e16; border-color: #059669; color: #34d399; }
 .aap-btn--retry  { background: #1e1b4b; border-color: #4f46e5; color: #a5b4fc; }
-.aap-btn--cancel { background: transparent; border-color: #374151; color: #6b7280; margin-left: auto; }
+.aap-btn--cancel { background: transparent; border-color: #374151; color: var(--text-dim); margin-left: auto; }
 .aap-btn--pause:hover:not(:disabled)  { background: #291f00; }
 .aap-btn--resume:hover:not(:disabled) { background: #064e3b; }
 .aap-btn--retry:hover:not(:disabled)  { background: #2e2769; }
@@ -234,14 +234,14 @@
   display: flex; align-items: center; gap: 8px; padding: 5px 8px;
   border-radius: 4px; font-size: 11px; background: #0a0e17;
 }
-.aap-bench-row--ok   { border-left: 3px solid #10b981; }
-.aap-bench-row--fail { border-left: 3px solid #ef4444; }
+.aap-bench-row--ok   { border-left: 3px solid var(--success); }
+.aap-bench-row--fail { border-left: 3px solid var(--danger); }
 .aap-bench-num     { color: #374151; width: 22px; flex-shrink: 0; }
 .aap-bench-dot     { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .aap-bench-goal    { flex: 1; color: #9ca3af; }
-.aap-bench-status  { color: #6b7280; font-size: 10px; }
-.aap-bench-repairs { color: #f59e0b; font-size: 10px; }
-.aap-bench-conf    { color: #10b981; font-size: 10px; }
+.aap-bench-status  { color: var(--text-dim); font-size: 10px; }
+.aap-bench-repairs { color: var(--warning); font-size: 10px; }
+.aap-bench-conf    { color: var(--success); font-size: 10px; }
 .aap-bench-ms      { color: #374151; font-size: 10px; }
 .aap-bench-err     { color: #f87171; font-size: 10px; }
 

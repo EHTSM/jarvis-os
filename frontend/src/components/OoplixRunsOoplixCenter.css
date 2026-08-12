@@ -70,7 +70,7 @@
 .oro-flow-main{margin:0;font-size:14px;font-weight:700;color:var(--text);line-height:1.55;}
 .oro-flow-result{color:inherit;}
 .oro-flow-tag{padding:3px 10px;border-radius:var(--radius-pill);font-size:12px;font-weight:700;border:1px solid transparent;}
-.oro-flow-tag--tool{background:rgba(78,205,196,.08);color:#4ecdc4;border-color:rgba(78,205,196,.2);}
+.oro-flow-tag--tool{background:rgba(78,205,196,.08);color:var(--accent2);border-color:rgba(78,205,196,.2);}
 .oro-flow-tag--mem{background:rgba(167,139,250,.08);color:#a78bfa;border-color:rgba(167,139,250,.2);}
 .oro-flow-action-row{display:flex;align-items:flex-start;gap:10px;}
 .oro-flow-action-ts{font-size:11.5px;color:var(--text-faint);min-width:58px;flex-shrink:0;}

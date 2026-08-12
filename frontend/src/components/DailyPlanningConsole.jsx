@@ -14,12 +14,12 @@ function Kpi({ value, label, color }) {
   );
 }
 
-const PRIORITY_COLOR = { urgent: "#f55b5b", high: "#f0b429", normal: "#5dc8f5", low: "#8994b0" };
+const PRIORITY_COLOR = { urgent: "var(--danger)", high: "var(--warning)", normal: "var(--info)", low: "var(--text-dim)" };
 
 function TaskRow({ task, onComplete, onDelete, busy }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: PRIORITY_COLOR[task.priority] || "#8994b0", flexShrink: 0 }} />
+      <span style={{ width: 8, height: 8, borderRadius: "50%", background: PRIORITY_COLOR[task.priority] || "var(--text-dim)", flexShrink: 0 }} />
       <span style={{ flex: 1, textDecoration: task.done ? "line-through" : "none", opacity: task.done ? 0.5 : 1 }}>{task.title}</span>
       {task.dueDate && <span style={{ color: "var(--text-dim, #8994b0)", fontFamily: "monospace" }}>{task.dueDate}</span>}
       {!task.done && (
@@ -63,7 +63,7 @@ export default function DailyPlanningConsole() {
   if (loading && !agenda) return <div style={{ padding: 24, color: "var(--text-dim, #8994b0)" }}>Loading daily agenda…</div>;
   if (error && !agenda) return (
     <div style={{ padding: 24 }}>
-      <div style={{ color: "#f55b5b", marginBottom: 8 }}>⚠ {error}</div>
+      <div style={{ color: "var(--danger)", marginBottom: 8 }}>⚠ {error}</div>
       <button onClick={refresh}>Retry</button>
     </div>
   );
@@ -78,10 +78,10 @@ export default function DailyPlanningConsole() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
-        <Kpi value={t.overdue?.length ?? 0} label="Overdue" color="#f55b5b" />
-        <Kpi value={t.dueToday?.length ?? 0} label="Due Today" color="#f0b429" />
-        <Kpi value={t.totalOpen ?? 0} label="Open Tasks" color="#5dc8f5" />
-        <Kpi value={agenda?.founderContext?.pendingDecisions ?? "—"} label="Pending Decisions" color="#7c6fff" />
+        <Kpi value={t.overdue?.length ?? 0} label="Overdue" color="var(--danger)" />
+        <Kpi value={t.dueToday?.length ?? 0} label="Due Today" color="var(--warning)" />
+        <Kpi value={t.totalOpen ?? 0} label="Open Tasks" color="var(--info)" />
+        <Kpi value={agenda?.founderContext?.pendingDecisions ?? "—"} label="Pending Decisions" color="var(--accent)" />
       </div>
 
       <form onSubmit={addTask} style={{ display: "flex", gap: 8, marginBottom: 20 }}>
@@ -98,7 +98,7 @@ export default function DailyPlanningConsole() {
 
       {t.overdue?.length > 0 && (
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "#f55b5b", marginBottom: 8 }}>Overdue</div>
+          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "var(--danger)", marginBottom: 8 }}>Overdue</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {t.overdue.map(task => <TaskRow key={task.id} task={task} onComplete={complete} onDelete={remove} busy={busy} />)}
           </div>

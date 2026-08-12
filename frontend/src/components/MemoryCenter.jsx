@@ -17,7 +17,7 @@ const MEMORY_TYPES = [
   { id: "user",     label: "User",     icon: "◎", color: "var(--accent)"  },
   { id: "company",  label: "Company",  icon: "◉", color: "var(--warning)" },
   { id: "project",  label: "Project",  icon: "◈", color: "var(--accent2)" },
-  { id: "workflow", label: "Workflow", icon: "▷", color: "#52d68a"        },
+  { id: "workflow", label: "Workflow", icon: "▷", color: "var(--success)"        },
   { id: "agent",    label: "Agent",    icon: "⬟", color: "var(--danger)"  },
 ];
 

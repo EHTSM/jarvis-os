@@ -229,7 +229,7 @@
 .cmd-stop-confirm-btn--stop {
   background: rgba(245,91,91,0.15);
   border: 1px solid rgba(245,91,91,0.30);
-  color: #f55b5b;
+  color: var(--danger);
 }
 .cmd-stop-confirm-btn--stop:hover { background: rgba(245,91,91,0.25); }
 
@@ -793,11 +793,11 @@
 
 /* State colours for timeline dots */
 .cmd-timeline-dot.exec-state--running  { background: var(--accent); border-color: rgba(124,111,255,0.4); box-shadow: 0 0 6px rgba(124,111,255,0.5); }
-.cmd-timeline-dot.exec-state--thinking { background: #4ecdc4; border-color: rgba(78,205,196,0.4); }
+.cmd-timeline-dot.exec-state--thinking { background: var(--accent2); border-color: rgba(78,205,196,0.4); }
 .cmd-timeline-dot.exec-state--done     { background: var(--success); border-color: rgba(82,214,138,0.3); }
 .cmd-timeline-dot.exec-state--error    { background: var(--danger); border-color: rgba(245,91,91,0.4); }
 .cmd-timeline-dot.exec-state--queued   { background: var(--accent); opacity: 0.5; }
-.cmd-timeline-dot.exec-state--paused   { background: #f0b429; border-color: rgba(240,180,41,0.35); }
+.cmd-timeline-dot.exec-state--paused   { background: var(--warning); border-color: rgba(240,180,41,0.35); }
 .cmd-timeline-dot.exec-state--idle     { background: rgba(255,255,255,0.20); }
 
 /* Placeholder dots when no data */

@@ -72,7 +72,7 @@
 
 .cb-breakeven {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-dim);
 }
 .cb-breakeven b { color: #e2e8f0; }
 
@@ -85,7 +85,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #64748b;
+  color: var(--text-dim);
   margin: 16px 0 8px;
   cursor: pointer;
   user-select: none;
@@ -111,7 +111,7 @@
 
 .cb-check-detail {
   font-size: 11px;
-  color: #64748b;
+  color: var(--text-dim);
   font-family: var(--font-mono, monospace);
 }
 .cb-check-detail b { color: #94a3b8; }
@@ -132,7 +132,7 @@
   font-size: 12px;
 }
 .cb-pl-row:last-child { border-bottom: none; }
-.cb-pl-row--header { background: rgba(255,255,255,0.04); font-weight: 700; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.cb-pl-row--header { background: rgba(255,255,255,0.04); font-weight: 700; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
 .cb-pl-row span:last-child { font-family: var(--font-mono, monospace); color: #e2e8f0; }
 
 /* Provider rows */
@@ -145,7 +145,7 @@
   font-size: 12px;
 }
 .cb-prov-name { flex: 1; color: #e2e8f0; }
-.cb-prov-reqs { color: #64748b; font-size: 11px; }
+.cb-prov-reqs { color: var(--text-dim); font-size: 11px; }
 .cb-prov-tok  { color: #94a3b8; font-size: 11px; font-family: var(--font-mono, monospace); }
 .cb-prov-cost { color: #4ade80; font-family: var(--font-mono, monospace); }
 

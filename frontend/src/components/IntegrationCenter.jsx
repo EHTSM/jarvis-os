@@ -321,11 +321,11 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
           {storedRecord.rotationDueAt && (
             <p className="ic-detail-sub">
               Rotation due: {new Date(storedRecord.rotationDueAt).toLocaleDateString()}
-              {new Date(storedRecord.rotationDueAt) < new Date() && <span style={{ color: '#f55b5b', marginLeft: 6 }}>⚠ overdue</span>}
+              {new Date(storedRecord.rotationDueAt) < new Date() && <span style={{ color: 'var(--danger)', marginLeft: 6 }}>⚠ overdue</span>}
             </p>
           )}
           {storedRecord.lastFailure?.reason && (
-            <p className="ic-detail-sub" style={{ color: '#f55b5b' }}>
+            <p className="ic-detail-sub" style={{ color: 'var(--danger)' }}>
               Last failure: {storedRecord.lastFailure.reason} ({storedRecord.lastFailure.ts ? new Date(storedRecord.lastFailure.ts).toLocaleString() : ""})
             </p>
           )}

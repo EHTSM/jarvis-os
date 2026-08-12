@@ -38,7 +38,7 @@ function StatCard({ label, value, sub, accent }) {
 
 function ScoreBar({ label, value, accent }) {
   const pct = Math.min(100, Math.max(0, value || 0));
-  const col  = accent || (pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#ef4444");
+  const col  = accent || (pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "var(--danger)");
   return (
     <div className="cseo-score-row">
       <span className="cseo-score-label">{label}</span>
@@ -87,9 +87,9 @@ function DashboardPanel() {
       </div>
 
       <div className="cseo-stats-grid">
-        <StatCard label="Organic Score"  value={`${d.organicScore}/100`} accent="#22c55e" />
+        <StatCard label="Organic Score"  value={`${d.organicScore}/100`} accent="var(--success)" />
         <StatCard label="Articles"       value={d.content?.totalArticles}   sub={`${d.seo?.publishedCount} published`} />
-        <StatCard label="Avg SEO Score"  value={d.seo?.avgArticleSEO}       accent="#7c6fff" />
+        <StatCard label="Avg SEO Score"  value={d.seo?.avgArticleSEO}       accent="var(--accent)" />
         <StatCard label="Landing Pages"  value={d.content?.totalLandingPages} sub={`Avg conv. ${d.content?.avgConversionScore}`} />
         <StatCard label="Docs"           value={d.content?.totalDocs} />
         <StatCard label="Keywords"       value={d.keywords?.total}           sub={`${d.keywords?.highOpportunity} high opp.`} />
@@ -100,19 +100,19 @@ function DashboardPanel() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
         <div className="cseo-card">
           <div className="cseo-card-title">SEO Health</div>
-          <ScoreBar label="Organic Score"     value={d.organicScore}           accent="#22c55e" />
-          <ScoreBar label="Avg Article SEO"   value={d.seo?.avgArticleSEO}     accent="#7c6fff" />
-          <ScoreBar label="Avg Conv. Score"   value={d.content?.avgConversionScore} accent="#4ecdc4" />
-          <ScoreBar label="KW Coverage"       value={Math.min(100, (d.keywords?.total || 0) * 4)} accent="#f59e0b" />
+          <ScoreBar label="Organic Score"     value={d.organicScore}           accent="var(--success)" />
+          <ScoreBar label="Avg Article SEO"   value={d.seo?.avgArticleSEO}     accent="var(--accent)" />
+          <ScoreBar label="Avg Conv. Score"   value={d.content?.avgConversionScore} accent="var(--accent2)" />
+          <ScoreBar label="KW Coverage"       value={Math.min(100, (d.keywords?.total || 0) * 4)} accent="var(--warning)" />
         </div>
         <div className="cseo-card">
           <div className="cseo-card-title">Traffic Projection (Organic)</div>
           {d.trafficProjection && (
             <div className="cseo-projection">
               {[
-                { label: "Month 1", value: d.trafficProjection.month1, color: "#4ecdc4" },
-                { label: "Month 3", value: d.trafficProjection.month3, color: "#7c6fff" },
-                { label: "Month 6", value: d.trafficProjection.month6, color: "#22c55e" },
+                { label: "Month 1", value: d.trafficProjection.month1, color: "var(--accent2)" },
+                { label: "Month 3", value: d.trafficProjection.month3, color: "var(--accent)" },
+                { label: "Month 6", value: d.trafficProjection.month6, color: "var(--success)" },
               ].map(p => (
                 <div key={p.label} className="cseo-proj-row">
                   <span className="cseo-proj-label">{p.label}</span>
@@ -129,9 +129,9 @@ function DashboardPanel() {
         <div className="cseo-card-title">Keyword Intelligence Summary</div>
         <div className="cseo-stats-grid" style={{ marginTop: 8 }}>
           <StatCard label="Total Keywords"     value={d.keywords?.total} />
-          <StatCard label="Avg Opportunity"    value={d.keywords?.avgOpportunity} accent="#7c6fff" />
-          <StatCard label="High Opportunity"   value={d.keywords?.highOpportunity} accent="#22c55e" />
-          <StatCard label="Competitor Gaps"    value={d.keywords?.competitorGaps} accent="#f59e0b" />
+          <StatCard label="Avg Opportunity"    value={d.keywords?.avgOpportunity} accent="var(--accent)" />
+          <StatCard label="High Opportunity"   value={d.keywords?.highOpportunity} accent="var(--success)" />
+          <StatCard label="Competitor Gaps"    value={d.keywords?.competitorGaps} accent="var(--warning)" />
           <StatCard label="Rising Trends"      value={d.keywords?.rising} />
           <StatCard label="Emerging"           value={d.keywords?.emerging} />
         </div>
@@ -146,7 +146,7 @@ function DashboardPanel() {
                   {k.competitorGap && <Chip color="green">gap</Chip>}
                   <span className="cseo-row-meta">{k.volume?.toLocaleString()}/mo</span>
                   <span className="cseo-row-meta">diff {k.difficulty}</span>
-                  <span className="cseo-opp" style={{ color: k.opportunityScore >= 70 ? "#22c55e" : "#f59e0b" }}>⬡ {k.opportunityScore}</span>
+                  <span className="cseo-opp" style={{ color: k.opportunityScore >= 70 ? "var(--success)" : "var(--warning)" }}>⬡ {k.opportunityScore}</span>
                 </div>
               ))}
             </div>
@@ -217,9 +217,9 @@ function BlogStudioPanel() {
           </div>
           <div className="cseo-stats-grid" style={{ margin: "8px 0" }}>
             <StatCard label="Total"     value={articles?.articles?.length || 0} />
-            <StatCard label="Published" value={(articles?.articles || []).filter(a => a.status === "published").length} accent="#22c55e" />
+            <StatCard label="Published" value={(articles?.articles || []).filter(a => a.status === "published").length} accent="var(--success)" />
             <StatCard label="Draft"     value={(articles?.articles || []).filter(a => a.status === "draft").length} />
-            <StatCard label="Avg SEO"   value={Math.round((articles?.articles || []).reduce((s, a) => s + (a.seoScore || 0), 0) / Math.max(1, articles?.articles?.length || 1))} accent="#7c6fff" />
+            <StatCard label="Avg SEO"   value={Math.round((articles?.articles || []).reduce((s, a) => s + (a.seoScore || 0), 0) / Math.max(1, articles?.articles?.length || 1))} accent="var(--accent)" />
           </div>
           <div className="cseo-list">
             {list.length === 0 && <div className="cseo-empty">No articles yet. Create your first AI-powered post.</div>}
@@ -234,7 +234,7 @@ function BlogStudioPanel() {
                   )}
                 </div>
                 <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                  <div className="cseo-score-pill" style={{ background: a.seoScore >= 70 ? "#22c55e22" : "#f59e0b22", color: a.seoScore >= 70 ? "#22c55e" : "#f59e0b" }}>SEO {a.seoScore}</div>
+                  <div className="cseo-score-pill" style={{ background: a.seoScore >= 70 ? "#22c55e22" : "#f59e0b22", color: a.seoScore >= 70 ? "var(--success)" : "var(--warning)" }}>SEO {a.seoScore}</div>
                   <Chip color={a.status === "published" ? "green" : "gray"}>{a.status}</Chip>
                   {a.status === "draft" && <button className="cseo-btn-sm" onClick={e => { e.stopPropagation(); publish(a.id); }}>Publish</button>}
                 </div>
@@ -329,10 +329,10 @@ function SEOPanel() {
       {view === "audit" && audit?.audit && (
         <div>
           <div className="cseo-stats-grid" style={{ marginBottom: 12 }}>
-            <StatCard label="SEO Score"      value={`${audit.audit.score}%`}      accent="#22c55e" />
+            <StatCard label="SEO Score"      value={`${audit.audit.score}%`}      accent="var(--success)" />
             <StatCard label="Passing"        value={`${audit.audit.passing}/${audit.audit.total}`} />
-            <StatCard label="Critical Issues" value={audit.audit.criticalIssues}  accent="#ef4444" />
-            <StatCard label="Verdict"        value={audit.audit.verdict?.replace(/_/g," ")} accent={audit.audit.score >= 80 ? "#22c55e" : "#f59e0b"} />
+            <StatCard label="Critical Issues" value={audit.audit.criticalIssues}  accent="var(--danger)" />
+            <StatCard label="Verdict"        value={audit.audit.verdict?.replace(/_/g," ")} accent={audit.audit.score >= 80 ? "var(--success)" : "var(--warning)"} />
           </div>
           <ScoreBar label="Overall SEO Score" value={audit.audit.score} />
           <div className="cseo-list" style={{ marginTop: 12 }}>
@@ -463,7 +463,7 @@ function SEOPanel() {
             { tag: "<meta name=\"viewport\">", rule: "width=device-width, initial-scale=1", status: "pass" },
           ].map(m => (
             <div key={m.tag} className="cseo-audit-row">
-              <span style={{ color: "#22c55e", fontWeight: 700 }}>✓</span>
+              <span style={{ color: "var(--success)", fontWeight: 700 }}>✓</span>
               <div style={{ flex: 1 }}>
                 <code className="cseo-code">{m.tag}</code>
                 <div className="cseo-row-meta">{m.rule}</div>
@@ -609,8 +609,8 @@ function LandingPagePanel() {
         <div>
           <div className="cseo-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"     value={list.length} />
-            <StatCard label="Avg SEO"   value={Math.round(list.reduce((s, l) => s + (l.seoScore || 0), 0) / Math.max(1, list.length))} accent="#7c6fff" />
-            <StatCard label="Avg Conv." value={Math.round(list.reduce((s, l) => s + (l.conversionScore || 0), 0) / Math.max(1, list.length))} accent="#22c55e" />
+            <StatCard label="Avg SEO"   value={Math.round(list.reduce((s, l) => s + (l.seoScore || 0), 0) / Math.max(1, list.length))} accent="var(--accent)" />
+            <StatCard label="Avg Conv." value={Math.round(list.reduce((s, l) => s + (l.conversionScore || 0), 0) / Math.max(1, list.length))} accent="var(--success)" />
             <StatCard label="Published" value={list.filter(l => l.status === "published").length} />
           </div>
           <div className="cseo-list">
@@ -623,8 +623,8 @@ function LandingPagePanel() {
                   <div className="cseo-row-meta">/{lp.slug} · Audience: {lp.audience} · KW: {lp.keyword}</div>
                 </div>
                 <div className="cseo-score-pills">
-                  <div className="cseo-score-pill" style={{ background: lp.seoScore >= 70 ? "#22c55e22" : "#f59e0b22", color: lp.seoScore >= 70 ? "#22c55e" : "#f59e0b" }}>SEO {lp.seoScore}</div>
-                  <div className="cseo-score-pill" style={{ background: lp.conversionScore >= 70 ? "#4ecdc422" : "#7c6fff22", color: lp.conversionScore >= 70 ? "#4ecdc4" : "#7c6fff" }}>Conv {lp.conversionScore}</div>
+                  <div className="cseo-score-pill" style={{ background: lp.seoScore >= 70 ? "#22c55e22" : "#f59e0b22", color: lp.seoScore >= 70 ? "var(--success)" : "var(--warning)" }}>SEO {lp.seoScore}</div>
+                  <div className="cseo-score-pill" style={{ background: lp.conversionScore >= 70 ? "#4ecdc422" : "#7c6fff22", color: lp.conversionScore >= 70 ? "var(--accent2)" : "var(--accent)" }}>Conv {lp.conversionScore}</div>
                 </div>
                 <Chip color={lp.status === "published" ? "green" : "gray"}>{lp.status}</Chip>
               </div>
@@ -805,10 +805,10 @@ function CalendarPanel() {
         <div className="cseo-stats-grid" style={{ margin: "8px 0" }}>
           <StatCard label="Total"       value={stats.total} />
           <StatCard label="This Month"  value={stats.thisMonth} />
-          <StatCard label="Approved"    value={stats.byState?.approved || 0}    accent="#22c55e" />
-          <StatCard label="In Review"   value={stats.byState?.["in-review"] || 0} accent="#f59e0b" />
-          <StatCard label="Scheduled"   value={stats.byState?.scheduled || 0}   accent="#7c6fff" />
-          <StatCard label="Published"   value={stats.byState?.published || 0}   accent="#4ecdc4" />
+          <StatCard label="Approved"    value={stats.byState?.approved || 0}    accent="var(--success)" />
+          <StatCard label="In Review"   value={stats.byState?.["in-review"] || 0} accent="var(--warning)" />
+          <StatCard label="Scheduled"   value={stats.byState?.scheduled || 0}   accent="var(--accent)" />
+          <StatCard label="Published"   value={stats.byState?.published || 0}   accent="var(--accent2)" />
         </div>
       )}
 
@@ -845,8 +845,8 @@ function CalendarPanel() {
                 <div className="cseo-row-meta">{e.channel} · {e.type} · {e.scheduledDate || "unscheduled"}</div>
               </div>
               <Chip color={STATE_COLOR[e.approvalState] || "gray"}>{e.approvalState}</Chip>
-              <button className="cseo-btn-sm" style={{ color: "#22c55e" }} onClick={() => approve(e.id)}>Approve</button>
-              <button className="cseo-btn-sm" style={{ color: "#ef4444" }} onClick={() => reject(e.id)}>Reject</button>
+              <button className="cseo-btn-sm" style={{ color: "var(--success)" }} onClick={() => approve(e.id)}>Approve</button>
+              <button className="cseo-btn-sm" style={{ color: "var(--danger)" }} onClick={() => reject(e.id)}>Reject</button>
             </div>
           ))}
         </div>
@@ -897,8 +897,8 @@ function KeywordsPanel() {
   const all = keywords?.keywords || [];
   const filtered = filter === "all" ? all : all.filter(k => k.intent === filter);
 
-  const OPP_COLOR = (s) => s >= 80 ? "#22c55e" : s >= 60 ? "#4ecdc4" : s >= 40 ? "#f59e0b" : "#ef4444";
-  const TREND_COLOR = { rising: "#22c55e", emerging: "#7c6fff", stable: "#888", declining: "#ef4444" };
+  const OPP_COLOR = (s) => s >= 80 ? "var(--success)" : s >= 60 ? "var(--accent2)" : s >= 40 ? "var(--warning)" : "var(--danger)";
+  const TREND_COLOR = { rising: "var(--success)", emerging: "var(--accent)", stable: "#888", declining: "var(--danger)" };
 
   return (
     <div>
@@ -914,11 +914,11 @@ function KeywordsPanel() {
       {intel?.intelligence && (
         <div className="cseo-stats-grid" style={{ margin: "8px 0" }}>
           <StatCard label="Total"           value={intel.intelligence.total} />
-          <StatCard label="Avg Opportunity" value={intel.intelligence.avgOpportunity} accent="#7c6fff" />
-          <StatCard label="High Opp (70+)"  value={intel.intelligence.highOpportunity} accent="#22c55e" />
-          <StatCard label="Competitor Gaps" value={intel.intelligence.competitorGaps}  accent="#f59e0b" />
+          <StatCard label="Avg Opportunity" value={intel.intelligence.avgOpportunity} accent="var(--accent)" />
+          <StatCard label="High Opp (70+)"  value={intel.intelligence.highOpportunity} accent="var(--success)" />
+          <StatCard label="Competitor Gaps" value={intel.intelligence.competitorGaps}  accent="var(--warning)" />
           <StatCard label="Rising"          value={intel.intelligence.rising} />
-          <StatCard label="Emerging"        value={intel.intelligence.emerging}  accent="#7c6fff" />
+          <StatCard label="Emerging"        value={intel.intelligence.emerging}  accent="var(--accent)" />
         </div>
       )}
 
@@ -1064,7 +1064,7 @@ function BrandVoicePanel() {
                 <div style={{ flex: 1 }}>
                   <div className="cseo-row-name">{g.term}</div>
                   <div className="cseo-row-meta">{g.definition}</div>
-                  {g.avoid && <div className="cseo-row-meta">Avoid: <span style={{ color: "#ef4444" }}>{g.avoid}</span></div>}
+                  {g.avoid && <div className="cseo-row-meta">Avoid: <span style={{ color: "var(--danger)" }}>{g.avoid}</span></div>}
                 </div>
                 <Chip color="green">✓ {g.preferred}</Chip>
               </div>
@@ -1097,18 +1097,18 @@ function BrandVoicePanel() {
           {checkResult && (
             <div className="cseo-card" style={{ marginTop: 12 }}>
               <div className="cseo-stats-grid">
-                <StatCard label="Brand Score" value={`${checkResult.score}/100`} accent={checkResult.score >= 80 ? "#22c55e" : "#ef4444"} />
-                <StatCard label="Violations" value={checkResult.violations?.length || 0} accent={checkResult.violations?.length ? "#ef4444" : "#22c55e"} />
-                <StatCard label="Suggestions" value={checkResult.suggestions?.length || 0} accent={checkResult.suggestions?.length ? "#f59e0b" : "#22c55e"} />
-                <StatCard label="Passed" value={checkResult.passed ? "Yes" : "No"} accent={checkResult.passed ? "#22c55e" : "#ef4444"} />
+                <StatCard label="Brand Score" value={`${checkResult.score}/100`} accent={checkResult.score >= 80 ? "var(--success)" : "var(--danger)"} />
+                <StatCard label="Violations" value={checkResult.violations?.length || 0} accent={checkResult.violations?.length ? "var(--danger)" : "var(--success)"} />
+                <StatCard label="Suggestions" value={checkResult.suggestions?.length || 0} accent={checkResult.suggestions?.length ? "var(--warning)" : "var(--success)"} />
+                <StatCard label="Passed" value={checkResult.passed ? "Yes" : "No"} accent={checkResult.passed ? "var(--success)" : "var(--danger)"} />
               </div>
               {checkResult.violations?.length > 0 && (
                 <>
-                  <div className="cseo-sub-title" style={{ color: "#ef4444" }}>Violations</div>
+                  <div className="cseo-sub-title" style={{ color: "var(--danger)" }}>Violations</div>
                   <div className="cseo-list">
                     {checkResult.violations.map((v, i) => (
                       <div key={i} className="cseo-row">
-                        <span style={{ color: "#ef4444" }}>✗</span>
+                        <span style={{ color: "var(--danger)" }}>✗</span>
                         <span className="cseo-row-name">{v.found}</span>
                         <span className="cseo-row-meta">{v.suggestion}</span>
                       </div>
@@ -1118,11 +1118,11 @@ function BrandVoicePanel() {
               )}
               {checkResult.suggestions?.length > 0 && (
                 <>
-                  <div className="cseo-sub-title" style={{ color: "#f59e0b" }}>Terminology Suggestions</div>
+                  <div className="cseo-sub-title" style={{ color: "var(--warning)" }}>Terminology Suggestions</div>
                   <div className="cseo-list">
                     {checkResult.suggestions.map((s, i) => (
                       <div key={i} className="cseo-row">
-                        <span style={{ color: "#f59e0b" }}>⚠</span>
+                        <span style={{ color: "var(--warning)" }}>⚠</span>
                         <span className="cseo-row-name">{s.found}</span>
                         <span>→</span>
                         <Chip color="green">{s.preferred}</Chip>
@@ -1152,7 +1152,7 @@ function BenchmarkPanel() {
     setRunning(false);
   };
 
-  const READINESS_COLOR = { production_ready: "#22c55e", nearly_ready: "#f59e0b", needs_work: "#ef4444" };
+  const READINESS_COLOR = { production_ready: "var(--success)", nearly_ready: "var(--warning)", needs_work: "var(--danger)" };
 
   return (
     <div>
@@ -1166,16 +1166,16 @@ function BenchmarkPanel() {
         <>
           <div className="cseo-stats-grid" style={{ marginBottom: 16 }}>
             <StatCard label="Score"       value={`${result.score}%`}              accent={READINESS_COLOR[result.organicReadiness]} />
-            <StatCard label="Passed"      value={`${result.passing}/${result.total}`} accent="#22c55e" />
+            <StatCard label="Passed"      value={`${result.passing}/${result.total}`} accent="var(--success)" />
             <StatCard label="Readiness"   value={result.organicReadiness?.replace(/_/g," ")} accent={READINESS_COLOR[result.organicReadiness]} />
-            <StatCard label="Regression"  value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "#22c55e" : "#ef4444"} />
+            <StatCard label="Regression"  value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "var(--success)" : "var(--danger)"} />
           </div>
           <div className="cseo-list">
             {(result.checks || []).map(c => (
               <div key={c.id} className={`cseo-row${c.ok ? "" : " cseo-row-fail"}`}>
-                <span style={{ color: c.ok ? "#22c55e" : "#ef4444", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
+                <span style={{ color: c.ok ? "var(--success)" : "var(--danger)", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
                 <span className="cseo-row-name" style={{ flex: 1 }}>{c.label}</span>
-                {c.error && <span className="cseo-row-meta" style={{ color: "#ef4444" }}>{c.error}</span>}
+                {c.error && <span className="cseo-row-meta" style={{ color: "var(--danger)" }}>{c.error}</span>}
                 <Chip color={c.ok ? "green" : "red"}>{c.ok ? "pass" : "fail"}</Chip>
               </div>
             ))}

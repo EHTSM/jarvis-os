@@ -90,7 +90,7 @@
   flex-shrink: 0;
 }
 .ctx-dot--green { background: #22c55e; box-shadow: 0 0 4px #22c55e88; animation: ctx-pulse-anim 2s ease-in-out infinite; }
-.ctx-dot--red   { background: #ef4444; }
+.ctx-dot--red   { background: var(--danger); }
 @keyframes ctx-pulse-anim {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -290,7 +290,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 10px;
-  color: #64748b;
+  color: var(--text-dim);
   transition: border-color 0.15s, color 0.15s, background 0.15s;
   font-family: inherit;
 }

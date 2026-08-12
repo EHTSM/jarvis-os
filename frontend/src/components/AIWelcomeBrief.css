@@ -81,8 +81,8 @@
 }
 .awb-summary-val--warn { color: #eab308; }
 .awb-summary-val--info { color: #3b82f6; }
-.awb-summary-val--ok   { color: #22c55e; }
-.awb-summary-val--crit { color: #ef4444; }
+.awb-summary-val--ok   { color: var(--success); }
+.awb-summary-val--crit { color: var(--danger); }
 
 /* Smells */
 .awb-smells {

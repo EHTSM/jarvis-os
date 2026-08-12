@@ -23,11 +23,11 @@ const DEPARTMENTS = [
     ],
   },
   {
-    id: "marketing", name: "Marketing", icon: "◉", color: "#f0b429",
+    id: "marketing", name: "Marketing", icon: "◉", color: "var(--warning)",
     mission: "Run campaigns, manage content distribution, track channel performance.",
     agents: [
-      { name: "Marketing Agent", icon: "◉", color: "#f0b429", status: "active", model: "claude-sonnet-4-6" },
-      { name: "SEO Agent",       icon: "⌕", color: "#4ecdc4", status: "active", model: "claude-sonnet-4-6" },
+      { name: "Marketing Agent", icon: "◉", color: "var(--warning)", status: "active", model: "claude-sonnet-4-6" },
+      { name: "SEO Agent",       icon: "⌕", color: "var(--accent2)", status: "active", model: "claude-sonnet-4-6" },
     ],
     activeWork: [
       { title: "LinkedIn post: Phase 9 AI OS release",        status: "in_progress" },
@@ -42,10 +42,10 @@ const DEPARTMENTS = [
     ],
   },
   {
-    id: "support", name: "Support", icon: "◎", color: "#52d68a",
+    id: "support", name: "Support", icon: "◎", color: "var(--success)",
     mission: "Triage tickets, draft responses from knowledge base, escalate critical issues.",
     agents: [
-      { name: "Support Agent", icon: "◎", color: "#52d68a", status: "active", model: "claude-haiku-4-5-20251001" },
+      { name: "Support Agent", icon: "◎", color: "var(--success)", status: "active", model: "claude-haiku-4-5-20251001" },
     ],
     activeWork: [
       { title: "Ticket #1024: WhatsApp QR not scanning",      status: "in_progress" },
@@ -79,10 +79,10 @@ const DEPARTMENTS = [
     ],
   },
   {
-    id: "engineering", name: "Engineering", icon: "⬡", color: "#e6edf3",
+    id: "engineering", name: "Engineering", icon: "⬡", color: "var(--text)",
     mission: "Write, review, test, and ship code. Maintain infra. Ensure quality and reliability.",
     agents: [
-      { name: "Dev Agent",      icon: "⬡", color: "#e6edf3", status: "idle", model: "claude-opus-4-8"    },
+      { name: "Dev Agent",      icon: "⬡", color: "var(--text)", status: "idle", model: "claude-opus-4-8"    },
       { name: "Research Agent", icon: "⊕", color: "#a78bfa", status: "idle", model: "claude-opus-4-8"    },
     ],
     activeWork: [

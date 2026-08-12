@@ -257,13 +257,13 @@ export default function JarvisBrainCenter({ onNavigate }) {
             ) : (
               missions.map((m, i) => {
                 const pct = m.progress ?? (m.completedSubtasks && m.totalSubtasks ? Math.round(m.completedSubtasks / m.totalSubtasks * 100) : 0);
-                const statusColor = STATUS_COLORS[m.status] ?? "#64748b";
+                const statusColor = STATUS_COLORS[m.status] ?? "var(--text-dim)";
                 return (
                   <div key={m.id ?? i} className="jbc-goal-row" style={{ marginBottom: 8 }}>
                     <span className="jbc-goal-icon">🎯</span>
                     <div className="jbc-goal-info">
                       <div className="jbc-goal-name">{m.title ?? m.name ?? m.goal ?? `Mission ${i + 1}`}</div>
-                      <div style={{ fontSize: 10, color: "#64748b", marginBottom: 4 }}>
+                      <div style={{ fontSize: 10, color: "var(--text-dim)", marginBottom: 4 }}>
                         {m.description && <span style={{ marginRight: 8 }}>{m.description.slice(0, 80)}</span>}
                         {m.createdAt && <span>{new Date(m.createdAt).toLocaleDateString()}</span>}
                       </div>
@@ -298,11 +298,11 @@ export default function JarvisBrainCenter({ onNavigate }) {
                     <div className="jbc-panel-title" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span>
                         {h.label ?? h.name ?? h.horizon ?? `Horizon ${i + 1}`}
-                        {h.timeframe && <span style={{ fontSize: 10, color: "#64748b", marginLeft: 8 }}>{h.timeframe}</span>}
+                        {h.timeframe && <span style={{ fontSize: 10, color: "var(--text-dim)", marginLeft: 8 }}>{h.timeframe}</span>}
                       </span>
-                      <span style={{ fontSize: 10, color: "#64748b" }}>{done}/{objectives.length} done</span>
+                      <span style={{ fontSize: 10, color: "var(--text-dim)" }}>{done}/{objectives.length} done</span>
                     </div>
-                    {h.description && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 8 }}>{h.description}</div>}
+                    {h.description && <div style={{ fontSize: 11, color: "var(--text-dim)", marginBottom: 8 }}>{h.description}</div>}
                     {objectives.length === 0 ? (
                       <div style={{ fontSize: 11, color: "#374151", fontStyle: "italic" }}>No objectives</div>
                     ) : (
@@ -310,9 +310,9 @@ export default function JarvisBrainCenter({ onNavigate }) {
                         const isDone = o.status === "complete" || o.completed;
                         return (
                           <div key={o.id ?? j} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0", borderBottom: "1px solid rgba(255,255,255,0.04)", fontSize: 11 }}>
-                            <span style={{ color: isDone ? "#22c55e" : "#64748b", fontSize: 13 }}>{isDone ? "✓" : "○"}</span>
+                            <span style={{ color: isDone ? "var(--success)" : "var(--text-dim)", fontSize: 13 }}>{isDone ? "✓" : "○"}</span>
                             <span style={{ flex: 1, color: isDone ? "#94a3b8" : "#e2e8f0", textDecoration: isDone ? "line-through" : "none" }}>{o.title ?? o.name ?? o.objective}</span>
-                            {o.priority && <span style={{ fontSize: 9, color: "#64748b", textTransform: "uppercase" }}>{o.priority}</span>}
+                            {o.priority && <span style={{ fontSize: 9, color: "var(--text-dim)", textTransform: "uppercase" }}>{o.priority}</span>}
                           </div>
                         );
                       })
@@ -337,7 +337,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
             ) : (
               providers.map((p, i) => {
                 const isOk = p.status === "active" || p.status === "healthy" || p.available === true;
-                const statusColor = isOk ? "#22c55e" : p.status === "degraded" ? "#eab308" : "#ef4444";
+                const statusColor = isOk ? "var(--success)" : p.status === "degraded" ? "#eab308" : "var(--danger)";
                 return (
                   <div key={p.id ?? p.name ?? i} style={{
                     background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)",
@@ -348,16 +348,16 @@ export default function JarvisBrainCenter({ onNavigate }) {
                       <div style={{ fontWeight: 700, fontSize: 13, color: "#e2e8f0", marginBottom: 2 }}>
                         {p.name ?? p.provider ?? p.id}
                       </div>
-                      {p.model && <div style={{ fontSize: 10, color: "#64748b" }}>Model: {p.model}</div>}
-                      {p.description && <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>{p.description}</div>}
+                      {p.model && <div style={{ fontSize: 10, color: "var(--text-dim)" }}>Model: {p.model}</div>}
+                      {p.description && <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 2 }}>{p.description}</div>}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
                       <span style={{
                         fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
                         background: statusColor + "18", color: statusColor, border: `1px solid ${statusColor}44`,
                       }}>{p.status ?? (p.available ? "active" : "unknown")}</span>
-                      {p.latency != null && <span style={{ fontSize: 10, color: "#64748b" }}>{p.latency}ms</span>}
-                      {p.cost != null && <span style={{ fontSize: 10, color: "#64748b" }}>${p.cost}/1k tok</span>}
+                      {p.latency != null && <span style={{ fontSize: 10, color: "var(--text-dim)" }}>{p.latency}ms</span>}
+                      {p.cost != null && <span style={{ fontSize: 10, color: "var(--text-dim)" }}>${p.cost}/1k tok</span>}
                     </div>
                   </div>
                 );
@@ -404,18 +404,18 @@ export default function JarvisBrainCenter({ onNavigate }) {
                 <div className="jbc-panel-title">Correlation Matrix</div>
                 {Object.entries(intelCorr).map(([key, corr]) => {
                   const strength = corr?.strength ?? 0;
-                  const color = strength >= 70 ? "#f87171" : strength >= 40 ? "#fbbf24" : "#22c55e";
+                  const color = strength >= 70 ? "#f87171" : strength >= 40 ? "#fbbf24" : "var(--success)";
                   const label = key.replace(/_/g, " → ");
                   return (
                     <div key={key} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                       <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 11, color: "#e2e8f0", textTransform: "capitalize", marginBottom: 2 }}>{label}</div>
-                        <div style={{ fontSize: 10, color: "#64748b" }}>{corr?.insight || corr?.label || ""}</div>
+                        <div style={{ fontSize: 10, color: "var(--text-dim)" }}>{corr?.insight || corr?.label || ""}</div>
                       </div>
                       <div style={{ textAlign: "right", flexShrink: 0 }}>
                         <div style={{ fontSize: 12, fontWeight: 700, color }}>{strength}%</div>
-                        <div style={{ fontSize: 9, color: "#64748b", textTransform: "uppercase" }}>{corr?.label || ""}</div>
+                        <div style={{ fontSize: 9, color: "var(--text-dim)", textTransform: "uppercase" }}>{corr?.label || ""}</div>
                       </div>
                       <div style={{ width: 60, height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, flexShrink: 0 }}>
                         <div style={{ width: `${strength}%`, height: "100%", background: color, borderRadius: 2, transition: "width 0.5s" }} />
@@ -431,7 +431,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
               <div className="jbc-panel" style={{ marginBottom: 10 }}>
                 <div className="jbc-panel-title">Pattern Timeline</div>
                 {intelPatterns.slice(0, 8).map((p, i) => {
-                  const typeColor = p.type === "failure" ? "#f87171" : p.type === "success" ? "#22c55e" : "#60a5fa";
+                  const typeColor = p.type === "failure" ? "#f87171" : p.type === "success" ? "var(--success)" : "#60a5fa";
                   return (
                     <div key={p.id ?? i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                       <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 8, background: typeColor + "22", color: typeColor, flexShrink: 0, marginTop: 1 }}>
@@ -439,9 +439,9 @@ export default function JarvisBrainCenter({ onNavigate }) {
                       </span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 11, color: "#e2e8f0" }}>{p.label}</div>
-                        {p.rootCause && <div style={{ fontSize: 10, color: "#64748b" }}>Root: {p.rootCause}</div>}
+                        {p.rootCause && <div style={{ fontSize: 10, color: "var(--text-dim)" }}>Root: {p.rootCause}</div>}
                       </div>
-                      <span style={{ fontSize: 11, color: "#64748b", flexShrink: 0 }}>×{p.count || 1}</span>
+                      <span style={{ fontSize: 11, color: "var(--text-dim)", flexShrink: 0 }}>×{p.count || 1}</span>
                     </div>
                   );
                 })}
@@ -455,7 +455,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
                   {intelRecConf.slice(0, 8).map((r, i) => {
                     const conf = r.confidence ?? 0;
-                    const color = conf >= 80 ? "#22c55e" : conf >= 60 ? "#fbbf24" : "#f87171";
+                    const color = conf >= 80 ? "var(--success)" : conf >= 60 ? "#fbbf24" : "#f87171";
                     return (
                       <div key={r.id ?? i} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 4, padding: "6px 8px", border: "1px solid rgba(255,255,255,0.06)" }}>
                         <div style={{ fontSize: 10, color: "#e2e8f0", marginBottom: 4, lineHeight: 1.3 }}>{r.title}</div>
@@ -465,7 +465,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
                           </div>
                           <span style={{ fontSize: 10, fontWeight: 700, color }}>{conf}%</span>
                         </div>
-                        <div style={{ fontSize: 9, color: "#64748b", marginTop: 2 }}>{r.source} · {r.priority}</div>
+                        <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 2 }}>{r.source} · {r.priority}</div>
                       </div>
                     );
                   })}
@@ -478,12 +478,12 @@ export default function JarvisBrainCenter({ onNavigate }) {
               <div className="jbc-panel">
                 <div className="jbc-panel-title">Cross-Domain Insights</div>
                 {intelInsights.slice(0, 6).map((ins, i) => {
-                  const sevColor = ins.severity === "high" ? "#f87171" : ins.severity === "medium" ? "#fbbf24" : "#22c55e";
+                  const sevColor = ins.severity === "high" ? "#f87171" : ins.severity === "medium" ? "#fbbf24" : "var(--success)";
                   return (
                     <div key={ins.domain ?? i} style={{ padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", gap: 8 }}>
                       <div style={{ width: 3, background: sevColor, borderRadius: 2, flexShrink: 0, alignSelf: "stretch" }} />
                       <div>
-                        <div style={{ fontSize: 10, color: "#64748b", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                        <div style={{ fontSize: 10, color: "var(--text-dim)", marginBottom: 2, textTransform: "uppercase", letterSpacing: "0.05em" }}>
                           {(ins.domain || "").replace(/_/g, " → ")}
                         </div>
                         <div style={{ fontSize: 11, color: "#e2e8f0" }}>{ins.insight}</div>
@@ -518,7 +518,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
                 </div>
               ) : (
                 <>
-                  <div style={{ fontSize: 10, color: '#64748b', marginBottom: 8 }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 8 }}>
                     Mission: <span style={{ color: 'var(--accent)' }}>{collabMission}</span>
                     <button onClick={() => { setCollabMission(''); setCollabHistory(null); setCollabReply(null); }}
                       style={{ marginLeft: 8, fontSize: 9, color: '#475569', background: 'none', border: 'none', cursor: 'pointer' }}>✕ detach</button>
@@ -574,7 +574,7 @@ export default function JarvisBrainCenter({ onNavigate }) {
                       {collabReply}
                     </div>
                   )}
-                  {collabErr && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 4 }}>{collabErr}</div>}
+                  {collabErr && <div style={{ fontSize: 10, color: 'var(--danger)', marginBottom: 4 }}>{collabErr}</div>}
 
                   {/* Input */}
                   <div style={{ display: 'flex', gap: 4 }}>

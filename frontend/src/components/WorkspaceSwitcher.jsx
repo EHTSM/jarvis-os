@@ -4,7 +4,7 @@ import { _fetch } from "../_client";
 const ROLE_COLOR = {
   Owner:     "var(--warning)",
   Admin:     "var(--accent)",
-  Operator:  "#52d68a",
+  Operator:  "var(--success)",
   Developer: "var(--accent2)",
   Viewer:    "var(--text-faint)",
 };

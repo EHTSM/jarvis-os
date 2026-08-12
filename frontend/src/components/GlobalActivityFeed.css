@@ -50,7 +50,7 @@
   transition: all 0.1s;
   white-space: nowrap;
 }
-.gaf-filter-btn:hover { color: #8994b0; border-color: rgba(255,255,255,0.12); }
+.gaf-filter-btn:hover { color: var(--text-dim); border-color: rgba(255,255,255,0.12); }
 .gaf-filter-btn--active {
   color: #e2e8f0;
   border-color: rgba(124,111,255,0.35);

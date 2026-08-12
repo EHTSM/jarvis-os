@@ -37,7 +37,7 @@
   background: #ef444422;
   border: 1px solid #ef444455;
   border-radius: 6px;
-  color: #ef4444;
+  color: var(--danger);
   font-size: 12px;
 }
 .aad-empty {
@@ -190,7 +190,7 @@
   align-items: flex-start;
   gap: 6px;
   font-size: 11px;
-  color: #ef4444;
+  color: var(--danger);
   padding: 4px 6px;
   background: #ef444411;
   border-radius: 4px;
@@ -214,9 +214,9 @@
   font-family: inherit;
 }
 .aad-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.aad-btn--ok     { background: #22c55e22; color: #22c55e; border-color: #22c55e55; }
-.aad-btn--warn   { background: #f59e0b22; color: #f59e0b; border-color: #f59e0b55; }
-.aad-btn--danger { background: #ef444422; color: #ef4444; border-color: #ef444455; }
+.aad-btn--ok     { background: #22c55e22; color: var(--success); border-color: #22c55e55; }
+.aad-btn--warn   { background: #f59e0b22; color: var(--warning); border-color: #f59e0b55; }
+.aad-btn--danger { background: #ef444422; color: var(--danger); border-color: #ef444455; }
 .aad-btn--ghost  { background: var(--bg3, #27272a); color: var(--text, #e2e8f0); border-color: var(--border, #3f3f46); }
 
 /* Inputs */
@@ -329,9 +329,9 @@
   border: 1px solid;
 }
 .aad-chain-agent.active  { background: #3b82f622; color: #3b82f6; border-color: #3b82f655; }
-.aad-chain-agent.done    { background: #22c55e22; color: #22c55e; border-color: #22c55e55; }
+.aad-chain-agent.done    { background: #22c55e22; color: var(--success); border-color: #22c55e55; }
 .aad-chain-agent.pending { background: var(--bg3, #27272a); color: var(--text-dim, #94a3b8); border-color: var(--border, #3f3f46); }
-.aad-chain-agent.failed  { background: #ef444422; color: #ef4444; border-color: #ef444455; }
+.aad-chain-agent.failed  { background: #ef444422; color: var(--danger); border-color: #ef444455; }
 .aad-chain-arrow { color: var(--text-dim, #94a3b8); font-size: 10px; }
 
 /* Parallel group */
@@ -357,8 +357,8 @@
   border-radius: 6px;
   font-size: 11px;
 }
-.aad-alert-row.warn    { background: #f59e0b11; border: 1px solid #f59e0b33; color: #f59e0b; }
-.aad-alert-row.danger  { background: #ef444411; border: 1px solid #ef444433; color: #ef4444; }
+.aad-alert-row.warn    { background: #f59e0b11; border: 1px solid #f59e0b33; color: var(--warning); }
+.aad-alert-row.danger  { background: #ef444411; border: 1px solid #ef444433; color: var(--danger); }
 .aad-alert-icon { flex-shrink: 0; font-size: 13px; }
 .aad-alert-body { flex: 1; }
 .aad-alert-title { font-weight: 600; }

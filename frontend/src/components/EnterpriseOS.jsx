@@ -391,7 +391,7 @@ function OrganizationsView({ onToast }) {
                     <div className="eos-list-strong">{org.name}</div>
                     <div className="eos-list-sub">{org.description || "No description"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={org.status} color={org.status === "active" ? "#22c55e" : org.status === "archived" ? "#f97316" : "#64748b"} />
+                      <Badge text={org.status} color={org.status === "active" ? "var(--success)" : org.status === "archived" ? "#f97316" : "var(--text-dim)"} />
                       <span>{_label(org.industry)} · {_label(org.plan)}</span>
                     </div>
                   </div>
@@ -528,7 +528,7 @@ function DepartmentsView({ onToast }) {
                     <div className="eos-list-strong">{dept.name}</div>
                     <div className="eos-list-sub">{dept.description || "No description"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={dept.status} color={dept.status === "active" ? "#22c55e" : dept.status === "archived" ? "#f97316" : "#64748b"} />
+                      <Badge text={dept.status} color={dept.status === "active" ? "var(--success)" : dept.status === "archived" ? "#f97316" : "var(--text-dim)"} />
                       <span>Head: {dept.headId || "Unassigned"}</span>
                     </div>
                   </div>
@@ -716,7 +716,7 @@ function TeamsView({ onToast }) {
                     <div className="eos-list-strong">{team.name}</div>
                     <div className="eos-list-sub">{team.description || "No description"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={team.status} color={team.status === "active" ? "#22c55e" : team.status === "archived" ? "#f97316" : "#64748b"} />
+                      <Badge text={team.status} color={team.status === "active" ? "var(--success)" : team.status === "archived" ? "#f97316" : "var(--text-dim)"} />
                       <span>{_label(team.type)} • {team.members?.length ?? 0} members</span>
                     </div>
                   </div>
@@ -893,7 +893,7 @@ function RolesView({ onToast }) {
                     <div className="eos-list-strong">{role.name}</div>
                     <div className="eos-list-sub">{role.description || "No description"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={role.status} color={role.status === "active" ? "#22c55e" : "#f97316"} />
+                      <Badge text={role.status} color={role.status === "active" ? "var(--success)" : "#f97316"} />
                       <span>{_label(role.scope)} • {role.permissions?.length ?? 0} permissions</span>
                     </div>
                   </div>
@@ -1044,7 +1044,7 @@ function PermissionsView({ onToast }) {
                   <div className="eos-list-strong">{perm.memberName || perm.memberId}</div>
                   <div className="eos-list-sub">Role: {perm.roleId} • Resource: {perm.resource}</div>
                   <div className="eos-meta-row">
-                    <Badge text={perm.active ? "active" : "revoked"} color={perm.active ? "#22c55e" : "#f97316"} />
+                    <Badge text={perm.active ? "active" : "revoked"} color={perm.active ? "var(--success)" : "#f97316"} />
                     <span>Actions: {(perm.actions || []).join(", ")}</span>
                   </div>
                 </div>
@@ -1215,7 +1215,7 @@ function PoliciesView({ onToast }) {
                     <div className="eos-list-strong">{policy.name}</div>
                     <div className="eos-list-sub">{policy.description || "No description"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={policy.status} color={policy.status === "active" ? "#22c55e" : policy.status === "archived" ? "#f97316" : "#64748b"} />
+                      <Badge text={policy.status} color={policy.status === "active" ? "var(--success)" : policy.status === "archived" ? "#f97316" : "var(--text-dim)"} />
                       <span>{_label(policy.type)} • {policy.enforcement}</span>
                     </div>
                   </div>
@@ -1359,7 +1359,7 @@ function AuditView({ onToast }) {
                     <div className="eos-list-strong">{event.action}</div>
                     <div className="eos-list-sub">{event.detail || "No detail provided"}</div>
                     <div className="eos-meta-row">
-                      <Badge text={event.outcome} color={event.outcome === "success" ? "#22c55e" : event.outcome === "violation" ? "#f97316" : "#64748b"} />
+                      <Badge text={event.outcome} color={event.outcome === "success" ? "var(--success)" : event.outcome === "violation" ? "#f97316" : "var(--text-dim)"} />
                       <span>{event.actorName || event.actorId}</span>
                     </div>
                   </div>

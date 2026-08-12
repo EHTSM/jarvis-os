@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { _fetch } from "../_client";
 
 // ── Shared panel constants ────────────────────────────────────────
-const HEALTH_COLOR_SH = { ok: "#52d68a", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
+const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
 const DIAG_COLOR_SH   = { info: "var(--accent)", warn: "var(--warning)", error: "var(--error)" };
 
 // ── L3 Extension Runtime Panels ──────────────────────────────────
 const EXT_STATE_COLOR = {
-  active:    "#52d68a",
+  active:    "var(--success)",
   suspended: "var(--warning)",
   error:     "var(--error)",
   loaded:    "var(--accent)",

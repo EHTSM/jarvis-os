@@ -12,7 +12,7 @@ function MedalBadge({ rank }) {
 }
 
 function LeaderEntry({ entry, rank, dim }) {
-  const color  = DIM_COLORS[dim] || "#7c6fff";
+  const color  = DIM_COLORS[dim] || "var(--accent)";
   const value  = dim === "speed"       ? `${Math.round(entry.avgLatency || 0)}ms`
                : dim === "quality"     ? `${Math.round(entry.avgQuality || 0)}/100`
                : dim === "cost"        ? `$${((entry.avgCost || 0) * 1000).toFixed(4)}/1K`
@@ -34,7 +34,7 @@ function LeaderEntry({ entry, rank, dim }) {
 
 function MatrixCell({ data }) {
   if (!data) return <td className="abl-matrix-cell abl-matrix-cell--empty">—</td>;
-  const scoreColor = data.qualityScore >= 80 ? "#4ade80" : data.qualityScore >= 50 ? "#f59e0b" : "#f87171";
+  const scoreColor = data.qualityScore >= 80 ? "#4ade80" : data.qualityScore >= 50 ? "var(--warning)" : "#f87171";
   return (
     <td className={`abl-matrix-cell${data.success ? "" : " abl-matrix-cell--fail"}`}>
       <span style={{ color: scoreColor }}>{data.qualityScore || 0}</span>

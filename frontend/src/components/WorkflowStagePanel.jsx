@@ -280,10 +280,10 @@ const PIPELINE = [
 
 // ── Status colours ────────────────────────────────────────────────────────────
 const STATUS = {
-  active:   { color: '#22c55e', label: 'Active'   },
-  idle:     { color: '#64748b', label: 'Idle'      },
-  complete: { color: '#7c6fff', label: 'Complete'  },
-  warning:  { color: '#ef4444', label: 'Warning'   },
+  active:   { color: 'var(--success)', label: 'Active'   },
+  idle:     { color: 'var(--text-dim)', label: 'Idle'      },
+  complete: { color: 'var(--accent)', label: 'Complete'  },
+  warning:  { color: 'var(--danger)', label: 'Warning'   },
   empty:    { color: '#374151', label: 'Empty'      },
   loading:  { color: '#374151', label: 'Loading…'  },
 };
@@ -320,7 +320,7 @@ function StageCard({ stage, data, active, onNavigate, onSelect, isSelected }) {
             <div className="wsp-card-items">
               {data.items.map((item, i) => (
                 <div key={i} className="wsp-card-item">
-                  <span style={{ color: item.statusOk ? '#22c55e' : '#ef4444', fontSize: 11 }}>
+                  <span style={{ color: item.statusOk ? 'var(--success)' : 'var(--danger)', fontSize: 11 }}>
                     {item.statusOk ? '✓' : '○'}
                   </span>
                   <span className="wsp-card-item-label">{item.label}</span>

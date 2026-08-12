@@ -30,7 +30,7 @@ const TABS = [
   { id: "blockers",   label: "Blockers" },
 ];
 
-const PRIORITY_COLOR = { critical: "#f55b5b", high: "#f0b429", medium: "#5dc8f5", low: "#8994b0" };
+const PRIORITY_COLOR = { critical: "var(--danger)", high: "var(--warning)", medium: "var(--info)", low: "var(--text-dim)" };
 
 export default function ProductOSCenter() {
   const [tab, setTab] = useState("plans");
@@ -102,7 +102,7 @@ export default function ProductOSCenter() {
   if (loading && !dashboard) return <div style={{ padding: 24, color: "var(--text-dim, #8994b0)" }}>Loading Product OS…</div>;
   if (error && !dashboard) return (
     <div style={{ padding: 24 }}>
-      <div style={{ color: "#f55b5b", marginBottom: 8 }}>⚠ {error}</div>
+      <div style={{ color: "var(--danger)", marginBottom: 8 }}>⚠ {error}</div>
       <button onClick={refresh}>Retry</button>
     </div>
   );
@@ -120,11 +120,11 @@ export default function ProductOSCenter() {
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 16 }}>
-        <Kpi value={s.plansCreated ?? "—"} label="Plans Created" color="#7c6fff" />
-        <Kpi value={s.releasesReady ?? "—"} label="Releases Ready" color="#52d68a" />
-        <Kpi value={objectives.length} label="Objectives" color="#5dc8f5" />
-        <Kpi value={epics.length} label="Epics" color="#f0b429" />
-        <Kpi value={blockers.length} label="Open Blockers" color="#f55b5b" />
+        <Kpi value={s.plansCreated ?? "—"} label="Plans Created" color="var(--accent)" />
+        <Kpi value={s.releasesReady ?? "—"} label="Releases Ready" color="var(--success)" />
+        <Kpi value={objectives.length} label="Objectives" color="var(--info)" />
+        <Kpi value={epics.length} label="Epics" color="var(--warning)" />
+        <Kpi value={blockers.length} label="Open Blockers" color="var(--danger)" />
       </div>
 
       <nav style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
@@ -150,7 +150,7 @@ export default function ProductOSCenter() {
             <div key={p.id} style={{ marginBottom: 6 }}>
               <div style={{ ...ROW, cursor: "pointer" }} onClick={() => setExpandedPlan(expandedPlan === p.id ? null : p.id)}>
                 <span>{p.objective}</span>
-                <span style={{ color: p.status === "approved" ? "#52d68a" : "#f0b429" }}>{p.status} · {p.complexity?.level || "—"}</span>
+                <span style={{ color: p.status === "approved" ? "var(--success)" : "var(--warning)" }}>{p.status} · {p.complexity?.level || "—"}</span>
               </div>
               {expandedPlan === p.id && (
                 <div style={{ padding: "8px 12px", fontSize: 11, color: "var(--text-dim, #8994b0)", background: "rgba(255,255,255,0.02)", borderRadius: 5, marginTop: -2, marginBottom: 6 }}>
@@ -175,7 +175,7 @@ export default function ProductOSCenter() {
           {objectives.length === 0 ? <div style={EMPTY}>No objectives yet.</div> : objectives.map(o => (
             <div key={o.id} style={ROW}>
               <span>{o.title}</span>
-              <span style={{ color: o.status === "completed" ? "#52d68a" : "#5dc8f5" }}>{o.status} · {(o.epicIds || []).length} epics</span>
+              <span style={{ color: o.status === "completed" ? "var(--success)" : "var(--info)" }}>{o.status} · {(o.epicIds || []).length} epics</span>
             </div>
           ))}
         </div>
@@ -194,7 +194,7 @@ export default function ProductOSCenter() {
           {epics.length === 0 ? <div style={EMPTY}>No epics yet.</div> : epics.map(ep => (
             <div key={ep.id} style={ROW}>
               <span>{ep.title}</span>
-              <span style={{ color: PRIORITY_COLOR[ep.priority] || "#8994b0" }}>{ep.priority} · {ep.status} · {(ep.workItemIds || []).length} items</span>
+              <span style={{ color: PRIORITY_COLOR[ep.priority] || "var(--text-dim)" }}>{ep.priority} · {ep.status} · {(ep.workItemIds || []).length} items</span>
             </div>
           ))}
         </div>
@@ -205,7 +205,7 @@ export default function ProductOSCenter() {
           {workItems.length === 0 ? <div style={EMPTY}>No work items yet.</div> : workItems.map(w => (
             <div key={w.id} style={ROW}>
               <span>{w.title}</span>
-              <span style={{ color: PRIORITY_COLOR[w.priority] || "#8994b0" }}>{w.priority} · {w.status}</span>
+              <span style={{ color: PRIORITY_COLOR[w.priority] || "var(--text-dim)" }}>{w.priority} · {w.status}</span>
             </div>
           ))}
         </div>

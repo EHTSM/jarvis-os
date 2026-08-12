@@ -45,7 +45,7 @@ export default function FounderTwinConsole() {
   if (loading && !dashboard) return <div style={{ padding: 24, color: "var(--text-dim, #8994b0)" }}>Loading Digital Twin console…</div>;
   if (error && !dashboard) return (
     <div style={{ padding: 24 }}>
-      <div style={{ color: "#f55b5b", marginBottom: 8 }}>⚠ {error}</div>
+      <div style={{ color: "var(--danger)", marginBottom: 8 }}>⚠ {error}</div>
       <button onClick={refresh}>Retry</button>
     </div>
   );
@@ -58,12 +58,12 @@ export default function FounderTwinConsole() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 10, marginBottom: 24 }}>
-        <Kpi value={dashboard?.trustScore ?? 0} label="Trust Score" color="#7c6fff" />
-        <Kpi value={`${dashboard?.accuracy ?? 0}%`} label="Accuracy" color="#52d68a" />
-        <Kpi value={dashboard?.totalDecisions ?? "—"} label="Total Decisions" color="#4ecdc4" />
-        <Kpi value={dashboard?.autoResolved ?? "—"} label="Auto-Resolved" color="#5dc8f5" />
-        <Kpi value={dashboard?.founderRequired ?? "—"} label="Escalated" color="#f0b429" />
-        <Kpi value={dashboard?.minutesSaved ?? "—"} label="Minutes Saved" color="#8994b0" />
+        <Kpi value={dashboard?.trustScore ?? 0} label="Trust Score" color="var(--accent)" />
+        <Kpi value={`${dashboard?.accuracy ?? 0}%`} label="Accuracy" color="var(--success)" />
+        <Kpi value={dashboard?.totalDecisions ?? "—"} label="Total Decisions" color="var(--accent2)" />
+        <Kpi value={dashboard?.autoResolved ?? "—"} label="Auto-Resolved" color="var(--info)" />
+        <Kpi value={dashboard?.founderRequired ?? "—"} label="Escalated" color="var(--warning)" />
+        <Kpi value={dashboard?.minutesSaved ?? "—"} label="Minutes Saved" color="var(--text-dim)" />
       </div>
 
       {predictStats && (
@@ -73,9 +73,9 @@ export default function FounderTwinConsole() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
             <Kpi value={predictStats.total ?? "—"} label="Predictions" />
-            <Kpi value={predictStats.routed ?? "—"} label="Auto-Routed" color="#52d68a" />
-            <Kpi value={`${predictStats.accuracy ?? 0}%`} label="Accuracy" color="#4ecdc4" />
-            <Kpi value={predictStats.threshold ?? "—"} label="Confidence Threshold" color="#f0b429" />
+            <Kpi value={predictStats.routed ?? "—"} label="Auto-Routed" color="var(--success)" />
+            <Kpi value={`${predictStats.accuracy ?? 0}%`} label="Accuracy" color="var(--accent2)" />
+            <Kpi value={predictStats.threshold ?? "—"} label="Confidence Threshold" color="var(--warning)" />
           </div>
         </div>
       )}
@@ -102,7 +102,7 @@ export default function FounderTwinConsole() {
             {decisions.slice().reverse().map(d => (
               <div key={d.id} style={{ display: "flex", justifyContent: "space-between", padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5, fontSize: 12 }}>
                 <span style={{ fontFamily: "monospace", color: "#e8ecf5" }}>{d.command || d.id}</span>
-                <span style={{ color: d.founderWouldLikely === "approve" ? "#52d68a" : "#f0b429" }}>{d.founderWouldLikely || d.actualOutcome || "pending"}</span>
+                <span style={{ color: d.founderWouldLikely === "approve" ? "var(--success)" : "var(--warning)" }}>{d.founderWouldLikely || d.actualOutcome || "pending"}</span>
               </div>
             ))}
           </div>

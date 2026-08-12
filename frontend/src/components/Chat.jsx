@@ -70,7 +70,7 @@ const ROLE_LABELS = {
 
 const ROLE_COLORS = {
   user:   "#9a90ff",
-  jarvis: "#4ecdc4",
+  jarvis: "var(--accent2)",
   system: "#9b9fb7",
   error:  "#ff7b7b"
 };

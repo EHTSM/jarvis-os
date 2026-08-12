@@ -48,10 +48,21 @@ const MAP = {
   '#6b7280': '--text-dim',
 };
 
-// Files/directories that legitimately hold non-themeable colour.
-const SKIP_FILE = /OoplixMark|Logo|Illustration|__snapshots__|\.test\./i;
+// Files that DEFINE the design language, or legitimately hold non-themeable
+// colour. index.css/tokens.js are where these literals are the authored source
+// of truth — rewriting a token to var(itself) makes it self-referential and
+// collapses the whole theme. They must never be codemodded.
+const SKIP_FILE =
+  /^index\.css$|^tokens\.(js|ts)$|OoplixMark|Logo|Illustration|__snapshots__|\.test\./i;
+
 // Lines whose colour is data-encoding or decorative rather than UI chrome.
 const SKIP_LINE = /gradient|chart|recharts|series|<Cell|dataKey|sparkline|AVATAR|avatarPalette|palette\s*=|COLORS\s*=|shadow/i;
+
+/**
+ * A CSS custom-property DEFINITION (`--success: #52d68a;`) declares the value;
+ * it is not a bypass of the token layer. Only *consumers* get rewritten.
+ */
+const IS_TOKEN_DEF = /^\s*--[a-z0-9-]+\s*:/i;
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -77,6 +88,7 @@ for (const file of walk(ROOT)) {
     const t = line.trim();
     if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) return line;
     if (SKIP_LINE.test(line)) return line;
+    if (IS_TOKEN_DEF.test(line)) return line;   // definition, not a bypass
 
     let out = line;
     for (const [lit, token] of Object.entries(MAP)) {

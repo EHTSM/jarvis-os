@@ -117,12 +117,12 @@ export default function MobilePlatformCenter({ onNavigate }) {
 
       <div className="mpc-summary-strip">
         {[
-          { label:"Android installs", value:totalInstalls.toLocaleString("en-IN"), color:"#4ecdc4"        },
+          { label:"Android installs", value:totalInstalls.toLocaleString("en-IN"), color:"var(--accent2)"        },
           { label:"Tablet installs",  value:tabletInstalls.toLocaleString("en-IN"),color:"var(--accent)"  },
           { label:"Live version",     value:liveRelease?.version || "—",           color:"var(--success)" },
           { label:"Avg crash rate",   value:"0.4%",                                color:"var(--success)" },
-          { label:"Android share",    value:"68%",                                 color:"#4ecdc4"        },
-          { label:"iOS share",        value:"32%",                                 color:"#e6edf3"        },
+          { label:"Android share",    value:"68%",                                 color:"var(--accent2)"        },
+          { label:"iOS share",        value:"32%",                                 color:"var(--text)"        },
         ].map(s => (
           <div key={s.label} className="mpc-summary-tile">
             <span className="mpc-sv" style={{color:s.color}}>{s.value}</span>
@@ -156,7 +156,7 @@ export default function MobilePlatformCenter({ onNavigate }) {
               </div>
               <div className="mpc-ov-card">
                 <p className="mpc-ov-label">OS distribution</p>
-                {ANDROID_OS.map(o=><BarRow key={o.os} label={o.os} pct={o.pct} color="#4ecdc4" />)}
+                {ANDROID_OS.map(o=><BarRow key={o.os} label={o.os} pct={o.pct} color="var(--accent2)" />)}
               </div>
             </div>
             <div className="mpc-ov-card mpc-ov-card--wide">
@@ -164,7 +164,7 @@ export default function MobilePlatformCenter({ onNavigate }) {
               {ANDROID_DEVICES.map((d,i)=>(
                 <div key={i} className="mpc-device-row">
                   <span className="mpc-device-model">{d.model}</span>
-                  <div className="mpc-device-bar-track"><div className="mpc-device-bar-fill" style={{width:`${d.pct}%`,background:"#4ecdc4"}} /></div>
+                  <div className="mpc-device-bar-track"><div className="mpc-device-bar-fill" style={{width:`${d.pct}%`,background:"var(--accent2)"}} /></div>
                   <span className="mpc-device-pct">{d.pct}%</span>
                   <span className="mpc-device-os">{d.os}</span>
                 </div>
@@ -204,7 +204,7 @@ export default function MobilePlatformCenter({ onNavigate }) {
               </div>
               <div className="mpc-ov-card">
                 <p className="mpc-ov-label">OS distribution</p>
-                {IOS_OS.map(o=><BarRow key={o.os} label={o.os} pct={o.pct} color="#e6edf3" />)}
+                {IOS_OS.map(o=><BarRow key={o.os} label={o.os} pct={o.pct} color="var(--text)" />)}
               </div>
             </div>
             <div className="mpc-ov-card mpc-ov-card--wide">
@@ -212,7 +212,7 @@ export default function MobilePlatformCenter({ onNavigate }) {
               {IOS_DEVICES.map((d,i)=>(
                 <div key={i} className="mpc-device-row">
                   <span className="mpc-device-model">{d.model}</span>
-                  <div className="mpc-device-bar-track"><div className="mpc-device-bar-fill" style={{width:`${d.pct}%`,background:"#e6edf3"}} /></div>
+                  <div className="mpc-device-bar-track"><div className="mpc-device-bar-fill" style={{width:`${d.pct}%`,background:"var(--text)"}} /></div>
                   <span className="mpc-device-pct">{d.pct}%</span>
                   <span className="mpc-device-os">{d.os}</span>
                 </div>

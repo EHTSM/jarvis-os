@@ -4,7 +4,7 @@ import { _fetch } from "../_client";
 // ── K5 Automation helpers ─────────────────────────────────────────
 const TRIGGER_TYPES   = ["schedule","event","threshold","manual","webhook","approval"];
 const ACTION_TYPES_K5 = ["queue_task","emit_event","notify","set_policy","escalate"];
-const OUTCOME_COLOR   = { success:"#52d68a", failed:"var(--error)", skipped:"var(--text-faint)", pending_approval:"var(--warning)", dry_run:"var(--accent2)" };
+const OUTCOME_COLOR   = { success:"var(--success)", failed:"var(--error)", skipped:"var(--text-faint)", pending_approval:"var(--warning)", dry_run:"var(--accent2)" };
 
 function _autoFmtTs(ts) {
   if (!ts) return "never";
@@ -54,7 +54,7 @@ function AutomationOverviewPanel() {
           <span className="k4-ov-sub">{rules?.total || 0} total</span>
         </div>
         <div className="k4-ov-card">
-          <span className="k4-ov-value" style={{ color: "#52d68a" }}>{history?.last24h || 0}</span>
+          <span className="k4-ov-value" style={{ color: "var(--success)" }}>{history?.last24h || 0}</span>
           <span className="k4-ov-label">Runs (24h)</span>
           <span className="k4-ov-sub">{history?.last7d || 0} this week</span>
         </div>

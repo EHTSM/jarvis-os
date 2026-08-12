@@ -50,7 +50,7 @@
 .gs-input::placeholder { color: #374151; }
 
 .gs-spinner {
-  color: #6b7280;
+  color: var(--text-dim);
   font-size: 16px;
   animation: gs-spin 0.8s linear infinite;
   flex-shrink: 0;
@@ -61,7 +61,7 @@
   background: #1f2937;
   border: 1px solid #374151;
   border-radius: 5px;
-  color: #6b7280;
+  color: var(--text-dim);
   font-size: 11px;
   padding: 3px 8px;
   cursor: pointer;
@@ -110,7 +110,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.gs-result--active .gs-result__label { color: #10b981; }
+.gs-result--active .gs-result__label { color: var(--success); }
 
 .gs-result__sub {
   font-size: 11px;
@@ -207,7 +207,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #6b7280;
+  color: var(--text-dim);
   flex-shrink: 0;
 }
 .clipboard-history__header span { flex: 1; }

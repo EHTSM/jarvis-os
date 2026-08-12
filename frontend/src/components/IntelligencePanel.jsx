@@ -28,10 +28,10 @@ async function _post(path, body = {}) {
 // ── palette ───────────────────────────────────────────────────────────
 
 const C = {
-  ok: "#52d68a", warn: "#f0b429", fail: "#f55b5b", info: "#44a2ff",
-  muted: "#8994b0", text: "#c8cdd8", head: "#e6edf3",
-  patch: "#44d9ff", memory: "#7c6fff", knowledge: "#f0b429",
-  incident: "#f55b5b", execution: "#52d68a",
+  ok: "var(--success)", warn: "var(--warning)", fail: "var(--danger)", info: "#44a2ff",
+  muted: "var(--text-dim)", text: "var(--text)", head: "var(--text)",
+  patch: "#44d9ff", memory: "var(--accent)", knowledge: "var(--warning)",
+  incident: "var(--danger)", execution: "var(--success)",
 };
 
 function typeColor(t) {
@@ -43,7 +43,7 @@ function typeColor(t) {
 function statusColor(s) {
   return { ok: C.ok, success: C.ok, applied: C.ok, done: C.ok, pass: C.ok,
     failed: C.fail, fail: C.fail, error: C.fail, rolled_back: C.fail,
-    pending: C.warn, running: "#7c6fff", open: C.warn, acknowledged: C.info }[s] || C.muted;
+    pending: C.warn, running: "var(--accent)", open: C.warn, acknowledged: C.info }[s] || C.muted;
 }
 
 // ── micro components ──────────────────────────────────────────────────

@@ -5,12 +5,12 @@ import "./AgentCollaborationCenter.css";
 
 // ── Agent roster ─────────────────────────────────────────────────────
 const AGENTS = {
-  seo:       { name: "SEO",       icon: "⌕", color: "#4ecdc4" },
-  marketing: { name: "Marketing", icon: "◉", color: "#f0b429" },
-  content:   { name: "Content",   icon: "◈", color: "#7c6fff" },
-  support:   { name: "Support",   icon: "◎", color: "#52d68a" },
+  seo:       { name: "SEO",       icon: "⌕", color: "var(--accent2)" },
+  marketing: { name: "Marketing", icon: "◉", color: "var(--warning)" },
+  content:   { name: "Content",   icon: "◈", color: "var(--accent)" },
+  support:   { name: "Support",   icon: "◎", color: "var(--success)" },
   sales:     { name: "Sales",     icon: "◇", color: "#da552f" },
-  dev:       { name: "Dev",       icon: "⬡", color: "#e6edf3" },
+  dev:       { name: "Dev",       icon: "⬡", color: "var(--text)" },
   devops:    { name: "DevOps",    icon: "⬟", color: "#fc6d26" },
   research:  { name: "Research",  icon: "⊕", color: "#a78bfa" },
   analytics: { name: "Analytics", icon: "▣", color: "#38bdf8" },
@@ -94,7 +94,7 @@ function CollabGraph({ handoffs, selectedEdge, onSelectEdge }) {
         (selectedEdge.from === h.from && selectedEdge.to === h.to) ||
         (selectedEdge.from === h.to && selectedEdge.to === h.from)
       );
-      const col = isSelected ? "#7c6fff" : "rgba(255,255,255,0.12)";
+      const col = isSelected ? "var(--accent)" : "rgba(255,255,255,0.12)";
       const w   = isSelected ? 2.5 : Math.min(cnt * 0.8 + 0.6, 3);
 
       ctx.beginPath();
@@ -240,9 +240,9 @@ export default function AgentCollaborationCenter({ onNavigate }) {
       <div className="acc-summary-strip">
         {[
           { label: "Total events",  value: HANDOFFS.length,    color: "var(--text)"    },
-          { label: "Handoffs",      value: byType("handoff"),  color: "#4ecdc4"        },
-          { label: "Escalations",   value: byType("escalation"),color:"#f55b5b"        },
-          { label: "Triggers",      value: byType("trigger"),  color: "#f0b429"        },
+          { label: "Handoffs",      value: byType("handoff"),  color: "var(--accent2)"        },
+          { label: "Escalations",   value: byType("escalation"),color:"var(--danger)"        },
+          { label: "Triggers",      value: byType("trigger"),  color: "var(--warning)"        },
           { label: "Dependencies",  value: byType("dependency"),color:"#a78bfa"        },
           { label: "Active now",    value: HANDOFFS.filter(h=>h.status==="active").length, color:"var(--accent2)" },
           { label: "Live sessions", value: sessions.length ?? coordStats?.totalSessions ?? 0, color: "var(--success)" },

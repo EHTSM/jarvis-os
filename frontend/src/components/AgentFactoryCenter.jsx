@@ -13,7 +13,7 @@ const TEMPLATES = [
   { id: "sales",     icon: "💰", name: "Sales Agent",     color: "#00dc82", badge: "Revenue",   desc: "Qualifies leads, follows up, closes deals autonomously." },
   { id: "marketing", icon: "📣", name: "Marketing Agent", color: "var(--warning)", badge: "Growth", desc: "Runs campaigns, A/B tests, schedules content distribution." },
   { id: "seo",       icon: "🔍", name: "SEO Agent",       color: "var(--accent2)", badge: "Traffic", desc: "Keyword research, meta generation, rank tracking." },
-  { id: "support",   icon: "🎧", name: "Support Agent",   color: "#7c6fff", badge: "CX",       desc: "Handles tickets, resolves issues, escalates intelligently." },
+  { id: "support",   icon: "🎧", name: "Support Agent",   color: "var(--accent)", badge: "CX",       desc: "Handles tickets, resolves issues, escalates intelligently." },
   { id: "research",  icon: "🔬", name: "Research Agent",  color: "#00c6ff", badge: "Intel",   desc: "Crawls sources, synthesizes insights, builds briefs." },
   { id: "dev",       icon: "💻", name: "Dev Agent",       color: "#ff6464", badge: "Build",   desc: "Writes code, reviews PRs, automates CI tasks." },
   { id: "devops",    icon: "⚙️", name: "DevOps Agent",    color: "var(--warning)", badge: "Ops", desc: "Monitors infra, deploys builds, handles incidents." },
@@ -229,7 +229,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
                 <div className="afc-agent-name">{p.name ?? p.id}</div>
                 <div className="afc-agent-meta">{p.type ?? "plugin"}{p.version ? ` · v${p.version}` : ""}{p.description ? ` · ${p.description}` : ""}</div>
               </div>
-              <span className="afc-agent-status" style={{ color: p.enabled === false ? "var(--text-faint)" : "#22c55e" }}>
+              <span className="afc-agent-status" style={{ color: p.enabled === false ? "var(--text-faint)" : "var(--success)" }}>
                 {p.enabled === false ? "disabled" : "enabled"}
               </span>
             </div>

@@ -180,7 +180,7 @@ function RequestTimeline() {
           <div className="rd-timeline-bar-wrap">
             <div
               className="rd-timeline-bar"
-              style={{ width: `${(e.duration / max) * 100}%`, background: e.duration > 500 ? '#ef4444' : e.duration > 200 ? '#f59e0b' : '#10b981' }}
+              style={{ width: `${(e.duration / max) * 100}%`, background: e.duration > 500 ? 'var(--danger)' : e.duration > 200 ? 'var(--warning)' : 'var(--success)' }}
             />
             <span className="rd-timeline-dur">{e.duration}ms</span>
           </div>
@@ -331,14 +331,14 @@ function MemoryGraph() {
       <svg className="rd-memory__chart" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none">
         <defs>
           <linearGradient id="mem-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--success)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--success)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <polyline
           points={pts}
           fill="none"
-          stroke="#10b981"
+          stroke="var(--success)"
           strokeWidth="1.5"
           vectorEffect="non-scaling-stroke"
         />

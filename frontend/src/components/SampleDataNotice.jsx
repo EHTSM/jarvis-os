@@ -17,7 +17,7 @@ export default function SampleDataNotice({ label = "sample data" }) {
         borderRadius: 6,
         background: "rgba(240, 180, 41, 0.12)",
         border: "1px solid rgba(240, 180, 41, 0.35)",
-        color: "#f0b429",
+        color: "var(--warning)",
         fontSize: 12,
         fontWeight: 500,
       }}

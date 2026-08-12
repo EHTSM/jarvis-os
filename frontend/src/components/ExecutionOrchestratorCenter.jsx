@@ -10,8 +10,8 @@ function _save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
 // ── Agent colours ─────────────────────────────────────────────────────
 const AGENT_COLORS = {
-  "SEO Agent":"#4ecdc4","Marketing Agent":"#f0b429","Content Agent":"#7c6fff",
-  "Support Agent":"#52d68a","Sales Agent":"#da552f","Dev Agent":"#e6edf3",
+  "SEO Agent":"var(--accent2)","Marketing Agent":"var(--warning)","Content Agent":"var(--accent)",
+  "Support Agent":"var(--success)","Sales Agent":"#da552f","Dev Agent":"var(--text)",
   "DevOps Agent":"#fc6d26","Research Agent":"#a78bfa","Analytics Agent":"#38bdf8",
 };
 

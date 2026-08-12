@@ -57,9 +57,9 @@
   letter-spacing: -0.04em;
   line-height: 1;
 }
-.bc-score-pct--all  { color: #22c55e; }
+.bc-score-pct--all  { color: var(--success); }
 .bc-score-pct--ok   { color: #3b82f6; }
-.bc-score-pct--warn { color: #f59e0b; }
+.bc-score-pct--warn { color: var(--warning); }
 .bc-score-label {
   font-size: 10px;
   color: #52525b;
@@ -266,7 +266,7 @@
 }
 .bc-feedback-header { display: flex; align-items: center; justify-content: space-between; }
 .bc-feedback-title  { font-size: 14px; font-weight: 700; color: #f9fafb; }
-.bc-feedback-close  { background: none; border: none; color: #6b7280; cursor: pointer; font-size: 16px; padding: 0 2px; }
+.bc-feedback-close  { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 0 2px; }
 .bc-feedback-close:hover { color: #f9fafb; }
 .bc-feedback-input  {
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
@@ -286,4 +286,4 @@
 }
 .bc-feedback-send:hover:not(:disabled) { background: rgba(102,87,232,0.32); }
 .bc-feedback-send:disabled { opacity: 0.4; cursor: not-allowed; }
-.bc-feedback-sent { text-align: center; padding: 20px; font-size: 14px; color: #10b981; font-weight: 600; }
+.bc-feedback-sent { text-align: center; padding: 20px; font-size: 14px; color: var(--success); font-weight: 600; }

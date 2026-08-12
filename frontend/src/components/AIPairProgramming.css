@@ -19,7 +19,7 @@
 }
 .aipp-header__title {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: #6b7280;
+  letter-spacing: 0.08em; color: var(--text-dim);
 }
 
 .aipp-tabs {
@@ -33,7 +33,7 @@
   cursor: pointer; white-space: nowrap; transition: color 0.15s;
 }
 .aipp-tab:hover { color: #9ca3af; }
-.aipp-tab--active { color: #10b981; border-bottom-color: #10b981; }
+.aipp-tab--active { color: var(--success); border-bottom-color: var(--success); }
 
 .aipp-body {
   flex: 1; overflow-y: auto; overflow-x: hidden;
@@ -68,7 +68,7 @@
 .aipp-action-btn {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
   padding: 8px 6px; background: #111; border: 1px solid #1f2937;
-  border-radius: 6px; color: #6b7280; font-size: 11px; cursor: pointer;
+  border-radius: 6px; color: var(--text-dim); font-size: 11px; cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 .aipp-action-btn:hover { background: #1f2937; color: #d1d5db; border-color: #374151; }
@@ -81,7 +81,7 @@
   padding: 7px 10px; font-size: 12px; color: #d1d5db; outline: none;
   resize: vertical; font-family: inherit; box-sizing: border-box;
 }
-.aipp-input:focus { border-color: #10b981; }
+.aipp-input:focus { border-color: var(--success); }
 .aipp-input::placeholder { color: #374151; }
 .aipp-input--mono  { font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11.5px; }
 .aipp-input--code  { font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11.5px; min-height: 120px; }
@@ -94,7 +94,7 @@
   display: flex; align-items: center; padding: 6px 10px;
   background: #0a0e17; border-bottom: 1px solid #1f2937;
 }
-.aipp-result-panel__action { flex: 1; font-size: 11px; text-transform: capitalize; color: #6b7280; font-weight: 600; }
+.aipp-result-panel__action { flex: 1; font-size: 11px; text-transform: capitalize; color: var(--text-dim); font-weight: 600; }
 .aipp-close-btn {
   background: transparent; border: none; color: #4b5563; font-size: 13px;
   cursor: pointer; padding: 2px 5px; border-radius: 3px;
@@ -117,9 +117,9 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 5px 10px; background: #111; border-bottom: 1px solid #1f2937;
 }
-.aipp-patch__label { font-size: 11px; color: #6b7280; font-weight: 600; }
+.aipp-patch__label { font-size: 11px; color: var(--text-dim); font-weight: 600; }
 .aipp-patch__body { max-height: 260px; overflow: auto; }
-.aipp-diff-line { font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px; padding: 0 8px; white-space: pre; line-height: 1.5; color: #6b7280; }
+.aipp-diff-line { font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px; padding: 0 8px; white-space: pre; line-height: 1.5; color: var(--text-dim); }
 .aipp-diff-add  { background: #05271820; color: #34d399; }
 .aipp-diff-del  { background: #450a0a20; color: #f87171; }
 .aipp-diff-meta { background: #1e3a5f20; color: #60a5fa; }
@@ -145,7 +145,7 @@
 .aipp-issue--low      .aipp-issue__sev { background: #1e3a5f; color: #60a5fa; }
 .aipp-issue__body { flex: 1; min-width: 0; }
 .aipp-issue__title { font-size: 12px; color: #d1d5db; font-weight: 500; }
-.aipp-issue__desc  { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.4; }
+.aipp-issue__desc  { font-size: 11px; color: var(--text-dim); margin-top: 3px; line-height: 1.4; }
 .aipp-issue__file  { font-size: 10px; color: #4b5563; margin-top: 3px; font-family: monospace; }
 
 /* Buttons */
@@ -157,22 +157,22 @@
 .aipp-btn:hover   { background: #374151; color: #e5e7eb; }
 .aipp-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
 .aipp-btn--primary{ background: #059669; border-color: #059669; color: #fff; }
-.aipp-btn--primary:hover{ background: #10b981; }
+.aipp-btn--primary:hover{ background: var(--success); }
 .aipp-btn--green  { background: #05271820; border-color: #059669; color: #34d399; }
 .aipp-btn--green:hover{ background: #052e16; }
-.aipp-btn--gray   { background: #111; border-color: #1f2937; color: #6b7280; }
+.aipp-btn--gray   { background: #111; border-color: #1f2937; color: var(--text-dim); }
 .aipp-btn--gray:hover{ background: #1f2937; color: #9ca3af; }
 
 .aipp-error   { padding: 8px 10px; color: #f87171; background: #450a0a20; border-radius: 4px; font-size: 12px; }
 .aipp-success { padding: 8px 10px; color: #34d399; background: #05271820; border-radius: 4px; font-size: 12px; }
 
 details.aipp-result__patch { margin: 4px 0; }
-details.aipp-result__patch summary { font-size: 11px; color: #6b7280; cursor: pointer; padding: 4px 0; font-family: monospace; }
+details.aipp-result__patch summary { font-size: 11px; color: var(--text-dim); cursor: pointer; padding: 4px 0; font-family: monospace; }
 details.aipp-result__patch summary:hover { color: #9ca3af; }
 
 /* ── ACP-1: Header context ────────────────────────────────────────── */
 .aipp-header__ctx {
-  margin-left: 8px; font-size: 10px; color: #10b981;
+  margin-left: 8px; font-size: 10px; color: var(--success);
   background: #05271820; border: 1px solid #05271840; border-radius: 3px;
   padding: 1px 6px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
@@ -182,7 +182,7 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
   display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 10px 0;
 }
 .aipp-ctx-badge {
-  font-size: 10px; color: #10b981; background: #05271820;
+  font-size: 10px; color: var(--success); background: #05271820;
   border: 1px solid #05271840; border-radius: 3px; padding: 2px 6px;
   max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: 'JetBrains Mono', Menlo, monospace;
@@ -198,7 +198,7 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
   cursor: pointer; transition: color 0.15s;
 }
 .aipp-mode-tab:hover { color: #9ca3af; }
-.aipp-mode-tab--active { color: #f59e0b; border-bottom-color: #f59e0b; }
+.aipp-mode-tab--active { color: var(--warning); border-bottom-color: var(--warning); }
 
 /* ── ACP-2: Patch prompt placeholder ─────────────────────────────── */
 .aipp-patch-prompt {
@@ -207,7 +207,7 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
 }
 .aipp-patch-prompt__label {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: #6b7280;
+  letter-spacing: 0.08em; color: var(--text-dim);
 }
 .aipp-patch-prompt__hint {
   font-size: 12px; color: #374151; line-height: 1.6;
@@ -219,7 +219,7 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
 }
 .aipp-btn--patch-toggle {
   padding: 4px 10px; border-radius: 4px; font-size: 13px; border: 1px solid #d97706;
-  background: #451a0320; color: #f59e0b; cursor: pointer;
+  background: #451a0320; color: var(--warning); cursor: pointer;
   transition: background 0.15s;
 }
 .aipp-btn--patch-toggle:hover:not(:disabled) { background: #451a0350; }
@@ -236,7 +236,7 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
 }
 .aipp-quick-btn {
   padding: 8px 10px; background: #111; border: 1px solid #1f2937; border-radius: 6px;
-  color: #6b7280; font-size: 11px; cursor: pointer; text-align: left;
+  color: var(--text-dim); font-size: 11px; cursor: pointer; text-align: left;
   transition: background 0.15s, color 0.15s, border-color 0.15s; line-height: 1.4;
 }
 .aipp-quick-btn:hover { background: #1f2937; color: #d1d5db; border-color: #374151; }
@@ -252,8 +252,8 @@ details.aipp-result__patch summary:hover { color: #9ca3af; }
 .aipp-chat-msg__role {
   font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
 }
-.aipp-chat-msg--user .aipp-chat-msg__role  { color: #10b981; }
-.aipp-chat-msg--assistant .aipp-chat-msg__role { color: #6b7280; }
+.aipp-chat-msg--user .aipp-chat-msg__role  { color: var(--success); }
+.aipp-chat-msg--assistant .aipp-chat-msg__role { color: var(--text-dim); }
 .aipp-chat-msg__content {
   margin: 0; font-family: inherit; font-size: 12px; color: #d1d5db;
   line-height: 1.6; white-space: pre-wrap; word-break: break-word;

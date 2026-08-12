@@ -130,14 +130,14 @@ function SkelRow({ cols = 3 }) {
   );
 }
 
-const SEV_COLOR = { critical:"#f55b5b", warning:"#f0b429", low:"#4ecdc4", info:"#8994b0" };
+const SEV_COLOR = { critical:"var(--danger)", warning:"var(--warning)", low:"var(--accent2)", info:"var(--text-dim)" };
 const STATUS_COLOR = {
-  healthy:"#52d68a", active:"#52d68a", ok:"#52d68a", success:"#52d68a",
-  degraded:"#f0b429", warning:"#f0b429", running:"#7c6fff",
-  failed:"#f55b5b", critical:"#f55b5b", down:"#f55b5b",
-  rollback:"#f0b429", standby:"#8994b0", resolved:"#52d68a", open:"#f0b429",
+  healthy:"var(--success)", active:"var(--success)", ok:"var(--success)", success:"var(--success)",
+  degraded:"var(--warning)", warning:"var(--warning)", running:"var(--accent)",
+  failed:"var(--danger)", critical:"var(--danger)", down:"var(--danger)",
+  rollback:"var(--warning)", standby:"var(--text-dim)", resolved:"var(--success)", open:"var(--warning)",
 };
-function sc(s) { return STATUS_COLOR[s] || "#8994b0"; }
+function sc(s) { return STATUS_COLOR[s] || "var(--text-dim)"; }
 
 // ── Tab: Runtime ──────────────────────────────────────────────────────
 
@@ -209,7 +209,7 @@ function TabRuntime({ addToast }) {
     }
   }
 
-  const LOG_LEVEL_COLOR = { running:"#7c6fff", success:"#52d68a", error:"#f55b5b", warning:"#f0b429", info:"#8994b0" };
+  const LOG_LEVEL_COLOR = { running:"var(--accent)", success:"var(--success)", error:"var(--danger)", warning:"var(--warning)", info:"var(--text-dim)" };
 
   return (
     <div className="dv2-runtime-root">
@@ -227,11 +227,11 @@ function TabRuntime({ addToast }) {
           <p className="dv2-section-label">Runtime Status</p>
           {loading ? <SkelRow cols={2} /> : (
             <div className="dv2-rt-meta">
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Mode</span><span className="dv2-rt-val" style={{ color: mode === "emergency" ? "#f55b5b" : "#52d68a" }}>{mode.toUpperCase()}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Emergency Stop</span><span className="dv2-rt-val" style={{ color: emergency ? "#f55b5b" : "#52d68a" }}>{emergency ? "ACTIVE" : "INACTIVE"}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Running</span><span className="dv2-rt-val" style={{ color: "#7c6fff" }}>{q.running ?? "—"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Mode</span><span className="dv2-rt-val" style={{ color: mode === "emergency" ? "var(--danger)" : "var(--success)" }}>{mode.toUpperCase()}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Emergency Stop</span><span className="dv2-rt-val" style={{ color: emergency ? "var(--danger)" : "var(--success)" }}>{emergency ? "ACTIVE" : "INACTIVE"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Running</span><span className="dv2-rt-val" style={{ color: "var(--accent)" }}>{q.running ?? "—"}</span></div>
               <div className="dv2-rt-row"><span className="dv2-rt-key">Queued</span><span className="dv2-rt-val">{q.queued ?? "—"}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Failed</span><span className="dv2-rt-val" style={{ color: "#f55b5b" }}>{q.failed ?? "—"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Failed</span><span className="dv2-rt-val" style={{ color: "var(--danger)" }}>{q.failed ?? "—"}</span></div>
               <div className="dv2-rt-row"><span className="dv2-rt-key">Executor</span><span className="dv2-rt-val dv2-mono">{status?.executor || "agents/executor.cjs"}</span></div>
             </div>
           )}
@@ -276,12 +276,12 @@ function TabRuntime({ addToast }) {
             {[0,1,2,3].map(i => <SkelRow key={i} cols={4} />)}
           </div>
         ) : history.length === 0 ? (
-          <div className="dv2-empty"><span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span><p className="dv2-empty-title">Queue is clear</p></div>
+          <div className="dv2-empty"><span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span><p className="dv2-empty-title">Queue is clear</p></div>
         ) : (
           <div className="dv2-log-list">
             {history.slice(0, 15).map((e, i) => {
               const s = e.status || "info";
-              const dotC = LOG_LEVEL_COLOR[s] || "#8994b0";
+              const dotC = LOG_LEVEL_COLOR[s] || "var(--text-dim)";
               return (
                 <div key={e.id || i} className="dv2-log-row">
                   <span className="dv2-log-ts dv2-mono">{_timeAgo(e.timestamp || e.createdAt)}</span>
@@ -381,7 +381,7 @@ function StrategyDeployPanel({ addToast }) {
           <p className="dv2-cs-sub">No strategy runs yet.</p>
         ) : runs.map(r => (
           <div key={r.id} className="dv2-strategy-run-row">
-            <span className="dv2-dr-status dv2-chip" style={{ color: sc(r.ok ? "success" : "failed"), background: (r.ok ? "#2ecc71" : "#f55b5b")+"15" }}>{r.ok ? "success" : (r.rolledBack ? "rolled back" : "failed")}</span>
+            <span className="dv2-dr-status dv2-chip" style={{ color: sc(r.ok ? "success" : "failed"), background: (r.ok ? "#2ecc71" : "var(--danger)")+"15" }}>{r.ok ? "success" : (r.rolledBack ? "rolled back" : "failed")}</span>
             <span className="dv2-dr-repo dv2-mono">{r.type}</span>
             <span className="dv2-dr-version dv2-mono">{r.composeFile}</span>
             <span className="dv2-dr-ts">{r.ts ? _timeAgo(r.ts) : "—"}</span>
@@ -452,7 +452,7 @@ function TabDeployments({ addToast }) {
       <div className="dv2-deploy-list">
         {loading ? [0,1,2].map(i => <div key={i} className="dv2-deploy-row"><SkelRow cols={5} /></div>) : (
           filtered.map(d => {
-            const ec = ENV_COLORS[d.env] || "#8994b0";
+            const ec = ENV_COLORS[d.env] || "var(--text-dim)";
             const dc = sc(d.status);
             const isOpen = expanded === d.id;
             return (
@@ -527,7 +527,7 @@ function TabObservability({ addToast }) {
     const pct = isInvert
       ? Math.min(Math.round((slo.target / Math.max(slo.current, 1)) * 100), 100)
       : Math.min(Math.round((slo.current / slo.target) * 100), 100);
-    const color = slo.status === "ok" ? "#52d68a" : slo.status === "warning" ? "#f0b429" : "#f55b5b";
+    const color = slo.status === "ok" ? "var(--success)" : slo.status === "warning" ? "var(--warning)" : "var(--danger)";
     const label = isInvert
       ? `${slo.current}ms (target <${slo.target}ms)`
       : `${slo.current}% (target ${slo.target}%)`;
@@ -562,9 +562,9 @@ function TabObservability({ addToast }) {
           {DEPS.map((d, i) => (
             <div key={i} className="dv2-dep-row">
               <span className="dv2-dep-from">{d.from}</span>
-              <span className="dv2-dep-arrow" style={{ color: d.state === "ok" ? "#52d68a" : "#f55b5b" }}>→</span>
+              <span className="dv2-dep-arrow" style={{ color: d.state === "ok" ? "var(--success)" : "var(--danger)" }}>→</span>
               <span className="dv2-dep-to">{d.to}</span>
-              <span className="dv2-dep-dot" style={{ background: d.state === "ok" ? "#52d68a" : "#f55b5b" }} />
+              <span className="dv2-dep-dot" style={{ background: d.state === "ok" ? "var(--success)" : "var(--danger)" }} />
             </div>
           ))}
         </div>
@@ -614,8 +614,8 @@ function TabTelemetry({ addToast }) {
   const port        = ops?.port ?? 5050;
 
   const memPct = memUsed && memTotal ? Math.min(Math.round((memUsed / memTotal) * 100), 100) : (memUsed ? Math.min(Math.round((memUsed / 512) * 100), 100) : 0);
-  const memColor = memPct > 85 ? "#f55b5b" : memPct > 65 ? "#f0b429" : "#52d68a";
-  const cpuColor = cpuPct > 85 ? "#f55b5b" : cpuPct > 60 ? "#f0b429" : "#52d68a";
+  const memColor = memPct > 85 ? "var(--danger)" : memPct > 65 ? "var(--warning)" : "var(--success)";
+  const cpuColor = cpuPct > 85 ? "var(--danger)" : cpuPct > 60 ? "var(--warning)" : "var(--success)";
 
   const PERF_EPS = [
     { path:"POST /jarvis",       ms: avgMs || 320, max:1000 },
@@ -629,12 +629,12 @@ function TabTelemetry({ addToast }) {
     <div className="dv2-tel-root">
       <div className="dv2-kpi-strip">
         {[
-          { label:"Uptime",       val: uptimeSecs > 0 ? _fmtUptime(uptimeSecs) : "—", color:"#52d68a" },
+          { label:"Uptime",       val: uptimeSecs > 0 ? _fmtUptime(uptimeSecs) : "—", color:"var(--success)" },
           { label:"Memory",       val: memUsed ? `${memUsed} MB` : "—",               color: memColor },
           { label:"CPU",          val: cpuPct ? `${cpuPct}%` : "—",                   color: cpuColor },
           { label:"Avg Response", val: avgMs ? `${avgMs}ms` : "—",                    color:"#c0c8dc" },
           { label:"P95",          val: p95 ? `${p95}ms` : "—",                        color:"#c0c8dc" },
-          { label:"Total Reqs",   val: totalReqs ? totalReqs.toLocaleString() : "—",  color:"#7c6fff" },
+          { label:"Total Reqs",   val: totalReqs ? totalReqs.toLocaleString() : "—",  color:"var(--accent)" },
         ].map(({ label, val, color }) => (
           <div key={label} className="dv2-kpi">
             <span className="dv2-kpi-val" style={{ color }}>{val}</span>
@@ -695,7 +695,7 @@ function TabTelemetry({ addToast }) {
         <p className="dv2-section-label">Endpoint Latency (avg)</p>
         {PERF_EPS.map(ep => {
           const pct = Math.min(Math.round((ep.ms / ep.max) * 100), 100);
-          const color = ep.ms < 200 ? "#52d68a" : ep.ms < 600 ? "#f0b429" : "#f55b5b";
+          const color = ep.ms < 200 ? "var(--success)" : ep.ms < 600 ? "var(--warning)" : "var(--danger)";
           return (
             <div key={ep.path} className="dv2-ep-row">
               <span className="dv2-ep-path dv2-mono">{ep.path}</span>
@@ -760,7 +760,7 @@ function TabModels({ addToast }) {
     const isFirst   = i === 0;
     const ok        = p.health?.ok === true;
     const status    = isActive ? "active" : ok ? "ready" : p.configured ? "degraded" : "not configured";
-    const statusColor = isActive ? "#52d68a" : ok ? "#4ecdc4" : p.configured ? "#f0b429" : "#8994b0";
+    const statusColor = isActive ? "var(--success)" : ok ? "var(--accent2)" : p.configured ? "var(--warning)" : "var(--text-dim)";
     return { ...p, ...meta, isActive, isFirst, status, statusColor };
   });
 
@@ -778,7 +778,7 @@ function TabModels({ addToast }) {
         <div className="dv2-router-meta">
           <div className="dv2-rt-row">
             <span className="dv2-rt-key">Active provider</span>
-            <span className="dv2-rt-val" style={{ color: activeProvider ? "#52d68a" : "#8994b0" }}>
+            <span className="dv2-rt-val" style={{ color: activeProvider ? "var(--success)" : "var(--text-dim)" }}>
               {loading ? "—" : (activeProvider ? activeProvider.toUpperCase() : "none yet")}
             </span>
           </div>
@@ -794,7 +794,7 @@ function TabModels({ addToast }) {
           </div>
           <div className="dv2-rt-row">
             <span className="dv2-rt-key">Failures</span>
-            <span className="dv2-rt-val" style={{ color: (aiStatus?.failCount ?? 0) > 0 ? "#f0b429" : "#52d68a" }}>
+            <span className="dv2-rt-val" style={{ color: (aiStatus?.failCount ?? 0) > 0 ? "var(--warning)" : "var(--success)" }}>
               {loading ? "—" : (aiStatus?.failCount ?? "—")}
             </span>
           </div>
@@ -806,7 +806,7 @@ function TabModels({ addToast }) {
       </div>
 
       <div className="dv2-models-grid">
-        {(loading ? AI_PROVIDERS_SEED.map(p => ({ ...p, statusColor:"#8994b0", status:"loading", isActive:false })) : providerCards).map(p => (
+        {(loading ? AI_PROVIDERS_SEED.map(p => ({ ...p, statusColor:"var(--text-dim)", status:"loading", isActive:false })) : providerCards).map(p => (
           <div key={p.id} className={`dv2-panel dv2-model-card${p.isActive ? " dv2-model-card--active" : ""}`}>
             <div className="dv2-mc-top">
               <div className="dv2-mc-ident">
@@ -819,13 +819,13 @@ function TabModels({ addToast }) {
             </div>
             <div className="dv2-mc-meta">
               <div className="dv2-mc-row"><span>Health</span>
-                <span style={{ color: p.health?.ok ? "#52d68a" : "#f55b5b" }}>
+                <span style={{ color: p.health?.ok ? "var(--success)" : "var(--danger)" }}>
                   {loading ? "—" : (p.health?.ok ? "✓ reachable" : (p.health?.reason || "unreachable"))}
                 </span>
               </div>
               <div className="dv2-mc-row"><span>Cost</span><strong>{p.cost}</strong></div>
               <div className="dv2-mc-row"><span>API key</span>
-                <span style={{ color: p.configured ? "#52d68a" : "#f55b5b" }}>
+                <span style={{ color: p.configured ? "var(--success)" : "var(--danger)" }}>
                   {loading ? "—" : (p.configured ? "✓ Set" : "✗ Missing")}
                 </span>
               </div>
@@ -848,7 +848,7 @@ function TabModels({ addToast }) {
             <p className="dv2-section-label">Evolution Score</p>
             <p className="dv2-evo-sub">Self-improvement index based on successful task completion, error rate, and suggestion adoption</p>
           </div>
-          <span className="dv2-evo-score" style={{ color: evoScore >= 80 ? "#52d68a" : evoScore >= 60 ? "#f0b429" : "#f55b5b" }}>
+          <span className="dv2-evo-score" style={{ color: evoScore >= 80 ? "var(--success)" : evoScore >= 60 ? "var(--warning)" : "var(--danger)" }}>
             {loading ? "—" : evoScore}
             <span className="dv2-evo-denom">/100</span>
           </span>
@@ -866,7 +866,7 @@ function TabModels({ addToast }) {
         <p className="dv2-section-label">AI Suggestions</p>
         {EVO_SUGGESTIONS.map(sg => (
           <div key={sg.id} className="dv2-sg-row">
-            <span className="dv2-sg-dot" style={{ color: sg.status === "applied" ? "#52d68a" : "#7c6fff" }}>○</span>
+            <span className="dv2-sg-dot" style={{ color: sg.status === "applied" ? "var(--success)" : "var(--accent)" }}>○</span>
             <span className="dv2-sg-text">{sg.text}</span>
             {sg.status === "pending" ? (
               <div className="dv2-sg-actions">
@@ -874,7 +874,7 @@ function TabModels({ addToast }) {
                 <button className="dv2-btn dv2-btn--ghost dv2-btn--xs" onClick={() => addToast("Suggestion dismissed", "info")}>Dismiss</button>
               </div>
             ) : (
-              <span className="dv2-chip dv2-chip--xs" style={{ color:"#52d68a", background:"rgba(82,214,138,.1)", borderColor:"rgba(82,214,138,.2)" }}>applied</span>
+              <span className="dv2-chip dv2-chip--xs" style={{ color:"var(--success)", background:"rgba(82,214,138,.1)", borderColor:"rgba(82,214,138,.2)" }}>applied</span>
             )}
           </div>
         ))}
@@ -965,7 +965,7 @@ function TabLogs({ addToast }) {
             <div className="dv2-empty"><span className="dv2-empty-icon">◎</span><p className="dv2-empty-title">No matching log entries</p></div>
           ) : (
             filtered.map(l => {
-              const lc = LEVEL_COLORS[l.level] || "#8994b0";
+              const lc = LEVEL_COLORS[l.level] || "var(--text-dim)";
               const isOpen = expanded === l.id;
               return (
                 <div
@@ -1073,12 +1073,12 @@ function TabAlerts({ addToast }) {
         {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
           filtered.length === 0 ? (
             <div className="dv2-empty">
-              <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+              <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
               <p className="dv2-empty-title">No alerts in this view</p>
             </div>
           ) : (
             filtered.map(a => {
-              const sc2 = SEV_COLOR[a.severity] || "#8994b0";
+              const sc2 = SEV_COLOR[a.severity] || "var(--text-dim)";
               const isOpen = expanded === a.id;
               return (
                 <div
@@ -1092,7 +1092,7 @@ function TabAlerts({ addToast }) {
                     <span className="dv2-ar-service dv2-mono">{a.service}</span>
                     <span className="dv2-ar-ts">{a.created}</span>
                     <span className="dv2-chip dv2-chip--xs" style={{
-                      color: a.status === "resolved" ? "#52d68a" : "#f0b429",
+                      color: a.status === "resolved" ? "var(--success)" : "var(--warning)",
                       background: a.status === "resolved" ? "rgba(82,214,138,.1)" : "rgba(240,180,41,.1)",
                       borderColor: a.status === "resolved" ? "rgba(82,214,138,.2)" : "rgba(240,180,41,.2)",
                     }}>{a.status}</span>
@@ -1154,22 +1154,22 @@ function TabServices({ addToast }) {
       <div className="dv2-svc-header">
         <div className="dv2-svc-hkpis">
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: online ? "#52d68a" : "#f55b5b" }}>{online ? "ONLINE" : "OFFLINE"}</span>
+            <span className="dv2-kpi-val" style={{ color: online ? "var(--success)" : "var(--danger)" }}>{online ? "ONLINE" : "OFFLINE"}</span>
             <span className="dv2-kpi-label">Backend Status</span>
           </div>
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: "#52d68a" }}>{healthyCount}</span>
+            <span className="dv2-kpi-val" style={{ color: "var(--success)" }}>{healthyCount}</span>
             <span className="dv2-kpi-label">Services healthy</span>
           </div>
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: services.length - healthyCount > 0 ? "#f0b429" : "#52d68a" }}>
+            <span className="dv2-kpi-val" style={{ color: services.length - healthyCount > 0 ? "var(--warning)" : "var(--success)" }}>
               {services.length - healthyCount}
             </span>
             <span className="dv2-kpi-label">Degraded</span>
           </div>
         </div>
         <div className="dv2-overall-health">
-          <span className="dv2-oh-dot" style={{ background: healthyCount === services.length ? "#52d68a" : "#f0b429" }} />
+          <span className="dv2-oh-dot" style={{ background: healthyCount === services.length ? "var(--success)" : "var(--warning)" }} />
           <span className="dv2-oh-label">{healthyCount === services.length ? "All systems operational" : `${services.length - healthyCount} service(s) degraded`}</span>
         </div>
       </div>
@@ -1270,13 +1270,13 @@ function TabDocker({ addToast }) {
       <div className="dv2-svc-header">
         <div className="dv2-svc-hkpis">
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: daemon.reachable ? "#52d68a" : "#f55b5b" }}>
+            <span className="dv2-kpi-val" style={{ color: daemon.reachable ? "var(--success)" : "var(--danger)" }}>
               {daemon.reachable ? "REACHABLE" : "UNREACHABLE"}
             </span>
             <span className="dv2-kpi-label">Docker Daemon</span>
           </div>
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: "#52d68a" }}>{dstats.containersRunning ?? "—"}</span>
+            <span className="dv2-kpi-val" style={{ color: "var(--success)" }}>{dstats.containersRunning ?? "—"}</span>
             <span className="dv2-kpi-label">Running</span>
           </div>
           <div className="dv2-kpi">
@@ -1306,7 +1306,7 @@ function TabDocker({ addToast }) {
       <div className="dv2-svc-grid">
         {containers.map(c => {
           const running = (c.State || "").toLowerCase() === "running";
-          const color = running ? "#52d68a" : "#8994b0";
+          const color = running ? "var(--success)" : "var(--text-dim)";
           const ref = c.ID || c.Names;
           return (
             <div key={ref} className={`dv2-svc-card${!running ? " dv2-svc-card--degraded" : ""}`}>
@@ -1515,12 +1515,12 @@ function TabTerminal({ addToast }) {
           <p className="dv2-cs-sub">No commands run yet.</p>
         ) : history.map(h => (
           <div key={h.cmdId} style={{ padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", color: h.status === "success" ? "#52d68a" : h.status === "failed" ? "#f55b5b" : "#f0b429" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", color: h.status === "success" ? "var(--success)" : h.status === "failed" ? "var(--danger)" : "var(--warning)" }}>
               <span>$ {h.cmd}</span>
               <span>{h.status}{h.durationMs != null ? ` · ${h.durationMs}ms` : ""}</span>
             </div>
             {h.output && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "#c8ccd8" }}>{h.output.slice(0, 1000)}</pre>}
-            {h.error && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "#f55b5b" }}>{h.error.slice(0, 1000)}</pre>}
+            {h.error && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "var(--danger)" }}>{h.error.slice(0, 1000)}</pre>}
           </div>
         ))}
         <div ref={bottomRef} />
@@ -1544,7 +1544,7 @@ function TabTerminal({ addToast }) {
 
 // ── Tab: Patches ──────────────────────────────────────────────────────
 
-const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
+const PATCH_STATUS_COLOR = { pending:"var(--warning)", applied:"var(--success)", rolled_back:"var(--danger)", failed:"var(--danger)" };
 
 function TabPatches({ addToast }) {
   const [patches,    setPatches]    = useState([]);
@@ -1633,13 +1633,13 @@ function TabPatches({ addToast }) {
       {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
         patches.length === 0 ? (
           <div className="dv2-empty">
-            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
             <p className="dv2-empty-title">No patches in this view</p>
             <p className="dv2-empty-sub">Patches are created when you ask JARVIS to fix or modify a file.</p>
           </div>
         ) : (
           patches.map(p => {
-            const col = PATCH_STATUS_COLOR[p.status] || "#8994b0";
+            const col = PATCH_STATUS_COLOR[p.status] || "var(--text-dim)";
             const isOpen = expanded === p.id;
             return (
               <div key={p.id}
@@ -1737,7 +1737,7 @@ function TabDLQ({ addToast }) {
     <div style={{ padding: "4px 0" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 14 }}>
         <div>
-          <span style={{ fontSize: 22, fontWeight: 700, color: total > 0 ? "#f0b429" : "#52d68a" }}>{total}</span>
+          <span style={{ fontSize: 22, fontWeight: 700, color: total > 0 ? "var(--warning)" : "var(--success)" }}>{total}</span>
           <span style={{ fontSize: 11, color: "var(--dv2-text2)", marginLeft: 6 }}>failed task{total !== 1 ? "s" : ""} in queue</span>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
@@ -1757,7 +1757,7 @@ function TabDLQ({ addToast }) {
       {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
         entries.length === 0 ? (
           <div className="dv2-empty">
-            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
             <p className="dv2-empty-title">Dead letter queue is empty</p>
             <p className="dv2-empty-sub">Failed tasks that exhaust retries will appear here for manual recovery.</p>
           </div>
@@ -1765,7 +1765,7 @@ function TabDLQ({ addToast }) {
           entries.map(e => (
             <div key={e.taskId} className="dv2-alert-row">
               <div className="dv2-ar-top">
-                <span className="dv2-sev-pill" style={{ color:"#f55b5b", background:"rgba(245,91,91,.1)" }}>failed</span>
+                <span className="dv2-sev-pill" style={{ color:"var(--danger)", background:"rgba(245,91,91,.1)" }}>failed</span>
                 <span className="dv2-ar-title" style={{ flex: 1 }}>
                   {(e.task?.input || e.input || e.taskId || "").slice(0, 60)}
                 </span>
@@ -1781,7 +1781,7 @@ function TabDLQ({ addToast }) {
                 </button>
               </div>
               {e.error && (
-                <div style={{ padding: "4px 8px 6px", fontSize: 10, color: "#f55b5b", fontFamily: "monospace", wordBreak: "break-all" }}>
+                <div style={{ padding: "4px 8px 6px", fontSize: 10, color: "var(--danger)", fontFamily: "monospace", wordBreak: "break-all" }}>
                   {e.error.slice(0, 200)}
                 </div>
               )}

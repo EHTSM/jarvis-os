@@ -86,7 +86,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
   const riskLevel = recs.find(r => r.priority === 'critical') ? 'high'
                   : recs.find(r => r.priority === 'high')     ? 'medium'
                   : 'low';
-  const riskColor = riskLevel === 'high' ? '#ef4444' : riskLevel === 'medium' ? '#eab308' : '#22c55e';
+  const riskColor = riskLevel === 'high' ? 'var(--danger)' : riskLevel === 'medium' ? '#eab308' : 'var(--success)';
 
   return (
     <aside className="ctx-sidebar">
@@ -99,7 +99,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
       {/* System pulse */}
       <div className="ctx-pulse">
         <div className="ctx-pulse__row">
-          <Metric label="Active" value={active.length} color="#22c55e" />
+          <Metric label="Active" value={active.length} color="var(--success)" />
           <Metric label="Total"  value={mStats?.total ?? missions.length} />
           <Metric label="Risk"   value={riskLevel.toUpperCase()} color={riskColor} />
         </div>
@@ -144,7 +144,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
         empty={recs.length === 0 ? 'No recommendations' : null} defaultOpen>
         {topRecs.map((r, i) => {
           const pri = r.priority ?? 'normal';
-          const priColor = pri === 'critical' ? '#ef4444' : pri === 'high' ? '#eab308' : 'var(--accent)';
+          const priColor = pri === 'critical' ? 'var(--danger)' : pri === 'high' ? '#eab308' : 'var(--accent)';
           return (
             <div key={r.id ?? i} className="ctx-rec-row"
               onClick={() => onNavigate?.('recommend')} title="Open Recommendations">

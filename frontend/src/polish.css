@@ -86,12 +86,12 @@
   flex-shrink: 0;
 }
 
-.chip--ok      { color: #22c55e; background: rgba(34,197,94,0.1);   border-color: rgba(34,197,94,0.25);   }
+.chip--ok      { color: var(--success); background: rgba(34,197,94,0.1);   border-color: rgba(34,197,94,0.25);   }
 .chip--warn    { color: #eab308; background: rgba(234,179,8,0.1);   border-color: rgba(234,179,8,0.25);   }
-.chip--crit    { color: #ef4444; background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.25);   }
+.chip--crit    { color: var(--danger); background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.25);   }
 .chip--info    { color: #3b82f6; background: rgba(59,130,246,0.1);  border-color: rgba(59,130,246,0.25);  }
 .chip--accent  { color: var(--accent); background: rgba(124,111,255,0.1); border-color: rgba(124,111,255,0.25); }
-.chip--neutral { color: #64748b; background: rgba(100,116,139,0.08); border-color: rgba(100,116,139,0.2); }
+.chip--neutral { color: var(--text-dim); background: rgba(100,116,139,0.08); border-color: rgba(100,116,139,0.2); }
 
 /* ── Progress bar ─────────────────────────────────────────────────────────
    Usage: <div className="progress"><div className="progress__fill" style={{width:'60%'}}/></div>
@@ -110,9 +110,9 @@
 }
 .progress--sm { height: 3px; }
 .progress--lg { height: 6px; }
-.progress--success  .progress__fill { background: #22c55e; }
+.progress--success  .progress__fill { background: var(--success); }
 .progress--warning  .progress__fill { background: #eab308; }
-.progress--danger   .progress__fill { background: #ef4444; }
+.progress--danger   .progress__fill { background: var(--danger); }
 
 /* ── Data row ─────────────────────────────────────────────────────────────
    Usage: <div className="data-row"><span>Label</span><span>Value</span></div>
@@ -196,7 +196,7 @@
   letter-spacing: 0.12em;
   padding: 2px 8px;
   border-radius: 999px;
-  color: #22c55e;
+  color: var(--success);
   background: rgba(34,197,94,0.1);
   border: 1px solid rgba(34,197,94,0.25);
 }
@@ -320,6 +320,6 @@ button, [role="button"], a {
   box-shadow: var(--shadow-lg);
   animation: fade-up 200ms var(--ease-spring) both;
 }
-.toast--ok   { border-color: rgba(34,197,94,0.3);  color: #22c55e; }
+.toast--ok   { border-color: rgba(34,197,94,0.3);  color: var(--success); }
 .toast--warn { border-color: rgba(234,179,8,0.3);  color: #eab308; }
-.toast--err  { border-color: rgba(239,68,68,0.3);  color: #ef4444; }
+.toast--err  { border-color: rgba(239,68,68,0.3);  color: var(--danger); }

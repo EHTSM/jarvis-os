@@ -20,16 +20,16 @@ const TABS = [
 ];
 
 const TYPE_META = {
-  context: { label: "context",  color: "#7c6fff", bg: "rgba(124,111,255,.12)" },
-  user:    { label: "user",     color: "#4ecdc4", bg: "rgba(78,205,196,.12)"  },
-  event:   { label: "event",    color: "#f0b429", bg: "rgba(240,180,41,.10)"  },
-  summary: { label: "summary",  color: "#5dc8f5", bg: "rgba(93,200,245,.10)"  },
-  error:   { label: "error",    color: "#f55b5b", bg: "rgba(245,91,91,.10)"   },
-  task:    { label: "task",     color: "#52d68a", bg: "rgba(82,214,138,.10)"  },
-  company: { label: "company",  color: "#f0b429", bg: "rgba(240,180,41,.10)"  },
-  project: { label: "project",  color: "#4ecdc4", bg: "rgba(78,205,196,.12)"  },
-  agent:   { label: "agent",    color: "#f55b5b", bg: "rgba(245,91,91,.10)"   },
-  workflow:{ label: "workflow",  color: "#52d68a", bg: "rgba(82,214,138,.10)"  },
+  context: { label: "context",  color: "var(--accent)", bg: "rgba(124,111,255,.12)" },
+  user:    { label: "user",     color: "var(--accent2)", bg: "rgba(78,205,196,.12)"  },
+  event:   { label: "event",    color: "var(--warning)", bg: "rgba(240,180,41,.10)"  },
+  summary: { label: "summary",  color: "var(--info)", bg: "rgba(93,200,245,.10)"  },
+  error:   { label: "error",    color: "var(--danger)", bg: "rgba(245,91,91,.10)"   },
+  task:    { label: "task",     color: "var(--success)", bg: "rgba(82,214,138,.10)"  },
+  company: { label: "company",  color: "var(--warning)", bg: "rgba(240,180,41,.10)"  },
+  project: { label: "project",  color: "var(--accent2)", bg: "rgba(78,205,196,.12)"  },
+  agent:   { label: "agent",    color: "var(--danger)", bg: "rgba(245,91,91,.10)"   },
+  workflow:{ label: "workflow",  color: "var(--success)", bg: "rgba(82,214,138,.10)"  },
 };
 
 const SHARED_NODES = [
@@ -74,11 +74,11 @@ const RECENT_QUERIES = [
 ];
 
 const KNOWLEDGE_CATS = [
-  { id: "product",      label: "Product",     icon: "◈", color: "#7c6fff" },
-  { id: "sales",        label: "Sales",       icon: "◎", color: "#f0b429" },
-  { id: "engineering",  label: "Engineering", icon: "⬟", color: "#4ecdc4" },
-  { id: "support",      label: "Support",     icon: "◉", color: "#52d68a" },
-  { id: "legal",        label: "Legal",       icon: "▷", color: "#f55b5b" },
+  { id: "product",      label: "Product",     icon: "◈", color: "var(--accent)" },
+  { id: "sales",        label: "Sales",       icon: "◎", color: "var(--warning)" },
+  { id: "engineering",  label: "Engineering", icon: "⬟", color: "var(--accent2)" },
+  { id: "support",      label: "Support",     icon: "◉", color: "var(--success)" },
+  { id: "legal",        label: "Legal",       icon: "▷", color: "var(--danger)" },
 ];
 
 const DOC_TYPES = {
@@ -86,7 +86,7 @@ const DOC_TYPES = {
   docx: { label: "DOC", color: "#2980b9" },
   pptx: { label: "PPT", color: "#e67e22" },
   web:  { label: "WEB", color: "#27ae60" },
-  txt:  { label: "TXT", color: "#8994b0" },
+  txt:  { label: "TXT", color: "var(--text-dim)" },
 };
 
 const SEED_DOCS = [
@@ -335,7 +335,7 @@ function TabShared() {
             <div className="mov2-node-top">
               <span
                 className="mov2-node-scope"
-                style={{ color: SCOPE_COLORS[n.scope] || "#7c6fff", background: (SCOPE_COLORS[n.scope] || "#7c6fff") + "18" }}
+                style={{ color: SCOPE_COLORS[n.scope] || "var(--accent)", background: (SCOPE_COLORS[n.scope] || "var(--accent)") + "18" }}
               >
                 {n.scope}
               </span>
@@ -447,10 +447,10 @@ function TabIntelligence() {
         <h3 className="mov2-section-title">Memory Clusters</h3>
         <div className="mov2-cluster-grid">
           {[
-            { label: "Pricing & Plans",  size: 8,  color: "#7c6fff", entries: ["Starter plan","Growth plan","Trial terms","Billing FAQ"] },
-            { label: "WhatsApp Ops",     size: 12, color: "#52d68a", entries: ["Follow-up sequence","Message templates","QR session","Batch send"] },
-            { label: "Lead Lifecycle",   size: 6,  color: "#4ecdc4", entries: ["Qualification criteria","Stage transitions","Won/Lost rules"] },
-            { label: "Error Patterns",   size: 4,  color: "#f55b5b", entries: ["Timeout events","API failures","Retry logic"] },
+            { label: "Pricing & Plans",  size: 8,  color: "var(--accent)", entries: ["Starter plan","Growth plan","Trial terms","Billing FAQ"] },
+            { label: "WhatsApp Ops",     size: 12, color: "var(--success)", entries: ["Follow-up sequence","Message templates","QR session","Batch send"] },
+            { label: "Lead Lifecycle",   size: 6,  color: "var(--accent2)", entries: ["Qualification criteria","Stage transitions","Won/Lost rules"] },
+            { label: "Error Patterns",   size: 4,  color: "var(--danger)", entries: ["Timeout events","API failures","Retry logic"] },
           ].map(c => (
             <div key={c.label} className="mov2-cluster-card" style={{ borderColor: c.color + "30" }}>
               <div className="mov2-cluster-dot" style={{ background: c.color }} />

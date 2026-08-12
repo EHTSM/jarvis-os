@@ -10,10 +10,10 @@ const BASE = process.env.REACT_APP_API_URL || "";
 const get  = (path) => fetch(`${BASE}${path}`, { credentials: "include" }).then(r => r.json()).catch(() => null);
 
 const PLANS = {
-  trial:   { name: "Trial",   color: "#f0b429", limit: 50,   aiCredits: 100,  features: ["editor", "ai-chat", "missions"] },
-  starter: { name: "Starter", color: "#4ecdc4", limit: 500,  aiCredits: 1000, features: ["editor", "ai-chat", "missions", "git", "pipeline"] },
-  growth:  { name: "Growth",  color: "#7c6fff", limit: 2000, aiCredits: 5000, features: ["editor", "ai-chat", "missions", "git", "pipeline", "plugins", "team"] },
-  scale:   { name: "Scale",   color: "#52d68a", limit: -1,   aiCredits: -1,   features: ["*"] },
+  trial:   { name: "Trial",   color: "var(--warning)", limit: 50,   aiCredits: 100,  features: ["editor", "ai-chat", "missions"] },
+  starter: { name: "Starter", color: "var(--accent2)", limit: 500,  aiCredits: 1000, features: ["editor", "ai-chat", "missions", "git", "pipeline"] },
+  growth:  { name: "Growth",  color: "var(--accent)", limit: 2000, aiCredits: 5000, features: ["editor", "ai-chat", "missions", "git", "pipeline", "plugins", "team"] },
+  scale:   { name: "Scale",   color: "var(--success)", limit: -1,   aiCredits: -1,   features: ["*"] },
 };
 
 const ALL_FEATURES = [

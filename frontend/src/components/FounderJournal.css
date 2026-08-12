@@ -96,7 +96,7 @@
 .fop-day-btn.active-day { color: #7c6af7; border-color: #2e2e48; background: #1a1a2e; }
 
 .fop-day-date    { font-weight: 600; }
-.fop-sealed-chip { font-size: 9px; color: #22c55e; }
+.fop-sealed-chip { font-size: 9px; color: var(--success); }
 .fop-mood-chip   { font-size: 9px; }
 .fop-stat-chip   { font-size: 9px; color: #888; }
 
@@ -236,8 +236,8 @@
   color: #888;
   white-space: nowrap;
 }
-.fop-chip.green { background: #0f2e1e; color: #22c55e; }
-.fop-chip.red   { background: #2e0f0f; color: #ef4444; }
+.fop-chip.green { background: #0f2e1e; color: var(--success); }
+.fop-chip.red   { background: #2e0f0f; color: var(--danger); }
 .fop-chip-sm { font-size: 9px; padding: 1px 6px; }
 
 /* ── Section headers ── */
@@ -291,11 +291,11 @@
   border-radius: 4px;
   flex-wrap: wrap;
 }
-.fop-crash-row.open     { border-left: 3px solid #ef4444; }
-.fop-crash-row.resolved { border-left: 3px solid #22c55e; opacity: 0.7; }
+.fop-crash-row.open     { border-left: 3px solid var(--danger); }
+.fop-crash-row.resolved { border-left: 3px solid var(--success); opacity: 0.7; }
 .fop-crash-title { font-size: 12px; font-weight: 600; color: #e2e2e8; }
 .fop-crash-desc  { font-size: 11px; color: #888; margin-top: 2px; }
-.fop-crash-res   { font-size: 11px; color: #22c55e; margin-top: 2px; }
+.fop-crash-res   { font-size: 11px; color: var(--success); margin-top: 2px; }
 
 .fop-resolve-row {
   display: flex;
@@ -314,7 +314,7 @@
   border: 1px solid #1e1e2e;
   border-radius: 4px;
 }
-.fop-perf-row.slow { border-left: 3px solid #ef4444; }
+.fop-perf-row.slow { border-left: 3px solid var(--danger); }
 .fop-perf-action   { font-size: 12px; color: #ccc; flex: 1; min-width: 0; }
 .fop-perf-ms       { font-size: 12px; font-weight: 700; white-space: nowrap; }
 
@@ -429,7 +429,7 @@
 .fop-empty   { font-size: 12px; color: #666; padding: 12px 0; }
 .fop-loading { font-size: 12px; color: #555; padding: 20px 0; }
 .fop-ts      { font-size: 10px; color: #555; white-space: nowrap; margin-left: auto; flex-shrink: 0; }
-.fop-msg     { font-size: 11px; color: #22c55e; }
+.fop-msg     { font-size: 11px; color: var(--success); }
 
 @media (prefers-reduced-motion: reduce) {
   .fop-bar-fill { transition: none; }

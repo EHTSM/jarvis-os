@@ -332,7 +332,7 @@ function FolderSyncCard() {
         <div className="k2-audit-list">
           {uploadLog.map((u, i) => (
             <div key={i} className="k2-audit-row">
-              <span className="k2-audit-dot" style={{ background: u.ok ? "#52d68a" : "var(--error)" }} />
+              <span className="k2-audit-dot" style={{ background: u.ok ? "var(--success)" : "var(--error)" }} />
               <span className="k2-audit-ts">{new Date(u.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
               <span className="k2-audit-action">{u.ok ? "synced" : "failed"}</span>
               <span className="k2-audit-detail">{u.relativePath}{u.sizeBytes ? ` (${_fmtBytes(u.sizeBytes)})` : ""}{u.error ? ` — ${u.error}` : ""}</span>

@@ -13,8 +13,8 @@ function _initials(name) {
 }
 
 const AVATAR_COLORS = [
-  "#7c6fff", "#4ecdc4", "#f0b429", "#52d68a", "#f55b5b",
-  "#5dc8f5", "#ff8c69", "#b794f4", "#68d391", "#fc8181",
+  "var(--accent)", "var(--accent2)", "var(--warning)", "var(--success)", "var(--danger)",
+  "var(--info)", "#ff8c69", "#b794f4", "#68d391", "#fc8181",
 ];
 
 function _avatarColor(name) {

@@ -26,7 +26,7 @@ function HealthRing({ score = 0, label = 'Health' }) {
   const r = 40, cx = 50, cy = 50;
   const circ = 2 * Math.PI * r;
   const dash  = (score / 100) * circ;
-  const color = score >= 80 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+  const color = score >= 80 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
 
   return (
     <div className="ao-ring">
@@ -43,7 +43,7 @@ function HealthRing({ score = 0, label = 'Health' }) {
         <text x={cx} y={cy - 4} textAnchor="middle" fill={color} fontSize="18" fontWeight="700" dominantBaseline="middle">
           {score}
         </text>
-        <text x={cx} y={cy + 16} textAnchor="middle" fill="#6b7280" fontSize="9">
+        <text x={cx} y={cy + 16} textAnchor="middle" fill="var(--text-dim)" fontSize="9">
           {label}
         </text>
       </svg>
@@ -182,7 +182,7 @@ function DeploymentPrediction() {
   if (!prediction) return <div className="ao-empty">No prediction data.</div>;
 
   const risk = prediction.failureRisk ?? prediction.risk ?? 0;
-  const color = risk >= 70 ? '#ef4444' : risk >= 40 ? '#f59e0b' : '#10b981';
+  const color = risk >= 70 ? 'var(--danger)' : risk >= 40 ? 'var(--warning)' : 'var(--success)';
 
   return (
     <div className="ao-deploy">

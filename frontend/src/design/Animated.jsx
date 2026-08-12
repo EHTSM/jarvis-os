@@ -234,7 +234,7 @@ export function PulseDot({ status = "ok", size = 8 }) {
         width: size,
         height: size,
         borderRadius: "50%",
-        backgroundColor: status === "ok" ? "#52d68a" : "#f55b5b",
+        backgroundColor: status === "ok" ? "var(--success)" : "var(--danger)",
         flexShrink: 0,
       }}
       animate={status === "ok" ? pulseDotOk : pulseDotCrit}
@@ -326,8 +326,8 @@ export function AnimatedApprovalCard({ children, status, className, style }) {
  */
 export function MetricValue({ value, direction = null, className, style }) {
   const colors = {
-    up:   ["var(--text-primary, #fff)", "#52d68a", "var(--text-primary, #fff)"],
-    down: ["var(--text-primary, #fff)", "#f55b5b", "var(--text-primary, #fff)"],
+    up:   ["var(--text-primary, #fff)", "var(--success)", "var(--text-primary, #fff)"],
+    down: ["var(--text-primary, #fff)", "var(--danger)", "var(--text-primary, #fff)"],
     null: undefined,
   };
 

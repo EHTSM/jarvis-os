@@ -42,7 +42,7 @@ const SEED = [
     runsToday: 3, totalRuns: 210, errorRate: "0.0%", lastRun: "2h ago", archived: false,
   },
   {
-    id: "ag_support", name: "Support Agent", type: "support", icon: "◎", color: "#52d68a",
+    id: "ag_support", name: "Support Agent", type: "support", icon: "◎", color: "var(--success)",
     status: "active", owner: "System", model: "claude-haiku-4-5-20251001",
     description: "Triages tickets, drafts responses from knowledge base, escalates critical issues.",
     capabilities: ["Query triage","Response drafting","Escalation logic","FAQ generation","Ticket summarisation"],
@@ -62,7 +62,7 @@ const SEED = [
     runsToday: 5, totalRuns: 388, errorRate: "0.5%", lastRun: "1h ago", archived: false,
   },
   {
-    id: "ag_dev", name: "Dev Agent", type: "engineering", icon: "⬡", color: "#e6edf3",
+    id: "ag_dev", name: "Dev Agent", type: "engineering", icon: "⬡", color: "var(--text)",
     status: "idle", owner: "System", model: "claude-opus-4-8",
     description: "Writes code, reviews PRs, generates tests, debugs failures, maintains documentation.",
     capabilities: ["Code generation","PR review","Test writing","Debugging","Documentation","Refactoring"],
@@ -104,8 +104,8 @@ const SEED = [
 ];
 
 const TYPE_COLORS = {
-  marketing: "var(--warning)", content: "var(--accent)", support: "#52d68a",
-  engineering: "#e6edf3", sales: "#da552f", research: "#a78bfa", analytics: "#38bdf8",
+  marketing: "var(--warning)", content: "var(--accent)", support: "var(--success)",
+  engineering: "var(--text)", sales: "#da552f", research: "#a78bfa", analytics: "#38bdf8",
 };
 const STATUS_CFG = {
   active: { color: "var(--success)", pulse: true },

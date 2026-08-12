@@ -52,7 +52,7 @@
   flex-shrink: 0;
 }
 .rs-item--current .rs-dot {
-  background: #22c55e;
+  background: var(--success);
   box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
   animation: rs-pulse 2s ease-in-out infinite;
 }

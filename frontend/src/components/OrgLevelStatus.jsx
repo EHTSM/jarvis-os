@@ -14,8 +14,8 @@ const LEVELS = {
   ako:  { label: "Knowledge Org (L4)", statusPath: "/ako/status", summaryPath: "/ako/summary", accent: "#9d6cff" },
   eos:  { label: "Executive OS",     statusPath: "/eos/status",  summaryPath: "/eos/summary",  accent: "#6c63ff" },
   ent:  { label: "Enterprise OS",    statusPath: "/ent/status",  summaryPath: "/ent/summary",  accent: "#00d4ff" },
-  eco:  { label: "Ecosystem OS",     statusPath: "/eco/status",  summaryPath: "/eco/summary",  accent: "#52d68a" },
-  civ:  { label: "Civilization OS",  statusPath: "/civ/status",  summaryPath: "/civ/summary",  accent: "#f0b429" },
+  eco:  { label: "Ecosystem OS",     statusPath: "/eco/status",  summaryPath: "/eco/summary",  accent: "var(--success)" },
+  civ:  { label: "Civilization OS",  statusPath: "/civ/status",  summaryPath: "/civ/summary",  accent: "var(--warning)" },
   auto: { label: "Autonomous OS",    statusPath: "/auto/status", summaryPath: "/auto/summary", accent: "#da552f" },
 };
 
@@ -56,7 +56,7 @@ function AgentTable({ agents }) {
               <td style={{ padding: "6px 8px", color: "#8888aa" }}>{a.role || "—"}</td>
               <td style={{ padding: "6px 8px" }}>
                 <span style={{
-                  color: a.status === "running" ? "#52d68a" : a.status === "not_registered" ? "#8888aa" : "#f0b429",
+                  color: a.status === "running" ? "var(--success)" : a.status === "not_registered" ? "#8888aa" : "var(--warning)",
                   fontSize: 12, fontWeight: 600,
                 }}>
                   {a.status || "unknown"}
@@ -100,7 +100,7 @@ export default function OrgLevelStatus({ level }) {
 
   useEffect(() => { reload(); }, [reload]);
 
-  if (!cfg) return <p style={{ color: "#f55b5b" }}>Unknown org level: {level}</p>;
+  if (!cfg) return <p style={{ color: "var(--danger)" }}>Unknown org level: {level}</p>;
 
   return (
     <div style={{ padding: 20, color: "#e0e0e0" }}>
@@ -120,7 +120,7 @@ export default function OrgLevelStatus({ level }) {
       </div>
 
       {error && (
-        <div style={{ background: "rgba(245,91,91,0.12)", border: "1px solid rgba(245,91,91,0.35)", borderRadius: 6, padding: "10px 14px", marginBottom: 16, color: "#f55b5b" }}>
+        <div style={{ background: "rgba(245,91,91,0.12)", border: "1px solid rgba(245,91,91,0.35)", borderRadius: 6, padding: "10px 14px", marginBottom: 16, color: "var(--danger)" }}>
           {error}
         </div>
       )}

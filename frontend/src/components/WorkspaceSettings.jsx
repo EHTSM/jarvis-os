@@ -107,8 +107,8 @@ export default function WorkspaceSettings({ onNavigate }) {
     workspaceName: "My Workspace",
     businessName:  "",
     tagline:       "",
-    primaryColor:  "#7c6fff",
-    accentColor:   "#4ecdc4",
+    primaryColor:  "var(--accent)",
+    accentColor:   "var(--accent2)",
     logoUrl:       "",
   }));
   const [notifs, setNotifs] = useState(() => _load(NOTIF_KEY, {
@@ -162,7 +162,7 @@ export default function WorkspaceSettings({ onNavigate }) {
   const resetBrand = () => {
     const defaults = {
       workspaceName: "My Workspace", businessName: "", tagline: "",
-      primaryColor: "#7c6fff", accentColor: "#4ecdc4", logoUrl: "",
+      primaryColor: "var(--accent)", accentColor: "var(--accent2)", logoUrl: "",
     };
     setBrand(defaults);
     _save(BRAND_KEY, defaults);
@@ -307,7 +307,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))} />
                     <input className="ws-input ws-input--mono" value={brand.primaryColor}
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))}
-                      placeholder="#7c6fff" />
+                      placeholder="var(--accent)" />
                   </div>
                 </FieldRow>
                 <FieldRow label="Secondary color" hint="Applied to the app's secondary accent, live">
@@ -316,7 +316,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                       onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))} />
                     <input className="ws-input ws-input--mono" value={brand.accentColor}
                       onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))}
-                      placeholder="#4ecdc4" />
+                      placeholder="var(--accent2)" />
                   </div>
                 </FieldRow>
                 <FieldRow label="Logo URL" hint="Saved for future use — not shown anywhere yet">

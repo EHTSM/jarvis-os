@@ -31,7 +31,7 @@
   transition: all 0.12s;
   white-space: nowrap;
 }
-.jb-journey-pill:hover { color: #8994b0; border-color: rgba(255,255,255,0.12); }
+.jb-journey-pill:hover { color: var(--text-dim); border-color: rgba(255,255,255,0.12); }
 .jb-journey-pill--active {
   color: var(--accent, #7c6fff);
   border-color: rgba(124,111,255,0.35);
@@ -49,7 +49,7 @@
   transition: color 0.12s;
   font-family: inherit;
 }
-.jb-dismiss:hover { color: #8994b0; }
+.jb-dismiss:hover { color: var(--text-dim); }
 
 /* Step track */
 .jb-track {
@@ -81,7 +81,7 @@
 .jb-step:disabled { cursor: default; }
 
 .jb-step--done  { color: #4a5470; }
-.jb-step--done:hover { color: #64748b; background: rgba(255,255,255,0.03); }
+.jb-step--done:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
 .jb-step--active {
   color: var(--accent, #7c6fff);
   background: rgba(124,111,255,0.10);
@@ -199,7 +199,7 @@
 .jb-complete-badge {
   font-size: 10px;
   font-weight: 700;
-  color: #22c55e;
+  color: var(--success);
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(34,197,94,0.09);
@@ -247,7 +247,7 @@
   flex-shrink: 0;
 }
 .jb-bc-step--done   { color: #374151; }
-.jb-bc-step--done:hover { color: #64748b; }
+.jb-bc-step--done:hover { color: var(--text-dim); }
 .jb-bc-step--active { color: var(--accent, #7c6fff); cursor: default; }
 .jb-bc-step--future { color: #2a3050; }
 .jb-bc-step--future:not(:disabled):hover { color: #4a5470; }

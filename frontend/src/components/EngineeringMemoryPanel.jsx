@@ -28,30 +28,30 @@ function timeAgo(iso) {
 }
 
 function scoreColor(score) {
-    if (score >= 0.6) return "#10b981";
-    if (score >= 0.3) return "#f59e0b";
-    return "#6b7280";
+    if (score >= 0.6) return "var(--success)";
+    if (score >= 0.3) return "var(--warning)";
+    return "var(--text-dim)";
 }
 
 function riskColor(score) {
-    if (score >= 70) return "#ef4444";
-    if (score >= 40) return "#f59e0b";
-    return "#10b981";
+    if (score >= 70) return "var(--danger)";
+    if (score >= 40) return "var(--warning)";
+    return "var(--success)";
 }
 
 const SOURCE_COLORS = {
     lesson:          "#60a5fa",
-    rule:            "#10b981",
+    rule:            "var(--success)",
     rca:             "#a78bfa",
-    mission:         "#f59e0b",
-    raw_lesson:      "#6b7280",
-    failure_lesson:  "#ef4444",
-    success_lesson:  "#10b981",
+    mission:         "var(--warning)",
+    raw_lesson:      "var(--text-dim)",
+    failure_lesson:  "var(--danger)",
+    success_lesson:  "var(--success)",
     reusable_rule:   "#34d399",
     rca_playbook:    "#c084fc",
-    rule_match:      "#10b981",
-    mission_failure: "#ef4444",
-    approved_decision: "#f59e0b",
+    rule_match:      "var(--success)",
+    mission_failure: "var(--danger)",
+    approved_decision: "var(--warning)",
     patch:           "#fb923c",
     pipeline:        "#94a3b8",
     acp6_bundle:     "#818cf8",
@@ -76,16 +76,16 @@ function StatsRow({ stats }) {
         <div className="emp-stats-row">
             {[
                 { k: "Lessons",     v: src.lessons,          c: "#60a5fa" },
-                { k: "Rules",       v: src.rules,            c: "#10b981" },
+                { k: "Rules",       v: src.rules,            c: "var(--success)" },
                 { k: "RCAs",        v: src.rcas,             c: "#a78bfa" },
-                { k: "Failures ✓",  v: src.failuresAnalysed, c: "#6b7280" },
-                { k: "Missions",    v: src.missions,         c: "#f59e0b" },
+                { k: "Failures ✓",  v: src.failuresAnalysed, c: "var(--text-dim)" },
+                { k: "Missions",    v: src.missions,         c: "var(--warning)" },
                 { k: "Patches",     v: src.patches,          c: "#fb923c" },
                 { k: "Pipelines",   v: src.pipelineRuns,     c: "#94a3b8" },
                 { k: "Knowledge",   v: grw.totalKnowledgeItems, c: "#e5e7eb" },
                 { k: "This Week",   v: grw.lessonsThisWeek,  c: "#34d399" },
-                { k: "Open Recs",   v: eng.openRecommendations, c: "#f59e0b" },
-                { k: "Active RCAs", v: eng.activeRCAs,       c: "#ef4444" },
+                { k: "Open Recs",   v: eng.openRecommendations, c: "var(--warning)" },
+                { k: "Active RCAs", v: eng.activeRCAs,       c: "var(--danger)" },
                 { k: "Playbooks",   v: eng.playbooks,        c: "#c084fc" },
             ].map(t => (
                 <div key={t.k} className="emp-stat">
@@ -114,7 +114,7 @@ function TimelineView() {
 
     const TYPE_COLOR = {
         lesson: "#60a5fa", patch: "#fb923c", pipeline: "#94a3b8",
-        mission: "#f59e0b", rca: "#a78bfa",
+        mission: "var(--warning)", rca: "#a78bfa",
     };
 
     return (
@@ -123,7 +123,7 @@ function TimelineView() {
                 <div key={i} className="emp-tl-row">
                     <div className="emp-tl-dot" style={{ background: TYPE_COLOR[e.type] || "#374151" }} />
                     <div className="emp-tl-body">
-                        <span className="emp-tl-type" style={{ color: TYPE_COLOR[e.type] || "#6b7280" }}>
+                        <span className="emp-tl-type" style={{ color: TYPE_COLOR[e.type] || "var(--text-dim)" }}>
                             {TYPE_ICONS[e.type] || "·"} {e.type}
                         </span>
                         <span className="emp-tl-title">{e.title}</span>
@@ -191,7 +191,7 @@ function SimilarityExplorer() {
                     <div key={i} className="emp-result-card">
                         <div className="emp-result-head">
                             <span className="emp-result-icon">{TYPE_ICONS[item.type] || "·"}</span>
-                            <span className="emp-result-type" style={{ color: SOURCE_COLORS[item.type] || "#6b7280" }}>
+                            <span className="emp-result-type" style={{ color: SOURCE_COLORS[item.type] || "var(--text-dim)" }}>
                                 {item.type}
                             </span>
                             <div className="emp-score-bar">
@@ -295,7 +295,7 @@ function PredictionsView() {
                             { k: "Repair",   v: risk.repairProbability },
                         ].map(p => (
                             <div key={p.k} className="emp-prob-tile">
-                                <div className="emp-prob-val" style={{ color: p.k === "Rollback" || p.k === "Repair" ? riskColor(p.v) : "#10b981" }}>
+                                <div className="emp-prob-val" style={{ color: p.k === "Rollback" || p.k === "Repair" ? riskColor(p.v) : "var(--success)" }}>
                                     {Math.round(p.v)}%
                                 </div>
                                 <div className="emp-prob-key">{p.k}</div>
@@ -353,7 +353,7 @@ function PredictionsView() {
                     <div className="emp-pred-label">Historical Comparison</div>
                     <div className="emp-compare-row">
                         <div className="emp-compare-kpi">
-                            <div className="emp-compare-val" style={{ color: compare.historicalSuccessRate >= 70 ? "#10b981" : "#f59e0b" }}>
+                            <div className="emp-compare-val" style={{ color: compare.historicalSuccessRate >= 70 ? "var(--success)" : "var(--warning)" }}>
                                 {compare.historicalSuccessRate ?? "—"}%
                             </div>
                             <div className="emp-compare-key">Historical Success</div>
@@ -363,7 +363,7 @@ function PredictionsView() {
                             <div className="emp-compare-key">Successes</div>
                         </div>
                         <div className="emp-compare-kpi">
-                            <div className="emp-compare-val" style={{ color: compare.historicalFailures > 0 ? "#ef4444" : "#6b7280" }}>
+                            <div className="emp-compare-val" style={{ color: compare.historicalFailures > 0 ? "var(--danger)" : "var(--text-dim)" }}>
                                 {compare.historicalFailures}
                             </div>
                             <div className="emp-compare-key">Failures</div>
@@ -426,7 +426,7 @@ function KnowledgeGrowthView() {
                 })}
             </div>
             <div className="emp-growth-legend">
-                {[["#60a5fa","Lessons"],["#fb923c","Patches"],["#f59e0b","Missions"],["#10b981","Rules"]].map(([c,l]) => (
+                {[["#60a5fa","Lessons"],["#fb923c","Patches"],["var(--warning)","Missions"],["var(--success)","Rules"]].map(([c,l]) => (
                     <div key={l} className="emp-growth-leg-item">
                         <div className="emp-growth-leg-dot" style={{ background: c }} />
                         <span>{l}</span>
@@ -522,8 +522,8 @@ function BenchmarkView() {
                 <>
                     <div className="emp-bench-kpis">
                         {[
-                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
-                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
+                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
+                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
                             { k: "Total Time", v: formatMs(result.totalMs),           c: "#60a5fa" },
                             { k: "Knowledge",  v: result.stats?.growth?.totalKnowledgeItems || 0, c: "#d1d5db" },
                             { k: "Lessons",    v: result.stats?.memorySources?.lessons || 0,      c: "#60a5fa" },
@@ -539,7 +539,7 @@ function BenchmarkView() {
                         {(result.scenarios || []).map((s, i) => (
                             <div key={i} className={`emp-bench-row emp-bench-row--${s.ok ? "ok" : "fail"}`}>
                                 <span className="emp-bench-num">{i + 1}.</span>
-                                <span className="emp-bench-dot" style={{ background: s.ok ? "#10b981" : "#ef4444" }} />
+                                <span className="emp-bench-dot" style={{ background: s.ok ? "var(--success)" : "var(--danger)" }} />
                                 <span className="emp-bench-goal">{s.name}</span>
                                 <span className="emp-bench-val">{s.value}</span>
                                 <span className="emp-bench-ms">{formatMs(s.elapsedMs)}</span>
@@ -585,7 +585,7 @@ function EvolveView() {
                 <div className="emp-evolve-results">
                     {Object.entries(result).filter(([k]) => k !== 'evolvedAt').map(([key, val]) => (
                         <div key={key} className={`emp-evolve-row emp-evolve-row--${val.ok ? "ok" : "fail"}`}>
-                            <span className="emp-evolve-dot" style={{ background: val.ok ? "#10b981" : "#ef4444" }} />
+                            <span className="emp-evolve-dot" style={{ background: val.ok ? "var(--success)" : "var(--danger)" }} />
                             <span className="emp-evolve-key">{key}</span>
                             {val.ok ? (
                                 <span className="emp-evolve-detail">
@@ -610,8 +610,8 @@ function EvolveView() {
 // ── Unified Index view (cross-product memory index: agents/runtime/unifiedMemoryEngine.cjs) ──
 
 const NS_COLORS = {
-    project: "#60a5fa", workflow: "#94a3b8", incident: "#ef4444",
-    decision: "#a78bfa", knowledge: "#10b981",
+    project: "#60a5fa", workflow: "#94a3b8", incident: "var(--danger)",
+    decision: "#a78bfa", knowledge: "var(--success)",
 };
 
 function IndexView() {
@@ -649,7 +649,7 @@ function IndexView() {
                 <div className="emp-stats-row">
                     {Object.entries(summary.namespaces || {}).map(([ns, count]) => (
                         <div key={ns} className="emp-stat">
-                            <div className="emp-stat-val" style={{ color: NS_COLORS[ns] || "#6b7280" }}>{count}</div>
+                            <div className="emp-stat-val" style={{ color: NS_COLORS[ns] || "var(--text-dim)" }}>{count}</div>
                             <div className="emp-stat-key">{ns}</div>
                         </div>
                     ))}
@@ -688,7 +688,7 @@ function IndexView() {
                 {(results || []).map((item, i) => (
                     <div key={i} className="emp-result-card">
                         <div className="emp-result-head">
-                            <span className="emp-result-type" style={{ color: NS_COLORS[item.ns] || "#6b7280" }}>
+                            <span className="emp-result-type" style={{ color: NS_COLORS[item.ns] || "var(--text-dim)" }}>
                                 {item.ns} · {item.type}
                             </span>
                         </div>

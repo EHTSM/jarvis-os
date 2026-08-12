@@ -80,7 +80,7 @@
 .cc-ev-left{flex:1;display:flex;align-items:center;gap:12px;}
 .cc-ev-type{padding:3px 10px;border-radius:var(--radius-pill);font-size:10.5px;font-weight:800;text-transform:uppercase;}
 .cc-ev-type--webinar{background:rgba(var(--accent2-rgb),.12);color:var(--accent2);}
-.cc-ev-type--ama{background:rgba(82,214,138,.12);color:#52d68a;}
+.cc-ev-type--ama{background:rgba(82,214,138,.12);color:var(--success);}
 .cc-ev-type--launch{background:rgba(240,180,41,.12);color:var(--warning);}
 .cc-ev-info{flex:1;}
 .cc-ev-title{display:block;font-size:13.5px;font-weight:700;color:var(--text);}

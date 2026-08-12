@@ -95,8 +95,8 @@
 }
 
 .cdialog-danger {
-  background: #ef4444;
-  border-color: #ef4444;
+  background: var(--danger);
+  border-color: var(--danger);
 }
 
 .cdialog-danger:hover { background: #dc2626; border-color: #dc2626; }

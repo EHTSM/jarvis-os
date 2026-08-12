@@ -14,8 +14,8 @@
   border-bottom: 1px solid rgba(255,255,255,0.07);
   flex-shrink: 0;
 }
-.io-title    { font-size: 13px; font-weight: 700; color: #22c55e; letter-spacing: 0.06em; }
-.io-subtitle { font-size: 9px; color: #64748b; margin-top: 2px; letter-spacing: 0.08em; }
+.io-title    { font-size: 13px; font-weight: 700; color: var(--success); letter-spacing: 0.06em; }
+.io-subtitle { font-size: 9px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.08em; }
 
 /* ── Search ── */
 .io-search-form {
@@ -42,7 +42,7 @@
   padding: 6px 14px;
   background: rgba(34,197,94,0.12);
   border: 1px solid rgba(34,197,94,0.3);
-  color: #22c55e;
+  color: var(--success);
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
@@ -55,7 +55,7 @@
 .io-prompt  { padding: 40px 20px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }
 .io-loading {
   padding: 12px 16px;
-  color: #64748b;
+  color: var(--text-dim);
   font-size: 10px;
   display: flex;
   flex-direction: column;
@@ -94,20 +94,20 @@
   flex-direction: column;
   gap: 5px;
 }
-.io-score-label  { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; font-weight: 700; }
+.io-score-label  { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 700; }
 .io-score-reason { font-size: 10px; color: #94a3b8; line-height: 1.4; }
 
 /* Risk bar */
 .io-risk-wrap { display: flex; align-items: center; gap: 8px; }
 .io-risk-bar  { flex: 1; height: 4px; background: #1e2130; border-radius: 2px; overflow: hidden; }
 .io-risk-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
-.io-risk-fill--low  { background: #22c55e; }
+.io-risk-fill--low  { background: var(--success); }
 .io-risk-fill--med  { background: #eab308; }
-.io-risk-fill--high { background: #ef4444; }
+.io-risk-fill--high { background: var(--danger); }
 .io-risk-val { font-size: 10px; font-weight: 600; white-space: nowrap; }
-.io-risk-val--low  { color: #22c55e; }
+.io-risk-val--low  { color: var(--success); }
 .io-risk-val--med  { color: #eab308; }
-.io-risk-val--high { color: #ef4444; }
+.io-risk-val--high { color: var(--danger); }
 
 /* Confidence bar */
 .io-conf-wrap { display: flex; align-items: center; gap: 8px; }
@@ -125,7 +125,7 @@
   border-radius: 5px;
   padding: 8px 10px;
 }
-.io-action-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #22c55e; font-weight: 700; }
+.io-action-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--success); font-weight: 700; }
 .io-action-text  { font-size: 11px; color: #e2e8f0; line-height: 1.5; }
 
 /* ── Rollback ── */
@@ -150,8 +150,8 @@
   padding: 4px 0 3px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.io-sec-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #64748b; font-weight: 700; }
-.io-sec-count { font-size: 10px; background: rgba(34,197,94,0.12); color: #22c55e; border-radius: 8px; padding: 0 6px; }
+.io-sec-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); font-weight: 700; }
+.io-sec-count { font-size: 10px; background: rgba(34,197,94,0.12); color: var(--success); border-radius: 8px; padding: 0 6px; }
 
 /* ── Memory hits ── */
 .io-mem-list { display: flex; flex-direction: column; gap: 4px; }
@@ -181,8 +181,8 @@
   gap: 3px;
 }
 .io-fail-msg  { font-size: 11px; color: #f87171; }
-.io-fail-fix  { font-size: 10px; color: #22c55e; }
-.io-fail-time { font-size: 9px; color: #64748b; }
+.io-fail-fix  { font-size: 10px; color: var(--success); }
+.io-fail-time { font-size: 9px; color: var(--text-dim); }
 
 /* ── Decisions ── */
 .io-dec-list { display: flex; flex-direction: column; gap: 4px; }
@@ -201,7 +201,7 @@
 /* ── Successes ── */
 .io-succ-list { display: flex; flex-direction: column; gap: 3px; }
 .io-succ      { display: flex; align-items: baseline; gap: 7px; }
-.io-succ-icon { color: #22c55e; font-size: 11px; flex-shrink: 0; }
+.io-succ-icon { color: var(--success); font-size: 11px; flex-shrink: 0; }
 .io-succ-text { font-size: 10px; color: #94a3b8; }
 
 .io-no-results { padding: 20px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }

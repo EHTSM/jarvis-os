@@ -61,7 +61,7 @@
 .wf-step--done .wf-step-dot {
   background: rgba(34,197,94,0.15);
   border-color: rgba(34,197,94,0.4);
-  color: #22c55e;
+  color: var(--success);
 }
 
 .wf-step-label {
@@ -128,7 +128,7 @@
 }
 
 .wf-checklist li span {
-  color: #22c55e;
+  color: var(--success);
   font-weight: 700;
 }
 
@@ -150,7 +150,7 @@
 .wf-folder-btn--done {
   background: rgba(34,197,94,0.1);
   border-color: rgba(34,197,94,0.35);
-  color: #22c55e;
+  color: var(--success);
 }
 
 .wf-skip-hint {
@@ -192,7 +192,7 @@
 .wf-mission-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 .wf-mission-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
 .wf-mission-desc  { font-size: 10px; color: rgba(255,255,255,0.35); }
-.wf-mission-check { color: #22c55e; font-size: 13px; font-weight: 700; }
+.wf-mission-check { color: var(--success); font-size: 13px; font-weight: 700; }
 
 /* ── Footer ── */
 .wf-footer {

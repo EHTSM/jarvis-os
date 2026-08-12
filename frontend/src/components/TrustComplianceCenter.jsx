@@ -57,7 +57,7 @@ const FRAMEWORKS = [
     ],
   },
   {
-    id:"dpdp", name:"DPDP 2023", region:"India", icon:"🇮🇳", color:"#f59e0b",
+    id:"dpdp", name:"DPDP 2023", region:"India", icon:"🇮🇳", color:"var(--warning)",
     description:"Digital Personal Data Protection Act 2023 — Indian personal data law.",
     completeness:82,
     controls:[
