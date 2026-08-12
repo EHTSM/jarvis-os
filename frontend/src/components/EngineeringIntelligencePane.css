@@ -128,7 +128,7 @@
   background: rgba(0,0,0,0.3);
 }
 .eip-statusbar__grade { color: var(--accent); font-weight: 600; }
-.eip-statusbar__sep   { color: rgba(255,255,255,0.1); }
+.eip-statusbar__sep   { color: rgba(var(--fg-rgb), 0.62); }
 
 /* ── Grade Ring ─────────────────────────────────────────────────────────────── */
 

@@ -59,7 +59,7 @@
 .tw-member-avatar {
   width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.8);
+  font-size: 12px; font-weight: 800; color: rgba(var(--fg-rgb), 0.92);
 }
 .tw-member-info { flex: 1; min-width: 0; }
 .tw-member-name  { display: block; font-size: 13.5px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -168,7 +168,7 @@
 .tw-ptd { padding: 9px 14px; text-align: center; }
 .tw-ptd--action { text-align: left; color: var(--text-dim); font-weight: 500; }
 .tw-perm-yes { font-size: 13px; font-weight: 800; }
-.tw-perm-no  { font-size: 13px; color: rgba(255,255,255,0.12); }
+.tw-perm-no  { font-size: 13px; color: rgba(var(--fg-rgb), 0.62); }
 
 /* Activity */
 .tw-activity-section { display: flex; flex-direction: column; gap: 10px; }

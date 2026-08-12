@@ -534,10 +534,10 @@
 }
 .mc-stop-icon  { font-size: 28px; text-align: center; }
 .mc-stop-title { font-size: 16px; font-weight: 700; color: #f9fafb; text-align: center; }
-.mc-stop-body  { font-size: 13px; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.5; }
+.mc-stop-body  { font-size: 13px; color: rgba(var(--fg-rgb), 0.62); text-align: center; line-height: 1.5; }
 .mc-stop-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
 .mc-stop-btn { padding: 8px 16px; border-radius: 7px; font-size: 13px; font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s; }
-.mc-stop-btn--cancel  { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.10); color: rgba(255,255,255,0.6); }
+.mc-stop-btn--cancel  { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.10); color: rgba(var(--fg-rgb), 0.62); }
 .mc-stop-btn--cancel:hover { background: rgba(255,255,255,0.12); }
 .mc-stop-btn--confirm { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.35); color: #f87171; }
 .mc-stop-btn--confirm:hover { background: rgba(239,68,68,0.30); }
@@ -559,7 +559,7 @@
 }
 .mc-approvals-stats {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(var(--fg-rgb), 0.62);
 }
 .mc-approvals-list {
   display: flex;
@@ -602,19 +602,19 @@
 .mc-approval-type {
   flex-shrink: 0;
   font-size: 0.72rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(var(--fg-rgb), 0.62);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .mc-approval-conf {
   flex-shrink: 0;
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.55);
+  color: rgba(var(--fg-rgb), 0.62);
   font-variant-numeric: tabular-nums;
 }
 .mc-approval-caret {
   flex-shrink: 0;
-  color: rgba(255,255,255,0.3);
+  color: rgba(var(--fg-rgb), 0.62);
   font-size: 0.7rem;
 }
 .mc-approval-detail {
@@ -632,10 +632,10 @@
 .mc-approval-detail-row > span:first-child {
   flex-shrink: 0;
   width: 130px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(var(--fg-rgb), 0.62);
   font-weight: 600;
 }
-.mc-approval-detail-row > span:last-child { color: rgba(255,255,255,0.75); }
+.mc-approval-detail-row > span:last-child { color: rgba(var(--fg-rgb), 0.78); }
 .mc-approval-actions {
   display: flex;
   gap: 8px;

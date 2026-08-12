@@ -981,7 +981,7 @@
 .landing-preview-pillars span:hover {
   background: rgba(78,205,196,0.07);
   border-color: rgba(78,205,196,0.22);
-  color: rgba(255,255,255,0.95);
+  color: rgba(var(--fg-rgb), 0.92);
 }
 
 /* Feature list: more readable at a glance */

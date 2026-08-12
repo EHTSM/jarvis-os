@@ -561,12 +561,12 @@
 .cep-delete-title {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255,255,255,0.88);
+  color: rgba(var(--fg-rgb), 0.92);
   text-align: center;
 }
 .cep-delete-body {
   font-size: 12px;
-  color: rgba(255,255,255,0.40);
+  color: rgba(var(--fg-rgb), 0.62);
   text-align: center;
 }
 .cep-delete-actions {
@@ -585,7 +585,7 @@
 .cep-delete-btn--cancel {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.10);
-  color: rgba(255,255,255,0.55);
+  color: rgba(var(--fg-rgb), 0.62);
 }
 .cep-delete-btn--cancel:hover { background: rgba(255,255,255,0.10); }
 .cep-delete-btn--confirm {
@@ -618,7 +618,7 @@
   padding: 8px 14px;
   background: none;
   border: none;
-  color: rgba(255,255,255,0.75);
+  color: rgba(var(--fg-rgb), 0.78);
   font-size: 12px;
   font-family: 'SF Mono', 'Fira Code', monospace;
   cursor: pointer;
@@ -654,7 +654,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 .cep-breadcrumb__file {
-  color: rgba(255,255,255,0.45);
+  color: rgba(var(--fg-rgb), 0.62);
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
@@ -663,7 +663,7 @@
   transition: color 0.12s;
 }
 .cep-breadcrumb__file:hover { color: #60a5fa; }
-.cep-breadcrumb__sep { color: rgba(255,255,255,0.18); }
+.cep-breadcrumb__sep { color: rgba(var(--fg-rgb), 0.62); }
 .cep-breadcrumb__sym {
   color: #fbbf24;
   cursor: pointer;
@@ -672,7 +672,7 @@
 }
 .cep-breadcrumb__sym:hover { color: #fde68a; }
 .cep-breadcrumb__line {
-  color: rgba(255,255,255,0.22);
+  color: rgba(var(--fg-rgb), 0.62);
   font-size: 10px;
   font-family: 'SF Mono', 'Fira Code', monospace;
 }
@@ -687,7 +687,7 @@
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 4px;
-  color: rgba(255,255,255,0.40);
+  color: rgba(var(--fg-rgb), 0.62);
   font-size: 10px;
   font-family: inherit;
   cursor: pointer;
@@ -751,7 +751,7 @@
 .cep-refs__header {
   padding: 4px 12px 6px;
   font-size: 11px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(var(--fg-rgb), 0.62);
   border-bottom: 1px solid rgba(255,255,255,0.05);
   margin-bottom: 2px;
 }
@@ -767,13 +767,13 @@
 }
 .cep-refs__row:hover { background: rgba(165,180,252,0.10); }
 .cep-refs__file { color: #60a5fa; }
-.cep-refs__line { color: rgba(255,255,255,0.45); }
-.cep-refs__col  { color: rgba(255,255,255,0.25); font-size: 11px; }
+.cep-refs__line { color: rgba(var(--fg-rgb), 0.62); }
+.cep-refs__col  { color: rgba(var(--fg-rgb), 0.62); font-size: 11px; }
 
 /* ERP-1: Status bar line number */
 .cep-statusbar__linenum {
   font-size: 11px;
-  color: rgba(255,255,255,0.30);
+  color: rgba(var(--fg-rgb), 0.62);
   margin-left: 8px;
 }
 

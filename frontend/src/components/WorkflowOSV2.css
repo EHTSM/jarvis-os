@@ -346,7 +346,7 @@
 
 .wov2-wf-desc   { margin: 0; font-size: 12px; color: var(--text-dim, #8994b0); line-height: 1.5; }
 .wov2-wf-meta   { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--text-faint, #4a5470); }
-.wov2-wf-meta-sep { color: rgba(255,255,255,.12); }
+.wov2-wf-meta-sep { color: rgba(var(--fg-rgb), 0.62); }
 .wov2-wf-error  { margin: 0; font-size: 11px; color: var(--danger); padding-left: 12px; }
 
 .wov2-quick-trigger {
@@ -753,7 +753,7 @@
 .wov2-dept-metrics { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
 .wov2-dm-val    { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text, #dde2ec); }
 .wov2-dm-label  { font-size: 11px; color: var(--text-faint, #4a5470); }
-.wov2-dm-sep    { font-size: 11px; color: rgba(255,255,255,.12); margin: 0 2px; }
+.wov2-dm-sep    { font-size: 11px; color: rgba(var(--fg-rgb), 0.62); margin: 0 2px; }
 
 .wov2-dept-detail { display: flex; flex-direction: column; gap: 8px; }
 .wov2-dept-mission { margin: 0; font-size: 12px; color: var(--text-dim, #8994b0); line-height: 1.5; }

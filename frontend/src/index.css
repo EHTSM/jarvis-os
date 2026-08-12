@@ -178,6 +178,33 @@
   --on-warning:     #120d02;   /* 11.27:1 on dark --warning */
   --on-accent2:     #05100f;   /* 10.85:1 on dark --accent2 */
   --on-info:        #04121a;   /* 11.05:1 on dark --info    */
+
+  /* ── B19.2.2: theme-aware "dimmed foreground" ───────────────────────────
+     Large parts of the chrome (topbar, tabs, palette trigger, overflow menu)
+     dim text with the idiom `rgba(255,255,255,α)`. That is white — it only
+     works over a dark canvas, and the topbar has no background of its own, so
+     it sits directly on --bg. In light mode those became white-on-near-white
+     (measured 1.00–1.28:1 across 30+ elements).
+
+     --fg-rgb is the foreground channel triple for the ACTIVE theme, so
+     `rgba(var(--fg-rgb), α)` keeps the same dimming intent in both themes.
+     The discrete steps below are the alphas actually in use, each chosen to
+     clear 4.5:1 against --bg in the theme where it is weakest.
+     Worst measured ratio across both themes after this change: 5.29:1. */
+  /* On a dark canvas the base semantic tokens are bright and already clear AA
+     on their own low-alpha tints, so these alias straight through. The light
+     theme overrides them with darker variants. */
+  --on-danger-tint:  var(--danger);
+  --on-success-tint: var(--success);
+  --on-warning-tint: var(--warning);
+  --on-info-tint:    var(--info);
+
+  --fg-rgb:         255, 255, 255;
+  --fg-dim-1:       rgba(var(--fg-rgb), 0.92);  /* primary chrome label   */
+  --fg-dim-2:       rgba(var(--fg-rgb), 0.78);  /* hover / active tab     */
+  --fg-dim-3:       rgba(var(--fg-rgb), 0.66);  /* resting tab label      */
+  --fg-dim-4:       rgba(var(--fg-rgb), 0.62);  /* meta, shortcut hints   */
+
   --font-sans:      -apple-system, 'SF Pro Text', 'Segoe UI Variable', 'Segoe UI',
                     system-ui, sans-serif;
 }
@@ -260,6 +287,21 @@
      (breadcrumbs, legal tree, pulse rows). Now ≥4.50:1 on all of them. */
   --text-faint:    #636b86;
 
+  /* B19.2.2: flip the dimmed-foreground channel. Every
+     `rgba(var(--fg-rgb), α)` in the chrome inverts with the theme. */
+  --fg-rgb:        10, 14, 24;
+
+  /* ── B19.2.2: text sitting ON a `-muted` tint of its own colour ──────────
+     `--danger` etc. are calibrated against --bg. A `-muted` tint of the SAME
+     hue is a materially darker, hue-matched backdrop, so the base token only
+     reaches 4.41:1 on it. These variants are one step darker and are the
+     correct choice whenever foreground and backdrop share a hue (status bars,
+     chips, callouts). Verified ≥4.8:1 on their own tint. */
+  --on-danger-tint:  #b00a0a;
+  --on-success-tint: #17603a;
+  --on-warning-tint: #715108;
+  --on-info-tint:    #085d80;
+
   --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
   --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
   --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);
@@ -324,6 +366,11 @@
     --text:          #1a1f2e;
     --text-dim:      #565f78;
     --text-faint:    #636b86;
+    --fg-rgb:        10, 14, 24;
+    --on-danger-tint:  #b00a0a;
+    --on-success-tint: #17603a;
+    --on-warning-tint: #715108;
+    --on-info-tint:    #085d80;
     --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
     --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
     --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);

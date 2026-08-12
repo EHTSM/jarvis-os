@@ -270,12 +270,12 @@
 .bc-feedback-close:hover { color: #f9fafb; }
 .bc-feedback-input  {
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 7px; padding: 10px 12px; color: rgba(255,255,255,0.85);
+  border-radius: 7px; padding: 10px 12px; color: rgba(var(--fg-rgb), 0.92);
   font-size: 13px; font-family: inherit; resize: vertical; outline: none; width: 100%;
   box-sizing: border-box; line-height: 1.5;
 }
 .bc-feedback-input:focus { border-color: rgba(102,87,232,0.40); }
-.bc-feedback-input::placeholder { color: rgba(255,255,255,0.25); }
+.bc-feedback-input::placeholder { color: rgba(var(--fg-rgb), 0.62); }
 .bc-feedback-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .bc-feedback-hint { font-size: 11px; color: #4b5563; }
 .bc-feedback-send {

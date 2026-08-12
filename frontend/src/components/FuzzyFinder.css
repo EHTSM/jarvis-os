@@ -28,7 +28,7 @@
 }
 .ff-title {
   font-size: 11px;
-  color: rgba(255,255,255,0.30);
+  color: rgba(var(--fg-rgb), 0.62);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 600;
@@ -42,7 +42,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.07);
   flex-shrink: 0;
 }
-.ff-input-icon { color: rgba(255,255,255,0.30); font-size: 14px; }
+.ff-input-icon { color: rgba(var(--fg-rgb), 0.62); font-size: 14px; }
 .ff-input {
   flex: 1;
   background: none;
@@ -52,7 +52,7 @@
   font-size: 14px;
   font-family: inherit;
 }
-.ff-input::placeholder { color: rgba(255,255,255,0.22); }
+.ff-input::placeholder { color: rgba(var(--fg-rgb), 0.62); }
 
 .ff-list {
   flex: 1;
@@ -65,7 +65,7 @@
   padding: 20px;
   text-align: center;
   font-size: 12px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(var(--fg-rgb), 0.62);
 }
 
 .ff-item {
@@ -90,7 +90,7 @@
 .ff-item__name {
   flex: 1;
   font-size: 13px;
-  color: rgba(255,255,255,0.85);
+  color: rgba(var(--fg-rgb), 0.92);
   font-family: 'SF Mono', 'Fira Code', monospace;
   white-space: nowrap;
   overflow: hidden;
@@ -98,7 +98,7 @@
 }
 .ff-item__file {
   font-size: 11px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(var(--fg-rgb), 0.62);
   flex-shrink: 0;
   max-width: 120px;
   overflow: hidden;
@@ -107,7 +107,7 @@
 }
 .ff-item__line {
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(var(--fg-rgb), 0.62);
   flex-shrink: 0;
 }
 
@@ -123,6 +123,6 @@
   padding: 8px 14px;
   border-top: 1px solid rgba(255,255,255,0.06);
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(var(--fg-rgb), 0.62);
   flex-shrink: 0;
 }

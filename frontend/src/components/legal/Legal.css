@@ -134,7 +134,7 @@
 
 /* ── Company card ─────────────────────────────────────────────────────── */
 .legal-company-card {
-  background: rgba(11, 15, 26, 0.95);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -187,7 +187,9 @@
 }
 .legal-tree-sub {
   font-size: 11px;
-  color: var(--text-faint, #4a5470);
+  /* B19.2.2: --text-faint measured 4.49:1 on this tinted panel. This is a
+     label carrying real content, so it takes the stronger dim role. */
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
@@ -213,7 +215,7 @@
   gap: 12px;
 }
 .legal-contact-card {
-  background: rgba(11, 15, 26, 0.95);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 18px;
@@ -253,7 +255,7 @@
   margin-bottom: 28px;
 }
 .trust-card {
-  background: rgba(11, 15, 26, 0.95);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 18px 20px;

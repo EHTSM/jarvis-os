@@ -98,13 +98,13 @@
 .sc-trial-bar--warn {
   background: var(--warning-muted);
   border: 1px solid var(--warning-border);
-  color: var(--warning);
+  color: var(--on-warning-tint);
 }
 
 .sc-trial-bar--critical {
   background: var(--danger-muted);
   border: 1px solid var(--danger-border);
-  color: var(--danger);
+  color: var(--on-danger-tint);
 }
 
 .sc-trial-bar-text { flex: 1; font-weight: 500; line-height: 1.4; }
@@ -115,7 +115,7 @@
    from the bar variant keeps the critical/warn semantics and themes correctly. */
 .sc-trial-bar-cta {
   padding: 6px 14px;
-  background: color-mix(in srgb, currentColor 12%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
   border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
   border-radius: var(--radius-pill);
   color: inherit;

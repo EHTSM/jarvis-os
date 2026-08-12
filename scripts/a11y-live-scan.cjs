@@ -189,8 +189,17 @@ const PROBE = `(() => {
       onLanding: !!document.querySelector('[class^="lp-"], .lp-root'),
     }));
 
+    // A run that never authenticated measures the login screen, where a low
+    // failure count is meaningless. B19.2.2: treat it as a hard error rather
+    // than letting a false "0 failures" be read as a pass.
+    const valid = reachable.authed && elementsSeen > 1000;
     results[theme] = { failures: found, visitedTabs: visited, reachable, errors,
-                       coverage: { elementsSeen, textSeen } };
+                       coverage: { elementsSeen, textSeen }, valid };
+    if (!valid) {
+      console.error(`  [${theme}] INVALID RUN — authed=${reachable.authed}, `
+        + `elementsSeen=${elementsSeen}. Login did not reach the app shell; `
+        + `this result must NOT be reported as a pass.`);
+    }
     console.log(`${theme}: ${found.length} failures | tabs walked ${visited} | cumulative DOM ${elementsSeen} els, ${textSeen} text nodes | authed=${reachable.authed} | page errors ${errors.length}`);
     await ctx.close();
   }
@@ -204,4 +213,13 @@ const PROBE = `(() => {
       console.log(`  ${String(f.ratio).padStart(6)}:1 (need ${f.need}) [${f.where}] ${f.sel}  "${f.text}"  ${f.color} on ${f.bg}`));
   }
   console.log(`\nscreenshots: ${SHOTS}`);
+
+  const invalid = Object.entries(results).filter(([, r]) => !r.valid).map(([t]) => t);
+  if (invalid.length) {
+    console.error(`\nFAILED: ${invalid.join(', ')} did not authenticate — rerun required.`);
+    process.exit(2);
+  }
+  const total = Object.values(results).reduce((n, r) => n + r.failures.length, 0);
+  console.log(`\nTOTAL live contrast failures: ${total}`);
+  process.exit(total === 0 ? 0 : 1);
 })();

@@ -12,9 +12,23 @@ function _initials(name) {
   return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 }
 
+/**
+ * Avatar identity palette — DOCUMENTED BRAND EXCEPTION (B19.2.2).
+ *
+ * These are identity colours, not semantic ones: the hue distinguishes one
+ * contact from another and must stay stable across themes (a contact should
+ * not change colour when the operator flips to light mode). They are therefore
+ * deliberately NOT tokens.
+ *
+ * Contrast obligation is met by pairing every entry with a fixed dark
+ * foreground (--avatar-fg, #0a0c14) rather than by theming the fill. Each
+ * value below is verified ≥4.5:1 against that foreground; worst case is
+ * #7c6fff at 5.18:1. Do not darken these without re-running the check in
+ * scripts/a11y-live-scan.cjs.
+ */
 const AVATAR_COLORS = [
-  "var(--accent)", "var(--accent2)", "var(--warning)", "var(--success)", "var(--danger)",
-  "var(--info)", "#ff8c69", "#b794f4", "#68d391", "#fc8181",
+  "#7c6fff", "#4ecdc4", "#f0b429", "#52d68a", "#f55b5b",
+  "#5dc8f5", "#ff8c69", "#b794f4", "#68d391", "#fc8181",
 ];
 
 function _avatarColor(name) {
