@@ -53,7 +53,7 @@
 }
 .me-input:focus { outline: none; border-color: rgba(34,197,94,0.4); }
 .me-input:disabled { opacity: 0.5; cursor: not-allowed; }
-.me-input::placeholder { color: #374151; }
+.me-input::placeholder { color: var(--text-faint); }
 
 .me-launch-btn {
   padding: 8px 18px;
@@ -107,7 +107,7 @@
 .me-dot--ok  { background: #22c55e; box-shadow: 0 0 5px #22c55e; }
 .me-dot--run { background: #eab308; animation: me-pulse 1.2s infinite; }
 .me-dot--err { background: #ef4444; box-shadow: 0 0 5px #ef4444; }
-.me-dot--dim { background: #374151; }
+.me-dot--dim { background: var(--surface-hover); }
 @keyframes me-pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
 /* ── Body ── */
@@ -200,7 +200,7 @@
 .me-progress-pct { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
 
 .me-card-meta { display: flex; align-items: center; gap: 10px; }
-.me-meta { font-size: 9px; color: #374151; }
+.me-meta { font-size: 9px; color: var(--text-faint); }
 
 .me-card-actions { display: flex; align-items: center; gap: 6px; }
 .me-running-badge { font-size: 10px; color: #eab308; font-weight: 600; animation: me-pulse 1.2s infinite; }
@@ -329,9 +329,9 @@
 .me-node-st--ok   { color: var(--success); }
 .me-node-st--err  { color: var(--danger); }
 .me-node-st--run  { color: #eab308; }
-.me-node-st--dim  { color: #374151; }
+.me-node-st--dim  { color: var(--text-faint); }
 .me-node-agent    { font-size: 9px; color: var(--text-dim); white-space: nowrap; }
-.me-node-time     { font-size: 9px; color: #374151; white-space: nowrap; }
+.me-node-time     { font-size: 9px; color: var(--text-faint); white-space: nowrap; }
 .me-node-err      { font-size: 9px; color: #f87171; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .me-error-box {
@@ -357,13 +357,13 @@
   box-shadow: 0 16px 48px rgba(0,0,0,0.8);
 }
 .me-del-title { font-size: 14px; font-weight: 700; color: #f9fafb; }
-.me-del-body  { font-size: 12px; color: #9ca3af; line-height: 1.5; }
+.me-del-body  { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
 .me-del-actions { display: flex; gap: 8px; margin-top: 4px; }
 .me-del-btn {
   flex: 1; padding: 7px 14px; border-radius: 6px; font-size: 12px;
   font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s;
 }
-.me-del-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #9ca3af; }
+.me-del-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
 .me-del-btn--cancel:hover { background: rgba(255,255,255,0.1); }
 .me-del-btn--confirm { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #f87171; }
 .me-del-btn--confirm:hover { background: rgba(239,68,68,0.22); }

@@ -222,7 +222,10 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--text2);
+  /* B19.2.2: --text2 is not defined anywhere, so this silently fell back to
+     the inherited colour. Fixed at the source (B19.2 had patched it with a
+     later override of the same selector, which is now redundant). */
+  color: var(--text-dim);
   margin-bottom: 8px;
 }
 

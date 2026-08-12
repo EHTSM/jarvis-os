@@ -51,7 +51,7 @@
 
 .lp-section-sub {
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.44);
+  color: rgba(255, 255, 255, 0.48);
   line-height: 1.7;
   margin: 0;
 }
@@ -62,7 +62,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--accent);
+  /* DOCUMENTED BRAND EXCEPTION (B19.2.2): the landing page is a fixed dark
+     surface in both themes, so this fill is pinned rather than tokenised.
+     It is a darkened brand violet chosen so the white label clears AA —
+     #7c6fff gave only 3.77:1. Now 5.39:1. */
+  background: #6555dd;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -77,7 +81,9 @@
 }
 
 .lp-btn-primary:hover {
-  background: #9685ff;
+  /* Lighter than rest for hover feedback, still ≥AA with a white label
+     (#9685ff was 2.96:1). Now 4.68:1. */
+  background: #6f61e2;
   box-shadow: 0 0 52px rgba(124, 111, 255, 0.36);
 }
 
@@ -115,7 +121,7 @@
 
 .lp-btn-ghost:hover {
   background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.48);
   color: #fff;
 }
 
@@ -141,7 +147,7 @@
   background: rgba(3, 5, 10, 0.82);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-bottom-color: rgba(255, 255, 255, 0.055);
+  border-bottom-color: rgba(255, 255, 255, 0.48);
 }
 
 .lp-nav-links {
@@ -348,7 +354,7 @@
   margin-left: 8px;
   font-family: var(--font-mono, "JetBrains Mono", "Fira Code", monospace);
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.48);
   letter-spacing: 0.02em;
 }
 
@@ -415,7 +421,7 @@
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.26);
+  color: rgba(255, 255, 255, 0.48);
 }
 
 .lp-trust-items {
@@ -430,7 +436,7 @@
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.20);
+  color: rgba(255, 255, 255, 0.48);
   text-transform: uppercase;
 }
 
@@ -495,7 +501,7 @@
 
 .lp-step-body {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.44);
+  color: rgba(255, 255, 255, 0.48);
   line-height: 1.68;
   margin: 0;
   max-width: 280px;
@@ -542,7 +548,7 @@
 
 .lp-cap-desc {
   font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.40);
+  color: rgba(255, 255, 255, 0.48);
   line-height: 1.65;
   margin: 0;
 }
@@ -578,7 +584,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.48);
 }
 
 .lp-feed-body {
@@ -624,7 +630,7 @@
 .lp-feed-col--id {
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.48);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -647,7 +653,7 @@
 .lp-feed-col--elapsed {
   font-family: var(--font-mono, monospace);
   font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.48);
   text-align: right;
 }
 
@@ -704,7 +710,7 @@
 }
 
 .lp-compare-col--before .lp-compare-head {
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.48);
 }
 
 .lp-compare-col--after .lp-compare-head {
@@ -729,7 +735,7 @@
 }
 
 .lp-compare-item--before {
-  color: rgba(255, 255, 255, 0.34);
+  color: rgba(255, 255, 255, 0.48);
 }
 
 .lp-compare-item--after {
@@ -792,7 +798,7 @@
 
 .lp-cta-sub {
   font-size: 15px;
-  color: rgba(255, 255, 255, 0.44);
+  color: rgba(255, 255, 255, 0.48);
   line-height: 1.68;
   margin: 0 0 44px;
 }
@@ -805,7 +811,7 @@
 
 .lp-cta-fine {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.48);
   margin: 0;
 }
 
@@ -829,7 +835,7 @@
 
 .lp-footer-link {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.26);
+  color: rgba(255, 255, 255, 0.48);
   background: none;
   border: none;
   padding: 0;
@@ -844,7 +850,7 @@
 
 .lp-footer-copy {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.48);
 }
 
 /* ── Responsive — 900px ─────────────────────────────────────────────────────── */

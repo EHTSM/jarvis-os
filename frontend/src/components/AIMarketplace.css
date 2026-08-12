@@ -18,7 +18,7 @@
 }
 
 .am-title { font-weight: 800; font-size: 14px; color: var(--accent, #7c6fff); }
-.am-subtitle { font-size: 11px; color: #475569; }
+.am-subtitle { font-size: 11px; color: var(--text-faint); }
 .am-search {
   flex: 1;
   background: rgba(255,255,255,0.04);
@@ -104,7 +104,7 @@
 .am-cap-icon  { font-size: 16px; }
 .am-cap-label { font-size: 13px; font-weight: 700; color: #e2e8f0; flex: 1; }
 .am-cap-count { font-size: 11px; color: var(--text-dim); }
-.am-cap-chevron { font-size: 10px; color: #475569; margin-left: auto; }
+.am-cap-chevron { font-size: 10px; color: var(--text-faint); margin-left: auto; }
 
 .am-cap-providers { padding: 6px 12px 10px; border-top: 1px solid rgba(255,255,255,0.04); }
 .am-cap-prov-row {
@@ -175,7 +175,7 @@
   background: var(--accent, #7c6fff);
   border: none;
   border-radius: var(--radius-sm, 6px);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 13px;
   font-weight: 700;
   padding: 6px 16px;
@@ -197,7 +197,7 @@
 .am-route-arrow   { color: var(--text-dim); }
 .am-route-provider{ font-weight: 700; color: #e2e8f0; }
 .am-route-model   { color: var(--text-dim); font-family: var(--font-mono, monospace); font-size: 11px; }
-.am-route-reason  { color: #475569; font-size: 11px; margin-left: auto; }
+.am-route-reason  { color: var(--text-faint); font-size: 11px; margin-left: auto; }
 .am-route-error   { color: var(--danger, #f87171); font-size: 12px; margin-top: 8px; }
 
 /* Local runtimes */
@@ -247,9 +247,9 @@
 .am-pcard-type--local { background: rgba(74,222,128,0.12); color: #4ade80; }
 .am-pcard-models { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
 .am-pcard-model { background: rgba(255,255,255,0.05); border-radius: 3px; padding: 1px 6px; font-size: 10px; font-family: var(--font-mono, monospace); color: var(--text-dim); }
-.am-pcard-more  { color: #475569; font-size: 10px; }
+.am-pcard-more  { color: var(--text-faint); font-size: 10px; }
 .am-pcard-meta { display: flex; align-items: center; gap: 8px; }
-.am-pcard-ctx  { font-size: 10px; color: #475569; margin-top: 4px; font-family: var(--font-mono, monospace); }
+.am-pcard-ctx  { font-size: 10px; color: var(--text-faint); margin-top: 4px; font-family: var(--font-mono, monospace); }
 
 .am-error { padding: 10px 14px; color: var(--danger, #f87171); font-size: 12px; }
-.am-empty { padding: 10px 14px; color: #475569; font-size: 12px; }
+.am-empty { padding: 10px 14px; color: var(--text-faint); font-size: 12px; }

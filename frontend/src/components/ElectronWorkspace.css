@@ -7,7 +7,7 @@
 }
 .ew-skeleton__label {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 4px;
@@ -32,14 +32,14 @@
   justify-content: center;
   height: 100%;
   gap: 8px;
-  color: #374151;
+  color: var(--text-faint);
   font-size: 12px;
   text-align: center;
   padding: 24px;
   animation: ew-fadein 0.25s ease;
 }
 .ew-empty__icon { font-size: 28px; opacity: 0.5; }
-.ew-empty__label { color: #4b5563; font-size: 12px; }
+.ew-empty__label { color: var(--text-faint); font-size: 12px; }
 
 /* ── Smooth panel entry animations ───────────────────────────────── */
 @keyframes ew-fadein {
@@ -70,7 +70,7 @@
   display: flex;
   flex-direction: column;
   width: 44px;
-  background: #111;
+  background: var(--surface-base);
   border-right: 1px solid #1f2937;
   flex-shrink: 0;
   padding: 6px 0;
@@ -91,12 +91,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4b5563;
+  color: var(--text-faint);
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
   position: relative;
 }
-.ew-activity-btn:hover { background: #1f2937; color: #9ca3af; }
+.ew-activity-btn:hover { background: var(--surface-raised); color: var(--text-dim); }
 .ew-activity-btn--active { background: #10b98120; color: var(--success); border: 1px solid #10b98130; }
 .ew-activity-btn:focus-visible {
   outline: 2px solid var(--success);
@@ -119,7 +119,7 @@
   flex-shrink: 0;
   border-right: 1px solid #1f2937;
   overflow: hidden;
-  background: #0d1117;
+  background: var(--surface-base);
   display: flex;
   flex-direction: column;
 }
@@ -129,7 +129,7 @@
   align-items: center;
   padding: 0 10px;
   height: 28px;
-  background: #0a0e17;
+  background: var(--surface-base);
   border-bottom: 1px solid #1f2937;
   flex-shrink: 0;
 }
@@ -139,19 +139,19 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #374151;
+  color: var(--text-faint);
 }
 .ew-sidebar__close {
   background: transparent;
   border: none;
-  color: #374151;
+  color: var(--text-faint);
   font-size: 11px;
   cursor: pointer;
   padding: 2px 4px;
   border-radius: 3px;
   transition: color 0.15s;
 }
-.ew-sidebar__close:hover { color: #9ca3af; }
+.ew-sidebar__close:hover { color: var(--text-dim); }
 
 .ew-sidebar__body {
   flex: 1;
@@ -246,7 +246,7 @@
 /* Bottom panel */
 .ew-bottom-resizer {
   height: 4px;
-  background: #1f2937;
+  background: var(--surface-raised);
   cursor: row-resize;
   flex-shrink: 0;
   transition: background 0.15s;
@@ -266,7 +266,7 @@
   display: flex;
   align-items: center;
   height: 30px;
-  background: #111;
+  background: var(--surface-base);
   border-bottom: 1px solid #1f2937;
   padding: 0 4px;
   flex-shrink: 0;
@@ -277,20 +277,20 @@
   height: 30px;
   background: transparent;
   border: none;
-  color: #4b5563;
+  color: var(--text-faint);
   font-size: 12px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: color 0.15s;
   font-family: system-ui, sans-serif;
 }
-.ew-bottom-tab:hover { color: #9ca3af; }
+.ew-bottom-tab:hover { color: var(--text-dim); }
 .ew-bottom-tab--active { color: var(--success); border-bottom-color: var(--success); }
 
 .ew-bottom-close {
   background: transparent;
   border: none;
-  color: #4b5563;
+  color: var(--text-faint);
   font-size: 13px;
   cursor: pointer;
   padding: 4px 8px;
@@ -329,7 +329,7 @@
 .ew-activity__separator {
   width: 28px;
   height: 1px;
-  background: #1f2937;
+  background: var(--surface-raised);
   margin: 4px auto;
   flex-shrink: 0;
 }
@@ -337,7 +337,7 @@
 /* ── Split editor layout ────────────────────────────────────────── */
 .ew-split-resizer {
   height: 4px;
-  background: #1f2937;
+  background: var(--surface-raised);
   cursor: row-resize;
   flex-shrink: 0;
   transition: background 0.15s;
@@ -348,7 +348,7 @@
   display: flex;
   align-items: center;
   height: 28px;
-  background: #0d1117;
+  background: var(--surface-base);
   border-bottom: 1px solid #1f2937;
   padding: 0 4px;
   flex-shrink: 0;
@@ -359,20 +359,20 @@
   height: 26px;
   background: transparent;
   border: none;
-  color: #4b5563;
+  color: var(--text-faint);
   font-size: 11px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: color 0.15s;
   font-family: system-ui, sans-serif;
 }
-.ew-split-tab:hover { color: #9ca3af; }
+.ew-split-tab:hover { color: var(--text-dim); }
 .ew-split-tab--active { color: var(--accent); border-bottom-color: var(--accent); }
 .ew-split-close {
   margin-left: auto;
   background: transparent;
   border: none;
-  color: #374151;
+  color: var(--text-faint);
   font-size: 11px;
   cursor: pointer;
   padding: 2px 8px;
@@ -395,7 +395,7 @@
 .ew-qs-modal {
   width: 520px;
   max-width: 90vw;
-  background: #111827;
+  background: var(--surface-base);
   border: 1px solid #374151;
   border-radius: 10px;
   box-shadow: 0 24px 48px rgba(0,0,0,0.6);
@@ -424,7 +424,7 @@
   font-size: 14px;
   font-family: system-ui, sans-serif;
 }
-.ew-qs-input::placeholder { color: #4b5563; }
+.ew-qs-input::placeholder { color: var(--text-faint); }
 .ew-qs-close {
   background: transparent;
   border: 1px solid #374151;
@@ -444,22 +444,22 @@
   transition: background 0.1s;
 }
 .ew-qs-item:hover,
-.ew-qs-item--active { background: #1f2937; }
+.ew-qs-item--active { background: var(--surface-raised); }
 .ew-qs-item__icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
 .ew-qs-item__text { flex: 1; min-width: 0; }
 .ew-qs-item__label { font-size: 13px; color: #e5e7eb; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ew-qs-item__sub   { font-size: 11px; color: var(--text-dim); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ew-qs-item__type  { font-size: 10px; color: #374151; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
-.ew-qs-empty { padding: 20px; text-align: center; color: #4b5563; font-size: 13px; }
-.ew-qs-empty__hint { font-size: 11px; color: #374151; margin-top: 4px; }
+.ew-qs-item__type  { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
+.ew-qs-empty { padding: 20px; text-align: center; color: var(--text-faint); font-size: 13px; }
+.ew-qs-empty__hint { font-size: 11px; color: var(--text-faint); margin-top: 4px; }
 .ew-qs-footer {
   display: flex;
   gap: 16px;
   padding: 6px 14px;
-  background: #0d1117;
+  background: var(--surface-base);
   border-top: 1px solid #1f2937;
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
   letter-spacing: 0.04em;
 }
 
@@ -536,7 +536,7 @@
   backdrop-filter: blur(6px);
 }
 .ew-shortcuts-panel {
-  background: #0d1117;
+  background: var(--surface-base);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
   width: 100%;

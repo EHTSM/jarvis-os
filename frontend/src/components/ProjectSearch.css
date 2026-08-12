@@ -43,7 +43,7 @@
   font-family: inherit;
   min-width: 0;
 }
-.ps-input::placeholder { color: #4a526a; }
+.ps-input::placeholder { color: var(--text-faint); }
 .ps-input--replace { border-radius: 6px; }
 
 .ps-input-flags {
@@ -174,7 +174,7 @@
 
 .ps-empty {
   padding: 20px 12px;
-  color: #4a526a;
+  color: var(--text-faint);
   font-size: 12px;
   text-align: center;
 }
@@ -235,7 +235,7 @@
   text-align: right;
   font-family: 'SF Mono', monospace;
   font-size: 10px;
-  color: #4a526a;
+  color: var(--text-faint);
 }
 .ps-match-row__text {
   flex: 1;
@@ -273,7 +273,7 @@
 .ps-footer {
   padding: 4px 10px;
   font-size: 10px;
-  color: #4a526a;
+  color: var(--text-faint);
   border-top: 1px solid rgba(255,255,255,0.04);
   flex-shrink: 0;
   background: rgba(255,255,255,0.01);

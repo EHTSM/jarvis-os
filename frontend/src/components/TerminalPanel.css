@@ -12,7 +12,7 @@
 .terminal-panel__tabs {
   display: flex;
   align-items: center;
-  background: #111;
+  background: var(--surface-base);
   border-bottom: 1px solid #1f2937;
   height: 32px;
   overflow-x: auto;
@@ -38,7 +38,7 @@
   transition: background 0.15s, color 0.15s;
   flex-shrink: 0;
 }
-.terminal-tab:hover { background: #1a1a1a; color: #d1d5db; }
+.terminal-tab:hover { background: #1a1a1a; color: var(--text); }
 .terminal-tab--active { background: #0d0d0d; color: var(--success); }
 
 .terminal-tab__dot {
@@ -65,12 +65,12 @@
   cursor: pointer;
 }
 .terminal-tab:hover .terminal-tab__close { opacity: 1; }
-.terminal-tab__close:hover { background: #374151; color: #f87171; }
+.terminal-tab__close:hover { background: var(--surface-hover); color: #f87171; }
 
 .terminal-tab--add {
   font-size: 18px;
   padding: 0 12px;
-  color: #374151;
+  color: var(--text-faint);
   border-right: none;
 }
 .terminal-tab--add:hover { color: var(--success); }
@@ -82,7 +82,7 @@
   height: 32px;
   background: transparent;
   border: none;
-  color: #4b5563;
+  color: var(--text-faint);
   font-size: 14px;
   cursor: pointer;
   transition: color 0.15s;
@@ -94,7 +94,7 @@
 .terminal-panel__search {
   display: flex;
   align-items: center;
-  background: #111;
+  background: var(--surface-base);
   border-bottom: 1px solid #1f2937;
   padding: 4px 8px;
   gap: 6px;
@@ -107,7 +107,7 @@
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 12px;
-  color: #d1d5db;
+  color: var(--text);
   outline: none;
 }
 .terminal-panel__search-input:focus { border-color: var(--success); }

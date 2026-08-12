@@ -291,7 +291,7 @@
 .tw-ws-create-input::placeholder { color: var(--text-faint); }
 .tw-ws-create-confirm {
   padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
-  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+  color: var(--on-accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .tw-ws-create-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -338,7 +338,7 @@
 }
 .tw-ws-invite-btn {
   padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
-  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+  color: var(--on-accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .tw-ws-invite-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .tw-ws-members-list { display: flex; flex-direction: column; gap: 6px; }

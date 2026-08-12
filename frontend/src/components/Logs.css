@@ -168,7 +168,7 @@
   height: 18px;
   border-radius: 50%;
   background: var(--danger, #f55b5b);
-  color: #fff;
+  color: var(--on-danger);
   font-size: 10px;
   font-weight: 700;
 }

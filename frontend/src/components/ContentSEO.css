@@ -1,17 +1,21 @@
 /* ── ContentSEO — G2 Content & SEO Engine ── */
 
 :root {
-  --cseo-bg:      #0d0d11;
-  --cseo-surface: #13131a;
-  --cseo-card:    #18181f;
-  --cseo-border:  #2a2a3a;
-  --cseo-text:    #e0e0e8;
-  --cseo-muted:   #666;
-  --cseo-accent:  #7c6fff;
-  --cseo-green:   #22c55e;
-  --cseo-teal:    #4ecdc4;
-  --cseo-yellow:  #f59e0b;
-  --cseo-red:     #ef4444;
+  /* B19.2.2: this was a private dark palette pinned to literals, so the whole
+     surface ignored the theme (--cseo-muted #666 measured 2.79:1 on --bg).
+     Aliased onto the real tokens — no new design language, and the component
+     now themes for free. */
+  --cseo-bg:      var(--bg);
+  --cseo-surface: var(--surface);
+  --cseo-card:    var(--surface-base);
+  --cseo-border:  var(--border);
+  --cseo-text:    var(--text);
+  --cseo-muted:   var(--text-dim);
+  --cseo-accent:  var(--accent);
+  --cseo-green:   var(--success);
+  --cseo-teal:    var(--accent2);
+  --cseo-yellow:  var(--warning);
+  --cseo-red:     var(--danger);
 }
 
 /* ── Root ── */
@@ -135,7 +139,7 @@
 
 /* ── Voice examples ── */
 .cseo-voice-example { padding: 8px 0; border-bottom: 1px solid var(--cseo-border); display: flex; flex-direction: column; gap: 4px; }
-.cseo-voice-good    { font-size: 12px; color: #ccc; }
+.cseo-voice-good    { font-size: 12px; color: var(--text); }
 .cseo-voice-bad     { font-size: 12px; color: var(--cseo-muted); }
 .cseo-voice-badge   { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-right: 4px; }
 .cseo-voice-badge.good { background: #22c55e22; color: var(--success); }

@@ -361,7 +361,7 @@
   font-size: 10px;
 }
 .cep-statusbar__dirty { color: var(--warning); }
-.cep-statusbar__hint { color: #4a526a; }
+.cep-statusbar__hint { color: var(--text-faint); }
 .cep-statusbar__msg {
   background: rgba(124, 111, 255, 0.15);
   color: var(--accent);
@@ -529,7 +529,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #4a526a;
+  color: var(--text-faint);
   font-size: 13px;
 }
 
@@ -801,7 +801,7 @@
   font-size: 12px;
 }
 .cep-ai-result__loading { color: var(--text-dim); font-style: italic; }
-.cep-ai-result__empty   { color: #4b5563; }
+.cep-ai-result__empty   { color: var(--text-faint); }
 .cep-ai-result__header  {
   display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
 }
@@ -810,18 +810,18 @@
   letter-spacing: 0.07em; color: #a89fff; background: rgba(124,111,255,0.12);
   border: 1px solid rgba(124,111,255,0.25); border-radius: 3px; padding: 2px 6px;
 }
-.cep-ai-result__line { font-size: 10px; color: #4b5563; }
+.cep-ai-result__line { font-size: 10px; color: var(--text-faint); }
 .cep-ai-result__body {
-  white-space: pre-wrap; color: #d1d5db; line-height: 1.6;
+  white-space: pre-wrap; color: var(--text); line-height: 1.6;
   font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
   border-radius: 4px; padding: 8px 10px; margin: 0;
 }
 .cep-ai-result__patch       { margin-top: 8px; }
-.cep-ai-result__patch-label { font-size: 10px; color: #4b5563; margin-bottom: 4px; }
+.cep-ai-result__patch-label { font-size: 10px; color: var(--text-faint); margin-bottom: 4px; }
 .cep-ai-result__patch-diff  {
   font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px;
-  background: #0d1117; border: 1px solid #1f2937; border-radius: 4px;
+  background: var(--surface-base); border: 1px solid #1f2937; border-radius: 4px;
   padding: 6px 8px; margin-bottom: 6px;
 }
 .cep-ai-result__del { color: #f87171; }

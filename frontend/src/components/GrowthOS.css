@@ -20,7 +20,7 @@
 }
 
 .gos-title    { font-size: 13px; font-weight: 700; color: var(--success); }
-.gos-subtitle { font-size: 11px; color: #555; }
+.gos-subtitle { font-size: 11px; color: var(--text-faint); }
 
 /* ── Tabs ── */
 .gos-tabs {
@@ -37,7 +37,7 @@
 .gos-tab {
   background: none;
   border: 1px solid transparent;
-  color: #666;
+  color: var(--text-faint);
   font-size: 11px;
   padding: 4px 10px;
   border-radius: 4px;
@@ -76,7 +76,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #555;
+  color: var(--text-faint);
   margin: 14px 0 6px;
 }
 
@@ -95,8 +95,8 @@
   text-align: center;
 }
 .gos-stat-val { font-size: 18px; font-weight: 700; color: #e2e2e8; }
-.gos-stat-lbl { font-size: 10px; color: #666; margin-top: 2px; }
-.gos-stat-sub { font-size: 10px; color: #555; }
+.gos-stat-lbl { font-size: 10px; color: var(--text-faint); margin-top: 2px; }
+.gos-stat-sub { font-size: 10px; color: var(--text-faint); }
 
 /* ── Channel grid ── */
 .gos-channel-grid {
@@ -114,8 +114,8 @@
 .gos-channel-icon  { font-size: 18px; margin-bottom: 6px; }
 .gos-channel-name  { font-size: 12px; font-weight: 700; color: #e2e2e8; }
 .gos-channel-val   { font-size: 16px; font-weight: 700; color: var(--success); margin: 4px 0; }
-.gos-channel-meta  { font-size: 10px; color: #888; }
-.gos-channel-count { font-size: 10px; color: #555; margin-top: 4px; }
+.gos-channel-meta  { font-size: 10px; color: var(--text-dim); }
+.gos-channel-count { font-size: 10px; color: var(--text-faint); margin-top: 4px; }
 
 /* ── Lists ── */
 .gos-list { display: flex; flex-direction: column; gap: 4px; }
@@ -132,7 +132,7 @@
 }
 .gos-campaign-row.gos-row-fail { border-left: 3px solid var(--danger); }
 .gos-campaign-name  { font-size: 12px; font-weight: 600; color: #e2e2e8; flex: 1; min-width: 0; }
-.gos-campaign-meta  { font-size: 11px; color: #777; }
+.gos-campaign-meta  { font-size: 11px; color: var(--text-faint); }
 .gos-campaign-sent  { font-size: 11px; color: #aaa; white-space: nowrap; }
 .gos-campaign-stats { display: flex; gap: 10px; font-size: 11px; color: #aaa; }
 
@@ -147,13 +147,13 @@
   background: none;
   border: 1px solid #2a2a3a;
   border-radius: 4px;
-  color: #777;
+  color: var(--text-faint);
   font-size: 11px;
   padding: 4px 12px;
   cursor: pointer;
   font-family: inherit;
 }
-.gos-sub-tab:hover { color: #ccc; }
+.gos-sub-tab:hover { color: var(--text); }
 .gos-sub-tab.active { color: var(--success); border-color: #1e3a2e; background: #0f2e1e; }
 
 /* ── Forms ── */
@@ -225,7 +225,7 @@
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #888;
+  color: var(--text-dim);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -270,7 +270,7 @@
   border-radius: 10px;
   font-size: 10px;
   background: #1e1e2e;
-  color: #888;
+  color: var(--text-dim);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -278,7 +278,7 @@
 .gos-chip-red    { background: #2e0f0f; color: var(--danger); }
 .gos-chip-yellow { background: #2e2a0f; color: var(--warning); }
 .gos-chip-purple { background: #1e1a2e; color: #7c6af7; }
-.gos-chip-gray   { background: #1a1a1a; color: #666; }
+.gos-chip-gray   { background: #1a1a1a; color: var(--text-faint); }
 
 /* ── Status dot ── */
 .gos-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
@@ -302,13 +302,13 @@
   background: none;
   border: 1px solid #2a2a3a;
   border-radius: 4px;
-  color: #777;
+  color: var(--text-faint);
   font-size: 11px;
   padding: 3px 10px;
   cursor: pointer;
   font-family: inherit;
 }
-.gos-filter-btn:hover { color: #ccc; }
+.gos-filter-btn:hover { color: var(--text); }
 .gos-filter-btn.active { color: var(--success); border-color: #1e3a2e; background: #0f2e1e; }
 
 /* ── Template grid ── */
@@ -330,9 +330,9 @@
 .gos-template-card.selected { border-color: var(--success); background: #0f2e1e; }
 .gos-tpl-header   { display: flex; gap: 4px; margin-bottom: 6px; }
 .gos-tpl-name     { font-size: 12px; font-weight: 700; color: #e2e2e8; margin-bottom: 2px; }
-.gos-tpl-category { font-size: 10px; color: #666; margin-bottom: 4px; }
+.gos-tpl-category { font-size: 10px; color: var(--text-faint); margin-bottom: 4px; }
 .gos-tpl-subject  { font-size: 11px; color: #aaa; margin-bottom: 4px; }
-.gos-tpl-body     { font-size: 10px; color: #666; white-space: pre-wrap; }
+.gos-tpl-body     { font-size: 10px; color: var(--text-faint); white-space: pre-wrap; }
 
 .gos-tpl-preview {
   background: #0a0a12;
@@ -342,7 +342,7 @@
   margin-top: 8px;
 }
 .gos-tpl-preview-subject { font-size: 12px; color: #aaa; margin-bottom: 8px; }
-.gos-tpl-preview-body    { font-size: 11px; color: #888; white-space: pre-wrap; margin: 0; font-family: inherit; }
+.gos-tpl-preview-body    { font-size: 11px; color: var(--text-dim); white-space: pre-wrap; margin: 0; font-family: inherit; }
 
 /* ── WhatsApp features ── */
 .gos-wa-features {
@@ -362,7 +362,7 @@
 }
 .gos-wa-feat-icon  { font-size: 18px; flex-shrink: 0; }
 .gos-wa-feat-label { font-size: 12px; font-weight: 600; color: #e2e2e8; }
-.gos-wa-feat-desc  { font-size: 10px; color: #666; margin-top: 2px; }
+.gos-wa-feat-desc  { font-size: 10px; color: var(--text-faint); margin-top: 2px; }
 
 /* ── Push platforms ── */
 .gos-push-platforms {
@@ -380,7 +380,7 @@
 }
 .gos-push-icon  { font-size: 20px; display: block; margin-bottom: 6px; }
 .gos-push-label { font-size: 12px; font-weight: 600; color: #e2e2e8; }
-.gos-push-desc  { font-size: 10px; color: #666; margin-top: 2px; }
+.gos-push-desc  { font-size: 10px; color: var(--text-faint); margin-top: 2px; }
 
 /* ── Tag cloud ── */
 .gos-tag-cloud { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -399,7 +399,7 @@
   border-radius: 4px;
 }
 .gos-step-icon  { font-size: 12px; color: var(--accent); flex-shrink: 0; }
-.gos-step-label { font-size: 11px; color: #ccc; flex: 1; }
+.gos-step-label { font-size: 11px; color: var(--text); flex: 1; }
 .gos-step-remove {
   background: none;
   border: none;
@@ -417,7 +417,7 @@
   background: none;
   border: 1px solid #2a2a3a;
   border-radius: 10px;
-  color: #777;
+  color: var(--text-faint);
   font-size: 10px;
   cursor: pointer;
   font-family: inherit;
@@ -432,11 +432,11 @@
   align-items: center;
   gap: 10px;
 }
-.gos-funnel-label { font-size: 11px; color: #888; width: 80px; flex-shrink: 0; }
+.gos-funnel-label { font-size: 11px; color: var(--text-dim); width: 80px; flex-shrink: 0; }
 .gos-funnel-bar-wrap { flex: 1; background: #1a1a24; border-radius: 4px; height: 14px; overflow: hidden; }
 .gos-funnel-bar { height: 100%; background: linear-gradient(90deg, #7c6fff, #4ecdc4); border-radius: 4px; transition: width 0.4s ease; }
-.gos-funnel-val { font-size: 11px; color: #ccc; width: 60px; text-align: right; flex-shrink: 0; }
-.gos-funnel-pct { font-size: 10px; color: #555; width: 40px; text-align: right; flex-shrink: 0; }
+.gos-funnel-val { font-size: 11px; color: var(--text); width: 60px; text-align: right; flex-shrink: 0; }
+.gos-funnel-pct { font-size: 10px; color: var(--text-faint); width: 40px; text-align: right; flex-shrink: 0; }
 
 /* ── Toast ── */
 .gos-toast {
@@ -453,10 +453,10 @@
 @keyframes gos-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── Misc ── */
-.gos-empty   { font-size: 12px; color: #555; padding: 20px 0; text-align: center; }
-.gos-loading { font-size: 12px; color: #555; padding: 20px; }
+.gos-empty   { font-size: 12px; color: var(--text-faint); padding: 20px 0; text-align: center; }
+.gos-loading { font-size: 12px; color: var(--text-faint); padding: 20px; }
 .gos-msg     { font-size: 11px; color: var(--success); margin-left: 8px; }
-.gos-hint    { font-size: 10px; color: #555; }
+.gos-hint    { font-size: 10px; color: var(--text-faint); }
 
 @media (prefers-reduced-motion: reduce) {
   .gos-bar-fill, .gos-template-card { transition: none; }

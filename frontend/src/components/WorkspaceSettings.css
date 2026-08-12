@@ -360,7 +360,7 @@
 }
 .k2-create-confirm {
   padding: 6px 14px; background: var(--accent); border: none;
-  border-radius: var(--radius-pill); color: #fff; font-size: 12px; font-weight: 700;
+  border-radius: var(--radius-pill); color: var(--on-accent); font-size: 12px; font-weight: 700;
   cursor: pointer; font-family: inherit;
 }
 .k2-create-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -804,7 +804,7 @@
   border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; color: var(--text-dim);
   cursor: pointer; font-family: inherit; transition: all var(--dur-fast); display: flex; align-items: center; gap: 5px;
 }
-.l2-cat-btn--active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.l2-cat-btn--active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .l2-cat-count { font-size: 10px; color: inherit; opacity: 0.75; }
 
 /* Plugin card grid */

@@ -510,5 +510,5 @@
 
 .ed-lc-card__pct {
   font-size: 10px;
-  color: #4b5563;
+  color: var(--text-faint);
 }

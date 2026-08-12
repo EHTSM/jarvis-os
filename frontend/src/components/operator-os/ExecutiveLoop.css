@@ -154,7 +154,7 @@
 .el-metric:last-child { border-right: none; }
 .el-metric-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); }
 .el-metric-val   { font-size: 16px; font-weight: 700; color: #e2e8f0; line-height: 1; }
-.el-metric-sub   { font-size: 10px; color: #374151; font-weight: 400; }
+.el-metric-sub   { font-size: 10px; color: var(--text-faint); font-weight: 400; }
 .el-metric-val--warn { color: #eab308; }
 .el-metric-val--err  { color: var(--danger); }
 
@@ -216,7 +216,7 @@
 .el-event-phase { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; color: var(--text-dim); white-space: nowrap; }
 .el-event-text  { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .el-event-status{ font-size: 9px; font-weight: 600; white-space: nowrap; }
-.el-event-time  { font-size: 9px; color: #374151; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.el-event-time  { font-size: 9px; color: var(--text-faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* ── Audit ── */
 .el-audit { background: #0f1117; border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 8px 10px; }
@@ -300,4 +300,4 @@
 .el-summary-autonomy { color: var(--success); font-weight: 600; }
 
 /* ── Empty ── */
-.el-empty { padding: 12px 4px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }
+.el-empty { padding: 12px 4px; text-align: center; color: var(--text-faint); font-size: 11px; font-style: italic; }

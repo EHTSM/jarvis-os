@@ -202,7 +202,7 @@
   box-sizing: border-box;
   transition: border-color .18s;
 }
-.dv2-search::placeholder { color: #4a5470; }
+.dv2-search::placeholder { color: var(--text-faint); }
 .dv2-search:focus { border-color: rgba(124,111,255,.5); }
 .dv2-search-wrap { position: relative; }
 .dv2-search-icon {
@@ -244,7 +244,7 @@
   gap: 8px;
   text-align: center;
 }
-.dv2-empty-icon  { font-size: 2rem; color: #4a5470; }
+.dv2-empty-icon  { font-size: 2rem; color: var(--text-faint); }
 .dv2-empty-title { font-size: .85rem; font-weight: 600; color: var(--text-dim); margin: 0; }
 
 /* Coming soon */
@@ -357,7 +357,7 @@
 .dv2-rt-val { color: #c0c8dc; font-weight: 600; }
 
 .dv2-ctrl-btns { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
-.dv2-ctrl-note { font-size: .72rem; color: #4a5470; margin: 0; line-height: 1.5; }
+.dv2-ctrl-note { font-size: .72rem; color: var(--text-faint); margin: 0; line-height: 1.5; }
 
 /* Log list */
 .dv2-log-list { display: flex; flex-direction: column; }
@@ -375,13 +375,13 @@
 .dv2-log-row--clickable:hover { background: rgba(255,255,255,.02); border-radius: 4px; }
 .dv2-log-row--open { background: rgba(255,255,255,.03); border-radius: 4px; }
 
-.dv2-log-ts     { color: #4a5470; min-width: 62px; font-size: .72rem; }
+.dv2-log-ts     { color: var(--text-faint); min-width: 62px; font-size: .72rem; }
 .dv2-log-dot    { font-size: .6rem; flex-shrink: 0; margin-top: 3px; }
-.dv2-log-type   { color: #4a5470; font-size: .7rem; min-width: 60px; }
-.dv2-log-type-tag { color: #4a5470; font-size: .7rem; min-width: 70px; }
+.dv2-log-type   { color: var(--text-faint); font-size: .7rem; min-width: 60px; }
+.dv2-log-type-tag { color: var(--text-faint); font-size: .7rem; min-width: 70px; }
 .dv2-log-msg    { flex: 1; color: #c0c8dc; min-width: 0; word-break: break-word; }
 .dv2-log-status { font-size: .66rem; font-weight: 700; letter-spacing: .04em; flex-shrink: 0; }
-.dv2-log-dur    { font-size: .66rem; color: #4a5470; }
+.dv2-log-dur    { font-size: .66rem; color: var(--text-faint); }
 .dv2-log-level  { font-size: .7rem; font-weight: 700; letter-spacing: .04em; flex-shrink: 0; min-width: 40px; }
 
 .dv2-log-expand { width: 100%; padding: 8px 0 4px; }
@@ -454,9 +454,9 @@
 .dv2-dr-repo    { font-size: .78rem; font-weight: 600; color: #c0c8dc; flex: 1; }
 .dv2-dr-version { font-size: .73rem; color: var(--text-dim); }
 .dv2-dr-status  { font-size: .66rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
-.dv2-dr-ts      { font-size: .7rem; color: #4a5470; white-space: nowrap; }
-.dv2-dr-dur     { font-size: .7rem; color: #4a5470; min-width: 55px; text-align: right; }
-.dv2-dr-toggle  { font-size: .7rem; color: #4a5470; }
+.dv2-dr-ts      { font-size: .7rem; color: var(--text-faint); white-space: nowrap; }
+.dv2-dr-dur     { font-size: .7rem; color: var(--text-faint); min-width: 55px; text-align: right; }
+.dv2-dr-toggle  { font-size: .7rem; color: var(--text-faint); }
 
 .dv2-dr-detail {
   border-top: 1px solid rgba(255,255,255,.07);
@@ -483,7 +483,7 @@
 .dv2-slo-row:last-child { border-bottom: none; }
 .dv2-slo-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
 .dv2-slo-name   { flex: 1; font-size: .8rem; font-weight: 600; color: #c0c8dc; }
-.dv2-slo-window { font-size: .68rem; color: #4a5470; }
+.dv2-slo-window { font-size: .68rem; color: var(--text-faint); }
 .dv2-slo-val    { font-size: .75rem; color: var(--text-dim); }
 
 .dv2-slo-track {
@@ -535,7 +535,7 @@
 
 .dv2-gauge-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
 .dv2-gauge-val  { font-size: 1.3rem; font-weight: 700; }
-.dv2-gauge-of   { font-size: .75rem; color: #4a5470; }
+.dv2-gauge-of   { font-size: .75rem; color: var(--text-faint); }
 .dv2-gauge-pct  { font-size: .72rem; font-weight: 600; }
 
 .dv2-ep-row {
@@ -600,7 +600,7 @@
   gap: 12px;
   margin-bottom: 12px;
 }
-.dv2-evo-sub   { font-size: .72rem; color: #4a5470; margin: 3px 0 0; max-width: 520px; }
+.dv2-evo-sub   { font-size: .72rem; color: var(--text-faint); margin: 3px 0 0; max-width: 520px; }
 .dv2-evo-score {
   font-size: 2rem;
   font-weight: 800;
@@ -608,7 +608,7 @@
   flex-shrink: 0;
   line-height: 1;
 }
-.dv2-evo-denom { font-size: 1rem; color: #4a5470; font-weight: 400; }
+.dv2-evo-denom { font-size: 1rem; color: var(--text-faint); font-weight: 400; }
 
 .dv2-suggestions-panel { display: flex; flex-direction: column; gap: 4px; }
 .dv2-sg-row {
@@ -718,9 +718,9 @@
   flex-shrink: 0;
 }
 .dv2-ar-title   { flex: 1; font-size: .8rem; color: #c0c8dc; font-weight: 500; min-width: 0; }
-.dv2-ar-service { font-size: .68rem; color: #4a5470; white-space: nowrap; }
-.dv2-ar-ts      { font-size: .68rem; color: #4a5470; white-space: nowrap; }
-.dv2-ar-toggle  { font-size: .68rem; color: #4a5470; }
+.dv2-ar-service { font-size: .68rem; color: var(--text-faint); white-space: nowrap; }
+.dv2-ar-ts      { font-size: .68rem; color: var(--text-faint); white-space: nowrap; }
+.dv2-ar-toggle  { font-size: .68rem; color: var(--text-faint); }
 
 .dv2-ar-expand {
   border-top: 1px solid rgba(255,255,255,.07);
@@ -783,7 +783,7 @@
 .dv2-sc-stat { font-size: .72rem; color: var(--text-dim); }
 .dv2-sc-stat strong { color: #c0c8dc; }
 
-.dv2-sc-provider { font-size: .64rem; color: #4a5470; text-transform: uppercase; letter-spacing: .07em; }
+.dv2-sc-provider { font-size: .64rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .07em; }
 
 .dv2-sc-warn {
   display: flex;

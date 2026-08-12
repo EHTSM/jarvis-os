@@ -58,7 +58,7 @@
 .ocl-item-prefix { flex-shrink: 0; font-size: 12px; margin-top: 1px; }
 .ocl-item-body   { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .ocl-item-text   { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 11px; }
-.ocl-item-time   { font-size: 9px; color: #374151; }
+.ocl-item-time   { font-size: 9px; color: var(--text-faint); }
 
 .ocl-thinking { animation: ocl-pulse 1.2s infinite; }
 @keyframes ocl-pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
@@ -108,6 +108,6 @@
   outline: none;
   caret-color: var(--success);
 }
-.ocl-input::placeholder { color: #374151; }
+.ocl-input::placeholder { color: var(--text-faint); }
 .ocl-input:disabled { opacity: 0.5; }
 .ocl-spinner { color: var(--success); animation: ocl-pulse 0.8s infinite; font-size: 10px; }

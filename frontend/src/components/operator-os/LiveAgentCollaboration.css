@@ -39,7 +39,7 @@
 
 .lac-stat-dot        { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
 .lac-stat-dot--ok    { background: #22c55e; box-shadow: 0 0 4px #22c55e; }
-.lac-stat-dot--dim   { background: #374151; }
+.lac-stat-dot--dim   { background: var(--surface-hover); }
 .lac-stat-dot--err   { background: var(--danger); }
 
 .lac-header-views {
@@ -71,7 +71,7 @@
 .lac-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .lac-dot--ok   { background: #22c55e; box-shadow: 0 0 5px #22c55e; }
 .lac-dot--err  { background: #ef4444; box-shadow: 0 0 5px #ef4444; }
-.lac-dot--dim  { background: #374151; }
+.lac-dot--dim  { background: var(--surface-hover); }
 .lac-dot--pulse { background: #94a3b8; animation: lac-pulse 1.4s infinite; }
 @keyframes lac-pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
@@ -130,12 +130,12 @@
 .lac-stage-icon  { font-size: 12px; color: var(--success); }
 .lac-stage-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; color: #e2e8f0; }
 .lac-stage-count { font-size: 9px; background: rgba(34,197,94,0.15); color: var(--success); border-radius: 8px; padding: 0 5px; }
-.lac-stage-empty { font-size: 9px; color: #374151; }
+.lac-stage-empty { font-size: 9px; color: var(--text-faint); }
 .lac-stage-agent { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
 .lac-stage-agent-name { font-size: 9px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lac-arrow {
   font-size: 16px;
-  color: #374151;
+  color: var(--text-faint);
   padding-top: 20px;
   flex-shrink: 0;
   transition: color 0.15s;
@@ -270,7 +270,7 @@
 }
 .lac-card-metrics { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
 .lac-card-conf    { font-size: 9px; color: var(--success); white-space: nowrap; }
-.lac-card-time    { font-size: 9px; color: #374151; }
+.lac-card-time    { font-size: 9px; color: var(--text-faint); }
 
 /* ── Chain section ── */
 .lac-chains-section {
@@ -418,7 +418,7 @@
 .lac-run-dot { width: 6px; height: 6px; border-radius: 50%; }
 .lac-run-dot--ok  { background: var(--success); }
 .lac-run-dot--err { background: var(--danger); }
-.lac-run-dot--dim { background: #374151; }
+.lac-run-dot--dim { background: var(--surface-hover); }
 .lac-run-time   { color: var(--text-dim); white-space: nowrap; }
 .lac-run-dur    { color: var(--text-dim); white-space: nowrap; }
 .lac-run-status { font-weight: 600; white-space: nowrap; }

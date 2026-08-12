@@ -95,7 +95,7 @@
 
 .auth-brand-sub {
   font-size: 10.5px;
-  color: #4a5470;
+  color: var(--text-faint);
   line-height: 1;
   letter-spacing: 0.02em;
 }
@@ -134,7 +134,7 @@
   background: none;
   border: none;
   border-radius: 7px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
@@ -195,7 +195,7 @@
   background: rgba(255,255,255,0.055);
 }
 
-.auth-input::placeholder { color: #4a5470; }
+.auth-input::placeholder { color: var(--text-faint); }
 .auth-input:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* iOS zoom prevention */
@@ -250,7 +250,7 @@
 
 .auth-pw-label {
   font-size: 10.5px;
-  color: #4a5470;
+  color: var(--text-faint);
   white-space: nowrap;
   min-width: 40px;
 }
@@ -371,7 +371,7 @@
 }
 
 .auth-divider-text {
-  font-size: 11px; color: #4a5470;
+  font-size: 11px; color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -438,13 +438,13 @@
 }
 
 .auth-trust-item {
-  font-size: 11px; color: #4a5470;
+  font-size: 11px; color: var(--text-faint);
   display: flex; align-items: center; gap: 4px;
 }
 
 .auth-trust-check { color: var(--success); font-size: 10px; }
 
-.auth-trust-sep { color: #2a3050; font-size: 11px; }
+.auth-trust-sep { color: var(--text-faint); font-size: 11px; }
 
 /* ── Footer ───────────────────────────────────────────────────── */
 .auth-footer {
@@ -454,7 +454,7 @@
 }
 
 .auth-footer-text {
-  font-size: 12px; color: #4a5470; text-align: center;
+  font-size: 12px; color: var(--text-faint); text-align: center;
 }
 
 .auth-link {
@@ -471,7 +471,7 @@
 .auth-link:disabled { opacity: 0.38; cursor: not-allowed; }
 
 .auth-footer-company {
-  font-size: 10px; color: #2a3050;
+  font-size: 10px; color: var(--text-faint);
   letter-spacing: 0.03em; text-align: center;
 }
 

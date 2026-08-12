@@ -151,7 +151,7 @@
   font-family: var(--font-sans);
   flex-shrink: 0;
 }
-.topbar-nav-arrow:hover:not(:disabled) { color: rgba(var(--fg-rgb), 0.78); border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); }
+.topbar-nav-arrow:hover:not(:disabled) { color: rgba(var(--fg-rgb), 0.78); border-color: rgba(var(--fg-rgb),0.16); background: rgba(var(--fg-rgb),0.06); }
 .topbar-nav-arrow:disabled { opacity: 0.22; cursor: default; }
 
 /* Palette trigger alias */
@@ -305,7 +305,10 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 11px;
+  padding: 6px 11px;
+  /* WCAG 2.5.8 AA — pointer target minimum. Without this the tab renders
+     23px tall and misses the 24px floor. */
+  min-height: 24px;
   border-radius: 7px;
   font-size: 13px;
   font-weight: 500;
@@ -322,7 +325,9 @@
 }
 .tab:hover {
   color: rgba(var(--fg-rgb), 0.78);
-  background: rgba(255,255,255,0.05);
+  /* B19.2.2: a white tint is invisible on a light canvas — use the
+     foreground channel so the hover reads in both themes. */
+  background: rgba(var(--fg-rgb), 0.06);
 }
 .tab.active {
   color: rgba(var(--fg-rgb), 0.92);
@@ -996,7 +1001,7 @@
   cursor: pointer; font-family: inherit; border: 1px solid var(--border);
 }
 .ws-create-btn--cancel { background: none; color: var(--text-dim); }
-.ws-create-btn--confirm { background: var(--accent); border-color: var(--accent); color: #fff; }
+.ws-create-btn--confirm { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .ws-create-btn--confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .ws-switcher-create {

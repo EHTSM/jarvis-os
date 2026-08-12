@@ -28,7 +28,7 @@
 .gt-tooltip {
   position: fixed;
   width: 280px;
-  background: #0d1117;
+  background: var(--surface-base);
   border: 1px solid rgba(124,111,255,0.3);
   border-radius: 12px;
   padding: 16px;
@@ -108,7 +108,7 @@
   background: var(--accent, #7c6fff);
   border: none;
   border-radius: 7px;
-  color: #fff;
+  color: var(--on-accent);
   font-size: 12px;
   font-weight: 700;
   font-family: inherit;

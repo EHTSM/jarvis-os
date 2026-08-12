@@ -3769,7 +3769,7 @@ body.op-long-session .op-notif-item {
   align-items: center;
   gap: 4px;
   font-size: 7px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 1px 5px;
@@ -7485,7 +7485,7 @@ body.op-long-session .op-badge.running {
 /* AI message: "Jarvis replied" timestamp label */
 .op-msg-ts {
   font-size: 9px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   letter-spacing: 0.02em;
   margin-top: 3px;
   font-variant-numeric: tabular-nums;
@@ -7683,7 +7683,7 @@ body.op-long-session .op-badge.running {
   cursor: pointer;
   padding: 0;
   font-size: 11px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   align-self: flex-end;
   margin-top: -4px;
   transition: color 120ms ease;
@@ -7757,7 +7757,7 @@ body.op-long-session .op-badge.running {
 /* "Powered by Jarvis" showcase footer */
 .op-showcase-footer {
   font-size: 9px;
-  color: rgba(145,163,184,0.25);
+  color: var(--op-text3);
   text-align: center;
   letter-spacing: 0.08em;
   padding: 4px 0;

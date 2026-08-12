@@ -31,7 +31,7 @@
 
 .wsp-header-meta {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .wsp-header-right {
@@ -66,7 +66,7 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 5px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 13px;
   cursor: pointer;
   padding: 2px 6px;
@@ -118,7 +118,7 @@
 
 .wsp-card-desc {
   font-size: 9px;
-  color: #374151;
+  color: var(--text-faint);
   margin-top: 1px;
   white-space: nowrap;
   overflow: hidden;
@@ -175,7 +175,7 @@
 
 .wsp-card-item-meta {
   font-size: 9px;
-  color: #374151;
+  color: var(--text-faint);
   flex-shrink: 0;
 }
 
@@ -221,7 +221,7 @@
 .wsp-footer {
   padding: 4px 16px 6px;
   font-size: 9px;
-  color: #1e2333;
+  color: var(--text-faint);
   text-align: right;
 }
 
@@ -245,7 +245,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .wsp-compact-pct {
@@ -264,7 +264,7 @@
   margin-left: auto;
   background: none;
   border: none;
-  color: #374151;
+  color: var(--text-faint);
   font-size: 12px;
   cursor: pointer;
   font-family: inherit;

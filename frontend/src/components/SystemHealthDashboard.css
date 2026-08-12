@@ -36,7 +36,7 @@
 
 .shd-ts {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .shd-header-right {
@@ -51,7 +51,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.07);
   background: transparent;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 10px;
   font-weight: 600;
   font-family: inherit;
@@ -70,7 +70,7 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 5px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 14px;
   cursor: pointer;
   padding: 2px 8px;
@@ -107,7 +107,7 @@
 .shd-dot--ok   { background: #22c55e; box-shadow: 0 0 6px #22c55e55; animation: shd-pulse 2s infinite; }
 .shd-dot--warn { background: #f59e0b; box-shadow: 0 0 6px #f59e0b55; }
 .shd-dot--crit { background: #ef4444; box-shadow: 0 0 6px #ef444455; animation: shd-pulse-fast 1s infinite; }
-.shd-dot--unknown { background: #374151; }
+.shd-dot--unknown { background: var(--surface-hover); }
 
 @keyframes shd-pulse {
   0%, 100% { opacity: 1; }
@@ -140,7 +140,7 @@
 .shd-count--ok      { color: var(--success); border-color: #22c55e44; background: #22c55e12; }
 .shd-count--warn    { color: var(--warning); border-color: #f59e0b44; background: #f59e0b12; }
 .shd-count--crit    { color: var(--danger); border-color: #ef444444; background: #ef444412; }
-.shd-count--dim     { color: #4a5470; border-color: #4a547044; background: transparent; }
+.shd-count--dim     { color: var(--text-faint); border-color: #4a547044; background: transparent; }
 
 /* Card grid */
 .shd-grid {
@@ -215,7 +215,7 @@
 .shd-ok      { color: var(--success); border-color: #22c55e44; background: #22c55e12; }
 .shd-warn    { color: var(--warning); border-color: #f59e0b44; background: #f59e0b12; }
 .shd-crit    { color: var(--danger); border-color: #ef444444; background: #ef444412; }
-.shd-dim     { color: #4a5470; border-color: #4a547044; background: transparent; }
+.shd-dim     { color: var(--text-faint); border-color: #4a547044; background: transparent; }
 
 /* Card body */
 .shd-card-body {
@@ -233,7 +233,7 @@
 }
 
 .shd-dim {
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .shd-accent {
@@ -243,7 +243,7 @@
 
 .shd-meta {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   margin-top: 2px;
 }
 

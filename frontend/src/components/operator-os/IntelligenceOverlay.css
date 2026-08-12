@@ -37,7 +37,7 @@
   transition: border-color 0.15s;
 }
 .io-search-input:focus { outline: none; border-color: rgba(34,197,94,0.4); }
-.io-search-input::placeholder { color: #374151; }
+.io-search-input::placeholder { color: var(--text-faint); }
 .io-search-btn {
   padding: 6px 14px;
   background: rgba(34,197,94,0.12);
@@ -52,7 +52,7 @@
 .io-search-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .io-error   { padding: 8px 16px; color: #f87171; font-size: 11px; flex-shrink: 0; }
-.io-prompt  { padding: 40px 20px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }
+.io-prompt  { padding: 40px 20px; text-align: center; color: var(--text-faint); font-size: 11px; font-style: italic; }
 .io-loading {
   padding: 12px 16px;
   color: var(--text-dim);
@@ -167,7 +167,7 @@
 .io-mem-head    { display: flex; align-items: center; gap: 8px; }
 .io-mem-type    { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: #3b82f6; font-weight: 600; }
 .io-mem-content { font-size: 10px; color: #94a3b8; line-height: 1.5; }
-.io-mem-time    { font-size: 9px; color: #374151; }
+.io-mem-time    { font-size: 9px; color: var(--text-faint); }
 
 /* ── Failures ── */
 .io-fail-list { display: flex; flex-direction: column; gap: 4px; }
@@ -204,4 +204,4 @@
 .io-succ-icon { color: var(--success); font-size: 11px; flex-shrink: 0; }
 .io-succ-text { font-size: 10px; color: #94a3b8; }
 
-.io-no-results { padding: 20px; text-align: center; color: #374151; font-size: 11px; font-style: italic; }
+.io-no-results { padding: 20px; text-align: center; color: var(--text-faint); font-size: 11px; font-style: italic; }

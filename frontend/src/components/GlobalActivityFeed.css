@@ -32,7 +32,7 @@
   transition: border-color 0.12s;
 }
 .gaf-search:focus { border-color: rgba(124,111,255,0.4); outline: none; }
-.gaf-search::placeholder { color: #374151; }
+.gaf-search::placeholder { color: var(--text-faint); }
 
 .gaf-filter-btn {
   display: inline-flex;
@@ -42,7 +42,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.07);
   background: transparent;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 10px;
   font-weight: 600;
   font-family: inherit;
@@ -77,7 +77,7 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 5px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 13px;
   cursor: pointer;
   padding: 3px 7px;
@@ -169,14 +169,14 @@
 
 .gaf-ts {
   font-size: 9px;
-  color: #374151;
+  color: var(--text-faint);
   flex-shrink: 0;
   white-space: nowrap;
 }
 
 .gaf-meta {
   font-size: 10px;
-  color: #4a5470;
+  color: var(--text-faint);
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -212,13 +212,13 @@
 .gaf-empty-title {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-faint);
   margin-bottom: 6px;
 }
 
 .gaf-empty-sub {
   font-size: 11px;
-  color: #1e2333;
+  color: var(--text-faint);
   line-height: 1.5;
   max-width: 300px;
   margin: 0 auto;
@@ -228,7 +228,7 @@
 .gaf-footer {
   padding: 5px 12px;
   font-size: 9px;
-  color: #1e2333;
+  color: var(--text-faint);
   text-align: right;
   border-top: 1px solid rgba(255,255,255,0.04);
   flex-shrink: 0;

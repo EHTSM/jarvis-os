@@ -161,7 +161,7 @@
   transition: border-color .18s;
   min-width: 0;
 }
-.dcv2-search::placeholder { color: #4a5470; }
+.dcv2-search::placeholder { color: var(--text-faint); }
 .dcv2-search:focus { border-color: rgba(124,111,255,.5); }
 
 .dcv2-search-wrap {
@@ -217,11 +217,11 @@
   padding: 48px 24px;
   gap: 10px;
   text-align: center;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 .dcv2-empty-icon  { font-size: 2.4rem; }
 .dcv2-empty-title { font-size: .9rem; font-weight: 600; color: var(--text-dim); margin: 0; }
-.dcv2-empty-sub   { font-size: .78rem; color: #4a5470; margin: 0; max-width: 320px; }
+.dcv2-empty-sub   { font-size: .78rem; color: var(--text-faint); margin: 0; max-width: 320px; }
 
 /* Coming soon banner */
 .dcv2-coming-soon {
@@ -381,7 +381,7 @@
 }
 .dcv2-msg-bubble--error { border-color: rgba(245,91,91,.3); background: rgba(245,91,91,.08); }
 .dcv2-msg-text { font-size: .82rem; color: #d0d8ec; margin: 0; line-height: 1.55; white-space: pre-wrap; }
-.dcv2-msg-ts   { font-size: .65rem; color: #4a5470; }
+.dcv2-msg-ts   { font-size: .65rem; color: var(--text-faint); }
 
 .dcv2-msg-bubble--thinking {
   padding: 14px 16px;
@@ -450,7 +450,7 @@
   max-height: 130px;
   overflow-y: auto;
 }
-.dcv2-chat-input::placeholder { color: #4a5470; }
+.dcv2-chat-input::placeholder { color: var(--text-faint); }
 .dcv2-chat-input:focus { border-color: rgba(124,111,255,.5); }
 .dcv2-chat-send {
   width: 40px; height: 40px;
@@ -497,7 +497,7 @@
   padding: 8px 12px;
   outline: none;
 }
-.dcv2-sem-input::placeholder { color: #4a5470; }
+.dcv2-sem-input::placeholder { color: var(--text-faint); }
 .dcv2-sem-input:focus { border-color: rgba(124,111,255,.5); }
 .dcv2-sem-btn {
   background: rgba(124,111,255,.2);
@@ -514,7 +514,7 @@
 .dcv2-sem-btn:hover:not(:disabled) { background: rgba(124,111,255,.3); }
 .dcv2-sem-btn:disabled { opacity: .4; cursor: default; }
 .dcv2-sem-count { font-size: .75rem; color: var(--text-dim); margin: 0; }
-.dcv2-sem-empty { font-size: .78rem; color: #4a5470; margin: 0; }
+.dcv2-sem-empty { font-size: .78rem; color: var(--text-faint); margin: 0; }
 .dcv2-sem-hit { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
 .dcv2-sem-file { font-size: .72rem; font-family: monospace; color: var(--accent); }
 .dcv2-sem-snippet { font-size: .78rem; color: var(--text-dim); margin: 3px 0 0; }
@@ -557,7 +557,7 @@
   color: var(--text-dim);
 }
 .dcv2-rm-item strong { color: #c0c8dc; }
-.dcv2-rm-sep { color: #2a3050; }
+.dcv2-rm-sep { color: var(--text-faint); }
 
 .dcv2-repo-actions {
   display: flex;
@@ -633,7 +633,7 @@
 .dcv2-rv-body { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .dcv2-rv-file    { font-size: .72rem; font-family: monospace; color: var(--accent); }
 .dcv2-rv-finding { font-size: .78rem; color: #c0c8dc; margin: 0; line-height: 1.5; }
-.dcv2-rv-pr      { font-size: .68rem; color: #4a5470; }
+.dcv2-rv-pr      { font-size: .68rem; color: var(--text-faint); }
 
 /* ── Architecture ─────────────────────────────────────────────────── */
 .dcv2-arch-root { display: flex; flex-direction: column; gap: 16px; }
@@ -694,13 +694,13 @@
 .dcv2-an-top { display: flex; align-items: center; gap: 7px; }
 .dcv2-an-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .dcv2-an-name { font-size: .82rem; font-weight: 600; color: #c0c8dc; flex: 1; }
-.dcv2-an-type { font-size: .64rem; color: #4a5470; text-transform: uppercase; letter-spacing: .06em; }
+.dcv2-an-type { font-size: .64rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .06em; }
 .dcv2-an-meta { display: flex; align-items: center; justify-content: space-between; }
-.dcv2-an-size { font-size: .68rem; color: #4a5470; }
+.dcv2-an-size { font-size: .68rem; color: var(--text-faint); }
 .dcv2-risk-chip { font-size: .68rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
 
 .dcv2-an-deps { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,.06); }
-.dcv2-an-dep-label { font-size: .65rem; color: #4a5470; }
+.dcv2-an-dep-label { font-size: .65rem; color: var(--text-faint); }
 .dcv2-dep-tag { font-size: .64rem; padding: 1px 6px; border-radius: 4px; background: rgba(124,111,255,.1); color: #b0a8ff; font-family: monospace; }
 
 .dcv2-arch-qa {
@@ -781,8 +781,8 @@
 .dcv2-svc-dot    { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .dcv2-svc-name   { flex: 1; font-size: .8rem; color: #c0c8dc; }
 .dcv2-svc-status { font-size: .7rem; font-weight: 700; letter-spacing: .05em; }
-.dcv2-svc-uptime { font-size: .7rem; color: #4a5470; margin-left: auto; }
-.dcv2-svc-lat    { font-size: .7rem; color: #4a5470; min-width: 50px; text-align: right; }
+.dcv2-svc-uptime { font-size: .7rem; color: var(--text-faint); margin-left: auto; }
+.dcv2-svc-lat    { font-size: .7rem; color: var(--text-faint); min-width: 50px; text-align: right; }
 
 .dcv2-errors-panel {
   background: rgba(245,91,91,.04);
@@ -801,7 +801,7 @@
   border-bottom: 1px solid rgba(255,255,255,.04);
 }
 .dcv2-err-row:last-child { border-bottom: none; }
-.dcv2-err-ts   { font-size: .68rem; color: #4a5470; white-space: nowrap; min-width: 60px; }
+.dcv2-err-ts   { font-size: .68rem; color: var(--text-faint); white-space: nowrap; min-width: 60px; }
 .dcv2-err-msg  { flex: 1; font-size: .78rem; color: #c0c8dc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dcv2-err-badge { font-size: .65rem; font-weight: 700; color: var(--danger); background: rgba(245,91,91,.12); padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
 
@@ -840,7 +840,7 @@
 .dcv2-heal-title  { flex: 1; font-size: .82rem; font-weight: 600; color: #c0c8dc; }
 .dcv2-heal-status { font-size: .68rem; font-weight: 700; letter-spacing: .05em; }
 .dcv2-heal-detail { font-size: .75rem; color: var(--text-dim); margin: 0; }
-.dcv2-heal-stat   { font-size: .7rem; color: #4a5470; }
+.dcv2-heal-stat   { font-size: .7rem; color: var(--text-faint); }
 
 .dcv2-heal-events {
   background: rgba(255,255,255,.025);
@@ -856,7 +856,7 @@
   border-bottom: 1px solid rgba(255,255,255,.05);
 }
 .dcv2-ev-row:last-child { border-bottom: none; }
-.dcv2-ev-ts  { font-size: .68rem; color: #4a5470; min-width: 50px; }
+.dcv2-ev-ts  { font-size: .68rem; color: var(--text-faint); min-width: 50px; }
 .dcv2-ev-msg { flex: 1; font-size: .77rem; color: #c0c8dc; }
 
 /* ── Integrations ─────────────────────────────────────────────────── */
@@ -890,7 +890,7 @@
 }
 .dcv2-ic-ident { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 .dcv2-ic-name { font-size: .85rem; font-weight: 600; color: #c0c8dc; }
-.dcv2-ic-cat  { font-size: .68rem; color: #4a5470; text-transform: uppercase; letter-spacing: .06em; }
+.dcv2-ic-cat  { font-size: .68rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .06em; }
 .dcv2-ic-status {
   font-size: .68rem; font-weight: 700;
   padding: 3px 9px; border-radius: 5px;
@@ -984,8 +984,8 @@
 .dcv2-tc-desc  { font-size: .72rem; color: var(--text-dim); }
 .dcv2-tc-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 
-.dcv2-tc-stats { display: flex; align-items: center; gap: 6px; font-size: .7rem; color: #4a5470; }
-.dcv2-tc-sep   { color: #2a3050; }
+.dcv2-tc-stats { display: flex; align-items: center; gap: 6px; font-size: .7rem; color: var(--text-faint); }
+.dcv2-tc-sep   { color: var(--text-faint); }
 .dcv2-tc-stat  { }
 .dcv2-tc-actions { }
 
@@ -1008,7 +1008,7 @@
 .dcv2-er-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .dcv2-er-tool   { font-size: .82rem; font-weight: 600; color: var(--accent); }
 .dcv2-er-input  { font-size: .75rem; color: var(--text-dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dcv2-er-ts     { font-size: .68rem; color: #4a5470; margin-left: auto; }
+.dcv2-er-ts     { font-size: .68rem; color: var(--text-faint); margin-left: auto; }
 .dcv2-er-output {
   margin: 0;
   font-family: monospace;
@@ -1040,7 +1040,7 @@
   border-bottom: 1px solid rgba(255,255,255,.04);
 }
 .dcv2-th-row:last-child { border-bottom: none; }
-.dcv2-th-ts   { font-size: .68rem; color: #4a5470; min-width: 48px; }
+.dcv2-th-ts   { font-size: .68rem; color: var(--text-faint); min-width: 48px; }
 .dcv2-th-tool { font-size: .75rem; font-weight: 600; color: #c0c8dc; min-width: 80px; }
 .dcv2-th-input { flex: 1; font-size: .73rem; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 

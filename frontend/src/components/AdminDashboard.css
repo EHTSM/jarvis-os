@@ -142,4 +142,4 @@
 }
 
 .ad-error { padding: 10px 14px; color: var(--danger, #f87171); font-size: 12px; }
-.ad-empty  { padding: 10px 14px; color: #475569; font-size: 12px; }
+.ad-empty  { padding: 10px 14px; color: var(--text-faint); font-size: 12px; }

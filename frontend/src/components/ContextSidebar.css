@@ -24,13 +24,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-refresh-btn {
   background: none;
   border: none;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 14px;
   cursor: pointer;
   padding: 0 2px;
@@ -72,7 +72,7 @@
 .ctx-metric__lbl {
   display: block;
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -98,7 +98,7 @@
 
 .ctx-pulse__label {
   font-size: 10px;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 /* Scrollable sections area */
@@ -138,12 +138,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-section__arrow {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-section__body {
@@ -153,7 +153,7 @@
 /* Loading / empty */
 .ctx-loading, .ctx-empty {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
   font-style: italic;
   padding: 4px 2px;
   text-align: center;
@@ -201,7 +201,7 @@
 
 .ctx-mission-pct {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   flex-shrink: 0;
   width: 24px;
   text-align: right;
@@ -268,7 +268,7 @@
 
 .ctx-dec-conf {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   margin-top: 2px;
 }
 
@@ -305,7 +305,7 @@
 .ctx-footer {
   padding: 5px 10px;
   font-size: 9px;
-  color: #1e2333;
+  color: var(--text-faint);
   text-align: right;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
   flex-shrink: 0;

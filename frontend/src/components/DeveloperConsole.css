@@ -112,15 +112,15 @@
 
 /* Decisions */
 .dc-decision-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-.dc-decision-ts { font-family: var(--font-mono, monospace); font-size: 10px; color: #475569; }
+.dc-decision-ts { font-family: var(--font-mono, monospace); font-size: 10px; color: var(--text-faint); }
 .dc-decision-task { color: #94a3b8; }
 .dc-decision-prov { color: var(--accent, #7c6fff); font-weight: 600; }
-.dc-decision-reason { color: #475569; font-size: 11px; flex: 1; }
+.dc-decision-reason { color: var(--text-faint); font-size: 11px; flex: 1; }
 .dc-decision-score { font-family: var(--font-mono, monospace); font-size: 11px; color: var(--text-dim); }
 
 /* Failures */
 .dc-fail-row { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-.dc-fail-ts { font-family: var(--font-mono, monospace); font-size: 10px; color: #475569; }
+.dc-fail-ts { font-family: var(--font-mono, monospace); font-size: 10px; color: var(--text-faint); }
 .dc-fail-type { color: #94a3b8; }
 .dc-fail-prov { color: var(--accent); }
 .dc-fail-err { color: var(--danger, #f87171); font-family: var(--font-mono, monospace); }
@@ -133,5 +133,5 @@
 .dc-badge--gray  { background: rgba(148,163,184,0.10); color: #94a3b8; }
 
 .dc-error { padding: 10px 14px; color: var(--danger, #f87171); font-size: 12px; }
-.dc-empty { padding: 10px 14px; color: #475569; font-size: 12px; }
+.dc-empty { padding: 10px 14px; color: var(--text-faint); font-size: 12px; }
 .dc-empty--green { color: #4ade80; }

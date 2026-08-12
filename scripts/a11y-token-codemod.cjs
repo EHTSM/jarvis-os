@@ -46,6 +46,9 @@ const MAP = {
   '#c8cdd8': '--text',
   '#64748b': '--text-dim',
   '#6b7280': '--text-dim',
+  // Dim greys used as recessed TEXT are handled separately by
+  // scripts/a11y-dimtext-codemod.cjs — they also appear as borders and
+  // scrollbar thumbs, where they are decorative and must not be rewritten.
 };
 
 // Files that DEFINE the design language, or legitimately hold non-themeable
