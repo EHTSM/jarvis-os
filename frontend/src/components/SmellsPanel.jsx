@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { _fetch } from '../_client';
 import './SmellsPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const PatchPreviewPanel = lazy(() => import('./PatchPreviewPanel'));
 
@@ -92,7 +93,7 @@ function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
 
   return (
     <div className={`smell-card smell-card--${smell.severity}`}>
-      <div className="smell-card__header" onClick={() => setExpanded(e => !e)}>
+      <div className="smell-card__header" {...clickableProps(() => setExpanded(e => !e))}>
         <div className="smell-card__badges">
           <SevBadge severity={smell.severity} />
           <TypeBadge type={smell.type} />

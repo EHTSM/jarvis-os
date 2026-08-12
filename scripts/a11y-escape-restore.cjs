@@ -38,7 +38,9 @@ const TARGETS = [
 /** Depth of the import specifier from the file back to src/. */
 function hookImport(rel) {
   const depth = rel.split('/').length - 1;
-  return `import { useEscapeKey } from "${'../'.repeat(depth)}hooks/useEscapeKey";`;
+  // depth 0 (a file directly in src/) needs "./hooks/…", not a bare specifier.
+  const prefix = depth === 0 ? './' : '../'.repeat(depth);
+  return `import { useEscapeKey } from "${prefix}hooks/useEscapeKey";`;
 }
 
 let changed = 0;

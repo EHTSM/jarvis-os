@@ -8,6 +8,7 @@ import { startCycle, listCycles, cycleStats, listAgents, getAgentHistory } from 
 import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -598,7 +599,7 @@ function TabRunning({ addToast }) {
 
       {logItem && (
         <div className="wov2-log-overlay" onClick={() => setLogItem(null)}>
-          <div className="wov2-log-modal" onClick={e => e.stopPropagation()}>
+          <div className="wov2-log-modal" {...clickableProps(e => e.stopPropagation())}>
             <div className="wov2-log-modal-header">
               <span className="wov2-log-modal-title">Log — {logItem.input || logItem.goal || logItem.id}</span>
               <button className="wov2-btn wov2-btn--ghost wov2-btn--sm" onClick={() => setLogItem(null)}>✕ Close</button>
@@ -722,10 +723,8 @@ function TabHistory() {
       </div>
       <div className="wov2-history-list">
         {shown.map((item, i) => (
-          <div
-            key={item.id || i}
-            className={`wov2-history-row${expanded === (item.id || i) ? " wov2-history-row--open" : ""}`}
-            onClick={() => setExpanded(v => v === (item.id || i) ? null : (item.id || i))}
+          <div key={item.id || i}
+            className={`wov2-history-row${expanded === (item.id || i) ? " wov2-history-row--open" : ""}`} {...clickableProps(() => setExpanded(v => v === (item.id || i) ? null : (item.id || i)))}
           >
             <span className={`wov2-hist-status wov2-hist-status--${item.status === "completed" || item.status === "success" ? "ok" : "error"}`}>
               {item.status === "completed" || item.status === "success" ? "✓" : "✗"}

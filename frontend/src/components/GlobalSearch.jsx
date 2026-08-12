@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './GlobalSearch.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BACKEND = process.env.REACT_APP_API_URL || '';
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -172,10 +173,8 @@ function ResultItem({ item, active, onSelect, q }) {
   const icon = item.icon || cat.icon;
 
   return (
-    <div
-      ref={ref}
-      className={`gs-result${active ? ' gs-result--active' : ''}`}
-      onClick={() => onSelect(item)}
+    <div ref={ref}
+      className={`gs-result${active ? ' gs-result--active' : ''}`} {...clickableProps(() => onSelect(item))}
     >
       <span className="gs-result__icon">{icon}</span>
       <div className="gs-result__text">
@@ -248,7 +247,7 @@ function ClipboardHistory({ onClose }) {
       ) : (
         <div className="clipboard-history__list">
           {history.map((text, i) => (
-            <div key={i} className="clipboard-item" onClick={() => paste(text)} title="Click to copy">
+            <div key={i} className="clipboard-item" {...clickableProps(() => paste(text))} title="Click to copy">
               <span className="clipboard-item__text">{text}</span>
               <span className="clipboard-item__idx">#{i + 1}</span>
             </div>
@@ -479,7 +478,7 @@ export default function GlobalSearch({ open, onClose, onAction, recentMissions =
 
   return (
     <div className="gs-backdrop" onClick={onClose}>
-      <div className="gs-modal" onClick={e => e.stopPropagation()}>
+      <div className="gs-modal" {...clickableProps(e => e.stopPropagation())}>
         <div className="gs-input-row">
           <span className="gs-search-icon">⌕</span>
           <input

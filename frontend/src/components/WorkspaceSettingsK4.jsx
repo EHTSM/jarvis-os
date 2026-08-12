@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── K4 Governance helpers ─────────────────────────────────────────
 const RISK_COLOR  = { critical: "var(--error)", high: "#ff6b35", medium: "var(--warning)", low: "var(--success)" };
@@ -297,7 +298,7 @@ function RiskMatrixPanel() {
 
       {editing && (
         <div className="ws-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="ws-modal k3-edit-modal" onClick={e => e.stopPropagation()}>
+          <div className="ws-modal k3-edit-modal" {...clickableProps(e => e.stopPropagation())}>
             <h3 className="k3-modal-title">Edit Risk: {editing.category}</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Likelihood

@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { listMemoryNodes, searchMemory, saveMemoryNode, archiveMemoryNode, memoryStats } from "../phase18Api";
 import "./MemoryCenter.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Persistence ───────────────────────────────────────────────────────
 const MEM_KEY = "ooplix_memory_entries";
@@ -245,7 +246,7 @@ export default function MemoryCenter({ onNavigate }) {
       {/* Edit form */}
       {editing && (
         <div className="mc-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="mc-modal" onClick={e=>e.stopPropagation()}>
+          <div className="mc-modal" {...clickableProps(e=>e.stopPropagation())}>
             <h3 className="mc-form-heading">Edit memory</h3>
             <MemoryForm
               initial={{ ...editing, tags: editing.tags.join(", ") }}

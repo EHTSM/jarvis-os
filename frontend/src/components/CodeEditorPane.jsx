@@ -27,6 +27,7 @@ import { aiInlineExtension, setDiagsEffect, makeInlineDiffExtension, setInlineDi
 import FuzzyFinder from './FuzzyFinder';
 import LSPStatus from './LSPStatus';
 import './CodeEditorPane.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -293,7 +294,7 @@ function RenameDialog({ path, onConfirm, onCancel }) {
   useEffect(() => { inputRef.current?.select(); }, []);
   return (
     <div className="cep-rename-overlay" onClick={onCancel}>
-      <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
+      <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
         <div className="cep-rename-title">Rename File</div>
         <input
           ref={inputRef}
@@ -368,7 +369,7 @@ function AIContextMenu({ x, y, selection, filePath, onAction, onClose, onGoToDef
 
 function ProblemRow({ item, onJump }) {
   return (
-    <div className={`cep-problem cep-problem--${item.severity || 'info'}`} onClick={() => onJump?.(item)}>
+    <div className={`cep-problem cep-problem--${item.severity || 'info'}`} {...clickableProps(() => onJump?.(item))}>
       <span className="cep-problem__icon">
         {item.severity === 'error' ? '✖' : item.severity === 'warning' ? '⚠' : 'ℹ'}
       </span>
@@ -1011,7 +1012,7 @@ export default function CodeEditorPane({
       {/* Delete confirmation modal */}
       {confirmDeleteTab && (
         <div className="cep-delete-overlay" onClick={() => setDeleteConfirm(null)}>
-          <div className="cep-delete-modal" onClick={e => e.stopPropagation()}>
+          <div className="cep-delete-modal" {...clickableProps(e => e.stopPropagation())}>
             <div className="cep-delete-icon">🗑</div>
             <div className="cep-delete-title">Delete "{confirmDeleteTab.name}"?</div>
             <div className="cep-delete-body">This cannot be undone.</div>
@@ -1103,7 +1104,7 @@ export default function CodeEditorPane({
       {/* Go-to-line overlay */}
       {gotoLine && (
         <div className="cep-goto-overlay" onClick={() => setGotoLine(false)}>
-          <div className="cep-goto-dialog" onClick={e => e.stopPropagation()}>
+          <div className="cep-goto-dialog" {...clickableProps(e => e.stopPropagation())}>
             <span className="cep-goto-label">Go to line</span>
             <input
               ref={gotoRef}
@@ -1129,17 +1130,15 @@ export default function CodeEditorPane({
       {/* Breadcrumb — sticky, shows file path + enclosing symbol at cursor */}
       {activeTab && (
         <div className="cep-breadcrumb cep-breadcrumb--sticky">
-          <span
-            className="cep-breadcrumb__file"
-            title={activeTab.path}
-            onClick={() => setFuzzyMode('file')}
+          <span className="cep-breadcrumb__file"
+            title={activeTab.path} {...clickableProps(() => setFuzzyMode('file'))}
           >
             {activeTab.path?.split('/').slice(-2).join('/')}
           </span>
           {(() => { const sym = enclosingSymbol(symbols, activeLine); return sym ? (
             <>
               <span className="cep-breadcrumb__sep">›</span>
-              <span className="cep-breadcrumb__sym" onClick={() => setFuzzyMode('symbol')}>
+              <span className="cep-breadcrumb__sym" {...clickableProps(() => setFuzzyMode('symbol'))}>
                 {sym.name}
               </span>
             </>
@@ -1304,7 +1303,7 @@ export default function CodeEditorPane({
       {/* Rename Symbol dialog */}
       {renameSymbol && (
         <div className="cep-rename-overlay" onClick={() => setRenameSymbol(null)}>
-          <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
+          <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="cep-rename-title">Rename Symbol: <strong>{renameSymbol.name}</strong></div>
             <input
               className="cep-rename-input"

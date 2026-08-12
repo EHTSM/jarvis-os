@@ -9,6 +9,7 @@ import {
   getScheduleRuns,
 } from "../../browserApi";
 import "./browser-automation.css";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 // ── Design data ───────────────────────────────────────────────────────────────
 
@@ -535,7 +536,7 @@ function ScreenshotLightbox({ src, onClose }) {
   }, [onClose]);
   return (
     <div className="bap-lightbox-overlay" onClick={onClose}>
-      <div className="bap-lightbox-inner" onClick={e=>e.stopPropagation()}>
+      <div className="bap-lightbox-inner" {...clickableProps(e=>e.stopPropagation())}>
         <button className="bap-lightbox-close" onClick={onClose}>✕ Close</button>
         <img src={src} alt="Execution screenshot" className="bap-lightbox-img" />
       </div>
@@ -1548,7 +1549,7 @@ function NewUserDashboard({ catalogue, onOpenLibrary, onBrowse, onNew }) {
       </div>
 
       <div className="bap-nud-paths">
-        <div className="bap-nud-path" onClick={onBrowse}>
+        <div className="bap-nud-path" {...clickableProps(onBrowse)}>
           <span className="bap-nud-path-icon">⌕</span>
           <div>
             <div className="bap-nud-path-label">Browse all 25 workflows</div>
@@ -1556,7 +1557,7 @@ function NewUserDashboard({ catalogue, onOpenLibrary, onBrowse, onNew }) {
           </div>
           <span className="bap-nud-path-arrow">→</span>
         </div>
-        <div className="bap-nud-path" onClick={onNew}>
+        <div className="bap-nud-path" {...clickableProps(onNew)}>
           <span className="bap-nud-path-icon">✦</span>
           <div>
             <div className="bap-nud-path-label">Build your own</div>
@@ -1702,7 +1703,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
             {warnings.map(tpl => {
               const h = wfHealthMap[tpl.id];
               return (
-                <div key={tpl.id} className={`bap-health-warn-row ${h.band}`} onClick={()=>onOpenTemplate(tpl)}>
+                <div key={tpl.id} className={`bap-health-warn-row ${h.band}`} {...clickableProps(()=>onOpenTemplate(tpl))}>
                   <div className="bap-health-warn-name">{tpl.name}</div>
                   <div className="bap-health-warn-meta">
                     <span style={{color:healthBandColor(h.band)}}>{h.passRate}% pass</span>
@@ -1719,20 +1720,20 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
 
       {/* ── KPI row ───────────────────────────────────────────────────────── */}
       <div className="bap-dash-kpi-row">
-        <div className="bap-dash-kpi" onClick={onBrowse} title="Browse library">
+        <div className="bap-dash-kpi" {...clickableProps(onBrowse)} title="Browse library">
           <div className="bap-dash-kpi-val">{catalogue.length}</div>
           <div className="bap-dash-kpi-label">Library workflows</div>
         </div>
-        <div className="bap-dash-kpi" onClick={onMine} title="My templates">
+        <div className="bap-dash-kpi" {...clickableProps(onMine)} title="My templates">
           <div className="bap-dash-kpi-val">{templates.length}</div>
           <div className="bap-dash-kpi-label">My templates</div>
         </div>
-        <div className="bap-dash-kpi" onClick={onHistory} title="Execution history">
+        <div className="bap-dash-kpi" {...clickableProps(onHistory)} title="Execution history">
           <div className="bap-dash-kpi-val">{totalRuns}</div>
           <div className="bap-dash-kpi-label">Total runs</div>
         </div>
         {passRate !== null ? (
-          <div className="bap-dash-kpi" onClick={onHistory} title="Overall success rate">
+          <div className="bap-dash-kpi" {...clickableProps(onHistory)} title="Overall success rate">
             <div className="bap-dash-kpi-val" style={{color: passRate>=80?"var(--op-green)":passRate>=60?"var(--op-amber)":"var(--op-red)"}}>{passRate}%</div>
             <div className="bap-dash-kpi-label">Success rate</div>
           </div>
@@ -1774,7 +1775,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
                 {pinnedTpl.map(tpl => {
                   const h = wfHealthMap[tpl.id];
                   return (
-                    <div key={tpl.id} className="bap-dash-quick-row" onClick={()=>onOpenTemplate(tpl)}>
+                    <div key={tpl.id} className="bap-dash-quick-row" {...clickableProps(()=>onOpenTemplate(tpl))}>
                       <div className="bap-dash-quick-name">{tpl.name}</div>
                       <div className="bap-dash-quick-meta">
                         {h && h.band !== "no-data" && (
@@ -1799,7 +1800,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
                 {favLibrary.slice(0,6).map(item => {
                   const last = lastRunMap[item.name];
                   return (
-                    <div key={item.name} className="bap-dash-quick-row" onClick={()=>onOpenLibrary(item)}>
+                    <div key={item.name} className="bap-dash-quick-row" {...clickableProps(()=>onOpenLibrary(item))}>
                       <span className="bap-dash-quick-icon" style={{color:CATEGORY_META[item.category]?.color||"var(--op-text2)"}}>
                         {CATEGORY_META[item.category]?.icon||"◌"}
                       </span>
@@ -1823,7 +1824,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
                 {Object.entries(catCounts).sort((a,b)=>b[1]-a[1]).map(([cat,n]) => {
                   const meta = CATEGORY_META[cat]||{label:cat,icon:"◌",color:"var(--op-text2)"};
                   return (
-                    <div key={cat} className="bap-dash-cat-row" onClick={onMine}>
+                    <div key={cat} className="bap-dash-cat-row" {...clickableProps(onMine)}>
                       <span className="bap-dash-cat-icon" style={{color:meta.color}}>{meta.icon}</span>
                       <span className="bap-dash-cat-label">{meta.label}</span>
                       <span className="bap-dash-cat-bar-wrap">
@@ -1912,7 +1913,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
                 </div>
                 <div className="bap-dash-quick-list">
                   {suggestions.map(item => (
-                    <div key={item.name} className="bap-dash-quick-row" onClick={() => onOpenLibrary(item)}>
+                    <div key={item.name} className="bap-dash-quick-row" {...clickableProps(() => onOpenLibrary(item))}>
                       <span className="bap-dash-quick-icon" style={{color:CATEGORY_META[item.category]?.color||"var(--op-text2)"}}>
                         {CATEGORY_META[item.category]?.icon||"◌"}
                       </span>
@@ -1938,7 +1939,7 @@ function WorkflowDashboard({ catalogue, templates, history, sysHealth, favorites
                   const tpl = templates.find(t=>t.id===id);
                   if (!tpl) return null;
                   return (
-                    <div key={id} className="bap-dash-note-row" onClick={()=>onOpenTemplate(tpl)}>
+                    <div key={id} className="bap-dash-note-row" {...clickableProps(()=>onOpenTemplate(tpl))}>
                       <div className="bap-dash-note-tpl">{tpl.name}</div>
                       <div className="bap-dash-note-text">💬 {text}</div>
                     </div>
@@ -2114,7 +2115,7 @@ function WorkflowCard({ item, isFav, isTrending, isNew, onToggleFav, onSelect, o
   const stepCnt  = STEP_COUNTS[item.name];
 
   return (
-    <div className="bap-card" onClick={onSelect}>
+    <div className="bap-card" {...clickableProps(onSelect)}>
       <div className="bap-card-top">
         <span className="bap-card-icon" style={{color:cat.color}}>{cat.icon}</span>
         <div className="bap-card-top-right">
@@ -2218,7 +2219,7 @@ function SavedCard({ tpl, health, isFav, isPinned, note, isDeleting, isEditingNo
           </div>
         </div>
       ) : note ? (
-        <div className="bap-card-note" onClick={()=>onStartEditNote(tpl.id,note)} title="Click to edit note">💬 {note}</div>
+        <div className="bap-card-note" {...clickableProps(()=>onStartEditNote(tpl.id,note))} title="Click to edit note">💬 {note}</div>
       ) : null}
 
       {/* Schedule panel */}
@@ -2304,7 +2305,7 @@ function SavedView({ templates, wfHealthMap, favorites, pins, notes, confirmDele
             Templates are workflows you've customized and saved for reuse. You get them three ways:
           </div>
           <div className="bap-empty-paths">
-            <div className="bap-empty-path-row" onClick={onBrowse}>
+            <div className="bap-empty-path-row" {...clickableProps(onBrowse)}>
               <span className="bap-empty-path-num">1</span>
               <div>
                 <div className="bap-empty-path-label">Run a library workflow</div>
@@ -2312,7 +2313,7 @@ function SavedView({ templates, wfHealthMap, favorites, pins, notes, confirmDele
               </div>
               <span className="bap-empty-path-cta">Browse →</span>
             </div>
-            <div className="bap-empty-path-row" onClick={onNew}>
+            <div className="bap-empty-path-row" {...clickableProps(onNew)}>
               <span className="bap-empty-path-num">2</span>
               <div>
                 <div className="bap-empty-path-label">Build from scratch</div>
@@ -2320,7 +2321,7 @@ function SavedView({ templates, wfHealthMap, favorites, pins, notes, confirmDele
               </div>
               <span className="bap-empty-path-cta">Build →</span>
             </div>
-            <div className="bap-empty-path-row" onClick={onImport}>
+            <div className="bap-empty-path-row" {...clickableProps(onImport)}>
               <span className="bap-empty-path-num">3</span>
               <div>
                 <div className="bap-empty-path-label">Import from a file</div>
@@ -3768,7 +3769,7 @@ function HistoryView({ history, loading, running, sysHealth, onReplay, onRefresh
             const prevRuns = history.filter(e=>e.name===exec.name&&e.id!==exec.id).slice(0,3);
             return (
               <div key={exec.id} className={`bap-hist-row ${exec.ok?"ok":exec.cancelled?"cancelled":"fail"}`}>
-                <div className="bap-hist-row-main" onClick={()=>setExpanded(isOpen?null:exec.id)}>
+                <div className="bap-hist-row-main" {...clickableProps(()=>setExpanded(isOpen?null:exec.id))}>
                   <StepBadge ok={exec.ok} cancelled={exec.cancelled} />
                   <div className="bap-hist-row-body">
                     <div className="bap-hist-row-name">{exec.name}</div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── L2 Marketplace Panels ─────────────────────────────────────────
 const STAR_COLOR = "#f5a623";
@@ -30,7 +31,7 @@ function StarRating({ rating }) {
 
 function PluginCard({ plugin, onInstall, onDetail }) {
   return (
-    <div className="l2-card" onClick={() => onDetail?.(plugin)}>
+    <div className="l2-card" {...clickableProps(() => onDetail?.(plugin))}>
       <div className="l2-card-header">
         <span className="l2-card-name">{plugin.name}</span>
         <div className="l2-card-badges">

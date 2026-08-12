@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useIpcCleanup } from '../hooks/useResourceManager';
 import './FileExplorer.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -17,7 +18,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
   }, []);
   return (
     <div className="fe-name-prompt-overlay" onClick={onCancel}>
-      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
+      <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
         <div className="fe-name-prompt__label">{prompt}</div>
         <input
           ref={inputRef}
@@ -42,7 +43,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
 function DeleteConfirm({ name, onConfirm, onCancel }) {
   return (
     <div className="fe-name-prompt-overlay" onClick={onCancel}>
-      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
+      <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
         <div className="fe-name-prompt__label">Delete <strong>{name}</strong>?</div>
         <div className="fe-name-prompt__hint">This cannot be undone.</div>
         <div className="fe-name-prompt__actions">
@@ -508,10 +509,8 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, onOpenFolder, c
             : searchResults?.length === 0
             ? <div className="file-explorer__status">No results.</div>
             : (searchResults || []).map(path => (
-              <div
-                key={path}
-                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`}
-                onClick={() => openFromList(path)}
+              <div key={path}
+                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`} {...clickableProps(() => openFromList(path))}
                 title={path}
               >
                 <span className="file-explorer__list-icon">{fileIcon(path.split('/').pop(), false)}</span>
@@ -533,10 +532,8 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, onOpenFolder, c
           favorites.length === 0
             ? <div className="file-explorer__status">No favorites yet. Star files from search results.</div>
             : favorites.map(path => (
-              <div
-                key={path}
-                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`}
-                onClick={() => openFromList(path)}
+              <div key={path}
+                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`} {...clickableProps(() => openFromList(path))}
                 title={path}
               >
                 <span className="file-explorer__list-icon">{fileIcon(path.split('/').pop(), false)}</span>
@@ -558,10 +555,8 @@ export default function FileExplorer({ rootDir, cwd, onFileOpen, onOpenFolder, c
           recent.length === 0
             ? <div className="file-explorer__status">No recent files.</div>
             : recent.map(path => (
-              <div
-                key={path}
-                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`}
-                onClick={() => openFromList(path)}
+              <div key={path}
+                className={`file-explorer__list-item${selected === path ? ' file-explorer__list-item--selected' : ''}`} {...clickableProps(() => openFromList(path))}
                 title={path}
               >
                 <span className="file-explorer__list-icon">{fileIcon(path.split('/').pop(), false)}</span>

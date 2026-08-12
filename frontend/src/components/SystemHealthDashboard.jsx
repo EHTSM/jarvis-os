@@ -7,6 +7,7 @@ import { getHealStatus } from '../phase19Api';
 import { cycleStats, memoryStats } from '../phase18Api';
 import { getRuntimeStatus } from '../runtimeApi';
 import './SystemHealthDashboard.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Service catalogue ─────────────────────────────────────────────────────────
 const SERVICES = [
@@ -292,9 +293,7 @@ function ServiceCard({ svc, info, onNavigate }) {
   };
 
   return (
-    <div
-      className={`shd-card shd-card--${info?.status ?? 'unknown'}`}
-      onClick={() => onNavigate?.(TAB_MAP[svc.id] ?? 'devops')}
+    <div className={`shd-card shd-card--${info?.status ?? 'unknown'}`} {...clickableProps(() => onNavigate?.(TAB_MAP[svc.id] ?? 'devops'))}
       title={`Navigate to ${svc.label}`}
     >
       <div className="shd-card-head">

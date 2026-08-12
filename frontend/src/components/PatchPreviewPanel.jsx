@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './PatchPreviewPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function post(path, body) {
   return _fetch(path, { method: 'POST', body: JSON.stringify(body) });
@@ -56,7 +57,7 @@ function DiffViewer({ patchSpecs, unifiedDiff }) {
       <div className="ppp-specs">
         {patchSpecs.map((spec, i) => (
           <div key={i} className={`ppp-spec ${spec.valid === false ? 'ppp-spec--invalid' : ''}`}>
-            <div className="ppp-spec__header" onClick={() => toggle(i)}>
+            <div className="ppp-spec__header" {...clickableProps(() => toggle(i))}>
               <span className="ppp-spec__arrow">{expanded[i] ? '▾' : '▸'}</span>
               <span className="ppp-spec__file">{spec.targetFile}</span>
               {spec.valid === false && <span className="ppp-spec__error">{spec.error}</span>}

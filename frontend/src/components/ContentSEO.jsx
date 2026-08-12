@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./ContentSEO.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api   = (path, opts = {}) =>
@@ -224,7 +225,7 @@ function BlogStudioPanel() {
           <div className="cseo-list">
             {list.length === 0 && <div className="cseo-empty">No articles yet. Create your first AI-powered post.</div>}
             {list.map(a => (
-              <div key={a.id} className={`cseo-row${selected?.id === a.id ? " selected" : ""}`} onClick={() => setSelected(selected?.id === a.id ? null : a)}>
+              <div key={a.id} className={`cseo-row${selected?.id === a.id ? " selected" : ""}`} {...clickableProps(() => setSelected(selected?.id === a.id ? null : a))}>
                 <StatusDot status={a.status} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="cseo-row-name">{a.title}</div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './RuntimeDebugger.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function apiFetch(path) {
   return _fetch(path);
@@ -133,10 +134,8 @@ function WebhookInspector() {
       </div>
       <div className="rd-inspector__list">
         {hooks.map((h, i) => (
-          <div
-            key={i}
-            className={`rd-webhook-row${selected === i ? ' rd-webhook-row--selected' : ''}`}
-            onClick={() => setSelected(i === selected ? null : i)}
+          <div key={i}
+            className={`rd-webhook-row${selected === i ? ' rd-webhook-row--selected' : ''}`} {...clickableProps(() => setSelected(i === selected ? null : i))}
           >
             <span className="rd-webhook-event">{h.event || h.type || '?'}</span>
             <span className="rd-webhook-source">{h.source || h.provider || '—'}</span>
@@ -269,10 +268,8 @@ function AgentTimeline() {
         <button className="rd-btn" onClick={refresh}>↻</button>
       </div>
       {agents.map((a, i) => (
-        <div
-          key={i}
-          className={`rd-agent-row${selected === i ? ' rd-agent-row--selected' : ''}`}
-          onClick={() => setSelected(i === selected ? null : i)}
+        <div key={i}
+          className={`rd-agent-row${selected === i ? ' rd-agent-row--selected' : ''}`} {...clickableProps(() => setSelected(i === selected ? null : i))}
         >
           <div className="rd-agent-row__header">
             <span className="rd-agent-id" title={a.id}>{a.id?.slice(0, 12) || '?'}</span>

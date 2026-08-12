@@ -13,6 +13,7 @@ import * as depAuditApi from "../dependencyAuditApi";
 import * as terminalApi from "../computerTerminalApi";
 import SampleDataNotice from "./SampleDataNotice";
 import "./DevOpsCenterV2.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -457,7 +458,7 @@ function TabDeployments({ addToast }) {
             const isOpen = expanded === d.id;
             return (
               <div key={d.id} className={`dv2-deploy-row${isOpen?" dv2-deploy-row--open":""}`}>
-                <div className="dv2-dr-top" onClick={() => setExpanded(isOpen ? null : d.id)}>
+                <div className="dv2-dr-top" {...clickableProps(() => setExpanded(isOpen ? null : d.id))}>
                   <span className="dv2-dr-env" style={{ color: ec, background: ec+"15" }}>{d.env}</span>
                   <span className="dv2-dr-repo dv2-mono">{d.repo}</span>
                   <span className="dv2-dr-version dv2-mono">{d.version}</span>
@@ -968,10 +969,8 @@ function TabLogs({ addToast }) {
               const lc = LEVEL_COLORS[l.level] || "var(--text-dim)";
               const isOpen = expanded === l.id;
               return (
-                <div
-                  key={l.id}
-                  className={`dv2-log-row dv2-log-row--clickable${isOpen?" dv2-log-row--open":""}`}
-                  onClick={() => setExpanded(isOpen ? null : l.id)}
+                <div key={l.id}
+                  className={`dv2-log-row dv2-log-row--clickable${isOpen?" dv2-log-row--open":""}`} {...clickableProps(() => setExpanded(isOpen ? null : l.id))}
                 >
                   <span className="dv2-log-ts dv2-mono">{l.ts}</span>
                   <span className="dv2-log-level" style={{ color: lc, minWidth:40 }}>{l.level.toUpperCase()}</span>
@@ -1081,10 +1080,8 @@ function TabAlerts({ addToast }) {
               const sc2 = SEV_COLOR[a.severity] || "var(--text-dim)";
               const isOpen = expanded === a.id;
               return (
-                <div
-                  key={a.id}
-                  className={`dv2-alert-row${a.severity === "critical" && a.status === "open" ? " dv2-alert-row--critical" : ""}${isOpen ? " dv2-alert-row--open" : ""}`}
-                  onClick={() => setExpanded(isOpen ? null : a.id)}
+                <div key={a.id}
+                  className={`dv2-alert-row${a.severity === "critical" && a.status === "open" ? " dv2-alert-row--critical" : ""}${isOpen ? " dv2-alert-row--open" : ""}`} {...clickableProps(() => setExpanded(isOpen ? null : a.id))}
                 >
                   <div className="dv2-ar-top">
                     <span className="dv2-sev-pill" style={{ color: sc2, background: sc2+"15" }}>{a.severity}</span>
@@ -1643,8 +1640,7 @@ function TabPatches({ addToast }) {
             const isOpen = expanded === p.id;
             return (
               <div key={p.id}
-                className={`dv2-alert-row${isOpen ? " dv2-alert-row--open" : ""}`}
-                onClick={() => setExpanded(isOpen ? null : p.id)}
+                className={`dv2-alert-row${isOpen ? " dv2-alert-row--open" : ""}`} {...clickableProps(() => setExpanded(isOpen ? null : p.id))}
               >
                 <div className="dv2-ar-top">
                   <span className="dv2-sev-pill" style={{ color: col, background: col + "15" }}>{p.status || "pending"}</span>
@@ -1654,7 +1650,7 @@ function TabPatches({ addToast }) {
                   <span className="dv2-ar-toggle">{isOpen ? "▲" : "▼"}</span>
                 </div>
                 {isOpen && (
-                  <div className="dv2-ar-expand" onClick={e => e.stopPropagation()}>
+                  <div className="dv2-ar-expand" {...clickableProps(e => e.stopPropagation())}>
                     {p.description && <p className="dv2-ar-detail">{p.description}</p>}
                     <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
                       {p.status === "pending" && (

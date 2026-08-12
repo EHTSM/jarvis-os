@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './WorkspaceProductivity.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const STORE_KEY_SESSIONS   = 'wp-sessions';
 const STORE_KEY_PROJECTS   = 'wp-projects';
@@ -185,7 +186,7 @@ function ProjectSwitcher({ onSwitch }) {
       <div className="wp-section__label">Projects</div>
       {projects.map(p => (
         <div key={p.id} className="wp-project-row">
-          <div className="wp-project-row__info" onClick={() => onSwitch?.(p)}>
+          <div className="wp-project-row__info" {...clickableProps(() => onSwitch?.(p))}>
             <span className="wp-project-row__name">{p.name}</span>
             <span className="wp-project-row__path">{p.path}</span>
           </div>

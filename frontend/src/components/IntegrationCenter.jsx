@@ -7,6 +7,7 @@ import {
   getAllIntegrations, checkIntegrationHealth, reconnectIntegration,
 } from "../connectorApi";
 import "./IntegrationCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Connector Center (Module 5) ──────────────────────────────────────────────
 // Rebuilt on the real backend: founderVault.js (54 connectors, 12 credential
@@ -109,9 +110,7 @@ const STATUS_COLOR = { connected: "var(--success)", missing: "var(--text-faint)"
 function ConnectorCard({ connectorId, connected, health, onOpen, isSelected }) {
   const color = STATUS_COLOR[health || (connected ? "connected" : "missing")];
   return (
-    <div
-      className={`ic-card${connected ? " ic-card--connected" : ""}${isSelected ? " ic-card--selected" : ""}`}
-      onClick={() => onOpen(connectorId)}
+    <div className={`ic-card${connected ? " ic-card--connected" : ""}${isSelected ? " ic-card--selected" : ""}`} {...clickableProps(() => onOpen(connectorId))}
     >
       <div className="ic-card-header">
         <div className="ic-icon-wrap" style={{ background: color + "18", borderColor: color + "33" }}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./CommercialBenchmark.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -146,7 +147,7 @@ export default function CommercialBenchmark() {
             </div>
           </div>
 
-          <div className="cb-section-hdr" onClick={() => setExpanded(e => !e)}>
+          <div className="cb-section-hdr" {...clickableProps(() => setExpanded(e => !e))}>
             <span>Benchmark Checks</span>
             <span className="cb-chevron">{expanded ? "▲" : "▼"}</span>
           </div>

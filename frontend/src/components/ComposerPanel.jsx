@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import { useConfirm } from './ConfirmDialog';
 import './ComposerPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function api(method, path, body) {
     return _fetch(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -323,7 +324,7 @@ function PlanDetail({ plan, onApprove, onReject, onExecute, onCancel, onBack, bu
 // ── Plan list item ────────────────────────────────────────────────────────────
 function PlanItem({ plan, active, onSelect }) {
     return (
-        <div className={`cp-item ${active ? 'cp-item--active' : ''}`} onClick={() => onSelect(plan.planId)}>
+        <div className={`cp-item ${active ? 'cp-item--active' : ''}`} {...clickableProps(() => onSelect(plan.planId))}>
             <div className="cp-item__head">
                 <StatusBadge status={plan.status} />
                 <span className="cp-item__goal">{plan.goal?.slice(0, 60)}</span>

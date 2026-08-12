@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./GrowthOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api   = (path, opts = {}) =>
@@ -1362,8 +1363,7 @@ function TemplatesPanel() {
           <div className="gos-template-grid">
             {list.map(t => (
               <div key={t.id}
-                className={`gos-template-card${selected?.id === t.id ? " selected" : ""}`}
-                onClick={() => setSelected(selected?.id === t.id ? null : t)}
+                className={`gos-template-card${selected?.id === t.id ? " selected" : ""}`} {...clickableProps(() => setSelected(selected?.id === t.id ? null : t))}
               >
                 <div className="gos-tpl-header">
                   <Chip>{t.type}</Chip>

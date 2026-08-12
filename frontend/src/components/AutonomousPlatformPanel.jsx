@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./AutonomousPlatformPanel.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -271,10 +272,8 @@ function RunHistory({ runs, stats, onSelect, selectedRunId }) {
 
             <div className="app-run-list">
                 {runs.map(r => (
-                    <div
-                        key={r.runId}
-                        className={`app-run-row ${selectedRunId === r.runId ? "app-run-row--selected" : ""}`}
-                        onClick={() => onSelect(r)}
+                    <div key={r.runId}
+                        className={`app-run-row ${selectedRunId === r.runId ? "app-run-row--selected" : ""}`} {...clickableProps(() => onSelect(r))}
                     >
                         <span className="app-run-dot" style={{ background: STATUS_COLOR[r.status] || "var(--text-dim)" }} />
                         <span className="app-run-cat">{CAT_ICON[r.classification?.category] || "●"}</span>

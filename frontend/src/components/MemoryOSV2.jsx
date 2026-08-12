@@ -8,6 +8,7 @@ import {
 } from "../phase18Api";
 import { getKnowledge, addKnowledge, deleteKnowledge } from "../personalApi";
 import "./MemoryOSV2.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -250,10 +251,8 @@ function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
             {shown.map(e => {
               const rowId = e.id || e.nodeId;
               return (
-              <div
-                key={rowId}
-                className={`mov2-entry-row${expanded === rowId ? " mov2-entry-row--open" : ""}`}
-                onClick={() => setExpanded(v => v === rowId ? null : rowId)}
+              <div key={rowId}
+                className={`mov2-entry-row${expanded === rowId ? " mov2-entry-row--open" : ""}`} {...clickableProps(() => setExpanded(v => v === rowId ? null : rowId))}
               >
                 <TypeChip type={e.type} />
                 <div className="mov2-entry-main">
@@ -327,10 +326,8 @@ function TabShared() {
 
       <div className="mov2-shared-grid">
         {filtered.map(n => (
-          <div
-            key={n.id}
-            className={`mov2-shared-node${selected === n.id ? " mov2-shared-node--selected" : ""}`}
-            onClick={() => setSelected(v => v === n.id ? null : n.id)}
+          <div key={n.id}
+            className={`mov2-shared-node${selected === n.id ? " mov2-shared-node--selected" : ""}`} {...clickableProps(() => setSelected(v => v === n.id ? null : n.id))}
           >
             <div className="mov2-node-top">
               <span
@@ -412,10 +409,8 @@ function TabIntelligence() {
 
       <div className="mov2-insight-list">
         {AI_INSIGHTS.map(ins => (
-          <div
-            key={ins.id}
-            className={`mov2-insight-card${activeInsight === ins.id ? " mov2-insight-card--open" : ""}`}
-            onClick={() => setActiveInsight(v => v === ins.id ? null : ins.id)}
+          <div key={ins.id}
+            className={`mov2-insight-card${activeInsight === ins.id ? " mov2-insight-card--open" : ""}`} {...clickableProps(() => setActiveInsight(v => v === ins.id ? null : ins.id))}
           >
             <div className="mov2-insight-top">
               <span

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import "./DOP1Dashboard.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = (path, opts = {}) =>
   fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
@@ -72,8 +73,7 @@ function CheckRow({ check }) {
   const [expanded, setExpanded] = useState(false);
   const icon = check.pass ? "✅" : (check.severity === "warning" ? "⚠️" : "❌");
   return (
-    <div className={`dop-check ${check.pass ? "pass" : check.severity === "warning" ? "warn" : "fail"}`}
-         onClick={() => setExpanded(!expanded)}>
+    <div className={`dop-check ${check.pass ? "pass" : check.severity === "warning" ? "warn" : "fail"}`} {...clickableProps(() => setExpanded(!expanded))}>
       <span className="dop-check-icon">{icon}</span>
       <div className="dop-check-body">
         <div className="dop-check-label">{check.label}</div>

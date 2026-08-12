@@ -8,6 +8,7 @@
  */
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import './FuzzyFinder.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -109,7 +110,7 @@ export default function FuzzyFinder({ mode, cwd, wsSymbols = [], onSelect, onClo
 
   return (
     <div className="ff-overlay" onClick={onClose}>
-      <div className="ff-dialog" onClick={e => e.stopPropagation()}>
+      <div className="ff-dialog" {...clickableProps(e => e.stopPropagation())}>
         <div className="ff-header">
           <span className="ff-title">{title}</span>
         </div>
@@ -128,10 +129,8 @@ export default function FuzzyFinder({ mode, cwd, wsSymbols = [], onSelect, onClo
           {loading && <div className="ff-empty">Indexing files…</div>}
           {!loading && results.length === 0 && <div className="ff-empty">{query ? 'No match.' : 'No files found.'}</div>}
           {results.map((item, i) => (
-            <div
-              key={i}
-              className={`ff-item${i === active ? ' ff-item--active' : ''}`}
-              onClick={() => onSelect(item)}
+            <div key={i}
+              className={`ff-item${i === active ? ' ff-item--active' : ''}`} {...clickableProps(() => onSelect(item))}
               onMouseEnter={() => setActive(i)}
             >
               {mode === 'file' ? (

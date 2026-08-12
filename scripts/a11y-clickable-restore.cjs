@@ -63,7 +63,10 @@ for (const file of files) {
   let next = out;
   if (!/clickableProps/.test(src) || !/from ["'].*hooks\/useClickableProps/.test(src)) {
     const depth = path.relative(SRC, file).split('/').length - 1;
-    const imp = `import { clickableProps } from "${'../'.repeat(depth)}hooks/useClickableProps";`;
+    // A file directly in src/ has depth 0 — its specifier must be "./hooks/…",
+    // not the bare "hooks/…" that resolves as a package.
+    const prefix = depth === 0 ? './' : '../'.repeat(depth);
+    const imp = `import { clickableProps } from "${prefix}hooks/useClickableProps";`;
     const imports = [...next.matchAll(/^import .*?;$/gm)];
     if (!imports.length) { console.log('  NO-IMPORTS ' + path.relative(SRC, file)); continue; }
     const last = imports[imports.length - 1];

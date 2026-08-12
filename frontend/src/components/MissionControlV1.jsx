@@ -9,6 +9,7 @@ import { _fetch } from "../_client";
 import MissionOrchestratorPanel from "./MissionOrchestratorPanel.jsx";
 import "./MissionControlV1.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const REFRESH_INTERVAL = 30_000;
 
@@ -19,7 +20,7 @@ function StatusDot({ ok, warn }) {
 
 function MetricCard({ icon, label, value, sub, status, onClick, children }) {
   return (
-    <div className={`mc-card${onClick ? " mc-card--link" : ""}`} onClick={onClick}>
+    <div className={`mc-card${onClick ? " mc-card--link" : ""}`} {...clickableProps(onClick)}>
       <div className="mc-card-head">
         <span className="mc-card-icon">{icon}</span>
         <span className="mc-card-label">{label}</span>
@@ -1001,7 +1002,7 @@ export default function MissionControlV1({ onNavigate }) {
     <div className="mc-root">
       {stopConfirm && (
         <div className="mc-stop-overlay" onClick={() => setStopConfirm(false)}>
-          <div className="mc-stop-panel" onClick={e => e.stopPropagation()}>
+          <div className="mc-stop-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="mc-stop-icon">⛔</div>
             <div className="mc-stop-title">Emergency Stop</div>
             <div className="mc-stop-body">Halt all in-flight and queued agents immediately. This cannot be undone without manually resuming.</div>

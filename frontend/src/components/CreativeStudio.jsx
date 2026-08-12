@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./CreativeStudio.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -414,7 +415,7 @@ function BrandPanel({ onComplete }) {
 
       <div className="cs-brand-list">
         {kits.map(kit => (
-          <div key={kit.id} className={`cs-brand-card${active === kit.id ? " active" : ""}`} onClick={() => setActive(kit.id === active ? null : kit.id)}>
+          <div key={kit.id} className={`cs-brand-card${active === kit.id ? " active" : ""}`} {...clickableProps(() => setActive(kit.id === active ? null : kit.id))}>
             <div className="cs-brand-name">{kit.name}</div>
             <div className="cs-brand-meta">{kit.industry || "—"}</div>
             <div className="cs-brand-colors">

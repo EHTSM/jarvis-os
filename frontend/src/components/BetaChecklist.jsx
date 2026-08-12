@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { _fetch } from '../_client';
 import './BetaChecklist.css';
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Checklist definition ──────────────────────────────────────────────────────
 const SECTIONS = [
@@ -192,7 +193,7 @@ export default function BetaChecklist({ onNavigate }) {
     <div className="bc-root">
       {feedbackOpen && (
         <div className="bc-feedback-overlay" onClick={() => setFeedbackOpen(false)}>
-          <div className="bc-feedback-panel" onClick={e => e.stopPropagation()}>
+          <div className="bc-feedback-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="bc-feedback-header">
               <span className="bc-feedback-title">Send Beta Feedback</span>
               <button className="bc-feedback-close" onClick={() => setFeedbackOpen(false)}>✕</button>

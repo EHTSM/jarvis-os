@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useId } from 'react';
 import './TerminalPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // xterm + addons — loaded only inside Electron (no-op in browser)
 let XTerminal, FitAddon, WebLinksAddon, SearchAddon;
@@ -216,9 +217,7 @@ export default function TerminalPanel({ cwd, className = '', onClose }) {
           >
             <span className="terminal-tab__dot" />
             <span className="terminal-tab__title">{tab.title}</span>
-            <span
-              className="terminal-tab__close"
-              onClick={(e) => closeTab(idx, e)}
+            <span className="terminal-tab__close" {...clickableProps((e) => closeTab(idx, e))}
               title="Close (Ctrl+Shift+W)"
             >×</span>
           </button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── K3 Admin helpers ─────────────────────────────────────────────
 const STATUS_COLOR = { active: "var(--success)", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
@@ -172,7 +173,7 @@ function TeamDirectoryPanel() {
 
       {editing && (
         <div className="ws-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="ws-modal k3-edit-modal" onClick={e => e.stopPropagation()}>
+          <div className="ws-modal k3-edit-modal" {...clickableProps(e => e.stopPropagation())}>
             <h3 className="k3-modal-title">Edit Member</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Job Title

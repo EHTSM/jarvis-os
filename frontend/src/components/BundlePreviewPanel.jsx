@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import { useConfirm } from './ConfirmDialog';
 import './BundlePreviewPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function api(method, path, body) {
   return _fetch(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -72,7 +73,7 @@ function FilePatchCard({ file, index }) {
 
   return (
     <div className={`bpp-file-card bpp-file-card--${file.valid ? 'valid' : 'invalid'}`}>
-      <div className="bpp-file-card__header" onClick={() => setExpanded(e => !e)}>
+      <div className="bpp-file-card__header" {...clickableProps(() => setExpanded(e => !e))}>
         <span className="bpp-file-card__idx">#{index + 1}</span>
         <span className={`bpp-file-card__valid-dot ${file.valid ? 'bpp-dot--valid' : 'bpp-dot--invalid'}`} />
         <span className="bpp-file-card__path">{file.path}</span>
@@ -163,9 +164,7 @@ function PipelineStatus({ pipelineId }) {
 // ── Bundle list item ───────────────────────────────────────────────────
 function BundleListItem({ bundle, onSelect, active }) {
   return (
-    <div
-      className={`bpp-list-item ${active ? 'bpp-list-item--active' : ''}`}
-      onClick={() => onSelect(bundle.bundleId)}
+    <div className={`bpp-list-item ${active ? 'bpp-list-item--active' : ''}`} {...clickableProps(() => onSelect(bundle.bundleId))}
     >
       <div className="bpp-list-item__head">
         <StatusBadge status={bundle.status} />

@@ -175,6 +175,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import { startPersonalNotifications, stopPersonalNotifications } from "./personalNotifications";
 import { useElectronEvent } from "./hooks/useElectron.js";
 import "./App.css";
+import { clickableProps } from "./hooks/useClickableProps";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
 // Primary nav — what a new customer needs immediately
@@ -1274,7 +1275,7 @@ function AppInner() {
             if (t.id === "more") {
               const secondaryActive = MORE_TABS.some(m => m.id === tab);
               return (
-                <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
+                <div key="more" className="tab-more-wrap" {...clickableProps(e => e.stopPropagation())}>
                   <button
                     className={`tab tab--more${secondaryActive ? " active" : ""}${moreOpen ? " tab--more-open" : ""}`}
                     onClick={() => setMoreOpen(o => !o)}

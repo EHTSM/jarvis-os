@@ -9,6 +9,7 @@ import {
 import "./IntegrationCenter.css";
 import "./CompanyFactoryCenter.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const STAGE_COLOR = {
   planning:    "var(--text-faint)",
@@ -94,7 +95,7 @@ function CreateCompanyModal({ templates, onClose, onCreated }) {
 
   return createPortal(
     <div className="cfc-modal-overlay" onClick={onClose}>
-      <div className="cfc-modal" onClick={e => e.stopPropagation()}>
+      <div className="cfc-modal" {...clickableProps(e => e.stopPropagation())}>
         <div className="cfc-modal-header">
           <h3 className="cfc-modal-title">Launch a new company</h3>
           <button className="ic-detail-close" onClick={onClose} aria-label="Close">✕</button>

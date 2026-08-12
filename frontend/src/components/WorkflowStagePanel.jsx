@@ -6,6 +6,7 @@ import { listPatches, getDLQ } from '../runtimeApi';
 import { getHealStatus, getHealHistory, getLessons, getRecommendations } from '../phase19Api';
 import { listDeployments, listAlerts } from '../phase25Api';
 import './WorkflowStagePanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Engineering pipeline definition ──────────────────────────────────────────
 const PIPELINE = [
@@ -294,9 +295,7 @@ function StageCard({ stage, data, active, onNavigate, onSelect, isSelected }) {
   const hasRollback = !!data?.rollback;
 
   return (
-    <div
-      className={`wsp-card ${isSelected ? 'wsp-card--selected' : ''} ${active ? 'wsp-card--active' : ''}`}
-      onClick={() => onSelect(stage.id)}
+    <div className={`wsp-card ${isSelected ? 'wsp-card--selected' : ''} ${active ? 'wsp-card--active' : ''}`} {...clickableProps(() => onSelect(stage.id))}
     >
       <div className="wsp-card-header">
         <span className="wsp-card-icon">{stage.icon}</span>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import { useConfirm } from './ConfirmDialog';
 import './AutonomousAgentPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function api(method, path, body) {
     return _fetch(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -206,7 +207,7 @@ function StageProgress({ currentStage, status }) {
 // ── Mission list item ─────────────────────────────────────────────────────────
 function MissionItem({ mission, active, onSelect }) {
     return (
-        <div className={`aap-item ${active ? 'aap-item--active' : ''}`} onClick={() => onSelect(mission.agentMissionId)}>
+        <div className={`aap-item ${active ? 'aap-item--active' : ''}`} {...clickableProps(() => onSelect(mission.agentMissionId))}>
             <div className="aap-item-head">
                 <StatusBadge status={mission.status} />
                 <span className="aap-item-goal">{mission.goal?.slice(0, 60)}</span>

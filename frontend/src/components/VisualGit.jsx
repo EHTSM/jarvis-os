@@ -13,6 +13,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useMissionGit } from '../hooks/useMissionGit';
 import './VisualGit.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api        = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -137,10 +138,8 @@ function CommitGraph({ commits, onSelect, selected, missionHistory = [] }) {
         const isSelected = selected?.hash === c.hash;
         const mCtx       = hashToMission[c.hash] || hashToMission[c.hash?.slice(0, 8)];
         return (
-          <div
-            key={c.hash}
-            className={`vg-commit-row${isSelected ? ' vg-commit-row--selected' : ''}${mCtx ? ' vg-commit-row--mission' : ''}`}
-            onClick={() => onSelect(c)}
+          <div key={c.hash}
+            className={`vg-commit-row${isSelected ? ' vg-commit-row--selected' : ''}${mCtx ? ' vg-commit-row--mission' : ''}`} {...clickableProps(() => onSelect(c))}
           >
             <div className="vg-commit-graph__track">
               <div className="vg-commit-line vg-commit-line--top" style={{ opacity: i === 0 ? 0 : 1 }} />
@@ -254,10 +253,8 @@ function BranchManager({ cwd, onMessage, missionGit }) {
 
       {/* Branch list */}
       {branches.map(b => (
-        <div
-          key={b}
-          className={`vg-branch-row${b === current ? ' vg-branch-row--current' : ''}`}
-          onClick={() => b !== current && checkout(b)}
+        <div key={b}
+          className={`vg-branch-row${b === current ? ' vg-branch-row--current' : ''}`} {...clickableProps(() => b !== current && checkout(b))}
         >
           <span className="vg-branch-icon">{b === current ? '●' : '○'}</span>
           <span className="vg-branch-name">{b}</span>
@@ -364,10 +361,8 @@ function ConflictResolution({ cwd }) {
     <div className="vg-conflict">
       <div className="vg-conflict__list">
         {conflicts.map(f => (
-          <div
-            key={f}
-            className={`vg-conflict__file${selected === f ? ' vg-conflict__file--selected' : ''}`}
-            onClick={() => viewConflict(f)}
+          <div key={f}
+            className={`vg-conflict__file${selected === f ? ' vg-conflict__file--selected' : ''}`} {...clickableProps(() => viewConflict(f))}
           >
             <span className="vg-status-badge vg-status-badge--red">!</span>
             {f}
@@ -652,7 +647,7 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
     <div className="vg-mission-panel">
       {rollbackTarget && (
         <div className="vg-rb-overlay" onClick={() => setRollbackTarget(null)}>
-          <div className="vg-rb-dialog" onClick={e => e.stopPropagation()}>
+          <div className="vg-rb-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="vg-rb-title">Rollback to {rollbackTarget.slice(0, 8)}</div>
             <input className="vg-rb-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') doRollbackConfirm(); if (e.key === 'Escape') setRollbackTarget(null); }} placeholder="Reason for rollback…" />
             <div className="vg-rb-actions">

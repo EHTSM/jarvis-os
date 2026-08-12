@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { getMissions, getMissionStats, getPlanningRecommend } from '../phase27Api';
 import { getObserverRecs, getObserverStatus, getMemoryDecisions } from '../phase26Api';
 import './ContextSidebar.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Section component ────────────────────────────────────────────────
 function Section({ title, icon, children, empty, loading, defaultOpen = true }) {
@@ -118,8 +119,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
         {active.slice(0, 5).map((m, i) => {
           const pct = m.progress ?? 0;
           return (
-            <div key={m.id ?? i} className="ctx-mission-row"
-              onClick={() => onNavigate?.('jarvisbrain')} title="Open Brain Center">
+            <div key={m.id ?? i} className="ctx-mission-row" {...clickableProps(() => onNavigate?.('jarvisbrain'))} title="Open Brain Center">
               <div className="ctx-mission-name">
                 {m.title ?? m.name ?? m.goal ?? `Mission ${i + 1}`}
               </div>
@@ -133,7 +133,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
           );
         })}
         {active.length > 5 && (
-          <div className="ctx-more" onClick={() => onNavigate?.('jarvisbrain')}>
+          <div className="ctx-more" {...clickableProps(() => onNavigate?.('jarvisbrain'))}>
             +{active.length - 5} more →
           </div>
         )}
@@ -146,8 +146,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
           const pri = r.priority ?? 'normal';
           const priColor = pri === 'critical' ? 'var(--danger)' : pri === 'high' ? '#eab308' : 'var(--accent)';
           return (
-            <div key={r.id ?? i} className="ctx-rec-row"
-              onClick={() => onNavigate?.('recommend')} title="Open Recommendations">
+            <div key={r.id ?? i} className="ctx-rec-row" {...clickableProps(() => onNavigate?.('recommend'))} title="Open Recommendations">
               <span className="ctx-rec-badge" style={{ background: priColor + '22', color: priColor, borderColor: priColor + '44' }}>
                 {pri}
               </span>
@@ -161,8 +160,7 @@ export default function ContextSidebar({ context = 'default', onNavigate }) {
       <Section icon="🧠" title="Memory Decisions" loading={loading && !decisions.length}
         empty={decisions.length === 0 ? 'No recent decisions' : null} defaultOpen={false}>
         {topDecs.map((d, i) => (
-          <div key={d.id ?? i} className="ctx-dec-row"
-            onClick={() => onNavigate?.('memory')}>
+          <div key={d.id ?? i} className="ctx-dec-row" {...clickableProps(() => onNavigate?.('memory'))}>
             <div className="ctx-dec-text">{d.content ?? d.text ?? d.decision ?? 'Decision record'}</div>
             {d.confidence != null && (
               <div className="ctx-dec-conf">{Math.round(d.confidence * 100)}% confidence</div>

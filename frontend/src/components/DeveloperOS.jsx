@@ -9,6 +9,7 @@ import {
   searchDeveloper,
 } from "../developerApi";
 import "./DeveloperOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const VIEWS = [
   { id: "overview", label: "Overview" },
@@ -549,7 +550,7 @@ function IssuesView({ onToast }) {
     <div className="dos-section">
       {assignTarget && (
         <div className="dos-dialog-overlay" onClick={() => setAssignTarget(null)}>
-          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+          <div className="dos-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="dos-dialog-title">Assign Issue</div>
             <input className="dos-input" autoFocus value={assignName} onChange={e => setAssignName(e.target.value)} onKeyDown={e => { if (e.key === "Enter") handleAssignConfirm(); if (e.key === "Escape") setAssignTarget(null); }} placeholder="Assignee name or email" />
             <div className="dos-dialog-actions">
@@ -561,7 +562,7 @@ function IssuesView({ onToast }) {
       )}
       {deleteTarget && (
         <div className="dos-dialog-overlay" onClick={() => setDeleteTarget(null)}>
-          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+          <div className="dos-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="dos-dialog-title">Delete Issue?</div>
             <div className="dos-dialog-body">This cannot be undone.</div>
             <div className="dos-dialog-actions">
@@ -820,7 +821,7 @@ function DeploymentsView({ onToast }) {
     <div className="dos-section">
       {rollbackTarget && (
         <div className="dos-dialog-overlay" onClick={() => setRollbackTarget(null)}>
-          <div className="dos-dialog" onClick={e => e.stopPropagation()}>
+          <div className="dos-dialog" {...clickableProps(e => e.stopPropagation())}>
             <div className="dos-dialog-title">Rollback Deployment</div>
             <input className="dos-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === "Enter") handleRollbackConfirm(); if (e.key === "Escape") setRollbackTarget(null); }} placeholder="Reason for rollback…" />
             <div className="dos-dialog-actions">

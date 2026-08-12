@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import "./DOP2Dashboard.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = (path, opts = {}) =>
   fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
@@ -50,7 +51,7 @@ function CheckRow({ check }) {
   const icon = check.pass ? "✓" : check.severity === "warning" ? "⚠" : "✗";
   const ic   = check.pass ? "#34d399" : check.severity === "warning" ? "#fbbf24" : "#f87171";
   return (
-    <div className={`dop2-check ${cls}`} onClick={() => setOpen(o => !o)}>
+    <div className={`dop2-check ${cls}`} {...clickableProps(() => setOpen(o => !o))}>
       <span className="dop2-check-icon" style={{ color: ic }}>{icon}</span>
       <div className="dop2-check-body">
         <div className="dop2-check-label">{check.label}</div>

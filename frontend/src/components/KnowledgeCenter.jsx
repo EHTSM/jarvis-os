@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { track } from "../analytics";
 import "./KnowledgeCenter.css";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Persistence ───────────────────────────────────────────────────────
 const DOCS_KEY = "ooplix_knowledge_docs";
@@ -94,7 +95,7 @@ function AddDocModal({ collections, onAdd, onClose }) {
 
   return (
     <div className="kc-modal-overlay" onClick={onClose}>
-      <div className="kc-modal" onClick={e => e.stopPropagation()}>
+      <div className="kc-modal" {...clickableProps(e => e.stopPropagation())}>
         <h3 className="kc-modal-title">Add document</h3>
         <form onSubmit={handleSubmit} className="kc-modal-form">
           <label className="kc-form-label">Document name / filename</label>

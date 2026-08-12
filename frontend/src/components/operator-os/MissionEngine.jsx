@@ -9,6 +9,7 @@ import {
 import { useIntervalCleanup } from "../../hooks/useResourceManager";
 import "./MissionEngine.css";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 const TICK_MS = 6_000;
 
@@ -257,7 +258,7 @@ export default function MissionEngine() {
       {/* Delete confirm modal */}
       {deleteTarget && (
         <div className="me-del-overlay" onClick={() => setDeleteTarget(null)}>
-          <div className="me-del-panel" onClick={e => e.stopPropagation()}>
+          <div className="me-del-panel" {...clickableProps(e => e.stopPropagation())}>
             <div className="me-del-title">Delete Mission?</div>
             <div className="me-del-body">This mission and all its task history will be permanently removed.</div>
             <div className="me-del-actions">

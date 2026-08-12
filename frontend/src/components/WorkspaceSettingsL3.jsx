@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { _fetch } from "../_client";
 import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Shared panel constants ────────────────────────────────────────
 const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
@@ -121,7 +122,7 @@ function ExtRuntimePanel() {
                 </span>
               </div>
               <span className="l3-ext-state" style={{ color: EXT_STATE_COLOR[ext.state] }}>{ext.state}</span>
-              <div className="l3-ext-actions" onClick={e => e.stopPropagation()}>
+              <div className="l3-ext-actions" {...clickableProps(e => e.stopPropagation())}>
                 {ext.state === "active"    && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/suspend", ext.id)}>Suspend</button>}
                 {ext.state === "suspended" && <button className="k5-toggle-btn k5-toggle-btn--on" disabled={busy === ext.id} onClick={() => action("/extensions/resume", ext.id)}>Resume</button>}
                 {(ext.state === "error" || ext.state === "suspended") && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/restart", ext.id)}>Restart</button>}

@@ -20,6 +20,7 @@ import { OperationalStatusBanner } from "./widgets/OperationalStatusBanner";
 import { NotificationOverlay } from "./widgets/NotificationOverlay";
 import { FirstRunSetup, shouldShowFirstRun } from "./widgets/FirstRunSetup";
 import "./operator.css";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 export default function OperatorConsole() {
   const [sessionRestored, setSessionRestored] = React.useState(false);
@@ -113,7 +114,7 @@ export default function OperatorConsole() {
   }, [authError, addNotification]);
 
   return (
-    <div className="operator-console" onClick={() => setLastCheck(Date.now())}>
+    <div className="operator-console" {...clickableProps(() => setLastCheck(Date.now()))}>
       {showFirstRun && (
         <FirstRunSetup onComplete={() => setShowFirstRun(false)} rtStatus={rtStatus} />
       )}

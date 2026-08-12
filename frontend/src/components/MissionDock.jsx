@@ -5,6 +5,7 @@
  */
 import React, { useState, useEffect } from "react";
 import "./MissionDock.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -66,7 +67,7 @@ export default function MissionDock({ onNavigate }) {
   return (
     <div className={`md-dock${expanded ? " md-dock--expanded" : ""}`}>
       {/* Collapsed bar */}
-      <div className="md-bar" onClick={() => setExpanded(e => !e)}>
+      <div className="md-bar" {...clickableProps(() => setExpanded(e => !e))}>
         <span className={`md-dot ${statusClass(active.status)}`} />
         <span className="md-mission-title">{active.title || active.goal || "Mission"}</span>
         <span className="md-stage-badge">{stage}</span>

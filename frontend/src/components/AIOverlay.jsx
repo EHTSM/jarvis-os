@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './AIOverlay.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function apiFetch(path, opts = {}) {
   return _fetch(path, opts);
@@ -57,7 +58,7 @@ function SuggestionCard({ suggestion, onApprove, onDismiss }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="ai-suggestion">
-      <div className="ai-suggestion__header" onClick={() => setExpanded(x => !x)}>
+      <div className="ai-suggestion__header" {...clickableProps(() => setExpanded(x => !x))}>
         <span className="ai-suggestion__icon">💡</span>
         <span className="ai-suggestion__title">{suggestion.title || suggestion.description || 'Suggestion'}</span>
         <span className="ai-suggestion__arrow">{expanded ? '▾' : '▸'}</span>

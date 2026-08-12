@@ -3,6 +3,7 @@ import { track } from "../analytics";
 import { _fetch } from "../_client";
 import { useConfirm } from "./ConfirmDialog.jsx";
 import "./TeamWorkspace.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Role definitions ─────────────────────────────────────────────────
 // Matches the real backend role vocabulary (workspaceService.cjs ROLES) —
@@ -383,7 +384,7 @@ export default function TeamWorkspace({ onNavigate }) {
             {/* Invite modal */}
             {showInvite && (
               <div className="tw-modal-overlay" onClick={() => setShowInvite(false)}>
-                <div className="tw-modal" onClick={e => e.stopPropagation()}>
+                <div className="tw-modal" {...clickableProps(e => e.stopPropagation())}>
                   <InviteForm onInvite={handleInvite} onCancel={() => setShowInvite(false)} submitting={inviting} />
                 </div>
               </div>

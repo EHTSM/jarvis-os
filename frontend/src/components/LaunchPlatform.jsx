@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./LaunchPlatform.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -146,7 +147,7 @@ function OnboardingPanel() {
       <p className="launch-section-title">What's your role?</p>
       <div className="role-grid">
         {roles.map(role => (
-          <div key={role.id} className="role-card" onClick={() => selectRole(role.id)}>
+          <div key={role.id} className="role-card" {...clickableProps(() => selectRole(role.id))}>
             <div className="role-icon">{role.icon}</div>
             <div className="role-label">{role.label}</div>
             <div className="role-desc">{role.welcome?.slice(0, 80)}…</div>

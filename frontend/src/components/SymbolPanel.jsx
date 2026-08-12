@@ -6,6 +6,7 @@
  */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import './SymbolPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const KIND_ICON = {
   function: 'ƒ',
@@ -16,9 +17,7 @@ const KIND_ICON = {
 
 function SymbolRow({ sym, onJump, active }) {
   return (
-    <div
-      className={`sp-row${active ? ' sp-row--active' : ''} sp-row--${sym.kind}`}
-      onClick={() => onJump(sym)}
+    <div className={`sp-row${active ? ' sp-row--active' : ''} sp-row--${sym.kind}`} {...clickableProps(() => onJump(sym))}
       title={`${sym.kind} — line ${sym.line}`}
     >
       <span className="sp-row__icon">{KIND_ICON[sym.kind] || '◻'}</span>
@@ -101,7 +100,7 @@ export default function SymbolPanel({ symbols = [], filePath, activeLine, onJump
               <div className="sp-empty">{wsQuery ? 'No symbols matched.' : 'Type to search across all indexed files.'}</div>
             ) : (
               wsFiltered.map((s, i) => (
-                <div key={i} className={`sp-row sp-row--${s.kind}`} onClick={() => onJump(s)}>
+                <div key={i} className={`sp-row sp-row--${s.kind}`} {...clickableProps(() => onJump(s))}>
                   <span className="sp-row__icon">{KIND_ICON[s.kind] || '◻'}</span>
                   <span className="sp-row__name">{s.name}</span>
                   <span className="sp-row__file">{s.filePath?.split('/').pop()}</span>
