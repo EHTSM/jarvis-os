@@ -6,6 +6,7 @@ import EmptyState from "./EmptyState";
 import "./AgentFactoryCenter.css";
 import { clickableProps } from "../hooks/useClickableProps";
 import { overlayProps } from "../hooks/useClickableProps";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const KEY = "ooplix_agent_factory_v1";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -38,6 +39,9 @@ export default function AgentFactoryCenter({ onNavigate }) {
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
   const [apiError, setApiError] = useState(null);
   const [trainMsg, setTrainMsg] = useState("");
+  // B19.3: both modals dismissed on backdrop click only. Escape now mirrors
+  // that, using the existing hook. Bound only while a modal is open.
+  useEscapeKey(!!modal, () => { setModal(null); setTrainMsg(""); });
 
   // p26 live data
   const [p26Tab,       setP26Tab]       = useState("plugins");

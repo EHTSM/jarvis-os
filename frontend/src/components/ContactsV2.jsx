@@ -5,6 +5,7 @@ import JourneyBanner from "./JourneyBanner";
 import EmptyState from "./EmptyState";
 import "./ContactsV2.css";
 import { overlayProps } from "../hooks/useClickableProps";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -110,6 +111,8 @@ function Toast({ toasts }) {
 const EMPTY_FORM = { name: "", phone: "", service: "", dealValue: "", notes: "" };
 
 function AddContactModal({ onClose, onSaved }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [fields,  setFields]  = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
   const [err,     setErr]     = useState("");
@@ -187,6 +190,8 @@ function AddContactModal({ onClose, onSaved }) {
 // ── Payment Link Modal ─────────────────────────────────────────────────────────
 
 function PaymentLinkModal({ prefill, onClose }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [form,    setForm]    = useState({
     name: prefill?.name || "", phone: prefill?.phone || "",
     amount: "", description: "",
@@ -293,6 +298,8 @@ function PaymentLinkModal({ prefill, onClose }) {
 const STATUS_OPTIONS = ["new", "hot", "qualified", "won", "paid", "onboarded", "lost"];
 
 function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpdate }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [sending,        setSending]        = useState(false);
   const [waMsg,          setWaMsg]          = useState("");
   const [waResult,       setWaResult]       = useState(null);
