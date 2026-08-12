@@ -30,9 +30,9 @@
   font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
   padding: 3px 7px; border-radius: 3px; border: 1px solid;
 }
-.risk--low    { color: #34d399; background: #05271820; border-color: #059669; }
+.risk--low    { color: var(--success); background: #05271820; border-color: #059669; }
 .risk--medium { color: #fbbf24; background: #451a0320; border-color: #d97706; }
-.risk--high   { color: #f87171; background: #450a0a20; border-color: #dc2626; }
+.risk--high   { color: var(--danger); background: #450a0a20; border-color: #dc2626; }
 
 /* Confidence */
 .ppp-conf { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 120px; }
@@ -69,7 +69,7 @@
 }
 .ppp-affected__file {
   font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px;
-  color: #60a5fa; padding: 2px 0; cursor: default;
+  color: var(--info); padding: 2px 0; cursor: default;
 }
 .ppp-affected__file::before { content: '◦ '; color: var(--text-faint); }
 
@@ -81,9 +81,9 @@
   max-height: 320px; overflow-y: auto;
 }
 .ppp-diff__line { padding: 0 10px; white-space: pre; color: var(--text-dim); }
-.diff-add    { background: #05271820; color: #34d399; }
-.diff-del    { background: #450a0a20; color: #f87171; }
-.diff-meta   { background: #1e3a5f20; color: #60a5fa; }
+.diff-add    { background: #05271820; color: var(--success); }
+.diff-del    { background: #450a0a20; color: var(--danger); }
+.diff-meta   { background: #1e3a5f20; color: var(--info); }
 .diff-header { color: var(--text-faint); }
 
 /* Spec list (when no unified diff) */
@@ -97,10 +97,10 @@
 .ppp-spec__header:hover { background: var(--surface-base); }
 .ppp-spec__arrow { color: var(--text-faint); font-size: 11px; width: 12px; flex-shrink: 0; }
 .ppp-spec__file {
-  font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px; color: #60a5fa; flex: 1;
+  font-family: 'JetBrains Mono', Menlo, monospace; font-size: 11px; color: var(--info); flex: 1;
 }
 .ppp-spec__ok    { color: var(--success); font-size: 12px; }
-.ppp-spec__error { color: #f87171; font-size: 10px; }
+.ppp-spec__error { color: var(--danger); font-size: 10px; }
 .ppp-spec__desc  { color: var(--text-dim); font-size: 10px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ppp-spec__body  { border-top: 1px solid #111827; }
 
@@ -142,18 +142,18 @@
 .ppp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .ppp-btn--apply  { background: var(--success); border-color: #059669; color: var(--on-success); }
 .ppp-btn--apply:hover:not(:disabled) { background: var(--success); }
-.ppp-btn--mission { background: #1e3a5f30; border-color: #1d4ed8; color: #60a5fa; }
+.ppp-btn--mission { background: #1e3a5f30; border-color: #1d4ed8; color: var(--info); }
 .ppp-btn--mission:hover:not(:disabled) { background: #1e3a5f60; }
 .ppp-btn--reject { background: transparent; border-color: #374151; color: var(--text-dim); }
-.ppp-btn--reject:hover { color: #f87171; border-color: #7f1d1d; }
+.ppp-btn--reject:hover { color: var(--danger); border-color: #7f1d1d; }
 
 .ppp-error {
   margin: 8px 12px; padding: 7px 10px; background: #450a0a20; border: 1px solid #7f1d1d;
-  border-radius: 4px; color: #f87171; font-size: 12px;
+  border-radius: 4px; color: var(--danger); font-size: 12px;
 }
 .ppp-success {
   margin: 8px 12px; padding: 7px 10px; background: #05271820; border: 1px solid #059669;
-  border-radius: 4px; color: #34d399; font-size: 12px;
+  border-radius: 4px; color: var(--success); font-size: 12px;
 }
 
 /* Pipeline tracker */
@@ -190,7 +190,7 @@
 .ppp-stage__label { flex: 1; color: var(--text-dim); }
 .ppp-stage--completed .ppp-stage__label { color: var(--text-dim); }
 .ppp-stage--running   .ppp-stage__label { color: var(--text); font-weight: 500; }
-.ppp-stage__error { font-size: 10px; color: #f87171; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.ppp-stage__error { font-size: 10px; color: var(--danger); max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
 @keyframes ppp-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 /* Patch history */
@@ -204,10 +204,10 @@
 .ppp-hist-item__goal { font-size: 12px; color: var(--text); }
 .ppp-hist-item__meta { display: flex; gap: 8px; align-items: center; }
 .ppp-hist-status { font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; }
-.ppp-hist-status--staged          { background: #1e3a5f30; color: #60a5fa; }
+.ppp-hist-status--staged          { background: #1e3a5f30; color: var(--info); }
 .ppp-hist-status--pipeline_running{ background: #451a0330; color: #fbbf24; }
 .ppp-hist-status--undone          { background: #1f293730; color: var(--text-dim); }
-.ppp-hist-status--completed       { background: #05271830; color: #34d399; }
+.ppp-hist-status--completed       { background: #05271830; color: var(--success); }
 .ppp-hist-files { font-size: 10px; color: var(--text-dim); }
 .ppp-hist-time  { font-size: 10px; color: var(--text-faint); margin-left: auto; }
 .ppp-undo-btn {
@@ -215,4 +215,4 @@
   background: transparent; border: 1px solid #374151; border-radius: 3px;
   color: var(--text-dim); cursor: pointer;
 }
-.ppp-undo-btn:hover { color: #f87171; border-color: #7f1d1d; }
+.ppp-undo-btn:hover { color: var(--danger); border-color: #7f1d1d; }

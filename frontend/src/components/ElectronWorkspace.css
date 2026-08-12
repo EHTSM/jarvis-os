@@ -297,7 +297,7 @@
   border-radius: 3px;
   transition: color 0.15s, background 0.15s;
 }
-.ew-bottom-close:hover { color: #f87171; background: #450a0a20; }
+.ew-bottom-close:hover { color: var(--danger); background: #450a0a20; }
 
 .ew-bottom__body {
   flex: 1;
@@ -379,7 +379,7 @@
   border-radius: 3px;
   transition: color 0.15s;
 }
-.ew-split-close:hover { color: #f87171; }
+.ew-split-close:hover { color: var(--danger); }
 
 /* ── Quick Switcher (Cmd+P) ─────────────────────────────────────── */
 .ew-qs-backdrop {

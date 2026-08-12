@@ -81,9 +81,9 @@
   text-align: center;
 }
 .sp-row--function .sp-row__icon { color: #fbbf24; }
-.sp-row--class    .sp-row__icon { color: #a78bfa; }
-.sp-row--method   .sp-row__icon { color: #34d399; }
-.sp-row--variable .sp-row__icon { color: #60a5fa; }
+.sp-row--class    .sp-row__icon { color: var(--accent); }
+.sp-row--method   .sp-row__icon { color: var(--success); }
+.sp-row--variable .sp-row__icon { color: var(--info); }
 
 .sp-row__name {
   flex: 1;

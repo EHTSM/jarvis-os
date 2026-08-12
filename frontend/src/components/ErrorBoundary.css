@@ -29,7 +29,7 @@
 .eb-title {
   font-size: 13px;
   font-weight: 700;
-  color: #f87171;
+  color: var(--danger);
   margin: 0;
 }
 
@@ -75,7 +75,7 @@
 .eb-btn--primary {
   background: rgba(239,68,68,0.15);
   border-color: rgba(239,68,68,0.35);
-  color: #f87171;
+  color: var(--danger);
 }
 .eb-btn--primary:hover {
   background: rgba(239,68,68,0.25);

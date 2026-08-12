@@ -345,7 +345,7 @@
   border-radius: 6px;
   font-size: 11px;
 }
-.aad-parallel-group-label { font-size: 10px; color: #a78bfa; font-weight: 600; margin-bottom: 2px; }
+.aad-parallel-group-label { font-size: 10px; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
 .aad-parallel-agents { display: flex; flex-wrap: wrap; gap: 4px; }
 
 /* Blocked / stalled warning rows */

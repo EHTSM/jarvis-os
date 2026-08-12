@@ -662,7 +662,7 @@
   max-width: 220px;
   transition: color 0.12s;
 }
-.cep-breadcrumb__file:hover { color: #60a5fa; }
+.cep-breadcrumb__file:hover { color: var(--info); }
 .cep-breadcrumb__sep { color: rgba(var(--fg-rgb), 0.62); }
 .cep-breadcrumb__sym {
   color: #fbbf24;
@@ -766,7 +766,7 @@
   transition: background 0.08s;
 }
 .cep-refs__row:hover { background: rgba(165,180,252,0.10); }
-.cep-refs__file { color: #60a5fa; }
+.cep-refs__file { color: var(--info); }
 .cep-refs__line { color: rgba(var(--fg-rgb), 0.62); }
 .cep-refs__col  { color: rgba(var(--fg-rgb), 0.62); font-size: 11px; }
 
@@ -824,14 +824,14 @@
   background: var(--surface-base); border: 1px solid #1f2937; border-radius: 4px;
   padding: 6px 8px; margin-bottom: 6px;
 }
-.cep-ai-result__del { color: #f87171; }
-.cep-ai-result__add { color: #34d399; }
+.cep-ai-result__del { color: var(--danger); }
+.cep-ai-result__add { color: var(--success); }
 .cep-ai-result__apply-btn {
   padding: 4px 10px; background: rgba(5,39,24,0.5);
   border: 1px solid #059669; border-radius: 4px;
-  color: #34d399; font-size: 11px; cursor: pointer;
+  color: var(--success); font-size: 11px; cursor: pointer;
 }
-.cep-ai-result__apply-btn:hover { background: #052e16; }
+.cep-ai-result__apply-btn:hover { background: var(--success-muted); }
 
 /* ACP-5: AI acceptance badge in status bar */
 .cep-statusbar__ai-badge {

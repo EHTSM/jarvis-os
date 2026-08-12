@@ -85,7 +85,7 @@
 }
 .chat-model-select option {
   background: #1a1a2e;
-  color: #e2e8f0;
+  color: var(--text);
 }
 
 /* Streaming indicator dots in header */

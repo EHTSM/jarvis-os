@@ -5,7 +5,7 @@
   height: 100%;
   min-height: 0;
   background: #0a0c10;
-  color: #e2e8f0;
+  color: var(--text);
   font-family: 'JetBrains Mono', 'Fira Mono', monospace;
   font-size: 12px;
   overflow: hidden;
@@ -43,7 +43,7 @@
   background: #0f1117;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 6px;
-  color: #e2e8f0;
+  color: var(--text);
   font-family: inherit;
   font-size: 11px;
   padding: 8px 10px;
@@ -97,7 +97,7 @@
   flex-shrink: 0;
 }
 .me-stat        { color: var(--text-dim); }
-.me-stat strong { color: #e2e8f0; margin-right: 2px; }
+.me-stat strong { color: var(--text); margin-right: 2px; }
 .me-stat--run strong { color: #eab308; }
 .me-stat--ok  strong { color: var(--success); }
 .me-stat--err strong { color: var(--danger); }
@@ -169,7 +169,7 @@
 .me-card-mission {
   font-size: 12px;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--text);
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -224,7 +224,7 @@
 }
 .me-btn--execute:hover { background: rgba(34,197,94,0.22); }
 .me-btn--ghost { background: transparent; border-color: rgba(255,255,255,0.07); color: var(--text-dim); }
-.me-btn--ghost:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.15); }
+.me-btn--ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
 .me-btn--sm { padding: 2px 7px; font-size: 10px; }
 .me-btn--full { width: 100%; margin-top: 8px; padding: 8px; }
 
@@ -287,7 +287,7 @@
 .me-detail-title {
   font-size: 13px;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text);
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -297,7 +297,7 @@
   background: none; border: none; color: var(--text-dim); cursor: pointer;
   font-size: 13px; padding: 2px 6px; border-radius: 3px; transition: color 0.12s;
 }
-.me-close:hover { color: #e2e8f0; }
+.me-close:hover { color: var(--text); }
 
 .me-detail-meta { display: flex; flex-wrap: wrap; gap: 8px; }
 .me-detail-progress { display: flex; align-items: center; gap: 8px; }
@@ -324,7 +324,7 @@
   border: 1px solid rgba(255,255,255,0.04);
 }
 .me-node-row--run { border-color: rgba(234,179,8,0.2); }
-.me-node-task     { font-size: 10px; color: #e2e8f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.me-node-task     { font-size: 10px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .me-node-st       { font-size: 10px; font-weight: 600; white-space: nowrap; }
 .me-node-st--ok   { color: var(--success); }
 .me-node-st--err  { color: var(--danger); }

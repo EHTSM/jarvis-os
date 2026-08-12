@@ -15,7 +15,7 @@
     letter-spacing: 0.08em; color: var(--text-dim); flex: 1;
     display: flex; align-items: center; gap: 8px;
 }
-.emp-header-icon { color: #a78bfa; font-size: 13px; }
+.emp-header-icon { color: var(--accent); font-size: 13px; }
 .emp-header-tabs { display: flex; gap: 2px; flex-wrap: wrap; }
 .emp-hdr-tab {
     padding: 3px 9px; border-radius: 4px; font-size: 11px;
@@ -45,7 +45,7 @@
 }
 .emp-empty   { padding: 40px; text-align: center; color: var(--text-faint); font-size: 12px; }
 .emp-loading { padding: 20px; text-align: center; color: var(--text-faint); font-size: 12px; }
-.emp-err     { margin: 12px; padding: 8px 10px; background: rgba(239,68,68,0.08); border: 1px solid #7f1d1d; border-radius: 4px; color: #f87171; font-size: 11px; }
+.emp-err     { margin: 12px; padding: 8px 10px; background: rgba(239,68,68,0.08); border: 1px solid #7f1d1d; border-radius: 4px; color: var(--danger); font-size: 11px; }
 
 /* ── Timeline ─────────────────────────────────────────────────────────────────── */
 .emp-timeline { padding: 8px 0; }
@@ -66,7 +66,7 @@
 .emp-tl-badge--completed  { color: var(--success); border-color: #065f46; }
 .emp-tl-badge--failed     { color: var(--danger); border-color: #7f1d1d; }
 .emp-tl-badge--cancelled  { color: var(--text-dim); border-color: #374151; }
-.emp-tl-badge--in_progress{ color: #60a5fa; border-color: #1e40af; }
+.emp-tl-badge--in_progress{ color: var(--info); border-color: #1e40af; }
 .emp-tl-conf { font-size: 10px; color: var(--success); flex-shrink: 0; }
 .emp-tl-ts   { font-size: 10px; color: var(--text-faint); flex-shrink: 0; margin-left: auto; }
 
@@ -81,7 +81,7 @@
     border: 1px solid #1f2937; background: transparent; color: var(--text-faint); cursor: pointer;
 }
 .emp-mode-tab:hover       { background: var(--surface-base); color: var(--text-dim); }
-.emp-mode-tab--active     { background: #1e1b4b; color: #a5b4fc; border-color: #4f46e5; }
+.emp-mode-tab--active     { background: var(--accent-glow); color: #a5b4fc; border-color: #4f46e5; }
 .emp-sim-search-row { display: flex; gap: 8px; }
 .emp-sim-input {
     flex: 1; background: var(--surface-base); border: 1px solid #1f2937; border-radius: 5px;
@@ -90,7 +90,7 @@
 .emp-sim-input:focus  { border-color: #374151; }
 .emp-sim-input::placeholder { color: var(--text-faint); }
 .emp-search-btn {
-    padding: 6px 14px; background: #1e1b4b; border: 1px solid #4f46e5;
+    padding: 6px 14px; background: var(--accent-glow); border: 1px solid #4f46e5;
     border-radius: 5px; color: #a5b4fc; font-size: 11px; font-weight: 600; cursor: pointer; flex-shrink: 0;
 }
 .emp-search-btn:hover:not(:disabled) { background: #2e2769; }
@@ -197,8 +197,8 @@
 .emp-lesson-type   { font-size: 8px; padding: 1px 4px; border-radius: 3px; font-weight: 700; }
 .emp-lesson-type--success  { background: rgba(16,185,129,0.1); color: var(--success); }
 .emp-lesson-type--failure  { background: rgba(239,68,68,0.1); color: var(--danger); }
-.emp-lesson-type--engineering_rule { background: rgba(96,165,250,0.1); color: #60a5fa; }
-.emp-lesson-type--engineering_playbook { background: rgba(167,139,250,0.1); color: #a78bfa; }
+.emp-lesson-type--engineering_rule { background: rgba(96,165,250,0.1); color: var(--info); }
+.emp-lesson-type--engineering_playbook { background: rgba(167,139,250,0.1); color: var(--accent); }
 .emp-lesson-age    { font-size: 9px; color: var(--text-faint); }
 
 /* ── Growth chart ────────────────────────────────────────────────────────────── */
@@ -227,7 +227,7 @@
 .emp-evolve-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
 .emp-evolve-desc  { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
 .emp-run-btn {
-    padding: 7px 18px; background: #1e1b4b; border: 1px solid #4f46e5;
+    padding: 7px 18px; background: var(--accent-glow); border: 1px solid #4f46e5;
     border-radius: 5px; color: #a5b4fc; font-size: 12px; font-weight: 600; cursor: pointer;
 }
 .emp-run-btn:hover:not(:disabled) { background: #2e2769; }
@@ -242,7 +242,7 @@
 .emp-evolve-dot    { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .emp-evolve-key    { color: var(--text-dim); font-weight: 600; width: 160px; flex-shrink: 0; }
 .emp-evolve-detail { color: var(--text-dim); }
-.emp-evolve-err    { color: #f87171; }
+.emp-evolve-err    { color: var(--danger); }
 .emp-evolve-ts     { font-size: 10px; color: var(--text-faint); }
 
 /* ── Benchmark ─────────────────────────────────────────────────────────────────── */
@@ -273,4 +273,4 @@
 .emp-bench-goal { flex: 1; color: var(--text-dim); }
 .emp-bench-val  { color: var(--text-dim); font-size: 10px; }
 .emp-bench-ms   { color: var(--text-faint); font-size: 10px; }
-.emp-bench-err  { color: #f87171; font-size: 10px; }
+.emp-bench-err  { color: var(--danger); font-size: 10px; }

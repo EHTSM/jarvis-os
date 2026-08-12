@@ -203,8 +203,8 @@
 }
 .ai-action-btn:hover { background: var(--surface-hover); color: #e5e7eb; }
 .ai-action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.ai-action-btn--green { background: #05271840; color: #34d399; border-color: #059669; }
-.ai-action-btn--green:hover { background: #052e16; color: #6ee7b7; }
+.ai-action-btn--green { background: #05271840; color: var(--success); border-color: #059669; }
+.ai-action-btn--green:hover { background: var(--success-muted); color: #6ee7b7; }
 .ai-action-btn--gray { background: var(--surface-base); color: var(--text-dim); border-color: #1f2937; }
 .ai-action-btn--gray:hover { background: var(--surface-raised); color: var(--text-dim); }
 .ai-action-btn--primary { background: var(--success); color: var(--on-success); border-color: #059669; }
@@ -311,7 +311,7 @@
 
 .ai-error-result__fix {
   font-size: 12px;
-  color: #34d399;
+  color: var(--success);
   background: #05271820;
   border: 1px solid #05271840;
   border-radius: 4px;
@@ -337,9 +337,9 @@
   white-space: pre;
   color: var(--text-dim);
 }
-.diff-line--add  { background: #05271820; color: #34d399; }
-.diff-line--del  { background: #450a0a20; color: #f87171; }
-.diff-line--meta { color: #60a5fa; background: #1e3a5f20; }
+.diff-line--add  { background: #05271820; color: var(--success); }
+.diff-line--del  { background: #450a0a20; color: var(--danger); }
+.diff-line--meta { color: var(--info); background: #1e3a5f20; }
 
 /* Patch toggle in message */
 .ai-patch {
@@ -363,7 +363,7 @@
 }
 .ai-error {
   padding: 12px;
-  color: #f87171;
+  color: var(--danger);
   font-size: 12px;
   background: #450a0a20;
   border-left: 3px solid var(--danger);

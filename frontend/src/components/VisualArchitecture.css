@@ -18,7 +18,7 @@
 .va-body { flex: 1; overflow: hidden; }
 
 .va-empty { padding: 20px; color: var(--text-faint); font-size: 12px; text-align: center; }
-.va-error { padding: 10px 12px; color: #f87171; background: #450a0a20; border-left: 3px solid var(--danger); margin: 8px; border-radius: 3px; font-size: 12px; }
+.va-error { padding: 10px 12px; color: var(--danger); background: #450a0a20; border-left: 3px solid var(--danger); margin: 8px; border-radius: 3px; font-size: 12px; }
 
 /* Graph view */
 .va-graph-view { display: flex; flex-direction: column; height: 100%; }
@@ -65,7 +65,7 @@
 .va-service-tile__dot--warn { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
 .va-service-tile__dot--err  { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
 .va-service-tile__status { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
-.va-service-tile--ok   .va-service-tile__status { color: #34d399; }
+.va-service-tile--ok   .va-service-tile__status { color: var(--success); }
 .va-service-tile--warn .va-service-tile__status { color: #fbbf24; }
-.va-service-tile--err  .va-service-tile__status { color: #f87171; }
+.va-service-tile--err  .va-service-tile__status { color: var(--danger); }
 .va-service-tile__meta { font-size: 10px; color: var(--text-faint); }

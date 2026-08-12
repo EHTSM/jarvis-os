@@ -16,7 +16,7 @@
 }
 .aap-running-badge {
   background: rgba(16,185,129,0.15); border: 1px solid #059669;
-  color: #34d399; font-size: 9px; padding: 1px 6px; border-radius: 10px;
+  color: var(--success); font-size: 9px; padding: 1px 6px; border-radius: 10px;
   font-weight: 700; letter-spacing: 0.04em;
 }
 .aap-header-tabs { display: flex; gap: 2px; }
@@ -51,7 +51,7 @@
 .aap-plan-id-input:focus { border-color: #374151; }
 .aap-plan-id-input::placeholder { color: var(--text-faint); }
 .aap-launch-btn {
-  padding: 5px 14px; background: #1e1b4b; border: 1px solid #4f46e5;
+  padding: 5px 14px; background: var(--accent-glow); border: 1px solid #4f46e5;
   border-radius: 5px; color: #a5b4fc; font-size: 11px; font-weight: 600;
   cursor: pointer; transition: background 0.12s; white-space: nowrap;
 }
@@ -73,7 +73,7 @@
 .aap-item-head     { display: flex; align-items: center; gap: 6px; }
 .aap-item-goal     { font-size: 12px; color: var(--text-dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .aap-item-meta     { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--text-faint); }
-.aap-item-stage    { color: #60a5fa; }
+.aap-item-stage    { color: var(--info); }
 .aap-item-repairs  { color: var(--warning); }
 .aap-item-conf     { color: var(--success); }
 
@@ -106,7 +106,7 @@
 }
 .aap-metric { display: flex; flex-direction: column; align-items: center; min-width: 56px; }
 .aap-metric__val { font-size: 15px; font-weight: 700; color: var(--text); }
-.aap-metric__val--stage { font-size: 11px; color: #60a5fa; }
+.aap-metric__val--stage { font-size: 11px; color: var(--info); }
 .aap-metric__key { font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* Stage progress bar */
@@ -133,14 +133,14 @@
   background: #60a5fa; border-color: #60a5fa;
   animation: aap-pulse 1.5s ease-in-out infinite;
 }
-.aap-step--active .aap-step-label { color: #60a5fa; }
+.aap-step--active .aap-step-label { color: var(--info); }
 .aap-step--fail .aap-step-dot  { background: var(--danger); border-color: var(--danger); }
 .aap-step--fail .aap-step-label{ color: var(--danger); }
 
 .aap-error {
   margin: 8px 12px; padding: 7px 10px;
   background: #450a0a20; border: 1px solid #7f1d1d;
-  border-radius: 4px; color: #f87171; font-size: 11px;
+  border-radius: 4px; color: var(--danger); font-size: 11px;
 }
 
 /* Sections */
@@ -179,7 +179,7 @@
 /* Pipeline ids */
 .aap-pipeline-ids { display: flex; flex-wrap: wrap; gap: 4px; }
 .aap-pipeline-id  {
-  font-family: monospace; font-size: 10px; color: #a78bfa;
+  font-family: monospace; font-size: 10px; color: var(--accent);
   background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2);
   border-radius: 4px; padding: 2px 6px;
 }
@@ -195,8 +195,8 @@
 }
 .aap-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .aap-btn--pause  { background: #1c1a0a; border-color: #b45309; color: #fbbf24; }
-.aap-btn--resume { background: #052e16; border-color: #059669; color: #34d399; }
-.aap-btn--retry  { background: #1e1b4b; border-color: #4f46e5; color: #a5b4fc; }
+.aap-btn--resume { background: var(--success-muted); border-color: #059669; color: var(--success); }
+.aap-btn--retry  { background: var(--accent-glow); border-color: #4f46e5; color: #a5b4fc; }
 .aap-btn--cancel { background: transparent; border-color: #374151; color: var(--text-dim); margin-left: auto; }
 .aap-btn--pause:hover:not(:disabled)  { background: #291f00; }
 .aap-btn--resume:hover:not(:disabled) { background: #064e3b; }
@@ -243,7 +243,7 @@
 .aap-bench-repairs { color: var(--warning); font-size: 10px; }
 .aap-bench-conf    { color: var(--success); font-size: 10px; }
 .aap-bench-ms      { color: var(--text-faint); font-size: 10px; }
-.aap-bench-err     { color: #f87171; font-size: 10px; }
+.aap-bench-err     { color: var(--danger); font-size: 10px; }
 
 /* Status badge */
 .aap-badge {

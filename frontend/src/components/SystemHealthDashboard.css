@@ -30,7 +30,7 @@
 .shd-title {
   font-size: 13px;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--text);
   letter-spacing: 0.02em;
 }
 
@@ -61,7 +61,7 @@
 }
 .shd-group-btn:hover { color: var(--text-dim); border-color: rgba(255,255,255,0.12); }
 .shd-group-btn--active {
-  color: #e2e8f0;
+  color: var(--text);
   border-color: rgba(124,111,255,0.35);
   background: rgba(124,111,255,0.09);
 }

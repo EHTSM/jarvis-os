@@ -5,7 +5,7 @@
   height: 100%;
   min-height: 0;
   background: #0a0c10;
-  color: #e2e8f0;
+  color: var(--text);
   font-family: 'JetBrains Mono', 'Fira Mono', monospace;
   font-size: 12px;
   overflow: hidden;
@@ -35,7 +35,7 @@
 }
 .lac-stat        { display: flex; align-items: center; gap: 4px; }
 .lac-stat--err   { color: var(--danger); }
-.lac-stat strong { color: #e2e8f0; }
+.lac-stat strong { color: var(--text); }
 
 .lac-stat-dot        { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
 .lac-stat-dot--ok    { background: #22c55e; box-shadow: 0 0 4px #22c55e; }
@@ -59,7 +59,7 @@
   cursor: pointer;
   transition: all 0.12s;
 }
-.lac-view-btn:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.12); }
+.lac-view-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.12); }
 .lac-view-btn.active { color: var(--success); border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.08); }
 .lac-refresh {
   background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px;
@@ -96,8 +96,8 @@
   letter-spacing: 0.06em;
 }
 .lac-tag--green  { background: rgba(34,197,94,0.12); color: var(--success); }
-.lac-tag--blue   { background: rgba(59,130,246,0.12); color: #60a5fa; }
-.lac-tag--purple { background: rgba(139,92,246,0.12); color: #a78bfa; }
+.lac-tag--blue   { background: rgba(59,130,246,0.12); color: var(--info); }
+.lac-tag--purple { background: rgba(139,92,246,0.12); color: var(--accent); }
 
 /* ── Pipeline view ── */
 .lac-pipeline-wrap {
@@ -128,11 +128,11 @@
   margin-bottom: 6px;
 }
 .lac-stage-icon  { font-size: 12px; color: var(--success); }
-.lac-stage-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; color: #e2e8f0; }
+.lac-stage-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; color: var(--text); }
 .lac-stage-count { font-size: 9px; background: rgba(34,197,94,0.15); color: var(--success); border-radius: 8px; padding: 0 5px; }
 .lac-stage-empty { font-size: 9px; color: var(--text-faint); }
 .lac-stage-agent { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
-.lac-stage-agent-name { font-size: 9px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lac-stage-agent-name { font-size: 9px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lac-arrow {
   font-size: 16px;
   color: var(--text-faint);
@@ -161,8 +161,8 @@
   border: 1px solid rgba(239,68,68,0.12);
   border-radius: 4px;
 }
-.lac-failure-agent { font-size: 11px; font-weight: 600; color: #f87171; }
-.lac-failure-error { font-size: 10px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lac-failure-agent { font-size: 11px; font-weight: 600; color: var(--danger); }
+.lac-failure-error { font-size: 10px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lac-failure-time  { font-size: 9px; color: var(--text-dim); white-space: nowrap; }
 
 /* ── Cards body ── */
@@ -200,7 +200,7 @@
   cursor: pointer;
   transition: all 0.12s;
 }
-.lac-filter-btn:hover { color: #e2e8f0; }
+.lac-filter-btn:hover { color: var(--text); }
 .lac-filter-btn.active { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.35); color: var(--success); }
 
 /* ── Cards ── */
@@ -241,7 +241,7 @@
 .lac-card-name {
   font-size: 11px;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -256,11 +256,11 @@
 .lac-badge--ok     { background: rgba(34,197,94,0.12); color: var(--success); }
 .lac-badge--err    { background: rgba(239,68,68,0.12); color: var(--danger); }
 .lac-badge--dim    { background: rgba(100,116,139,0.12); color: var(--text-dim); }
-.lac-badge--stage  { background: rgba(139,92,246,0.12); color: #a78bfa; font-size: 11px; padding: 0 4px; }
+.lac-badge--stage  { background: rgba(139,92,246,0.12); color: var(--accent); font-size: 11px; padding: 0 4px; }
 
 .lac-card-task {
   font-size: 10px;
-  color: #94a3b8;
+  color: var(--text-dim);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -292,7 +292,7 @@
   padding: 3px 0;
   font-size: 10px;
 }
-.lac-chain-id    { color: #e2e8f0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lac-chain-id    { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lac-chain-len   { color: var(--text-dim); white-space: nowrap; }
 .lac-chain-status { font-weight: 600; white-space: nowrap; }
 .lac-chain-status--ok  { color: var(--success); }
@@ -339,7 +339,7 @@
   background: none; border: none; color: var(--text-dim); cursor: pointer;
   font-size: 13px; padding: 2px 6px; border-radius: 3px; transition: color 0.12s;
 }
-.lac-close:hover { color: #e2e8f0; }
+.lac-close:hover { color: var(--text); }
 
 .lac-detail-section { display: flex; flex-direction: column; gap: 4px; }
 .lac-detail-section-label {
@@ -351,7 +351,7 @@
 }
 .lac-detail-task {
   font-size: 11px;
-  color: #e2e8f0;
+  color: var(--text);
   background: #0f1117;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 4px;
@@ -360,7 +360,7 @@
 }
 .lac-detail-thought {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--text-dim);
   background: rgba(139,92,246,0.05);
   border: 1px solid rgba(139,92,246,0.12);
   border-radius: 4px;
@@ -395,13 +395,13 @@
   border: 1px solid rgba(59,130,246,0.15);
   border-radius: 8px;
   font-size: 9px;
-  color: #60a5fa;
+  color: var(--info);
 }
 
 .lac-artifact-list { display: flex; flex-direction: column; gap: 3px; }
 .lac-artifact { display: flex; align-items: center; gap: 6px; }
 .lac-artifact-icon { font-size: 12px; color: var(--text-dim); }
-.lac-artifact-name { font-size: 10px; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lac-artifact-name { font-size: 10px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── Timeline ── */
 .lac-timeline { display: flex; flex-direction: column; gap: 3px; }
@@ -425,7 +425,7 @@
 .lac-run-status--ok  { color: var(--success); }
 .lac-run-status--err { color: var(--danger); }
 .lac-run-status--dim { color: var(--text-dim); }
-.lac-run-err { font-size: 9px; color: #f87171; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lac-run-err { font-size: 9px; color: var(--danger); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── Misc ── */
 .lac-loading, .lac-empty {

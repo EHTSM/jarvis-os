@@ -65,7 +65,7 @@
   cursor: pointer;
 }
 .terminal-tab:hover .terminal-tab__close { opacity: 1; }
-.terminal-tab__close:hover { background: var(--surface-hover); color: #f87171; }
+.terminal-tab__close:hover { background: var(--surface-hover); color: var(--danger); }
 
 .terminal-tab--add {
   font-size: 18px;

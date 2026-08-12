@@ -53,10 +53,10 @@
   padding: 3px 8px;
   border-radius: 4px;
 }
-.mc-sys-badge--ok      { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+.mc-sys-badge--ok      { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid rgba(52,211,153,0.3); }
 .mc-sys-badge--degraded{ background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
-.mc-sys-badge--critical{ background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
-.mc-sys-badge--unknown { background: rgba(148,163,184,0.12); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
+.mc-sys-badge--critical{ background: rgba(239,68,68,0.15);  color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
+.mc-sys-badge--unknown { background: rgba(148,163,184,0.12); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.25); }
 .mc-uptime,
 .mc-refresh-time {
   font-size: 0.72rem;
@@ -86,7 +86,7 @@
 .mc-alert--critical {
   background: rgba(239,68,68,0.1);
   border: 1px solid rgba(248,113,113,0.25);
-  color: #f87171;
+  color: var(--danger);
 }
 .mc-alert-code {
   font-weight: 700;
@@ -107,8 +107,8 @@
   font-size: 0.82rem;
   margin-bottom: 12px;
 }
-.mc-action-msg--ok  { background: rgba(16,185,129,0.12); border: 1px solid rgba(52,211,153,0.25); color: #34d399; }
-.mc-action-msg--err { background: rgba(239,68,68,0.1);   border: 1px solid rgba(248,113,113,0.25); color: #f87171; }
+.mc-action-msg--ok  { background: rgba(16,185,129,0.12); border: 1px solid rgba(52,211,153,0.25); color: var(--success); }
+.mc-action-msg--err { background: rgba(239,68,68,0.1);   border: 1px solid rgba(248,113,113,0.25); color: var(--danger); }
 .mc-action-msg button {
   background: none; border: none; color: inherit; cursor: pointer; padding: 0 4px; font-size: 1rem;
 }
@@ -132,7 +132,7 @@
   padding: 3px 8px;
   border-radius: 4px;
   background: rgba(239,68,68,0.2);
-  color: #f87171;
+  color: var(--danger);
   border: 1px solid rgba(248,113,113,0.4);
   animation: mc-blink 1.4s infinite;
 }
@@ -160,7 +160,7 @@
 }
 .mc-btn--resume {
   background: rgba(16,185,129,0.2);
-  color: #34d399;
+  color: var(--success);
   border: 1px solid rgba(52,211,153,0.35);
 }
 .mc-btn--ghost {
@@ -438,7 +438,7 @@
   outline: none;
 }
 .mc-lc-input:focus { border-color: var(--accent, #7c3aed); }
-.mc-lc-err { font-size: 11px; color: #f87171; }
+.mc-lc-err { font-size: 11px; color: var(--danger); }
 
 .mc-lc-stage-row {
   display: flex;
@@ -484,8 +484,8 @@
   color: var(--text-muted, #94a3b8);
   white-space: nowrap;
 }
-.mc-lc-badge--conf   { background: rgba(167,139,250,0.15); color: #a78bfa; }
-.mc-lc-badge--status { background: rgba(52,211,153,0.1);  color: #34d399; }
+.mc-lc-badge--conf   { background: rgba(167,139,250,0.15); color: var(--accent); }
+.mc-lc-badge--status { background: rgba(52,211,153,0.1);  color: var(--success); }
 
 .mc-lc-progress { margin: 4px 0 2px; }
 .mc-lc-progress-label {
@@ -517,7 +517,7 @@
   font-size: 11px;
 }
 .mc-lc-event-ts    { color: var(--text-faint); flex-shrink: 0; font-variant-numeric: tabular-nums; }
-.mc-lc-event-type  { color: #60a5fa; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mc-lc-event-type  { color: var(--info); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mc-lc-event-stage { color: #fbbf24; font-size: 10px; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; }
 
 /* ── Emergency stop confirm modal ──────────────────────────────── */
@@ -539,7 +539,7 @@
 .mc-stop-btn { padding: 8px 16px; border-radius: 7px; font-size: 13px; font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s; }
 .mc-stop-btn--cancel  { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.10); color: rgba(var(--fg-rgb), 0.62); }
 .mc-stop-btn--cancel:hover { background: rgba(255,255,255,0.12); }
-.mc-stop-btn--confirm { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.35); color: #f87171; }
+.mc-stop-btn--confirm { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.35); color: var(--danger); }
 .mc-stop-btn--confirm:hover { background: rgba(239,68,68,0.30); }
 
 /* ── Approval Queue ─────────────────────────────────────────────────────── */

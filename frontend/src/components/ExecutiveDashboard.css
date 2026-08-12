@@ -492,7 +492,7 @@
   white-space: nowrap;
 }
 
-.ed-lc-badge--conf { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.ed-lc-badge--conf { background: rgba(167,139,250,0.15); color: var(--accent); }
 
 .ed-lc-card__bar {
   height: 3px;

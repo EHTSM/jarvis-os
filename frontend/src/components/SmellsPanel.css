@@ -22,7 +22,7 @@
 }
 .smells-summary__counts { display: flex; align-items: center; gap: 8px; flex: 1; flex-wrap: wrap; }
 .smells-summary__count { font-size: 11px; font-weight: 600; }
-.smells-summary__count--high   { color: #f87171; }
+.smells-summary__count--high   { color: var(--danger); }
 .smells-summary__count--medium { color: #fbbf24; }
 .smells-summary__count--low    { color: var(--text-dim); }
 .smells-summary__sep   { color: var(--text-faint); }
@@ -75,7 +75,7 @@
 
 .smells-error {
   margin: 8px 12px; padding: 7px 10px; background: #450a0a20; border: 1px solid #7f1d1d;
-  border-radius: 4px; color: #f87171; font-size: 12px;
+  border-radius: 4px; color: var(--danger); font-size: 12px;
 }
 
 /* Smell card */
@@ -102,8 +102,8 @@
   font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
   padding: 2px 5px; border-radius: 3px;
 }
-.smell-sev-badge--high   { background: #450a0a; color: #f87171; }
-.smell-sev-badge--medium { background: #451a03; color: #fbbf24; }
+.smell-sev-badge--high   { background: var(--danger-muted); color: var(--danger); }
+.smell-sev-badge--medium { background: var(--warning-muted); color: #fbbf24; }
 .smell-sev-badge--low    { background: var(--surface-raised); color: var(--text-dim); }
 
 .smell-card__detail {
@@ -111,7 +111,7 @@
 }
 .smell-card__location {
   font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px;
-  color: #60a5fa; margin-bottom: 5px;
+  color: var(--info); margin-bottom: 5px;
 }
 .smell-card__file { }
 .smell-card__line { color: var(--text-faint); }
@@ -150,8 +150,8 @@
   display: flex; flex-direction: column; gap: 2px;
   font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px;
 }
-.diff-del { color: #f87171; }
-.diff-add { color: #34d399; }
+.diff-del { color: var(--danger); }
+.diff-add { color: var(--success); }
 
 /* Action buttons */
 .smell-card__actions {
@@ -161,9 +161,9 @@
   padding: 3px 9px; border-radius: 4px; font-size: 11px; border: 1px solid; cursor: pointer;
   transition: background 0.12s, color 0.12s;
 }
-.smell-action-btn--patch   { background: #05271820; border-color: #059669; color: #34d399; }
-.smell-action-btn--patch:hover { background: #052e16; }
-.smell-action-btn--mission { background: #1e3a5f20; border-color: #1d4ed8; color: #60a5fa; }
+.smell-action-btn--patch   { background: #05271820; border-color: #059669; color: var(--success); }
+.smell-action-btn--patch:hover { background: var(--success-muted); }
+.smell-action-btn--mission { background: #1e3a5f20; border-color: #1d4ed8; color: var(--info); }
 .smell-action-btn--mission:hover { background: #1e3a5f50; }
 .smell-action-btn--dismiss { background: transparent; border-color: #1f2937; color: var(--text-faint); }
 .smell-action-btn--dismiss:hover { color: var(--text-dim); border-color: #374151; }

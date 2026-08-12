@@ -82,7 +82,7 @@
   white-space: nowrap;
 }
 .bc-chip--pass { background: rgba(34,197,94,0.15); color: #4ade80; }
-.bc-chip--fail { background: rgba(239,68,68,0.15);  color: #f87171; }
+.bc-chip--fail { background: rgba(239,68,68,0.15);  color: var(--danger); }
 .bc-chip--dim  { background: rgba(255,255,255,0.06); color: var(--text-faint); }
 .bc-chip--sm   { font-size: 11px; padding: 1px 6px; }
 
@@ -92,7 +92,7 @@
   background: rgba(59,130,246,0.15);
   border: 1px solid rgba(59,130,246,0.3);
   border-radius: 6px;
-  color: #60a5fa;
+  color: var(--info);
   font-size: 12px;
   cursor: pointer;
   transition: background 0.15s;
@@ -196,9 +196,9 @@
 /* status coloring */
 .bc-pass .bc-item-icon { color: #4ade80; }
 .bc-pass .bc-item-text { color: #d4d4d8; }
-.bc-fail .bc-item-icon { color: #f87171; }
+.bc-fail .bc-item-icon { color: var(--danger); }
 .bc-fail .bc-item-text { color: #d4d4d8; }
-.bc-running .bc-item-icon { color: #60a5fa; animation: bc-spin 1s linear infinite; }
+.bc-running .bc-item-icon { color: var(--info); animation: bc-spin 1s linear infinite; }
 .bc-pending .bc-item-icon { color: var(--text-faint); }
 
 @keyframes bc-spin {
@@ -222,7 +222,7 @@
   border-radius: 4px;
   border: 1px solid rgba(239,68,68,0.3);
   background: rgba(239,68,68,0.1);
-  color: #f87171;
+  color: var(--danger);
   cursor: pointer;
   font-family: inherit;
   flex-shrink: 0;

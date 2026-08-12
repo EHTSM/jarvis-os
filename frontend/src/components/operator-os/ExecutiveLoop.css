@@ -5,7 +5,7 @@
   height: 100%;
   min-height: 0;
   background: #0a0c10;
-  color: #e2e8f0;
+  color: var(--text);
   font-family: 'JetBrains Mono', 'Fira Mono', monospace;
   font-size: 12px;
   overflow: hidden;
@@ -40,7 +40,7 @@
 .el-sys-status--halt   { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.25); color: var(--danger); }
 .el-sys-status--warn   { background: rgba(234,179,8,0.1);  border-color: rgba(234,179,8,0.2);  color: #eab308; }
 .el-sys-status--unknown,
-.el-sys-status--degraded { background: rgba(100,116,139,0.1); border-color: rgba(100,116,139,0.2); color: #94a3b8; }
+.el-sys-status--degraded { background: rgba(100,116,139,0.1); border-color: rgba(100,116,139,0.2); color: var(--text-dim); }
 .el-autonomy { font-size: 11px; color: var(--text-dim); }
 
 .el-header-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
@@ -56,12 +56,12 @@
   letter-spacing: 0.02em;
 }
 .el-btn:hover { transform: translateY(-1px); }
-.el-btn--trigger { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: #60a5fa; }
+.el-btn--trigger { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: var(--info); }
 .el-btn--heal    { background: rgba(234,179,8,0.1);   border-color: rgba(234,179,8,0.25);   color: #eab308; }
 .el-btn--resume  { background: rgba(34,197,94,0.12);  border-color: rgba(34,197,94,0.3);    color: var(--success); }
 .el-btn--stop    { background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.25);   color: var(--danger); }
 .el-btn--ghost   { background: transparent; border-color: rgba(255,255,255,0.07); color: var(--text-dim); }
-.el-btn--ghost:hover { color: #e2e8f0; }
+.el-btn--ghost:hover { color: var(--text); }
 
 /* ── Banner ── */
 .el-banner {
@@ -69,7 +69,7 @@
   font-size: 11px; flex-shrink: 0;
 }
 .el-banner--ok  { background: rgba(34,197,94,0.08); color: var(--success); border-bottom: 1px solid rgba(34,197,94,0.15); }
-.el-banner--err { background: rgba(239,68,68,0.08); color: #f87171; border-bottom: 1px solid rgba(239,68,68,0.15); }
+.el-banner--err { background: rgba(239,68,68,0.08); color: var(--danger); border-bottom: 1px solid rgba(239,68,68,0.15); }
 .el-banner-close { background: none; border: none; cursor: pointer; color: inherit; opacity: 0.6; margin-left: auto; }
 
 /* ── Phase cycle ── */
@@ -113,14 +113,14 @@
 .el-phase-dot--err .el-phase-icon { color: var(--danger); }
 
 /* Phase colors */
-.el-phase-dot--blue   .el-phase-icon { color: #60a5fa; }
-.el-phase-dot--purple .el-phase-icon { color: #a78bfa; }
+.el-phase-dot--blue   .el-phase-icon { color: var(--info); }
+.el-phase-dot--purple .el-phase-icon { color: var(--accent); }
 .el-phase-dot--yellow .el-phase-icon { color: #eab308; }
 .el-phase-dot--green  .el-phase-icon { color: var(--success); }
 .el-phase-dot--teal   .el-phase-icon { color: #2dd4bf; }
 .el-phase-dot--orange .el-phase-icon { color: #fb923c; }
 .el-phase-dot--pink   .el-phase-icon { color: #f472b6; }
-.el-phase-dot--gray   .el-phase-icon { color: #94a3b8; }
+.el-phase-dot--gray   .el-phase-icon { color: var(--text-dim); }
 
 @keyframes el-glow {
   from { box-shadow: 0 0 6px rgba(34,197,94,0.1); }
@@ -153,7 +153,7 @@
 }
 .el-metric:last-child { border-right: none; }
 .el-metric-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); }
-.el-metric-val   { font-size: 16px; font-weight: 700; color: #e2e8f0; line-height: 1; }
+.el-metric-val   { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1; }
 .el-metric-sub   { font-size: 10px; color: var(--text-faint); font-weight: 400; }
 .el-metric-val--warn { color: #eab308; }
 .el-metric-val--err  { color: var(--danger); }
@@ -211,7 +211,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .el-event--ok   { color: #86efac; }
-.el-event--err  { color: #f87171; background: rgba(239,68,68,0.03); }
+.el-event--err  { color: var(--danger); background: rgba(239,68,68,0.03); }
 .el-event--dim  { color: var(--text-dim); }
 .el-event-phase { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; color: var(--text-dim); white-space: nowrap; }
 .el-event-text  { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -220,8 +220,8 @@
 
 /* ── Audit ── */
 .el-audit { background: #0f1117; border: 1px solid rgba(255,255,255,0.07); border-radius: 5px; padding: 8px 10px; }
-.el-audit-row   { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; padding: 2px 0; }
-.el-audit-val   { font-weight: 600; color: #e2e8f0; }
+.el-audit-row   { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); padding: 2px 0; }
+.el-audit-val   { font-weight: 600; color: var(--text); }
 .el-audit-issue { font-size: 10px; color: #eab308; padding: 2px 0; }
 
 /* ── Recs ── */
@@ -236,7 +236,7 @@
 .el-rec--crit { border-left: 3px solid var(--danger); }
 .el-rec--high { border-left: 3px solid #eab308; }
 .el-rec--med  { border-left: 3px solid #3b82f6; }
-.el-rec-title  { font-size: 11px; font-weight: 600; color: #e2e8f0; }
+.el-rec-title  { font-size: 11px; font-weight: 600; color: var(--text); }
 .el-rec-reason { font-size: 10px; color: var(--text-dim); line-height: 1.4; }
 .el-rec-foot   { display: flex; align-items: center; gap: 6px; }
 .el-rec-pri    { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
@@ -261,7 +261,7 @@
   font-size: 10px;
 }
 .el-incident-code   { font-weight: 700; color: var(--danger); white-space: nowrap; }
-.el-incident-detail { color: #94a3b8; }
+.el-incident-detail { color: var(--text-dim); }
 
 /* ── Approvals ── */
 .el-approval {
@@ -274,7 +274,7 @@
   border-radius: 4px;
   font-size: 10px;
 }
-.el-approval-text { flex: 1; color: #e2e8f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.el-approval-text { flex: 1; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .el-approval-time { color: var(--text-dim); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* ── Summary ── */
@@ -296,7 +296,7 @@
   gap: 8px;
 }
 .el-summary-row > span:first-child { color: var(--text-dim); white-space: nowrap; }
-.el-summary-row > span:last-child  { color: #e2e8f0; text-align: right; }
+.el-summary-row > span:last-child  { color: var(--text); text-align: right; }
 .el-summary-autonomy { color: var(--success); font-weight: 600; }
 
 /* ── Empty ── */

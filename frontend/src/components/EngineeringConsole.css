@@ -90,8 +90,8 @@
 .ec-btn:hover { background: var(--surface-hover); color: #e5e7eb; }
 .ec-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .ec-btn--sm { padding: 2px 8px; font-size: 12px; }
-.ec-btn--red { border-color: #7f1d1d40; color: #f87171; }
-.ec-btn--red:hover { background: #450a0a; color: #fca5a5; }
+.ec-btn--red { border-color: #7f1d1d40; color: var(--danger); }
+.ec-btn--red:hover { background: var(--danger-muted); color: #fca5a5; }
 
 /* Filter + toolbar */
 .ec-filter-input {
@@ -128,7 +128,7 @@
 
 .ec-error {
   padding: 12px;
-  color: #f87171;
+  color: var(--danger);
   font-size: 12px;
   background: #450a0a20;
   border-left: 3px solid var(--danger);
@@ -173,9 +173,9 @@
   word-break: break-all;
   line-height: 1.5;
 }
-.log-line--error { color: #f87171; background: #450a0a10; }
+.log-line--error { color: var(--danger); background: #450a0a10; }
 .log-line--warn  { color: #fbbf24; }
-.log-line--info  { color: #60a5fa; }
+.log-line--info  { color: var(--info); }
 
 /* Table */
 .ec-table-wrap {
@@ -218,7 +218,7 @@
 .ec-table__time { font-size: 11px; color: var(--text-faint); }
 .ec-table__actions { display: flex; gap: 4px; }
 
-.ec-cell--warn { color: #f87171; font-weight: 600; }
+.ec-cell--warn { color: var(--danger); font-weight: 600; }
 
 /* Badges */
 .ec-badge {
@@ -230,8 +230,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.ec-badge--green { background: #05271840; color: #34d399; border: 1px solid #059669; }
-.ec-badge--red   { background: #450a0a40; color: #f87171; border: 1px solid #7f1d1d; }
+.ec-badge--green { background: #05271840; color: var(--success); border: 1px solid #059669; }
+.ec-badge--red   { background: #450a0a40; color: var(--danger); border: 1px solid #7f1d1d; }
 .ec-badge--gray  { background: #1f293740; color: var(--text-dim); border: 1px solid #374151; }
 
 /* Agent monitor — virtualized rows */
@@ -404,8 +404,8 @@
   gap: 6px;
   margin-bottom: 3px;
 }
-.ec-collab-msg__from { font-size: 11px; font-weight: 700; color: #60a5fa; }
-.ec-collab-msg__to   { font-size: 11px; font-weight: 700; color: #34d399; }
+.ec-collab-msg__from { font-size: 11px; font-weight: 700; color: var(--info); }
+.ec-collab-msg__to   { font-size: 11px; font-weight: 700; color: var(--success); }
 .ec-collab-msg__arrow { font-size: 11px; color: var(--text-faint); }
 .ec-collab-msg__type { font-size: 10px; color: var(--text-dim); margin-left: 4px; }
 .ec-collab-msg__ts   { font-size: 10px; color: var(--text-faint); margin-left: auto; }
@@ -496,8 +496,8 @@
   color: var(--text-dim);
   margin-bottom: 2px;
 }
-.ec-collab-event__from { color: #60a5fa; font-weight: 600; }
-.ec-collab-event__to   { color: #34d399; font-weight: 600; }
+.ec-collab-event__from { color: var(--info); font-weight: 600; }
+.ec-collab-event__to   { color: var(--success); font-weight: 600; }
 .ec-collab-event__task { color: var(--text-faint); font-family: monospace; font-size: 10px; }
 .ec-collab-event__reason {
   font-size: 11px;
@@ -516,7 +516,7 @@
 }
 .ec-collab-event__status--completed { background: #14532d; color: #6ee7b7; }
 .ec-collab-event__status--failed    { background: #7f1d1d; color: #fca5a5; }
-.ec-collab-event__status--pending   { background: #1e3a5f; color: #93c5fd; }
+.ec-collab-event__status--pending   { background: var(--info-muted); color: #93c5fd; }
 
 /* ── Lifecycle Event Stream (J3) ─────────────────────────────────── */
 .ec-collab-lc {
@@ -554,7 +554,7 @@
   background: rgba(255,255,255,0.05);
   color: var(--text-dim);
 }
-.ec-collab-lc__conf { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.ec-collab-lc__conf { background: rgba(167,139,250,0.15); color: var(--accent); }
 
 .ec-collab-lc__total {
   font-size: 11px;
@@ -583,4 +583,4 @@
 .ec-collab-lc__evt-ts   { font-size: 10px; color: var(--text-faint); flex-shrink: 0; font-variant-numeric: tabular-nums; min-width: 60px; }
 .ec-collab-lc__evt-type { font-size: 11px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ec-collab-lc__evt-stage { font-size: 10px; color: #fbbf24; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
-.ec-collab-lc__evt-conf  { font-size: 10px; color: #a78bfa; background: rgba(167,139,250,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+.ec-collab-lc__evt-conf  { font-size: 10px; color: var(--accent); background: rgba(167,139,250,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }

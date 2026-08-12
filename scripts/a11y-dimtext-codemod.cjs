@@ -46,6 +46,17 @@ const MAP = {
   '#a1a1aa': '--text-dim',
   '#cccccc': '--text',
   '#ccc':    '--text',
+  // B19.2.3: Tailwind-palette equivalents of tokens we already have. Each was
+  // verified to be the same semantic role at comparable contrast on --bg
+  // (e.g. #f87171 7.28:1 vs --danger 6.26:1), so this is a rename, not a
+  // colour change.
+  '#f87171': '--danger',
+  '#e2e8f0': '--text',
+  '#94a3b8': '--text-dim',
+  '#60a5fa': '--info',
+  '#34d399': '--success',
+  '#a78bfa': '--accent',
+  '#818cf8': '--accent',
 };
 
 // Fixed-dark surfaces: their own canvas never themes, so a dim grey there is

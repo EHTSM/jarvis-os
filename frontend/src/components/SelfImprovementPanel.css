@@ -32,11 +32,11 @@
     margin-bottom: 10px;
 }
 
-.sip-header-icon { color: #60a5fa; font-size: 16px; }
+.sip-header-icon { color: var(--info); font-size: 16px; }
 
 .sip-badge-pending {
     background: #a78bfa22;
-    color: #a78bfa;
+    color: var(--accent);
     border: 1px solid #a78bfa44;
     border-radius: 10px;
     padding: 1px 8px;
@@ -66,7 +66,7 @@
 .sip-hdr-tab:hover { color: var(--text); }
 
 .sip-hdr-tab--active {
-    color: #60a5fa;
+    color: var(--info);
     border-bottom-color: #60a5fa;
 }
 
@@ -255,7 +255,7 @@
 .sip-cand-dot   { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .sip-cand-title { flex: 1; color: var(--text); }
 .sip-cand-conf  { font-weight: 600; font-size: 11px; min-width: 32px; }
-.sip-auto-tag   { background: #1d4ed820; color: #60a5fa; border: 1px solid #1d4ed840; border-radius: 4px; padding: 1px 6px; font-size: 10px; }
+.sip-auto-tag   { background: #1d4ed820; color: var(--info); border: 1px solid #1d4ed840; border-radius: 4px; padding: 1px 6px; font-size: 10px; }
 
 .sip-pattern-list { display: flex; flex-direction: column; gap: 10px; }
 
@@ -388,7 +388,7 @@
 .sip-arch-roi      { font-size: 10px; color: #059669; }
 .sip-arch-title    { font-size: 13px; font-weight: 600; color: #f1f5f9; margin-bottom: 6px; }
 .sip-arch-rationale { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
-.sip-arch-action   { font-size: 10px; color: #60a5fa; font-family: monospace; }
+.sip-arch-action   { font-size: 10px; color: var(--info); font-family: monospace; }
 
 /* ── Confidence view ────────────────────────────────────────────────────────── */
 
@@ -445,7 +445,7 @@
 .sip-conf-src       { color: var(--text); font-weight: 600; font-size: 12px; }
 .sip-conf-rate      { color: var(--text-dim); font-size: 11px; }
 .sip-conf-action    { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
-.sip-conf-suggested { color: #60a5fa; font-size: 11px; margin-left: auto; }
+.sip-conf-suggested { color: var(--info); font-size: 11px; margin-left: auto; }
 .sip-conf-rec       { font-size: 11px; color: var(--text-dim); font-style: italic; }
 
 /* ── Benchmark view ─────────────────────────────────────────────────────────── */

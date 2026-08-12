@@ -32,7 +32,7 @@
     margin-bottom: 10px;
 }
 
-.app-header-icon { color: #60a5fa; font-size: 15px; }
+.app-header-icon { color: var(--info); font-size: 15px; }
 
 .app-header-tabs { display: flex; gap: 2px; }
 
@@ -48,7 +48,7 @@
     transition: color 0.15s, border-color 0.15s;
 }
 .app-hdr-tab:hover { color: var(--text); }
-.app-hdr-tab--active { color: #60a5fa; border-bottom-color: #60a5fa; }
+.app-hdr-tab--active { color: var(--info); border-bottom-color: #60a5fa; }
 
 /* ── Content ────────────────────────────────────────────────────────────────── */
 
@@ -83,7 +83,7 @@
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    color: #60a5fa;
+    color: var(--info);
     margin-bottom: 10px;
 }
 
@@ -337,7 +337,7 @@
     border-bottom: 1px solid #1f2937;
     font-size: 11px;
 }
-.app-rec-src  { color: #60a5fa; min-width: 130px; flex-shrink: 0; }
+.app-rec-src  { color: var(--info); min-width: 130px; flex-shrink: 0; }
 .app-rec-text { color: var(--text-dim); }
 
 /* ── Run history ────────────────────────────────────────────────────────────── */

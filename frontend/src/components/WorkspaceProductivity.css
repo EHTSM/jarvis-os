@@ -38,11 +38,11 @@
 .wp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .wp-btn--primary { background: var(--success); border-color: #059669; color: var(--on-success); }
 .wp-btn--primary:hover { background: var(--success); }
-.wp-btn--green   { background: #05271820; border-color: #059669; color: #34d399; }
-.wp-btn--green:hover { background: #052e16; }
+.wp-btn--green   { background: #05271820; border-color: #059669; color: var(--success); }
+.wp-btn--green:hover { background: var(--success-muted); }
 .wp-btn--sm { padding: 2px 8px; font-size: 11px; }
-.wp-btn--red { border-color: #7f1d1d40; color: #f87171; }
-.wp-btn--red:hover { background: #450a0a; }
+.wp-btn--red { border-color: #7f1d1d40; color: var(--danger); }
+.wp-btn--red:hover { background: var(--danger-muted); }
 
 /* Save row */
 .wp-save-row { display: flex; gap: 6px; }
@@ -86,5 +86,5 @@
 .wp-index-status__label { font-size: 10px; color: var(--text-faint); }
 .wp-index-status__count { font-size: 10px; color: var(--text-faint); }
 .wp-badge { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; }
-.wp-badge--green { background: #05271820; color: #34d399; border: 1px solid #059669; }
-.wp-badge--blue  { background: #1e3a5f20; color: #60a5fa; border: 1px solid #1d4ed8; }
+.wp-badge--green { background: #05271820; color: var(--success); border: 1px solid #059669; }
+.wp-badge--blue  { background: #1e3a5f20; color: var(--info); border: 1px solid #1d4ed8; }
