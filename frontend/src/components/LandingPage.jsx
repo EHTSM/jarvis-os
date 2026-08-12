@@ -147,7 +147,9 @@ function Nav({ onAccess, onPricing, onLogin }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
-      <OoplixWordmark size={26} />
+      {/* The landing nav is a fixed dark surface in both themes
+          (rgba(3,5,10,.82)), so the wordmark opts into light-on-dark. */}
+      <OoplixWordmark size={26} dark />
 
       <ul className="lp-nav-links" role="list">
         {NAV_LINKS.map((l) => (
@@ -636,7 +638,10 @@ function CTASection({ onAccess }) {
 function Footer({ onLegal }) {
   return (
     <footer className="lp-footer">
-      <OoplixWordmark size={22} style={{ opacity: 0.52 }} />
+      {/* The footer is a hard #03050a in both themes → light-on-dark.
+          B19.2.2: opacity was 0.52, which composited the wordmark to ~2.3:1.
+          Raised to 0.78 (≥4.5:1) — still visibly recessed, now legible. */}
+      <OoplixWordmark size={22} dark style={{ opacity: 0.78 }} />
 
       <nav className="lp-footer-nav" aria-label="Footer navigation">
         <button className="lp-footer-link" onClick={() => onLegal?.("privacy")}>Privacy</button>

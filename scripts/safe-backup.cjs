@@ -72,6 +72,38 @@ async function runBackup() {
         console.log("[+] vault-index.json: OK");
     }
 
+    // 2d. Core business stores — Phase B.5 DR validation.
+    // These were absent from every jarvis_full_* archive, so the nightly
+    // automated backup (cron 03:00 / PM2 02:00, both invoking THIS script)
+    // captured no CRM, no organizations, no missions, no memory and no
+    // secret vault. DISASTER_RECOVERY.md line 22 explicitly promises "CRM
+    // leads, task history, learning/memory data" are recoverable, and
+    // deploy/rollback.sh restores from the newest jarvis_* archive — which
+    // is always one of these — so a real restore silently dropped the
+    // entire customer dataset. Verified by reading data/: this content lives
+    // ONLY in these JSON files (jarvis.db holds just the `tasks` table), so
+    // nothing here is redundant with the SQLite snapshot below.
+    // vault.json holds AES-256-GCM ciphertext (key = SHA-256(JWT_SECRET),
+    // which lives in .env and is deliberately NOT backed up), so including
+    // it stores no usable plaintext secret.
+    const CORE_BUSINESS_FILES = [
+        "leads.json",             // CRM — customer records
+        "organizations.json",     // orgs, memberships, RBAC roles
+        "missions.json",          // mission store / task history
+        "memory-store.json",      // learning + memory data
+        "product-plans.json",     // Product OS
+        "vault.json",             // encrypted connector credentials
+        "fdios-state.json",       // declared critical in rc1-manifest.json
+        "org-context.json",       // active org/workspace resolution
+    ];
+    for (const f of CORE_BUSINESS_FILES) {
+        const fPath = path.join(DATA_DIR, f);
+        if (fs.existsSync(fPath)) {
+            fs.copyFileSync(fPath, path.join(SNAP_DIR, f));
+            console.log(`[+] ${f}: OK`);
+        }
+    }
+
     // 3. Safe SQLite Backup (Using VACUUM INTO)
     const dbPath = path.join(DATA_DIR, 'jarvis.db');
     if (fs.existsSync(dbPath)) {

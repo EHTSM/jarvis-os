@@ -92,26 +92,33 @@
   color: var(--accent2);
 }
 
+/* B19.2.2: the tints were pinned to the DARK-mode semantic literals, so in
+   light mode the backdrop no longer tracked the (darkened) foreground token.
+   The `-muted`/`-border` tokens are already theme-aware — use them. */
 .sc-trial-bar--warn {
-  background: rgba(240,180,41,0.09);
-  border: 1px solid rgba(240,180,41,0.24);
+  background: var(--warning-muted);
+  border: 1px solid var(--warning-border);
   color: var(--warning);
 }
 
 .sc-trial-bar--critical {
-  background: rgba(245,91,91,0.10);
-  border: 1px solid rgba(245,91,91,0.28);
+  background: var(--danger-muted);
+  border: 1px solid var(--danger-border);
   color: var(--danger);
 }
 
 .sc-trial-bar-text { flex: 1; font-weight: 500; line-height: 1.4; }
 
+/* B19.2.2: was `color:#fff` on a 10% white fill — legible only over a dark
+   canvas. The trial bar's own background is a pale semantic tint, so in light
+   mode this rendered white-on-near-white (1.19:1). Inheriting `currentColor`
+   from the bar variant keeps the critical/warn semantics and themes correctly. */
 .sc-trial-bar-cta {
   padding: 6px 14px;
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.16);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: inherit;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -119,7 +126,7 @@
   white-space: nowrap;
   transition: background var(--dur-fast) var(--ease-out);
 }
-.sc-trial-bar-cta:hover { background: rgba(255,255,255,0.18); }
+.sc-trial-bar-cta:hover { background: color-mix(in srgb, currentColor 20%, transparent); }
 
 /* ── Milestone list ─────────────────────────────────────────────────── */
 .sc-milestones {
@@ -219,7 +226,7 @@
 .sc-milestone--done .sc-ms-title {
   color: var(--text-dim);
   text-decoration: line-through;
-  text-decoration-color: rgba(255,255,255,0.18);
+  text-decoration-color: var(--text-faint);
 }
 
 .sc-ms-reward {

@@ -6,11 +6,18 @@ import { OoplixMark } from './OoplixMark';
  * Use in nav headers, auth screens, and brand moments.
  *
  * Usage:
- *   <OoplixWordmark size={28} />
- *   <OoplixWordmark size={20} dark={false} />
+ *   <OoplixWordmark size={28} />            // follows the active theme
+ *   <OoplixWordmark size={20} dark={false} />  // force dark-on-light
+ *   <OoplixWordmark size={20} dark />          // force light-on-dark
+ *
+ * B19.2.2: `dark` used to default to `true`, painting rgba(255,255,255,0.96)
+ * even in light mode — 1.09:1 against the light canvas. It now defaults to
+ * `undefined`, meaning "follow the theme" via --text, and only pins a literal
+ * when a caller explicitly opts in (e.g. over a fixed dark brand panel).
  */
-export function OoplixWordmark({ size = 28, className, style, dark = true }) {
-  const textColor = dark ? 'rgba(255,255,255,0.96)' : '#03050a';
+export function OoplixWordmark({ size = 28, className, style, dark }) {
+  const textColor =
+    dark === undefined ? 'var(--text)' : dark ? 'rgba(255,255,255,0.96)' : '#03050a';
   return (
     <span
       className={className}

@@ -27,8 +27,11 @@
   justify-content: space-between;
   height: var(--health-bar-height, 40px);
   padding: 0 var(--health-bar-pad-x, 20px);
-  background: var(--health-bar-bg, rgba(13,17,23,0.92));
-  border-bottom: 1px solid var(--health-bar-border, rgba(255,255,255,0.07));
+  /* B19.2.2: the fallback was a near-black literal, so in light mode the bar
+     painted dark while --text-dim/--text-faint resolved to their LIGHT values
+     — 2.27:1 and 2.86:1. Both sides must come from the same theme. */
+  background: var(--health-bar-bg, var(--surface-base));
+  border-bottom: 1px solid var(--health-bar-border, var(--border));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   flex-shrink: 0;
@@ -42,7 +45,7 @@
 
 /* Emergency banner — pulsing red border */
 .cmd-pulse--emergency {
-  background: rgba(28, 4, 4, 0.96);
+  background: var(--surface-base);
   border-bottom: 1px solid var(--danger, #f55b5b);
   animation: pulse-emergency-border 1.4s ease-in-out infinite;
 }
@@ -72,7 +75,7 @@
   transition: border-color 0.18s ease;
 }
 .cmd-pulse-item:hover {
-  border-color: rgba(255,255,255,0.14);
+  border-color: var(--text-faint);
   background: rgba(255,255,255,0.06);
 }
 
@@ -91,13 +94,13 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.60);
+  color: var(--text-dim);
 }
 
 .cmd-pulse-value {
   font-family: var(--font-mono, "JetBrains Mono", monospace);
   font-size: 11px;
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
 }
 
 .cmd-pulse-emerg {
@@ -136,7 +139,7 @@
   border-radius: var(--radius-xs, 5px);
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.10);
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -144,7 +147,7 @@
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.cmd-pulse-refresh:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.75); }
+.cmd-pulse-refresh:hover { background: rgba(255,255,255,0.09); color: var(--text-dim); }
 
 .cmd-pulse-stop {
   width: 26px;
@@ -166,7 +169,7 @@
 .cmd-stop-confirm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: var(--surface-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,12 +196,12 @@
 .cmd-stop-confirm-title {
   font-size: 16px;
   font-weight: 600;
-  color: rgba(255,255,255,0.90);
+  color: var(--text);
   text-align: center;
 }
 .cmd-stop-confirm-body {
   font-size: 13px;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-dim);
   text-align: center;
   line-height: 1.5;
 }
@@ -220,9 +223,9 @@
 .cmd-stop-confirm-btn--cancel {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.62);
+  color: var(--text-dim);
 }
-.cmd-stop-confirm-btn--cancel:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+.cmd-stop-confirm-btn--cancel:hover { background: rgba(255,255,255,0.12); color: var(--text); }
 .cmd-stop-confirm-btn--stop {
   background: rgba(245,91,91,0.15);
   border: 1px solid rgba(245,91,91,0.30);
@@ -251,12 +254,12 @@
   font-size: var(--type-heading, 18px);
   font-weight: 700;
   letter-spacing: var(--tracking-tight, -0.02em);
-  color: rgba(255,255,255,0.88);
+  color: var(--text);
   line-height: 1;
 }
 
 .cmd-date {
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
   font-size: 12px;
 }
 
@@ -286,7 +289,7 @@
   border-radius: 99px;
   border: 1px solid rgba(255,255,255,0.10);
   background: transparent;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-dim);
   font-size: 12px;
   font-weight: 500;
   font-family: inherit;
@@ -295,8 +298,8 @@
 }
 .cmd-header-btn:hover {
   background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.18);
-  color: rgba(255,255,255,0.88);
+  border-color: var(--text-faint);
+  color: var(--text);
 }
 
 /* ── Quick Actions strip ──────────────────────────────────────────────────── */
@@ -337,9 +340,9 @@
 .cmd-qa-label {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.6);
+  color: var(--text-dim);
 }
-.cmd-qa-btn:hover .cmd-qa-label { color: rgba(255,255,255,0.85); }
+.cmd-qa-btn:hover .cmd-qa-label { color: var(--text); }
 
 /* ── 3-column cockpit layout ────────────────────────────────────────────────
    Row 1: feed (35%) | agents (30%) | side-col (35%)
@@ -370,7 +373,7 @@
 
 /* ── Panel base ─────────────────────────────────────────────────────────────── */
 .cmd-panel {
-  background: #0d1117;
+  background: var(--surface-base);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 14px;
   overflow: hidden;
@@ -399,7 +402,7 @@
   border-radius: 5px;
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
   font-size: 11px;
   font-family: inherit;
   cursor: pointer;
@@ -415,7 +418,7 @@
   flex: 1;
   padding: 4px 0;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
+  scrollbar-color: var(--text-faint) transparent;
 }
 
 .cmd-feed-row {
@@ -449,7 +452,7 @@
   flex-shrink: 0;
   width: 28px;
   text-align: right;
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
   font-size: 11px;
 }
 
@@ -465,13 +468,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 11px;
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
 }
 
 .cmd-feed-label {
   flex: 1;
   font-size: 13px;
-  color: rgba(255,255,255,0.80);
+  color: var(--text);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -491,17 +494,17 @@
 }
 .cmd-feed-empty-icon {
   font-size: 28px;
-  color: rgba(255,255,255,0.20);
+  color: var(--text-faint);
   margin-bottom: 6px;
 }
 .cmd-feed-empty-title {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
 }
 .cmd-feed-empty-sub {
   font-size: 12px;
-  color: rgba(255,255,255,0.22);
+  color: var(--text-faint);
   max-width: 260px;
   line-height: 1.5;
 }
@@ -586,19 +589,19 @@
 .cmd-agent-name {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255,255,255,0.88);
+  color: var(--text);
   flex: 1;
 }
 
 .cmd-agent-elapsed {
   flex-shrink: 0;
   font-size: 11px;
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
 }
 
 .cmd-agent-id {
   font-size: 11px;
-  color: rgba(255,255,255,0.28);
+  color: var(--text-faint);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -606,7 +609,7 @@
 
 .cmd-agent-task {
   font-size: 12px;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-dim);
   line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -624,13 +627,13 @@
   gap: 10px;
   flex: 1;
   padding: 32px 16px;
-  color: rgba(255,255,255,0.28);
+  color: var(--text-faint);
   font-size: 13px;
 }
 
 /* ── Approval Panel ─────────────────────────────────────────────────────────── */
 .cmd-approval-panel {
-  background: #0d1117;
+  background: var(--surface-base);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 14px;
   overflow: hidden;
@@ -646,7 +649,7 @@
   max-height: 440px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.07) transparent;
+  scrollbar-color: var(--text-faint) transparent;
 }
 
 .cmd-approval-card {
@@ -676,7 +679,7 @@
 }
 
 .approval-card--normal {
-  border-color: rgba(255,255,255,0.08);
+  border-color: var(--text-faint);
 }
 
 .cmd-approval-header {
@@ -688,25 +691,25 @@
 
 .cmd-approval-risk {
   font-size: 11px;
-  color: rgba(255,255,255,0.45);
+  color: var(--text-faint);
   margin-left: auto;
 }
 
 .cmd-approval-ts {
   flex-shrink: 0;
   font-size: 11px;
-  color: rgba(255,255,255,0.28);
+  color: var(--text-faint);
 }
 
 .cmd-approval-desc {
   font-size: 13px;
-  color: rgba(255,255,255,0.80);
+  color: var(--text);
   line-height: 1.45;
 }
 
 .cmd-approval-impact {
   font-size: 11px;
-  color: rgba(255,255,255,0.38);
+  color: var(--text-faint);
   line-height: 1.4;
 }
 
@@ -737,7 +740,7 @@
   justify-content: center;
   gap: 10px;
   padding: 28px 16px;
-  color: rgba(255,255,255,0.30);
+  color: var(--text-faint);
   font-size: 13px;
 }
 .cmd-approval-empty-icon {
@@ -789,18 +792,18 @@
 }
 
 /* State colours for timeline dots */
-.cmd-timeline-dot.exec-state--running  { background: #7c6fff; border-color: rgba(124,111,255,0.4); box-shadow: 0 0 6px rgba(124,111,255,0.5); }
+.cmd-timeline-dot.exec-state--running  { background: var(--accent); border-color: rgba(124,111,255,0.4); box-shadow: 0 0 6px rgba(124,111,255,0.5); }
 .cmd-timeline-dot.exec-state--thinking { background: #4ecdc4; border-color: rgba(78,205,196,0.4); }
-.cmd-timeline-dot.exec-state--done     { background: #52d68a; border-color: rgba(82,214,138,0.3); }
-.cmd-timeline-dot.exec-state--error    { background: #f55b5b; border-color: rgba(245,91,91,0.4); }
-.cmd-timeline-dot.exec-state--queued   { background: #7c6fff; opacity: 0.5; }
+.cmd-timeline-dot.exec-state--done     { background: var(--success); border-color: rgba(82,214,138,0.3); }
+.cmd-timeline-dot.exec-state--error    { background: var(--danger); border-color: rgba(245,91,91,0.4); }
+.cmd-timeline-dot.exec-state--queued   { background: var(--accent); opacity: 0.5; }
 .cmd-timeline-dot.exec-state--paused   { background: #f0b429; border-color: rgba(240,180,41,0.35); }
 .cmd-timeline-dot.exec-state--idle     { background: rgba(255,255,255,0.20); }
 
 /* Placeholder dots when no data */
 .cmd-timeline-dot--empty {
   background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.05);
+  border-color: var(--text-faint);
   animation: pulse-dot 2.6s ease-in-out infinite;
 }
 @keyframes pulse-dot {
@@ -816,7 +819,7 @@
   max-width: 260px;
   padding: 8px 11px;
   border-radius: 8px;
-  background: #161b22;
+  background: var(--surface-raised);
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   display: flex;
@@ -830,11 +833,11 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
 }
 .cmd-timeline-tooltip-label {
   font-size: 12px;
-  color: rgba(255,255,255,0.80);
+  color: var(--text);
   line-height: 1.4;
   word-break: break-word;
 }
@@ -884,13 +887,13 @@
   height: 42px;
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.88);
+  color: var(--text);
   font-family: var(--font-mono, "JetBrains Mono", monospace);
   font-size: 13px;
   outline: none;
 }
 .cmd-dispatch-input::placeholder {
-  color: rgba(255,255,255,0.28);
+  color: var(--text-faint);
   font-family: inherit;
 }
 .cmd-dispatch-input:disabled { opacity: 0.45; }
@@ -900,9 +903,9 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.064);
   border: none;
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
   font-size: 10px;
   display: flex;
   align-items: center;
@@ -910,7 +913,7 @@
   cursor: pointer;
   transition: background 0.12s ease, color 0.12s ease;
 }
-.cmd-dispatch-clear:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.80); }
+.cmd-dispatch-clear:hover { background: rgba(255, 255, 255, 0.064); color: var(--text); }
 
 .cmd-dispatch-run {
   flex-shrink: 0;
@@ -931,7 +934,7 @@
   border-radius: 99px;
   border: 1px solid rgba(255,255,255,0.09);
   background: transparent;
-  color: rgba(255,255,255,0.40);
+  color: var(--text-faint);
   font-size: 11px;
   font-family: inherit;
   cursor: pointer;
@@ -941,8 +944,8 @@
 }
 .cmd-chip:hover {
   background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.16);
-  color: rgba(255,255,255,0.75);
+  border-color: var(--text-faint);
+  color: var(--text-dim);
 }
 .cmd-chip:disabled { opacity: 0.35; cursor: not-allowed; }
 
@@ -969,7 +972,7 @@
 .cmd-dispatch-result-text {
   flex: 1;
   font-size: 13px;
-  color: rgba(255,255,255,0.80);
+  color: var(--text);
   line-height: 1.45;
   word-break: break-word;
 }
@@ -980,7 +983,7 @@
   border-radius: 50%;
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.25);
+  color: var(--text-faint);
   font-size: 9px;
   display: flex;
   align-items: center;
@@ -989,7 +992,7 @@
   margin-top: 1px;
   transition: background 0.12s ease, color 0.12s ease;
 }
-.cmd-dispatch-result-dismiss:hover { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.65); }
+.cmd-dispatch-result-dismiss:hover { background: rgba(255,255,255,0.10); color: var(--text-dim); }
 
 /* Spinner */
 .cmd-spinner {
@@ -1035,14 +1038,14 @@
 
 .cmd-health-label {
   font-size: 13px;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-dim);
   flex: 1;
 }
 
 .cmd-health-val {
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255,255,255,0.80);
+  color: var(--text);
   text-align: right;
 }
 

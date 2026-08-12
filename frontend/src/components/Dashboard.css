@@ -117,13 +117,15 @@
   border-radius: 999px;
   letter-spacing: 0.04em;
 }
+/* B19.2.2: were the dark-mode literals #52d68a / #ff6b6b on their own tints —
+   1.70:1 and 2.41:1 in light mode. The semantic tokens theme correctly. */
 .dv2-trend--up {
-  background: rgba(82,214,138,0.12);
-  color: #52d68a;
+  background: var(--success-muted);
+  color: var(--success);
 }
 .dv2-trend--down {
-  background: rgba(255,89,89,0.12);
-  color: #ff6b6b;
+  background: var(--danger-muted);
+  color: var(--danger);
 }
 
 .dv2-spark {

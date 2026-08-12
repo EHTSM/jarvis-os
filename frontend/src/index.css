@@ -49,7 +49,12 @@
   /* ── Typography ── */
   --text:          #dde2ec;
   --text-dim:      #8994b0;
-  --text-faint:    #4a5470;
+  /* B19.2: was #4a5470 — measured 2.40:1 on --surface-hover, below AA 1.4.3
+     even for large text. --text-faint carries real content (743 text usages:
+     counts, meta labels, placeholders), so it must clear 4.5:1. Hue and
+     saturation preserved; lightness raised until AA clears on the darkest
+     surface. Now 4.63:1. */
+  --text-faint:    #7481a3;
   /* Mono stack — used in Command Center execution feed, status codes */
   --font-mono:     'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code',
                    'Consolas', monospace;
@@ -129,6 +134,52 @@
   --type-body:    0.875rem;
   --type-caption: 0.75rem;
   --type-micro:   0.6875rem;
+
+  /* ── B19.2: compatibility aliases ────────────────────────────────────────
+     276 `var(--x, <literal>)` references across the codebase named tokens
+     that were never defined. Each silently fell back to its hardcoded
+     literal, so those rules could not respond to the theme at all — e.g.
+     `var(--bg3, #1e1e21)` painted a dark panel in light mode.
+
+     Rather than rewrite 276 call sites (and risk changing intent), the
+     missing names are defined here as aliases onto the real tokens they
+     were standing in for. Because they are declared in :root and the light
+     theme overrides their targets, every one of those call sites becomes
+     theme-aware without touching the components. No new design language —
+     these are renames of tokens that already exist. */
+  --fg:             var(--text);
+  --fg-muted:       var(--text-dim);
+  --text-muted:     var(--text-dim);
+  --op-text1:       var(--text);
+  --surface-high:   var(--surface-base);
+  --surface-overlay: var(--surface-float);
+  --surface-alt:    var(--surface2);
+  --card-bg:        var(--surface-base);
+  --bg2:            var(--surface);
+  --bg3:            var(--surface-raised);
+  --op-bg2:         var(--surface);
+  --os-void:        var(--bg);
+  --os-raised:      var(--surface-raised);
+  --error:          var(--danger);
+  --accent2-rgb:    78, 205, 196;
+
+  /* ── B19.2: text colour for use ON a filled brand/semantic surface ───────
+     Every brand fill is light enough that white text fails AA on it
+     (measured: accent 3.77:1, danger 3.22:1, success 1.85:1, warning 1.86:1,
+     accent2 1.93:1, info 1.90:1) while near-black clears it comfortably
+     (5.57:1 – 11.34:1). Parts of the codebase already used a dark on-fill
+     colour (#06080e); these tokens make that the documented default.
+     These flip with the theme, because the FILLS flip too: dark-mode fills are
+     bright (near-black text wins, 5.57–11.34:1), light-mode fills are the
+     darkened variants below (white text wins, 5.04–5.11:1). */
+  --on-accent:      #0a0c14;   /* 5.57:1 on dark --accent  */
+  --on-danger:      #0a0c14;   /* 6.53:1 on dark --danger  */
+  --on-success:     #06100a;   /* 11.34:1 on dark --success */
+  --on-warning:     #120d02;   /* 11.27:1 on dark --warning */
+  --on-accent2:     #05100f;   /* 10.85:1 on dark --accent2 */
+  --on-info:        #04121a;   /* 11.05:1 on dark --info    */
+  --font-sans:      -apple-system, 'SF Pro Text', 'Segoe UI Variable', 'Segoe UI',
+                    system-ui, sans-serif;
 }
 
 /* ── Light theme ──────────────────────────────────────────────────────────
@@ -156,6 +207,34 @@
   --accent-glow:   rgba(124, 111, 255, 0.10);
   --accent2-glow:  rgba(78, 205, 196, 0.08);
 
+  /* ── B19.2: semantic palette for a light backdrop ──────────────────────
+     The muted/border variants were already re-tuned for light mode, but the
+     base semantic colours were not — they kept their dark-mode values, which
+     are calibrated against a near-black canvas. Measured on white they were
+     1.70–1.93:1, far below AA 1.4.3, across 606 text usages in 73 files.
+     Hue and saturation are preserved (same brand colours); only lightness is
+     lowered until each clears 4.5:1 against BOTH #ffffff and --bg (#f4f5f8).
+     Worst measured ratio after this change: 4.62:1. */
+  /* Matches the darkened --accent2 below; used only for ≤0.30 alpha tints. */
+  --accent2-rgb:   35, 122, 116;
+  /* ── B19.2.2: recalibrated against TINTED backdrops, not just white ─────
+     B19.2 tuned these against #ffffff/--bg only, landing at 5.04–5.08:1 —
+     barely over AA. But semantic text is routinely painted on its own
+     `-muted` tint (chips, pills, trend badges, active filters), which is
+     ~4–8% darker than white. Measured live, that pushed 24 elements to
+     3.93–4.49:1. Each value below is the smallest lightness reduction that
+     clears 4.5:1 against white, --bg, AND the tint families it renders on.
+     Hue and saturation are unchanged — same brand colours. */
+  --success:       #1c7643;   /* was #1e7e47 → 4.23:1 on its own tint */
+  --warning:       #8c650a;   /* was #90680a → 4.32:1 on its own tint */
+  --danger:        #d20c0c;   /* was #dd0d0d → 4.19:1 on its own tint */
+  --info:          #0a75a1;   /* was #0a76a3 → tint margin */
+  --accent:        #594beb;   /* was #6152ff → 3.94:1 on its own tint */
+  --accent2:       #227671;   /* was #237a74 → tint margin */
+  --accent-hover:  #5142f0;
+  --accent-active: #4436d6;
+  --accent2-hover: #1c665f;
+
   --success-muted: rgba(30, 148, 90, 0.10);
   --warning-muted: rgba(180, 128, 6, 0.10);
   --danger-muted:  rgba(214, 58, 58, 0.10);
@@ -165,9 +244,21 @@
   --danger-border:  rgba(214, 58, 58, 0.24);
   --info-border:    rgba(30, 130, 180, 0.24);
 
+  /* B19.2: light-mode fills are the darkened variants above, so WHITE is the
+     accessible on-fill colour here (5.04–5.11:1). */
+  --on-accent:     #ffffff;
+  --on-danger:     #ffffff;
+  --on-success:    #ffffff;
+  --on-warning:    #ffffff;
+  --on-accent2:    #ffffff;
+  --on-info:       #ffffff;
+
   --text:          #1a1f2e;
   --text-dim:      #565f78;
-  --text-faint:    #8990a8;
+  /* B19.2: was #8990a8 — 3.17:1 on white, below AA.
+     B19.2.2: #666e8a measured 4.31:1 on the tinted panels it renders on
+     (breadcrumbs, legal tree, pulse rows). Now ≥4.50:1 on all of them. */
+  --text-faint:    #636b86;
 
   --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
   --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
@@ -202,6 +293,18 @@
     --border-strong: rgba(20, 24, 38, 0.16);
     --accent-glow:   rgba(124, 111, 255, 0.10);
     --accent2-glow:  rgba(78, 205, 196, 0.08);
+    /* B19.2: must stay identical to the :root[data-theme="light"] block above.
+       Regression test `light-mode token parity` asserts the two agree. */
+    --accent2-rgb:   35, 122, 116;
+    --success:       #1c7643;
+    --warning:       #8c650a;
+    --danger:        #d20c0c;
+    --info:          #0a75a1;
+    --accent:        #594beb;
+    --accent2:       #227671;
+    --accent-hover:  #5142f0;
+    --accent-active: #4436d6;
+    --accent2-hover: #1c665f;
     --success-muted: rgba(30, 148, 90, 0.10);
     --warning-muted: rgba(180, 128, 6, 0.10);
     --danger-muted:  rgba(214, 58, 58, 0.10);
@@ -210,9 +313,17 @@
     --warning-border: rgba(180, 128, 6, 0.24);
     --danger-border:  rgba(214, 58, 58, 0.24);
     --info-border:    rgba(30, 130, 180, 0.24);
+    /* B19.2: light-mode fills are the darkened variants above, so WHITE is the
+     accessible on-fill colour here (5.04–5.11:1). */
+    --on-accent:     #ffffff;
+    --on-danger:     #ffffff;
+    --on-success:    #ffffff;
+    --on-warning:    #ffffff;
+    --on-accent2:    #ffffff;
+    --on-info:       #ffffff;
     --text:          #1a1f2e;
     --text-dim:      #565f78;
-    --text-faint:    #8990a8;
+    --text-faint:    #636b86;
     --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
     --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
     --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);
@@ -279,7 +390,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── Scrollbars ───────────────────────────────────────────────────────── */
-* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.09) transparent; }
+* { scrollbar-width: thin; scrollbar-color: var(--text-faint) transparent; }
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 999px; }
@@ -469,6 +580,55 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Truncate utility ─────────────────────────────────────────────────── */
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Base button component ─────────────────────────────────────────────────
+   B19.2.2: `.btn`, `.btn--primary/success/danger/sm` were applied in JSX
+   (App.jsx, CommandCenter.jsx) but NEVER defined in any stylesheet, so these
+   buttons rendered with user-agent defaults. The live scan caught the symptom
+   — the disabled "Run ↵" painted UA grey rgba(16,16,16,.3) at 1.39:1 (dark)
+   and 1.99:1 (light) — but the cause was a missing component, not a colour.
+   Defined here on tokens so both themes and every state are accessible.
+   Every other button family in the app is namespaced (pv2-, dv2-, …); this
+   covers only the unprefixed convention. ─────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-base);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast, .14s) var(--ease-out, ease),
+              opacity var(--dur-fast, .14s) var(--ease-out, ease);
+}
+.btn:hover:not(:disabled) { background: var(--surface-hover); }
+.btn:active:not(:disabled) { transform: scale(0.97); }
+
+/* Disabled must stay ≥4.5:1: dim the SURFACE, never the text colour. */
+.btn:disabled {
+  background: var(--surface2);
+  color: var(--text-dim);
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+
+.btn--primary { background: var(--accent);  color: var(--on-accent);  border-color: transparent; }
+.btn--success { background: var(--success); color: var(--on-success); border-color: transparent; }
+.btn--danger  { background: var(--danger);  color: var(--on-danger);  border-color: transparent; }
+.btn--primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn--success:hover:not(:disabled),
+.btn--danger:hover:not(:disabled)  { opacity: .88; }
+
+.btn--sm { padding: 5px 11px; font-size: 12px; border-radius: 7px; }
+.btn--xs { padding: 3px 8px;  font-size: 11px; border-radius: 6px; }
 
 /* ── Visually hidden (accessible) ────────────────────────────────────── */
 .sr-only {
@@ -688,4 +848,121 @@ html {
   }
   /* Consistent tap highlight color */
   * { -webkit-tap-highlight-color: rgba(78, 205, 196, 0.12); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   B19.2 — Visual accessibility modes
+   Three user preferences the design system did not previously answer:
+   Windows High Contrast / forced-colors, prefers-contrast: more, and
+   prefers-reduced-transparency. Each maps existing tokens onto the mode's
+   requirements — no new components, no layout changes.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Forced colors (Windows High Contrast) ────────────────────────────────
+   The OS replaces author colours with a user-chosen palette. Our glass
+   surfaces, low-alpha borders and glows either vanish or block that palette,
+   so here we step out of the way and let the system colours through. */
+@media (forced-colors: active) {
+  :root, :root:not([data-theme]), :root[data-theme] {
+    --bg:             Canvas;
+    --surface:        Canvas;
+    --surface2:       Canvas;
+    --surface-base:   Canvas;
+    --surface-raised: Canvas;
+    --surface-float:  Canvas;
+    --surface-hover:  Canvas;
+    --text:           CanvasText;
+    --text-dim:       CanvasText;
+    --text-faint:     CanvasText;
+    --border:         CanvasText;
+    --border-strong:  CanvasText;
+    --border-subtle:  CanvasText;
+    --accent:         LinkText;
+    --accent2:        LinkText;
+    --danger:         CanvasText;
+    --success:        CanvasText;
+    --warning:        CanvasText;
+    --info:           CanvasText;
+    --on-accent:      Canvas;
+    --on-accent2:     Canvas;
+    --on-danger:      Canvas;
+    --on-success:     Canvas;
+    --on-warning:     Canvas;
+    --on-info:        Canvas;
+  }
+  /* Decorative depth must not paint over the forced palette. */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  /* Keep focus visible — forced-colors ignores custom outline colours, so
+     ask for the system highlight explicitly. */
+  :focus-visible {
+    outline: 3px solid Highlight !important;
+    outline-offset: 2px !important;
+  }
+  /* Borders drawn with alpha disappear entirely; force them opaque. */
+  button, input, select, textarea, [role="button"], [role="tab"] {
+    border: 1px solid ButtonBorder;
+    forced-color-adjust: none;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+  /* Status colour alone must not be the only signal (1.4.1). */
+  .status-indicator, [class*="badge"], [class*="chip"] { border: 1px solid CanvasText; }
+}
+
+/* ── prefers-contrast: more ───────────────────────────────────────────────
+   Push text to the extremes of the ramp and make hairlines legible. */
+@media (prefers-contrast: more) {
+  :root, :root:not([data-theme]), :root[data-theme="dark"] {
+    --text:          #ffffff;
+    --text-dim:      #d6dcea;
+    --text-faint:    #b4bdd2;
+    --border:        rgba(255, 255, 255, 0.34);
+    --border-strong: rgba(255, 255, 255, 0.52);
+    --border-subtle: rgba(255, 255, 255, 0.24);
+  }
+  :root[data-theme="light"] {
+    --text:          #000000;
+    --text-dim:      #23293a;
+    --text-faint:    #333a4d;
+    --border:        rgba(20, 24, 38, 0.42);
+    --border-strong: rgba(20, 24, 38, 0.60);
+    --border-subtle: rgba(20, 24, 38, 0.30);
+  }
+  :focus-visible { outline-width: 3px !important; }
+}
+
+/* ── prefers-reduced-transparency ─────────────────────────────────────────
+   Glass surfaces rely on translucency + blur for separation. When the user
+   asks for less transparency, make every surface opaque and lean on borders
+   instead, so panels stay distinguishable. */
+@media (prefers-reduced-transparency: reduce) {
+  :root, :root:not([data-theme]), :root[data-theme="dark"] {
+    --surface:        #0b0f1b;
+    --surface2:       #080c16;
+    --surface-base:   #0a0e18;
+    --surface-raised: #0e1320;
+    --surface-float:  #080c14;
+    --surface-hover:  #101626;
+    --surface-glass:       transparent;
+    --surface-glass-hover: transparent;
+    --border:         rgba(255, 255, 255, 0.22);
+    --border-strong:  rgba(255, 255, 255, 0.34);
+  }
+  :root[data-theme="light"] {
+    --surface:        #ffffff;
+    --surface2:       #f7f8fb;
+    --surface-base:   #ffffff;
+    --surface-raised: #ffffff;
+    --surface-float:  #ffffff;
+    --surface-hover:  #ffffff;
+    --surface-glass:       transparent;
+    --surface-glass-hover: transparent;
+    --border:         rgba(20, 24, 38, 0.26);
+    --border-strong:  rgba(20, 24, 38, 0.40);
+  }
+  * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 }
