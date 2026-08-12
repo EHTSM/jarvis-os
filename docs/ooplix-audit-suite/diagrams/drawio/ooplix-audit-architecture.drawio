@@ -1,0 +1,211 @@
+<mxfile host="app.diagrams.net" modified="2026-08-09T00:00:00.000Z" agent="Ooplix Audit Suite" version="24.0.0" type="device">
+  <diagram id="arch-coverage" name="Architecture &amp; Audit Coverage">
+    <mxGraphModel dx="1422" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="OOPLIX V1 — Platform Architecture with Audit Coverage Overlay" style="text;html=1;fontSize=22;fontStyle=1;fontFamily=Georgia;fontColor=#0B1F33;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Green = certified · Orange = certified with limitations · Red = residual critical gap or not certified · Grey dashed = planned" style="text;html=1;fontSize=12;fontColor=#4A5C6D;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="1000" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- CLIENT TIER -->
+        <mxCell id="clTier" value="CLIENT TIER" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#1F4E79;fontStyle=1;fontColor=#1F4E79;" vertex="1" parent="1">
+          <mxGeometry x="60" y="100" width="560" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="web" value="Web App (React)&#10;B.19 · WCAG 2.2 AA NOT CERTIFIED" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="clTier">
+          <mxGeometry x="20" y="45" width="180" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="desk" value="Desktop (Electron)" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="clTier">
+          <mxGeometry x="215" y="45" width="150" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="mob" value="Mobile (Capacitor)" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="clTier">
+          <mxGeometry x="380" y="45" width="150" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- EDGE TIER -->
+        <mxCell id="edgeTier" value="EDGE TIER" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#2E75B6;fontStyle=1;fontColor=#2E75B6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="100" width="380" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ngx" value="nginx · TLS 1.3 · HTTP/2&#10;B.4 CERTIFIED" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="edgeTier">
+          <mxGeometry x="20" y="45" width="160" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="pm2" value="PM2 · fork · instances:1&#10;B.8 · heap 1024MB / ceil 1536" style="rounded=1;html=1;fillColor=#FDF0E6;strokeColor=#C55A11;strokeWidth=2;fontSize=11;" vertex="1" parent="edgeTier">
+          <mxGeometry x="195" y="45" width="165" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- API TIER -->
+        <mxCell id="apiTier" value="API TIER — B.7 Certification · 7.6 / 10" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#C55A11;fontStyle=1;fontColor=#C55A11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="250" width="980" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="router" value="Express Router&#10;299 / 300 routes protected" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="apiTier">
+          <mxGeometry x="30" y="45" width="190" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="JWT Auth · production mode&#10;dev bypass fails closed" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="apiTier">
+          <mxGeometry x="250" y="45" width="200" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="attachorg" value="attachOrg middleware&#10;B.7 F1 — X-Org-Id confused deputy FIXED" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="apiTier">
+          <mxGeometry x="480" y="45" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="envelope" value="Response envelope 5.0 / 10&#10;5 variants · no pagination metadata" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;dashed=1;" vertex="1" parent="apiTier">
+          <mxGeometry x="750" y="45" width="205" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- BUSINESS SERVICES -->
+        <mxCell id="bizTier" value="BUSINESS SERVICES — Layer 4" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#C55A11;fontStyle=1;fontColor=#C55A11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="400" width="620" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="crm" value="CRM — org-scoped&#10;B.16 CERTIFIED" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="25" y="45" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fin" value="Finance — B.14&#10;orgId attribution restored" style="rounded=1;html=1;fillColor=#FDF0E6;strokeColor=#C55A11;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="215" y="45" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="autosvc" value="Automation — B.13 · 8.7&#10;dryRun honoured" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="415" y="45" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sup" value="Support Engines&#10;G1-B15 CRITICAL — 190 tickets unowned" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="25" y="115" width="185" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="cust" value="Customer Engines (x5)&#10;G1-B16 CRITICAL — zero orgId" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="230" y="115" width="185" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="wf" value="Workforce — B.17&#10;G1 CRITICAL — no owner transfer" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="bizTier">
+          <mxGeometry x="435" y="115" width="160" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gapnote" value="These three share ONE root cause: storage models built before multi-tenancy, with no ownership dimension." style="text;html=1;fontSize=10;fontColor=#B00020;fontStyle=2" vertex="1" parent="bizTier">
+          <mxGeometry x="25" y="180" width="570" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- INTELLIGENCE -->
+        <mxCell id="intTier" value="INTELLIGENCE TIER — Layer 3 · mean 8.67 / 10" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#7030A0;fontStyle=1;fontColor=#7030A0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="400" width="320" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="ai" value="AI Service · 14 providers&#10;B.9 · 8.6 · honest failover" style="rounded=1;html=1;fillColor=#F3EAFA;strokeColor=#7030A0;strokeWidth=2;fontSize=11;" vertex="1" parent="intTier">
+          <mxGeometry x="25" y="45" width="270" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="mem" value="Memory Layer · B.10 · 8.7&#10;2000-node store · eviction fixed" style="rounded=1;html=1;fillColor=#F3EAFA;strokeColor=#7030A0;strokeWidth=2;fontSize=11;" vertex="1" parent="intTier">
+          <mxGeometry x="25" y="100" width="270" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="agents" value="Agent Runtime · 210 agents · B.11 · 8.7&#10;admission gate 68.6% → 0%" style="rounded=1;html=1;fillColor=#F3EAFA;strokeColor=#7030A0;strokeWidth=2;fontSize=11;" vertex="1" parent="intTier">
+          <mxGeometry x="25" y="155" width="270" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- PERSISTENCE -->
+        <mxCell id="dataTier" value="PERSISTENCE — B.6 Certification" style="swimlane;html=1;startSize=28;fillColor=#F5F8FA;strokeColor=#C55A11;fontStyle=1;fontColor=#C55A11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="660" width="980" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="json" value="JSON Stores — authoritative&#10;3438 files · 677 MB · 0 corrupted" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="dataTier">
+          <mxGeometry x="30" y="45" width="215" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sqlite" value="SQLite — passive mirror&#10;1 table · never read back" style="rounded=1;html=1;fillColor=#FDF0E6;strokeColor=#C55A11;strokeWidth=2;fontSize=11;" vertex="1" parent="dataTier">
+          <mxGeometry x="270" y="45" width="200" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dlq" value="Dead-Letter Queue · 1000 cap&#10;B.18 · agentId restored 980/980" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontSize=11;" vertex="1" parent="dataTier">
+          <mxGeometry x="495" y="45" width="215" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="backup" value="Backups — local disk only&#10;B.5 fixed · G13-B18 no offsite" style="rounded=1;html=1;fillColor=#FDF0E6;strokeColor=#C55A11;strokeWidth=2;fontSize=11;" vertex="1" parent="dataTier">
+          <mxGeometry x="735" y="45" width="215" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- EDGES -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#4A5C6D;endArrow=block;" edge="1" parent="1" source="clTier" target="ngx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#4A5C6D;endArrow=block;" edge="1" parent="1" source="edgeTier" target="apiTier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="org-scoped" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0F9D58;endArrow=block;fontSize=10;" edge="1" parent="1" source="attachorg" target="crm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="scoping DISCARDED at engine boundary" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#B00020;endArrow=block;dashed=1;fontSize=10;fontColor=#B00020;" edge="1" parent="1" source="attachorg" target="cust">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7030A0;endArrow=block;" edge="1" parent="1" source="bizTier" target="intTier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#4A5C6D;endArrow=block;" edge="1" parent="1" source="bizTier" target="dataTier">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="failed work" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#C55A11;endArrow=block;fontSize=10;" edge="1" parent="1" source="agents" target="dlq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="mirrors" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#8A96A3;endArrow=block;dashed=1;fontSize=10;" edge="1" parent="1" source="json" target="sqlite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="gap-remediation" name="Residual Gap Remediation">
+    <mxGraphModel dx="1422" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="g0" />
+        <mxCell id="g1" parent="g0" />
+
+        <mxCell id="gt" value="Residual Critical Gap Remediation — one root cause, three symptoms" style="text;html=1;fontSize=20;fontStyle=1;fontFamily=Georgia;fontColor=#0B1F33;" vertex="1" parent="g1">
+          <mxGeometry x="40" y="20" width="900" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="root" value="ROOT CAUSE&#10;Three storage models were built before multi-tenancy existed.&#10;None carries an ownership dimension." style="rounded=1;html=1;fillColor=#B00020;strokeColor=#7A0016;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="g1">
+          <mxGeometry x="440" y="80" width="440" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ga" value="G1-B15 · CRITICAL&#10;customerSupportEngine.cjs&#10;zero orgId · 190 tickets exposed" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="160" y="210" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gb" value="G1-B16 · CRITICAL&#10;5 customer engines&#10;0 of 123 records owned" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="540" y="210" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gc" value="G1-B17 · CRITICAL&#10;no ownership transfer&#10;both guards already demand it" style="rounded=1;html=1;fillColor=#FBE9EC;strokeColor=#B00020;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="920" y="210" width="240" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="w1" value="R1.1 — Define the ownership contract once&#10;orgId + accountId sourced from membership-verified req.org, never the raw header" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="440" y="340" width="440" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="w2" value="R1.2 — Backfill ownership into 3 stores&#10;190 tickets · 123 customer records · membership rows&#10;Reversible migration with dry-run mode" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="180" y="450" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="w3" value="R1.3 — Thread orgId through 5 customer engines + 2 support services&#10;Filter at the ENGINE boundary, not only the route" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="520" y="450" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="w4" value="R1.4 — Build transferOwnership()&#10;The single operation both existing guards demand but was never written" style="rounded=1;html=1;fillColor=#EAF1F8;strokeColor=#1F4E79;strokeWidth=2;fontSize=11;" vertex="1" parent="g1">
+          <mxGeometry x="860" y="450" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ver" value="VERIFICATION GATE&#10;Two real orgs + unique leak markers · every probe 403 with 0 rows leaked&#10;Negative-tested: the test MUST fail against un-fixed code" style="rounded=1;html=1;fillColor=#E8F3EC;strokeColor=#0F9D58;strokeWidth=2;fontStyle=1;fontSize=12;" vertex="1" parent="g1">
+          <mxGeometry x="440" y="580" width="440" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="b21" value="B.21 Compliance&#10;PLANNED" style="rounded=1;html=1;fillColor=#F2F4F6;strokeColor=#8A96A3;strokeWidth=2;dashed=1;fontSize=11;fontColor=#4A5C6D;" vertex="1" parent="g1">
+          <mxGeometry x="360" y="710" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b23" value="B.23 Data Governance&#10;PLANNED" style="rounded=1;html=1;fillColor=#F2F4F6;strokeColor=#8A96A3;strokeWidth=2;dashed=1;fontSize=11;fontColor=#4A5C6D;" vertex="1" parent="g1">
+          <mxGeometry x="570" y="710" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b25" value="B.25 Readiness Gate&#10;PLANNED" style="rounded=1;html=1;fillColor=#F2F4F6;strokeColor=#8A96A3;strokeWidth=2;dashed=1;fontSize=11;fontColor=#4A5C6D;" vertex="1" parent="g1">
+          <mxGeometry x="780" y="710" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ge1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#B00020;endArrow=block;" edge="1" parent="g1" source="root" target="ga"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#B00020;endArrow=block;" edge="1" parent="g1" source="root" target="gb"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#B00020;endArrow=block;" edge="1" parent="g1" source="root" target="gc"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="ga" target="w1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge5" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="gb" target="w1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="gc" target="w1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="w1" target="w2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="w1" target="w3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#1F4E79;endArrow=block;" edge="1" parent="g1" source="w1" target="w4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge10" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0F9D58;endArrow=block;" edge="1" parent="g1" source="w3" target="ver"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge11" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0F9D58;endArrow=block;" edge="1" parent="g1" source="w4" target="ver"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge12" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#8A96A3;endArrow=block;dashed=1;" edge="1" parent="g1" source="ver" target="b21"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge13" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#8A96A3;endArrow=block;dashed=1;" edge="1" parent="g1" source="ver" target="b23"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="ge14" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#8A96A3;endArrow=block;dashed=1;" edge="1" parent="g1" source="ver" target="b25"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

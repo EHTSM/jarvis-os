@@ -1,0 +1,71 @@
+%% OOPLIX V1 — Recovery Roadmap
+%% Remediation sequence for the 3 residual CRITICAL gaps and the NOT CERTIFIED audit.
+%% All three critical gaps share one root cause: storage models built without an ownership dimension.
+flowchart TD
+    classDef root    fill:#B00020,stroke:#7A0016,stroke-width:2px,color:#FFFFFF,font-weight:bold
+    classDef gap     fill:#FBE9EC,stroke:#B00020,stroke-width:2px,color:#0B1F33
+    classDef work    fill:#EAF1F8,stroke:#1F4E79,stroke-width:2px,color:#0B1F33
+    classDef verify  fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef planned fill:#F2F4F6,stroke:#8A96A3,stroke-width:2px,stroke-dasharray:5 4,color:#4A5C6D
+
+    ROOT["`**ROOT CAUSE**
+    Three storage models were built
+    before multi-tenancy existed.
+    None carries an ownership dimension.`"]:::root
+
+    GA["G1-B15 · CRITICAL<br/>customerSupportEngine.cjs<br/>zero orgId · 190 tickets exposed"]:::gap
+    GB["G1-B16 · CRITICAL<br/>5 customer engines<br/>zero orgId · 0 of 123 records owned"]:::gap
+    GC["G1-B17 · CRITICAL<br/>no ownership transfer<br/>both guards demand it"]:::gap
+
+    ROOT --> GA & GB & GC
+
+    W1["`**R1.1** Define the ownership contract once
+    orgId + accountId, sourced from
+    membership-verified req.org — never the raw header`"]:::work
+    W2["`**R1.2** Backfill ownership into 3 stores
+    190 tickets · 123 customer records · membership rows
+    Reversible migration with a dry-run mode`"]:::work
+    W3["`**R1.3** Thread orgId through 5 customer engines
+    + 2 support services. Filter at the engine
+    boundary, not only at the route.`"]:::work
+    W4["`**R1.4** Build transferOwnership()
+    The single operation both existing guards
+    already demand but was never written`"]:::work
+
+    GA --> W1
+    GB --> W1
+    GC --> W1
+    W1 --> W2 --> W3
+    W1 --> W4
+
+    V1["`**VERIFY** Two real orgs + unique leak markers
+    Every probe returns 403 with 0 rows leaked
+    Negative-tested: must fail against un-fixed code`"]:::verify
+    W3 --> V1
+    W4 --> V1
+
+    A1["`**R2** Accessibility AA remediation
+    330 hardcoded white rules · 360 placeholder-only
+    inputs · 179 unnamed · 25 of 73 contrast failures`"]:::work
+    A2["`**VERIFY** Re-measure rendered DOM
+    2 schemes x 5 viewports + WebKit/Gecko
+    + screen-reader runtime pass`"]:::verify
+    A1 --> A2
+
+    P1["`**R3** API envelope unification
+    5 variants to 1 · pagination metadata
+    token auth for non-browser clients`"]:::work
+    P2["`**VERIFY** Re-score B.7 dimensions
+    envelope 5.0 and SDK 5.5 are the two
+    lowest scores in the entire portfolio`"]:::verify
+    P1 --> P2
+
+    B21["B.21 Compliance & Audit Trail"]:::planned
+    B23["B.23 Data Governance"]:::planned
+    B25["B.25 Readiness Gate"]:::planned
+    B22["B.22 Integrations"]:::planned
+
+    V1 --> B21 & B23
+    A2 --> B25
+    P2 --> B22
+    B21 & B23 & B22 --> B25

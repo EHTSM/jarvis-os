@@ -1,0 +1,51 @@
+%% OOPLIX V1 — Audit Maturity Model
+%% Six levels. Current position per layer is stated, not aspirational.
+%% L5 and L6 sit at Level 1 because their audits have not run — a position, not a deficiency.
+flowchart TD
+    classDef l1 fill:#F2F4F6,stroke:#8A96A3,stroke-width:2px,color:#4A5C6D
+    classDef l2 fill:#EAF1F8,stroke:#2E75B6,stroke-width:2px,color:#0B1F33
+    classDef l3 fill:#E4EEF7,stroke:#1F4E79,stroke-width:2px,color:#0B1F33
+    classDef l4 fill:#FDF0E6,stroke:#C55A11,stroke-width:2px,color:#0B1F33
+    classDef l5 fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef l6 fill:#FFF8E6,stroke:#BF9000,stroke-width:2px,color:#0B1F33
+    classDef here fill:#1F4E79,stroke:#0B1F33,color:#FFFFFF,font-weight:bold
+
+    M1["`**Level 1 · AD HOC**
+    Behaviour unverified.
+    Failures discovered by users.`"]:::l1
+    M2["`**Level 2 · REPRODUCED**
+    Defects reproducible on demand
+    with a written procedure.`"]:::l2
+    M3["`**Level 3 · MEASURED**
+    Behaviour quantified against live data,
+    not inferred from source.`"]:::l3
+    M4["`**Level 4 · RECOVERED**
+    Defects fixed, regression-tested,
+    and negative-tested.`"]:::l4
+    M5["`**Level 5 · CERTIFIED**
+    Independently scored with named
+    residual gaps and reproductions.`"]:::l5
+    M6["`**Level 6 · SELF-PROVING**
+    Continuous automated re-certification.
+    Drift detected without human initiation.`"]:::l6
+
+    M1 --> M2 --> M3 --> M4 --> M5 --> M6
+
+    P1["L1 Foundation<br/>Level 4"]:::here
+    P2["L2 Engineering<br/>Level 4"]:::here
+    P3["L3 Intelligence<br/>Level 5"]:::here
+    P4["L4 Operations<br/>Level 5"]:::here
+    P5["L5 Vision<br/>Level 1 — not audited"]:::l1
+    P6["L6 Perfection<br/>Level 1 — not audited"]:::l1
+
+    M4 -.->|current| P1
+    M4 -.->|current| P2
+    M5 -.->|current| P3
+    M5 -.->|current| P4
+    M1 -.->|current| P5
+    M1 -.->|current| P6
+
+    T["`**TARGET STATE**
+    All layers at Level 5.
+    Certification layer at Level 6.`"]:::l6
+    P1 & P2 & P3 & P4 & P5 & P6 -.-> T

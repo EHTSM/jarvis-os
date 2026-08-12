@@ -1,0 +1,62 @@
+%% OOPLIX V1 — Certification Roadmap
+%% The path from current position to GA certification.
+%% Every gate below B.25 is PLANNED and carries no evidence.
+flowchart LR
+    classDef achieved fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef partial  fill:#FDF0E6,stroke:#C55A11,stroke-width:2px,color:#0B1F33
+    classDef blocked  fill:#FBE9EC,stroke:#B00020,stroke-width:2px,color:#0B1F33
+    classDef planned  fill:#F2F4F6,stroke:#8A96A3,stroke-width:2px,stroke-dasharray:5 4,color:#4A5C6D
+    classDef gate     fill:#BF9000,stroke:#8A6A00,color:#FFFFFF,font-weight:bold
+
+    G0["`**GATE 0 — ACHIEVED**
+    Runtime Integrity`"]:::gate
+    G0A["144/144 regression"]:::achieved
+    G0B["0 corrupted / 3438 stores"]:::achieved
+    G0C["210/210 agents live"]:::achieved
+    G0D["SIGKILL recovery ~11-12s"]:::achieved
+
+    G1["`**GATE 1 — ACHIEVED**
+    Boundary Security`"]:::gate
+    G1A["299/300 routes protected"]:::achieved
+    G1B["X-Org-Id leak closed"]:::achieved
+    G1C["Dev bypass fails closed"]:::achieved
+    G1D["Cross-org probes 403"]:::achieved
+
+    G2["`**GATE 2 — PARTIAL**
+    Tenant Ownership`"]:::gate
+    G2A["CRM org-scoped"]:::achieved
+    G2B["G1-B15 tickets unowned"]:::blocked
+    G2C["G1-B16 engines unscoped"]:::blocked
+    G2D["G1-B17 no owner transfer"]:::blocked
+
+    G3["`**GATE 3 — PARTIAL**
+    Enterprise Readiness`"]:::gate
+    G3A["AI honesty 9.5/10"]:::achieved
+    G3B["Response envelope 5.0/10"]:::partial
+    G3C["SDK readiness 5.5/10"]:::partial
+    G3D["WCAG 2.2 AA not met"]:::blocked
+
+    G4["`**GATE 4 — PLANNED**
+    Compliance & Scale`"]:::gate
+    G4A["B.20 Scalability"]:::planned
+    G4B["B.21 Audit trail"]:::planned
+    G4C["B.22 Integrations"]:::planned
+    G4D["B.23 Data governance"]:::planned
+
+    G5["`**GATE 5 — PLANNED**
+    Capacity & Commitment`"]:::gate
+    G5A["B.24 Capacity model"]:::planned
+    G5B["Published RTO/RPO"]:::planned
+    G5C["B.25 Readiness gate"]:::planned
+
+    GA["`**PHASE C**
+    GA CERTIFICATION`"]:::planned
+
+    G0 --> G0A & G0B & G0C & G0D
+    G1 --> G1A & G1B & G1C & G1D
+    G2 --> G2A & G2B & G2C & G2D
+    G3 --> G3A & G3B & G3C & G3D
+    G4 --> G4A & G4B & G4C & G4D
+    G5 --> G5A & G5B & G5C
+
+    G0 ==> G1 ==> G2 ==> G3 ==> G4 ==> G5 ==> GA

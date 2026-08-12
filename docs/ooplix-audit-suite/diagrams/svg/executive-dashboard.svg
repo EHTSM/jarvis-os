@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-label="Ooplix V1 executive audit dashboard. 27 audits executed, 7 planned. 88 findings recovered including 17 critical. 3 residual critical gaps remain, all sharing one root cause. Mean score 8.40 of 10 across 6 formally scored audits. Regression baseline 144 of 144.">
+  <title>Ooplix V1 — Executive Audit Dashboard</title>
+
+  <text x="28" y="40" font-family="Georgia, serif" font-size="24" font-weight="600" fill="currentColor">27 audits executed, 88 findings recovered, 3 critical gaps left open on purpose</text>
+  <text x="28" y="64" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" opacity="0.65">Ooplix v1.0.0-rc1 · branch security/reality-completion · record date 2026-08-09 · all figures measured, none projected</text>
+  <line x1="28" y1="80" x2="972" y2="80" stroke="currentColor" stroke-opacity="0.2"/>
+
+  <!-- KPI ROW -->
+  <g transform="translate(28,100)">
+    <rect x="0" y="0" width="178" height="92" rx="8" fill="currentColor" fill-opacity="0.04" stroke="currentColor" stroke-opacity="0.18"/>
+    <text x="16" y="26" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">AUDITS EXECUTED</text>
+    <text x="16" y="62" font-family="system-ui, sans-serif" font-size="34" font-weight="700" fill="#1F4E79">27</text>
+    <text x="78" y="62" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" opacity="0.6">of 34 rows</text>
+    <text x="16" y="80" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.55">7 planned, unevidenced</text>
+  </g>
+  <g transform="translate(222,100)">
+    <rect x="0" y="0" width="178" height="92" rx="8" fill="currentColor" fill-opacity="0.04" stroke="currentColor" stroke-opacity="0.18"/>
+    <text x="16" y="26" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">FINDINGS RECOVERED</text>
+    <text x="16" y="62" font-family="system-ui, sans-serif" font-size="34" font-weight="700" fill="#0F9D58">88</text>
+    <text x="86" y="62" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" opacity="0.6">17 critical</text>
+    <text x="16" y="80" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.55">all regression-tested</text>
+  </g>
+  <g transform="translate(416,100)">
+    <rect x="0" y="0" width="178" height="92" rx="8" fill="#B00020" fill-opacity="0.07" stroke="#B00020" stroke-opacity="0.5"/>
+    <text x="16" y="26" font-family="system-ui, sans-serif" font-size="11" fill="#B00020">RESIDUAL CRITICAL</text>
+    <text x="16" y="62" font-family="system-ui, sans-serif" font-size="34" font-weight="700" fill="#B00020">3</text>
+    <text x="52" y="62" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" opacity="0.7">one root cause</text>
+    <text x="16" y="80" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.6">recorded, not hidden</text>
+  </g>
+  <g transform="translate(610,100)">
+    <rect x="0" y="0" width="178" height="92" rx="8" fill="currentColor" fill-opacity="0.04" stroke="currentColor" stroke-opacity="0.18"/>
+    <text x="16" y="26" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">MEAN SCORE</text>
+    <text x="16" y="62" font-family="system-ui, sans-serif" font-size="34" font-weight="700" fill="#1F4E79">8.40</text>
+    <text x="92" y="62" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" opacity="0.6">/ 10</text>
+    <text x="16" y="80" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.55">6 formally scored audits</text>
+  </g>
+  <g transform="translate(804,100)">
+    <rect x="0" y="0" width="168" height="92" rx="8" fill="currentColor" fill-opacity="0.04" stroke="currentColor" stroke-opacity="0.18"/>
+    <text x="16" y="26" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">REGRESSION</text>
+    <text x="16" y="62" font-family="system-ui, sans-serif" font-size="30" font-weight="700" fill="#0F9D58">144/144</text>
+    <text x="16" y="80" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.55">+142/142 phase-specific</text>
+  </g>
+
+  <!-- FINDINGS BY LAYER -->
+  <text x="28" y="230" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="currentColor">Findings by layer — Engineering carried the largest recovery load</text>
+  <g transform="translate(28,244)">
+    <!-- axis -->
+    <line x1="120" y1="0" x2="120" y2="150" stroke="currentColor" stroke-opacity="0.25"/>
+    <!-- L1: 20 -->
+    <text x="112" y="20" text-anchor="end" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor">L1 Foundation</text>
+    <rect x="120" y="8" width="180" height="16" rx="3" fill="#1F4E79"/>
+    <text x="310" y="21" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600" fill="currentColor">20</text>
+    <!-- L2: 36 -->
+    <text x="112" y="52" text-anchor="end" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor">L2 Engineering</text>
+    <rect x="120" y="40" width="324" height="16" rx="3" fill="#2E75B6"/>
+    <text x="454" y="53" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600" fill="currentColor">36</text>
+    <!-- L3: 7 -->
+    <text x="112" y="84" text-anchor="end" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor">L3 Intelligence</text>
+    <rect x="120" y="72" width="63" height="16" rx="3" fill="#0F9D58"/>
+    <text x="193" y="85" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600" fill="currentColor">7</text>
+    <!-- L4: 25 -->
+    <text x="112" y="116" text-anchor="end" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor">L4 Operations</text>
+    <rect x="120" y="104" width="225" height="16" rx="3" fill="#C55A11"/>
+    <text x="355" y="117" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600" fill="currentColor">25</text>
+    <!-- L5/L6 -->
+    <text x="112" y="148" text-anchor="end" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.6">L5 / L6 Planned</text>
+    <rect x="120" y="136" width="120" height="16" rx="3" fill="none" stroke="#8A96A3" stroke-dasharray="4 3"/>
+    <text x="250" y="149" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.55">not executed — no findings exist</text>
+  </g>
+
+  <!-- VERDICT DISTRIBUTION -->
+  <text x="560" y="230" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="currentColor">Verdict distribution</text>
+  <g transform="translate(560,244)">
+    <rect x="0" y="8" width="180" height="26" rx="4" fill="#0F9D58"/>
+    <text x="90" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">13 CERTIFIED</text>
+    <rect x="188" y="8" width="180" height="26" rx="4" fill="#C55A11"/>
+    <text x="278" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">13 CERTIFIED W/ LIMITATIONS</text>
+    <rect x="376" y="8" width="36" height="26" rx="4" fill="#B00020"/>
+    <text x="394" y="26" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">1</text>
+    <text x="0" y="58" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.7">B.19 Accessibility is recorded as NOT CERTIFIED rather than</text>
+    <text x="0" y="76" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.7">omitted or softened. WCAG 2.2 AA was not achieved and the</text>
+    <text x="0" y="94" font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.7">failing criteria are listed as failing.</text>
+    <rect x="0" y="112" width="412" height="40" rx="6" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.15"/>
+    <text x="14" y="128" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="currentColor">92 gaps recorded across executed audits</text>
+    <text x="14" y="144" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.65">each with reproduction steps and reason for remaining open</text>
+  </g>
+
+  <!-- BEFORE/AFTER STRIP -->
+  <line x1="28" y1="424" x2="972" y2="424" stroke="currentColor" stroke-opacity="0.2"/>
+  <text x="28" y="450" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="currentColor">Four measurements that changed materially</text>
+
+  <g transform="translate(28,466)">
+    <text x="0" y="16" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">AGENT WORK REJECTED · B.11</text>
+    <text x="0" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#B00020">68.6%</text>
+    <text x="82" y="46" font-family="system-ui, sans-serif" font-size="16" fill="currentColor" opacity="0.5">→</text>
+    <text x="106" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#0F9D58">0.0%</text>
+    <text x="0" y="66" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.6">1371 of 2000 runs failed memory_pressure</text>
+  </g>
+  <g transform="translate(268,466)">
+    <text x="0" y="16" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">KNOWLEDGE GRAPH EDGES · B.12</text>
+    <text x="0" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#B00020">5</text>
+    <text x="28" y="46" font-family="system-ui, sans-serif" font-size="16" fill="currentColor" opacity="0.5">→</text>
+    <text x="52" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#0F9D58">1526</text>
+    <text x="0" y="66" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.6">capability existed; it had never been run</text>
+  </g>
+  <g transform="translate(508,466)">
+    <text x="0" y="16" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">DLQ ENTRIES NAMING AGENT · B.18</text>
+    <text x="0" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#B00020">0</text>
+    <text x="24" y="46" font-family="system-ui, sans-serif" font-size="16" fill="currentColor" opacity="0.5">→</text>
+    <text x="48" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#0F9D58">980</text>
+    <text x="0" y="66" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.6">anonymous backlog made triage impossible</text>
+  </g>
+  <g transform="translate(748,466)">
+    <text x="0" y="16" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.65">EVENT-LOOP BLOCK · B.1</text>
+    <text x="0" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#B00020">483ms</text>
+    <text x="86" y="46" font-family="system-ui, sans-serif" font-size="16" fill="currentColor" opacity="0.5">→</text>
+    <text x="110" y="46" font-family="system-ui, sans-serif" font-size="24" font-weight="700" fill="#0F9D58">0</text>
+    <text x="0" y="66" font-family="system-ui, sans-serif" font-size="10.5" fill="currentColor" opacity="0.6">mission store retention cap</text>
+  </g>
+
+  <line x1="28" y1="556" x2="972" y2="556" stroke="currentColor" stroke-opacity="0.15"/>
+  <text x="28" y="578" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Every figure above is a measurement taken against the running product. Planned audits (B.20–B.25, Phase C) contribute nothing to any number on this page.</text>
+  <text x="28" y="598" font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Ooplix V1 Master Audit Suite · OPX-MAR-001 · Confidential — Investor / Enterprise Due Diligence</text>
+</svg>

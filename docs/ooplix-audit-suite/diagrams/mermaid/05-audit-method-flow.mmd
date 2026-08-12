@@ -1,0 +1,48 @@
+%% OOPLIX V1 — Audit Method Flowchart
+%% The six-step protocol applied to every executed audit, including the
+%% decision that produces a recorded GAP rather than a silent build.
+flowchart TD
+    classDef step    fill:#EAF1F8,stroke:#1F4E79,stroke-width:2px,color:#0B1F33
+    classDef gate    fill:#FFF8E6,stroke:#BF9000,stroke-width:2px,color:#0B1F33
+    classDef good    fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef bad     fill:#FBE9EC,stroke:#B00020,stroke-width:2px,color:#0B1F33
+    classDef gap     fill:#FDF0E6,stroke:#C55A11,stroke-width:2px,color:#0B1F33
+
+    S["Operate the product as its<br/>real-world operator would"]:::step
+    R["1 · REPRODUCE<br/>Observe defect from outside.<br/>Do not read source yet."]:::step
+    M["2 · MEASURE<br/>Quantify against live data.<br/>Never infer from code."]:::step
+
+    Q1{"Reproducible<br/>on demand?"}:::gate
+    OBS["Record as OBSERVATION<br/>with measured baseline"]:::gap
+
+    RC["3 · ROOT CAUSE<br/>Now read source.<br/>Trace to exact line."]:::step
+
+    Q2{"Does the capability<br/>already exist?"}:::gate
+
+    REC["4 · RECOVER<br/>Restore existing capability.<br/>Minimal diff."]:::step
+    GAP["Record as GAP<br/>severity + reproduction +<br/>reason not closed +<br/>audit that will close it"]:::gap
+
+    REG["5 · REGRESSION<br/>Write test. Verify it FAILS<br/>against un-fixed code."]:::step
+    Q3{"Negative test<br/>actually fails?"}:::gate
+    WEAK["Test proves nothing.<br/>Rewrite the assertion."]:::bad
+
+    RV["6 · REVERIFY<br/>Re-measure the original<br/>reproduction. Full suite."]:::step
+    Q4{"All criteria met?"}:::gate
+
+    C1["CERTIFIED"]:::good
+    C2["CERTIFIED WITH LIMITATIONS<br/>gaps named in verdict"]:::gap
+    C3["NOT CERTIFIED<br/>failures listed as failures"]:::bad
+
+    S --> R --> M --> Q1
+    Q1 -->|no| OBS
+    Q1 -->|yes| RC --> Q2
+    Q2 -->|"yes — dormant,<br/>miswired, or misconfigured"| REC
+    Q2 -->|"no — would require<br/>new capability"| GAP
+    REC --> REG --> Q3
+    Q3 -->|no| WEAK --> REG
+    Q3 -->|yes| RV --> Q4
+    GAP --> RV
+    OBS --> RV
+    Q4 -->|"yes, no gaps"| C1
+    Q4 -->|"yes, gaps recorded"| C2
+    Q4 -->|no| C3
