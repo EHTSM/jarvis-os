@@ -760,6 +760,37 @@
     min-height: 34px;        /* 34px touch minimum */
   }
   .header-right { gap: 8px; }
+
+  /* A.11.1: this block already handled `.app-header`, but the shell actually
+     renders `.topbar` — so the real header was never given mobile treatment.
+     Measured at 390px: .tabs, .topbar-actions, .palette-trigger and
+     .org-switcher-trigger extended to x=572, forcing document scrollWidth to
+     621 on EVERY surface. The tab strip already scrolls horizontally by
+     design; the fix is to let it do so inside the viewport instead of
+     stretching the header. Same pattern as the .tabs rule above — no new
+     responsive system. */
+  .topbar {
+    padding: 0 10px;
+    gap: 8px;
+    min-width: 0;            /* allow the flex row to shrink below content */
+  }
+  .topbar .tabs {
+    min-width: 0;            /* the scroll container must be allowed to shrink */
+    flex: 1 1 auto;
+  }
+  .topbar-actions {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  /* The command-palette trigger carries a long label + shortcut hint that is
+     the single widest header item. Its function is reachable via ⌘K and the
+     More menu, so on mobile it collapses to its icon. */
+  /* Markup is: <span>⌕</span><span>Search…</span><kbd>⌘K</kbd> — keep the
+     icon, drop the word and the shortcut hint. */
+  .palette-trigger { padding: 5px 8px; }
+  .palette-trigger kbd,
+  .palette-trigger span + span { display: none; }
+  .org-switcher-trigger { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 }
 
 @media (max-width: 480px) {
