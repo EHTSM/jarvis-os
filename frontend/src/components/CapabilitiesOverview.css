@@ -42,7 +42,11 @@
   flex-direction: column;
   gap: 10px;
   padding: 22px 20px;
-  background: rgba(11, 15, 26, 0.95);
+  /* B19.5: this was a hardcoded near-black card while its text used the theme
+     tokens, so in light mode dark text sat on a dark surface — 6 contrast
+     failures at 390/430px, where this surface is reachable. Same defect class
+     as .bc-root. --surface-base is the themed panel background. */
+  background: var(--surface-base);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg, 14px);
   backdrop-filter: blur(16px);
@@ -118,7 +122,9 @@
   border-radius: var(--radius-pill, 999px);
   font-size: 12px;
   font-weight: 600;
-  color: var(--accent);
+  /* B19.5: accent text on its own accent tint — the case --on-accent-tint
+     exists for. Flagged at 768px in light mode. */
+  color: var(--on-accent-tint);
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease-out),
               border-color var(--dur-fast) var(--ease-out),

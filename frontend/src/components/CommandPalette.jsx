@@ -423,6 +423,10 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
         {/* Input */}
         <div className="cp-input-row">
           <span className="cp-search-icon" aria-hidden="true">⌕</span>
+          {/* B19.5: focus never leaves this input — ArrowUp/Down move a virtual
+              `active` index — so the active option must be announced via
+              aria-activedescendant, or a screen reader reads nothing as the
+              user arrows through results. */}
           <input
             ref={inputRef}
             className="cp-input"
@@ -433,6 +437,10 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
             autoComplete="off"
             spellCheck={false}
             aria-label="Command search"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="cp-results-listbox"
+            aria-activedescendant={results.length ? `cp-opt-${active}` : undefined}
           />
           {query && (
             <button className="cp-clear" onClick={() => { setQuery(""); inputRef.current?.focus(); }}>
@@ -443,7 +451,15 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
         </div>
 
         {/* Results */}
-        <div className="cp-results cp-list-animate" key={listKey} ref={listRef} role="listbox">
+        {/* B19.5: the listbox had no accessible name (axe aria-input-field-name). */}
+        <div
+          className="cp-results cp-list-animate"
+          key={listKey}
+          ref={listRef}
+          id="cp-results-listbox"
+          role="listbox"
+          aria-label="Command results"
+        >
           {results.length === 0 ? (
             <div className="cp-empty">
               <span className="cp-empty-icon">◎</span>
@@ -451,7 +467,12 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
             </div>
           ) : (
             Object.entries(grouped).map(([group, items]) => (
-              <div key={group} className={`cp-group${group === "Pinned" ? " cp-pin-section" : ""}`}>
+              <div
+                key={group}
+                className={`cp-group${group === "Pinned" ? " cp-pin-section" : ""}`}
+                role="group"
+                aria-label={group}
+              >
                 <div className="cp-group-label section-label" data-group={group}>{group}</div>
                 {items.map(action => {
                   const isPinned = pins.includes(action.id);
@@ -459,6 +480,7 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
                     <div key={action.id} className="cp-row">
                       <button
                         data-idx={action._idx}
+                        id={`cp-opt-${action._idx}`}
                         className={`cp-item${action._idx === active ? " cp-item--active" : ""}`}
                         onMouseEnter={() => setActive(action._idx)}
                         onClick={() => execute(action)}

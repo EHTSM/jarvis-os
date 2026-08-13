@@ -99,6 +99,34 @@ const PROBE = `(() => {
   return out;
 })()`;
 
+/**
+ * B19.5: entrance animations (Framer Motion staggers, CSS keyframes) fade text
+ * in from opacity 0. Probing mid-flight measures a partially composited
+ * foreground and reports a failure that does not exist once the UI settles —
+ * .cmd-pulse-value was reported at 2.01:1 while its resting ratio is 4.70:1.
+ * Wait for finite entrance animations to finish before measuring. Infinite
+ * animations (pulsing dots, spinners) never finish, so they are excluded and
+ * bounded by a timeout rather than blocking the sweep.
+ */
+async function settle(page, budgetMs = 4000) {
+  await page.evaluate(async (budget) => {
+    const finite = () => document.getAnimations().filter((a) => {
+      if (a.playState !== 'running') return false;
+      const d = a.effect && a.effect.getTiming ? a.effect.getTiming() : {};
+      return d.iterations !== Infinity;
+    });
+    const deadline = Date.now() + budget;
+    while (finite().length && Date.now() < deadline) {
+      await Promise.race([
+        Promise.allSettled(finite().map(a => a.finished)),
+        new Promise(r => setTimeout(r, 250)),
+      ]);
+    }
+    // one more frame so the final computed styles are committed
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  }, budgetMs);
+}
+
 (async () => {
   if (!fs.existsSync(SHOTS)) fs.mkdirSync(SHOTS, { recursive: true });
   const browser = await chromium.launch();
@@ -155,6 +183,7 @@ const PROBE = `(() => {
     }
     await page.evaluate(t => document.documentElement.setAttribute('data-theme', t), theme);
     await page.waitForTimeout(1500);
+    await settle(page);
 
     const found = [];
     const seen = new Set();
@@ -188,6 +217,7 @@ const PROBE = `(() => {
         if (!els[t.i]) continue;
         await els[t.i].click({ timeout: 2500 });
         await page.waitForTimeout(1200);
+        await settle(page);
         push(await page.evaluate(PROBE), t.label);
         elementsSeen += await page.evaluate(() => document.querySelectorAll('*').length);
         textSeen += await page.evaluate(() => [...document.querySelectorAll('*')]
