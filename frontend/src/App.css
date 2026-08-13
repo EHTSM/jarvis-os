@@ -499,6 +499,10 @@
   flex-direction: column;
   min-height: 0;
 }
+/* B19.5: the skip-link target takes tabindex="-1" so focus can land on it.
+   It is never a tab stop, so the ring would only ever appear after a skip —
+   suppress it there while leaving :focus-visible intact everywhere else. */
+.app-main:focus { outline: none; }
 
 /* Tab pane — wraps each route; key change triggers page-enter animation */
 .app-tab-pane {

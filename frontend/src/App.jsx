@@ -1450,7 +1450,11 @@ function AppInner() {
         }}
       />
 
-      <main className="app-main" id="main-content" role="main">
+      {/* B19.5: the skip link updated the hash but focus stayed on <body>,
+          because a <main> is not focusable by default — keyboard users got no
+          actual skip (WCAG 2.4.1). tabindex="-1" makes it programmatically
+          focusable without adding a tab stop. */}
+      <main className="app-main" id="main-content" role="main" tabIndex={-1}>
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane motion-premium">
         <ErrorBoundary label={tab}>
