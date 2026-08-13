@@ -15,7 +15,7 @@
 **CONTENT:**
 > # Ooplix V1
 > ## Master Audit & Certification Record
-> 34 audits executed · 136 findings recovered · 3 critical gaps recorded, not hidden
+> 34 audits executed · 137 findings recovered · 3 critical gaps recorded, not hidden
 >
 > v1.0.0-rc1 · 2026-08-09 · Confidential
 
@@ -96,7 +96,7 @@
 
 **CONTENT:**
 > **Reproduce → Measure → Root Cause → Recover → Regression → Reverify**
-> Applied identically to all 35 executed audits.
+> Applied identically to all 36 executed audits.
 
 **SPEAKER NOTES:** Walk the chain once, fast. The two steps people skip are the first and the fifth. Skipping *reproduce* means auditing your mental model instead of the system. Skipping the negative test in *regression* means shipping a test that would pass even against the broken code — which is worse than no test, because it manufactures false confidence.
 
@@ -539,7 +539,7 @@
 
 **CONTENT:**
 > B.19.2 Visual A11y **9.0** · B.10 Memory **8.7** · B.11 Agent **8.7** · B.13 Automation **8.7** · B.9 AI **8.6** · B.19.2.1 Live A11y **8.5** · B.8 DevOps **8.1** · B.7 API **7.6**
-> **Mean 8.66 / 10** across 11 formally scored audits.
+> **Mean 8.57 / 10** across 11 formally scored audits.
 
 **SPEAKER NOTES:** Eight of thirty-one carry a formal weighted score. The other twenty-three were pass/fail against defined criteria. Do not average them together — that would be inventing a number.
 
