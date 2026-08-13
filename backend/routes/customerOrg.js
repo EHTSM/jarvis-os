@@ -6,7 +6,20 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-router.use("/customer-org", requireAuth);
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
+// B.21: attachOrg resolves req.org from the X-Org-Id header (or the caller's
+// own primary membership when absent) AND sets req.orgRole from real
+// membership — so the org used for scoping below is verified, never simply
+// trusted from a client header. Support tickets previously carried no tenant
+// field at all, so listTickets() returned every org's tickets to every
+// authenticated caller (reproduced live: two separate companies received the
+// SAME 50-ticket list, containing neither company's own tickets).
+router.use("/customer-org", requireAuth, attachOrg);
+
+/** The caller's verified org, or null when they hold no membership in it. */
+function _orgId(req) {
+    return req.org && req.orgRole ? req.org.id : null;
+}
 
 const _try   = fn => { try { return fn(); } catch { return null; } };
 const _cje   = () => _try(() => require("../services/customerJourneyEngine.cjs"));
@@ -105,7 +118,7 @@ router.get("/customer-org/success/stats", wrap(async (req, res) => {
 
 // ── Support ───────────────────────────────────────────────────────────────────
 router.post("/customer-org/support/ticket", wrap(async (req, res) => {
-  const r = _csup()?.createTicket?.(req.body);
+  const r = _csup()?.createTicket?.({ ...req.body, orgId: _orgId(req) });
   if (!r?.ok) return err(res, r?.error || "create failed");
   ok(res, r);
 }));
@@ -115,6 +128,11 @@ router.post("/customer-org/support/ticket/:id/resolve", wrap(async (req, res) =>
 router.get("/customer-org/support/ticket/:id", wrap(async (req, res) => {
   const t = _csup()?.getTicket?.(req.params.id);
   if (!t) return err(res, "ticket not found", 404);
+  // B.21: fetching by id was a direct IDOR — any authenticated caller could
+  // read any tenant's ticket. A caller with a verified org may only read that
+  // org's tickets; 404 (not 403) so the endpoint does not confirm existence.
+  const org = _orgId(req);
+  if (org && t.orgId !== org) return err(res, "ticket not found", 404);
   ok(res, { ticket: t });
 }));
 router.get("/customer-org/support/tickets", wrap(async (req, res) => {
@@ -125,6 +143,7 @@ router.get("/customer-org/support/tickets", wrap(async (req, res) => {
   // Reproduced: limit=-1 → 189 rows, limit=99999 → 190 rows.
   ok(res, _csup()?.listTickets?.({
     customerId, status, severity,
+    orgId: _orgId(req),
     limit: Math.max(1, Math.min(parseInt(limit) || 50, 500)),
   }));
 }));

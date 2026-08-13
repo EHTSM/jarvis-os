@@ -119,7 +119,7 @@ function _getRelevantLessons(category) {
 
 // ── Core functions ────────────────────────────────────────────────────────────
 
-function createTicket({ customerId, issue, severity = "medium" }) {
+function createTicket({ customerId, issue, severity = "medium", orgId = null }) {
   if (!customerId) return { ok: false, error: "customerId required" };
 
   const category = _classify(issue);
@@ -147,6 +147,12 @@ function createTicket({ customerId, issue, severity = "medium" }) {
   const id     = _id();
   const ticket = {
     id, customerId,
+    // B.21: tickets carried no tenant field, so listTickets() returned every
+    // org's tickets to every authenticated caller. Reproduced live with two
+    // real companies: both received the SAME 50-ticket list, containing
+    // neither company's own tickets. Stamped at creation so the list can be
+    // scoped; see listTickets() below for how legacy rows are treated.
+    orgId:    orgId || null,
     issue:    issue || "General support request",
     category, severity: finalSeverity,
     status:   "open",
@@ -214,8 +220,15 @@ function getSuggestedResolution(issue, customerId) {
 
 function getTicket(id)     { return _load().tickets.find(t => t.id === id) || null; }
 
-function listTickets({ customerId, status, severity, limit = 50 } = {}) {
+function listTickets({ customerId, status, severity, limit = 50, orgId = null } = {}) {
   let tickets = _load().tickets;
+  // B.21 cross-tenant fix. When the caller identifies its org, return only
+  // that org's tickets. Legacy rows created before tickets carried an orgId
+  // are EXCLUDED from a scoped call rather than attributed to whoever asks —
+  // showing them to an arbitrary tenant is exactly the leak being closed.
+  // An unscoped call (no orgId) keeps the previous behaviour for internal
+  // callers such as stats aggregation.
+  if (orgId) tickets = tickets.filter(t => t.orgId === orgId);
   if (customerId) tickets = tickets.filter(t => t.customerId === customerId);
   if (status)     tickets = tickets.filter(t => t.status     === status);
   if (severity)   tickets = tickets.filter(t => t.severity   === severity);

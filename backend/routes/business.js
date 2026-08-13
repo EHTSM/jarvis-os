@@ -144,7 +144,10 @@ router.get("/business/pipeline", requireAuth, _requireOrg, (req, res) => {
         const bem = _bem();
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const pipeline = bds.getPipelineSummary(req.org.id);
-        const bizMissions = bem?.getPipelineSummary?.() || {};
+        // B.21: pass the org through. bds.getPipelineSummary was already
+        // org-scoped while this sibling call was not, so the same response
+        // mixed one tenant-scoped block with one platform-wide block.
+        const bizMissions = bem?.getPipelineSummary?.(req.org.id) || {};
         const rules = bem?.getBusinessRules?.() || [];
         _ok(res, { pipeline, bizMissions, ruleCount: rules.length });
     } catch (e) { _err(res, e); }
@@ -572,7 +575,7 @@ router.get("/business/deals", requireAuth, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "deal", status: req.query.status, limit: 100 });
+        const result = bem.listBusinessMissions({ entityType: "deal", status: req.query.status, limit: 100, orgId: req.org?.id || null });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
@@ -584,7 +587,7 @@ router.post("/business/deals", requireAuth, (req, res) => {
         const { name, title, description, value, stage, priority } = req.body;
         if (!name && !title) return res.status(400).json({ success: false, error: "name or title required" });
         const entity = { id: `deal_${Date.now()}`, name: name || title, title, description, value, stage };
-        const mission = bem.createBusinessMission("deal", entity, { priority });
+        const mission = bem.createBusinessMission("deal", entity, { priority, orgId: req.org?.id || null });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
@@ -593,7 +596,7 @@ router.get("/business/marketing/tasks", requireAuth, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "marketing_task", status: req.query.status, limit: 100 });
+        const result = bem.listBusinessMissions({ entityType: "marketing_task", status: req.query.status, limit: 100, orgId: req.org?.id || null });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
@@ -605,7 +608,7 @@ router.post("/business/marketing/tasks", requireAuth, (req, res) => {
         const { title, campaign, channel, priority, subtasks } = req.body;
         if (!title) return res.status(400).json({ success: false, error: "title required" });
         const entity = { id: `mtask_${Date.now()}`, title, campaign, channel, subtasks };
-        const mission = bem.createBusinessMission("marketing_task", entity, { priority });
+        const mission = bem.createBusinessMission("marketing_task", entity, { priority, orgId: req.org?.id || null });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
@@ -614,7 +617,7 @@ router.get("/business/customers", requireAuth, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "customer", status: req.query.status, limit: 100 });
+        const result = bem.listBusinessMissions({ entityType: "customer", status: req.query.status, limit: 100, orgId: req.org?.id || null });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
@@ -626,7 +629,7 @@ router.post("/business/customers", requireAuth, (req, res) => {
         const { name, phone, email, plan, status, action, priority } = req.body;
         if (!name && !phone && !email) return res.status(400).json({ success: false, error: "name, phone, or email required" });
         const entity = { id: phone || email || `cust_${Date.now()}`, name, phone, email, plan, status: status || "active", action };
-        const mission = bem.createBusinessMission("customer", entity, { priority });
+        const mission = bem.createBusinessMission("customer", entity, { priority, orgId: req.org?.id || null });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
@@ -635,7 +638,7 @@ router.get("/business/operations", requireAuth, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "operation", status: req.query.status, limit: 100 });
+        const result = bem.listBusinessMissions({ entityType: "operation", status: req.query.status, limit: 100, orgId: req.org?.id || null });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
@@ -647,7 +650,7 @@ router.post("/business/operations", requireAuth, (req, res) => {
         const { title, name, category, steps, priority } = req.body;
         if (!title && !name) return res.status(400).json({ success: false, error: "title or name required" });
         const entity = { id: `op_${Date.now()}`, title: title || name, category, steps: steps || [] };
-        const mission = bem.createBusinessMission("operation", entity, { priority });
+        const mission = bem.createBusinessMission("operation", entity, { priority, orgId: req.org?.id || null });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
