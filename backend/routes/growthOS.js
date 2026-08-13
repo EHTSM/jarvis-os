@@ -50,7 +50,15 @@ function _ok(res, data)   { res.json({ ok: true, ...data }); }
  */
 function _err(res, e, code) {
   const msg = e && e.message ? e.message : String(e);
-  const status = code !== undefined ? code : (/\bnot found\b/i.test(msg) ? 404 : 500);
+  // Phase OS-MKT: "<field> required" is a client error, not a server fault.
+  // The creators now reject empty bodies (previously a 200 + junk record), and
+  // those rejections were surfacing as 500 — telling the caller to retry when
+  // the fix is to supply the field.
+  const status = code !== undefined
+    ? code
+    : /\bnot found\b/i.test(msg) ? 404
+    : /\brequired\b/i.test(msg)  ? 400
+    : 500;
   res.status(status).json({ error: msg });
 }
 

@@ -91,6 +91,13 @@ const EMAIL_CAMPAIGN_SCHEMA = {
 };
 
 function createEmailCampaign(opts, orgId) {
+  // Phase OS-MKT: POST /growth/email/campaigns with an EMPTY body returned 200
+  // and created a campaign with name:"", subject:"", body:"" — a junk record
+  // that counts toward campaign totals and can be "sent". Matches the
+  // validation convention already used by businessDataService.cjs
+  // (`throw new Error("title required")`), which routes/growthOS.js's _err()
+  // maps to a 400.
+  if (!opts || !opts.name) throw new Error("name required");
   const s  = _load();
   const id = _id("ecm");
   // orgId always comes from the authenticated caller's own context (route
@@ -171,6 +178,9 @@ function getSequence(id, orgId) { return _ownedRecord(_load().sequences, id, org
 // ── MODULE 2: SMS Marketing OS ────────────────────────────────────────────────
 
 function createSMSCampaign(opts, orgId) {
+  // Phase OS-MKT: reject an empty body rather than persisting a junk record
+  // that counts toward totals. Same convention as createEmailCampaign above.
+  if (!opts || !opts.name) throw new Error("name required");
   const s  = _load();
   const id = _id("sms");
   s.campaigns[id] = {
@@ -249,6 +259,9 @@ function listSMSCampaigns(status, orgId) {
 // ── MODULE 3: WhatsApp Business OS ───────────────────────────────────────────
 
 function createWhatsAppBroadcast(opts, orgId) {
+  // Phase OS-MKT: reject an empty body rather than persisting a junk record
+  // that counts toward totals. Same convention as createEmailCampaign above.
+  if (!opts || !opts.name) throw new Error("name required");
   const s  = _load();
   const id = _id("wa");
   s.campaigns[id] = {
@@ -301,9 +314,18 @@ async function sendWhatsAppBroadcast(id, orgId) {
   // nonRetriable error naming the real reason; this mirrors that convention
   // rather than inventing a new one. A broadcast WITH recipients is unchanged.
   if (!memberIds.length) {
+    // Phase OS-MKT: the refusal itself was correct, but the message stated a
+    // cause that may be false. Measured live: a broadcast WITH an audience
+    // attached (aud-…) whose memberIds array was empty still reported "no
+    // audience is attached", sending the operator to fix the wrong thing.
+    // Distinguish the two real cases so the message matches the actual state.
+    const hasAudience = !!(c.audienceId && _ownedRecord(s.audiences, c.audienceId, orgId));
     const err = new Error(
-      "WhatsApp broadcast has no recipients: no audience is attached and the CRM returned no leads with a phone number. " +
-      "Attach an audience via /growth/audiences or add CRM leads with phone numbers to enable sending."
+      hasAudience
+        ? `WhatsApp broadcast has no recipients: the attached audience (${c.audienceId}) has no members. ` +
+          "Add members via POST /growth/audiences/:id/add to enable sending."
+        : "WhatsApp broadcast has no recipients: no audience is attached and the CRM returned no leads with a phone number. " +
+          "Attach an audience via /growth/audiences or add CRM leads with phone numbers to enable sending."
     );
     err.nonRetriable = true;
     throw err;
@@ -323,9 +345,23 @@ async function sendWhatsAppBroadcast(id, orgId) {
     }
   }
 
-  c.status          = "sent";
-  c.sentAt          = _ts();
-  c.stats.sent      = memberIds.length;
+  // Phase OS-MKT honesty fix. status was unconditionally "sent" even when the
+  // provider rejected every message. Measured live: a broadcast to 2 real
+  // recipients returned status:"sent" with delivered:0, failed:2 and a real
+  // Meta Graph permissions error — the operator sees "sent" for a broadcast
+  // that reached nobody. `sent` also counted ATTEMPTS (memberIds.length)
+  // rather than successful hand-offs, so it could never disagree with the
+  // recipient count no matter how badly the send went.
+  //
+  // The send loop above is unchanged and still performs real provider calls;
+  // only the reported state now matches the measured outcome.
+  c.status          = delivered > 0
+    ? (failed > 0 ? "partially_sent" : "sent")
+    : "failed";
+  c.sentAt          = delivered > 0 ? _ts() : null;
+  c.attemptedAt     = _ts();
+  c.stats.attempted = memberIds.length;
+  c.stats.sent      = delivered;   // successful provider hand-offs, not attempts
   c.stats.delivered = delivered;
   c.stats.failed    = failed;
   c.stats.read      = null;   // requires an inbound read-receipt webhook this module doesn't consume
@@ -565,6 +601,9 @@ function getActionTypes()   { return ACTION_TYPES; }
 // ── MODULE 6: Audience Manager ────────────────────────────────────────────────
 
 function createAudience(opts, orgId) {
+  // Phase OS-MKT: reject an empty body rather than persisting a junk record
+  // that counts toward totals. Same convention as createEmailCampaign above.
+  if (!opts || !opts.name) throw new Error("name required");
   const s  = _load();
   const id = _id("aud");
   s.audiences[id] = {
@@ -625,8 +664,20 @@ function listAudiences(type, orgId) {
 function getAudience(id, orgId) { return _ownedRecord(_load().audiences, id, orgId); }
 
 function syncCRMToAudience(audienceId, orgId) {
+  // Phase OS-MKT silent-failure fix. This mapped `l.id`, but CRM leads carry
+  // NO `id` field — they are keyed by phone (measured: keys are phone, name,
+  // userId, orgId, status, …). Every mapped value was undefined, .filter(Boolean)
+  // reduced them to [], and the route still returned 200 with an unchanged
+  // audience. A founder syncing a populated CRM saw success and zero members,
+  // silently breaking the CRM → audience → campaign chain.
+  //
+  // `phone` is the identifier the rest of this module already treats as an
+  // audience member: sendWhatsAppBroadcast() falls back to
+  // crm.getLeads().map(l => l.phone) and passes each memberId straight to
+  // wa.sendMessage() as the recipient number. Aligning the sync with that
+  // existing contract rather than introducing a new identity scheme.
   const leads = crm.getLeads(undefined, orgId);
-  const ids   = leads.map(l => l.id).filter(Boolean);
+  const ids   = leads.map(l => l.phone).filter(Boolean);
   return addToAudience(audienceId, ids, orgId);
 }
 
@@ -820,6 +871,9 @@ function getTemplate(id, orgId) {
 }
 
 function createTemplate(opts, orgId) {
+  // Phase OS-MKT: reject an empty body rather than persisting a junk record
+  // that counts toward totals. Same convention as createEmailCampaign above.
+  if (!opts || !opts.name) throw new Error("name required");
   const s  = _load();
   const id = _id("tpl");
   s.templates[id] = {
