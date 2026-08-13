@@ -4,6 +4,7 @@
  * Supports both token naming conventions from .env.
  */
 
+const crypto = require("crypto");
 const axios  = require("axios");
 const logger = require("../utils/logger");
 
@@ -39,6 +40,65 @@ function _phoneId(orgId) {
     return process.env.WA_PHONE_ID || process.env.PHONE_NUMBER_ID || "";
 }
 function _version() { return process.env.WA_API_VERSION || "v19.0"; }
+
+function _webhookSecret() {
+    return process.env.WA_WEBHOOK_SECRET
+        || process.env.WHATSAPP_WEBHOOK_SECRET
+        || process.env.WA_APP_SECRET
+        || process.env.WHATSAPP_APP_SECRET
+        || "";
+}
+
+const _REPLAY_TTL_MS = 10 * 60_000; // 10 minutes
+const _recentWebhookKeys = new Map();
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, ts] of _recentWebhookKeys) {
+        if (now - ts > _REPLAY_TTL_MS) _recentWebhookKeys.delete(key);
+    }
+}, 60_000).unref();
+
+function _normalizeSignature(signature) {
+    if (!signature || typeof signature !== "string") return "";
+    const prefix = "sha256=";
+    return signature.trim().startsWith(prefix)
+        ? signature.trim().slice(prefix.length).trim()
+        : signature.trim();
+}
+
+function verifyWebhookSignature(rawBody, signature) {
+    const secret = _webhookSecret();
+    if (!secret) {
+        if (process.env.NODE_ENV !== "production") return true;
+        return false;
+    }
+
+    const provided = _normalizeSignature(signature);
+    if (!provided) return false;
+
+    try {
+        const expected = crypto.createHmac("sha256", secret)
+            .update(String(rawBody))
+            .digest("hex");
+        const expectedBuf = Buffer.from(expected, "hex");
+        const providedBuf = Buffer.from(provided, "hex");
+        if (providedBuf.length !== expectedBuf.length) return false;
+        return crypto.timingSafeEqual(providedBuf, expectedBuf);
+    } catch {
+        return false;
+    }
+}
+
+function registerWebhookEvent(body) {
+    const msg = parseIncomingMessage(body);
+    const key = msg?.msgId
+        ? `msg:${msg.msgId}`
+        : `body:${crypto.createHash("sha256").update(JSON.stringify(body)).digest("hex")}`;
+
+    if (_recentWebhookKeys.has(key)) return false;
+    _recentWebhookKeys.set(key, Date.now());
+    return true;
+}
 
 function _sanitizePhone(phone) {
     return String(phone).replace(/\D/g, "").replace(/^0+/, "");
@@ -167,4 +227,11 @@ function parseIncomingMessage(body) {
     }
 }
 
-module.exports = { sendMessage, verifyWebhook, parseIncomingMessage, resetAuthCooldown };
+module.exports = {
+    sendMessage,
+    verifyWebhook,
+    verifyWebhookSignature,
+    registerWebhookEvent,
+    parseIncomingMessage,
+    resetAuthCooldown
+};

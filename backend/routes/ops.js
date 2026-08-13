@@ -89,7 +89,7 @@ router.get("/metrics", (req, res) => {
         const snap = mc.snapshot();
         res.json({ success: true, ...controller.getMetrics(), execution: snap });
     } catch (e) {
-        res.json({ success: true, ...controller.getMetrics(), execution_error: e.message });
+        res.json({ success: true, ...controller.getMetrics(), execution_error: "execution_failed" });
     }
 });
 
@@ -214,13 +214,623 @@ router.post("/runtime/reboot", requireAuth, operatorAudit("runtime-reboot"), (re
     setTimeout(() => process.exit(0), 1000);
 });
 
+// ── Incident Detection Engine ─────────────────────────────────────
+const _inc = (() => { try { return require("../../agents/runtime/incidentEngine.cjs"); } catch { return null; } })();
+
+// POST /incidents/detect — trigger a detection run (authenticated)
+router.post("/incidents/detect", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const { windowMins = 60, blueprintId, productName } = req.body || {};
+        const result = _inc.detect({ windowMins, blueprintId, productName });
+        res.json({ success: true, ...result });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /incidents — list incidents with filters
+router.get("/incidents", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const { status, severity, blueprintId, ruleId, limit } = req.query;
+        const incidents = _inc.listIncidents({
+            status, severity, blueprintId, ruleId,
+            limit: limit ? Math.min(parseInt(limit) || 50, 200) : 50,
+        });
+        const summary = _inc.getIncidentSummary();
+        res.json({ success: true, summary, incidents });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /incidents/summary — counts by severity and status
+router.get("/incidents/summary", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try { res.json({ success: true, ..._inc.getIncidentSummary() }); }
+    catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /incidents/:id — single incident
+router.get("/incidents/:id", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const inc = _inc.getIncident(req.params.id);
+        if (!inc) return res.status(404).json({ success: false, error: "incident_not_found" });
+        res.json({ success: true, incident: inc });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /incidents/:id/acknowledge
+router.post("/incidents/:id/acknowledge", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const result = _inc.acknowledge(req.params.id, req.body?.note || "");
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, incident: result.incident });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /incidents/:id/resolve
+router.post("/incidents/:id/resolve", (req, res) => {
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const result = _inc.resolve(req.params.id, req.body?.note || "");
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, incident: result.incident });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Root Cause Analyzer ───────────────────────────────────────────
+const _rca = (() => { try { return require("../../agents/runtime/rootCauseAnalyzer.cjs"); } catch { return null; } })();
+
+// POST /incidents/:id/analyze — run RCA for an incident, persist report
+router.post("/incidents/:id/analyze", (req, res) => {
+    if (!_rca) return res.status(503).json({ success: false, error: "rootCauseAnalyzer unavailable" });
+    if (!_inc) return res.status(503).json({ success: false, error: "incidentEngine unavailable" });
+    try {
+        const incident = _inc.getIncident(req.params.id);
+        if (!incident) return res.status(404).json({ success: false, error: "incident_not_found" });
+        const windowMins = parseInt(req.query.windowMins) || 60;
+        const report = _rca.analyze(req.params.id, { windowMins });
+        if (!report) return res.status(404).json({ success: false, error: "incident_not_found" });
+        res.json({ success: true, report });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /incidents/:id/rca — retrieve the most recent RCA report for an incident
+router.get("/incidents/:id/rca", (req, res) => {
+    if (!_rca) return res.status(503).json({ success: false, error: "rootCauseAnalyzer unavailable" });
+    try {
+        const reports = _rca.listReports({ incidentId: req.params.id, limit: 1 });
+        if (!reports.length) return res.status(404).json({ success: false, error: "no_rca_report" });
+        res.json({ success: true, report: reports[0] });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /rca-reports — list all RCA reports
+router.get("/rca-reports", (req, res) => {
+    if (!_rca) return res.status(503).json({ success: false, error: "rootCauseAnalyzer unavailable" });
+    try {
+        const { incidentId, limit } = req.query;
+        const reports = _rca.listReports({
+            incidentId,
+            limit: limit ? Math.min(parseInt(limit) || 20, 100) : 20,
+        });
+        res.json({ success: true, total: reports.length, reports });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /rca-reports/:rcaId — single RCA report by ID
+router.get("/rca-reports/:rcaId", (req, res) => {
+    if (!_rca) return res.status(503).json({ success: false, error: "rootCauseAnalyzer unavailable" });
+    try {
+        const report = _rca.getReport(req.params.rcaId);
+        if (!report) return res.status(404).json({ success: false, error: "rca_not_found" });
+        res.json({ success: true, report });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Auto-Fix Planner ──────────────────────────────────────────────
+const _afp = (() => { try { return require("../../agents/runtime/autoFixPlanner.cjs"); } catch { return null; } })();
+
+// POST /rca-reports/:rcaId/plan — generate a fix plan from an RCA report
+router.post("/rca-reports/:rcaId/plan", (req, res) => {
+    if (!_afp) return res.status(503).json({ success: false, error: "autoFixPlanner unavailable" });
+    if (!_rca) return res.status(503).json({ success: false, error: "rootCauseAnalyzer unavailable" });
+    try {
+        const rcaReport = _rca.getReport(req.params.rcaId);
+        if (!rcaReport) return res.status(404).json({ success: false, error: "rca_not_found" });
+        const registerPatches = req.query.registerPatches === "1";
+        const fixPlan = _afp.planInline(rcaReport, { registerPatches });
+        res.json({ success: true, plan: fixPlan });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /fix-plans — list fix plans (filter: rcaId, incidentId, status, limit)
+router.get("/fix-plans", (req, res) => {
+    if (!_afp) return res.status(503).json({ success: false, error: "autoFixPlanner unavailable" });
+    try {
+        const { rcaId, incidentId, status, limit } = req.query;
+        const plans = _afp.listPlans({
+            rcaId, incidentId, status,
+            limit: limit ? Math.min(parseInt(limit) || 20, 100) : 20,
+        });
+        res.json({ success: true, total: plans.length, plans });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /fix-plans/:planId — retrieve a single fix plan
+router.get("/fix-plans/:planId", (req, res) => {
+    if (!_afp) return res.status(503).json({ success: false, error: "autoFixPlanner unavailable" });
+    try {
+        const p = _afp.getPlan(req.params.planId);
+        if (!p) return res.status(404).json({ success: false, error: "plan_not_found" });
+        res.json({ success: true, plan: p });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// PATCH /fix-plans/:planId/status — update plan status
+router.patch("/fix-plans/:planId/status", (req, res) => {
+    if (!_afp) return res.status(503).json({ success: false, error: "autoFixPlanner unavailable" });
+    try {
+        const result = _afp.updateStatus(req.params.planId, req.body?.status || "");
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, plan: result.plan });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Self-Healing Pipeline ─────────────────────────────────────────
+const _shp = (() => { try { return require("../../agents/runtime/selfHealingPipeline.cjs"); } catch { return null; } })();
+
+// POST /fix-plans/:planId/execute — execute a fix plan
+router.post("/fix-plans/:planId/execute", (req, res) => {
+    if (!_shp) return res.status(503).json({ success: false, error: "selfHealingPipeline unavailable" });
+    if (!_afp) return res.status(503).json({ success: false, error: "autoFixPlanner unavailable" });
+    try {
+        const plan = _afp.getPlan(req.params.planId);
+        if (!plan) return res.status(404).json({ success: false, error: "plan_not_found" });
+        const mode = req.body?.mode || "approval_required";
+        const run  = _shp.executePlan(plan, { mode, operatorId: req.body?.operatorId || null });
+        if (run.ok === false) return res.status(400).json({ success: false, error: run.error });
+        res.json({ success: true, run });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /healing-runs/:runId/approve — approve a halted run
+router.post("/healing-runs/:runId/approve", (req, res) => {
+    if (!_shp) return res.status(503).json({ success: false, error: "selfHealingPipeline unavailable" });
+    try {
+        const result = _shp.approveRun(req.params.runId, { operatorId: req.body?.operatorId || null });
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error || result.run?.outcome });
+        res.json({ success: true, run: result.run });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /healing-runs — list healing runs
+router.get("/healing-runs", (req, res) => {
+    if (!_shp) return res.status(503).json({ success: false, error: "selfHealingPipeline unavailable" });
+    try {
+        const { planId, incidentId, outcome, status, limit } = req.query;
+        const runs = _shp.listHealingRuns({
+            planId, incidentId, outcome, status,
+            limit: limit ? Math.min(parseInt(limit) || 20, 100) : 20,
+        });
+        res.json({ success: true, total: runs.length, runs });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /healing-runs/:runId — single healing run
+router.get("/healing-runs/:runId", (req, res) => {
+    if (!_shp) return res.status(503).json({ success: false, error: "selfHealingPipeline unavailable" });
+    try {
+        const run = _shp.getHealingRun(req.params.runId);
+        if (!run) return res.status(404).json({ success: false, error: "run_not_found" });
+        res.json({ success: true, run });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Learning Memory Engine ────────────────────────────────────────
+const _lme = (() => { try { return require("../../agents/runtime/learningMemoryEngine.cjs"); } catch { return null; } })();
+
+// POST /learning/ingest — manually ingest a healing run into memory
+router.post("/learning/ingest", (req, res) => {
+    if (!_lme) return res.status(503).json({ success: false, error: "learningMemoryEngine unavailable" });
+    try {
+        const { runId } = req.body || {};
+        const result = runId
+            ? _lme.ingestFromRun(runId)
+            : _lme.ingest(req.body || {});
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, ...result });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /learning/summary — counts, trends, top patterns
+router.get("/learning/summary", (req, res) => {
+    if (!_lme) return res.status(503).json({ success: false, error: "learningMemoryEngine unavailable" });
+    try { res.json({ success: true, ..._lme.getSummary() }); }
+    catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /learning/patterns — list patterns (filter: type, causeCategory, ruleId, minCount, limit)
+router.get("/learning/patterns", (req, res) => {
+    if (!_lme) return res.status(503).json({ success: false, error: "learningMemoryEngine unavailable" });
+    try {
+        const { type, causeCategory, ruleId, minCount, limit } = req.query;
+        const patterns = _lme.getPatterns({
+            type, causeCategory, ruleId,
+            minCount: minCount ? parseInt(minCount) : 1,
+            limit:    limit    ? Math.min(parseInt(limit) || 20, 100) : 20,
+        });
+        res.json({ success: true, ...patterns });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /learning/recommendations — context-aware recommendations
+router.get("/learning/recommendations", (req, res) => {
+    if (!_lme) return res.status(503).json({ success: false, error: "learningMemoryEngine unavailable" });
+    try {
+        const { ruleId, causeCategory, severity } = req.query;
+        const recs = _lme.getRecommendations({ ruleId, causeCategory, severity });
+        res.json({ success: true, recommendations: recs });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /learning/repeated — check if a pattern is a known repeat
+router.get("/learning/repeated", (req, res) => {
+    if (!_lme) return res.status(503).json({ success: false, error: "learningMemoryEngine unavailable" });
+    try {
+        const { ruleId, causeCategory, severity } = req.query;
+        const result = _lme.detectRepeated({ ruleId, causeCategory, severity });
+        res.json({ success: true, ...result });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Product Lifecycle Engine ──────────────────────────────────────
+const _ple = (() => { try { return require("../../agents/runtime/productLifecycleEngine.cjs"); } catch { return null; } })();
+
+// POST /lifecycle/evaluate — run a lifecycle evaluation tick
+router.post("/lifecycle/evaluate", (req, res) => {
+    if (!_ple) return res.status(503).json({ success: false, error: "productLifecycleEngine unavailable" });
+    try {
+        const { blueprintId, productName, windowMins = 60 } = req.body || {};
+        const report = _ple.evaluate({ blueprintId, productName, windowMins: parseInt(windowMins) || 60 });
+        res.json({ success: true, report });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /lifecycle/reports — list lifecycle reports
+router.get("/lifecycle/reports", (req, res) => {
+    if (!_ple) return res.status(503).json({ success: false, error: "productLifecycleEngine unavailable" });
+    try {
+        const { blueprintId, limit } = req.query;
+        const reports = _ple.listReports({ blueprintId, limit: limit ? Math.min(parseInt(limit) || 10, 50) : 10 });
+        res.json({ success: true, total: reports.length, reports });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /lifecycle/reports/:reportId — single lifecycle report
+router.get("/lifecycle/reports/:reportId", (req, res) => {
+    if (!_ple) return res.status(503).json({ success: false, error: "productLifecycleEngine unavailable" });
+    try {
+        const r = _ple.getReport(req.params.reportId);
+        if (!r) return res.status(404).json({ success: false, error: "report_not_found" });
+        res.json({ success: true, report: r });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /lifecycle/maturity — current maturity score
+router.get("/lifecycle/maturity", (req, res) => {
+    if (!_ple) return res.status(503).json({ success: false, error: "productLifecycleEngine unavailable" });
+    try {
+        const m = _ple.getMaturity(req.query.blueprintId);
+        if (!m) return res.status(404).json({ success: false, error: "no_lifecycle_report_yet" });
+        res.json({ success: true, maturity: m });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /lifecycle/debt — list technical debt items
+router.get("/lifecycle/debt", (req, res) => {
+    if (!_ple) return res.status(503).json({ success: false, error: "productLifecycleEngine unavailable" });
+    try {
+        const { blueprintId, status, type, limit } = req.query;
+        const items = _ple.getDebtItems({
+            blueprintId, status, type,
+            limit: limit ? Math.min(parseInt(limit) || 50, 200) : 50,
+        });
+        res.json({ success: true, total: items.length, items });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Goal Engine ───────────────────────────────────────────────────
+const _ge = (() => { try { return require("../../agents/runtime/goalEngine.cjs"); } catch { return null; } })();
+
+// POST /goals — create a new goal
+router.post("/goals", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const { title, description, type, targetDate, blueprintId, tags } = req.body || {};
+        if (!title) return res.status(400).json({ success: false, error: "title is required" });
+        const goal = _ge.createGoal({ title, description, type, targetDate, blueprintId, tags });
+        if (goal.ok === false) return res.status(400).json({ success: false, error: goal.error });
+        res.status(201).json({ success: true, goal });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /goals — list goals
+router.get("/goals", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const { type, status, blueprintId, limit } = req.query;
+        const goals   = _ge.listGoals({ type, status, blueprintId, limit: limit ? Math.min(parseInt(limit) || 20, 100) : 20 });
+        const summary = _ge.getGoalSummary();
+        res.json({ success: true, summary, goals });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /goals/summary — goal counts and health
+router.get("/goals/summary", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try { res.json({ success: true, ..._ge.getGoalSummary() }); }
+    catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /goals/:id — single goal
+router.get("/goals/:id", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const goal = _ge.getGoal(req.params.id);
+        if (!goal) return res.status(404).json({ success: false, error: "goal_not_found" });
+        res.json({ success: true, goal });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /goals/:id/advance — record a task outcome
+router.post("/goals/:id/advance", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const { taskId, ok, detail, error: err, projectRunId } = req.body || {};
+        if (!taskId) return res.status(400).json({ success: false, error: "taskId required" });
+        const result = _ge.advanceTask(req.params.id, taskId, { ok, detail, error: err, projectRunId });
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, goal: result.goal });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /goals/:id/complete — complete the goal
+router.post("/goals/:id/complete", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const result = _ge.completeGoal(req.params.id, { note: req.body?.note || "" });
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, goal: result.goal, report: result.report });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// POST /goals/:id/abandon
+router.post("/goals/:id/abandon", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const result = _ge.abandonGoal(req.params.id, req.body?.reason || "");
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        res.json({ success: true, goal: result.goal });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// GET /goals/:id/report — completion report
+router.get("/goals/:id/report", (req, res) => {
+    if (!_ge) return res.status(503).json({ success: false, error: "goalEngine unavailable" });
+    try {
+        const report = _ge.getCompletionReport(req.params.id);
+        if (!report) return res.status(404).json({ success: false, error: "no_completion_report" });
+        res.json({ success: true, report });
+    } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); }
+});
+
+// ── Personal AI OS ────────────────────────────────────────────────
+const _pos = (() => { try { return require("../../agents/runtime/personalOS.cjs"); } catch { return null; } })();
+
+// ── Dashboard & Summaries ─────────────────────────────────────────
+router.get("/personal/dashboard",           (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { res.json({ success: true, ..._pos.getDashboard() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/summary/daily",       (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { res.json({ success: true, ..._pos.getDailySummary(req.query.date) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/summary/weekly",      (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { res.json({ success: true, ..._pos.getWeeklySummary(req.query.weekStart) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/stats",               (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { res.json({ success: true, ..._pos.getStats() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/search",              (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const { q, limit } = req.query; if (!q) return res.status(400).json({ success: false, error: "q required" }); res.json({ success: true, results: _pos.searchMemory(q, { limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Tasks ─────────────────────────────────────────────────────────
+router.post("/personal/tasks",              (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const t = _pos.createTask(req.body || {}); if (t.ok === false) return res.status(400).json({ success: false, error: t.error }); res.status(201).json({ success: true, task: t }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/tasks",               (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const { status, priority, goalId, overdue, limit } = req.query; res.json({ success: true, tasks: _pos.listTasks({ status, priority, goalId, overdue: overdue === "1", limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/tasks/:id",           (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const t = _pos.getTask(req.params.id); if (!t) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, task: t }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/personal/tasks/:id",         (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.updateTask(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, task: r.task }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/personal/tasks/:id/complete", (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.completeTask(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, task: r.task }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/personal/tasks/:id",        (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.deleteTask(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Notes ─────────────────────────────────────────────────────────
+router.post("/personal/notes",              (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const n = _pos.createNote(req.body || {}); if (n.ok === false) return res.status(400).json({ success: false, error: n.error }); res.status(201).json({ success: true, note: n }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/notes",               (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const { search, pinned, limit } = req.query; res.json({ success: true, notes: _pos.listNotes({ search, pinned: pinned === "1" ? true : pinned === "0" ? false : undefined, limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/notes/:id",           (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const n = _pos.getNote(req.params.id); if (!n) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, note: n }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/personal/notes/:id",         (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.updateNote(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, note: r.note }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/personal/notes/:id",        (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.deleteNote(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Reminders ─────────────────────────────────────────────────────
+router.post("/personal/reminders",                      (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.createReminder(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, reminder: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/reminders",                       (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const { status, upcoming, limit } = req.query; res.json({ success: true, reminders: _pos.listReminders({ status, upcoming: upcoming === "1", limit: limit ? parseInt(limit) : 20 }), due: _pos.getDueReminders() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/personal/reminders/:id/dismiss",          (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.dismissReminder(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, reminder: r.reminder }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/personal/reminders/:id/snooze",           (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.snoozeReminder(req.params.id, parseInt(req.body?.mins) || 30); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, reminder: r.reminder, snoozedUntil: r.snoozedUntil }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Knowledge Base ────────────────────────────────────────────────
+router.post("/personal/knowledge",          (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.addKnowledge(req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, entry: r.entry }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/knowledge",           (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const { category, search, limit } = req.query; res.json({ success: true, entries: search ? _pos.searchKnowledge(search, { category, limit: limit ? parseInt(limit) : 20 }) : _pos.listKnowledge({ category, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/personal/knowledge/:key",      (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const e = _pos.getKnowledge(req.params.key); if (!e) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, entry: e }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/personal/knowledge/:key",   (req, res) => { if (!_pos) return res.status(503).json({ success: false, error: "personalOS unavailable" }); try { const r = _pos.deleteKnowledge(req.params.key); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Business AI OS ────────────────────────────────────────────────
+const _bos = (() => { try { return require("../../agents/runtime/businessOS.cjs"); } catch { return null; } })();
+
+// Leads
+router.post("/business/leads",                      (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.createLead(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, lead: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/leads",                       (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { status, source, assignee, minScore, limit } = req.query; res.json({ success: true, leads: _bos.listLeads({ status, source, assignee, minScore: minScore ? Number(minScore) : undefined, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/leads/:id",                   (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const l = _bos.getLead(req.params.id); if (!l) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, lead: l }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/business/leads/:id",                 (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.updateLead(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, lead: r.lead }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/leads/:id/qualify",          (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.qualifyLead(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, lead: r.lead }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/leads/:id/disqualify",       (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.disqualifyLead(req.params.id, req.body?.reason || ""); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, lead: r.lead }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/business/leads/:id",                (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.deleteLead(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Contacts
+router.post("/business/contacts",                   (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.createContact(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, contact: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/contacts",                    (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { company, search, limit } = req.query; res.json({ success: true, contacts: search ? _bos.searchContacts(search, { limit: limit ? parseInt(limit) : 20 }) : _bos.listContacts({ company, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/contacts/:id",                (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const c = _bos.getContact(req.params.id); if (!c) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, contact: c }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/business/contacts/:id",              (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.updateContact(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, contact: r.contact }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/business/contacts/:id",             (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.deleteContact(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Opportunities
+router.post("/business/opportunities",              (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.createOpportunity(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, opportunity: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/opportunities",               (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { stage, assignee, minValue, limit } = req.query; res.json({ success: true, opportunities: _bos.listOpportunities({ stage, assignee, minValue: minValue ? Number(minValue) : undefined, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/opportunities/:id",           (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const o = _bos.getOpportunity(req.params.id); if (!o) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, opportunity: o }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/business/opportunities/:id",         (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.updateOpportunity(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, opportunity: r.opportunity }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/opportunities/:id/advance",  (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.advanceStage(req.params.id, req.body?.stage || ""); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, opportunity: r.opportunity }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/opportunities/:id/close-won",(req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.closeWon(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, opportunity: r.opportunity }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/opportunities/:id/close-lost",(req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.closeLost(req.params.id, req.body?.reason || ""); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, opportunity: r.opportunity }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Campaigns
+router.post("/business/campaigns",                  (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.createCampaign(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, campaign: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/campaigns",                   (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { status, channel, limit } = req.query; res.json({ success: true, campaigns: _bos.listCampaigns({ status, channel, limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/campaigns/:id",               (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const c = _bos.getCampaign(req.params.id); if (!c) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, campaign: c }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/business/campaigns/:id",             (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.updateCampaign(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, campaign: r.campaign }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/campaigns/:id/event",        (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.recordCampaignEvent(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, metrics: r.metrics }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/business/campaigns/:id/complete",     (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.completeCampaign(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, campaign: r.campaign }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Revenue
+router.post("/business/revenue",                    (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const r = _bos.recordRevenue(req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, record: r.record }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/revenue",                     (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { type, dateFrom, dateTo, oppId, limit } = req.query; res.json({ success: true, revenue: _bos.listRevenue({ type, dateFrom, dateTo, oppId, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/revenue/stats",               (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { dateFrom, dateTo, currency } = req.query; res.json({ success: true, ..._bos.getRevenueStats({ dateFrom, dateTo, currency }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Summaries & search
+router.get("/business/dashboard",                   (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { res.json({ success: true, ..._bos.getBusinessDashboard() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/summary/daily",               (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { res.json({ success: true, ..._bos.getDailySummary(req.query.date) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/summary/weekly",              (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { res.json({ success: true, ..._bos.getWeeklySummary(req.query.weekStart) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/pipeline",                    (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { res.json({ success: true, ..._bos.getPipelineSummary() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/search",                      (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { const { q, limit } = req.query; if (!q) return res.status(400).json({ success: false, error: "q required" }); res.json({ success: true, results: _bos.searchBusiness(q, { limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/business/stats",                       (req, res) => { if (!_bos) return res.status(503).json({ success: false, error: "businessOS unavailable" }); try { res.json({ success: true, ..._bos.getStats() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Developer AI OS ───────────────────────────────────────────────
+const _dos = (() => { try { return require("../../agents/runtime/developerOS.cjs"); } catch { return null; } })();
+
+// Repos
+router.post("/dev/repos",                         (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.createRepo(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, repo: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/repos",                          (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { language, status, search, limit } = req.query; res.json({ success: true, repos: search ? _dos.searchRepos(search, { limit: limit ? parseInt(limit) : 20 }) : _dos.listRepos({ language, status, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/repos/:id",                      (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.getRepo(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, repo: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/dev/repos/:id",                    (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.updateRepo(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, repo: r.repo }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/repos/:id/archive",             (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.archiveRepo(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, repo: r.repo }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Projects
+router.post("/dev/projects",                      (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.createProject(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, project: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/projects",                       (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { status, repoId, priority, limit } = req.query; res.json({ success: true, projects: _dos.listProjects({ status, repoId, priority, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/projects/:id",                   (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.getProject(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, project: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/dev/projects/:id",                 (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.updateProject(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, project: r.project }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/projects/:id/complete",         (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.completeProject(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, project: r.project }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/projects/:id/archive",          (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.archiveProject(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, project: r.project }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Issues
+router.post("/dev/issues",                        (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.createIssue(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, issue: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/issues",                         (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { status, type, priority, severity, repoId, projectId, assignee, label, limit } = req.query; res.json({ success: true, issues: _dos.listIssues({ status, type, priority, severity, repoId, projectId, assignee, label, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/issues/:id",                     (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.getIssue(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, issue: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/dev/issues/:id",                   (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.updateIssue(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, issue: r.issue }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/issues/:id/assign",             (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.assignIssue(req.params.id, req.body?.assignee || ""); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, issue: r.issue }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/issues/:id/close",              (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.closeIssue(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, issue: r.issue }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/issues/:id/reopen",             (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.reopenIssue(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, issue: r.issue }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/dev/issues/:id",                  (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.deleteIssue(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Builds
+router.post("/dev/builds",                        (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.recordBuild(req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, build: r.build }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/builds",                         (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { status, repoId, branch, trigger, limit } = req.query; res.json({ success: true, builds: _dos.listBuilds({ status, repoId, branch, trigger, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/builds/stats",                   (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { repoId, dateFrom, dateTo } = req.query; res.json({ success: true, ..._dos.getBuildStats({ repoId, dateFrom, dateTo }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/builds/:id",                     (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.getBuild(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, build: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/dev/builds/:id",                   (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.updateBuild(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, build: r.build }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Deployments
+router.post("/dev/deployments",                   (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.recordDeployment(req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, deployment: r.deployment }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/deployments",                    (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { status, repoId, environment, projectId, limit } = req.query; res.json({ success: true, deployments: _dos.listDeployments({ status, repoId, environment, projectId, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/deployments/stats",              (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { repoId, dateFrom, dateTo } = req.query; res.json({ success: true, ..._dos.getDeploymentStats({ repoId, dateFrom, dateTo }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/deployments/:id",                (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.getDeployment(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, deployment: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/dev/deployments/:id",              (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.updateDeployment(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, deployment: r.deployment }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/dev/deployments/:id/rollback",      (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const r = _dos.rollbackDeployment(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, deployment: r.deployment }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Summaries & search
+router.get("/dev/dashboard",                      (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { res.json({ success: true, ..._dos.getEngineeringDashboard() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/summary/daily",                  (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { res.json({ success: true, ..._dos.getDailySummary(req.query.date) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/summary/weekly",                 (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { res.json({ success: true, ..._dos.getWeeklySummary(req.query.weekStart) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/velocity",                       (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { days } = req.query; res.json({ success: true, ..._dos.getVelocityMetrics({ days: days ? parseInt(days) : 7 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/search",                         (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { const { q, limit } = req.query; if (!q) return res.status(400).json({ success: false, error: "q required" }); res.json({ success: true, results: _dos.searchEngineering(q, { limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/dev/stats",                          (req, res) => { if (!_dos) return res.status(503).json({ success: false, error: "developerOS unavailable" }); try { res.json({ success: true, ..._dos.getStats() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// ── Enterprise AI OS ──────────────────────────────────────────────
+const _eos = (() => { try { return require("../../agents/runtime/enterpriseOS.cjs"); } catch { return null; } })();
+
+// Organizations
+router.post("/enterprise/orgs",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.createOrg(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, org: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/orgs",                            (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { status, plan, industry, limit } = req.query; res.json({ success: true, orgs: _eos.listOrgs({ status, plan, industry, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/orgs/:id",                        (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getOrg(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, org: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/orgs/:id",                      (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updateOrg(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, org: r.org }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/orgs/:id/archive",               (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.archiveOrg(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, org: r.org }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Departments
+router.post("/enterprise/depts",                          (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.createDept(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, dept: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/depts",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, status, limit } = req.query; res.json({ success: true, depts: _eos.listDepts({ orgId, status, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/depts/:id",                       (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getDept(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, dept: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/depts/:id",                     (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updateDept(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, dept: r.dept }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/depts/:id/archive",              (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.archiveDept(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, dept: r.dept }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Teams
+router.post("/enterprise/teams",                          (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.createTeam(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, team: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/teams",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, deptId, status, type, limit } = req.query; res.json({ success: true, teams: _eos.listTeams({ orgId, deptId, status, type, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/teams/:id",                       (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getTeam(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, team: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/teams/:id",                     (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updateTeam(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, team: r.team }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/teams/:id/members",              (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.addMember(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, team: r.team }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.delete("/enterprise/teams/:id/members/:memberId",  (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.removeMember(req.params.id, req.params.memberId); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, team: r.team }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/teams/:id/archive",              (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.archiveTeam(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, team: r.team }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Roles
+router.post("/enterprise/roles",                          (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.createRole(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, role: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/roles",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, scope, status, limit } = req.query; res.json({ success: true, roles: _eos.listRoles({ orgId, scope, status, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/roles/:id",                       (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getRole(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, role: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/roles/:id",                     (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updateRole(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, role: r.role }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/roles/:id/deprecate",            (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.deprecateRole(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, role: r.role }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Permissions
+router.post("/enterprise/permissions",                    (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.grantPermission(req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, permission: r.permission }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/permissions",                     (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { memberId, roleId, orgId, resource, active, limit } = req.query; res.json({ success: true, permissions: _eos.listPermissions({ memberId, roleId, orgId, resource, active: active !== undefined ? active === "true" : undefined, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/permissions/check",               (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { memberId, resource, action } = req.query; if (!memberId || !resource || !action) return res.status(400).json({ success: false, error: "memberId, resource, action required" }); res.json({ success: true, ..._eos.checkPermission(memberId, resource, action) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/permissions/:id",                 (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getPermission(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, permission: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/permissions/:id",               (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updatePermission(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, permission: r.permission }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/permissions/:id/revoke",         (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.revokePermission(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, permission: r.permission }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Policies
+router.post("/enterprise/policies",                       (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.createPolicy(req.body || {}); if (r.ok === false) return res.status(400).json({ success: false, error: r.error }); res.status(201).json({ success: true, policy: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/policies",                        (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, type, status, enforcement, limit } = req.query; res.json({ success: true, policies: _eos.listPolicies({ orgId, type, status, enforcement, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/policies/:id",                    (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.getPolicy(req.params.id); if (!r) return res.status(404).json({ success: false, error: "not_found" }); res.json({ success: true, policy: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.patch("/enterprise/policies/:id",                  (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.updatePolicy(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, policy: r.policy }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/policies/:id/enforce",           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.enforcePolicy(req.params.id, req.body || {}); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, ...r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.post("/enterprise/policies/:id/archive",           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.archivePolicy(req.params.id); if (!r.ok) return res.status(400).json({ success: false, error: r.error }); res.json({ success: true, policy: r.policy }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Audit
+router.post("/enterprise/audit",                          (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const r = _eos.logAuditEvent(req.body || {}); res.status(201).json({ success: true, event: r }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/audit",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, actorId, action, resource, outcome, dateFrom, dateTo, limit } = req.query; res.json({ success: true, events: _eos.listAuditLog({ orgId, actorId, action, resource, outcome, dateFrom, dateTo, limit: limit ? parseInt(limit) : 50 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/audit/stats",                     (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { orgId, dateFrom, dateTo } = req.query; res.json({ success: true, ..._eos.getAuditStats({ orgId, dateFrom, dateTo }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
+// Summaries & dashboard
+router.get("/enterprise/dashboard",                       (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { res.json({ success: true, ..._eos.getEnterpriseDashboard() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/summary/daily",                   (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { res.json({ success: true, ..._eos.getDailySummary(req.query.date) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/summary/weekly",                  (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { res.json({ success: true, ..._eos.getWeeklySummary(req.query.weekStart) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/compliance/:orgId",               (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { res.json({ success: true, ..._eos.getComplianceSummary(req.params.orgId) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/search",                          (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { const { q, limit } = req.query; if (!q) return res.status(400).json({ success: false, error: "q required" }); res.json({ success: true, results: _eos.searchEnterprise(q, { limit: limit ? parseInt(limit) : 20 }) }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+router.get("/enterprise/stats",                           (req, res) => { if (!_eos) return res.status(503).json({ success: false, error: "enterpriseOS unavailable" }); try { res.json({ success: true, ..._eos.getStats() }); } catch (e) { res.status(500).json({ success: false, error: "internal_error" }); } });
+
 // ── Workflow health status ────────────────────────────────────────
 const _autoAgent = (() => { try { return require("../../agents/automationAgent.cjs"); } catch { return null; } })();
 
 router.get("/workflow/status", (req, res) => {
     if (!_autoAgent) return res.status(503).json({ success: false, error: "automationAgent unavailable" });
     try { return res.json({ success: true, ..._autoAgent.getStatus() }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.get("/workflow/log", (req, res) => {
@@ -228,7 +838,7 @@ router.get("/workflow/log", (req, res) => {
     try {
         const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 20, 100));
         return res.json({ success: true, log: _autoAgent.getLog(limit) });
-    } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    } catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 module.exports = router;

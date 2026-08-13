@@ -53,7 +53,7 @@ router.post("/runtime/dispatch", rateLimiter(30, 60_000), async (req, res) => {
         return res.json(result);
     } catch (err) {
         logger.error("[Runtime Route] dispatch error:", err.message);
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -118,7 +118,7 @@ router.post("/runtime/emergency/stop", (req, res) => {
         auditLog.recordEmergency({ action: "stop", reason, operator: req.user, emergencyId: r.emergencyId });
         return res.json({ success: true, emergencyId: r.emergencyId, alreadyActive: !r.declared });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -130,7 +130,7 @@ router.post("/runtime/quarantine/enter", (req, res) => {
         const r = governor.enterQuarantine({ reason, authorityLevel: "operator" });
         auditLog.recordEmergency({ action: "quarantine_enter", reason, operator: req.user });
         return res.json({ success: r.ok, ...r });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // POST /runtime/quarantine/exit — re-allow dispatches
@@ -140,7 +140,7 @@ router.post("/runtime/quarantine/exit", (req, res) => {
         const r = governor.exitQuarantine({ authorityLevel: "operator" });
         auditLog.recordEmergency({ action: "quarantine_exit", operator: req.user });
         return res.json({ success: r.ok, ...r });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // POST /runtime/emergency/resume — re-allow executions
@@ -152,7 +152,7 @@ router.post("/runtime/emergency/resume", (req, res) => {
         auditLog.recordEmergency({ action: "resume", operator: req.user, emergencyId: r.emergencyId });
         return res.json({ success: r.resolved ?? true, ...r });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -365,7 +365,7 @@ router.post("/runtime/recover/queue", (req, res) => {
             reason: `manual queue reconciliation — ${recovered} stale task(s)` });
         return res.json({ success: true, recovered, pending: after.filter(t => t.status === "pending").length });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -383,7 +383,7 @@ router.post("/runtime/recover/governor", (req, res) => {
             reason: `manual governor reset — was active=${before}` });
         return res.json({ success: true, message: `governor active was ${before} — restart runtime to fully reset if needed` });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -403,7 +403,7 @@ router.post("/runtime/recover/dlq", (req, res) => {
             reason: `requeued ${queued} DLQ entries` });
         return res.json({ success: true, queued, remaining: dlq.size() });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -435,7 +435,7 @@ router.post("/runtime/replay", rateLimiter(20, 60_000), (req, res) => {
         const id = replayEngine.record(chainName, goal.slice(0, 200), steps, meta || {});
         return res.json({ success: true, replayId: id });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -469,7 +469,7 @@ router.post("/runtime/simulate", rateLimiter(5, 60_000), async (req, res) => {
         const result = await failureSim.simulate(scenario);
         return res.json(result);
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -481,7 +481,7 @@ router.post("/runtime/simulate/all", rateLimiter(2, 60_000), async (req, res) =>
         const results = await failureSim.runAll({ skipSlow: req.body.skipSlow !== false });
         return res.json({ success: true, results });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -504,7 +504,7 @@ router.get("/runtime/metrics", (req, res) => {
         const data = ms.recent(n);
         return res.json({ success: true, count: data.length, dates: ms.availableDates(), data });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -533,7 +533,7 @@ router.post("/runtime/coordinator/dispatch", rateLimiter(30, 60_000), async (req
         });
         return res.json(result);
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -593,7 +593,7 @@ router.post("/runtime/verify", rateLimiter(20, 60_000), async (req, res) => {
         const verification = await verifier.verify(result, mergedProbes);
         return res.json({ success: true, ...verification });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -608,7 +608,7 @@ router.post("/runtime/recover", rateLimiter(10, 60_000), async (req, res) => {
         const result = await recovery.recover(input, originalError, { approved });
         return res.json(result);
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -665,7 +665,7 @@ router.get("/runtime/burnin/summary", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -751,7 +751,7 @@ router.get("/runtime/crashes", (req, res) => {
         });
         return res.json({ success: true, count: crashes.length, crashes });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -766,7 +766,7 @@ router.delete("/runtime/crashes", (req, res) => {
         for (const f of files) { try { fs.unlinkSync(path.join(crashDir, f)); } catch {} }
         return res.json({ success: true, deleted: files.length });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -797,7 +797,7 @@ router.get("/runtime/startup/diagnostics", (req, res) => {
         // Adapter availability
         const adapters = ["terminalExecutionAdapter", "browserExecutionAdapter", "processLifecycleAdapter", "filesystemExecutionAdapter"].map(name => {
             try { require(`../../agents/runtime/adapters/${name}.cjs`); return { adapter: name, loaded: true }; }
-            catch (e) { return { adapter: name, loaded: false, reason: e.message.slice(0, 60) }; }
+            catch (e) { return { adapter: name, loaded: false, reason: "load_error" }; }
         });
 
         // Uptime since server start
@@ -827,7 +827,7 @@ router.get("/runtime/startup/diagnostics", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -894,7 +894,7 @@ router.get("/runtime/release-checklist", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -933,7 +933,7 @@ router.get("/runtime/telemetry/startup", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1000,7 +1000,7 @@ router.post("/runtime/survivability/baseline", rateLimiter(10, 60_000), (req, re
         logger.info(`[Survivability] baseline captured: ${name}`);
         return res.json({ success: true, name, baseline: snap });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1010,7 +1010,7 @@ router.get("/runtime/survivability/baselines", (req, res) => {
         const baselines = _loadBaselines();
         return res.json({ success: true, count: Object.keys(baselines).length, baselines });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1054,7 +1054,7 @@ router.get("/runtime/survivability/compare/:name", (req, res) => {
             healthy: warnings.length === 0,
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1083,7 +1083,7 @@ router.get("/runtime/rollback/status", (req, res) => {
             const fp = path.join(dataDir, f);
             if (!fs.existsSync(fp)) return { file: f, ok: false, reason: "missing" };
             try { JSON.parse(fs.readFileSync(fp, "utf8")); return { file: f, ok: true }; }
-            catch (e) { return { file: f, ok: false, reason: "corrupt: " + e.message.slice(0, 60) }; }
+            catch (e) { return { file: f, ok: false, reason: "corrupt" }; }
         });
 
         // Deploy meta mismatch check
@@ -1125,7 +1125,7 @@ router.get("/runtime/rollback/status", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1151,7 +1151,7 @@ router.post("/runtime/rollback/config-backup", rateLimiter(5, 60_000), (req, res
                 fs.copyFileSync(src, dst);
                 return { file: f, ok: true, backup: path.basename(dst) };
             } catch (e) {
-                return { file: f, ok: false, reason: e.message.slice(0, 80) };
+                return { file: f, ok: false, reason: "load_error" };
             }
         });
 
@@ -1159,7 +1159,7 @@ router.post("/runtime/rollback/config-backup", rateLimiter(5, 60_000), (req, res
         logger.info(`[Rollback] config-backup label=${label} files=${results.length} allOk=${allOk}`);
         return res.json({ success: true, label, stamp, results });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1198,7 +1198,7 @@ router.post("/runtime/rollback/config-restore", rateLimiter(5, 60_000), (req, re
                 fs.copyFileSync(src, dst);
                 results.push({ file: f, ok: true, restored: latest });
             } catch (e) {
-                results.push({ file: f, ok: false, reason: e.message.slice(0, 80) });
+                results.push({ file: f, ok: false, reason: "load_error" });
             }
         }
 
@@ -1207,7 +1207,7 @@ router.post("/runtime/rollback/config-restore", rateLimiter(5, 60_000), (req, re
         auditLog.recordEmergency({ action: "config_restore", reason: `label=${label}`, operator: req.user });
         return res.json({ success: allOk, label, results });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1249,7 +1249,7 @@ router.get("/runtime/rollback/backup-integrity", (req, res) => {
                 const stat = fs.statSync(fp);
                 return { file: f, ok: true, sizeBytes: stat.size, mtime: stat.mtime.toISOString() };
             } catch (e) {
-                return { file: f, ok: false, reason: e.message.slice(0, 60) };
+                return { file: f, ok: false, reason: "load_error" };
             }
         });
 
@@ -1261,7 +1261,7 @@ router.get("/runtime/rollback/backup-integrity", (req, res) => {
             backups: results.slice(0, 50),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1279,7 +1279,7 @@ router.post("/runtime/rollback/startup-reset", rateLimiter(5, 60_000), (req, res
         auditLog.recordEmergency({ action: "startup_counter_reset", reason: "operator_reset", operator: req.user });
         return res.json({ success: true, before });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1365,7 +1365,7 @@ router.get("/runtime/mvp-readiness", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1419,7 +1419,7 @@ router.get("/runtime/release-manifest", (req, res) => {
 
         return res.json(manifest);
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1532,7 +1532,7 @@ router.get("/runtime/beta-candidate", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1578,7 +1578,7 @@ router.get("/runtime/install/check", (req, res) => {
         ];
         const moduleChecks = coreModules.map(m => {
             try { require(path.join(root, m)); return { module: m, ok: true }; }
-            catch (e) { return { module: m, ok: false, error: e.message.slice(0, 80) }; }
+            catch (e) { return { module: m, ok: false, error: "load_error" }; }
         });
         const modulesOk = moduleChecks.every(c => c.ok);
         checks.push({ item: "core_modules", ok: modulesOk, modules: moduleChecks, repair: modulesOk ? null : "Run: npm install — some module dependencies missing" });
@@ -1602,7 +1602,7 @@ router.get("/runtime/install/check", (req, res) => {
             safeResetNote: "To perform a safe reset: DELETE data/task-queue.json and data/dead-letter.json, then restart the server. Existing work will be lost.",
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1678,7 +1678,7 @@ router.get("/runtime/diagnostics/bundle", (req, res) => {
 
         return res.json(bundle);
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1706,7 +1706,7 @@ router.get("/runtime/release-manifest/verify", (req, res) => {
                 JSON.parse(content); // validate parseable
                 return { file: f, ok: true, sha256, sizeBytes: content.length };
             } catch (e) {
-                return { file: f, ok: false, reason: e.message.slice(0, 60) };
+                return { file: f, ok: false, reason: "load_error" };
             }
         });
 
@@ -1730,7 +1730,7 @@ router.get("/runtime/release-manifest/verify", (req, res) => {
             ts: new Date().toISOString(),
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1840,7 +1840,7 @@ router.get("/runtime/analytics", (req, res) => {
             },
         });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1883,7 +1883,7 @@ router.get("/runtime/memory/growth", (req, res) => {
         const anyConcerning = Object.values(comparisons).some(c => c.concerning);
         return res.json({ ok: !anyConcerning, current, comparisons, recommendation: anyConcerning ? "Memory growth detected. Consider pm2 restart if heap exceeds 450MB." : "Memory growth within normal bounds." });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1913,7 +1913,7 @@ router.post("/runtime/feedback", rateLimiter(20, 60_000), (req, res) => {
         logger.info(`[Feedback] category=${entry.category} len=${entry.message.length}`);
         return res.json({ success: true });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1927,7 +1927,7 @@ router.get("/runtime/feedback", (req, res) => {
         try { log = JSON.parse(fs.readFileSync(fbFile, "utf8")); } catch {}
         return res.json({ success: true, count: log.length, entries: log.slice(0, 50) });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -1956,7 +1956,7 @@ router.post("/runtime/sessions", rateLimiter(20, 60_000), (req, res) => {
     try {
         const session = engSession.create(goal, meta);
         return res.json({ success: true, session });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // GET /runtime/sessions — list sessions
@@ -2028,7 +2028,7 @@ router.post("/runtime/continuity/evaluate", rateLimiter(20, 60_000), async (req,
     try {
         const decision = await crossWfCont.evaluateContinuation(sequenceId, currentIndex || 0, sessionId, lastResult || {});
         return res.json({ success: true, ...decision });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Adapter context bridge ────────────────────────────────────────────────────
@@ -2086,7 +2086,7 @@ router.post("/runtime/deps/validate", rateLimiter(10, 60_000), async (req, res) 
     try {
         const result = await depGraph.validateDeps(chainName);
         return res.json({ success: true, chainName, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Autonomous continuation ───────────────────────────────────────────────────
@@ -2146,7 +2146,7 @@ router.post("/runtime/chains/score", rateLimiter(20, 60_000), (req, res) => {
     try {
         const result = chainScorer.scoreChain(steps);
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Adapter self-healing ──────────────────────────────────────────────────────
@@ -2192,7 +2192,7 @@ router.get("/runtime/safety/audit", rateLimiter(5, 60_000), async (req, res) => 
     try {
         const result = await safetyAudit.runAudit();
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Timeline intelligence ─────────────────────────────────────────────────────
@@ -2291,7 +2291,7 @@ router.get("/runtime/health/matrix", (req, res) => {
     try {
         const matrix = healthMatrix.compute();
         return res.status(matrix.grade === "F" ? 503 : 200).json({ success: true, ...matrix });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 423: Deployment Recovery Flows ─────────────────────────────────────
@@ -2392,7 +2392,7 @@ router.post("/runtime/forensics", rateLimiter(60, 60_000), (req, res) => {
             case "causality-chain":     forensics.recordCausalityChain(req.body.chain, req.body.sessionId); break;
         }
         return res.json({ success: true, type });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 429: Autonomous Maintenance ────────────────────────────────────────
@@ -2411,7 +2411,7 @@ router.post("/runtime/maintenance/run", rateLimiter(10, 60_000), async (req, res
     try {
         const result = await maintenance.run(taskName);
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // POST /runtime/maintenance/run-all — run all safe maintenance tasks
@@ -2420,7 +2420,7 @@ router.post("/runtime/maintenance/run-all", rateLimiter(3, 60_000), async (req, 
     try {
         const results = await maintenance.runAll();
         return res.json({ success: true, results });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 430: Context Snapshots ─────────────────────────────────────────────
@@ -2446,7 +2446,7 @@ router.post("/runtime/context/snapshot", rateLimiter(20, 60_000), (req, res) => 
     try {
         const snap = ctxSnapshot.capture(sessionId);
         return res.json({ success: true, snapshot: snap });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // DELETE /runtime/context/snapshot — clear snapshot (after session abandoned)
@@ -2468,7 +2468,7 @@ router.post("/runtime/validate/cross-system", rateLimiter(10, 60_000), async (re
     try {
         const result = await crossValidator.validate(opts);
         return res.status(result.consistent ? 200 : 409).json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 432: Execution Recovery Memory ─────────────────────────────────────
@@ -2503,7 +2503,7 @@ router.post("/runtime/recovery-memory", rateLimiter(30, 60_000), (req, res) => {
             default: return res.status(400).json({ success: false, error: "type must be: validated-path|failed-pattern|unstable-chain|repair-sequence" });
         }
         return res.json({ success: true, type });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 434: Production Safety Audit ───────────────────────────────────────
@@ -2516,7 +2516,7 @@ router.get("/runtime/safety/production-audit", rateLimiter(5, 60_000), async (re
     try {
         const result = await prodAudit.runProductionAudit();
         return res.status(result.productionReady ? 200 : 503).json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 436-450: Daily Engineering Operator routes ──────────────────────────
@@ -2535,7 +2535,7 @@ router.get("/runtime/workspace", (req, res) => {
     if (!workspace) return res.status(503).json({ success: false, error: "workspace_unavailable" });
     try {
         return res.json({ success: true, workspace: workspace.getWorkspace() });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // POST /runtime/workspace/pin — pin a workflow to workspace
@@ -2635,7 +2635,7 @@ router.post("/runtime/knowledge", rateLimiter(20, 60_000), (req, res) => {
             default: return res.status(400).json({ success: false, error: `kind must be one of: ${knowledgeMem.KINDS.join(", ")}` });
         }
         return res.json({ success: true, kind });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 445: Operational Search ────────────────────────────────────────────
@@ -2680,7 +2680,7 @@ router.post("/runtime/failure/assess", rateLimiter(30, 60_000), (req, res) => {
             pressure:       pressure  || null,
         });
         return res.json({ success: true, ...assessment });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // POST /runtime/failure/assess-chain — assess a sequence of step outcomes
@@ -2690,7 +2690,7 @@ router.post("/runtime/failure/assess-chain", rateLimiter(20, 60_000), (req, res)
     if (!steps.length) return res.status(400).json({ success: false, error: "steps array required" });
     try {
         return res.json({ success: true, ...failIntel.assessChain(steps) });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 451: Multi-Operator Sessions ───────────────────────────────────────
@@ -2705,7 +2705,7 @@ router.post("/runtime/operators/:operatorId/sessions", rateLimiter(20, 60_000), 
     try {
         const s = multiOp.createSession(operatorId, goal, req.body.meta || {});
         return res.json({ success: true, session: s });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.get("/runtime/operators/:operatorId/sessions", (req, res) => {
@@ -2838,7 +2838,7 @@ router.post("/runtime/analytics/record", rateLimiter(120, 60_000), (req, res) =>
             default: return res.status(400).json({ success: false, error: `type must be: ${opAnalytics.EVENT_TYPES.join("|")}` });
         }
         return res.json({ success: true });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 459: Replay Export ──────────────────────────────────────────────────
@@ -2921,7 +2921,7 @@ router.post("/runtime/accounts", rateLimiter(20, 60_000), (req, res) => {
     try {
         const result = localAccounts.upsertAccount(name, req.body);
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.get("/runtime/accounts/:nameOrId", (req, res) => {
@@ -2983,7 +2983,7 @@ router.post("/runtime/sync/enqueue", rateLimiter(30, 60_000), (req, res) => {
     try {
         cloudSync.enqueue(type, entityId, payload, { operatorId });
         return res.json({ success: true });
-    } catch (err) { return res.status(400).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(400).json({ success: false, error: "internal_error" }); }
 });
 
 router.post("/runtime/sync/enable", rateLimiter(5, 60_000), (req, res) => {
@@ -3013,7 +3013,7 @@ router.post("/runtime/workspaces", rateLimiter(10, 60_000), (req, res) => {
     try {
         const result = projectWorkspace.createWorkspace(name, req.body);
         return res.status(result.created ? 200 : 400).json({ success: result.created, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.post("/runtime/workspaces/switch", rateLimiter(10, 60_000), (req, res) => {
@@ -3075,7 +3075,7 @@ router.post("/runtime/pipelines/:name/runs", rateLimiter(10, 60_000), (req, res)
             dryRun:     req.body.dryRun     === true,
         });
         return res.status(result.created ? 200 : 400).json({ success: result.created, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.get("/runtime/pipelines/runs", (req, res) => {
@@ -3111,7 +3111,7 @@ router.get("/runtime/saas-readiness", rateLimiter(5, 60_000), async (req, res) =
     try {
         const result = await saasAudit.runSaasAudit();
         return res.status(result.saasReady ? 200 : 503).json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 481: Operator Onboarding ───────────────────────────────────────────
@@ -3129,7 +3129,7 @@ router.post("/runtime/onboarding/run", rateLimiter(5, 60_000), async (req, res) 
     try {
         const result = await onboarding.runOnboarding(operatorId);
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 router.post("/runtime/onboarding/reset", rateLimiter(3, 60_000), (req, res) => {
@@ -3552,7 +3552,7 @@ router.get("/runtime/environment", rateLimiter(10, 60_000), async (req, res) => 
     try {
         const result = envDetector.detect();
         return res.json({ success: true, ...result });
-    } catch (err) { return res.status(500).json({ success: false, error: err.message }); }
+    } catch (err) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // ── Phase 514: Workflow Marketplace ──────────────────────────────────────────
@@ -4150,7 +4150,686 @@ router.post("/runtime/patches/:id/verify", rateLimiter(10, 60_000), async (req, 
         });
         return res.json({ success: result.ok, ...result });
     } catch (err) {
-        return res.status(500).json({ success: false, error: err.message });
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// V2 Phase 1 — Pipeline Orchestrator (Plan → Code → Patch → Test)
+const _pipelineOrch = (() => { try { return require("../../agents/dev/pipelineOrchestrator.cjs"); } catch { return null; } })();
+
+router.post("/runtime/pipeline/run-multi", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    if (typeof _pipelineOrch.runMulti !== "function") return res.status(503).json({ success: false, error: "runMulti_unavailable" });
+    const { request, autoApply = true, autoRollback = true, autoDeploy = true, testCommand, operatorId } = req.body || {};
+    if (!request?.trim()) return res.status(400).json({ success: false, error: "request is required" });
+    try {
+        const trace = await _pipelineOrch.runMulti(request, { autoApply, autoRollback, autoDeploy, testCommand, operatorId });
+        return res.json({ success: trace.ok, ...trace });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+router.post("/runtime/pipeline/run", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    const { request, autoApply = true, autoRollback = true, autoDeploy = true, testCommand, operatorId } = req.body || {};
+    if (!request?.trim()) return res.status(400).json({ success: false, error: "request is required" });
+    try {
+        const trace = await _pipelineOrch.run(request, { autoApply, autoRollback, autoDeploy, testCommand, operatorId });
+        return res.json({ success: trace.ok, ...trace });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/pipeline/deploy — standalone deploy: restart PM2, verify health, auto-rollback on failure
+router.post("/runtime/pipeline/deploy", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    if (typeof _pipelineOrch.deploy !== "function") return res.status(503).json({ success: false, error: "deploy_unavailable" });
+    const { autoRollback = true, operatorId = "operator" } = req.body || {};
+    try {
+        const result = await _pipelineOrch.deploy({ autoRollback, operatorId });
+        return res.json({ success: result.ok, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/pipeline/rollback — standalone rollback to a specific git HEAD
+router.post("/runtime/pipeline/rollback", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pipelineOrch) return res.status(503).json({ success: false, error: "pipelineOrchestrator_unavailable" });
+    if (typeof _pipelineOrch.rollback !== "function") return res.status(503).json({ success: false, error: "rollback_unavailable" });
+    const { gitHead, operatorId = "operator" } = req.body || {};
+    if (!gitHead?.trim()) return res.status(400).json({ success: false, error: "gitHead is required" });
+    try {
+        const result = await _pipelineOrch.rollback(gitHead, { operatorId });
+        return res.json({ success: result.ok, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V2 Phase 4: Multi-step project execution ──────────────────────────────
+const _projectRunner = (() => { try { return require("../../agents/dev/projectRunner.cjs"); } catch { return null; } })();
+
+// POST /runtime/project/run — decompose goal → sequential pipeline runs → final report
+router.post("/runtime/project/run", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    const {
+        goal,
+        autoApply    = true,
+        autoRollback = true,
+        autoDeploy   = false,
+        deployAtEnd  = true,
+        testCommand,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!goal?.trim()) return res.status(400).json({ success: false, error: "goal is required" });
+    try {
+        const report = await _projectRunner.runProject(goal, { autoApply, autoRollback, autoDeploy, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: report.ok, ...report });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/project/runs — list recent project runs
+router.get("/runtime/project/runs", rateLimiter(20, 60_000), (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    const limit  = Math.min(parseInt(req.query.limit) || 20, 50);
+    const status = req.query.status;
+    try {
+        return res.json({ success: true, runs: _projectRunner.listProjects({ limit, status }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/project/runs/:projectId — get a specific project run
+router.get("/runtime/project/runs/:projectId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    try {
+        const run = _projectRunner.getProject(req.params.projectId);
+        if (!run) return res.status(404).json({ success: false, error: "project_not_found" });
+        return res.json({ success: true, ...run });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/project/runs/:projectId/pause — signal running project to stop after current task
+router.post("/runtime/project/runs/:projectId/pause", rateLimiter(10, 60_000), (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    try {
+        const result = _projectRunner.pauseProject(req.params.projectId);
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        return res.json({ success: true, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/project/runs/:projectId/resume — continue a paused project from remaining tasks
+router.post("/runtime/project/runs/:projectId/resume", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    const { autoApply = true, autoRollback = true, autoDeploy = false, deployAtEnd = true, testCommand, operatorId = "operator" } = req.body || {};
+    try {
+        const report = await _projectRunner.resumeProject(req.params.projectId, { autoApply, autoRollback, autoDeploy, deployAtEnd, testCommand, operatorId });
+        if (!report.ok && report.error) return res.status(400).json({ success: false, error: report.error });
+        return res.json({ success: report.ok, ...report });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/project/runs/:projectId/cancel — permanently cancel; marks all pending tasks cancelled
+router.post("/runtime/project/runs/:projectId/cancel", rateLimiter(10, 60_000), (req, res) => {
+    if (!_projectRunner) return res.status(503).json({ success: false, error: "projectRunner_unavailable" });
+    try {
+        const result = _projectRunner.cancelProject(req.params.projectId);
+        if (!result.ok) return res.status(400).json({ success: false, error: result.error });
+        return res.json({ success: true, ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 1: Product Blueprint Generator ───────────────────────────────
+const _blueprintGen = (() => { try { return require("../../agents/dev/blueprintGenerator.cjs"); } catch { return null; } })();
+
+// POST /runtime/blueprint/generate — business idea → product blueprint + task graph
+router.post("/runtime/blueprint/generate", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_blueprintGen) return res.status(503).json({ success: false, error: "blueprintGenerator_unavailable" });
+    const { idea, buildTaskGraph = true } = req.body || {};
+    if (!idea?.trim()) return res.status(400).json({ success: false, error: "idea is required" });
+    try {
+        const blueprint = await _blueprintGen.generateBlueprint(idea, { buildTaskGraph });
+        return res.json({ success: true, ...blueprint });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/blueprint/list — list recent blueprints
+router.get("/runtime/blueprint/list", rateLimiter(20, 60_000), (req, res) => {
+    if (!_blueprintGen) return res.status(503).json({ success: false, error: "blueprintGenerator_unavailable" });
+    const limit = Math.min(parseInt(req.query.limit) || 20, 30);
+    try {
+        return res.json({ success: true, blueprints: _blueprintGen.listBlueprints({ limit }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/blueprint/:blueprintId — get a specific blueprint
+router.get("/runtime/blueprint/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_blueprintGen) return res.status(503).json({ success: false, error: "blueprintGenerator_unavailable" });
+    try {
+        const bp = _blueprintGen.getBlueprint(req.params.blueprintId);
+        if (!bp) return res.status(404).json({ success: false, error: "blueprint_not_found" });
+        return res.json({ success: true, ...bp });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/blueprint/:blueprintId/run — execute a stored blueprint as a project
+router.post("/runtime/blueprint/:blueprintId/run", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_blueprintGen) return res.status(503).json({ success: false, error: "blueprintGenerator_unavailable" });
+    const { autoApply = true, autoRollback = true, autoDeploy = false, deployAtEnd = true, testCommand, operatorId = "operator" } = req.body || {};
+    try {
+        const report = await _blueprintGen.runBlueprint(req.params.blueprintId, { autoApply, autoRollback, autoDeploy, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: report.ok, ...report });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 2: Repository Skeleton Generator ─────────────────────────────
+const _skelGen = (() => { try { return require("../../agents/dev/repoSkeletonGenerator.cjs"); } catch { return null; } })();
+
+// POST /runtime/skeleton/generate — blueprint → repo skeleton written to targetDir
+router.post("/runtime/skeleton/generate", rateLimiter(5, 60_000), (req, res) => {
+    if (!_skelGen) return res.status(503).json({ success: false, error: "skeletonGenerator_unavailable" });
+    const { blueprintId, targetDir, overwrite = false } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    if (!targetDir?.trim())   return res.status(400).json({ success: false, error: "targetDir is required" });
+    try {
+        const record = _skelGen.generateSkeleton(blueprintId, targetDir, { overwrite });
+        return res.json({ success: record.errors.length === 0, ...record });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/skeleton/list — list recent skeleton runs
+router.get("/runtime/skeleton/list", rateLimiter(20, 60_000), (req, res) => {
+    if (!_skelGen) return res.status(503).json({ success: false, error: "skeletonGenerator_unavailable" });
+    const limit = Math.min(parseInt(req.query.limit) || 20, 20);
+    try {
+        return res.json({ success: true, skeletons: _skelGen.listSkeletons({ limit }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/skeleton/:id — get a specific skeleton manifest (by skeletonId or blueprintId)
+router.get("/runtime/skeleton/:id", rateLimiter(20, 60_000), (req, res) => {
+    if (!_skelGen) return res.status(503).json({ success: false, error: "skeletonGenerator_unavailable" });
+    try {
+        const sk = _skelGen.getSkeleton(req.params.id);
+        if (!sk) return res.status(404).json({ success: false, error: "skeleton_not_found" });
+        return res.json({ success: true, ...sk });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/skeleton/preview — return skeleton manifest WITHOUT writing to disk
+router.post("/runtime/skeleton/preview", rateLimiter(10, 60_000), (req, res) => {
+    if (!_skelGen || !_blueprintGen) return res.status(503).json({ success: false, error: "generators_unavailable" });
+    const { blueprintId } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const bp = _blueprintGen.getBlueprint(blueprintId);
+        if (!bp) return res.status(404).json({ success: false, error: "blueprint_not_found" });
+        const skeleton = _skelGen.blueprintToSkeleton(bp);
+        // Return manifest without content (large field) for efficient preview
+        return res.json({
+            success:     true,
+            productName: skeleton.productName,
+            blueprintId: skeleton.blueprintId,
+            stats:       skeleton.stats,
+            dirs:        skeleton.dirs,
+            files:       skeleton.files.map(f => ({ filePath: f.filePath, layer: f.layer, bytes: Buffer.byteLength(f.content, "utf8") })),
+        });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 3: Feature Factory ───────────────────────────────────────────────
+const _featFac = (() => { try { return require("../../agents/dev/featureFactory.cjs"); } catch { return null; } })();
+
+// POST /runtime/feature/plan — generate implementation task graph for one feature (no execution)
+router.post("/runtime/feature/plan", rateLimiter(10, 60_000), async (req, res) => {
+    if (!_featFac) return res.status(503).json({ success: false, error: "featureFactory_unavailable" });
+    const { featureId, blueprintId, useAI = true } = req.body || {};
+    if (!featureId?.trim())   return res.status(400).json({ success: false, error: "featureId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const plan = await _featFac.planFeature(featureId, blueprintId, { useAI });
+        return res.json({ success: true, ...plan });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/feature/implement — plan + execute a single feature through projectRunner
+router.post("/runtime/feature/implement", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_featFac) return res.status(503).json({ success: false, error: "featureFactory_unavailable" });
+    const {
+        featureId, blueprintId,
+        useAI        = true,
+        autoApply    = true,
+        autoRollback = true,
+        deployAtEnd  = false,
+        testCommand,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!featureId?.trim())   return res.status(400).json({ success: false, error: "featureId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _featFac.implementFeature(featureId, blueprintId,
+            { useAI, autoApply, autoRollback, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: result.featureManifest.status === "implemented", ...result.featureManifest, projectRun: result.projectRun });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/feature/implement-all — implement every feature in a blueprint sequentially
+router.post("/runtime/feature/implement-all", rateLimiter(2, 60_000), async (req, res) => {
+    if (!_featFac) return res.status(503).json({ success: false, error: "featureFactory_unavailable" });
+    const { blueprintId, useAI = true, autoApply = true, autoRollback = true, operatorId = "operator" } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _featFac.implementAllFeatures(blueprintId, { useAI, autoApply, autoRollback, operatorId });
+        return res.json({ success: result.results.every(r => r.status === "implemented"), ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/feature/list/:blueprintId — list feature manifests for a blueprint
+router.get("/runtime/feature/list/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_featFac) return res.status(503).json({ success: false, error: "featureFactory_unavailable" });
+    try {
+        return res.json({ success: true, features: _featFac.listFeatures(req.params.blueprintId) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/feature/:blueprintId/:featureId — get one feature manifest
+router.get("/runtime/feature/:blueprintId/:featureId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_featFac) return res.status(503).json({ success: false, error: "featureFactory_unavailable" });
+    try {
+        const feat = _featFac.getFeature(req.params.featureId, req.params.blueprintId);
+        if (!feat) return res.status(404).json({ success: false, error: "feature_not_found" });
+        return res.json({ success: true, ...feat });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 4: API Factory ───────────────────────────────────────────────────
+const _apiFactory = (() => { try { return require("../../agents/dev/apiFactory.cjs"); } catch { return null; } })();
+
+// POST /runtime/api/plan — build implementation task graph for one API (no execution)
+router.post("/runtime/api/plan", rateLimiter(20, 60_000), (req, res) => {
+    if (!_apiFactory) return res.status(503).json({ success: false, error: "apiFactory_unavailable" });
+    const { apiId, blueprintId } = req.body || {};
+    if (!apiId?.trim())       return res.status(400).json({ success: false, error: "apiId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const plan = _apiFactory.planApi(apiId, blueprintId);
+        return res.json({ success: true, ...plan });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/api/implement — plan + execute a single API endpoint
+router.post("/runtime/api/implement", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_apiFactory) return res.status(503).json({ success: false, error: "apiFactory_unavailable" });
+    const {
+        apiId, blueprintId,
+        autoApply    = true,
+        autoRollback = true,
+        deployAtEnd  = false,
+        testCommand,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!apiId?.trim())       return res.status(400).json({ success: false, error: "apiId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _apiFactory.implementApi(apiId, blueprintId,
+            { autoApply, autoRollback, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: result.apiManifest.status === "implemented", ...result.apiManifest, projectRun: result.projectRun });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/api/implement-all — implement every API in a blueprint (grouped by route file)
+router.post("/runtime/api/implement-all", rateLimiter(2, 60_000), async (req, res) => {
+    if (!_apiFactory) return res.status(503).json({ success: false, error: "apiFactory_unavailable" });
+    const { blueprintId, autoApply = true, autoRollback = true, operatorId = "operator" } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _apiFactory.implementAllApis(blueprintId, { autoApply, autoRollback, operatorId });
+        return res.json({ success: result.groups.every(g => g.status === "implemented"), ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/api/list/:blueprintId — list API manifests for a blueprint
+router.get("/runtime/api/list/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_apiFactory) return res.status(503).json({ success: false, error: "apiFactory_unavailable" });
+    try {
+        return res.json({ success: true, apis: _apiFactory.listApiManifests(req.params.blueprintId) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/api/:blueprintId/:apiId — get one API manifest
+router.get("/runtime/api/:blueprintId/:apiId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_apiFactory) return res.status(503).json({ success: false, error: "apiFactory_unavailable" });
+    try {
+        const manifest = _apiFactory.getApiManifest(req.params.apiId, req.params.blueprintId);
+        if (!manifest) return res.status(404).json({ success: false, error: "api_manifest_not_found" });
+        return res.json({ success: true, ...manifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 5: Database Factory ──────────────────────────────────────────────
+const _dbFactory = (() => { try { return require("../../agents/dev/databaseFactory.cjs"); } catch { return null; } })();
+
+// POST /runtime/db/plan — build full DB task graph for a blueprint (pure, no execution)
+router.post("/runtime/db/plan", rateLimiter(20, 60_000), (req, res) => {
+    if (!_dbFactory) return res.status(503).json({ success: false, error: "databaseFactory_unavailable" });
+    const { blueprintId } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const plan = _dbFactory.planDatabase(blueprintId);
+        return res.json({ success: true, ...plan });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/db/implement — plan + execute the full database layer
+router.post("/runtime/db/implement", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_dbFactory) return res.status(503).json({ success: false, error: "databaseFactory_unavailable" });
+    const {
+        blueprintId,
+        autoApply    = true,
+        autoRollback = true,
+        deployAtEnd  = false,
+        testCommand,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _dbFactory.implementDatabase(blueprintId,
+            { autoApply, autoRollback, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: result.dbManifest.status === "implemented", ...result.dbManifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/db/manifest/:blueprintId — get stored DB manifest
+router.get("/runtime/db/manifest/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_dbFactory) return res.status(503).json({ success: false, error: "databaseFactory_unavailable" });
+    try {
+        const manifest = _dbFactory.getDatabaseManifest(req.params.blueprintId);
+        if (!manifest) return res.status(404).json({ success: false, error: "db_manifest_not_found" });
+        return res.json({ success: true, ...manifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/db/list — list recent DB manifests
+router.get("/runtime/db/list", rateLimiter(20, 60_000), (req, res) => {
+    if (!_dbFactory) return res.status(503).json({ success: false, error: "databaseFactory_unavailable" });
+    const limit = Math.min(parseInt(req.query.limit) || 20, 50);
+    try {
+        return res.json({ success: true, manifests: _dbFactory.listDatabaseManifests({ limit }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 6: Page Factory ──────────────────────────────────────────────────
+const _pageFactory = (() => { try { return require("../../agents/dev/pageFactory.cjs"); } catch { return null; } })();
+
+// POST /runtime/page/plan — build 7-task graph for one page (pure, no execution)
+router.post("/runtime/page/plan", rateLimiter(20, 60_000), (req, res) => {
+    if (!_pageFactory) return res.status(503).json({ success: false, error: "pageFactory_unavailable" });
+    const { pageId, blueprintId } = req.body || {};
+    if (!pageId?.trim())      return res.status(400).json({ success: false, error: "pageId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const plan = _pageFactory.planPage(pageId, blueprintId);
+        return res.json({ success: true, ...plan });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/page/implement — plan + execute a single page through projectRunner
+router.post("/runtime/page/implement", rateLimiter(5, 60_000), async (req, res) => {
+    if (!_pageFactory) return res.status(503).json({ success: false, error: "pageFactory_unavailable" });
+    const {
+        pageId, blueprintId,
+        autoApply    = true,
+        autoRollback = true,
+        deployAtEnd  = false,
+        testCommand,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!pageId?.trim())      return res.status(400).json({ success: false, error: "pageId is required" });
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _pageFactory.implementPage(pageId, blueprintId,
+            { autoApply, autoRollback, deployAtEnd, testCommand, operatorId });
+        return res.json({ success: result.pageManifest.status === "implemented", ...result.pageManifest, projectRun: result.projectRun });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/page/implement-all — implement every page in a blueprint sequentially
+router.post("/runtime/page/implement-all", rateLimiter(2, 60_000), async (req, res) => {
+    if (!_pageFactory) return res.status(503).json({ success: false, error: "pageFactory_unavailable" });
+    const { blueprintId, autoApply = true, autoRollback = true, operatorId = "operator" } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _pageFactory.implementAllPages(blueprintId, { autoApply, autoRollback, operatorId });
+        return res.json({ success: result.results.every(r => r.status === "implemented"), ...result });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/page/list/:blueprintId — list page manifests for a blueprint
+router.get("/runtime/page/list/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_pageFactory) return res.status(503).json({ success: false, error: "pageFactory_unavailable" });
+    try {
+        return res.json({ success: true, pages: _pageFactory.listPageManifests(req.params.blueprintId) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/page/:blueprintId/:pageId — get one page manifest
+router.get("/runtime/page/:blueprintId/:pageId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_pageFactory) return res.status(503).json({ success: false, error: "pageFactory_unavailable" });
+    try {
+        const manifest = _pageFactory.getPageManifest(req.params.pageId, req.params.blueprintId);
+        if (!manifest) return res.status(404).json({ success: false, error: "page_manifest_not_found" });
+        return res.json({ success: true, ...manifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V3 Phase 7: Product Assembly Engine ───────────────────────────────────────
+const _assembly = (() => { try { return require("../../agents/dev/productAssembly.cjs"); } catch { return null; } })();
+
+// GET /runtime/product/readiness/:blueprintId — pure cross-link verification, no execution
+router.get("/runtime/product/readiness/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_assembly) return res.status(503).json({ success: false, error: "productAssembly_unavailable" });
+    try {
+        const report = _assembly.readinessReport(req.params.blueprintId);
+        return res.json({ success: report.ok, ...report });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/product/assemble — verify + run 5 assembly tasks → product manifest
+router.post("/runtime/product/assemble", rateLimiter(3, 60_000), async (req, res) => {
+    if (!_assembly) return res.status(503).json({ success: false, error: "productAssembly_unavailable" });
+    const {
+        blueprintId,
+        autoApply    = true,
+        autoRollback = true,
+        deployAtEnd  = false,
+        operatorId   = "operator",
+    } = req.body || {};
+    if (!blueprintId?.trim()) return res.status(400).json({ success: false, error: "blueprintId is required" });
+    try {
+        const result = await _assembly.assembleProduct(blueprintId, { autoApply, autoRollback, deployAtEnd, operatorId });
+        return res.json({ success: result.productManifest.status === "assembled", ...result.productManifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/product/manifest/:blueprintId — retrieve stored product manifest
+router.get("/runtime/product/manifest/:blueprintId", rateLimiter(20, 60_000), (req, res) => {
+    if (!_assembly) return res.status(503).json({ success: false, error: "productAssembly_unavailable" });
+    try {
+        const manifest = _assembly.getProductManifest(req.params.blueprintId);
+        if (!manifest) return res.status(404).json({ success: false, error: "product_manifest_not_found" });
+        return res.json({ success: true, ...manifest });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/product/list — list recent product manifests
+router.get("/runtime/product/list", rateLimiter(20, 60_000), (req, res) => {
+    if (!_assembly) return res.status(503).json({ success: false, error: "productAssembly_unavailable" });
+    const limit = Math.min(parseInt(req.query.limit) || 20, 20);
+    try {
+        return res.json({ success: true, products: _assembly.listProductManifests({ limit }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// ── V4 Phase 1: Product Telemetry Engine ──────────────────────────────────────
+const _telemetry = (() => { try { return require("../../agents/runtime/telemetryEngine.cjs"); } catch { return null; } })();
+
+// GET /runtime/telemetry/health — current product health summary (last 60 min)
+router.get("/runtime/telemetry/health", rateLimiter(20, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const windowMins = Math.min(parseInt(req.query.window) || 60, 1440);
+    try {
+        const summary = _telemetry.getHealthSummary({ windowMins });
+        return res.json({ success: true, ...summary });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/telemetry/metrics — aggregated counters and rates
+router.get("/runtime/telemetry/metrics", rateLimiter(20, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const windowMins  = Math.min(parseInt(req.query.window) || 60, 1440);
+    const type        = req.query.type;
+    const blueprintId = req.query.blueprintId;
+    try {
+        return res.json({ success: true, ..._telemetry.getMetrics({ windowMins, type, blueprintId }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/telemetry/history — raw event stream with filters
+router.get("/runtime/telemetry/history", rateLimiter(20, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const limit       = Math.min(parseInt(req.query.limit) || 100, 500);
+    const type        = req.query.type;
+    const blueprintId = req.query.blueprintId;
+    const windowMins  = req.query.window ? Math.min(parseInt(req.query.window), 1440) : undefined;
+    try {
+        return res.json({ success: true, events: _telemetry.getHistory({ limit, type, blueprintId, windowMins }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// GET /runtime/telemetry/deploys — deploy event history
+router.get("/runtime/telemetry/deploys", rateLimiter(20, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const limit       = Math.min(parseInt(req.query.limit) || 20, 100);
+    const blueprintId = req.query.blueprintId;
+    try {
+        return res.json({ success: true, deploys: _telemetry.getDeployHistory({ limit, blueprintId }) });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/telemetry/event — manually record any telemetry event
+router.post("/runtime/telemetry/event", rateLimiter(30, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const { type, ...rest } = req.body || {};
+    if (!type?.trim()) return res.status(400).json({ success: false, error: "type is required" });
+    try {
+        let event;
+        switch (type) {
+            case "deploy":      event = _telemetry.recordDeploy(rest);      break;
+            case "api_request": event = _telemetry.recordApiRequest(rest);  break;
+            case "api_error":   event = _telemetry.recordApiError(rest);    break;
+            case "page_view":   event = _telemetry.recordPageView(rest);    break;
+            default: return res.status(400).json({ success: false, error: `Unknown event type: ${type}. Use: deploy, api_request, api_error, page_view` });
+        }
+        return res.json({ success: true, eventId: event.id, ts: event.ts });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
+    }
+});
+
+// POST /runtime/telemetry/prune — remove events older than retentionDays
+router.post("/runtime/telemetry/prune", rateLimiter(5, 60_000), (req, res) => {
+    if (!_telemetry) return res.status(503).json({ success: false, error: "telemetryEngine_unavailable" });
+    const retentionDays = Math.max(parseInt(req.body?.retentionDays) || 30, 1);
+    try {
+        const pruned = _telemetry.pruneOldEvents(retentionDays);
+        return res.json({ success: true, pruned, retentionDays });
+    } catch (err) {
+        return res.status(500).json({ success: false, error: "internal_error" });
     }
 });
 
@@ -4160,17 +4839,17 @@ router.post("/runtime/patch-sets/propose", rateLimiter(10, 60_000), (req, res) =
     if (typeof patchAssist.proposeSet !== "function") return res.status(503).json({ success: false, error: "proposeSet_unavailable" });
     const { files, reason, operatorId } = req.body || {};
     try { return res.json({ success: true, ...patchAssist.proposeSet(files, { reason, operatorId }) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.post("/runtime/patch-sets/:id/apply", rateLimiter(10, 60_000), (req, res) => {
     if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
     try { return res.json({ success: true, ...patchAssist.applySet(req.params.id, { approved: req.body?.approved, operatorId: req.body?.operatorId }) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.post("/runtime/patch-sets/:id/rollback", rateLimiter(10, 60_000), (req, res) => {
     if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
     try { return res.json({ success: true, ...patchAssist.rollbackSet(req.params.id, { approved: req.body?.approved }) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.post("/runtime/patch-sets/:id/verify", rateLimiter(10, 60_000), async (req, res) => {
     if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
@@ -4178,12 +4857,12 @@ router.post("/runtime/patch-sets/:id/verify", rateLimiter(10, 60_000), async (re
     try {
         const r = await patchAssist.verifySet(req.params.id, { command: req.body?.command, autoRollback: req.body?.autoRollback === true });
         return res.json({ success: r.ok, ...r });
-    } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    } catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/patch-sets", rateLimiter(20, 60_000), (req, res) => {
     if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
     try { return res.json({ success: true, sets: patchAssist.listSets({ status: req.query.status }) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/patch-sets/:id", rateLimiter(20, 60_000), (req, res) => {
     if (!patchAssist) return res.status(503).json({ success: false, error: "patchAssistant_unavailable" });
@@ -10817,27 +11496,27 @@ const symIntel = (() => { try { return require("../../agents/dev/symbolIntellige
 router.get("/runtime/symbols/find", rateLimiter(20, 60_000), async (req, res) => {
     if (!symIntel) return res.status(503).json({ success: false, error: "symbolIntelligence_unavailable" });
     try { return res.json({ success: true, ...(await symIntel.findSymbol(req.query.name || "")) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/symbols/references", rateLimiter(20, 60_000), async (req, res) => {
     if (!symIntel) return res.status(503).json({ success: false, error: "symbolIntelligence_unavailable" });
     try { return res.json({ success: true, ...(await symIntel.findReferences(req.query.name || "")) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/symbols/implementations", rateLimiter(20, 60_000), async (req, res) => {
     if (!symIntel) return res.status(503).json({ success: false, error: "symbolIntelligence_unavailable" });
     try { return res.json({ success: true, ...(await symIntel.findImplementations(req.query.name || "")) }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/symbols/imports", rateLimiter(20, 60_000), (req, res) => {
     if (!symIntel) return res.status(503).json({ success: false, error: "symbolIntelligence_unavailable" });
     try { return res.json({ success: true, ...symIntel.findImports(req.query.file || "") }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 router.get("/runtime/symbols/dependents", rateLimiter(20, 60_000), (req, res) => {
     if (!symIntel) return res.status(503).json({ success: false, error: "symbolIntelligence_unavailable" });
     try { return res.json({ success: true, ...symIntel.findDependents(req.query.file || "") }); }
-    catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+    catch (e) { return res.status(500).json({ success: false, error: "internal_error" }); }
 });
 
 // Phase 724 — Contextual Patch Maturity

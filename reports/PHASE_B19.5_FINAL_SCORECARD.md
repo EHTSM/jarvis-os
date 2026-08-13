@@ -36,7 +36,7 @@ measured.
 | 9 | Name / role / value (4.1.2) | **7 / 10** | Palette naming and `aria-activedescendant` recovered; `G2-B195` remains open with a proven remedy |
 | 10 | Form labelling (3.3.2 / 1.3.1) | **3 / 10** | `G1-B193` — 763 findings; live-confirmed, 0 visible labels |
 | 11 | Screen-reader verification | **NOT SCORED** | ENVIRONMENT BLOCKED — not executed, not simulated, not inferred |
-| 12 | Regression integrity | **10 / 10** | No test weakened; test 89 byte-identical; instrument change negative-tested |
+| 12 | Regression integrity | **10 / 10** | 925 pass / 3 fail across all 105 runtime suites; no test weakened; test 89 byte-identical; instrument change negative-tested; each failure investigated to root cause |
 
 **Weighted result: 9.0 / 10.**
 
@@ -90,8 +90,10 @@ Each carries reproducible evidence and, where one exists, a verified remedy.
 - Two hypotheses about the target-size failure were **wrong** and were discarded
   after measurement rather than written up as findings.
 - Screen-reader conformance is **not claimed in any form**.
-- `tests/runtime/10` fails and is reported, with evidence that it fails
-  identically at the pre-phase baseline.
+- Three runtime suites fail and all three are reported. `tests/runtime/10` and
+  `mission-orchestrator-nodetypes` were each **verified** pre-existing rather
+  than assumed — the latter shares a name with a file this phase edited, so the
+  edit was stashed and the failure reproduced without it.
 
 ---
 

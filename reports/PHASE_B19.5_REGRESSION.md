@@ -48,10 +48,38 @@ the labels genuinely exist.
 
 ## Wider runtime regression
 
-| Batch | Result |
+`tests/runtime` contains **105 suites**. They were run in batches because the
+full sweep exceeds the shell's execution ceiling.
+
+| Batch | Suites | Result |
+| --- | --- | --- |
+| First 30 | 30 | **339 pass / 2 fail** |
+| Middle (31 → 87) | 57 | **440 pass / 1 fail** |
+| Final 18 | 18 | **146 pass / 0 fail** — re-run after every fix in this phase |
+
+**Total: 925 pass / 3 fail across all 105 suites.**
+
+### The three failures, each investigated
+
+| Suite | Verdict |
 | --- | --- |
-| `tests/runtime` — final 18 suites | **146 pass / 0 fail** |
-| `tests/runtime` — numbered suites 25–29 | **72 pass / 1 fail** (above) |
+| `10-recovery-certification` | **Pre-existing.** Fails identically at the pre-B.19.5 baseline; untracked by git; exercises runtime recovery, no frontend code. |
+| `26-accessibility-foundation` | **`G1-B193`, deliberately open.** Asserts 0 findings, gets 763. Left red rather than silenced. |
+| `mission-orchestrator-nodetypes` | **Pre-existing, name collision only.** |
+
+The third deserved scrutiny, because this phase edited a file called
+`MissionOrchestratorPanel.jsx`. It is not the cause:
+
+- The test requires only `backend/services/autonomousExecutionRuntime.cjs`,
+  `engineeringCapabilities.cjs` and `missionOrchestrator.cjs`. It never loads
+  any frontend file.
+- The failing assertion is `resolveBlockingStage() with outcome:rejected …` —
+  `Error: waitFor timed out`, a backend orchestration timing check.
+- **Verified by removing the change:** with the panel edit stashed, the suite
+  fails identically twice in a row (7 pass / 1 fail each time).
+
+A shared name is not a shared dependency, and the check was run rather than
+assumed.
 
 ### Pre-existing failure, not attributed to this phase
 

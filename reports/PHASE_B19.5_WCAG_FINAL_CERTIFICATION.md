@@ -301,10 +301,18 @@ assistive-technology testing**, and no AA criterion is certified on its basis.
 | `29-a11-ux-consistency` | 12 / 12 |
 | `tests/security/89` | PASS, **byte-identical** — SHA `aa5b00db…9bfebcb` verified unchanged |
 
-`10-recovery-certification` fails. It is **pre-existing and unrelated** — an
-untracked runtime-recovery test that fails identically before any B.19.5 change,
-and touches no accessibility, CSS, or frontend code. Recorded, not attributed to
-this phase.
+**Full runtime regression: 925 pass / 3 fail across all 105 suites.**
+
+Two failures besides suite 26 are pre-existing and were each verified as such,
+not assumed:
+
+- `10-recovery-certification` — untracked runtime-recovery test; fails
+  identically before any B.19.5 change; touches no frontend code.
+- `mission-orchestrator-nodetypes` — shares a name with
+  `MissionOrchestratorPanel.jsx`, which this phase edited, so it was checked
+  properly. The suite loads only `backend/services/*`, the failing assertion is
+  a `waitFor` timeout in `resolveBlockingStage()`, and with the panel edit
+  stashed it fails identically on two consecutive runs.
 
 ---
 
