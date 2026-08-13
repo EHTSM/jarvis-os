@@ -1279,8 +1279,12 @@ function AppInner() {
           {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
             if (t.id === "more") {
               const secondaryActive = MORE_TABS.some(m => m.id === tab);
+              // B19.5: B19.2.3's clickable codemod wrapped this in clickableProps,
+              // giving a role="button" wrapper around a real <button> — WCAG 4.1.2
+              // nested-interactive, flagged by axe on 15 nodes. This div is a click
+              // CONTAINMENT wrapper, not a control; restored to its original handler.
               return (
-                <div key="more" className="tab-more-wrap" {...clickableProps(e => e.stopPropagation())}>
+                <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
                   <button
                     className={`tab tab--more${secondaryActive ? " active" : ""}${moreOpen ? " tab--more-open" : ""}`}
                     onClick={() => setMoreOpen(o => !o)}

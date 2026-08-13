@@ -123,7 +123,7 @@ function ExtRuntimePanel() {
                 </span>
               </div>
               <span className="l3-ext-state" style={{ color: EXT_STATE_COLOR[ext.state] }}>{ext.state}</span>
-              <div className="l3-ext-actions" {...clickableProps(e => e.stopPropagation())}>
+              <div className="l3-ext-actions" onClick={e => e.stopPropagation()}>
                 {ext.state === "active"    && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/suspend", ext.id)}>Suspend</button>}
                 {ext.state === "suspended" && <button className="k5-toggle-btn k5-toggle-btn--on" disabled={busy === ext.id} onClick={() => action("/extensions/resume", ext.id)}>Resume</button>}
                 {(ext.state === "error" || ext.state === "suspended") && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/restart", ext.id)}>Restart</button>}
@@ -136,7 +136,7 @@ function ExtRuntimePanel() {
 
       {detail && (
         <div className="ws-modal-overlay" {...overlayProps(() => setDetail(null))}>
-          <div className="ws-modal" {...clickableProps(e => e.stopPropagation())} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
+          <div className="ws-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <strong style={{ fontSize: 15 }}>{detail.id}</strong>
               <button onClick={() => setDetail(null)} style={{ background: "none", border: "none", color: "var(--text-faint)", cursor: "pointer", fontSize: 18 }}>✕</button>

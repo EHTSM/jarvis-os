@@ -3,8 +3,13 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: var(--color-bg, #0d0d0f);
-  color: var(--color-text, #e4e4e7);
+  /* B19.5: --color-bg and --color-text are defined NOWHERE in the codebase, so
+     these always resolved to their hardcoded dark fallbacks. In light mode the
+     surface stayed dark while the app's text tokens turned dark — axe measured
+     76 contrast violations on this one surface. Same undefined-token class as
+     the B19.2 compatibility aliases. Pointed at the real tokens. */
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 13px;
 }
@@ -58,7 +63,7 @@
   line-height: 1;
 }
 .bc-score-pct--all  { color: var(--success); }
-.bc-score-pct--ok   { color: #3b82f6; }
+.bc-score-pct--ok   { color: var(--info); }
 .bc-score-pct--warn { color: var(--warning); }
 .bc-score-label {
   font-size: 10px;
@@ -81,8 +86,10 @@
   font-weight: 500;
   white-space: nowrap;
 }
-.bc-chip--pass { background: rgba(34,197,94,0.15); color: #4ade80; }
-.bc-chip--fail { background: rgba(239,68,68,0.15);  color: var(--danger); }
+/* B19.5: #4ade80 is a dark-mode green; on the light tint it measured below
+   4.5:1. --success themes correctly and is the semantic role. */
+.bc-chip--pass { background: var(--success-muted); color: var(--on-success-tint); }
+.bc-chip--fail { background: var(--danger-muted);  color: var(--on-danger-tint); }
 .bc-chip--dim  { background: rgba(255,255,255,0.06); color: var(--text-faint); }
 .bc-chip--sm   { font-size: 11px; padding: 1px 6px; }
 
@@ -142,7 +149,8 @@
   background: rgba(255,255,255,0.03);
   border: none;
   cursor: pointer;
-  color: #d4d4d8;
+  /* B19.5: hardcoded light-on-dark; unreadable once .bc-root became themed. */
+  color: var(--text);
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
@@ -194,10 +202,10 @@
 }
 
 /* status coloring */
-.bc-pass .bc-item-icon { color: #4ade80; }
-.bc-pass .bc-item-text { color: #d4d4d8; }
+.bc-pass .bc-item-icon { color: var(--success); }
+.bc-pass .bc-item-text { color: var(--text); }
 .bc-fail .bc-item-icon { color: var(--danger); }
-.bc-fail .bc-item-text { color: #d4d4d8; }
+.bc-fail .bc-item-text { color: var(--text); }
 .bc-running .bc-item-icon { color: var(--info); animation: bc-spin 1s linear infinite; }
 .bc-pending .bc-item-icon { color: var(--text-faint); }
 
@@ -212,7 +220,10 @@
   padding: 1px 5px;
   border-radius: 3px;
   background: rgba(255,255,255,0.06);
-  color: var(--text-faint);
+  /* B19.5: --text-faint measured 4.37:1 on this 6%-white badge — just under
+     WCAG 1.4.3's 4.5 at 10px. axe flagged 31 nodes. --text-dim is the next
+     role up and clears at 5.59:1; the badge keeps its recessed look. */
+  color: var(--text-dim);
   letter-spacing: 0.04em;
   flex-shrink: 0;
 }

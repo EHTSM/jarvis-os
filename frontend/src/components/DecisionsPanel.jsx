@@ -147,7 +147,7 @@ function OpportunityCard({ opp, onApprove, onSchedule, onIgnore, onConvert, onPa
 
       {/* Actions */}
       {opp.status === 'open' && (
-        <div className="dec-card__actions" {...clickableProps(e => e.stopPropagation())}>
+        <div className="dec-card__actions" onClick={e => e.stopPropagation()}>
           <button className="dec-act dec-act--approve" disabled={!!busy}
             onClick={() => act(() => onApprove(opp.id), 'approve')}>
             {busy === 'approve' ? '…' : '✓ Approve'}
@@ -175,7 +175,7 @@ function OpportunityCard({ opp, onApprove, onSchedule, onIgnore, onConvert, onPa
         </div>
       )}
       {opp.status === 'approved' && (
-        <div className="dec-card__actions" {...clickableProps(e => e.stopPropagation())}>
+        <div className="dec-card__actions" onClick={e => e.stopPropagation()}>
           {!opp.missionLink && (
             <button className="dec-act dec-act--mission"
               onClick={() => onConvert(opp.id)}>→ Mission</button>

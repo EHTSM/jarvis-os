@@ -64,7 +64,7 @@ export default function ConfirmDialog({ title, message, danger, confirmLabel = "
 
   return (
     <div className="cdialog-overlay" role="dialog" aria-modal="true" aria-labelledby="cdialog-title" onClick={onCancel}>
-      <div className="cdialog-box" {...clickableProps(e => e.stopPropagation())}>
+      <div className="cdialog-box" onClick={e => e.stopPropagation()}>
         <div className="cdialog-icon" aria-hidden="true">{danger ? "⚠" : "◈"}</div>
         <div id="cdialog-title" className="cdialog-title">{title}</div>
         {message && <div className="cdialog-message">{message}</div>}

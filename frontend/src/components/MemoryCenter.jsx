@@ -246,7 +246,7 @@ export default function MemoryCenter({ onNavigate }) {
       {/* Edit form */}
       {editing && (
         <div className="mc-modal-overlay" {...overlayProps(() => setEditing(null))}>
-          <div className="mc-modal" role="dialog" aria-modal="true" aria-labelledby="mc-form-heading" {...clickableProps(e=>e.stopPropagation())}>
+          <div className="mc-modal" role="dialog" aria-modal="true" aria-labelledby="mc-form-heading" onClick={e=>e.stopPropagation()}>
             <h3 className="mc-form-heading">Edit memory</h3>
             <MemoryForm
               initial={{ ...editing, tags: editing.tags.join(", ") }}

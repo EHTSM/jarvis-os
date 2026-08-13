@@ -65,7 +65,25 @@ const PROBE = `(() => {
     if(r.width<2||r.height<2) continue;
     const fg0=parse(cs.color); if(!fg0||fg0[3]===0) continue;
     const bg=effBg(el); if(!bg) continue;
-    const cr=ratio(over(fg0,bg),bg);
+    // B19.5: element opacity was previously only used to SKIP opacity:0. Any
+    // fractional opacity composites the text toward its backdrop and lowers the
+    // real ratio — axe-core flagged .ri-ring-sub at 3.04:1 where this scanner
+    // reported a pass, because it measured --text-faint (5.19:1) and ignored
+    // opacity 0.7. Opacity is inherited multiplicatively, so accumulate it
+    // up the ancestor chain and fold it into the foreground alpha.
+    let eff=1, invisible=false;
+    for(let n=el; n && n!==document.documentElement; n=n.parentElement){
+      const o=parseFloat(getComputedStyle(n).opacity);
+      if(isNaN(o)) continue;
+      // opacity:0 means the element is not currently shown at all — e.g. row
+      // actions revealed on hover. Measuring it in that state reports a
+      // phantom 1:1. axe treats such nodes as not-yet-visible; so do we.
+      if(o===0){ invisible=true; break; }
+      if(o<1) eff*=o;
+    }
+    if(invisible) continue;
+    const fg=[fg0[0],fg0[1],fg0[2],fg0[3]*eff];
+    const cr=ratio(over(fg,bg),bg);
     const size=parseFloat(cs.fontSize), weight=parseInt(cs.fontWeight)||400;
     const need=(size>=24||(size>=18.66&&weight>=700))?3.0:4.5;
     if(cr<need){

@@ -264,7 +264,7 @@ export const FeedbackPanel = React.memo(({ onClose, connectionState, runtimeDegr
           padding: "20px 22px", fontFamily: "var(--op-mono)",
           display: "flex", flexDirection: "column", gap: 12
         }}
-        {...clickableProps(e => e.stopPropagation())}
+        onClick={e => e.stopPropagation()}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{ fontSize: 12, fontWeight: "bold", color: "var(--op-text)" }}>Send Feedback</span>

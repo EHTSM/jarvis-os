@@ -174,7 +174,7 @@ function TeamDirectoryPanel() {
 
       {editing && (
         <div className="ws-modal-overlay" {...overlayProps(() => setEditing(null))}>
-          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-member-title" {...clickableProps(e => e.stopPropagation())}>
+          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-member-title" onClick={e => e.stopPropagation()}>
             <h3 className="k3-modal-title">Edit Member</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Job Title

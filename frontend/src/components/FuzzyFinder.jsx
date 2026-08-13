@@ -111,7 +111,7 @@ export default function FuzzyFinder({ mode, cwd, wsSymbols = [], onSelect, onClo
 
   return (
     <div className="ff-overlay" {...overlayProps(onClose)}>
-      <div className="ff-dialog" {...clickableProps(e => e.stopPropagation())}>
+      <div className="ff-dialog" onClick={e => e.stopPropagation()}>
         <div className="ff-header">
           <span className="ff-title">{title}</span>
         </div>

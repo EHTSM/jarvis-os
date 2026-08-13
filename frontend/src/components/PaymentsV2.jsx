@@ -283,8 +283,10 @@ function WaFollowupPanel({ leads }) {
         <input className="pv2-input" placeholder="+91-9876543210" value={phone}
           onChange={e => setPhone(e.target.value)} inputMode="tel" />
 
-        <label className="pv2-label">Message template</label>
-        <select className="pv2-input pv2-select" value={template} onChange={e => handleTemplate(e.target.value)}>
+        {/* B19.5: axe `select-name` (WCAG 4.1.2) — the label text already existed
+            but was never associated, so the control had no accessible name. */}
+        <label className="pv2-label" htmlFor="pv2-template">Message template</label>
+        <select id="pv2-template" className="pv2-input pv2-select" value={template} onChange={e => handleTemplate(e.target.value)}>
           <option value="">— choose template —</option>
           {WA_TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
         </select>

@@ -295,7 +295,7 @@ function RenameDialog({ path, onConfirm, onCancel }) {
   useEffect(() => { inputRef.current?.select(); }, []);
   return (
     <div className="cep-rename-overlay" {...overlayProps(onCancel)}>
-      <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
+      <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
         <div className="cep-rename-title">Rename File</div>
         <input
           ref={inputRef}
@@ -1013,7 +1013,7 @@ export default function CodeEditorPane({
       {/* Delete confirmation modal */}
       {confirmDeleteTab && (
         <div className="cep-delete-overlay" {...overlayProps(() => setDeleteConfirm(null))}>
-          <div className="cep-delete-modal" {...clickableProps(e => e.stopPropagation())}>
+          <div className="cep-delete-modal" onClick={e => e.stopPropagation()}>
             <div className="cep-delete-icon">🗑</div>
             <div className="cep-delete-title">Delete "{confirmDeleteTab.name}"?</div>
             <div className="cep-delete-body">This cannot be undone.</div>
@@ -1105,7 +1105,7 @@ export default function CodeEditorPane({
       {/* Go-to-line overlay */}
       {gotoLine && (
         <div className="cep-goto-overlay" {...overlayProps(() => setGotoLine(false))}>
-          <div className="cep-goto-dialog" {...clickableProps(e => e.stopPropagation())}>
+          <div className="cep-goto-dialog" onClick={e => e.stopPropagation()}>
             <span className="cep-goto-label">Go to line</span>
             <input
               ref={gotoRef}
@@ -1304,7 +1304,7 @@ export default function CodeEditorPane({
       {/* Rename Symbol dialog */}
       {renameSymbol && (
         <div className="cep-rename-overlay" {...overlayProps(() => setRenameSymbol(null))}>
-          <div className="cep-rename-dialog" {...clickableProps(e => e.stopPropagation())}>
+          <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
             <div className="cep-rename-title">Rename Symbol: <strong>{renameSymbol.name}</strong></div>
             <input
               className="cep-rename-input"

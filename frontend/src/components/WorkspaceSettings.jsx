@@ -303,7 +303,9 @@ export default function WorkspaceSettings({ onNavigate }) {
                 </FieldRow>
                 <FieldRow label="Primary color" hint="Applied to the app's accent color, live">
                   <div className="ws-color-row">
-                    <input type="color" className="ws-color-input" value={brand.primaryColor}
+                    {/* B19.5: axe `label` (WCAG 4.1.2) — the FieldRow label is visual only and
+                        never associated, so the swatch had no accessible name. */}
+                    <input type="color" className="ws-color-input" aria-label="Primary color" value={brand.primaryColor}
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))} />
                     <input className="ws-input ws-input--mono" value={brand.primaryColor}
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))}
@@ -312,7 +314,7 @@ export default function WorkspaceSettings({ onNavigate }) {
                 </FieldRow>
                 <FieldRow label="Secondary color" hint="Applied to the app's secondary accent, live">
                   <div className="ws-color-row">
-                    <input type="color" className="ws-color-input" value={brand.accentColor}
+                    <input type="color" className="ws-color-input" aria-label="Secondary color" value={brand.accentColor}
                       onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))} />
                     <input className="ws-input ws-input--mono" value={brand.accentColor}
                       onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))}

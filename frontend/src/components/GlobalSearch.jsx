@@ -479,7 +479,7 @@ export default function GlobalSearch({ open, onClose, onAction, recentMissions =
 
   return (
     <div className="gs-backdrop" {...overlayProps(onClose)}>
-      <div className="gs-modal" {...clickableProps(e => e.stopPropagation())}>
+      <div className="gs-modal" onClick={e => e.stopPropagation()}>
         <div className="gs-input-row">
           <span className="gs-search-icon">⌕</span>
           <input

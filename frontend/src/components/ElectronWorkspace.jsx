@@ -429,7 +429,7 @@ const QuickSwitcher = memo(function QuickSwitcher({ open, onClose, onSelect, rec
 
   return (
     <div className="ew-qs-backdrop" {...overlayProps(onClose)}>
-      <div className="ew-qs-modal" {...clickableProps(e => e.stopPropagation())}>
+      <div className="ew-qs-modal" onClick={e => e.stopPropagation()}>
         <div className="ew-qs-header">
           <span className="ew-qs-icon">⌘</span>
           <input
@@ -1344,7 +1344,7 @@ function WorkspaceShortcutsOverlay({ onClose }) {
 
   return (
     <div className="ew-shortcuts-overlay" {...overlayProps(onClose)}>
-      <div className="ew-shortcuts-panel" {...clickableProps(e => e.stopPropagation())}>
+      <div className="ew-shortcuts-panel" onClick={e => e.stopPropagation()}>
         <div className="ew-shortcuts-header">
           <span className="ew-shortcuts-title">Workspace Keyboard Shortcuts</span>
           <button className="ew-shortcuts-close" onClick={onClose}><kbd>Esc</kbd></button>

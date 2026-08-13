@@ -19,7 +19,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
   }, []);
   return (
     <div className="fe-name-prompt-overlay" {...overlayProps(onCancel)}>
-      <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
+      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
         <div className="fe-name-prompt__label">{prompt}</div>
         <input
           ref={inputRef}
@@ -44,7 +44,7 @@ function NamePrompt({ prompt, defaultValue = '', onConfirm, onCancel }) {
 function DeleteConfirm({ name, onConfirm, onCancel }) {
   return (
     <div className="fe-name-prompt-overlay" {...overlayProps(onCancel)}>
-      <div className="fe-name-prompt" {...clickableProps(e => e.stopPropagation())}>
+      <div className="fe-name-prompt" onClick={e => e.stopPropagation()}>
         <div className="fe-name-prompt__label">Delete <strong>{name}</strong>?</div>
         <div className="fe-name-prompt__hint">This cannot be undone.</div>
         <div className="fe-name-prompt__actions">

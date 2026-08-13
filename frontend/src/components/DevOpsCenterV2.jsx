@@ -1650,7 +1650,7 @@ function TabPatches({ addToast }) {
                   <span className="dv2-ar-toggle">{isOpen ? "▲" : "▼"}</span>
                 </div>
                 {isOpen && (
-                  <div className="dv2-ar-expand" {...clickableProps(e => e.stopPropagation())}>
+                  <div className="dv2-ar-expand" onClick={e => e.stopPropagation()}>
                     {p.description && <p className="dv2-ar-detail">{p.description}</p>}
                     <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 6 }}>
                       {p.status === "pending" && (

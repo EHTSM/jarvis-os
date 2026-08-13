@@ -299,7 +299,7 @@ function RiskMatrixPanel() {
 
       {editing && (
         <div className="ws-modal-overlay" {...overlayProps(() => setEditing(null))}>
-          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-modal-title" {...clickableProps(e => e.stopPropagation())}>
+          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-modal-title" onClick={e => e.stopPropagation()}>
             <h3 className="k3-modal-title" id="k3-modal-title">Edit Risk: {editing.category}</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Likelihood

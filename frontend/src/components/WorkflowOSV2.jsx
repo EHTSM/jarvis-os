@@ -600,7 +600,7 @@ function TabRunning({ addToast }) {
 
       {logItem && (
         <div className="wov2-log-overlay" {...overlayProps(() => setLogItem(null))}>
-          <div className="wov2-log-modal" {...clickableProps(e => e.stopPropagation())}>
+          <div className="wov2-log-modal" onClick={e => e.stopPropagation()}>
             <div className="wov2-log-modal-header">
               <span className="wov2-log-modal-title">Log — {logItem.input || logItem.goal || logItem.id}</span>
               <button className="wov2-btn wov2-btn--ghost wov2-btn--sm" onClick={() => setLogItem(null)}>✕ Close</button>

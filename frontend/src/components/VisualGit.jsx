@@ -648,7 +648,7 @@ function MissionGitPanel({ cwd, missionGit, onMessage }) {
     <div className="vg-mission-panel">
       {rollbackTarget && (
         <div className="vg-rb-overlay" {...overlayProps(() => setRollbackTarget(null))}>
-          <div className="vg-rb-dialog" {...clickableProps(e => e.stopPropagation())}>
+          <div className="vg-rb-dialog" onClick={e => e.stopPropagation()}>
             <div className="vg-rb-title">Rollback to {rollbackTarget.slice(0, 8)}</div>
             <input className="vg-rb-input" autoFocus value={rollbackReason} onChange={e => setRollbackReason(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') doRollbackConfirm(); if (e.key === 'Escape') setRollbackTarget(null); }} placeholder="Reason for rollback…" />
             <div className="vg-rb-actions">

@@ -537,7 +537,7 @@ function ScreenshotLightbox({ src, onClose }) {
   }, [onClose]);
   return (
     <div className="bap-lightbox-overlay" {...overlayProps(onClose)}>
-      <div className="bap-lightbox-inner" {...clickableProps(e=>e.stopPropagation())}>
+      <div className="bap-lightbox-inner" onClick={e=>e.stopPropagation()}>
         <button className="bap-lightbox-close" onClick={onClose}>✕ Close</button>
         <img src={src} alt="Execution screenshot" className="bap-lightbox-img" />
       </div>

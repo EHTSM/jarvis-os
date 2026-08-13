@@ -259,7 +259,7 @@ export default function MissionEngine() {
       {/* Delete confirm modal */}
       {deleteTarget && (
         <div className="me-del-overlay" {...overlayProps(() => setDeleteTarget(null))}>
-          <div className="me-del-panel" {...clickableProps(e => e.stopPropagation())}>
+          <div className="me-del-panel" onClick={e => e.stopPropagation()}>
             <div className="me-del-title">Delete Mission?</div>
             <div className="me-del-body">This mission and all its task history will be permanently removed.</div>
             <div className="me-del-actions">

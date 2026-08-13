@@ -385,7 +385,7 @@ export default function TeamWorkspace({ onNavigate }) {
             {/* Invite modal */}
             {showInvite && (
               <div className="tw-modal-overlay" {...overlayProps(() => setShowInvite(false))}>
-                <div className="tw-modal" role="dialog" aria-modal="true" aria-labelledby="tw-invite-title" {...clickableProps(e => e.stopPropagation())}>
+                <div className="tw-modal" role="dialog" aria-modal="true" aria-labelledby="tw-invite-title" onClick={e => e.stopPropagation()}>
                   <InviteForm onInvite={handleInvite} onCancel={() => setShowInvite(false)} submitting={inviting} />
                 </div>
               </div>
