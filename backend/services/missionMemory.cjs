@@ -50,6 +50,49 @@ function _uid(prefix) {
 // any real write anywhere invalidates it.
 let _missionsCache = null; // { mtimeMs, store }
 
+// B.20 chaos finding — orphaned tmp sweep.
+//
+// _saveMissions() writes `missions.json.<pid>.<rand>.tmp` then renames it, and
+// cleans the tmp up in its catch block. That covers a *caught* write error, but
+// not a process death between writeFileSync and renameSync: SIGKILL, OOM kill,
+// or a host restart leaves the tmp behind with no code path that ever removes
+// it. Measured on this repo: two orphans totalling ~11 MB of real disk, one of
+// them from a pid that no longer exists. Nothing reads `.tmp`, so there is no
+// correctness impact — it is unbounded disk growth across crash cycles.
+//
+// Swept once at module load (the same point the store is first used), and only
+// for files matching this store's own `missions.json.<pid>.<hex>.tmp` shape, so
+// it can never touch another service's tmp file or a real data file. A live
+// tmp belonging to a *currently running* write is younger than the grace
+// window, so a concurrent writer's file is never removed.
+const _TMP_RE = /^missions\.json\.\d+\.[0-9a-f]+\.tmp$/;
+const _TMP_GRACE_MS = 5 * 60 * 1000;
+
+function _sweepOrphanedTmp() {
+    try {
+        const dir = path.dirname(MISSIONS_FILE);
+        const now = Date.now();
+        let removed = 0, bytes = 0;
+        for (const name of fs.readdirSync(dir)) {
+            if (!_TMP_RE.test(name)) continue;
+            const full = path.join(dir, name);
+            try {
+                const st = fs.statSync(full);
+                if (now - st.mtimeMs < _TMP_GRACE_MS) continue; // possibly an in-flight write
+                bytes += st.size;
+                fs.unlinkSync(full);
+                removed++;
+            } catch { /* raced with another sweep or a rename — fine either way */ }
+        }
+        if (removed) {
+            logger.warn(`[MissionMemory] Swept ${removed} orphaned tmp file(s) (${Math.round(bytes / 1024)} KB) ` +
+                `left by an interrupted write.`);
+        }
+    } catch { /* directory unreadable — never block startup on cleanup */ }
+}
+
+_sweepOrphanedTmp();
+
 function _loadMissions() {
     let mtimeMs;
     try { mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs; }

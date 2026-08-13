@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BASE_URL, getOpsData, getTasks, getRuntimeStatus, getRuntimeHistory } from '../api';
+// B.20: `getTasks` is not exported from ../api — it lives in personalApi.js
+// (personal to-do tasks, and it takes a filter object). This hook polls the
+// RUNTIME task queue, so the function it actually wants is getRuntimeTasks(),
+// which api.js does re-export via `export * from "./runtimeApi"` and which
+// takes no arguments, matching the call site below. The bad import broke the
+// production build outright ("Attempted import error: 'getTasks' is not
+// exported from '../api'"), so this was never a runtime-only defect.
+import { BASE_URL, getOpsData, getRuntimeTasks, getRuntimeStatus, getRuntimeHistory } from '../api';
 
 const POLL_OPS_MS = 10000; // Relaxed from 6000
 const POLL_RT_MS = 15000;  // Relaxed from 8000
@@ -122,7 +129,7 @@ export function useRuntimeStream() {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const t = await getTasks();
+      const t = await getRuntimeTasks();
       if (t) { setTasks(t); setFetchErrors(e => ({ ...e, tasks: null })); }
     } catch (err) {
       setFetchErrors(e => ({ ...e, tasks: err.message }));
