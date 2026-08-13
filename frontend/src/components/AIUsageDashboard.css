@@ -69,3 +69,8 @@
 @media (max-width: 720px) {
   .ai-usage-dashboard { padding: 18px 16px 36px; }
 }
+
+/* A.11.2: canonical table scroll wrapper — same idiom as .tw-perms-table-wrap,
+   .ec-table-wrap, .pp-rev-table-wrap and .rd-table-wrap. Keeps the table's own
+   column widths while confining it to the viewport on narrow screens. */
+.aud-table-wrap { overflow-x: auto; }

@@ -43,6 +43,12 @@ function HealthPanel() {
         <h3 className="aud-section-title">Live provider health</h3>
         <button className="aud-btn" onClick={load}>Refresh</button>
       </div>
+      {/* A.11.2: measured at 390px the table's right edge sat at 486 — 96px
+          outside the viewport, with overflow-x:visible. Wrapped in the
+          canonical `-table-wrap` scroll container already used by
+          TeamWorkspace, EngineeringConsole, PartnerProgram and RuntimeDebugger.
+          The table itself is unchanged. */}
+      <div className="aud-table-wrap">
       <table className="aud-table">
         <thead><tr><th>Provider</th><th>Reachable</th><th>Live latency</th><th>Historical p50</th><th>Quality</th><th>Detail</th></tr></thead>
         <tbody>
@@ -58,6 +64,7 @@ function HealthPanel() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
@@ -94,6 +101,7 @@ function CostPanel() {
       {!byProvider?.length ? (
         <div className="aud-empty">No usage recorded yet.</div>
       ) : (
+        <div className="aud-table-wrap">
         <table className="aud-table">
           <thead><tr><th>Provider</th><th>Requests</th><th>Tokens</th><th>Cost</th><th>Errors</th></tr></thead>
           <tbody>
@@ -108,6 +116,7 @@ function CostPanel() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );
