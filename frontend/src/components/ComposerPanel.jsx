@@ -475,7 +475,7 @@ export default function ComposerPanel({ cwd }) {
         try {
             const r = await api('POST', `/composer/${selected.planId}/reject`, { reason });
             if (r?.ok) { setSelected(r.plan); loadPlans(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not reject the plan.'); }
     }, [selected, loadPlans]);
 
     const doExecute = useCallback(async () => {
@@ -498,7 +498,7 @@ export default function ComposerPanel({ cwd }) {
         try {
             const r = await api('POST', `/composer/${selected.planId}/cancel`);
             if (r?.ok) { setSelected(r.plan); loadPlans(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not cancel the plan.'); }
     }, [selected, loadPlans]);
 
     const runBenchmark = useCallback(async () => {

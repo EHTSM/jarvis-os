@@ -369,7 +369,8 @@ function EventReplay() {
         method: 'POST',
         body: JSON.stringify({ eventId: event.id, eventType: event.type, payload: event.payload }),
       });
-    } catch {}
+      // A.11.2: replay failure was invisible. setError() is this file's mechanism.
+    } catch (e) { setError(e?.message || 'Could not replay the event.'); }
     setTimeout(() => setReplaying(null), 2000);
   }, []);
 

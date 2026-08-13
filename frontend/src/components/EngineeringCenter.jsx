@@ -572,7 +572,8 @@ function TabHealing() {
   async function handleAck(id) {
     setAcking(id);
     try { await _post(`/runtime/incidents/${id}/acknowledge`); await load(); }
-    catch {} finally { setAcking(null); }
+    catch (e) { setStatus(e?.message || 'Could not acknowledge the incident.'); }
+      finally { setAcking(null); }
   }
 
   return (

@@ -3,12 +3,23 @@ import "./SelfImprovementPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Now mirrors the semantics of
+// the canonical _client.js _fetch: preserve the backend's own message and
+// attach the status, so callers can surface the real reason.
 const API = async (method, path, body) => {
     const r = await fetch(`/api${path}`, {
         method,
         headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
+    if (!r.ok) {
+        const err = await r.json().catch(() => ({}));
+        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
+        e.status = r.status;
+        throw e;
+    }
     return r.json();
 };
 
@@ -116,8 +127,10 @@ function EvolutionView({ stats }) {
 
     const evolve = async () => {
         setRunning(true);
+        // A.11.2: failure was invisible. Reuses this file's own error shape
+        // (see the benchmark handler), now carrying the real backend message.
         try { setResult(await API("POST", "/improvement/evolve", {})); }
-        catch {}
+        catch (e) { setResult({ error: e?.message || "Evolve failed" }); }
         setRunning(false);
     };
 
@@ -153,7 +166,9 @@ function EvolutionView({ stats }) {
                 ))}
             </div>
 
-            {result && (
+            {/* A.11.2: surface the failure using this file's own .sip-err class. */}
+            {result?.error && <div className="sip-err">{result.error}</div>}
+            {result && !result.error && (
                 <div className="sip-cycle-result">
                     <div className="sip-cycle-head">
                         <span className="sip-cycle-title">Cycle Result</span>
@@ -215,7 +230,7 @@ function PatternsView() {
     const promote = async () => {
         setPromoting(true);
         try { setPromResult(await API("POST", "/improvement/promote", {})); }
-        catch {}
+        catch (e) { setPromResult({ error: e?.message || "Promote failed" }); }
         setPromoting(false);
     };
 
@@ -235,7 +250,8 @@ function PatternsView() {
                 )}
             </div>
 
-            {promResult && (
+            {promResult?.error && <div className="sip-err">{promResult.error}</div>}
+            {promResult && !promResult.error && (
                 <div className="sip-prom-result">
                     {promResult.promoted?.length > 0 && (
                         <span className="sip-prom-ok">✓ {promResult.promoted.length} rules promoted</span>

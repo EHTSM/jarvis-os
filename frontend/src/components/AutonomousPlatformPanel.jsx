@@ -4,12 +4,23 @@ import { clickableProps } from "../hooks/useClickableProps";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Now mirrors the semantics of
+// the canonical _client.js _fetch: preserve the backend's own message and
+// attach the status, so callers can surface the real reason.
 const API = async (method, path, body) => {
     const r = await fetch(`/api${path}`, {
         method,
         headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
+    if (!r.ok) {
+        const err = await r.json().catch(() => ({}));
+        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
+        e.status = r.status;
+        throw e;
+    }
     return r.json();
 };
 
@@ -298,8 +309,9 @@ function BenchmarkView() {
 
     const run = async () => {
         setRunning(true);
+        // A.11.2: benchmark failure was invisible.
         try { const r = await API("POST", "/platform/benchmark", {}); setResult(r.benchmark); }
-        catch {}
+        catch (e) { setResult({ error: e?.message || "Benchmark failed" }); }
         setRunning(false);
     };
 

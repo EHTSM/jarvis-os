@@ -3,12 +3,23 @@ import "./RepositoryMapPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Now mirrors the semantics of
+// the canonical _client.js _fetch: preserve the backend's own message and
+// attach the status, so callers can surface the real reason.
 const API = async (method, path, body) => {
     const r = await fetch(`/api${path}`, {
         method,
         headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
+    if (!r.ok) {
+        const err = await r.json().catch(() => ({}));
+        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
+        e.status = r.status;
+        throw e;
+    }
     return r.json();
 };
 
@@ -550,7 +561,8 @@ export default function RepositoryMapPanel() {
             const r = await API("POST", "/repo-viz/ai-nav", { query: aiQuery });
             setAiResult(r);
             if (r.nodes?.length) setHighlightIds(new Set(r.nodes.map(n => n.id)));
-        } catch {}
+        // A.11.2: AI-nav failure was invisible; surface the backend reason.
+        } catch (e) { setAiResult({ error: e?.message || 'AI navigation failed.' }); }
         setAiLoading(false);
     };
 
@@ -641,7 +653,10 @@ export default function RepositoryMapPanel() {
                         <button className="rmp-ai-btn" onClick={runAiNav} disabled={aiLoading || !mapData}>
                             {aiLoading ? "…" : "Navigate"}
                         </button>
-                        {aiResult && (
+                        {aiResult?.error && (
+                            <div className="rmp-err">{aiResult.error}</div>
+                        )}
+                        {aiResult && !aiResult.error && (
                             <span className="rmp-ai-result">
                                 {aiResult.nodes?.length} files · {aiResult.explanation?.slice(0, 60)}
                             </span>

@@ -148,3 +148,64 @@ test('NEGATIVE: alias→keyword drift is detectable', () => {
   assert.deepStrictEqual(miss, ['subscription'],
     'the drift check must flag a word absent from the ⌘K keywords');
 });
+
+// ── A.11.2 F3: user-initiated mutations must not fail silently ──────────────
+
+test('no user-initiated mutation swallows its API error', () => {
+  // A.11.1 classified 558 empty catch blocks; 15 were user-initiated mutations
+  // (pause/cancel/reject/dismiss/switch/create) whose failure was invisible.
+  // Each was recovered using the mechanism ALREADY in its own file.
+  const files = [];
+  (function walk(d) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (!/node_modules/.test(e.name)) walk(p); }
+      else if (/\.(jsx|js)$/.test(e.name)) files.push(p);
+    }
+  })(SRC);
+
+  const OPTIONAL = /localStorage|sessionStorage|JSON\.parse|clipboard|matchMedia|scrollIntoView|\.focus\(\)|requestAnimation|addEventListener|removeEventListener|clearInterval|clearTimeout|Observer|track\(|analytics|\.play\(\)|navigator\./i;
+  const REQUEST  = /fetch\(|await api\(|await _|Api\.|await get[A-Z]|await post|await list|await create|await save|await delete|await update|await run|axios/i;
+  const MUTATION = /POST|PUT|PATCH|DELETE|\/(pause|cancel|resume|dismiss|approve|reject|retry|restart|apply|save|create|delete|update|stop|start)\b/i;
+
+  const offenders = [];
+  for (const f of files) {
+    const lines = fs.readFileSync(f, 'utf8').split('\n');
+    lines.forEach((line, i) => {
+      if (!/catch\s*(\([^)]*\))?\s*\{\s*\}/.test(line)) return;
+      const ctx = lines.slice(Math.max(0, i - 4), i + 1).join(' ').replace(/\s+/g, ' ');
+      if (OPTIONAL.test(ctx) || !REQUEST.test(ctx) || !MUTATION.test(ctx)) return;
+      offenders.push(`${path.relative(SRC, f)}:${i + 1}`);
+    });
+  }
+  assert.deepStrictEqual(offenders, [],
+    `user-initiated mutations failing silently:\n${offenders.join('\n')}`);
+});
+
+test('local API helpers check response status', () => {
+  // Four files carried a private `API()` that returned r.json() with NO status
+  // check, so a 4xx/5xx body flowed through as data and the caller's catch only
+  // fired on a network error — the same defect class as A.11 F1.
+  for (const rel of [
+    'components/AutonomousPlatformPanel.jsx',
+    'components/RepositoryMapPanel.jsx',
+    'components/EngineeringMemoryPanel.jsx',
+    'components/SelfImprovementPanel.jsx',
+  ]) {
+    const src = read(rel);
+    const helper = /const API = async \([\s\S]*?\n\};/.exec(src);
+    assert.ok(helper, `${rel}: the local API helper must exist`);
+    assert.match(helper[0], /if \(!r\.ok\)/,
+      `${rel}: the local API helper must check response status`);
+    assert.match(helper[0], /err\.error \|\| err\.message/,
+      `${rel}: it must preserve the backend's own message`);
+  }
+});
+
+test('NEGATIVE: a silent mutation catch is detectable', () => {
+  const ctx = "const r = await api('POST', `/x/${id}/cancel`); } catch {}";
+  const REQUEST  = /fetch\(|await api\(/i;
+  const MUTATION = /POST|\/(cancel)\b/i;
+  assert.ok(REQUEST.test(ctx) && MUTATION.test(ctx),
+    'the guard must classify this as a user-visible silent mutation');
+});

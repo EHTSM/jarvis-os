@@ -3,12 +3,23 @@ import "./EngineeringMemoryPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Now mirrors the semantics of
+// the canonical _client.js _fetch: preserve the backend's own message and
+// attach the status, so callers can surface the real reason.
 const API = async (method, path, body) => {
     const r = await fetch(`/api${path}`, {
         method,
         headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
+    if (!r.ok) {
+        const err = await r.json().catch(() => ({}));
+        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
+        e.status = r.status;
+        throw e;
+    }
     return r.json();
 };
 
@@ -155,7 +166,8 @@ function SimilarityExplorer() {
             if (mode === "patches")    r = await API("POST", "/memory/similar-patches",    { targetFile: query, reasonHint: query, limit: 10 });
             if (mode === "strategies") r = await API("POST", "/memory/successful-strategies", { goal: query, limit: 10 });
             setResult(r);
-        } catch {}
+        // A.11.2: search failure was invisible; surface the backend reason.
+        } catch (e) { setResult({ error: e?.message || 'Memory search failed.' }); }
         setLoading(false);
     };
 

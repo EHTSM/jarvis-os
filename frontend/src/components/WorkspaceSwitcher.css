@@ -1,0 +1,13 @@
+
+/* A.11.2: failure feedback for switch/create, which previously failed silently.
+   Uses the semantic danger tokens already used across the app. */
+.ws-switcher-error {
+  margin: 6px 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-muted);
+  border: 1px solid var(--danger-border);
+  color: var(--on-danger-tint);
+  font-size: 11px;
+  line-height: 1.4;
+}

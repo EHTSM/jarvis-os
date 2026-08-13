@@ -15,6 +15,10 @@ export default function WorkspaceSwitcher({ onNavigate }) {
   const [activeId, setActiveId] = useState(null);
   const [loading, setLoading]   = useState(false);
   const [creating, setCreating] = useState(false);
+  // A.11.2: switching or creating a workspace failed with NO feedback at all —
+  // the most severe of the 15 silent-mutation paths. _client.js already
+  // preserves the backend message; this surfaces it.
+  const [error, setError]       = useState(null);
   const [newName, setNewName]   = useState("");
   const ref = useRef(null);
 
@@ -44,7 +48,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       await _fetch("/workspace/switch", { method: "POST", body: JSON.stringify({ workspaceId: id }) });
       setActiveId(id);
       setOpen(false);
-    } catch {}
+      setError(null);
+    } catch (e) { setError(e?.message || "Could not switch workspace."); }
   }
 
   async function doCreate() {
@@ -56,7 +61,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       setWs(prev => [...prev, d.workspace]);
       setNewName("");
       setCreating(false);
-    } catch {}
+      setError(null);
+    } catch (e) { setError(e?.message || "Could not create workspace."); }
     setLoading(false);
   }
 
@@ -86,6 +92,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       {open && (
         <div className="ws-switcher-dropdown">
           <div className="ws-switcher-header">Workspaces</div>
+          {/* A.11.2: surfaces the real backend reason for a failed switch/create. */}
+          {error && <div className="ws-switcher-error" role="alert">{error}</div>}
 
           {workspaces.map(ws => (
             <button

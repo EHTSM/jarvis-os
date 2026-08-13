@@ -360,7 +360,8 @@ export default function AutonomousAgentPanel({ cwd }) {
         try {
             const r = await api('POST', `/autonomous/${selected.agentMissionId}/pause`);
             if (r?.ok) setSelected(r.mission);
-        } catch {}
+            // A.11.2: pause failure was invisible. setError() is this file's own mechanism.
+        } catch (e) { setError(e?.message || 'Could not pause the mission.'); }
     }, [selected]);
 
     const doResume = useCallback(async () => {
@@ -378,7 +379,7 @@ export default function AutonomousAgentPanel({ cwd }) {
         try {
             const r = await api('POST', `/autonomous/${selected.agentMissionId}/cancel`);
             if (r?.ok) { setSelected(r.mission); loadMissions(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not cancel the mission.'); }
     }, [selected, loadMissions]);
 
     const doRetry = useCallback(async () => {

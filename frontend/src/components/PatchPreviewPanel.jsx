@@ -158,7 +158,7 @@ function PatchHistory({ onUndo }) {
     try {
       const r = await post('/coding/undo-patch', { histId });
       if (r?.ok) { load(); onUndo?.(); }
-    } catch {}
+    } catch (e) { setError(e?.message || 'Could not undo the patch.'); }
   };
 
   if (loading) return <div className="ppp-history-empty">Loading…</div>;

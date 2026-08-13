@@ -229,7 +229,7 @@ export default function SmellsPanel({ cwd }) {
     try {
       const r = await post('/coding/smells/dismiss', { smellId: id });
       if (r?.ok) setSmells(s => s.filter(x => x.id !== id));
-    } catch {}
+    } catch (e) { setError(e?.message || 'Could not dismiss.'); }
   }, []);
 
   const openPatch = useCallback((smell) => {
