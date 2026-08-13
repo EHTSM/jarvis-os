@@ -129,6 +129,9 @@
   display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(var(--fg-rgb), 0.62);
   letter-spacing: 0.02em; padding: 0 4px; background: none; border: none; font-family: inherit; cursor: pointer;
   transition: color var(--dur-fast, 0.12s) var(--ease-out, ease);
+  /* B19.5: WCAG 2.5.8 AA — pointer target minimum is 24x24; this rendered
+     under that. Same min-height idiom as the .tab recovery in B19.2.2. */
+  min-height: 24px;
 }
 .topbar-status:hover { color: rgba(var(--fg-rgb), 0.62); }
 .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -343,7 +346,7 @@
   background: rgba(102,87,232,0.07);
 }
 .tab--featured.active {
-  color: #9d8ff5;
+  color: var(--on-accent-tint);
   background: rgba(102,87,232,0.14);
   border-color: rgba(102,87,232,0.30);
 }
@@ -453,7 +456,7 @@
   gap: 8px;
 }
 .tab-more-item:hover { background: rgba(255,255,255,0.06); color: rgba(var(--fg-rgb), 0.92); }
-.tab-more-item.active { background: rgba(102,87,232,0.12); color: #9d8ff5; }
+.tab-more-item.active { background: rgba(102,87,232,0.12); color: var(--on-accent-tint); }
 .tab-more-item.focused { background: rgba(255,255,255,0.06); color: rgba(var(--fg-rgb), 0.92); }
 
 /* Group badge in search results */
@@ -866,7 +869,7 @@
 .tcc-lp-overall { font-size: 0.72rem; font-weight: 700; margin-left: 0.25rem; color: rgba(var(--fg-rgb), 0.62); }
 
 /* ContentEngine — Generate button */
-.ce-generate-btn { margin-top: 0.5rem; padding: 0.45rem 1rem; border-radius: 7px; border: 1px solid rgba(102,87,232,0.32); background: rgba(102,87,232,0.10); color: #9d8ff5; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.ce-generate-btn { margin-top: 0.5rem; padding: 0.45rem 1rem; border-radius: 7px; border: 1px solid rgba(102,87,232,0.32); background: rgba(102,87,232,0.10); color: var(--on-accent-tint); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
 .ce-generate-btn:hover:not(:disabled) { background: rgba(102,87,232,0.20); }
 .ce-generate-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
@@ -907,7 +910,7 @@
 }
 .zone-nav-item:hover { color: rgba(var(--fg-rgb), 0.78); background: rgba(255,255,255,0.05); }
 .zone-nav-item.active { color: rgba(var(--fg-rgb), 0.92); background: rgba(102,87,232,0.14); border-color: rgba(102,87,232,0.22); }
-.zone-nav-item.active[data-zone="command"]      { color: #9d8ff5; background: rgba(102,87,232,0.12); border-color: rgba(102,87,232,0.24); }
+.zone-nav-item.active[data-zone="command"]      { color: var(--on-accent-tint); background: rgba(102,87,232,0.12); border-color: rgba(102,87,232,0.24); }
 .zone-nav-item.active[data-zone="intelligence"] { color: var(--accent2); background: rgba(78,205,196,0.10);  border-color: rgba(78,205,196,0.22);  }
 .zone-nav-item.active[data-zone="engineering"]  { color: var(--info); background: rgba(96,165,250,0.10);  border-color: rgba(96,165,250,0.22);  }
 .zone-nav-item.active[data-zone="workflows"]    { color: var(--accent); background: rgba(167,139,250,0.10); border-color: rgba(167,139,250,0.22); }

@@ -74,6 +74,9 @@
   font-family: inherit;
   transition: color var(--dur-fast) var(--ease-out),
               background var(--dur-fast) var(--ease-out);
+  /* B19.5: WCAG 2.5.8 AA — pointer target minimum is 24x24; this rendered
+     under that. Same min-height idiom as the .tab recovery in B19.2.2. */
+  min-height: 24px;
 }
 .co-footer-link:hover {
   color: var(--text-dim);

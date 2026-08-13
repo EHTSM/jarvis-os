@@ -15,6 +15,9 @@
   cursor: pointer;
   transition: background var(--dur-fast), color var(--dur-fast);
   font-family: inherit;
+  /* B19.5: WCAG 2.5.8 AA — pointer target minimum is 24x24; this rendered
+     under that. Same min-height idiom as the .tab recovery in B19.2.2. */
+  min-height: 24px;
 }
 .wp-tab:hover { color: var(--text-dim); }
 .wp-tab--active { background: var(--surface-raised); color: var(--text); }

@@ -12,7 +12,10 @@
   flex-shrink: 0; overflow-x: auto; scrollbar-width: none;
 }
 .wp-tabs::-webkit-scrollbar { display: none; }
-.wp-tab { padding: 6px 14px; background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--text-faint); font-size: 12px; cursor: pointer; white-space: nowrap; transition: color 0.15s; }
+.wp-tab { padding: 6px 14px; background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--text-faint); font-size: 12px; cursor: pointer; white-space: nowrap; transition: color 0.15s;   /* B19.5: WCAG 2.5.8 AA — pointer target minimum is 24x24; this rendered
+     under that. Same min-height idiom as the .tab recovery in B19.2.2. */
+  min-height: 24px;
+}
 .wp-tab:hover { color: var(--text-dim); }
 .wp-tab--active { color: var(--success); border-bottom-color: var(--success); }
 .wp-body { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #2d3748 transparent; }

@@ -1859,8 +1859,11 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         </motion.section>
 
         {/* ── Mission Templates ──── */}
+        {/* B19.5: this carried cmd-col-dispatch, the same grid area as the
+            Command Dispatch panel below, so the two stacked on top of each
+            other. Moved to its own area. */}
         <motion.section
-          className="cmd-panel cmd-col-dispatch"
+          className="cmd-panel cmd-col-templates"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...transition.enter, delay: 0.28 }}

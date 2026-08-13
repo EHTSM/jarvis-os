@@ -358,10 +358,11 @@
 .cmd-layout {
   display: grid;
   grid-template-columns: 35fr 30fr 35fr;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "feed    agents  side"
     "tl      tl      side"
+    "templates templates side"
     "dispatch dispatch side";
   gap: 12px;
   padding: 12px 16px 16px;
@@ -375,6 +376,13 @@
 .cmd-col-agents   { grid-area: agents;   min-height: 320px; }
 .cmd-col-side     { grid-area: side;     display: flex; flex-direction: column; gap: 12px; }
 .cmd-col-timeline { grid-area: tl; }
+/* B19.5: Mission Templates and Command Dispatch were BOTH given
+   .cmd-col-dispatch, so both claimed `grid-area: dispatch`. Grid stacks items
+   placed in one named area, so the templates card grid painted on top of the
+   dispatch bar — axe reported 6 WCAG 2.5.8 target-size failures whose own boxes
+   measured >=24px but whose unobscured space was 6-8px. The controls were also
+   largely unclickable in the real product. Each panel now owns a row. */
+.cmd-col-templates { grid-area: templates; }
 .cmd-col-dispatch { grid-area: dispatch; }
 
 /* ── Panel base ─────────────────────────────────────────────────────────────── */
@@ -413,6 +421,9 @@
   font-family: inherit;
   cursor: pointer;
   transition: color 0.15s ease;
+  /* B19.5: WCAG 2.5.8 AA — pointer target minimum is 24x24; this rendered
+     under that. Same min-height idiom as the .tab recovery in B19.2.2. */
+  min-height: 24px;
 }
 .cmd-panel-link:hover { color: var(--p500, #6657e8); }
 
@@ -1094,6 +1105,7 @@
       "feed   agents"
       "side   side"
       "tl     tl"
+      "templates templates"
       "dispatch dispatch";
   }
   .cmd-col-side {
@@ -1115,6 +1127,7 @@
       "agents"
       "side"
       "tl"
+      "templates"
       "dispatch";
     padding: 10px;
     gap: 10px;

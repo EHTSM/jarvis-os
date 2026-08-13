@@ -202,6 +202,9 @@
   --on-success-tint: var(--success);
   --on-warning-tint: var(--warning);
   --on-info-tint:    var(--info);
+  /* B19.5: the accent hue needed the same treatment — several surfaces paint
+     brand-tinted text on a brand-tinted backdrop. */
+  --on-accent-tint:  var(--accent);
 
   --fg-rgb:         255, 255, 255;
   --fg-dim-1:       rgba(var(--fg-rgb), 0.92);  /* primary chrome label   */
@@ -305,6 +308,9 @@
   --on-success-tint: #17603a;
   --on-warning-tint: #715108;
   --on-info-tint:    #085d80;
+  /* B19.5: 4.81:1 against the heaviest brand tint (0.35 alpha of #6657e8 over
+     the light canvas), the same worst-case basis as the four above. */
+  --on-accent-tint:  #3a2fa6;
 
   --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
   --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
@@ -375,6 +381,7 @@
     --on-success-tint: #17603a;
     --on-warning-tint: #715108;
     --on-info-tint:    #085d80;
+    --on-accent-tint:  #3a2fa6;
     --shadow-xs:     0 1px 4px rgba(20, 24, 38, 0.06);
     --shadow-sm:     0 3px 10px rgba(20, 24, 38, 0.07);
     --shadow:        0 8px 32px rgba(20, 24, 38, 0.09);
