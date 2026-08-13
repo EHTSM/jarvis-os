@@ -30,10 +30,10 @@ function SourceRow({ src }) {
       borderBottom: "1px solid #1e1e1e", fontSize: 12 }}>
       <span style={{ width: 8, height: 8, borderRadius: "50%", background: dot, flexShrink: 0 }} />
       <span style={{ flex: 1, color: "#ccc" }}>{CAT_ICON[src.name] || "·"} {src.name}</span>
-      <span style={{ color: "#666", fontSize: 11 }}>
+      <span style={{ color: "#999", fontSize: 11 }}>
         {src.intervalMs ? `${src.intervalMs / 1000}s` : "event"}
       </span>
-      <span style={{ color: "#666", fontSize: 11, minWidth: 40, textAlign: "right" }}>
+      <span style={{ color: "#999", fontSize: 11, minWidth: 40, textAlign: "right" }}>
         {src.runCount || 0} runs
       </span>
       {src.lastError && (
@@ -53,7 +53,7 @@ function EventRow({ ev }) {
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "4px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
         {...clickableProps(() => setExpanded(e => !e))}>
-        <span style={{ color: "#444", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums" }}>{ts}</span>
+        <span style={{ color: "#888", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums" }}>{ts}</span>
         <SevBadge severity={ev.severity} />
         <span style={{ color: "#888", fontSize: 11, minWidth: 80 }}>{CAT_ICON[ev.category] || "·"} {ev.source}</span>
         <span style={{ color: "#ccc", fontSize: 12, flex: 1, overflow: "hidden",
@@ -62,7 +62,7 @@ function EventRow({ ev }) {
           {" — "}
           {ev.action.replace(/_/g, " ")}
         </span>
-        <span style={{ color: "#555", fontSize: 10 }}>{expanded ? "▲" : "▼"}</span>
+        <span style={{ color: "#888", fontSize: 10 }}>{expanded ? "▲" : "▼"}</span>
       </div>
       {expanded && (
         <pre style={{ margin: "4px 0 4px 66px", padding: 8, background: "#111",
@@ -114,7 +114,7 @@ export default function RuntimeObserverPanel() {
 
   const tabStyle = (t) => ({
     padding: "4px 12px", cursor: "pointer", fontSize: 12, fontWeight: 500,
-    color: tab === t ? "#fff" : "#666",
+    color: tab === t ? "#fff" : "#999",
     borderBottom: tab === t ? "2px solid #4caf50" : "2px solid transparent",
     background: "none", border: "none", borderBottom: tab === t ? "2px solid #4caf50" : "2px solid transparent",
   });
@@ -133,10 +133,10 @@ export default function RuntimeObserverPanel() {
         <span style={{ color: "#4caf50", fontWeight: 700, fontSize: 13 }}>◉ Runtime Observer</span>
         {status && (
           <>
-            <span style={{ color: "#555", fontSize: 11 }}>
+            <span style={{ color: "#888", fontSize: 11 }}>
               {status.running ? <span style={{ color: "#4caf50" }}>● live</span> : <span style={{ color: "#f44336" }}>● stopped</span>}
             </span>
-            <span style={{ color: "#555", fontSize: 11 }}>
+            <span style={{ color: "#888", fontSize: 11 }}>
               {status.sourceCount} sources · {status.eventCount} events · uptime {Math.floor((status.uptimeSec || 0) / 60)}m
             </span>
           </>
@@ -165,16 +165,16 @@ export default function RuntimeObserverPanel() {
                   style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", color: "#ccc",
                     borderRadius: 4, padding: "3px 8px", fontSize: 11, width: 100 }} />
               ))}
-              <span style={{ color: "#555", fontSize: 11, lineHeight: "26px" }}>{events.length} events</span>
+              <span style={{ color: "#888", fontSize: 11, lineHeight: "26px" }}>{events.length} events</span>
             </div>
-            {events.length === 0 && <div style={{ color: "#555", fontSize: 12, padding: "20px 0" }}>No events yet — observer starting…</div>}
+            {events.length === 0 && <div style={{ color: "#888", fontSize: 12, padding: "20px 0" }}>No events yet — observer starting…</div>}
             {events.map(ev => <EventRow key={ev.id} ev={ev} />)}
           </>
         )}
 
         {tab === "sources" && (
           <>
-            <div style={{ color: "#555", fontSize: 11, marginBottom: 8 }}>{sources.length} sources registered</div>
+            <div style={{ color: "#888", fontSize: 11, marginBottom: 8 }}>{sources.length} sources registered</div>
             {sources.map(s => <SourceRow key={s.name} src={s} />)}
           </>
         )}
@@ -195,8 +195,8 @@ export default function RuntimeObserverPanel() {
                 <span style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0,
                   background: s.status === "healthy" ? "#4caf50" : s.status === "degraded" ? "#ff9800" : "#f44336" }} />
                 <span style={{ flex: 1, color: "#ccc" }}>{CAT_ICON[name] || "·"} {name}</span>
-                <span style={{ color: "#666", fontSize: 11 }}>{s.errorCount} errors</span>
-                <span style={{ color: "#555", fontSize: 10 }}>{s.lastRunAt ? new Date(s.lastRunAt).toLocaleTimeString("en-US", { hour12: false }) : "—"}</span>
+                <span style={{ color: "#999", fontSize: 11 }}>{s.errorCount} errors</span>
+                <span style={{ color: "#888", fontSize: 10 }}>{s.lastRunAt ? new Date(s.lastRunAt).toLocaleTimeString("en-US", { hour12: false }) : "—"}</span>
               </div>
             ))}
           </div>
@@ -205,7 +205,7 @@ export default function RuntimeObserverPanel() {
         {tab === "statistics" && stats && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Throughput</div>
+              <div style={{ color: "#999", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Throughput</div>
               {[
                 ["Total emitted", stats.totalEmitted],
                 ["Per minute", stats.throughputPerMin],
@@ -221,7 +221,7 @@ export default function RuntimeObserverPanel() {
               ))}
             </div>
             <div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Severity</div>
+              <div style={{ color: "#999", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Severity</div>
               {Object.entries(stats.bySeverity || {}).map(([sev, count]) => (
                 <div key={sev} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0",
                   borderBottom: "1px solid #1a1a1a", fontSize: 12 }}>
@@ -229,7 +229,7 @@ export default function RuntimeObserverPanel() {
                   <span style={{ color: "#ccc" }}>{count}</span>
                 </div>
               ))}
-              <div style={{ color: "#666", fontSize: 11, marginTop: 12, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Category</div>
+              <div style={{ color: "#999", fontSize: 11, marginTop: 12, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Category</div>
               {Object.entries(stats.byCategory || {}).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
                 <div key={cat} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0",
                   borderBottom: "1px solid #1a1a1a", fontSize: 12 }}>

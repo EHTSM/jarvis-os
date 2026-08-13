@@ -6,10 +6,10 @@ const STATUS_COLOR = {
   created:   "#607d8b", planned:   "#2196f3", queued:    "#00bcd4",
   executing: "#4caf50", waiting:   "#ff9800", retrying:  "#ff5722",
   completed: "#8bc34a", failed:    "#f44336", rolledback:"#9c27b0",
-  paused:    "#795548", cancelled: "#444",
+  paused:    "#795548", cancelled: "#888",
 };
 const PRI_COLOR = { critical: "#9c27b0", high: "#f44336", medium: "#ff9800", low: "#2196f3" };
-const STAGE_COLOR = { pending: "#444", running: "#4caf50", completed: "#8bc34a", failed: "#f44336", skipped: "#555" };
+const STAGE_COLOR = { pending: "#888", running: "#4caf50", completed: "#8bc34a", failed: "#f44336", skipped: "#888" };
 
 function StatusBadge({ status }) {
   return (
@@ -25,7 +25,7 @@ function StageTimeline({ stages = [] }) {
   if (!stages.length) return null;
   return (
     <div style={{ padding: "8px 0" }}>
-      <div style={{ color: "#555", fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
+      <div style={{ color: "#888", fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 }}>
         Stage Graph
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -34,7 +34,7 @@ function StageTimeline({ stages = [] }) {
             {/* Connector line */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 16 }}>
               <div style={{ width: 10, height: 10, borderRadius: "50%", flexShrink: 0,
-                background: STAGE_COLOR[stg.status] || "#444", border: "2px solid #222" }} />
+                background: STAGE_COLOR[stg.status] || "#888", border: "2px solid #222" }} />
               {i < stages.length - 1 && (
                 <div style={{ width: 2, flex: 1, minHeight: 12, background: "#2a2a2a", margin: "2px 0" }} />
               )}
@@ -45,7 +45,7 @@ function StageTimeline({ stages = [] }) {
                 <span style={{ color: "#bbb", fontSize: 11 }}>{stg.description?.slice(0, 70)}</span>
               </div>
               {stg.assignedAgent && (
-                <span style={{ color: "#555", fontSize: 10, marginLeft: 0 }}>→ {stg.assignedAgent}</span>
+                <span style={{ color: "#888", fontSize: 10, marginLeft: 0 }}>→ {stg.assignedAgent}</span>
               )}
               {stg.dependsOn?.length > 0 && (
                 <span style={{ color: "#333", fontSize: 10 }}> deps: {stg.dependsOn.length}</span>
@@ -73,13 +73,13 @@ function MissionRow({ m, onAction }) {
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "6px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
         {...clickableProps(() => setExpanded(e => !e))}>
-        <span style={{ color: "#444", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
+        <span style={{ color: "#888", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
         <StatusBadge status={m.orchStatus} />
         <span style={{ color: PRI_COLOR[m.priority] || "#888", fontSize: 10, minWidth: 50, flexShrink: 0 }}>{m.priority}</span>
         <span style={{ color: "#bbb", fontSize: 12, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {m.goal}
         </span>
-        <span style={{ color: "#555", fontSize: 10, flexShrink: 0 }}>{pct}%</span>
+        <span style={{ color: "#888", fontSize: 10, flexShrink: 0 }}>{pct}%</span>
         {isActive && (
           <button onClick={e => { e.stopPropagation(); onAction("pause", m.missionId); }}
             style={{ background: "#1a1a1a", border: "1px solid #333", color: "#ff9800",
@@ -95,7 +95,7 @@ function MissionRow({ m, onAction }) {
             style={{ background: "#1a1a1a", border: "1px solid #333", color: "#f44336",
               borderRadius: 3, padding: "1px 6px", fontSize: 10, cursor: "pointer" }}>cancel</button>
         )}
-        <span style={{ color: "#444", fontSize: 10, flexShrink: 0 }}>{expanded ? "▲" : "▼"}</span>
+        <span style={{ color: "#888", fontSize: 10, flexShrink: 0 }}>{expanded ? "▲" : "▼"}</span>
       </div>
 
       {/* Progress bar */}
@@ -118,7 +118,7 @@ function MissionRow({ m, onAction }) {
               ["Rollback plan", m.rollbackPlan?.slice(0, 60) || "—"],
             ].map(([k, v]) => (
               <React.Fragment key={k}>
-                <span style={{ color: "#555" }}>{k}</span>
+                <span style={{ color: "#888" }}>{k}</span>
                 <span style={{ color: "#aaa", wordBreak: "break-all" }}>{v}</span>
               </React.Fragment>
             ))}
@@ -195,7 +195,7 @@ export default function MissionOrchestratorPanel() {
 
   const tabStyle = t => ({
     padding: "4px 12px", cursor: "pointer", fontSize: 12, fontWeight: 500,
-    color: tab === t ? "#fff" : "#666", background: "none", border: "none",
+    color: tab === t ? "#fff" : "#999", background: "none", border: "none",
     borderBottom: tab === t ? "2px solid #4caf50" : "2px solid transparent",
   });
 
@@ -207,7 +207,7 @@ export default function MissionOrchestratorPanel() {
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "6px 12px", borderBottom: "1px solid #1e1e1e", flexShrink: 0 }}>
         <span style={{ color: "#4caf50", fontWeight: 700, fontSize: 13 }}>◎ Mission Orchestrator</span>
         {stats && (
-          <span style={{ color: "#555", fontSize: 11 }}>
+          <span style={{ color: "#888", fontSize: 11 }}>
             {stats.running ? <span style={{ color: "#4caf50" }}>● live</span> : <span style={{ color: "#f44336" }}>● stopped</span>}
             {" "}{stats.liveMissions} live · {stats.activeMissions} active · {stats.completed} done
           </span>
@@ -233,23 +233,23 @@ export default function MissionOrchestratorPanel() {
                   onChange={e => setFilter(f => ({ ...f, [key]: e.target.value }))}
                   style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", color: "#ccc", borderRadius: 4, padding: "3px 8px", fontSize: 11, width: 90 }} />
               ))}
-              <span style={{ color: "#555", fontSize: 11, lineHeight: "26px" }}>{missions.length} missions</span>
+              <span style={{ color: "#888", fontSize: 11, lineHeight: "26px" }}>{missions.length} missions</span>
             </div>
-            {missions.length === 0 && <div style={{ color: "#555", fontSize: 12, padding: "20px 0" }}>No orchestrated missions yet.</div>}
+            {missions.length === 0 && <div style={{ color: "#888", fontSize: 12, padding: "20px 0" }}>No orchestrated missions yet.</div>}
             {missions.map(m => <MissionRow key={m.missionId || m.orchId} m={m} onAction={handleAction} />)}
           </>
         )}
 
         {tab === "create" && (
           <div style={{ maxWidth: 600 }}>
-            <div style={{ color: "#666", fontSize: 11, marginBottom: 8 }}>Create a mission manually. The orchestrator will plan stages and delegate execution to autonomousLoop.</div>
+            <div style={{ color: "#999", fontSize: 11, marginBottom: 8 }}>Create a mission manually. The orchestrator will plan stages and delegate execution to autonomousLoop.</div>
             <textarea value={newGoal} onChange={e => setNewGoal(e.target.value)}
               placeholder="Mission goal…"
               style={{ width: "100%", height: 80, background: "#1a1a1a", border: "1px solid #2a2a2a", color: "#ccc",
                 borderRadius: 4, padding: 8, fontSize: 12, resize: "vertical", fontFamily: "monospace" }} />
             <button onClick={handleCreate} disabled={creating || !newGoal.trim()}
               style={{ marginTop: 8, background: creating ? "#1a1a1a" : "#1b5e20", border: "1px solid #2e7d32",
-                color: creating ? "#555" : "#ccc", borderRadius: 4, padding: "6px 16px", fontSize: 12, cursor: creating ? "default" : "pointer" }}>
+                color: creating ? "#888" : "#ccc", borderRadius: 4, padding: "6px 16px", fontSize: 12, cursor: creating ? "default" : "pointer" }}>
               {creating ? "Creating…" : "Create Mission"}
             </button>
           </div>
@@ -258,7 +258,7 @@ export default function MissionOrchestratorPanel() {
         {tab === "statistics" && stats && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             <div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Throughput</div>
+              <div style={{ color: "#999", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Throughput</div>
               {[
                 ["Created",   stats.created],
                 ["Completed", stats.completed],
