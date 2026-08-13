@@ -609,6 +609,34 @@ function updateMemberRole(orgId, accountId, newRole, requestingAccountId) {
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
     const m = org.members.find(m => m.accountId === accountId);
     if (!m) throw Object.assign(new Error("Member not found"), { status: 404 });
+
+    // Phase B.17: removeMember (above) refuses to delete the org owner —
+    // "transfer ownership first" — but this function had no equivalent guard, so
+    // the SAME protection was bypassable by demotion instead of removal.
+    // Reproduced live on a real 4-member org: the sole org_owner PATCHed itself
+    // to "viewer" with HTTP 200 and the organization became permanently
+    // ownerless and unmanageable —
+    //   ex-owner delete_org            → 403 (no longer owner)
+    //   ex-owner re-promote self       → 403
+    //   ex-owner update_org            → 403
+    //   org_admin promote a new owner  → 400 "Use transferOwnership to assign org_owner"
+    //   org_admin delete_org           → 403 (owner-only action)
+    // and there is no transferOwnership function or route anywhere in the
+    // product (39 exported functions, none named that — only this error
+    // string), so the instruction both guards give is impossible to follow.
+    // Nothing can recover the org.
+    //
+    // Refuse to demote the last owner, matching removeMember's wording. An org
+    // with a second owner is unaffected, so a genuine hand-over (promote the
+    // successor, then step down) still works the moment transferOwnership
+    // exists — and demoting any non-last owner keeps working today.
+    if (m.orgRole === "org_owner" && newRole !== "org_owner") {
+        const owners = org.members.filter(x => x.orgRole === "org_owner");
+        if (owners.length <= 1) {
+            throw new Error("Cannot demote the last org owner — transfer ownership first");
+        }
+    }
+
     const previousRole = m.orgRole;
     m.orgRole   = newRole;
     org.updatedAt = new Date().toISOString();

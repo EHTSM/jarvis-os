@@ -412,6 +412,28 @@ function listRuns({ status, domain, limit = 50 } = {}) {
   return runs.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, limit);
 }
 
+/**
+ * Render a run's `command` as a short display string.
+ *
+ * Phase C.1.1: execute(command) persists whatever the caller passed, and
+ * 109 of 500 stored runs hold an OBJECT ({ command, workspaceType }) rather
+ * than a string. `r.command?.slice(0, 50)` optional-chains away null but not
+ * a wrong TYPE, so it threw "r.command?.slice is not a function" and
+ * GET /computer/dashboard returned 500 on every call — the last 5 runs (the
+ * exact window this reads) were all objects.
+ *
+ * Reader-side normalisation only: the stored records are left untouched, and
+ * writers keep their current contract. Callers that pass an object get its
+ * inner `.command` surfaced instead of a crash.
+ */
+function _commandLabel(cmd) {
+  if (typeof cmd === "string") return cmd.slice(0, 50);
+  if (cmd && typeof cmd === "object" && typeof cmd.command === "string") {
+    return cmd.command.slice(0, 50);
+  }
+  return cmd == null ? null : String(cmd).slice(0, 50);
+}
+
 function getStats() {
   const d  = _load();
   const wc = _wc()?.getContext?.() || {};
@@ -419,7 +441,7 @@ function getStats() {
     ...d.stats,
     successRate:  d.stats.total > 0 ? Math.round(d.stats.succeeded / d.stats.total * 100) : 0,
     context:      wc,
-    recentRuns:   d.runs.slice(-5).map(r => ({ runId: r.runId, command: r.command?.slice(0, 50), outcome: r.outcome, durationMs: r.durationMs })),
+    recentRuns:   d.runs.slice(-5).map(r => ({ runId: r.runId, command: _commandLabel(r.command), outcome: r.outcome, durationMs: r.durationMs })),
   };
 }
 

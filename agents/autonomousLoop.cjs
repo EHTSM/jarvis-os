@@ -5,13 +5,16 @@
  * Retry logic: failed tasks are re-queued with exponential-ish delay until maxRetries.
  */
 
-const cron       = require("node-cron");
-const taskQueue  = require("./taskQueue.cjs");
+const cron = require("node-cron");
+const taskQueue = require("./taskQueue.cjs");
+const prereqGate = require("./runtime/prerequisiteGate.cjs");
+const aiService = require("../backend/services/aiService.js");
+const { execFile } = require("child_process");
 
-let _running        = false;
+let _running = false;
 let _intervalHandle = null;
-const _cronJobs     = {};       // task.id → cron.ScheduledTask
-const POLL_MS         = 10_000;   // check queue every 10 seconds
+const _cronJobs = {};       // task.id → cron.ScheduledTask
+const POLL_MS = 10_000;   // check queue every 10 seconds
 const TASK_TIMEOUT_MS = 30_000;   // single task must complete within 30s
 const STUCK_AGE_HOURS = 2;        // abandon pending tasks older than this
 // A.5.2 runtime-stability finding: getDuePending() is unbounded — a real
@@ -44,7 +47,7 @@ function _recordFailure(input, error) {
     const existing = _failureTracker.get(key) || { count: 0, lastError: "", lastTs: null };
     existing.count++;
     existing.lastError = error;
-    existing.lastTs    = new Date().toISOString();
+    existing.lastTs = new Date().toISOString();
     _failureTracker.set(key, existing);
     // Emit a loud warning if a specific input keeps failing
     if (existing.count === 3) {
@@ -61,10 +64,10 @@ function getFailureReport() {
 }
 
 // ── Slow-task + execution timing tracker ────────────────────────────
-const SLOW_TASK_MS    = 15_000;   // warn if a task takes longer than this
-const _slowTasks      = [];       // ring buffer of last 20 slow tasks
-const _execTimings    = [];       // ring buffer of last 100 exec times
-const MAX_SLOW        = 20;
+const SLOW_TASK_MS = 15_000;   // warn if a task takes longer than this
+const _slowTasks = [];       // ring buffer of last 20 slow tasks
+const _execTimings = [];       // ring buffer of last 100 exec times
+const MAX_SLOW = 20;
 const MAX_EXEC_TIMING = 100;
 
 // Per task-type cumulative stats: type → { count, totalMs, failures }
@@ -72,10 +75,10 @@ const _typeStats = new Map();
 
 function _recordExecTiming(task, elapsedMs, success) {
     const entry = {
-        ts:        new Date().toISOString(),
-        id:        task.id,
-        input:     task.input.slice(0, 60),
-        type:      task.type || "auto",
+        ts: new Date().toISOString(),
+        id: task.id,
+        input: task.input.slice(0, 60),
+        type: task.type || "auto",
         elapsedMs,
         success
     };
@@ -103,18 +106,18 @@ function getTimingReport() {
     for (const [type, stats] of _typeStats) {
         typeBreakdown.push({
             type,
-            count:       stats.count,
-            failures:    stats.failures,
-            avg_ms:      stats.count ? Math.round(stats.totalMs / stats.count) : 0,
+            count: stats.count,
+            failures: stats.failures,
+            avg_ms: stats.count ? Math.round(stats.totalMs / stats.count) : 0,
             success_rate: stats.count
                 ? +(((stats.count - stats.failures) / stats.count) * 100).toFixed(1)
                 : 100
         });
     }
     return {
-        slow_tasks:     _slowTasks.slice(-10).reverse(),
+        slow_tasks: _slowTasks.slice(-10).reverse(),
         slow_threshold: SLOW_TASK_MS,
-        recent_execs:   _execTimings.slice(-20).reverse(),
+        recent_execs: _execTimings.slice(-20).reverse(),
         type_breakdown: typeBreakdown.sort((a, b) => b.count - a.count)
     };
 }
@@ -128,8 +131,21 @@ function _withTimeout(promise, ms, label) {
     ]);
 }
 
+async function _gitHealthProbe() {
+    return await new Promise(resolve => {
+        execFile("git", ["rev-parse", "--is-inside-work-tree"], { cwd: require("path").resolve(__dirname, ".."), timeout: 3_000 }, (err) => resolve(!err));
+    });
+}
+
+async function _checkRuntimeReadiness() {
+    return prereqGate.checkPrerequisites({
+        aiService,
+        gitRunner: _gitHealthProbe,
+    });
+}
+
 // Lazy-load to avoid circular deps at module load time
-function _getPlanner()  { return require("./planner.cjs").plannerAgent; }
+function _getPlanner() { return require("./planner.cjs").plannerAgent; }
 function _getExecutor() { return require("./executor.cjs").executorAgent; }
 
 // ── Execute one queued task ──────────────────────────────────────────
@@ -141,16 +157,16 @@ async function _runTask(task) {
 
     console.log(`[AutoLoop] START task ${task.id} input="${task.input.slice(0, 60)}"`);
     taskQueue.update(task.id, {
-        status:    "running",
+        status: "running",
         startedAt: new Date().toISOString()
     });
 
     try {
-        const plannerAgent  = _getPlanner();
+        const plannerAgent = _getPlanner();
         const executorAgent = _getExecutor();
 
         const parsedTasks = plannerAgent(task.input);
-        const results     = [];
+        const results = [];
 
         for (const pt of parsedTasks) {
             const result = await _withTimeout(
@@ -163,15 +179,15 @@ async function _runTask(task) {
 
         const summary = results.map(r => {
             const text = (typeof r.result?.result === "string" ? r.result.result :
-                          typeof r.result?.reply   === "string" ? r.result.reply  :
-                          typeof r.result?.message === "string" ? r.result.message :
-                          JSON.stringify(r.result)).slice(0, 300);
+                typeof r.result?.reply === "string" ? r.result.reply :
+                    typeof r.result?.message === "string" ? r.result.message :
+                        JSON.stringify(r.result)).slice(0, 300);
             return `[${r.type}] ${text}`;
         }).join("\n");
 
         const fresh = taskQueue.getAll().find(t => t.id === task.id) || task;
         taskQueue.update(task.id, {
-            status:      task.recurringCron ? "pending" : "completed",
+            status: task.recurringCron ? "pending" : "completed",
             completedAt: new Date().toISOString(),
             // For recurring: reschedule 1 year forward (cron handles actual timing)
             scheduledFor: task.recurringCron
@@ -193,15 +209,15 @@ async function _runTask(task) {
         console.error(`[AutoLoop] ERROR task ${task.id} (${elapsed}ms): ${err.message}`);
         _recordFailure(task.input, err.message);
 
-        const fresh   = taskQueue.getAll().find(t => t.id === task.id) || task;
+        const fresh = taskQueue.getAll().find(t => t.id === task.id) || task;
         const retries = (fresh.retries || 0) + 1;
-        const delay   = (task.retryDelay || 15000) * retries;   // linear back-off
+        const delay = (task.retryDelay || 15000) * retries;   // linear back-off
 
         if (retries >= (task.maxRetries || 3)) {
             taskQueue.update(task.id, {
-                status:      "failed",
+                status: "failed",
                 retries,
-                lastError:   err.message,
+                lastError: err.message,
                 executionLog: [
                     ...(fresh.executionLog || []),
                     logEntry("failed_final", { error: err.message, retries })
@@ -211,10 +227,10 @@ async function _runTask(task) {
         } else {
             const nextRun = new Date(Date.now() + delay).toISOString();
             taskQueue.update(task.id, {
-                status:       "pending",
+                status: "pending",
                 retries,
                 scheduledFor: nextRun,
-                lastError:    err.message,
+                lastError: err.message,
                 executionLog: [
                     ...(fresh.executionLog || []),
                     logEntry("retry_scheduled", { attempt: retries, nextRun, error: err.message })
@@ -246,6 +262,13 @@ async function _tick() {
 
         const due = taskQueue.getDuePending();
         if (due.length === 0) return;
+
+        const prereq = await _checkRuntimeReadiness();
+        if (!prereq.ok) {
+            console.warn(`[AutoLoop] skipping tick — prerequisites unavailable: ${prereq.reasons.join("; ")}`);
+            return;
+        }
+
         const batch = due.slice(0, MAX_TASKS_PER_TICK);
         console.log(`[AutoLoop] tick — ${due.length} task(s) due${due.length > batch.length ? ` (processing ${batch.length}, remainder picked up next tick)` : ""}`);
         for (const task of batch) {
@@ -265,7 +288,7 @@ function _registerCron(task) {
     }
     console.log(`[AutoLoop] cron register ${task.id} pattern="${task.recurringCron}" input="${task.input}"`);
     const job = cron.schedule(task.recurringCron, async () => {
-        const all   = taskQueue.getAll();
+        const all = taskQueue.getAll();
         const fresh = all.find(t => t.id === task.id);
         if (!fresh || fresh.status === "cancelled" || fresh.status === "failed") {
             job.stop();

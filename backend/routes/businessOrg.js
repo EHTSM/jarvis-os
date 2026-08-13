@@ -142,7 +142,7 @@ router.get("/bizorg/v3/pipeline", requireAuth, (req, res) => {
 router.get("/bizorg/v3/deals", requireAuth, (req, res) => {
   try {
     const { stage, deptId, campaignId } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, deals: _st().listDeals({ stage, deptId, campaignId, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -167,7 +167,7 @@ router.post("/bizorg/v3/deals/:id/advance", requireAuth, (req, res) => {
 router.get("/bizorg/v3/tasks", requireAuth, (req, res) => {
   try {
     const { deptId, status, type, priority } = req.query;
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = Math.max(1, parseInt(req.query.limit) || 100);
     return res.json({ success: true, tasks: _st().listTasks({ deptId, status, type, priority, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -208,7 +208,7 @@ router.get("/bizorg/v3/kpis/:id", requireAuth, (req, res) => {
 router.get("/bizorg/v3/memory", requireAuth, (req, res) => {
   try {
     const { deptId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, memory: _st().getMemory({ deptId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -216,7 +216,7 @@ router.get("/bizorg/v3/memory", requireAuth, (req, res) => {
 router.get("/bizorg/v3/reports", requireAuth, (req, res) => {
   try {
     const { deptId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 20;
+    const limit = Math.max(1, parseInt(req.query.limit) || 20);
     return res.json({ success: true, reports: _st().listReports({ deptId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });

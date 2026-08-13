@@ -111,7 +111,22 @@ router.patch("/crm/lead/:phone", requireAuth, attachOrg, operatorAudit, (req, re
             return res.status(403).json({ error: "Forbidden — not your lead" });
         }
     }
-    crm.updateLead(phone, req.body, req.user.role === "operator" ? undefined : orgId);
+    // Phase B.16: req.body went straight through, so orgId and userId were
+    // editable payload fields. Reproduced live: PATCH {"orgId":"org_HIJACK",
+    // "userId":"someone_else"} on the caller's OWN lead succeeded with 200 and
+    // the lead vanished from its owner's list (3 visible → 2), stranded in a
+    // non-existent org with no route to get it back — there is no transfer,
+    // merge, archive or restore endpoint (all 404). Stealing another org's lead
+    // was already correctly blocked by the 403 check above; this is the reverse
+    // direction — a tenant pushing its own customer record out of reach.
+    // Ownership is set at creation from the verified session; it is not a
+    // client-editable field. Operators keep the ability to re-home a lead.
+    let update = req.body || {};
+    if (req.user.role !== "operator") {
+        const { orgId: _o, userId: _u, ...rest } = update;
+        update = rest;
+    }
+    crm.updateLead(phone, update, req.user.role === "operator" ? undefined : orgId);
     res.json({ success: true });
 });
 

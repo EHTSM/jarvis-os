@@ -104,7 +104,16 @@ async function main() {
 
   const execR = await fetch(`${BASE}/distrib/executive`, { headers: { Cookie: cookieFresh } });
   const execBody = await execR.json().catch(() => null);
-  assert(execBody?.dashboard?.traffic?.totalReach === 0, "a brand-new account's totalReach is 0, not the platform-wide accumulated total", `got ${execBody?.dashboard?.traffic?.totalReach}`);
+  // Phase OS-4: this used to assert traffic.totalReach === 0 as the proxy for
+  // "a new tenant sees none of the platform's accumulated data". totalReach is
+  // now null by design — no platform analytics connector exists, so reach is
+  // NOT MEASURED and reporting 0 would falsely assert zero observed reach.
+  // The isolation intent is unchanged and is now anchored on publishJobs, a
+  // genuinely counted, tenant-scoped value. This is a stronger signal than the
+  // old one, not a weaker one: it counts real records rather than a derived
+  // metric that was fabricated before OS-3.
+  assert(execBody?.dashboard?.traffic?.publishJobs === 0, "a brand-new account's publishJobs is 0, not the platform-wide accumulated total", `got ${execBody?.dashboard?.traffic?.publishJobs}`);
+  assert(execBody?.dashboard?.traffic?.totalReach === null, "unmeasured reach is reported as null, never as a fabricated number", `got ${execBody?.dashboard?.traffic?.totalReach}`);
   assert(execBody?.dashboard?.community?.totalMembers === 0, "a brand-new account's community totalMembers is 0", `got ${execBody?.dashboard?.community?.totalMembers}`);
   assert(execBody?.dashboard?.campaigns?.total === 0, "a brand-new account's campaign total is 0", `got ${execBody?.dashboard?.campaigns?.total}`);
 
@@ -121,15 +130,17 @@ async function main() {
 
   const execAR = await fetch(`${BASE}/distrib/executive`, { headers: { Cookie: cookieA } });
   const execABody = await execAR.json().catch(() => null);
-  const reachAfterBench = execABody?.dashboard?.traffic?.totalReach ?? 0;
-  assert(reachAfterBench > 0, "account A sees its OWN benchmark-created reach/campaigns", `expected >0, got ${reachAfterBench}`);
+  // Same OS-4 re-anchor: count the benchmark's own publish jobs rather than a
+  // reach figure that is no longer fabricated into existence.
+  const jobsAfterBench = execABody?.dashboard?.traffic?.publishJobs ?? 0;
+  assert(jobsAfterBench > 0, "account A sees its OWN benchmark-created publish jobs/campaigns", `expected >0, got ${jobsAfterBench}`);
 
   section("A completely separate account does NOT see account A's benchmark data");
   const emailB = `distrib-bench-b-${Date.now()}@ooplix-test.local`;
   const cookieB = await registerAndLogin(emailB, "DistribBenchB12345!");
   const execBR = await fetch(`${BASE}/distrib/executive`, { headers: { Cookie: cookieB } });
   const execBBody = await execBR.json().catch(() => null);
-  assert(execBBody?.dashboard?.traffic?.totalReach === 0, "account B's totalReach is 0 — does not see account A's benchmark reach", `got ${execBBody?.dashboard?.traffic?.totalReach}`);
+  assert(execBBody?.dashboard?.traffic?.publishJobs === 0, "account B's publishJobs is 0 — does not see account A's benchmark jobs", `got ${execBBody?.dashboard?.traffic?.publishJobs}`);
   assert(execBBody?.dashboard?.community?.totalMembers === 0, "account B's community totalMembers is 0", `got ${execBBody?.dashboard?.community?.totalMembers}`);
 
   const commBR = await fetch(`${BASE}/distrib/communities`, { headers: { Cookie: cookieB } });

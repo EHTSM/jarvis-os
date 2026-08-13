@@ -36,7 +36,10 @@ router.post("/org-automation/:orgId/rules/ai-triggered", (req, res) => {
 });
 
 router.post("/org-automation/:orgId/rules/:ruleId/fire", async (req, res) => {
-  try { res.json({ ok: true, result: await _center().fireRule(req.params.orgId, req.user.sub, req.params.ruleId, req.body?.context || {}) }); }
+  // Phase B.13: `dryRun` was dropped here — only req.body.context was forwarded —
+  // so a caller asking for a preview got a real execution. automationService's
+  // fireRule() has always supported dryRun; it just never received it.
+  try { res.json({ ok: true, result: await _center().fireRule(req.params.orgId, req.user.sub, req.params.ruleId, req.body?.context || {}, req.body?.dryRun === true) }); }
   catch (e) { res.status(e.status || 400).json({ ok: false, error: e.message }); }
 });
 

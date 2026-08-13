@@ -10,7 +10,9 @@ const svc = require("../services/co3UserSuccess.cjs");
 router.use("/co3", requireAuth);
 
 function _ok(res, data)    { res.json({ ok: true, ...data }); }
-function _err(res, e, c)   { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }
+// An error carrying its own .status (e.g. the 400 validation errors and 403
+// ownership errors below) keeps it; otherwise the caller's fallback applies.
+function _err(res, e, c)   { res.status(e?.status || c || 500).json({ ok: false, error: e?.message || String(e) }); }
 
 // ── Executive ──────────────────────────────────────────────────────────────────
 router.get("/co3/executive", (req, res) => {
@@ -145,29 +147,74 @@ router.post("/co3/analytics/event", (req, res) => {
 });
 
 // ── M4: Customer Success Inbox ─────────────────────────────────────────────────
+// Phase B.15: the CS inbox had no ownership at all. createCSTicket() has always
+// accepted an accountId and getCSInbox() has always supported an accountId
+// filter — but the routes never forwarded req.user.sub, so every ticket stored
+// accountId:null and the filter was unusable. Reproduced live with two accounts
+// in two separate orgs: account B read account A's ticket verbatim (subject,
+// body and the "INTERNAL: customer is on trial" note) and then reassigned it to
+// "ORG_B_HIJACK" and closed it. Wiring the existing field + existing filter is
+// the whole fix — no new storage, no new engine.
+//
+// Operators (role "operator") intentionally keep the full cross-account view;
+// that is the existing support-desk model, and getCSInbox's accountId filter is
+// still honoured for them so they can scope to one customer on request.
+function _isOperator(req) { return req.user?.role === "operator"; }
+
+/**
+ * Tickets an ordinary caller may act on: their own. Operators: all.
+ * Ownership is read through the existing getCSInbox() rather than a new
+ * service accessor, so this adds no service surface.
+ */
+function _assertTicketOwner(req, id) {
+  if (_isOperator(req)) return;
+  const t = (svc.getCSInbox({}).tickets || []).find(x => x.id === id);
+  // Unknown id → let the service raise its own 404 rather than leaking
+  // existence through a different status here.
+  if (!t) return;
+  // Legacy tickets predate ownership (accountId:null) and stay operable, so
+  // this fix cannot strand existing support work.
+  if (t.accountId && t.accountId !== req.user.sub) {
+    const e = new Error("Forbidden — ticket belongs to another account");
+    e.status = 403;
+    throw e;
+  }
+}
+
 router.get("/co3/cs", (req, res) => {
-  try { _ok(res, svc.getCSInbox(req.query)); } catch (e) { _err(res, e); }
+  try {
+    const filter = { ...req.query };
+    // Non-operators are pinned to their own tickets; a client-supplied
+    // accountId must never widen the view.
+    if (!_isOperator(req)) filter.accountId = req.user.sub;
+    _ok(res, svc.getCSInbox(filter));
+  } catch (e) { _err(res, e); }
 });
 
 router.post("/co3/cs", (req, res) => {
   try {
-    const ticket = svc.createCSTicket(req.body);
+    // Stamp ownership from the verified session, never from the body.
+    const ticket = svc.createCSTicket({ ...req.body, accountId: req.user.sub });
     _ok(res, { ticket });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/co3/cs/:id/reply", (req, res) => {
   try {
+    _assertTicketOwner(req, req.params.id);
     const ticket = svc.replyToTicket(req.params.id, req.body);
     _ok(res, { ticket });
-  } catch (e) { _err(res, e, 404); }
+  } catch (e) { _err(res, e, e?.status || 404); }
 });
 
 router.patch("/co3/cs/:id", (req, res) => {
   try {
-    const ticket = svc.updateTicket(req.params.id, req.body);
+    _assertTicketOwner(req, req.params.id);
+    // accountId is ownership, not a mutable field.
+    const { accountId: _ignored, ...update } = req.body || {};
+    const ticket = svc.updateTicket(req.params.id, update);
     _ok(res, { ticket });
-  } catch (e) { _err(res, e, 404); }
+  } catch (e) { _err(res, e, e?.status || 404); }
 });
 
 // ── M5: Knowledge Base ─────────────────────────────────────────────────────────

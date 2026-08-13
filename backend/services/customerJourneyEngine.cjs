@@ -193,7 +193,21 @@ function getStats() {
   const d = _load();
   const churnRisks = { critical: 0, high: 0, medium: 0, low: 0 };
   d.journeys.forEach(j => { churnRisks[j.churnRisk] = (churnRisks[j.churnRisk] || 0) + 1; });
-  return { ...d.stats, churnRisks, updatedAt: d.updatedAt };
+
+  // Phase B.16: this spread the stored d.stats, whose byStage was computed by
+  // syncJourneys() from the *pre-merge* lead list. Because customerId prefers
+  // lead.userId, several leads collapse into one journey (7 customerIds were
+  // shared by 2–5 leads each), so byStage counted leads while total counted
+  // distinct customers. Reproduced live: total=60 with byStage summing to 71,
+  // and the two customer-reporting surfaces disagreed on the same question —
+  // getStats said lead=17/qualification=43 while getStageDistribution() said
+  // 12/37 from the same store. Recompute from the stored journeys so both
+  // agree; getStageDistribution() already did exactly this.
+  const byStage = {};
+  LIFECYCLE_STAGES.forEach(s => { byStage[s] = 0; });
+  d.journeys.forEach(j => { byStage[j.stage] = (byStage[j.stage] || 0) + 1; });
+
+  return { ...d.stats, total: d.journeys.length, byStage, churnRisks, updatedAt: d.updatedAt };
 }
 
 module.exports = {

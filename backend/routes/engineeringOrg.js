@@ -91,7 +91,7 @@ router.post("/engorg/agents/:id/disable", requireAuth, (req, res) => {
 
 router.get("/engorg/missions", requireAuth, (req, res) => {
   try {
-    const limit  = parseInt(req.query.limit) || 50;
+    const limit  = Math.max(1, parseInt(req.query.limit) || 50);
     const all    = _mm()?.listMissions({ limit: 500 }) || { missions: [] };
     const orgIds = new Set(require("../services/engineeringOrg.cjs").ENGINEERING_ORG.map(e => e.id));
     const missions = (all.missions || [])
@@ -147,7 +147,7 @@ router.post("/engorg/v2/epics", requireAuth, (req, res) => {
 router.get("/engorg/v2/work-items", requireAuth, (req, res) => {
   try {
     const { status, assignedTo, domain, epicId, priority } = req.query;
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = Math.max(1, parseInt(req.query.limit) || 100);
     return res.json({ success: true, workItems: _st().listWorkItems({ status, assignedTo, domain, epicId, priority, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -260,7 +260,7 @@ router.get("/engorg/v2/reviews", requireAuth, (req, res) => {
 router.get("/engorg/v2/memory", requireAuth, (req, res) => {
   try {
     const { engineerId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, memory: _st().getMemory({ engineerId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });

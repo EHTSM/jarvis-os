@@ -211,11 +211,33 @@ async function validate(planId, { skipExecute = false } = {}) {
   const d = _load();
   d.validations.push(validation);
   const all = d.validations;
+  // Phase OS-4: avgScore is a 0-100 figure surfaced on the Product Factory
+  // dashboard, but it read 234 — impossible on its own scale.
+  //
+  // Root cause: 5 records written on 2026-06-29 carry out-of-range dimension
+  // scores (tests: 10000, security: 600) from before the per-dimension clamps
+  // in _validateTests/_validateSecurity existed. Their overallScore values
+  // (2193, 2058, 2053 …) then dominated the mean. Every record since is in
+  // range — the newest, 2026-08-05, scores 87 — so the generator is already
+  // correct and only this aggregate was still reporting the corrupt history.
+  //
+  // Reader-side guard rather than a data rewrite: the historical records are
+  // real audit history and are not mine to silently mutate. Out-of-range
+  // entries are excluded from the mean and counted separately so the exclusion
+  // is visible rather than hidden.
+  const scored    = all.filter(v => typeof v.overallScore === "number");
+  const inRange   = scored.filter(v => v.overallScore >= 0 && v.overallScore <= 100);
+  const outOfRange = scored.length - inRange.length;
   d.stats = {
     total:    all.length,
     passed:   all.filter(v => v.status === "passed").length,
     failed:   all.filter(v => v.status === "failed").length,
-    avgScore: Math.round(all.reduce((s, v) => s + (v.overallScore || 0), 0) / all.length),
+    avgScore: inRange.length
+      ? Math.round(inRange.reduce((s, v) => s + v.overallScore, 0) / inRange.length)
+      : null,
+    // Non-zero means legacy records exist whose scores predate the dimension
+    // clamps; they are excluded above rather than silently averaged in.
+    excludedOutOfRange: outOfRange,
   };
   _save(d);
 
@@ -231,7 +253,23 @@ function listValidations({ limit = 50, status } = {}) {
 }
 function getStats() {
   const d = _load();
-  return { ...d.stats, VALIDATION_DIMENSIONS, DIMENSION_WEIGHTS, updatedAt: d.updatedAt };
+  // Phase OS-4: d.stats is only rewritten when validate() next runs, so a
+  // stored avgScore computed before the out-of-range guard would keep being
+  // served (the dashboard read 234 on a 0-100 scale). Recompute on read from
+  // the same in-range rule so the figure is correct immediately and stays
+  // correct, without mutating the persisted audit history.
+  const all        = Array.isArray(d.validations) ? d.validations : [];
+  const scored     = all.filter(v => v && typeof v.overallScore === "number");
+  const inRange    = scored.filter(v => v.overallScore >= 0 && v.overallScore <= 100);
+  const avgScore   = inRange.length
+    ? Math.round(inRange.reduce((s, v) => s + v.overallScore, 0) / inRange.length)
+    : null;
+  return {
+    ...d.stats,
+    avgScore,
+    excludedOutOfRange: scored.length - inRange.length,
+    VALIDATION_DIMENSIONS, DIMENSION_WEIGHTS, updatedAt: d.updatedAt,
+  };
 }
 
 module.exports = {

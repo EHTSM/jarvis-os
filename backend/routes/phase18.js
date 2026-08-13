@@ -75,7 +75,7 @@ router.delete("/p18/actions/:id", (req, res) => {
 });
 
 router.get("/p18/actions/audit", (req, res) => {
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = Math.max(1, parseInt(req.query.limit) || 100);
     res.json({ success: true, ...rae.getAuditTrail({ limit }) });
 });
 

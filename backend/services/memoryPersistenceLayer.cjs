@@ -67,11 +67,54 @@ let _archive = new Map(
 const MAX_STORE_NODES   = 2000;
 const MAX_ARCHIVE_NODES = 2000;
 
+// Phase B.10: eviction ordered by importance alone silently destroyed every
+// NEW memory once the store was full.
+//
+// Measured on the live store: 2000/2000 nodes with a MINIMUM importance of 95
+// (1918 of them written at exactly 95 by the autonomous RCA-playbook writer —
+// 640 for circuit_breaker_open_media and 639 for ai_service_timeout alone).
+// saveTypedMemory() defaults to importance 60, so any newly-learned memory was
+// the lowest-ranked node in the map and was evicted inside the very same
+// _persist() call that saved it. Reproduced deterministically: save() returned
+// { saved: true } while the node was already unreadable, with a hard cutoff at
+// importance >= 95. Retrieval measured recall@8 = 0/3 for three memories that
+// had just been written "successfully".
+//
+// Two independent problems, both fixed here without changing the storage
+// engine, the cap, or the schema:
+//
+//  1. A brand-new node could never win eviction against a saturated store.
+//     Nodes are now protected for a short grace window after creation, so a
+//     just-written memory always survives long enough to be read back. Beyond
+//     that window the original importance/age ordering applies unchanged.
+//
+//  2. Eviction never considered recency of USE, so a node recalled seconds ago
+//     ranked identically to one never read. usageCount/lastUsedAt are already
+//     maintained by load() — they are now part of the ordering, which is what
+//     the surrounding comment ("frequently-recalled/important nodes survive
+//     longest") always claimed but did not implement.
+const EVICTION_GRACE_MS = 60_000;   // a new node is never evicted for 60s
+
 function _evictOverflow(map, maxSize) {
     if (map.size <= maxSize) return;
-    const over = map.size - maxSize;
-    const sorted = Array.from(map.values())
-        .sort((a, b) => (a.importance || 0) - (b.importance || 0) || a.updatedAt.localeCompare(b.updatedAt));
+    const now = Date.now();
+    const _ms = (ts) => { const t = Date.parse(ts || ""); return Number.isNaN(t) ? 0 : t; };
+
+    const candidates = Array.from(map.values())
+        .filter(n => (now - _ms(n.createdAt)) > EVICTION_GRACE_MS);
+
+    // If everything is inside the grace window the store is being written to
+    // faster than the window allows; fall back to the full set so the cap is
+    // still honoured rather than growing unbounded.
+    const pool = candidates.length ? candidates : Array.from(map.values());
+
+    const over = Math.min(map.size - maxSize, pool.length);
+    const sorted = pool.sort((a, b) =>
+        (a.importance || 0) - (b.importance || 0) ||
+        (a.usageCount  || 0) - (b.usageCount  || 0) ||
+        _ms(a.lastUsedAt) - _ms(b.lastUsedAt)      ||
+        _ms(a.updatedAt) - _ms(b.updatedAt));
+
     for (let i = 0; i < over; i++) map.delete(sorted[i].nodeId);
 }
 

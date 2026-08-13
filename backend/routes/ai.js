@@ -5,9 +5,26 @@ const connectorTools = require("../services/connectorToolBridge.cjs");
 const usageMetering  = require("../services/usageMetering.cjs");
 const billing        = require("../services/billingService");
 const { requireAuth } = require("../middleware/authMiddleware");
+// Phase B.14: attachOrg is the existing org-resolution middleware used across the
+// org-scoped surfaces. /ai routes never mounted it, so req.org was always undefined
+// and every usageMetering.record() below wrote orgId:null — see the block comment on
+// the /ai/chat handler for the reproduction.
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter    = require("../middleware/rateLimiter");
 
-router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
+// Phase B.14: every usageMetering.record() on these routes wrote orgId:null, so
+// org-level AI spend reporting was always zero. Reproduced live: the usage ledger
+// held 636 events, 252 for the test account, and 0 tagged with its orgId — while
+// GET /enterprise/monitoring/:orgId/ai-usage reported requestsLast1000=0 and
+// totalCostUsdSampled=0 against $8.24 of real recorded spend. Confirmed by sending
+// X-Org-Id on a call from an account with quota remaining: the ledger row still
+// carried orgId=None.
+//
+// usageMetering.record() has always accepted orgId (usageMetering.cjs:87) and
+// jarvisController already passes req.org?.id (jarvisController.js:357). These routes
+// simply never mounted attachOrg, so req.org was undefined. Mounting the existing
+// middleware and forwarding the existing field — no new service, no new model.
+router.post("/ai/chat", requireAuth, attachOrg, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
     const t0 = Date.now();
     try {
         const { prompt, system, history, provider, model } = req.body;
@@ -23,7 +40,7 @@ router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsa
         // does (A.7 fix) and surface the real failure instead.
         if (typeof reply !== "string" || !reply.trim() || reply.startsWith("AI backend unavailable")) {
             usageMetering.record({
-                accountId: req.user?.sub || req.user?.id, provider: provider || "unknown",
+                accountId: req.user?.sub || req.user?.id, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: provider || "unknown",
                 model: model || "unknown", requestType: "chat", latencyMs: Date.now() - t0,
                 success: false, errorCode: "all_providers_failed",
             });
@@ -33,13 +50,13 @@ router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsa
         }
 
         usageMetering.record({
-            accountId: req.user?.sub || req.user?.id, provider: provider || "unknown",
+            accountId: req.user?.sub || req.user?.id, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: provider || "unknown",
             model: model || "unknown", requestType: "chat", latencyMs: Date.now() - t0, success: true,
         });
         res.json({ success: true, reply });
     } catch (err) {
         usageMetering.record({
-            accountId: req.user?.sub || req.user?.id, provider: req.body?.provider || "unknown",
+            accountId: req.user?.sub || req.user?.id, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: req.body?.provider || "unknown",
             latencyMs: Date.now() - t0, success: false, errorCode: err.message,
         });
         res.status(500).json({ error: err.message });
@@ -50,7 +67,7 @@ router.post("/ai/chat", requireAuth, rateLimiter(30, 60_000), billing.requireUsa
 // Executes any tool calls the model requests (connector status/connect-url/
 // list-connections — see connectorToolBridge.cjs) and returns both the
 // model's tool call(s) and their real execution results.
-router.post("/ai/chat-with-tools", requireAuth, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
+router.post("/ai/chat-with-tools", requireAuth, attachOrg, rateLimiter(30, 60_000), billing.requireUsageQuota, async (req, res) => {
     const t0 = Date.now();
     try {
         const { prompt, system, history, provider, model } = req.body;
@@ -75,13 +92,13 @@ router.post("/ai/chat-with-tools", requireAuth, rateLimiter(30, 60_000), billing
         });
 
         usageMetering.record({
-            accountId: userId, provider: result.provider, model: result.model,
+            accountId: userId, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: result.provider, model: result.model,
             requestType: "chat_with_tools", latencyMs: Date.now() - t0, success: true,
         });
         res.json({ success: true, text: result.text, toolCalls: executed, provider: result.provider, model: result.model });
     } catch (err) {
         usageMetering.record({
-            accountId: req.user?.sub || req.user?.id, provider: req.body?.provider || "unknown",
+            accountId: req.user?.sub || req.user?.id, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: req.body?.provider || "unknown",
             requestType: "chat_with_tools", latencyMs: Date.now() - t0, success: false, errorCode: err.message,
         });
         res.status(500).json({ error: err.message });

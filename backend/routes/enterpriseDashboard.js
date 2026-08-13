@@ -89,7 +89,23 @@ router.get("/enterprise/dashboard/:orgId/billing", (req, res) => {
   // No separate membership pre-check: getOrgBillingOverview already
   // requires manage_billing internally and getBillingSummary propagates
   // that as { ok:false, error, status } rather than throwing uncaught.
-  res.json(_dash().getBillingSummary(req.params.orgId, req.user.sub));
+  //
+  // Phase B.14: that propagated `status` was computed but never applied, so a
+  // denied request returned **HTTP 200** carrying { ok:false, status:403 }.
+  // Reproduced 3/3 with a genuine non-member of the target org: HTTP=200,
+  // body ok=false status=403. Access itself was correctly denied — no financial
+  // data leaked (the body held only the error envelope) — but every sibling
+  // route on this dashboard (`overview`, `users`, `analytics`) returns a real
+  // 403, so a finance client checking HTTP status would read a permission
+  // denial on the billing surface as a successful, empty response.
+  //
+  // Honour the status the service already returns, using the same
+  // res.status(...).json(...) shape _requireOrgMember uses above.
+  const result = _dash().getBillingSummary(req.params.orgId, req.user.sub);
+  if (result && result.ok === false && Number.isInteger(result.status)) {
+    return res.status(result.status).json(result);
+  }
+  res.json(result);
 });
 
 router.get("/enterprise/dashboard/:orgId/connectors", (req, res) => {

@@ -198,6 +198,43 @@ function recoverStale() {
         _save(tasks);
         console.log(`[TaskQueue] recovered ${changed} stale running task(s) → pending`);
     }
+
+    // Re-mirror any task whose SQLite row disagrees with the JSON authority.
+    //
+    // Phase B.6: _save() (JSON, authoritative) and _shadowUpsert() (SQLite
+    // mirror) are two separate writes, not one transaction. A crash in the
+    // window between them leaves the mirror permanently behind — reproduced
+    // deterministically, and observed for real on 10 tasks after the Phase B.5
+    // crash drills (JSON=completed while SQLite still said pending/running).
+    // Nothing repaired it: the loop above only re-mirrors tasks that are
+    // "running" in JSON, so a completed/pending disagreement was never
+    // revisited and survived every subsequent boot.
+    //
+    // This reconciles on the existing startup path using the existing
+    // _shadowUpsert — no new storage, no schema change, and JSON stays the
+    // single source of truth (the mirror is corrected toward JSON, never the
+    // reverse). Tasks present in SQLite but absent from JSON are left alone:
+    // pruneOldTasks() intentionally trims JSON to the last 50 terminal tasks
+    // while the mirror retains history, so that difference is by design.
+    try {
+        const { getDB } = require("../backend/db/sqlite.cjs");
+        const rows = getDB().prepare("SELECT id, status FROM tasks").all();
+        const mirrored = new Map(rows.map(r => [r.id, r.status]));
+        let resynced = 0;
+        for (const t of tasks) {
+            const m = mirrored.get(t.id);
+            if (m !== undefined && m !== t.status) {
+                _shadowUpsert(t);
+                resynced++;
+            }
+        }
+        if (resynced > 0) {
+            console.log(`[TaskQueue] re-mirrored ${resynced} task(s) whose SQLite status had drifted from JSON`);
+        }
+    } catch (err) {
+        // FAIL-SAFE: the mirror is non-authoritative — never block startup on it.
+        try { require("../backend/utils/logger").warn(`[TaskQueue] mirror reconcile skipped: ${err.message}`); } catch { /* ignore */ }
+    }
 }
 
 /**

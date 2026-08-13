@@ -267,14 +267,40 @@ async function _intelligencePipeline(input, history, ctx = {}) {
         logger.info(`[AI] callAI (intelligence) — "${input.slice(0, 60)}"`);
         const t0 = Date.now();
         const reply = await ai.callAI(input, { history, system: systemOverride });
-        // The orchestrator path records usage internally; this fallback
-        // bypasses it entirely, so it must record its own event or the
-        // request silently never counts against the account's quota at all.
+
+        // Phase B.9: aiService.callAI() does not throw when every provider
+        // fails — it RESOLVES to the sentinel string "AI backend unavailable...".
+        // This fallback returned that sentinel straight into _ok(), so a total
+        // provider outage was rendered to the caller as
+        //     { "success": true, "reply": "AI backend unavailable..." }
+        // with HTTP 200. Reproduced 3/3 live with real failing providers
+        // (groq 429 → openai 401 → ollama 404 → lmstudio unreachable): the text
+        // was honest but the machine-readable envelope claimed success, so any
+        // client trusting `success` treats a failed request as answered.
+        // It also recorded success:true in usageMetering below, so the outage
+        // was counted as a satisfied request in cost/usage reporting.
+        //
+        // Same sentinel check codingAssistant.js, creativeStudio.js and ai.js
+        // already use (A.7/A.10) — throwing routes this into the caller's
+        // existing catch, which returns an honest error envelope.
+        const failed = typeof reply !== "string" || !reply.trim() ||
+                       reply.startsWith("AI backend unavailable");
+
         if (ctx.accountId) {
+            // The orchestrator path records usage internally; this fallback
+            // bypasses it entirely, so it must record its own event or the
+            // request silently never counts against the account's quota at all.
+            // Record the REAL outcome — a failed call must not inflate success
+            // metrics or be billed as a completed generation.
             usageMetering.record({
                 accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
-                provider: "jarvis_fallback", requestType: "chat", latencyMs: Date.now() - t0, success: true,
+                provider: "jarvis_fallback", requestType: "chat", latencyMs: Date.now() - t0,
+                success: !failed,
             });
+        }
+
+        if (failed) {
+            throw new Error(reply || "AI generation returned no content. Check provider API keys in your .env file.");
         }
         return { reply, action: "ai_reply", data: null };
     }

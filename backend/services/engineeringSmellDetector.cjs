@@ -62,6 +62,35 @@ function _rel(root, abs) {
     return path.relative(root, abs);
 }
 
+/**
+ * Per-scan file-content memo.
+ *
+ * Phase C.1.1: _walkFiles() returns PATHS, and each of the ~11 file-based
+ * detectors below then re-read every file itself. On this repository that is
+ * 2,293 files × ~11 detectors ≈ 23,000 readFileSync calls for 2,293 distinct
+ * files, and GET /coding/smells took 25–35s wall clock per request with no
+ * caching (warm ≈ cold).
+ *
+ * This memo is populated and cleared inside a single scan() call, so it does
+ * not hold repository contents in memory between requests and cannot serve
+ * stale data across scans — each scan still reads every file exactly once.
+ * Detector logic is unchanged; they call _readFile(f) instead of
+ * fs.readFileSync(f, "utf8").
+ */
+let _fileCache = null;
+
+function _readFile(f) {
+    if (_fileCache) {
+        const hit = _fileCache.get(f);
+        if (hit !== undefined) return hit;
+    }
+    let content;
+    try { content = fs.readFileSync(f, "utf8"); }
+    catch { content = null; }
+    if (_fileCache) _fileCache.set(f, content);
+    return content;
+}
+
 function _smellId(type, file, detail) {
     return crypto.createHash("sha1").update(`${type}:${file}:${detail}`).digest("hex").slice(0, 12);
 }
@@ -87,7 +116,7 @@ function _detectTodoFixme(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
         let count = 0;
         const firstLine = { TODO: -1, FIXME: -1 };
@@ -119,7 +148,7 @@ function _detectEmptyCatch(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
         let inCatch = false;
         let catchLine = -1;
@@ -162,7 +191,7 @@ function _detectConsoleLogs(files, root) {
         if (/\.(test|spec)\.[^.]+$/.test(f)) continue;
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
         const hits = [];
         for (let i = 0; i < lines.length; i++) {
@@ -193,7 +222,7 @@ function _detectSyncFs(files, root) {
         if (SERVICE_DIR.test(f)) continue; // services legitimately use sync fs
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
         for (let i = 0; i < lines.length; i++) {
             if (/fs\.(readFileSync|writeFileSync|existsSync|mkdirSync|readdirSync)\s*\(/.test(lines[i])) {
@@ -218,7 +247,7 @@ function _detectBlockingCrypto(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
         for (let i = 0; i < lines.length; i++) {
             if (/crypto\.pbkdf2Sync|crypto\.scryptSync|bcrypt\.hashSync|bcrypt\.compareSync/.test(lines[i])) {
@@ -243,7 +272,7 @@ function _detectLongFunctions(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const lines = content.split("\n");
 
         let funcStart = -1;
@@ -306,7 +335,7 @@ function _detectUnindexedDataScan(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         if (!READ_RE.test(content)) continue;
         const hasCacheGuard = CACHE_HINT_RE.test(content);
         if (hasCacheGuard) continue; // module already guards against redundant reads — not flagging a real anti-pattern
@@ -342,7 +371,7 @@ function _detectDuplicateLiterals(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const strings = {};
         const matches = content.matchAll(/["'`]([^"'`\n]{8,60})["'`]/g);
         for (const m of matches) {
@@ -394,7 +423,7 @@ function _detectDeadExport(files, root) {
     const exportsByFile = [];
     for (const f of files) {
         let content;
-        try { content = fs.readFileSync(f, "utf8"); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
         const m = content.match(EXPORT_LINE_RE);
         if (!m) continue;
         const body = m[1];
@@ -418,9 +447,34 @@ function _detectDeadExport(files, root) {
     function _content(f) {
         if (contentCache.has(f)) return contentCache.get(f);
         let c = "";
-        try { c = fs.readFileSync(f, "utf8"); } catch {}
+        c = _readFile(f);
         contentCache.set(f, c);
         return c;
+    }
+
+    // Phase C.1.1 — identifier index, built once.
+    //
+    // This loop previously ran `new RegExp("\\b"+name+"\\b").test(content)`
+    // for every candidate export against every other file. It short-circuits
+    // on the FIRST match, so a name that IS used exits early — but a name
+    // that is genuinely dead scans the entire corpus. With 692 dead exports
+    // across 2,293 files that is ~1.6M regex executions over full file
+    // bodies, and _detectDeadExport measured 23,029ms of the scan's total
+    // 24,882ms (92.5%) while every other detector finished in under 1s.
+    //
+    // Same heuristic, same output: tokenise each file once into the set of
+    // identifiers it contains, then test membership. Identical
+    // whole-word semantics to `\bname\b` for identifier characters, so the
+    // detector's confidence (0.55) and its false-positive profile are
+    // unchanged — this is a lookup strategy change, not a rule change.
+    const fileTokens = new Map();
+    function _tokens(f) {
+        let t = fileTokens.get(f);
+        if (!t) {
+            t = new Set((_content(f) || "").match(/[A-Za-z_$][A-Za-z0-9_$]*/g) || []);
+            fileTokens.set(f, t);
+        }
+        return t;
     }
 
     for (const entry of exportsByFile) {
@@ -429,10 +483,9 @@ function _detectDeadExport(files, root) {
             // Cheap guard: identifiers under 4 chars are too collision-prone
             // for a whole-word regex scan to be meaningful (e.g. "ok", "id").
             if (name.length < 4) continue;
-            const USAGE_RE = new RegExp(`\\b${name}\\b`);
             let usedElsewhere = false;
             for (const other of otherFiles) {
-                if (USAGE_RE.test(_content(other))) { usedElsewhere = true; break; }
+                if (_tokens(other).has(name)) { usedElsewhere = true; break; }
             }
             if (!usedElsewhere) {
                 smells.push({
@@ -456,7 +509,8 @@ function _detectStaleFeatureFlags(files, root) {
     for (const f of files) {
         const rel = _rel(root, f);
         let content, stat;
-        try { content = fs.readFileSync(f, "utf8"); stat = fs.statSync(f); } catch { continue; }
+        content = _readFile(f); if (content === null) continue;
+        try { stat = fs.statSync(f); } catch { continue; }
         const lines = content.split("\n");
         const ageMs = Date.now() - stat.mtimeMs;
         const ageDays = ageMs / 86400000;
@@ -594,6 +648,13 @@ function scan(repoPath) {
     const files    = _walkFiles(root);
     const dismissed = _loadDismissed();
 
+    // Phase C.1.1 — see _readFile above. Scoped to this call only: every
+    // detector below shares one read per file instead of re-reading the tree,
+    // and the memo is released in the finally block so nothing is retained
+    // between requests.
+    _fileCache = new Map();
+    try {
+
     const allSmells = [
         ..._detectTodoFixme(files, root),
         ..._detectEmptyCatch(files, root),
@@ -647,6 +708,10 @@ function scan(repoPath) {
     };
 
     return { smells: deduped, summary, scannedFiles: files.length };
+
+    } finally {
+        _fileCache = null;   // release the per-scan memo (see _readFile above)
+    }
 }
 
 function dismiss(smellId) {

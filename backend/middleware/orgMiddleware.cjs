@@ -20,7 +20,25 @@ function _svc() {
 function attachOrg(req, res, next) {
     try {
         const accountId = req.user?.sub;
-        const orgId     = req.headers["x-org-id"] || req.query.orgId || req.body?.orgId;
+        // Precedence: an :orgId PATH PARAM wins over the X-Org-Id header.
+        //
+        // Phase B.7: the header used to win unconditionally, which made every
+        // route shaped `/orgs/:orgId/...` (gated by requireOrgPermission, but
+        // reading req.params.orgId in the handler) a confused deputy — the
+        // permission check ran against the HEADER's org while the handler
+        // served the PATH's org. Reproduced 3/3 live: an account that is a
+        // member of org A only, requesting
+        //     GET /orgs/<orgB>/members   with   X-Org-Id: <orgA>
+        // was authorized as org A's owner and received org B's member roster.
+        // Without the header the same request correctly returned 403.
+        // Confirmed on /members, /departments and /teams.
+        //
+        // The path param identifies the RESOURCE being addressed, so it is the
+        // only correct authorization subject when present; the header remains
+        // the tenant selector for routes that carry no :orgId (e.g. /crm/lead).
+        // This narrows what the header can do — it can no longer disagree with
+        // the addressed resource — and never widens access.
+        const orgId     = req.params?.orgId || req.headers["x-org-id"] || req.query.orgId || req.body?.orgId;
 
         if (orgId) {
             req.org     = _svc().getOrg(orgId) || null;

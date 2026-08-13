@@ -291,6 +291,24 @@ async function sendWhatsAppBroadcast(id, orgId) {
     ? (s.audiences[c.audienceId].memberIds || [])
     : crm.getLeads(undefined, orgId).map(l => l.phone).filter(Boolean);
 
+  // Phase OS-2 fake-success fix. With no audience and a phone-first CRM that
+  // returns no leads, memberIds is empty — the loop below never executes, yet
+  // status was still set to "sent" with a sentAt timestamp. Measured: a
+  // broadcast reported status:"sent" while stats showed sent:0, delivered:0,
+  // failed:0. Nothing reached anyone, and the record claimed otherwise.
+  //
+  // sendEmailCampaign() and sendSMSCampaign() already refuse this case with a
+  // nonRetriable error naming the real reason; this mirrors that convention
+  // rather than inventing a new one. A broadcast WITH recipients is unchanged.
+  if (!memberIds.length) {
+    const err = new Error(
+      "WhatsApp broadcast has no recipients: no audience is attached and the CRM returned no leads with a phone number. " +
+      "Attach an audience via /growth/audiences or add CRM leads with phone numbers to enable sending."
+    );
+    err.nonRetriable = true;
+    throw err;
+  }
+
   const wa = require("./whatsappService.js");
   let delivered = 0, failed = 0;
   const failures = [];
@@ -437,8 +455,21 @@ function sendPushNotification(opts, orgId) {
     trigger: trigger || "manual",
     automationId: automationId || null,
     data: data || {},
-    status: "sent", sentAt: _ts(), orgId,
-    stats: { targeted: targets.length, sent, clicked: Math.round(sent * 0.06), dismissed: Math.round(sent * 0.12) },
+    // Phase OS-2 fake-success fix: status was unconditionally "sent" even when
+    // zero devices were targeted (no audience, or no registered push tokens),
+    // matching the WhatsApp defect fixed in sendWhatsAppBroadcast().
+    status: sent > 0 ? "sent" : "not_sent", sentAt: sent > 0 ? _ts() : null, orgId,
+    // Phase OS-2 fabricated-metrics fix: `clicked` and `dismissed` were
+    // computed as sent*0.06 and sent*0.12 — invented engagement rates
+    // presented to the operator as measured analytics. This module consumes no
+    // click or dismissal webhook, so those numbers cannot be known. null means
+    // "not measured", which is the truth; 0 would falsely assert zero clicks.
+    stats: { targeted: targets.length, sent, clicked: null, dismissed: null },
+    // Set when no device could be reached, so the operator sees the reason
+    // rather than a silent zero.
+    notSentReason: sent > 0 ? null
+      : (targets.length ? "no registered push tokens for the targeted accounts"
+                        : "no audience or accountIds supplied — zero devices targeted"),
     createdAt: _ts(),
   };
   _recordEvent({ type: "push_sent", campaignId: id, count: sent });

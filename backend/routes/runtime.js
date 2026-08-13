@@ -91,7 +91,7 @@ router.get("/runtime/status", (req, res) => {
 
 // GET /runtime/history — recent execution history
 router.get("/runtime/history", (req, res) => {
-    const n = Math.min(parseInt(req.query.n) || 20, 100);
+    const n = Math.max(1, Math.min(parseInt(req.query.n) || 20, 100));
     return res.json({ success: true, entries: history.recent(n) });
 });
 
@@ -228,7 +228,7 @@ router.get("/runtime/health/deep", (req, res) => {
 
 // GET /runtime/dead-letter — list failed tasks
 router.get("/runtime/dead-letter", (req, res) => {
-    const n      = Math.min(parseInt(req.query.n) || 50, 500);
+    const n      = Math.max(1, Math.min(parseInt(req.query.n) || 50, 500));
     const entries = dlq.list().slice(0, n);
     return res.json({ success: true, count: entries.length, total: dlq.size(), entries });
 });
@@ -241,7 +241,7 @@ router.delete("/runtime/dead-letter/:taskId", (req, res) => {
 
 // GET /runtime/logs — tail persistent execution log
 router.get("/runtime/logs", (req, res) => {
-    const n = Math.min(parseInt(req.query.n) || 100, 500);
+    const n = Math.max(1, Math.min(parseInt(req.query.n) || 100, 500));
     return res.json({ success: true, entries: execLog.tail(n), ...execLog.info() });
 });
 
@@ -344,7 +344,7 @@ router.get("/runtime/audit/health", (req, res) => {
 
 // GET /runtime/audit — tail immutable audit trail
 router.get("/runtime/audit", (req, res) => {
-    const n = Math.min(parseInt(req.query.n) || 100, 500);
+    const n = Math.max(1, Math.min(parseInt(req.query.n) || 100, 500));
     return res.json({ success: true, entries: auditLog.tail(n), ...auditLog.info() });
 });
 
@@ -413,7 +413,7 @@ const replayEngine = _tryRequirePhase("../../agents/runtime/executionReplayEngin
 // GET /runtime/replay — list saved replays
 router.get("/runtime/replay", (req, res) => {
     if (!replayEngine) return res.status(503).json({ success: false, error: "replay_unavailable" });
-    const n = Math.min(parseInt(req.query.n) || 20, 50);
+    const n = Math.max(1, Math.min(parseInt(req.query.n) || 20, 50));
     return res.json({ success: true, replays: replayEngine.list(n), stats: replayEngine.stats() });
 });
 
@@ -500,7 +500,7 @@ router.post("/runtime/safety/check", rateLimiter(60, 60_000), (req, res) => {
 router.get("/runtime/metrics", (req, res) => {
     try {
         const ms   = require("../../agents/runtime/metricsStore.cjs");
-        const n    = Math.min(parseInt(req.query.n) || 50, 500);
+        const n    = Math.max(1, Math.min(parseInt(req.query.n) || 50, 500));
         const data = ms.recent(n);
         return res.json({ success: true, count: data.length, dates: ms.availableDates(), data });
     } catch (err) {
@@ -741,7 +741,7 @@ router.get("/runtime/crashes", (req, res) => {
         const path     = require("path");
         const crashDir = path.join(__dirname, "../../data/crashes");
         if (!fs.existsSync(crashDir)) return res.json({ success: true, crashes: [] });
-        const n     = Math.min(parseInt(req.query.n) || 10, 50);
+        const n     = Math.max(1, Math.min(parseInt(req.query.n) || 10, 50));
         const files = fs.readdirSync(crashDir)
             .filter(f => f.startsWith("crash_") && f.endsWith(".json"))
             .sort().slice(-n).reverse();
@@ -1963,7 +1963,7 @@ router.post("/runtime/sessions", rateLimiter(20, 60_000), (req, res) => {
 router.get("/runtime/sessions", (req, res) => {
     if (!engSession) return res.status(503).json({ success: false, error: "sessions_unavailable" });
     const state = req.query.state || null;
-    const limit = Math.min(parseInt(req.query.limit) || 10, 20);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 10, 20));
     return res.json({ success: true, sessions: engSession.list({ state, limit }) });
 });
 
@@ -2365,7 +2365,7 @@ router.get("/runtime/forensics", (req, res) => {
     if (!forensics) return res.status(503).json({ success: false, error: "forensics_unavailable" });
     const type      = (req.query.type      || null);
     const sessionId = (req.query.sessionId || null);
-    const limit     = Math.min(parseInt(req.query.limit) || 50, 200);
+    const limit     = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 200));
     return res.json({ success: true, entries: forensics.query({ type, sessionId, limit }) });
 });
 
@@ -2479,7 +2479,7 @@ const recoveryMemory = _tryRequirePhase("../../agents/runtime/executionRecoveryM
 router.get("/runtime/recovery-memory", (req, res) => {
     if (!recoveryMemory) return res.status(503).json({ success: false, error: "recovery_memory_unavailable" });
     const { type, chainName } = req.query;
-    const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 200));
     return res.json({ success: true, entries: recoveryMemory.query({ type, chainName, limit }), stats: recoveryMemory.stats() });
 });
 
@@ -2609,7 +2609,7 @@ router.post("/runtime/productivity/suggest", rateLimiter(20, 60_000), (req, res)
 router.get("/runtime/knowledge", (req, res) => {
     if (!knowledgeMem) return res.status(503).json({ success: false, error: "knowledge_unavailable" });
     const { kind, search } = req.query;
-    const limit = Math.min(parseInt(req.query.limit) || 30, 150);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 30, 150));
     return res.json({ success: true, entries: knowledgeMem.query({ kind, search, limit }), stats: knowledgeMem.stats() });
 });
 
@@ -2644,7 +2644,7 @@ router.post("/runtime/knowledge", rateLimiter(20, 60_000), (req, res) => {
 router.get("/runtime/search", (req, res) => {
     if (!opSearch) return res.status(503).json({ success: false, error: "search_unavailable" });
     const query = (req.query.q || "").slice(0, 200);
-    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 10, 50));
     if (!query) return res.status(400).json({ success: false, error: "q parameter required" });
     return res.json({ success: true, query, results: opSearch.searchAll(query, limit) });
 });
@@ -2653,7 +2653,7 @@ router.get("/runtime/search", (req, res) => {
 router.get("/runtime/search/commands", (req, res) => {
     if (!opSearch) return res.status(503).json({ success: false, error: "search_unavailable" });
     const pattern = (req.query.q || "").slice(0, 200);
-    const limit   = Math.min(parseInt(req.query.limit) || 10, 50);
+    const limit   = Math.max(1, Math.min(parseInt(req.query.limit) || 10, 50));
     return res.json({ success: true, commands: opSearch.recallCommands(pattern, limit) });
 });
 
@@ -2710,7 +2710,7 @@ router.post("/runtime/operators/:operatorId/sessions", rateLimiter(20, 60_000), 
 
 router.get("/runtime/operators/:operatorId/sessions", (req, res) => {
     if (!multiOp) return res.status(503).json({ success: false, error: "multi_operator_unavailable" });
-    const limit = Math.min(parseInt(req.query.limit) || 10, 20);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 10, 20));
     return res.json({ success: true, sessions: multiOp.listSessions(req.params.operatorId, { state: req.query.state || null, limit }) });
 });
 
@@ -2822,7 +2822,7 @@ router.get("/runtime/analytics/summary", (req, res) => {
 router.get("/runtime/analytics/events", (req, res) => {
     if (!opAnalytics) return res.status(503).json({ success: false, error: "analytics_unavailable" });
     const windowMs = req.query.window ? parseInt(req.query.window) * 3_600_000 : null;
-    return res.json({ success: true, events: opAnalytics.query({ type: req.query.type || null, limit: Math.min(parseInt(req.query.limit) || 100, 500), windowMs }) });
+    return res.json({ success: true, events: opAnalytics.query({ type: req.query.type || null, limit: Math.max(1, Math.min(parseInt(req.query.limit) || 100, 500)), windowMs }) });
 });
 
 router.post("/runtime/analytics/record", rateLimiter(120, 60_000), (req, res) => {
@@ -2973,7 +2973,7 @@ router.get("/runtime/sync/status", (req, res) => {
 
 router.get("/runtime/sync/pending", (req, res) => {
     if (!cloudSync) return res.status(503).json({ success: false, error: "sync_unavailable" });
-    const limit = Math.min(parseInt(req.query.limit) || 50, 500);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 500));
     return res.json({ success: true, entries: cloudSync.getPending({ limit }) });
 });
 
@@ -3080,7 +3080,7 @@ router.post("/runtime/pipelines/:name/runs", rateLimiter(10, 60_000), (req, res)
 
 router.get("/runtime/pipelines/runs", (req, res) => {
     if (!pipeline) return res.status(503).json({ success: false, error: "pipeline_unavailable" });
-    const limit = Math.min(parseInt(req.query.limit) || 20, 20);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 20, 20));
     return res.json({ success: true, runs: pipeline.listRuns({ pipeline: req.query.pipeline, state: req.query.state, limit }) });
 });
 
@@ -10371,7 +10371,7 @@ router.get("/runtime/lh-workspace/health", rateLimiter(10, 60_000), (req, res) =
 });
 router.get("/runtime/lh-workspace/sessions", rateLimiter(20, 60_000), (req, res) => {
     if (!lhWorkspaceCont) return res.status(503).json({ success: false, error: "module_unavailable" });
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
     return res.json({ success: true, sessions: lhWorkspaceCont.listWorkspaceSessions({ limit }) });
 });
 
@@ -10653,7 +10653,7 @@ router.get("/runtime/lh-prod/health", rateLimiter(10, 60_000), (req, res) => {
 });
 router.get("/runtime/lh-prod/sessions", rateLimiter(20, 60_000), (req, res) => {
     if (!lhProdCont) return res.status(503).json({ success: false, error: "module_unavailable" });
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
     return res.json({ success: true, sessions: lhProdCont.listProductivitySessions({ limit }) });
 });
 
@@ -10964,7 +10964,7 @@ router.get("/runtime/long-sess/health", rateLimiter(10, 60_000), (req, res) => {
 });
 router.get("/runtime/long-sess/sessions", rateLimiter(20, 60_000), (req, res) => {
     if (!longSesseSurv) return res.status(503).json({ success: false, error: "module_unavailable" });
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);
     return res.json({ success: true, sessions: longSesseSurv.listSurvivabilitySessions({ limit }) });
 });
 
@@ -11489,7 +11489,7 @@ const _execErr = (res) => res.status(503).json({ success: false, error: "executi
 // GET /runtime/execution
 router.get("/runtime/execution", rateLimiter(60, 60_000), (req, res) => {
     if (!_execRT) return _execErr(res);
-    const limit      = Math.min(parseInt(req.query.limit) || 100, 500);
+    const limit      = Math.max(1, Math.min(parseInt(req.query.limit) || 100, 500));
     const status     = req.query.status     || null;
     const missionId  = req.query.missionId  || null;
     const capability = req.query.capability || null;
@@ -11616,7 +11616,7 @@ router.get("/runtime/observer/status", rateLimiter(30, 60_000), (req, res) => {
 // GET /runtime/observer/events
 router.get("/runtime/observer/events", rateLimiter(60, 60_000), (req, res) => {
     if (!_observer) return res.status(503).json({ success: false, error: "observer_unavailable" });
-    const limit    = Math.min(parseInt(req.query.limit)  || 100, 500);
+    const limit    = Math.max(1, Math.min(parseInt(req.query.limit) || 100, 500));
     const category = req.query.category || null;
     const severity = req.query.severity || null;
     const source   = req.query.source   || null;

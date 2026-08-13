@@ -250,10 +250,79 @@ if (hasFrontendBuild) {
 // ── Mount all API routes ────────────────────────────────────────────
 app.use(routes);
 
+// ── API 404 boundary ────────────────────────────────────────────────
+// Phase C.1.1 measurement-integrity fix. The SPA fallback below matches
+// ANY unmatched GET, so an authenticated request to a nonexistent API
+// path (e.g. GET /enterprise/orgs, which no route defines) fell through
+// to index.html and returned HTTP 200 + HTML. A client could not
+// distinguish "route missing" from "route working" by status code, and a
+// consumer failed at JSON.parse rather than on a clean 404.
+//
+// Measured impact: this corrupted the Phase C.1 audit twice — it made
+// three orphaned components (EnterpriseOS/DeveloperOS/PersonalOS, 22
+// endpoints) appear to have live backends, and it produced a false
+// cross-tenant "leak" signal when three nonexistent org paths returned
+// 200 to a foreign account (the owner received the same 200 HTML).
+//
+// The prefix list is derived from the live router tree at boot, not
+// hardcoded, so it stays correct as routes are added or removed.
+const _apiPrefixes = (() => {
+    const found = new Set();
+    (function walk(stack) {
+        for (const layer of stack || []) {
+            if (layer.route && typeof layer.route.path === "string") {
+                const seg = layer.route.path.split("/")[1];
+                if (seg && !seg.startsWith(":")) found.add(seg.split(":")[0]);
+            } else if (layer.handle && layer.handle.stack) {
+                walk(layer.handle.stack);
+            }
+        }
+    })(routes.stack);
+    return found;
+})();
+
+// Real client-side routes. App.jsx reads window.location.pathname and handles
+// exactly these; everything else it renders from local state, so no other
+// multi-segment path is a legitimate frontend destination.
+const _SPA_PATHS = new Set(["/", "/reset-password", "/verify-email", "/accept-invite"]);
+
+app.use((req, res, next) => {
+    const seg = req.path.split("/")[1];
+
+    // (a) Unknown path under a prefix that DOES serve routes.
+    if (seg && _apiPrefixes.has(seg)) {
+        return res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.path}`,
+        });
+    }
+
+    // (b) Phase OS-2 gap fix. Keying only off mounted prefixes left a hole:
+    // a path whose prefix has NO routes at all (e.g. /dev/*, /personal/*) was
+    // absent from _apiPrefixes and fell through to the SPA, still answering
+    // 200 + HTML. Those are precisely the endpoints DeveloperOS.jsx and
+    // PersonalOS.jsx call — the dead prototypes this whole audit is trying to
+    // tell the truth about — so the masking survived exactly where it mattered.
+    //
+    // A multi-segment path that is not a known client-side route is an API
+    // call by any reasonable reading. Single-segment paths still fall through,
+    // so client-side routes added later keep working without touching this.
+    const isMultiSegment = req.path.split("/").filter(Boolean).length > 1;
+    if (isMultiSegment && !_SPA_PATHS.has(req.path)) {
+        return res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.path}`,
+        });
+    }
+
+    return next();
+});
+
 // ── SPA fallback — any non-API path that reached here falls back to
 // index.html so React Router / hash routes resolve client-side. Must
-// run AFTER the API route barrel so unmatched API paths still 404/401
-// correctly instead of silently returning the SPA shell.
+// run AFTER the API route barrel and the API 404 boundary above so
+// unmatched API paths 404 correctly instead of silently returning the
+// SPA shell.
 if (hasFrontendBuild) {
     // Express 5 / path-to-regexp v6 rejects a bare "*" — wildcard segments
     // must be named (e.g. "/*splat"). This previously never executed because

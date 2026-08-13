@@ -169,8 +169,49 @@ log "Saving current data/ to ${SAFETY} (safety net)..."
 tar -czf "${SAFETY}" data/ 2>/dev/null || true
 
 # ── Restore data ──────────────────────────────────────────────────────────
+# Two backup layouts exist in backups/ and this script's own glob
+# (jarvis_*.tar.gz) matches BOTH:
+#   backup.sh          -> archive rooted at  data/           (extracts in place)
+#   safe-backup.cjs    -> archive rooted at  snapshot_<ts>/  (does NOT)
+# Extracting the snapshot_* layout with a bare `tar -xzf` created a stray
+# snapshot_<ts>/ directory and left data/ completely untouched — the restore
+# silently no-opped while still reporting "Rollback complete", because
+# _restart_and_verify only checks that /health returns 200 (which it does,
+# still serving the OLD data). Since safe-backup.cjs runs nightly, its
+# archive is almost always the newest match, so the default no-argument
+# `bash deploy/rollback.sh` hit this path. Detect the layout and copy the
+# snapshot's files into data/ explicitly. Verified by drill: Phase B.5.
 log "Restoring from ${BACKUP_FILE}..."
-tar -xzf "${BACKUP_FILE}" 2>/dev/null
+_ARCHIVE_ROOT=$(tar -tzf "${BACKUP_FILE}" 2>/dev/null | head -1)
+case "${_ARCHIVE_ROOT}" in
+    data/*)
+        tar -xzf "${BACKUP_FILE}" 2>/dev/null
+        log "Restored (data/-rooted archive) into data/"
+        ;;
+    snapshot_*)
+        _RTMP=$(mktemp -d)
+        tar -xzf "${BACKUP_FILE}" -C "${_RTMP}" 2>/dev/null
+        _SNAP="${_RTMP}/$(ls "${_RTMP}" | head -1)"
+        mkdir -p data
+        # Only the snapshot's own files are restored; anything in data/ that
+        # the snapshot does not contain is left as-is (the safety-net archive
+        # above is the way back to the pre-restore state).
+        _RCOUNT=0
+        for _f in "${_SNAP}"/*; do
+            [ -f "${_f}" ] || continue
+            case "$(basename "${_f}")" in
+                env-config-nonsecret.txt) continue ;;  # reference only — never overwrite .env
+            esac
+            cp "${_f}" "data/$(basename "${_f}")" && _RCOUNT=$((_RCOUNT + 1))
+        done
+        rm -rf "${_RTMP}"
+        log "Restored ${_RCOUNT} file(s) from snapshot archive into data/"
+        [ "${_RCOUNT}" -gt 0 ] || die "Restore copied 0 files — refusing to report success. Safety net: ${SAFETY}"
+        ;;
+    *)
+        die "Unrecognized backup layout (root='${_ARCHIVE_ROOT}'). Refusing to restore. Safety net: ${SAFETY}"
+        ;;
+esac
 
 # ── Restart and verify ────────────────────────────────────────────────────
 _restart_and_verify "$(basename "${BACKUP_FILE}")"

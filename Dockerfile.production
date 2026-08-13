@@ -127,4 +127,10 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # Run the server directly — Docker/compose handles restarts
-CMD ["node", "--max-old-space-size=400", "backend/server.js"]
+# Phase B.8: was --max-old-space-size=400, the same cap that produced 223
+# "FATAL ERROR: Reached heap limit" aborts under PM2 (earliest 2026-06-06).
+# Measured steady-state RSS is 700-880 MB, so 400 MB is inside the normal
+# operating range, not a safety margin. Kept in step with the PM2 value in
+# ecosystem.config.cjs; docker-compose.prod.yml's container memory limit was
+# raised alongside it so the container ceiling still sits above this cap.
+CMD ["node", "--max-old-space-size=1024", "backend/server.js"]

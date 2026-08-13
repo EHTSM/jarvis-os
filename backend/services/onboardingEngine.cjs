@@ -155,7 +155,8 @@ function getState(accountId) {
 function completeStep(accountId, stepId) {
   const store = _load();
   const state = store[accountId];
-  if (!state) return null;
+  // Same shared-file hazard as getAllProgress() — see _isAccountRecord below.
+  if (!_isAccountRecord(state)) return null;
   const step = state.steps.find(s => s.id === stepId);
   if (!step) return state;
   if (!step.done) {
@@ -174,7 +175,8 @@ function completeStep(accountId, stepId) {
 
 function getProgress(accountId) {
   const state = getState(accountId);
-  if (!state) return null;
+  // Same shared-file hazard as getAllProgress() — see _isAccountRecord below.
+  if (!_isAccountRecord(state)) return null;
   const done  = state.steps.filter(s => s.done).length;
   return {
     roleId:    state.roleId,
@@ -186,15 +188,38 @@ function getProgress(accountId) {
   };
 }
 
+/**
+ * True only for records written by startOnboarding() above — i.e. an object
+ * carrying a real `steps` array.
+ *
+ * Phase C.1.1: data/onboarding-state.json is shared with an unrelated writer,
+ * agents/runtime/operatorOnboarding.cjs, which persists a completely different
+ * single-object shape ({ completed: string[], operatorId, startedAt,
+ * finishedAt }) to the same path. Reading that as a map of per-account records
+ * yielded values with no `.steps`, so `s.steps.filter()` threw and
+ * GET /launch/onboarding/all returned 500 on every call.
+ *
+ * Filtering rather than repointing storage: the other module owns that file
+ * too, and moving either one's path would change its behaviour. This reader
+ * only skips records that were never its own.
+ */
+function _isAccountRecord(s) {
+  return !!s && typeof s === "object" && !Array.isArray(s) && Array.isArray(s.steps);
+}
+
 function getAllProgress() {
   const store = _load();
-  return Object.values(store).map(s => ({
-    accountId:  s.accountId,
-    roleId:     s.roleId,
-    completed:  s.completed,
-    pct: Math.round((s.steps.filter(x => x.done).length / s.steps.length) * 100),
-    started:    s.started,
-  }));
+  return Object.values(store)
+    .filter(_isAccountRecord)
+    .map(s => ({
+      accountId:  s.accountId,
+      roleId:     s.roleId,
+      completed:  s.completed,
+      pct: s.steps.length
+        ? Math.round((s.steps.filter(x => x.done).length / s.steps.length) * 100)
+        : 0,
+      started:    s.started,
+    }));
 }
 
 module.exports = {

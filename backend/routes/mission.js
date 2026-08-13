@@ -137,7 +137,7 @@ const _orchErr = (res) => res.status(503).json({ success: false, error: "orchest
 // GET /missions/orchestrator
 router.get("/missions/orchestrator", (req, res) => {
     if (!_orch) return _orchErr(res);
-    const limit    = Math.min(parseInt(req.query.limit) || 100, 500);
+    const limit    = Math.max(1, Math.min(parseInt(req.query.limit) || 100, 500));
     const status   = req.query.status   || null;
     const priority = req.query.priority || null;
     const since    = req.query.since    || null;
@@ -437,7 +437,7 @@ router.get("/mission/git/context/:id", (req, res) => {
 // Returns recent mission-linked commits across all missions (timeline scan).
 router.get("/mission/git/history", (req, res) => {
     _send(res, () => {
-        const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+        const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 50, 200));
         const { missions } = memory.listMissions({ limit: 200 });
         const history = [];
         for (const m of missions) {

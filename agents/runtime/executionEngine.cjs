@@ -110,6 +110,13 @@ async function executeTask(task, options = {}) {
 
     const capability = router.resolveCapability(task.type);
     let   lastError  = null;
+    // Phase B.18: which agent was actually attempted, carried out of the retry
+    // loop for the dead-letter record below. `const agent` is block-scoped
+    // inside the for-loop, so the DLQ push at the end of this function had no
+    // way to name it and passed a hardcoded agentId:null — see the comment
+    // there. Tracked next to lastError because it has exactly the same
+    // lifetime: the state of the final attempt.
+    let   lastAgentId = null;
 
     // Agent Factory instance overlay (Universal Composition Engine Phase 4):
     // if this task is scoped to an org, look up whether that org has a
@@ -275,6 +282,8 @@ async function executeTask(task, options = {}) {
         }
 
         const agent = registry.findForCapability(capability);
+        // Remember who we attempted, so a dead-letter entry can name the agent.
+        if (agent) lastAgentId = agent.id;
 
         // If we have a registered agent, use it
         if (agent) {
@@ -348,6 +357,7 @@ async function executeTask(task, options = {}) {
                     }
                 } catch (err) {
                     lastError = err;
+                    lastAgentId = "legacy";
                     history.record({
                         agentId: "legacy", taskType: task.type, taskId,
                         success: false, durationMs: Date.now() - t0,
@@ -368,12 +378,28 @@ async function executeTask(task, options = {}) {
 
     const finalError = lastError?.message || "unknown";
     logger.error(`[ExecEngine] ${task.type} FAILED after ${maxRetries} attempts: ${finalError}`);
-    // Push to dead-letter queue so the failure is not silently lost
+    // Push to dead-letter queue so the failure is not silently lost.
+    //
+    // Phase B.18: this passed a hardcoded `agentId: null`, so every dead-letter
+    // entry was anonymous. Measured on the live queue: 0 of 980 entries carried
+    // an agentId, while taskType and deadAt were present on 980/980. The DLQ is
+    // the record of work that permanently failed after all retries — 550 "cb
+    // trigger", 328 "permanent failure", 110 "Agent \"weather\" not found" —
+    // and without the agent it cannot answer which component is failing, so an
+    // operator triaging a 1000-entry backlog (at cap, evicting oldest) cannot
+    // tell one bad adapter from a systemic outage. deadLetterQueue.push()
+    // already documents and stores agentId; the caller simply never supplied it.
+    // agent.id is block-scoped inside the retry loop, so it is now tracked in
+    // lastAgentId alongside lastError.
     try {
-        dlq.push({ taskId, taskType: task.type, input: task.input || task.label || "", error: finalError, attempts: maxRetries, agentId: null });
+        dlq.push({ taskId, taskType: task.type, input: task.input || task.label || "", error: finalError, attempts: maxRetries, agentId: lastAgentId });
     } catch { /* non-critical */ }
     _emitTelemetryAndMemory(task, { success: false, error: finalError, agentInstanceId: instanceCtx.agentInstanceId });
-    return { success: false, result: null, agentId: null, durationMs: 0, attempts: maxRetries, error: finalError };
+    // Same reasoning as the dlq.push above: an agent WAS attempted here (retries
+    // were exhausted), so report which one rather than null. The earlier
+    // `agentId: null` returns are different — those bail before any agent runs
+    // (no handler registered, or an approval gate), where null is correct.
+    return { success: false, result: null, agentId: lastAgentId, durationMs: 0, attempts: maxRetries, error: finalError };
 }
 
 module.exports = { executeTask };

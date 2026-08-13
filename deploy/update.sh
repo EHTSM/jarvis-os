@@ -1,9 +1,22 @@
 #!/bin/bash
 # ════════════════════════════════════════════════════════════════════════
-#  JARVIS OS — Zero-downtime update script
-#  Pulls latest code, installs deps, rebuilds frontend, hot-reloads PM2.
+#  JARVIS OS — Update script (brief-interruption reload)
+#  Pulls latest code, installs deps, rebuilds frontend, reloads PM2.
 #
 #  Usage: bash deploy/update.sh
+#
+#  NOTE ON DOWNTIME (measured, Phase B.8): this is NOT zero-downtime.
+#  `pm2 reload` only achieves overlap in CLUSTER mode, where PM2 starts a new
+#  worker before retiring the old one. This app runs instances:1 / exec_mode
+#  "fork" — deliberately, because taskQueue/learningSystem/contextEngine are
+#  in-process singletons and are not cluster-safe — so PM2 must stop the
+#  process before starting it again. Measured by polling /health every 100 ms
+#  across a real reload: 56 of 200 requests failed, a ~5.6 s window matching
+#  the 5 s graceful drain in _gracefulShutdown() plus startup. nginx has a
+#  single upstream (127.0.0.1:5050) with no failover, so that window surfaces
+#  to users as 502.
+#
+#  Deploy during a low-traffic window, or drain at the load balancer first.
 # ════════════════════════════════════════════════════════════════════════
 
 set -euo pipefail
@@ -49,8 +62,37 @@ rm -f data/startup_in_progress.json
 echo '{"count":0}' > data/startup_crash_count.json
 
 # ── Reload PM2 (zero-downtime) ───────────────────────────────────────────
-log "Reloading JARVIS (PM2 graceful reload)..."
-pm2 reload jarvis-os 2>/dev/null || pm2 restart jarvis-os
+#
+# Phase B.8: `pm2 reload jarvis-os || pm2 restart jarvis-os` reported success
+# when PM2 managed NOTHING. Both commands exit 1 with
+# "Process or Namespace jarvis-os not found", but `||` makes the compound
+# succeed, so `set -e` never fires. The health poll below then passes against
+# whatever was already listening on the port — typically a bare
+# `node backend/server.js` started by hand (reproduced live: PM2 daemon up,
+# 0 managed processes, port 5050 held by a bare node PID). The deploy printed
+# "Update complete. JARVIS is running." having reloaded no code at all.
+#
+# Fix: fall back to starting from the ecosystem file (the same recovery
+# deploy/rollback.sh already uses at lines 88/125), and verify PM2 actually
+# owns the process afterwards. Reuses the existing PM2 deployment — no new
+# tooling, no change to the ecosystem config.
+log "Reloading JARVIS (PM2 graceful reload — expect a ~6s 502 window; see header)..."
+if pm2 reload jarvis-os 2>/dev/null; then
+    log "Reloaded existing PM2 process."
+elif pm2 restart jarvis-os 2>/dev/null; then
+    log "Restarted existing PM2 process."
+else
+    warn "No PM2-managed 'jarvis-os' process found — starting from ecosystem.config.cjs."
+    # A hand-started bare process would hold port 5050 and silently block PM2
+    # (see the warning at the top of ecosystem.config.cjs), so clear it first.
+    if pgrep -f "node backend/server.js" >/dev/null 2>&1; then
+        warn "Stopping unmanaged 'node backend/server.js' holding the port..."
+        pkill -f "node backend/server.js" || true
+        sleep 2
+    fi
+    pm2 start ecosystem.config.cjs --env production || die "PM2 failed to start jarvis-os."
+    pm2 save || warn "pm2 save failed — process list will not survive a reboot."
+fi
 
 # Wait up to 40s for server to be ready after reload
 PORT="${PORT:-5050}"
@@ -64,8 +106,14 @@ for i in $(seq 1 20); do
     fi
 done
 
+# A healthy port is not proof of a successful deploy — it may be a stale
+# unmanaged process (the exact failure above). Require PM2 ownership too.
+if ! pm2 jlist 2>/dev/null | grep -q '"name":"jarvis-os"'; then
+    die "Health check passed but PM2 does not manage 'jarvis-os' — refusing to report success. Run: pm2 start ecosystem.config.cjs --env production"
+fi
+
 if [ "$READY" = "1" ]; then
-    log "Update complete. JARVIS is running."
+    log "Update complete. JARVIS is running under PM2."
     pm2 status jarvis-os
 else
     warn "Server may not be healthy after 40s. Checking logs..."

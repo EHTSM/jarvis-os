@@ -28,7 +28,23 @@ router.use("/content", (req, res, next) => {
 });
 
 function _ok(res, data)            { res.json({ ok: true, ...data }); }
-function _err(res, e, code = 500)  { res.status(code).json({ error: e.message || e }); }
+
+/**
+ * Phase OS-2: same defect class as growthOS.js — mutating routes let the
+ * service throw on a missing entity and every throw became HTTP 500.
+ * Measured: POST /content/articles/nope/publish and PATCH
+ * /content/calendar/nope both returned 500 "… not found", while the
+ * equivalent GET routes correctly returned 404.
+ *
+ * A 500 tells a client to retry; a 404 tells it the id does not exist.
+ * Classifying by the error the service already raises keeps this to one
+ * helper and leaves genuine faults as 500.
+ */
+function _err(res, e, code) {
+  const msg = e && e.message ? e.message : String(e);
+  const status = code !== undefined ? code : (/\bnot found\b/i.test(msg) ? 404 : 500);
+  res.status(status).json({ error: msg });
+}
 
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: AI Blog Studio

@@ -121,22 +121,59 @@ function publishJob(id, orgId) {
   if (!job) throw new Error(`Publish job ${id} not found`);
   if (job.requireApproval && job.approvalState !== "approved") throw new Error("Job not approved yet");
 
+  // Phase OS-3 fake-success fix — same defect class as the WhatsApp/Push
+  // findings in OS-2 (F-001/F-002), but with wider blast radius.
+  //
+  // This module performs NO external HTTP call anywhere (verified: zero
+  // axios/fetch call sites). It nonetheless marked every platform
+  // "published", minted a postUrl pointing at a page that does not exist
+  // (https://linkedin.com/ooplix/p/<id>), and derived reach/engagement/
+  // shares/clicks from hardcoded per-platform constants and fixed
+  // multipliers (0.042 / 0.008 / 0.025).
+  //
+  // Measured live: POST /distrib/publish/jobs/:id/publish reported linkedin
+  // and x as "published" with URLs and reach 580; /distrib/analytics then
+  // aggregated those into totalReach 7280, engagementRate "4.20" — the
+  // multiplier echoed back as a measured rate. Nothing was ever posted, and
+  // no field disclosed that the numbers were modelled.
+  //
+  // A founder could reasonably report those figures to an investor.
+  //
+  // Preserved: the job/approval/scheduling workflow is real and untouched.
+  // Changed: the state is now "simulated" rather than "published", the URL
+  // is not fabricated, and projections are labelled as projections instead
+  // of masquerading as measurements.
   const now = _ts();
   for (const pf of job.platforms) {
     if (pf.status === "queued" || pf.status === "failed") {
-      pf.status      = "published";
-      pf.publishedAt = now;
-      pf.postUrl     = `https://${pf.platform}.com/ooplix/p/${id.slice(-6)}`;
+      pf.status      = "simulated";
+      pf.simulatedAt = now;
+      pf.postUrl     = null;
+      pf.note        = `No ${pf.platform} connector is configured — this job was recorded, not posted.`;
     }
   }
   job.updatedAt = now;
+  job.simulated = true;
 
-  // Simulate reach based on platform
+  // Per-platform audience-size assumptions used for PLANNING only. These are
+  // static constants, not observed reach, so they are reported under
+  // `projected` and the measured counters stay null ("not measured").
   const REACH_ESTIMATES = { linkedin: 400, facebook: 250, instagram: 600, x: 180, threads: 90, pinterest: 120, youtube: 800, telegram: 350, whatsapp_channel: 500, medium: 200, wordpress: 150 };
-  job.stats.reach      = job.platforms.filter(p => p.status === "published").reduce((s, p) => s + (REACH_ESTIMATES[p.platform] || 100), 0);
-  job.stats.engagement = Math.round(job.stats.reach * 0.042);
-  job.stats.shares     = Math.round(job.stats.reach * 0.008);
-  job.stats.clicks     = Math.round(job.stats.reach * 0.025);
+  const projectedReach = job.platforms
+    .filter(p => p.status === "simulated" || p.status === "published")
+    .reduce((sum, p) => sum + (REACH_ESTIMATES[p.platform] || 100), 0);
+
+  job.stats.reach      = null;   // requires real platform analytics APIs
+  job.stats.engagement = null;
+  job.stats.shares     = null;
+  job.stats.clicks     = null;
+  job.stats.projected  = {
+    basis: "static per-platform audience estimates × fixed industry rates — NOT measured",
+    reach:      projectedReach,
+    engagement: Math.round(projectedReach * 0.042),
+    shares:     Math.round(projectedReach * 0.008),
+    clicks:     Math.round(projectedReach * 0.025),
+  };
   _save(s);
   return s.publishJobs[id];
 }
@@ -147,13 +184,16 @@ function retryPlatform(jobId, platform, orgId) {
   if (!job) throw new Error(`Job ${jobId} not found`);
   const pf = job.platforms.find(p => p.platform === platform);
   if (!pf) throw new Error(`Platform ${platform} not in job`);
-  pf.status  = "retrying";
   pf.retries = (pf.retries || 0) + 1;
   job.updatedAt = _ts();
-  // Simulate retry success
-  pf.status      = "published";
-  pf.publishedAt = _ts();
-  pf.postUrl     = `https://${platform}.com/ooplix/p/${jobId.slice(-6)}-r${pf.retries}`;
+  // Phase OS-3: this mirrored publishJob()'s fake success — it declared the
+  // retry "published" and minted another non-existent postUrl, without any
+  // external call. A retry of a simulated post is still simulated.
+  pf.status      = "simulated";
+  pf.simulatedAt = _ts();
+  pf.postUrl     = null;
+  pf.note        = `No ${platform} connector is configured — retry recorded, not posted.`;
+  job.simulated  = true;
   _save(s);
   return job;
 }
@@ -688,38 +728,73 @@ function getDistributionAnalytics(orgId) {
   const jobs    = _scopedRecords(s.publishJobs, orgId);
   const camps   = _scopedRecords(s.campaigns, orgId);
 
-  const totalReach      = jobs.reduce((s, j) => s + (j.stats?.reach || 0), 0);
-  const totalEngagement = jobs.reduce((s, j) => s + (j.stats?.engagement || 0), 0);
-  const totalShares     = jobs.reduce((s, j) => s + (j.stats?.shares || 0), 0);
-  const totalClicks     = jobs.reduce((s, j) => s + (j.stats?.clicks || 0), 0);
+  // Phase OS-4. These four totals were reported as measured performance, but
+  // every contributing value was fabricated by the pre-OS-3 publishJob():
+  // reach came from static per-platform constants and engagement/shares/clicks
+  // from fixed multipliers. Measured live before the fix:
+  //   totalReach 7280, engagementRate "4.20"  — 4.20 IS the 0.042 multiplier,
+  // echoed back as though it had been observed.
+  //
+  // Nothing in this module consumes a platform analytics API, so no measured
+  // value for any of these exists. They are reported as null ("not measured"),
+  // and the residue still held by pre-fix records is surfaced separately under
+  // `legacy` so it is visible without masquerading as performance data.
+  const legacyReach      = jobs.reduce((s, j) => s + (typeof j.stats?.reach      === "number" ? j.stats.reach      : 0), 0);
+  const legacyEngagement = jobs.reduce((s, j) => s + (typeof j.stats?.engagement === "number" ? j.stats.engagement : 0), 0);
+  const legacyShares     = jobs.reduce((s, j) => s + (typeof j.stats?.shares     === "number" ? j.stats.shares     : 0), 0);
+  const legacyClicks     = jobs.reduce((s, j) => s + (typeof j.stats?.clicks     === "number" ? j.stats.clicks     : 0), 0);
+  const legacyJobs       = jobs.filter(j => typeof j.stats?.reach === "number").length;
 
   const byPlatform = {};
   for (const j of jobs) {
     for (const pf of j.platforms) {
-      if (!byPlatform[pf.platform]) byPlatform[pf.platform] = { posts: 0, reach: 0, engagement: 0, shares: 0 };
-      if (pf.status === "published") {
+      // `engagement`/`shares` are deliberately absent: this module consumes no
+      // platform analytics API, so there is nothing measured to report.
+      if (!byPlatform[pf.platform]) byPlatform[pf.platform] = { posts: 0, legacyReach: 0 };
+      if (pf.status === "published" || pf.status === "simulated") {
         byPlatform[pf.platform].posts++;
-        const perPlatformReach = Math.round((j.stats?.reach || 0) / j.platforms.length);
-        byPlatform[pf.platform].reach      += perPlatformReach;
-        byPlatform[pf.platform].engagement += Math.round(perPlatformReach * 0.042);
-        byPlatform[pf.platform].shares     += Math.round(perPlatformReach * 0.008);
+        // Phase OS-4: this mirrored the publishJob() fabrication fixed in OS-3
+        // — per-platform engagement and shares were still derived from
+        // reach × 0.042 / × 0.008 rather than measured. Post-OS-3 jobs carry
+        // stats.reach === null, so only pre-fix records fed this path, and it
+        // kept re-deriving invented engagement from invented reach.
+        //
+        // Reach is summed only where a number was actually recorded; the
+        // derived counters are gone. `legacyReach` marks totals that came from
+        // records written before the OS-3 honesty fix.
+        const recorded = typeof j.stats?.reach === "number" ? j.stats.reach : null;
+        if (recorded !== null) {
+          byPlatform[pf.platform].legacyReach += Math.round(recorded / j.platforms.length);
+        }
       }
     }
   }
 
-  const viralityScore = totalReach > 0 ? Math.min(100, Math.round(totalShares / totalReach * 1000)) : 0;
-
   return {
-    totalReach,
-    totalEngagement,
-    totalShares,
-    totalClicks,
-    engagementRate: totalReach > 0 ? (totalEngagement / totalReach * 100).toFixed(2) : "0.00",
-    viralityScore,
+    // No platform analytics connector exists, so none of these are measured.
+    // null means "not measured"; 0 would falsely assert zero reach.
+    totalReach:      null,
+    totalEngagement: null,
+    totalShares:     null,
+    totalClicks:     null,
+    engagementRate:  null,
+    viralityScore:   null,
+    measured: false,
+    measurementNote: "No platform analytics connector is configured — reach, engagement, shares and clicks are not measured for this deployment.",
+    // Residue from records written before the OS-3 publishing-honesty fix.
+    // Retained for transparency, explicitly NOT presented as performance.
+    legacy: {
+      note: "Values from pre-fix records whose reach/engagement were generated from static constants and fixed multipliers, not observed.",
+      jobs: legacyJobs,
+      reach: legacyReach,
+      engagement: legacyEngagement,
+      shares: legacyShares,
+      clicks: legacyClicks,
+    },
     totalPublishJobs: jobs.length,
     totalCampaigns:   camps.length,
     byPlatform,
-    topPlatform: Object.entries(byPlatform).sort((a, b) => b[1].reach - a[1].reach)[0]?.[0] || null,
+    topPlatform: Object.entries(byPlatform).sort((a, b) => b[1].legacyReach - a[1].legacyReach)[0]?.[0] || null,
     period: "all_time",
   };
 }

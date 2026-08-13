@@ -39,14 +39,20 @@ services:
       NODE_ENV: production
       PORT:     5050
 
-    # Resource limits — prevent runaway memory/CPU from taking down the host
+    # Resource limits — prevent runaway memory/CPU from taking down the host.
+    # Phase B.8: memory was 512m while measured steady-state RSS is 700-880 MB,
+    # so the container ceiling sat inside the normal operating range and the
+    # kernel OOM-killer (or Node's own heap abort) would fire during ordinary
+    # work. Raised above the --max-old-space-size=1024 in Dockerfile.production
+    # so the container limit remains the outer backstop, matching the
+    # max_memory_restart hierarchy used by PM2 in ecosystem.config.cjs.
     deploy:
       resources:
         limits:
-          memory: 512m
+          memory: 1536m
           cpus:   "1.0"
         reservations:
-          memory: 128m
+          memory: 256m
 
     # Persistent data volumes
     volumes:

@@ -32,6 +32,15 @@ router.post("/customer-org/journey/sync", wrap(async (req, res) => {
 router.get("/customer-org/journey/stages", wrap(async (req, res) => {
   ok(res, _cje()?.getStageDistribution?.());
 }));
+// Phase B.16: /stats was registered AFTER /:customerId, so Express matched
+// "stats" as a customerId and the route answered 404 {"error":"journey not
+// found"} — the statistics were unreachable over HTTP even though getStats()
+// works and holds real data (59 journeys). Same slip on health and automation
+// below. /journey/stages was already correctly ordered above, which is how the
+// pattern was spotted. Literal paths must precede the parameterised ones.
+router.get("/customer-org/journey/stats", wrap(async (req, res) => {
+  ok(res, _cje()?.getStats?.() || {});
+}));
 router.get("/customer-org/journey/:customerId", wrap(async (req, res) => {
   const j = _cje()?.getJourney?.(req.params.customerId);
   if (!j) return err(res, "journey not found", 404);
@@ -42,10 +51,7 @@ router.post("/customer-org/journey/:customerId/advance", wrap(async (req, res) =
 }));
 router.get("/customer-org/journey", wrap(async (req, res) => {
   const { stage, churnRisk, limit } = req.query;
-  ok(res, _cje()?.listJourneys?.({ stage, churnRisk, limit: parseInt(limit)||50 }));
-}));
-router.get("/customer-org/journey/stats", wrap(async (req, res) => {
-  ok(res, _cje()?.getStats?.() || {});
+  ok(res, _cje()?.listJourneys?.({ stage, churnRisk, limit: Math.max(1, Math.min(parseInt(limit) || 50, 500)) }));
 }));
 
 // ── Health ────────────────────────────────────────────────────────────────────
@@ -55,23 +61,24 @@ router.post("/customer-org/health/score-all", wrap(async (req, res) => {
 router.post("/customer-org/health/score/:customerId", wrap(async (req, res) => {
   ok(res, _che()?.scoreCustomer?.(req.params.customerId, req.body));
 }));
+// Phase B.16: literal path before the parameterised ones (see /journey/stats).
+router.get("/customer-org/health/stats", wrap(async (req, res) => {
+  ok(res, _che()?.getStats?.() || {});
+}));
 router.get("/customer-org/health/:customerId", wrap(async (req, res) => {
   const h = _che()?.getHealthRecord?.(req.params.customerId);
   if (!h) return err(res, "health record not found", 404);
   ok(res, { health: h });
 }));
 router.get("/customer-org/health/:customerId/history", wrap(async (req, res) => {
-  ok(res, _che()?.getHealthHistory?.(req.params.customerId, parseInt(req.query.limit)||10));
+  ok(res, _che()?.getHealthHistory?.(req.params.customerId, Math.max(1, Math.min(parseInt(req.query.limit) || 10, 500))));
 }));
 router.get("/customer-org/health/:customerId/trend", wrap(async (req, res) => {
   ok(res, _che()?.getHealthTrend?.(req.params.customerId));
 }));
 router.get("/customer-org/health", wrap(async (req, res) => {
   const { risk, grade, limit } = req.query;
-  ok(res, _che()?.listHealthRecords?.({ risk, grade, limit: parseInt(limit)||50 }));
-}));
-router.get("/customer-org/health/stats", wrap(async (req, res) => {
-  ok(res, _che()?.getStats?.() || {});
+  ok(res, _che()?.listHealthRecords?.({ risk, grade, limit: Math.max(1, Math.min(parseInt(limit) || 50, 500)) }));
 }));
 
 // ── Success ───────────────────────────────────────────────────────────────────
@@ -112,7 +119,14 @@ router.get("/customer-org/support/ticket/:id", wrap(async (req, res) => {
 }));
 router.get("/customer-org/support/tickets", wrap(async (req, res) => {
   const { customerId, status, severity, limit } = req.query;
-  ok(res, _csup()?.listTickets?.({ customerId, status, severity, limit: parseInt(limit)||50 }));
+  // Phase B.15: `parseInt(limit)||50` was unclamped, so ?limit=-1 reached
+  // Array.prototype.slice(0, -1) and returned 189 of 190 tickets — the same
+  // negative-limit cap bypass recovered across 38 sites in Phase B.7.
+  // Reproduced: limit=-1 → 189 rows, limit=99999 → 190 rows.
+  ok(res, _csup()?.listTickets?.({
+    customerId, status, severity,
+    limit: Math.max(1, Math.min(parseInt(limit) || 50, 500)),
+  }));
 }));
 router.post("/customer-org/support/suggest", wrap(async (req, res) => {
   const { issue, customerId } = req.body;
@@ -133,6 +147,10 @@ router.post("/customer-org/automation/trigger", wrap(async (req, res) => {
 router.post("/customer-org/automation/scan", wrap(async (req, res) => {
   ok(res, await _cae()?.runAutomationScan?.({ skipExecute: req.body.skipExecute }));
 }));
+// Phase B.16: literal path before the parameterised one (see /journey/stats).
+router.get("/customer-org/automation/stats", wrap(async (req, res) => {
+  ok(res, _cae()?.getStats?.() || {});
+}));
 router.get("/customer-org/automation/:id", wrap(async (req, res) => {
   const a = _cae()?.getAutomation?.(req.params.id);
   if (!a) return err(res, "automation not found", 404);
@@ -140,10 +158,7 @@ router.get("/customer-org/automation/:id", wrap(async (req, res) => {
 }));
 router.get("/customer-org/automation", wrap(async (req, res) => {
   const { customerId, type, status, limit } = req.query;
-  ok(res, _cae()?.listAutomations?.({ customerId, type, status, limit: parseInt(limit)||50 }));
-}));
-router.get("/customer-org/automation/stats", wrap(async (req, res) => {
-  ok(res, _cae()?.getStats?.() || {});
+  ok(res, _cae()?.listAutomations?.({ customerId, type, status, limit: Math.max(1, Math.min(parseInt(limit) || 50, 500)) }));
 }));
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────

@@ -425,11 +425,41 @@ function replyToTicket(id, opts = {}) {
   return ticket;
 }
 
-function updateTicket(id, update) {
+function updateTicket(id, update = {}) {
   const s = _load();
   if (!s.csInbox?.[id]) throw new Error(`CS ticket not found: ${id}`);
+
+  // Phase B.15: status/priority were written straight through with no check
+  // against the CS_TICKET_STATUS / CS_TICKET_PRIORITY enums this module already
+  // declares and exports. Reproduced live: PATCH {"status":"DROP_TABLE"} stored
+  // verbatim with HTTP 200, and getCSInbox() then reported total=3 while
+  // open+resolved=2 — the ticket vanished from every operational bucket and
+  // from slaBreach detection, so a support manager's backlog silently loses
+  // work. Validate against the existing constants; no new field, no new engine.
+  if (update.status !== undefined && !CS_TICKET_STATUS.includes(update.status)) {
+    const e = new Error(`Invalid status "${update.status}". Choose: ${CS_TICKET_STATUS.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
+  if (update.priority !== undefined && !CS_TICKET_PRIORITY.includes(update.priority)) {
+    const e = new Error(`Invalid priority "${update.priority}". Choose: ${CS_TICKET_PRIORITY.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
+
   s.csInbox[id] = { ...s.csInbox[id], ...update, updatedAt: _ts() };
-  if (update.status === "resolved") s.csInbox[id].resolvedAt = _ts();
+
+  // Phase B.15: resolvedAt was set on "resolved" but never cleared on reopen,
+  // and "closed" never set it at all (inconsistent with replyToTicket, which
+  // handles both). Reproduced: resolve → reopen left resolvedAt populated, so a
+  // reopened ticket still counted as resolved in avgResolutionHrs — understating
+  // real resolution time. Terminal states stamp it; reopening clears it.
+  if (update.status === "resolved" || update.status === "closed") {
+    s.csInbox[id].resolvedAt = s.csInbox[id].resolvedAt || _ts();
+  } else if (update.status !== undefined) {
+    s.csInbox[id].resolvedAt = null;
+  }
+
   _save(s);
   return s.csInbox[id];
 }

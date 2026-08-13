@@ -56,10 +56,24 @@ async function build(command, { workflowId, domain, category, opts = {} } = {}) 
   const timingCheck  = _try(() => _wpe()?.isGoodTime?.(wfCategory)) || {};
 
   // 5. Engineering memory recall
+  //
+  // Phase B.10: engineeringMemoryEngine.recall() returns
+  //   { query, totalFound, results: [...] }
+  // and never a bare array — so `Array.isArray(recall) ? recall : []` discarded
+  // EVERY recalled memory and this field was always empty. Reproduced: a recall
+  // reporting totalFound=1 still yielded engineeringMemory=[], so stored
+  // engineering knowledge never reached the AI context that exists to carry it.
+  // Memory was written, durable and searchable — just never used.
+  //
+  // Accept the documented envelope (and still a bare array, in case another
+  // engine is swapped in) while keeping engineeringMemory an ARRAY, which is
+  // what the context shape returned by build() promises to its consumers.
   let engineeringMemory = [];
   try {
     const recall = await _eme()?.recall?.({ query: command, limit: 5 });
-    engineeringMemory = Array.isArray(recall) ? recall : [];
+    engineeringMemory = Array.isArray(recall)          ? recall
+                      : Array.isArray(recall?.results) ? recall.results
+                      : [];
   } catch {}
 
   // 6. Production Bible match

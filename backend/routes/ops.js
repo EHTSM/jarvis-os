@@ -226,7 +226,7 @@ router.get("/workflow/status", (req, res) => {
 router.get("/workflow/log", (req, res) => {
     if (!_autoAgent) return res.status(503).json({ success: false, error: "automationAgent unavailable" });
     try {
-        const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+        const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 20, 100));
         return res.json({ success: true, log: _autoAgent.getLog(limit) });
     } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });

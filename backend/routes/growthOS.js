@@ -32,7 +32,27 @@ router.use("/growth", (req, res, next) => {
 });
 
 function _ok(res, data)   { res.json({ ok: true, ...data }); }
-function _err(res, e, code = 500) { res.status(code).json({ error: e.message || e }); }
+
+/**
+ * Phase OS-2: mutating routes let the service layer THROW on a missing
+ * entity, and every throw landed here as HTTP 500. Measured: PATCH/POST
+ * against a nonexistent id returned 500 on 7 of 10 probed endpoints
+ * ("Campaign nope-xyz not found", "Audience ... not found", …) while the
+ * equivalent GET routes correctly returned 404 — they null-check instead of
+ * relying on the throw.
+ *
+ * A 500 tells a client "the server broke, retry later"; a 404 tells it "that
+ * id does not exist, stop". Monitoring and retry logic act on that difference,
+ * so a client error reported as a server fault is a truthfulness defect.
+ *
+ * Classifying by the error the service already raises keeps this to one
+ * helper rather than editing 50 call sites, and leaves genuine faults as 500.
+ */
+function _err(res, e, code) {
+  const msg = e && e.message ? e.message : String(e);
+  const status = code !== undefined ? code : (/\bnot found\b/i.test(msg) ? 404 : 500);
+  res.status(status).json({ error: msg });
+}
 
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: Email Marketing OS
@@ -55,7 +75,10 @@ router.patch("/growth/email/campaigns/:id",      (req, res) => {
 
 router.post("/growth/email/campaigns/:id/send",  (req, res) => {
   try { _ok(res, { campaign: g.sendEmailCampaign(req.params.id, req.orgId) }); }
-  catch (e) { _err(res, e, e.nonRetriable ? 400 : 500); }
+  // A missing campaign is a 404 regardless of the retriable/non-retriable
+  // split, which distinguishes provider/config failures (400) from genuine
+  // server faults (500) — neither describes "that id does not exist".
+  catch (e) { _err(res, e, /\bnot found\b/i.test(e && e.message || "") ? 404 : (e.nonRetriable ? 400 : 500)); }
 });
 
 router.get("/growth/email/sequences",            (req, res) => {
@@ -102,7 +125,10 @@ router.patch("/growth/sms/campaigns/:id",        (req, res) => {
 
 router.post("/growth/sms/campaigns/:id/send",    (req, res) => {
   try { _ok(res, { campaign: g.sendSMSCampaign(req.params.id, req.orgId) }); }
-  catch (e) { _err(res, e, e.nonRetriable ? 400 : 500); }
+  // A missing campaign is a 404 regardless of the retriable/non-retriable
+  // split, which distinguishes provider/config failures (400) from genuine
+  // server faults (500) — neither describes "that id does not exist".
+  catch (e) { _err(res, e, /\bnot found\b/i.test(e && e.message || "") ? 404 : (e.nonRetriable ? 400 : 500)); }
 });
 
 router.post("/growth/sms/campaigns/:id/schedule",(req, res) => {
@@ -137,7 +163,10 @@ router.post("/growth/whatsapp/broadcasts",             (req, res) => {
 
 router.post("/growth/whatsapp/broadcasts/:id/send",    async (req, res) => {
   try { _ok(res, { campaign: await g.sendWhatsAppBroadcast(req.params.id, req.orgId) }); }
-  catch (e) { _err(res, e); }
+  // Matches the email/SMS send routes: a missing broadcast is 404, a
+  // non-retriable precondition (no recipients configured) is 400 — a client
+  // error the operator can act on, not a server fault.
+  catch (e) { _err(res, e, /\bnot found\b/i.test(e && e.message || "") ? 404 : (e.nonRetriable ? 400 : 500)); }
 });
 
 router.post("/growth/whatsapp/broadcasts/:id/sync-crm",(req, res) => {

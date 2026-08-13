@@ -1136,6 +1136,28 @@ function start() {
         _startAgent(spec.id);
     }
 
+    // Phase B.11: start() used to restart ONLY the BUILTIN_AGENTS list while
+    // stop() stops every entry in _agents. At runtime there are 210 agents —
+    // 10 builtin plus 200 added through registerAgent() by the various org
+    // modules — so a stop→start cycle left 200 of them permanently stopped
+    // while getSupervisorStatus() still reported started:true.
+    //
+    // Reproduced live via the operator controls: POST supervisor/stop then
+    // supervisor/start gave runningCount 10/210, and sampling every 6s for 30s
+    // showed it stuck there (status: 200 stopped / 10 running, all enabled:true)
+    // — not a ramp-up. Emergency-stop is a human-oversight control, so a
+    // partial restore is worse than none: the operator is told the runtime is
+    // up while 95% of the fleet is idle.
+    //
+    // Restart every already-registered, enabled agent too, so start() is the
+    // true inverse of stop(). Builtins are handled above and skipped here;
+    // disabled agents stay stopped, which is their intended state.
+    for (const [id, state] of _agents) {
+        if (BUILTIN_AGENTS.some(s => s.id === id)) continue;   // already started
+        if (state && state.enabled === false) continue;        // deliberately off
+        _startAgent(id);
+    }
+
     try { _bus()?.emit("agent:supervisor:runtime_started", { agentCount: _agents.size }); } catch {}
     return getSupervisorStatus();
 }

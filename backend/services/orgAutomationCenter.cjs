@@ -86,9 +86,20 @@ function createAiTriggeredRule(orgId, accountId, { name, description, trigger, c
   }, accountId);
 }
 
-function fireRule(orgId, accountId, ruleId, context) {
+// Phase B.12/B.13: automationService.fireRule() already takes a 5th `dryRun`
+// parameter and implements it fully (it short-circuits _executeAction into a
+// "Would execute: …" preview and skips history/runCount mutation). Neither this
+// wrapper nor the route passed it, so `{"dryRun":true}` was silently dropped and
+// every "preview" ran for real.
+//
+// Reproduced 3/3 live: POST /org-automation/:orgId/rules/:ruleId/fire with
+// {"dryRun":true} on a queue_task rule returned outcome "success" (not
+// "dry_run") and queued a real task each time — task count 2→3→4→5.
+//
+// Forwarding the existing flag; no new capability, no new engine.
+function fireRule(orgId, accountId, ruleId, context, dryRun = false) {
   _assertCanManage(orgId, accountId);
-  return _automation()?.fireRule?.(orgId, ruleId, context, accountId);
+  return _automation()?.fireRule?.(orgId, ruleId, context, accountId, dryRun);
 }
 
 function getHistory(orgId, accountId, opts) {

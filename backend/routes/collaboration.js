@@ -29,7 +29,7 @@ router.get("/collaboration/session/:missionId", (req, res) => {
 // ── GET /collaboration/history/:missionId ────────────────────────────────────
 router.get("/collaboration/history/:missionId", (req, res) => {
     try {
-        const limit   = parseInt(req.query.limit) || 50;
+        const limit   = Math.max(1, parseInt(req.query.limit) || 50);
         const history = layer.getHistory(req.params.missionId, { limit });
         _ok(res, { history });
     } catch (err) {

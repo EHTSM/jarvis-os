@@ -42,7 +42,7 @@ router.post("/platform/run", async (req, res) => {
 
 // List recent platform runs
 router.get("/platform/runs", (req, res) => {
-    const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+    const limit = Math.max(1, Math.min(parseInt(req.query.limit) || 20, 100));
     try { ok(res, platform.getRunHistory(limit)); }
     catch (e) { err(res, e); }
 });
