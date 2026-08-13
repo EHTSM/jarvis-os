@@ -138,7 +138,8 @@
 }
 .rv2-panel-link {
   font-size: 12px;
-  color: var(--accent, #7c6fff);
+  /* B19.5: 12px accent link on a light panel — flagged at 768px in light mode. */
+  color: var(--on-accent-tint);
   background: transparent;
   border: none;
   cursor: pointer;

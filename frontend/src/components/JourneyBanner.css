@@ -33,7 +33,9 @@
 }
 .jb-journey-pill:hover { color: var(--text-dim); border-color: rgba(255,255,255,0.12); }
 .jb-journey-pill--active {
-  color: var(--accent, #7c6fff);
+  /* B19.5: accent text on its own 0.09 brand tint — the --on-accent-tint case.
+     Flagged in light mode at 390px, where this pill is reachable. */
+  color: var(--on-accent-tint);
   border-color: rgba(124,111,255,0.35);
   background: rgba(124,111,255,0.09);
 }
@@ -136,7 +138,9 @@
 
 .jb-pct {
   font-size: 9px;
-  color: var(--accent, #7c6fff);
+  /* B19.5: 9px accent text — well under the large-text threshold, so it needs
+     the full 4.5:1. */
+  color: var(--on-accent-tint);
   font-weight: 700;
   min-width: 26px;
 }
