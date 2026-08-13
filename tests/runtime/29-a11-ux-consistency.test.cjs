@@ -101,3 +101,50 @@ test('every overflow surface keeps a search alias', () => {
   assert.deepStrictEqual(missing, [],
     `overflow surfaces with no search alias:\n${missing.join('\n')}`);
 });
+
+// ── A.11.1: the two search registries must not drift apart ─────────────────
+
+test('every More-menu alias word is also a Command Palette keyword', () => {
+  // tests/security/89 asserts this contract. A.11 first read it as a stale
+  // expectation; re-reading the assertion showed it checks a REAL two-registry
+  // contract that the source violated — 68 destinations had alias words that
+  // returned nothing in ⌘K. Guarded here so the registries cannot drift again.
+  const app = read('App.jsx');
+  const cp = read('components/CommandPalette.jsx');
+  const block = (s, m) => { const i = s.indexOf(m); return s.slice(i, s.indexOf('\n];', i)); };
+  const parse = (b) => {
+    const out = [];
+    for (const m of b.matchAll(/\{[^{}]*\}/g)) {
+      const g = k => { const r = new RegExp(`${k}:\\s*"([^"]*)"`).exec(m[0]); return r ? r[1] : ''; };
+      if (g('id')) out.push({ id: g('id'), alias: g('alias'), keywords: g('keywords'), tab: g('tab'), label: g('label') });
+    }
+    return out;
+  };
+  const more = parse(block(app, 'const MORE_TABS ='));
+  const nav = parse(block(cp, 'const NAV_ACTIONS ='));
+  assert.ok(more.length > 60 && nav.length > 60,
+    `registry parse returned too few entries (more=${more.length}, nav=${nav.length})`);
+
+  const byTab = new Map(nav.filter(n => n.tab).map(n => [n.tab, n]));
+  const noEntry = more.filter(m => !byTab.has(m.id)).map(m => m.id);
+  assert.deepStrictEqual(noEntry, [],
+    `every More-menu destination needs a ⌘K entry; missing: ${noEntry.join(', ')}`);
+
+  const drift = [];
+  for (const m of more) {
+    if (!m.alias) continue;
+    const n = byTab.get(m.id);
+    const hay = ((n.keywords || '') + ' ' + (n.label || '')).toLowerCase();
+    const miss = m.alias.toLowerCase().split(/\s+/).filter(w => w && !hay.includes(w));
+    if (miss.length) drift.push(`${m.id}:${miss.join('/')}`);
+  }
+  assert.deepStrictEqual(drift, [],
+    `alias words that return nothing in ⌘K:\n${drift.join('\n')}`);
+});
+
+test('NEGATIVE: alias→keyword drift is detectable', () => {
+  const hay = 'billing invoice'.toLowerCase();
+  const miss = 'billing subscription'.split(/\s+/).filter(w => !hay.includes(w));
+  assert.deepStrictEqual(miss, ['subscription'],
+    'the drift check must flag a word absent from the ⌘K keywords');
+});
