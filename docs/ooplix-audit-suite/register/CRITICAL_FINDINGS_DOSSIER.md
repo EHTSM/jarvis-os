@@ -42,10 +42,11 @@ verify that the summary is true should read this.
 | — | A.5 | — | 🔴 CRITICAL | Unbounded mission-fanout loops blocked the event loop; Engineering Workspace swallowed every pipeline failure. *(commit-evidenced, no certification document)* |
 | — | A.8 | — | 🔴 CRITICAL | Runtime Console crashed with 4 TDZ errors; Memory Fabric crashed on every real memory node. *(commit-evidenced, no certification document)* |
 | — | A.9 | — | 🔴 CRITICAL | Cross-org tenant isolation confirmed with real accounts; Executive Intelligence crash fixed. *(commit-evidenced, no certification document)* |
+| — | A.11 | — | 🔴 CRITICAL | A.11.1 completed the walk (25 -> 81 surfaces) and closed the three unmeasured dimensions. Five findings fixed and live-verified: Agent Registry crashed on real API data (normalise dropped tools/memoryLinks), mobile topbar forced 231px overflow on EVERY surface, 68 CmdK destinations lost the More-menu vocabulary, plus a drawer theme bypass and a mouse-only drawer. Test 89 adjudicated: NOT stale — it asserts a real two-registry contract the source violated; source fixed, test preserved unmodified. *(commit-evidenced, no certification document)* |
 | — | B.1 | — | 🔴 CRITICAL | Mission store retention cap removed a measured 483 ms event-loop block. *(commit-evidenced, no certification document)* |
 
 **12 critical findings** extracted from 19 certification documents.
-**6 further critical findings** are commit-evidenced only and recorded in the register.
+**7 further critical findings** are commit-evidenced only and recorded in the register.
 
 ---
 
@@ -573,7 +574,7 @@ assertions fail when the fix is reverted.
 | B.13 | `D1` | `tests/runtime/19-automation-dryrun.test.cjs` | 7 | **3 fail** without the fix |
 | B.19.3 | `F1` | `tests/runtime/27-visual-accessibility` | 16 | see source |
 
-**Baseline:** 144/144 runtime regression, plus phase-specific suites. Independently re-executed 2026-08-13: 144/144 runtime; accessibility suites 25 (9/9), 26 (21/22 — the single form-labelling gap), 27 (16/16), 28 (14/14, new).
+**Baseline:** 144/144 runtime regression, plus phase-specific suites. Independently re-executed 2026-08-13: 144/144 runtime; accessibility suites 25 (9/9), 26 (21/22 — the single form-labelling gap), 27 (16/16), 28 (14/14), 29 (9/9, A.11 UX consistency).
 
 ---
 
