@@ -7,7 +7,7 @@
 
 ## Read this first
 
-This suite documents **34 executed audits** and **7 planned audits**. The distinction is enforced everywhere, in prose, in charts, in exports, and in code:
+This suite documents **35 executed audits** and **7 planned audits**. The distinction is enforced everywhere, in prose, in charts, in exports, and in code:
 
 | Class | Count | What it means |
 |---|---:|---|
