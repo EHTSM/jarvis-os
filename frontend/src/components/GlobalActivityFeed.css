@@ -3,12 +3,35 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #08090e;
+  /* A.11: was #08090e — a hardcoded canvas that ignored the theme, the same
+     class of bypass B19.2.2/B19.2.3 removed elsewhere. */
+  background: var(--bg);
   font-family: system-ui, sans-serif;
   min-height: 0;
 }
 
 /* Toolbar */
+/* A.11: page header, recovered from the SystemHealthDashboard pattern so this
+   surface names itself like every other measured screen. */
+.gaf-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.gaf-page-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.gaf-page-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
 .gaf-toolbar {
   display: flex;
   align-items: center;

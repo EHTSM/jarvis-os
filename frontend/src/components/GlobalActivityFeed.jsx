@@ -219,6 +219,16 @@ export default function GlobalActivityFeed({ onNavigate, maxItems = 50 }) {
 
   return (
     <div className="gaf-root">
+      {/* A.11 UX consistency: this was the only measured surface of 25 with no
+          page header — it opened straight onto a filter toolbar, so the screen
+          never named itself. Recovered from the sibling pattern in
+          SystemHealthDashboard.jsx:393 (header → title + timestamp), reusing
+          this component's own gaf- namespace. No new component. */}
+      <div className="gaf-header">
+        <span className="gaf-page-title">Global Activity</span>
+        <span className="gaf-page-sub">{events.length} events across all surfaces</span>
+      </div>
+
       {/* Toolbar */}
       <div className="gaf-toolbar">
         <input
