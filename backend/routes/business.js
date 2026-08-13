@@ -295,7 +295,7 @@ router.patch("/business/leads/:id", requireAuth, _requireOrg, (req, res) => {
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const lead = bds.updateLead(req.params.id, req.body, req.org.id);
         _ok(res, { lead });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.delete("/business/leads/:id", requireAuth, _requireOrg, (req, res) => {
@@ -312,7 +312,7 @@ router.post("/business/leads/:id/qualify", requireAuth, _requireOrg, (req, res) 
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const lead = bds.qualifyLead(req.params.id, req.body, req.org.id);
         _ok(res, { lead });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/leads/:id/disqualify", requireAuth, _requireOrg, (req, res) => {
@@ -322,7 +322,7 @@ router.post("/business/leads/:id/disqualify", requireAuth, _requireOrg, (req, re
         const { reason } = req.body;
         const lead = bds.disqualifyLead(req.params.id, reason, req.org.id);
         _ok(res, { lead });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 // Qualify from old CRM phone-based leads (compat route)
@@ -400,7 +400,7 @@ router.patch("/business/contacts/:id", requireAuth, _requireOrg, (req, res) => {
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const contact = bds.updateContact(req.params.id, req.body, req.org.id);
         _ok(res, { contact });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.delete("/business/contacts/:id", requireAuth, _requireOrg, (req, res) => {
@@ -448,7 +448,7 @@ router.patch("/business/opportunities/:id", requireAuth, _requireOrg, (req, res)
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const opp = bds.updateOpportunity(req.params.id, req.body, req.org.id);
         _ok(res, { opportunity: opp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/opportunities/:id/advance", requireAuth, _requireOrg, (req, res) => {
@@ -459,7 +459,7 @@ router.post("/business/opportunities/:id/advance", requireAuth, _requireOrg, (re
         if (!stage) return res.status(400).json({ success: false, error: "stage required" });
         const opp = bds.advanceStage(req.params.id, stage, req.org.id);
         _ok(res, { opportunity: opp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/opportunities/:id/close-won", requireAuth, _requireOrg, (req, res) => {
@@ -468,7 +468,7 @@ router.post("/business/opportunities/:id/close-won", requireAuth, _requireOrg, (
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const opp = bds.closeWon(req.params.id, req.body, req.org.id);
         _ok(res, { opportunity: opp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/opportunities/:id/close-lost", requireAuth, _requireOrg, (req, res) => {
@@ -478,7 +478,7 @@ router.post("/business/opportunities/:id/close-lost", requireAuth, _requireOrg, 
         const { reason } = req.body;
         const opp = bds.closeLost(req.params.id, reason, req.org.id);
         _ok(res, { opportunity: opp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 // ── Campaigns ─────────────────────────────────────────────────────────────────
@@ -518,7 +518,7 @@ router.patch("/business/campaigns/:id", requireAuth, _requireOrg, (req, res) => 
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const camp = bds.updateCampaign(req.params.id, req.body, req.org.id);
         _ok(res, { campaign: camp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/campaigns/:id/event", requireAuth, _requireOrg, (req, res) => {
@@ -527,7 +527,7 @@ router.post("/business/campaigns/:id/event", requireAuth, _requireOrg, (req, res
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const camp = bds.recordCampaignEvent(req.params.id, req.body, req.org.id);
         _ok(res, { campaign: camp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 router.post("/business/campaigns/:id/complete", requireAuth, _requireOrg, (req, res) => {
@@ -536,7 +536,7 @@ router.post("/business/campaigns/:id/complete", requireAuth, _requireOrg, (req, 
         if (!bds) return _err(res, new Error("bds unavailable"), 503);
         const camp = bds.completeCampaign(req.params.id, req.body, req.org.id);
         _ok(res, { campaign: camp });
-    } catch (e) { _err(res, e, e.message.includes("Not found") ? 404 : 400); }
+    } catch (e) { _err(res, e, /not found/i.test(e.message) ? 404 : 400); }
 });
 
 // ── Revenue ───────────────────────────────────────────────────────────────────

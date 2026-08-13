@@ -244,7 +244,47 @@ function closeWon(id, opts = {}, orgId = null) {
     const opp = _get(F_OPPS, id, orgId);
     if (!opp) throw new Error(`Opportunity not found: ${id}`);
     const entry = { from: opp.stage, to: "closed-won", at: new Date().toISOString(), ...opts };
-    return _update(F_OPPS, id, { stage: "closed-won", closedAt: new Date().toISOString(), closedWonAt: new Date().toISOString(), history: [...(opp.history || []), entry] }, orgId);
+    const updated = _update(F_OPPS, id, { stage: "closed-won", closedAt: new Date().toISOString(), closedWonAt: new Date().toISOString(), history: [...(opp.history || []), entry] }, orgId);
+
+    // Sales OS: closing a deal won recorded the stage change but never produced
+    // revenue. Reproduced live — pipeline showed closed-won 1 / $72,000 while
+    // GET /business/revenue returned {revenue: [], total: 0} and revenue/stats
+    // reported count 0. The two views disagreed about the same closed deal.
+    //
+    // recordRevenue() already exists, is already exported, and already accepts
+    // an `oppId` — the link was simply never made. No new ledger is introduced.
+    // Guarded so a revenue failure can never roll back or mask a successful
+    // close, and skipped when the deal has no value or was already recorded
+    // (close-won is idempotent in the stage machine, so it must be here too).
+    try {
+        const amount = Number(opts.amount ?? updated.value ?? opp.value);
+        if (amount && !isNaN(amount)) {
+            // listRevenue returns { items, total } — NOT a bare array. A first
+            // version of this guard checked `.length` on that object, which is
+            // always undefined, so re-closing a won deal silently doubled the
+            // revenue ($55,000 -> $110,000, reproduced live).
+            const already = (listRevenue({ oppId: id, orgId, limit: 1 }).items || []).length > 0;
+            if (!already) {
+                recordRevenue({
+                    amount,
+                    currency:    opts.currency || updated.currency || "USD",
+                    type:        opts.revenueType || "one-time",
+                    source:      "opportunity-close-won",
+                    description: `Closed won: ${updated.title || updated.name || id}`,
+                    contactId:   updated.contactId || null,
+                    oppId:       id,
+                    orgId,
+                });
+            }
+        }
+    } catch {
+        // Never let a revenue-write failure roll back or mask a successful
+        // close. This module has no logger import, so the failure is contained
+        // rather than reported here — the missing revenue row is itself visible
+        // via GET /business/revenue, which is the check that found this bug.
+    }
+
+    return updated;
 }
 
 function closeLost(id, reason = "", orgId = null) {
