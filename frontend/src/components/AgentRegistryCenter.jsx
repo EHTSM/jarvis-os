@@ -170,28 +170,28 @@ function AgentDetail({ agent, onClone, onArchive, onToggle }) {
       <div className="arc-detail-section">
         <p className="arc-ds-label">Capabilities</p>
         <div className="arc-chips">
-          {agent.capabilities.map(c => <span key={c} className="arc-cap-chip" style={{ borderColor: agent.color + "33", color: agent.color }}>✓ {c}</span>)}
+          {(agent.capabilities || []).map(c => <span key={c} className="arc-cap-chip" style={{ borderColor: agent.color + "33", color: agent.color }}>✓ {c}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Tools</p>
         <div className="arc-chips">
-          {agent.tools.map(t => <span key={t} className="arc-tool-chip arc-mono">{t}</span>)}
+          {(agent.tools || []).map(t => <span key={t} className="arc-tool-chip arc-mono">{t}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Permissions</p>
         <div className="arc-chips">
-          {agent.permissions.map(p => <span key={p} className="arc-perm-chip">◎ {p}</span>)}
+          {(agent.permissions || []).map(p => <span key={p} className="arc-perm-chip">◎ {p}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Memory links</p>
         <div className="arc-chips">
-          {agent.memoryLinks.map(m => <span key={m} className="arc-mem-chip">{m} memory</span>)}
+          {(agent.memoryLinks || []).map(m => <span key={m} className="arc-mem-chip">{m} memory</span>)}
         </div>
       </div>
 
@@ -300,6 +300,15 @@ export default function AgentRegistryCenter({ onNavigate }) {
           description: a.description || (a.specializations ? `${a.specializations.join(", ")} — org: ${a.org}` : ""),
           capabilities: a.capabilities || a.skills || [],
           permissions: a.permissions || [],
+          // A.11.1: `tools` and `memoryLinks` were absent from normalise, but the
+          // detail pane renders `agent.tools.map(...)` and
+          // `agent.memoryLinks.map(...)` unconditionally. The seed rows carry
+          // both, so the crash only appeared once REAL agents loaded — measured
+          // live: "TypeError: Cannot read properties of undefined (reading 'map')"
+          // took the whole Registry panel into its ErrorBoundary.
+          // Defaulted the same way as the two fields above; no new mechanism.
+          tools:       a.tools || [],
+          memoryLinks: a.memoryLinks || [],
           model:       a.model || "—",
           lastRun:     a.lastRun || a.lastActive || "—",
           runsToday:   a.runsToday ?? a.successCount ?? 0,
