@@ -8,6 +8,7 @@ import { sendMessage, checkHealth } from "../api";
 import EmptyState from "./EmptyState";
 import "./AgentOSV2.css";
 import { overlayProps } from "../hooks/useClickableProps";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -925,6 +926,12 @@ export default function AgentOSV2({ onNavigate, online = false }) {
   const [runningId,  setRunningId]  = useState(null);
   const [drawer,     setDrawer]     = useState(null);
   const [toasts,     setToasts]     = useState([]);
+
+  // A.11.1: the detail drawer dismissed on backdrop click only — mouse-only,
+  // so a keyboard user who opened it was stuck. ContactsV2's drawer already
+  // binds Escape with this hook; recovered the same pattern here. Bound only
+  // while the drawer is open.
+  useEscapeKey(!!drawer, () => setDrawer(null));
 
   const toast = useCallback((type, msg) => {
     const id = Date.now();

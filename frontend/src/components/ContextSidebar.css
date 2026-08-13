@@ -2,7 +2,11 @@
 .ctx-sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: #08090e;
+  /* A.11.1: was #08090e — a hardcoded canvas that ignored the theme, the same
+     bypass class removed from GlobalActivityFeed in A.11 and across ~200 files
+     in B19.2.2/B19.2.3. This drawer renders on Execution, Reliability and
+     Jarvis Brain. */
+  background: var(--bg);
   border-left: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
