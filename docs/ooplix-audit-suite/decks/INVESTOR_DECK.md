@@ -15,7 +15,7 @@
 **CONTENT:**
 > # Ooplix V1
 > ## Master Audit & Certification Record
-> 34 audits executed · 127 findings recovered · 3 critical gaps recorded, not hidden
+> 34 audits executed · 129 findings recovered · 3 critical gaps recorded, not hidden
 >
 > v1.0.0-rc1 · 2026-08-09 · Confidential
 
