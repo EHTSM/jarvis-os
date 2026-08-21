@@ -3,7 +3,7 @@ import "./DOP2Dashboard.css";
 import { clickableProps } from "../hooks/useClickableProps";
 
 const api = (path, opts = {}) =>
-  fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
+  fetch(path, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
     .then(r => r.json());
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

@@ -14,7 +14,7 @@
 
 const fs   = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 
 const INDEX_PATH = path.join(__dirname, "../../data/repo-index.json");
 
@@ -264,21 +264,40 @@ function findSymbol(symbolName, repoPath) {
 
 // ── Public: semantic search (grep + rank) ────────────────────────────────────
 
+// Command Injection & Process Execution Deep Security Sweep (2026-08-21):
+// `limit` (opts.limit, ultimately req.body.limit on POST /p24/repo/search)
+// was interpolated into the shell command string with ZERO quoting of any
+// kind — not even the (ineffective against $()/backticks) JSON.stringify()
+// wrapping `query`/`absPath` got. Live-reproduced: an ordinary
+// requireAuth-only customer's { limit: "1; touch /tmp/PROOF; echo " }
+// executed the injected command as the backend process — full RCE via a
+// bare `;`, no escaping needed at all since there was no surrounding
+// quote context to break out of. Fixed the same way as
+// largeContextCodeSearch.cjs's identical-shape finding: execFileSync with
+// a real argument array — grep/-m/term/absPath each arrive as their own
+// argv element, shell metacharacters are inert data. `limit` is also now
+// coerced through a real integer parse, matching the existing convention
+// already used at phase25.js:333 for the equivalent parameter there.
 function semanticSearch(query, repoPath, opts = {}) {
     const absPath = path.resolve(repoPath || ".");
-    const limit   = opts.limit || 20;
+    const limit   = String(parseInt(opts.limit, 10) > 0 ? parseInt(opts.limit, 10) : 20);
     const terms   = query.split(/\s+/).filter(Boolean);
 
     let results = [];
     for (const term of terms) {
         try {
-            const raw = execSync(
-                `grep -rn --include="*.js" --include="*.cjs" --include="*.ts" --include="*.tsx" ` +
-                `--include="*.py" --include="*.go" ` +
-                `--exclude-dir=node_modules --exclude-dir=.git --exclude-dir=_archive ` +
-                `-m ${limit} -- ${JSON.stringify(term)} ${JSON.stringify(absPath)} 2>/dev/null`,
-                { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 }
-            );
+            const args = [
+                "-rn",
+                "--include=*.js", "--include=*.cjs", "--include=*.ts", "--include=*.tsx",
+                "--include=*.py", "--include=*.go",
+                "--exclude-dir=node_modules", "--exclude-dir=.git", "--exclude-dir=_archive",
+                "-m", limit,
+                "--", term, absPath,
+            ];
+            const raw = execFileSync("grep", args, {
+                encoding: "utf8", maxBuffer: 4 * 1024 * 1024,
+                stdio: ["ignore", "pipe", "ignore"],
+            });
             const lines = raw.trim().split("\n").filter(Boolean);
             for (const l of lines) {
                 const m = l.match(/^(.+?):(\d+):(.+)$/);

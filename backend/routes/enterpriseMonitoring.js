@@ -32,6 +32,7 @@ const _try = fn => { try { return fn(); } catch { return null; } };
 const _mon = () => _try(() => require("../services/enterpriseMonitoring.cjs"));
 const _org = () => _try(() => require("../services/organizationService.cjs"));
 const _alerting = () => _try(() => require("../services/operationsAlertingLayer.cjs"));
+const _policy = () => _try(() => require("../services/policyService.cjs"));
 
 router.use("/enterprise/monitoring", requireAuth);
 
@@ -40,6 +41,10 @@ function _requireOrgMember(req, res) {
     res.status(403).json({ ok: false, error: "Forbidden — not a member of this organization" });
     return false;
   }
+  // B25-01/GG-1 closure: real org membership confirmed above — now enforce
+  // the org's own IP allowlist, if it has configured one.
+  try { _policy()?.assertIpAllowed?.(req.params.orgId, req); }
+  catch (e) { res.status(e.status || 403).json({ ok: false, error: e.message }); return false; }
   return true;
 }
 

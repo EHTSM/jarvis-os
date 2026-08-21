@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./EngineeringMemoryPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -8,19 +9,36 @@ import "./EngineeringMemoryPanel.css";
 // a network error. Same defect class as A.11 F1. Now mirrors the semantics of
 // the canonical _client.js _fetch: preserve the backend's own message and
 // attach the status, so callers can surface the real reason.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16): this helper called a bare fetch()
+// against `/api${path}` — e.g. /api/memory/stats — but the real backend
+// mounts these routes at /memory/*, /memory-index/* with NO /api prefix
+// (confirmed: only /api/auth/*, /api/accounts/*, and /api/status are real
+// duplicate-mounted routes — grep-confirmed across every route file, not a
+// general rule). Every single call this entire panel makes (8 tabs: Timeline,
+// Lessons, Similarity, Predictions, Growth, Evolve, Benchmark, Index) 404'd,
+// live-confirmed: GET /api/memory/stats -> 404 "Not Found: GET /api/memory/stats"
+// with real auth, for every user, always. The bare fetch() also omitted
+// credentials:"include" (cookies never sent) and BASE_URL support (would
+// have broken under REACT_APP_API_URL/Electron regardless of the path fix).
+// Replaced with the canonical _fetch (_client.js), matching every other
+// component in the codebase including this file's own sibling MemoryOSV2.jsx
+// — preserves this file's existing API(method, path, body) call-site
+// signature and its Error{message,status} contract that all 8 view
+// components already depend on, so no other line in this file needed to
+// change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-    });
-    if (!r.ok) {
-        const err = await r.json().catch(() => ({}));
-        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
-        e.status = r.status;
+    try {
+        return await _fetch(path, {
+            method,
+            ...(body ? { body: JSON.stringify(body) } : {}),
+        });
+    } catch (e) {
+        // _fetch already throws a real Error with the backend's own message
+        // and e.status set (see _client.js) — rethrow as-is, matching the
+        // shape every caller in this file already expects.
         throw e;
     }
-    return r.json();
 };
 
 function formatMs(ms) {

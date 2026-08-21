@@ -472,27 +472,39 @@ function getCSInbox(filter = {}) {
   if (filter.priority)  filtered = filtered.filter(t => t.priority  === filter.priority);
   if (filter.accountId) filtered = filtered.filter(t => t.accountId === filter.accountId);
 
+  // Cross-tenant analytics leak. `/co3/cs`'s route pins non-operators to
+  // filter.accountId = req.user.sub, and the `tickets` array returned above
+  // was already correctly scoped to that filter — but every summary field
+  // below (total/open/resolved/slaBreach/byStatus/byPriority/avgResolutionHrs)
+  // was computed over the RAW, unfiltered `tickets` array regardless. A
+  // non-operator's own single-ticket inbox reported the platform-wide
+  // total/slaBreach/status-priority breakdown. Reproduced live: an account
+  // with exactly 1 real ticket received `"total":9,"slaBreach":5,"byStatus":
+  // {"open":6,"closed":1,"resolved":1,"in_progress":1}` — every other
+  // tenant's ticket counted into numbers presented as this account's inbox
+  // summary. Compute the summary fields from `filtered` instead — when no
+  // scope filter is supplied (operator/internal aggregation callers), filtered
+  // still equals the full `tickets` array, so unscoped behaviour is unchanged.
   const byStatus   = {};
   const byPriority = {};
-  for (const t of tickets) {
+  for (const t of filtered) {
     byStatus[t.status]     = (byStatus[t.status]     || 0) + 1;
     byPriority[t.priority] = (byPriority[t.priority] || 0) + 1;
   }
 
-  const now = Date.now();
-  const slaBreach = tickets.filter(t => t.status !== "resolved" && t.status !== "closed"
+  const slaBreach = filtered.filter(t => t.status !== "resolved" && t.status !== "closed"
     && new Date(t.sla_target) < new Date()).length;
 
   return {
-    tickets:   filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-    total:     tickets.length,
-    open:      tickets.filter(t => t.status === "open").length,
-    resolved:  tickets.filter(t => t.status === "resolved").length,
+    tickets:   filtered.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    total:     filtered.length,
+    open:      filtered.filter(t => t.status === "open").length,
+    resolved:  filtered.filter(t => t.status === "resolved").length,
     slaBreach,
     byStatus,
     byPriority,
     avgResolutionHrs: (() => {
-      const res = tickets.filter(t => t.resolvedAt);
+      const res = filtered.filter(t => t.resolvedAt);
       if (!res.length) return null;
       const avg = res.reduce((s, t) => s + (new Date(t.resolvedAt) - new Date(t.createdAt)), 0) / res.length;
       return Math.round(avg / 3600_000 * 10) / 10;

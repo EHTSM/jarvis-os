@@ -307,8 +307,15 @@ async function execute(messages, opts = {}) {
   // in a way a stale chat answer isn't).
   const cacheable = !opts.noCache && !(Array.isArray(opts.tools) && opts.tools.length);
   const primary = chain[0];
+  // AI Workspace OS pass: keyed by accountId (falls back to orgId, then ""
+  // for unscoped internal callers) — see aiResponseCache.cjs's _key() doc
+  // comment for the cross-tenant defect this closes. accountId is the
+  // tighter boundary; two members of the same org still each get their own
+  // cache entry rather than silently sharing one, matching the account-level
+  // scoping promptHistory's own history/me already uses.
+  const tenantKey = opts.accountId || opts.orgId || "";
   if (cacheable) {
-    const hit = responseCache.get(primary.providerId, opts.model || primary.model, messages, opts.temperature);
+    const hit = responseCache.get(primary.providerId, opts.model || primary.model, messages, opts.temperature, tenantKey);
     if (hit) {
       return { ...hit, chain: chain.map(c => c.providerId), capability, reason: `${reason}_cache_hit` };
     }
@@ -379,7 +386,7 @@ async function execute(messages, opts = {}) {
         responseCache.set(candidate.providerId, callOpts.model, messages, opts.temperature, {
           text: response.text, provider: response.provider, model: response.model,
           latencyMs: response.latencyMs, estimatedCostUsd: response.estimatedCostUsd,
-        });
+        }, undefined, tenantKey);
       }
 
       return response;
@@ -405,7 +412,17 @@ async function execute(messages, opts = {}) {
     }
   }
 
-  const e = new Error(`All providers in fallback chain failed: ${errors.map(e => `${e.providerId} (${e.error})`).join("; ")}`);
+  // Client Error Sanitization Deep Sweep (2026-08-21): the thrown message
+  // previously named every provider in the fallback chain plus each one's
+  // raw failure detail — live-reproduced via POST
+  // /ai-ecosystem/orchestrator/execute, an ordinary authenticated customer
+  // received "All providers in fallback chain failed: ollama (...); groq
+  // (...); openai (...)", disclosing the operator's real provider roster
+  // and chain structure. Full detail (provider IDs, raw errors) stays on
+  // e.chainErrors, already logged via logger.warn above and consumed
+  // internally — only the client-facing message text changes.
+  logger.error(`[aiOrchestrator] All providers in fallback chain failed: ${errors.map(e => `${e.providerId} (${e.error})`).join("; ")}`);
+  const e = new Error("AI request failed — no provider was able to complete this request");
   e.chainErrors = errors;
   throw e;
 }
@@ -496,7 +513,11 @@ async function executeStream(messages, opts = {}, onChunk = () => {}) {
     }
   }
 
-  const e = new Error(`All streaming-capable providers in fallback chain failed: ${errors.map(e => `${e.providerId} (${e.error})`).join("; ")}`);
+  // Client Error Sanitization Deep Sweep (2026-08-21): same provider-roster
+  // disclosure as execute()'s equivalent throw above, reached via POST
+  // /ai-ecosystem/orchestrator/execute/stream's SSE error event.
+  logger.error(`[aiOrchestrator] All streaming-capable providers in fallback chain failed: ${errors.map(e => `${e.providerId} (${e.error})`).join("; ")}`);
+  const e = new Error("AI request failed — no provider was able to complete this request");
   e.chainErrors = errors;
   throw e;
 }

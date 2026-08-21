@@ -276,6 +276,22 @@ async function _patchValidateGate(run, stageState, opts) {
         const fs_ = require("fs");
         const ROOT = path.join(__dirname, "../../");
         const absPath = path.join(ROOT, spec.targetFile);
+        // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+        // (2026-08-21): spec.targetFile is fully caller-controlled
+        // (POST /pipeline/run, requireAuth-only) with no containment check
+        // here — path.join resolves "../" segments normally, so a
+        // targetFile like "../../../tmp/x" escapes ROOT entirely. A real
+        // read failure on the resolved path (EACCES/EISDIR — existsSync
+        // itself never throws) then leaked the absolute resolved path via
+        // e.message below, live-reproduced with a safe scratch fixture.
+        // Contained the same way exportFileService.cjs's resolveLocal()
+        // already does — reused pattern, not a new mechanism.
+        if (!absPath.startsWith(ROOT)) {
+            result.checks.push({ name: "target_file_exists", ok: false });
+            result.issues.push("Target file not found");
+            result.ok = false;
+            return result;
+        }
         if (!fs_.existsSync(absPath)) {
             result.checks.push({ name: "target_file_exists", ok: false });
             result.issues.push(`Target file not found: ${spec.targetFile}`);
@@ -308,8 +324,12 @@ async function _patchValidateGate(run, stageState, opts) {
             }
         }
     } catch (e) {
+        // Full detail logged server-side; the caller-facing issue text
+        // uses the already-safe, caller-relative spec.targetFile instead
+        // of the raw fs error, which always embeds the absolute path.
+        logger.warn(`[PipelineCoordinator] target file read failed: ${e.message}`);
         result.checks.push({ name: "file_read", ok: false });
-        result.issues.push(`File read error: ${e.message}`);
+        result.issues.push(`Could not read target file: ${spec.targetFile}`);
         result.ok = false;
         return result;
     }

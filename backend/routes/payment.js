@@ -4,8 +4,20 @@ const payment = require("../services/paymentService");
 const wa      = require("../services/whatsappService");
 const { handleRazorpayWebhook } = require("../controllers/webhookController");
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
-router.post("/payment/link", requireAuth, async (req, res) => {
+// Unauthenticated by design (Razorpay calls this directly) and HMAC-verified
+// inside handleRazorpayWebhook, but still rate-limited per IP so a flood
+// can't exhaust webhook-processing capacity before the signature check runs.
+const _webhookRL = rateLimiter(30, 60_000, "payment-webhook");
+
+// External Actions, Payments, Webhooks & Side-Effect Security Audit
+// (2026-08-21): same gap as /billing/upgrade — a real external Razorpay
+// payment-link creation call per request, plus a real WhatsApp send when a
+// phone is supplied, with zero rate limit. Same established fix pattern.
+const _paymentLinkRL = rateLimiter(15, 60_000, "payment-link-create");
+
+router.post("/payment/link", requireAuth, _paymentLinkRL, async (req, res) => {
     try {
         const { amount = 999, name = "Customer", phone, description = "JARVIS Access" } = req.body;
         const accountId = req.user.sub || req.user.id || null;
@@ -24,7 +36,7 @@ router.post("/payment/link", requireAuth, async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-router.post("/webhook/razorpay", handleRazorpayWebhook);
-router.post("/razorpay-webhook", handleRazorpayWebhook);
+router.post("/webhook/razorpay", _webhookRL, handleRazorpayWebhook);
+router.post("/razorpay-webhook", _webhookRL, handleRazorpayWebhook);
 
 module.exports = router;

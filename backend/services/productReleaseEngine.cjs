@@ -10,6 +10,12 @@
  *         selfReviewEngine, founderWorkRegistry.
  *
  * Storage: data/product-releases.json
+ *
+ * ECOSYSTEM OS RECOVERY (2026-08-15): orgId now required — see
+ * productPlannerEngine.cjs's file header for the full blast-radius
+ * investigation and precedent this follows. Pre-existing unowned records
+ * (~54 releases) are correctly invisible to real orgId queries, not
+ * misattributed.
  */
 
 const fs   = require("fs");
@@ -33,6 +39,10 @@ const _pve  = () => _try(() => require("./productValidationEngine.cjs"));
 function _ts()    { return new Date().toISOString(); }
 function _id()    { return `pr_${Date.now()}_${Math.random().toString(36).slice(2,6)}`; }
 function _ver()   { return `1.0.${Math.floor(Date.now() / 1000) % 1000}`; }
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+function _requireOrgId(orgId, fnName) {
+  if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
 
 // ── Release artifacts ─────────────────────────────────────────────────────────
 
@@ -121,11 +131,12 @@ function _save(d) {
 
 // ── Core: prepare ─────────────────────────────────────────────────────────────
 
-async function prepare(planId, { skipExecute = false } = {}) {
-  const plan       = _ppe()?.getPlan?.(planId);
+async function prepare(orgId, planId, { skipExecute = false } = {}) {
+  _requireOrgId(orgId, "prepare");
+  const plan       = _ppe()?.getPlan?.(orgId, planId);
   if (!plan) return { ok: false, error: `plan not found: ${planId}` };
 
-  const validation = _pve()?.getValidationForPlan?.(planId) || null;
+  const validation = _pve()?.getValidationForPlan?.(orgId, planId) || null;
   if (!validation?.productionReady && !skipExecute) {
     return { ok: false, error: "product has not passed validation — run validate() first" };
   }
@@ -209,7 +220,7 @@ async function prepare(planId, { skipExecute = false } = {}) {
     ? 20 : 0);
 
   const release = {
-    id, planId,
+    id, planId, orgId,
     version:      releaseNotes.version,
     status:       twinApproval.startsWith("approve") ? "ready" : "pending_approval",
     twinDecision: twinApproval,
@@ -239,10 +250,17 @@ async function prepare(planId, { skipExecute = false } = {}) {
   return { ok: true, release };
 }
 
-function getRelease(id)        { return _load().releases.find(r => r.id === id) || null; }
-function getReleaseForPlan(pid){ return _load().releases.filter(r => r.planId === pid).pop() || null; }
-function listReleases({ limit = 50, status } = {}) {
-  let list = _load().releases;
+function getRelease(orgId, id) {
+  _requireOrgId(orgId, "getRelease");
+  return _load().releases.find(r => r.id === id && _ownedBy(r, orgId)) || null;
+}
+function getReleaseForPlan(orgId, pid) {
+  _requireOrgId(orgId, "getReleaseForPlan");
+  return _load().releases.filter(r => r.planId === pid && _ownedBy(r, orgId)).pop() || null;
+}
+function listReleases(orgId, { limit = 50, status } = {}) {
+  _requireOrgId(orgId, "listReleases");
+  let list = _load().releases.filter(r => _ownedBy(r, orgId));
   if (status) list = list.filter(r => r.status === status);
   return { ok: true, releases: list.slice(-limit).reverse(), total: list.length };
 }

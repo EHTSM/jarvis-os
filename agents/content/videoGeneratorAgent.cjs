@@ -175,8 +175,13 @@ async function generateRealVideo({ prompt, seconds = "4", size = "1280x720" } = 
         result.note       = null;
         return result;
     } catch (err) {
-        result.generationError = err.message;
-        result.note = `Sora API error: ${err.message}`;
+        // Client Error Sanitization Deep Sweep (2026-08-21): same leak class
+        // as imageGeneratorAgent.cjs's DALL-E path and voiceCloningAgent.cjs's
+        // TTS paths — the raw OpenAI/Sora err.message previously reached the
+        // client via /creative/video/*. Full detail logged server-side.
+        try { require("../../backend/utils/logger").warn(`[VideoGen] Sora call failed: ${err.message}`); } catch { /* non-fatal */ }
+        result.generationError = "Video generation failed";
+        result.note = "Sora API error — see server logs for detail";
         return result;
     }
 }

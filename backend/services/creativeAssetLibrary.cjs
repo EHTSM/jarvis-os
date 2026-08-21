@@ -83,6 +83,11 @@ function storeAsset(opts = {}) {
     capability: asset.capability, tags: asset.tags, folder: asset.folder,
     accountId: asset.accountId, orgId: asset.orgId, createdAt: asset.createdAt, favorite: false,
     jobId: asset.jobId,
+    // Creative Studio OS pass: url was previously only in the append-only NDJSON
+    // log, not the fast-lookup index — added so getAssetByUrl() below (used to
+    // gate the generated-file serving routes on ownership) doesn't need to scan
+    // the whole log per file request.
+    url: asset.url,
   };
 
   // Update folder index
@@ -103,6 +108,18 @@ function storeAsset(opts = {}) {
 function getAsset(id) {
   const idx = _loadIndex();
   return idx.assets[id] || null;
+}
+
+// Creative Studio OS pass: used by the generated-file serving routes
+// (/creative/image|video/file/:filename, /creative/audio/:filename) to find
+// the owning asset record for a requested file path, so those routes can
+// check ownership instead of serving any authenticated caller's guess at a
+// server-generated filename. O(n) over the in-memory index — the same cost
+// class every other list/stat function in this file already pays.
+function getAssetByUrl(url) {
+  if (!url) return null;
+  const idx = _loadIndex();
+  return Object.values(idx.assets).find(a => a.url === url) || null;
 }
 
 /**
@@ -245,7 +262,7 @@ function getReuseRef(id) {
 }
 
 module.exports = {
-  storeAsset, getAsset, listAssets,
+  storeAsset, getAsset, getAssetByUrl, listAssets,
   toggleFavorite, addTag, moveToFolder, deleteAsset,
   getFolders, getTags, getStats, getReuseRef,
   ASSET_TYPES,

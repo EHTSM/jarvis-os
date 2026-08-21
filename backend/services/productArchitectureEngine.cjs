@@ -11,6 +11,12 @@
  *         companyBlueprintEngine, selfReviewEngine, benchmarkEngine.
  *
  * Storage: data/product-architectures.json
+ *
+ * ECOSYSTEM OS RECOVERY (2026-08-15): orgId now required — see
+ * productPlannerEngine.cjs's file header for the full blast-radius
+ * investigation and precedent this follows. Pre-existing unowned records
+ * (~111 architectures) are correctly invisible to real orgId queries, not
+ * misattributed.
  */
 
 const fs   = require("fs");
@@ -30,6 +36,10 @@ const _ppe = () => _try(() => require("./productPlannerEngine.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `pa_${Date.now()}_${Math.random().toString(36).slice(2,6)}`; }
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+function _requireOrgId(orgId, fnName) {
+  if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
 
 // ── Platform layer catalogue ──────────────────────────────────────────────────
 
@@ -135,8 +145,9 @@ function _save(d) {
 
 // ── Core: design ─────────────────────────────────────────────────────────────
 
-function design(planId, { skipReasoning = false } = {}) {
-  const plan = _ppe()?.getPlan?.(planId);
+function design(orgId, planId, { skipReasoning = false } = {}) {
+  _requireOrgId(orgId, "design");
+  const plan = _ppe()?.getPlan?.(orgId, planId);
   if (!plan) return { ok: false, error: `plan not found: ${planId}` };
 
   const id   = _id();
@@ -187,7 +198,7 @@ function design(planId, { skipReasoning = false } = {}) {
   } catch {}
 
   const architecture = {
-    id, planId,
+    id, planId, orgId,
     selectedLayers,
     componentMap,
     reuseRatio:         reuseData.reuseRatio,
@@ -216,10 +227,17 @@ function design(planId, { skipReasoning = false } = {}) {
   return { ok: true, architecture };
 }
 
-function getArchitecture(id)     { return _load().architectures.find(a => a.id === id) || null; }
-function getArchitectureForPlan(planId) { return _load().architectures.filter(a => a.planId === planId).pop() || null; }
-function listArchitectures({ limit = 50 } = {}) {
-  const list = _load().architectures;
+function getArchitecture(orgId, id) {
+  _requireOrgId(orgId, "getArchitecture");
+  return _load().architectures.find(a => a.id === id && _ownedBy(a, orgId)) || null;
+}
+function getArchitectureForPlan(orgId, planId) {
+  _requireOrgId(orgId, "getArchitectureForPlan");
+  return _load().architectures.filter(a => a.planId === planId && _ownedBy(a, orgId)).pop() || null;
+}
+function listArchitectures(orgId, { limit = 50 } = {}) {
+  _requireOrgId(orgId, "listArchitectures");
+  const list = _load().architectures.filter(a => _ownedBy(a, orgId));
   return { ok: true, architectures: list.slice(-limit).reverse(), total: list.length };
 }
 function getStats()              {

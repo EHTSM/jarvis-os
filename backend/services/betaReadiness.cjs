@@ -21,6 +21,7 @@
 const fs     = require("fs");
 const path   = require("path");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const ROOT     = path.join(__dirname, "../../");
 const DATA_DIR = path.join(ROOT, "data");
@@ -60,8 +61,52 @@ function _loadTokens() {
   catch { return {}; }
 }
 
+// Atomic tmp-rename write — same pattern already used by
+// authMiddleware.js's revocation ledger / missionMemory.cjs /
+// organizationService.cjs, so a crash mid-write can never leave
+// m6-auth-tokens.json truncated or corrupt.
 function _saveTokens(t) {
-  fs.writeFileSync(TOKEN_FILE, JSON.stringify(t, null, 2));
+  const tmp = `${TOKEN_FILE}.${process.pid}.${crypto.randomBytes(4).toString("hex")}.tmp`;
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(t, null, 2));
+    fs.renameSync(tmp, TOKEN_FILE);
+  } catch (e) {
+    // Client Error Sanitization Deep Sweep (2026-08-21): a real write
+    // failure here (disk full, permission issue) previously threw Node's
+    // raw fs error straight up through resetPassword()/verifyEmail() into
+    // /auth/reset-password and /auth/verify-email's route-level catch —
+    // both UNAUTHENTICATED routes — leaking the absolute path to
+    // data/m6-auth-tokens.json to anyone on the internet. Reproduced via a
+    // standalone read-only-directory test (safe — not induced against the
+    // real data/ directory): "EACCES: permission denied, open
+    // '.../m6-auth-tokens.json.<pid>.<rand>.tmp'".
+    logger.error(`[BetaReadiness] token store write failed: ${e.message}`);
+    throw new Error("Could not save token state");
+  }
+}
+
+// Rate-Limit + Security Token Audit (2026-08-16): resetPassword() and
+// verifyEmail() each did read-tokens → check usedAt → do real work →
+// write-tokens, with no lock between the check and the write. Two
+// concurrent requests carrying the identical valid token could both pass
+// the `usedAt == null` check before either request's write landed — a
+// real, live-reproducible single-use bypass (replay). This process is
+// single-instance (no cluster/worker_threads — confirmed via the existing
+// in-memory rateLimiter's own single-process assumption), so a plain
+// in-memory claim set is sufficient: a token is provisionally "claimed"
+// synchronously before any of the surrounding async/IO work runs, and
+// released only if that attempt turns out invalid — closing the race
+// without a new locking framework or session store.
+const _claimedTokens = new Set();
+
+function _claimToken(key) {
+  if (_claimedTokens.has(key)) return false;
+  _claimedTokens.add(key);
+  return true;
+}
+
+function _releaseToken(key) {
+  _claimedTokens.delete(key);
 }
 
 function _ts()    { return new Date().toISOString(); }
@@ -113,20 +158,30 @@ function sendEmailVerification(accountId, email, name) {
 }
 
 function verifyEmail(token) {
+  // Same claim-lock as resetPassword — closes the identical read-check-write
+  // race for concurrent requests carrying the same verify token.
+  const claimKey = `ev_${token}`;
+  if (!_claimToken(claimKey)) {
+    return { ok: false, error: "Token already used" };
+  }
+
   const tokens = _loadTokens();
-  const entry  = tokens[`ev_${token}`];
+  const entry  = tokens[claimKey];
   if (!entry || entry.type !== "email_verify") {
+    _releaseToken(claimKey);
     return { ok: false, error: "Invalid or expired verification token" };
   }
   if (entry.usedAt) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Token already used" };
   }
   if (new Date(entry.expiresAt) < new Date()) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Verification token expired" };
   }
 
   // Mark token used
-  tokens[`ev_${token}`].usedAt = _ts();
+  tokens[claimKey].usedAt = _ts();
   _saveTokens(tokens);
 
   // Mark account as verified in accountService
@@ -199,20 +254,34 @@ function resetPassword(token, newPassword) {
     return { ok: false, error: "Password must be at least 8 characters" };
   }
 
+  // Claim the token synchronously before any async/IO work runs — closes
+  // the read-check-write race where two concurrent requests carrying the
+  // same valid token could both pass the usedAt check before either
+  // request's write landed. Released on every early-exit failure path so a
+  // rejected attempt (unknown/expired/already-used token) never blocks a
+  // legitimate subsequent retry.
+  const claimKey = `pr_${token}`;
+  if (!_claimToken(claimKey)) {
+    return { ok: false, error: "Reset token already used" };
+  }
+
   const tokens = _loadTokens();
-  const entry  = tokens[`pr_${token}`];
+  const entry  = tokens[claimKey];
   if (!entry || entry.type !== "password_reset") {
+    _releaseToken(claimKey);
     return { ok: false, error: "Invalid or expired reset token" };
   }
   if (entry.usedAt) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Reset token already used" };
   }
   if (new Date(entry.expiresAt) < new Date()) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Reset token expired" };
   }
 
   const acctSvc = _accounts();
-  if (!acctSvc) return { ok: false, error: "accountService unavailable" };
+  if (!acctSvc) { _releaseToken(claimKey); return { ok: false, error: "accountService unavailable" }; }
 
   // Enterprise password policy (Module 4): enforced here rather than in
   // accountService.createAccount, which has no org context at signup time —
@@ -224,19 +293,31 @@ function resetPassword(token, newPassword) {
     const primaryOrgId = org.resolveContext(entry.accountId)?.primaryOrg?.orgId;
     if (primaryOrgId) policy.assertPasswordMeetsPolicy(primaryOrgId, newPassword);
   } catch (e) {
-    if (e?.message?.startsWith("Password must")) return { ok: false, error: e.message };
+    if (e?.message?.startsWith("Password must")) { _releaseToken(claimKey); return { ok: false, error: e.message }; }
     // organizationService/policyService unavailable — fail open on the
     // enterprise policy check specifically (not on the reset itself), same
     // as every other _try()-wrapped optional integration in this codebase.
   }
 
+  // Mark used and persist BEFORE the account mutation: the claim above
+  // already prevents a concurrent duplicate from reaching this point, but
+  // writing the token's consumed state first (rather than after
+  // updateAccount) means a crash between the two can never leave a
+  // password changed with its token still showing as unused/replayable.
+  tokens[claimKey].usedAt = _ts();
+  _saveTokens(tokens);
+
   const result = acctSvc.updateAccount(entry.accountId, {
     passwordHash: acctSvc.hashPassword ? acctSvc.hashPassword(newPassword)
       : require("crypto").scryptSync(newPassword, "ooplix-salt", 64).toString("hex"),
+    // Security Token Audit (2026-08-16): invalidates every session/JWT
+    // issued before this moment (see verifyJWT's iat check in
+    // authMiddleware.js) — a pre-reset session (e.g. held by whoever
+    // triggered the compromise this reset is meant to recover from) no
+    // longer authenticates after a successful reset, without needing a new
+    // session-store architecture (JWTs already carry iat + sub).
+    passwordChangedAt: _ts(),
   });
-
-  tokens[`pr_${token}`].usedAt = _ts();
-  _saveTokens(tokens);
 
   const al = _auditLog();
   if (al) al.append({ type: "password_reset_complete", accountId: entry.accountId });

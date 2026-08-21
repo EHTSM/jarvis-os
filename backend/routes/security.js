@@ -21,8 +21,8 @@ const svc = require("../services/securityLayer.cjs");
 const wsSvc = require("../services/workspaceService.cjs");
 
 router.use("/security", requireAuth);
-router.use(attachWorkspace);
-router.use(requireWorkspaceMember);
+router.use("/security", attachWorkspace);
+router.use("/security", requireWorkspaceMember);
 
 // Workspace is always the authenticated requester's validated membership —
 // never a raw client-supplied id. attachWorkspace already resolves

@@ -170,14 +170,22 @@ async function sendMessage(phone, text, retries = 2, orgId = null) {
             return { success: true, messageId: msgId };
 
         } catch (err) {
+            // Client Error / Failure-Honesty Leakage Audit (2026-08-21):
+            // `detail` is Meta's raw Graph API error body — live-reproduced,
+            // it can contain real internal identifiers (e.g. the configured
+            // WA_PHONE_ID value) verbatim in the message text, not just
+            // generic wording. This flowed straight through to the customer
+            // via POST /whatsapp/send and POST /payment/link (phone-notify
+            // path). Full detail is still logged server-side (unchanged);
+            // only the client-facing value is now a fixed, safe string.
             const detail = err.response?.data?.error?.message || err.message;
             const status = err.response?.status;
 
             // Auth/Config errors: set cooldown so automation stops hammering Meta for the next hour.
             if (status === 400 || status === 401 || status === 403 || status === 404) {
                 _authCooldownUntil.set(scope, Date.now() + AUTH_COOLDOWN_MS);
-                logger.error(`[WA] Permanent/Config error (${status}) for scope=${scope} — pausing WA sends for this scope for 1 hour.`);
-                return { success: false, error: `Config error: ${detail}` };
+                logger.error(`[WA] Permanent/Config error (${status}) for scope=${scope}: ${detail} — pausing WA sends for this scope for 1 hour.`);
+                return { success: false, error: "WhatsApp send failed — configuration error, please contact support" };
             }
 
             if (attempt < retries) {
@@ -185,7 +193,7 @@ async function sendMessage(phone, text, retries = 2, orgId = null) {
                 await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
             } else {
                 logger.error(`[WA] All attempts failed: ${detail}`);
-                return { success: false, error: detail };
+                return { success: false, error: "WhatsApp send failed after multiple attempts" };
             }
         }
     }

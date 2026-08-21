@@ -411,8 +411,27 @@ function subscribeWorkflowEvents() {
   const bus = _bus();
   if (!bus) return;
 
+  // Runtime Event Bus Reliability, Isolation & Backpressure Audit (2026-08-16):
+  // every subscribe() call below used its first argument as if it were a
+  // per-type event filter and destructured the handler argument as if it
+  // were the raw payload — runtimeEventBus.subscribe(id, fn) actually keys
+  // fn by a unique subscriber id and calls it with the FULL event envelope
+  // { seq, ts, type, payload } for every event on the bus, regardless of
+  // type. Live-reproduced: a handler registered this way fired on 4/4
+  // unrelated event types in one test, and its destructured fields were
+  // always undefined. Fixed to the exact pattern already correct elsewhere
+  // in this codebase (businessOrgWorkflow.cjs, engineeringOrgWorkflow.cjs,
+  // autonomousOrg.cjs, platformOrg.cjs): a real `if (evt.type !== "...")
+  // return;` type guard, and destructuring from evt.payload, not evt
+  // itself. The original string argument to subscribe() is now a
+  // genuinely unique subscriber id (kept as the same descriptive string —
+  // it was already unique per call site, just not doing the job its shape
+  // implied) rather than a fake type filter.
+
   // CKO creates operational tasks when objective is created
-  bus.subscribe("ako:objective:created", async ({ objectiveId, title }) => {
+  bus.subscribe("ako_sub_ako_objective_created", async (evt) => {
+    if (evt.type !== "ako:objective:created") return;
+    const { objectiveId, title } = evt.payload || {};
     try {
       const tasks = [
         { title: `Research: capture engineering knowledge for ${title}`, type: "research",    deptId: "ako_research",    priority: "high"   },
@@ -427,7 +446,9 @@ function subscribeWorkflowEvents() {
   });
 
   // Research captures → auto-validate
-  bus.subscribe("ako:knowledge:captured", async ({ itemId, confidence }) => {
+  bus.subscribe("ako_sub_ako_knowledge_captured", async (evt) => {
+    if (evt.type !== "ako:knowledge:captured") return;
+    const { itemId, confidence } = evt.payload || {};
     try {
       if ((confidence || 70) >= 65) {
         setTimeout(() => validateKnowledge(itemId, { confidence }), 50);
@@ -436,7 +457,9 @@ function subscribeWorkflowEvents() {
   });
 
   // On validation → index graph + store memory + confirm searchable
-  bus.subscribe("ako:knowledge:validated", async ({ itemId }) => {
+  bus.subscribe("ako_sub_ako_knowledge_validated", async (evt) => {
+    if (evt.type !== "ako:knowledge:validated") return;
+    const { itemId } = evt.payload || {};
     try {
       setTimeout(() => {
         indexKnowledgeGraph(itemId);
@@ -447,7 +470,9 @@ function subscribeWorkflowEvents() {
   });
 
   // On graph indexed → learning step
-  bus.subscribe("ako:graph:indexed", async ({ itemId }) => {
+  bus.subscribe("ako_sub_ako_graph_indexed", async (evt) => {
+    if (evt.type !== "ako:graph:indexed") return;
+    const { itemId } = evt.payload || {};
     try {
       const item = _st().getItem(itemId);
       if (item) recordLesson({ title: `Graph indexed: ${item.title}`, detail: `type=${item.type}`, type: item.type, tags: item.tags || [] });
@@ -455,7 +480,9 @@ function subscribeWorkflowEvents() {
   });
 
   // On engineering events — cross-org knowledge capture
-  bus.subscribe("engorg:work:completed", async ({ workItemId, domain, engineerId }) => {
+  bus.subscribe("ako_sub_engorg_work_completed", async (evt) => {
+    if (evt.type !== "engorg:work:completed") return;
+    const { workItemId, domain, engineerId } = evt.payload || {};
     try {
       researchCapture({
         title: `Engineering completed: ${domain} work item ${workItemId}`,
@@ -467,7 +494,9 @@ function subscribeWorkflowEvents() {
   });
 
   // On business events — cross-org knowledge capture
-  bus.subscribe("bizorg:deal:won", async ({ dealId, company, value }) => {
+  bus.subscribe("ako_sub_bizorg_deal_won", async (evt) => {
+    if (evt.type !== "bizorg:deal:won") return;
+    const { dealId, company, value } = evt.payload || {};
     try {
       researchCapture({
         title: `Business win: ${company} — $${value}`,
@@ -479,7 +508,9 @@ function subscribeWorkflowEvents() {
   });
 
   // On ODI design events — design knowledge
-  bus.subscribe("odi:patch:applied", async ({ patchId, description }) => {
+  bus.subscribe("ako_sub_odi_patch_applied", async (evt) => {
+    if (evt.type !== "odi:patch:applied") return;
+    const { patchId, description } = evt.payload || {};
     try {
       researchCapture({
         title: `Design patch: ${description || patchId}`,
@@ -491,7 +522,9 @@ function subscribeWorkflowEvents() {
   });
 
   // Mission completion → knowledge capture
-  bus.subscribe("mission:completed", async ({ missionId, objective }) => {
+  bus.subscribe("ako_sub_mission_completed", async (evt) => {
+    if (evt.type !== "mission:completed") return;
+    const { missionId, objective } = evt.payload || {};
     try {
       if (!objective) return;
       researchCapture({

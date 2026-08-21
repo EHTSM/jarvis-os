@@ -44,12 +44,17 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 const gha = require("../services/gitHubEngineeringAgent.cjs");
 const cre = require("../services/codeReviewEngine.cjs");
 const re  = require("../services/releaseEngine.cjs");
 const ap  = require("../services/engineeringAutopilot.cjs");
 
 router.use("/p23", requireAuth);
+// File-scoped: every route here either calls the real GitHub API
+// (gitHubEngineeringAgent.cjs, via https) or runs code-review/release
+// analysis over real repo content — same pattern as phase27.js's AI routes.
+router.use("/p23", rateLimiter(30, 60_000, "p23-engineering"));
 
 // ── 23A GitHub Engineering Agent ──────────────────────────────────────────
 

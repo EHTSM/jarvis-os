@@ -16,6 +16,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const metrics    = require("../services/launchMetrics.cjs");
 const onboarding = require("../services/onboardingEngine.cjs");
@@ -224,7 +225,7 @@ router.post("/launch/academy/:pathId/module/:moduleId", (req, res) => {
 
 // V6 Phase 6 (Category E: Education OS) — real AI-generated custom
 // learning path, merged into the existing catalogue (see academyEngine.cjs).
-router.post("/launch/academy/paths/generate", async (req, res) => {
+router.post("/launch/academy/paths/generate", rateLimiter(15, 60_000, "academy-path-generate"), async (req, res) => {
   try {
     const { topic, level, moduleCount } = req.body || {};
     if (!topic) return res.status(400).json({ error: "topic required" });

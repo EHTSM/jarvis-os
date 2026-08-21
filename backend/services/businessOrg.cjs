@@ -241,10 +241,30 @@ async function _crmTick(s) {
   _setObj(s, "Qualifying leads and managing CRM pipeline");
   try {
     const prospects = _st()?.listDeals({ stage: "prospect" }) || [];
-    // Qualify up to 3 prospects
+    // Qualify up to 3 prospects.
+    //
+    // Phase OS-5: the score here is Math.random(), not a computed lead score —
+    // this tick has no scoring model, no enrichment data and no CRM signal to
+    // derive one from. It was written straight into the deal's stage note as
+    // `Score: 87` and into agent memory, and surfaced verbatim on
+    // GET /bizorg/v3/deals (measured live: "Score: 82", "Score: 79",
+    // "Score: 86"). A founder reading that sees a qualification score that
+    // looks measured and is not.
+    //
+    // The synthetic lead-capture two functions above already solves this
+    // correctly — it threads `synthetic: true` and `source: "demo_simulation"`
+    // so downstream consumers can tell demo data apart. This mirrors that
+    // convention rather than inventing a new one: the simulation still runs
+    // (the autonomous org demo depends on it), but the value is now labelled
+    // for what it is instead of impersonating a measurement.
     for (const deal of prospects.slice(0, 3)) {
       const score = 60 + Math.floor(Math.random() * 40);
-      _wf()?.crmQualifyLead(deal.id, { score, qualified: score >= 65 });
+      _wf()?.crmQualifyLead(deal.id, {
+        score,
+        qualified: score >= 65,
+        synthetic: true,
+        notes: "simulated qualification — no scoring model is configured; score is not measured",
+      });
     }
     // CRM service stats
     const stats = _crm()?.getStats?.() || {};

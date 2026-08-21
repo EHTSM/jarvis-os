@@ -171,7 +171,16 @@ async function recall({ query, limit = 20, sources = ["all"] }) {
     if (all || sources.includes("lessons")) {
         const le = _le();
         if (le) {
-            const { lessons } = le.getLessons({ limit: 200 });
+            // Search the whole retained lesson store, not just the newest 200.
+            // continuousLearningEngine caps lessons at 2000, so limit:200 scored
+            // only the most recent 10% — a memory written through
+            // POST /memory/remember became unreachable as soon as ~200 further
+            // lessons were written (minutes, given autonomous churn), while still
+            // sitting on disk. Confirmed: a probe lesson was present in the store
+            // but absent from the 200-item window, so recall returned unrelated
+            // 0.06-score matches instead of the exact hit. Scoring all 2000
+            // measures at ~5 ms, so the narrower window bought nothing.
+            const { lessons } = le.getLessons({ limit: 2000 });
             for (const l of (lessons || [])) {
                 const score = _cosineSim(query, `${l.title} ${l.detail} ${l.recommendation||""}`);
                 if (score > 0.05) results.push({ source: "lesson", score, item: l });

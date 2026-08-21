@@ -155,8 +155,13 @@ function generateSuccessPlan(customerId) {
   );
 
   const id   = _id();
+  // Cross-tenant fix — same class as journey/health above. Success plans
+  // carried no orgId, so listPlans() returned every organization's plans to
+  // every caller. Inherit from the health record (customerHealthEngine.cjs
+  // now stamps orgId from the matching CRM lead) since this function doesn't
+  // read a lead directly.
   const plan = {
-    id, customerId,
+    id, customerId, orgId: health?.orgId || null,
     stage, healthScore: health?.overall || 0,
     predictions, actions,
     playbook:    revHealth?.activePlaybook || null,
@@ -173,10 +178,17 @@ function generateSuccessPlan(customerId) {
   return { ok: true, plan };
 }
 
-function getPlan(customerId) { return _load().plans.find(p => p.customerId === customerId) || null; }
+function getPlan(customerId, orgId = null) {
+  const p = _load().plans.find(x => x.customerId === customerId);
+  if (!p) return null;
+  if (orgId && (p.orgId || null) !== orgId) return null;
+  return p;
+}
 
-function listPlans({ stage, limit = 50 } = {}) {
+function listPlans({ stage, limit = 50, orgId = null } = {}) {
   let plans = _load().plans;
+  // Same scoping rule as the journey/health list functions.
+  if (orgId) plans = plans.filter(p => p.orgId === orgId);
   if (stage) plans = plans.filter(p => p.stage === stage);
   return { ok: true, plans: plans.slice(0, limit) };
 }

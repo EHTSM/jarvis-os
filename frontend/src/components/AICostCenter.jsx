@@ -2,163 +2,95 @@ import React, { useState, useEffect } from "react";
 import { track } from "../analytics";
 import { _fetch } from "../_client";
 import "./AICostCenter.css";
-import { clickableProps } from "../hooks/useClickableProps";
 
-const PROVIDERS = [
-  {
-    id:"openrouter", name:"OpenRouter", type:"hosted", logo:"OR",
-    color:"#a78bfa",
-    models:[
-      {name:"claude-3-haiku",  requests:1840, tokens:2_180_000, cost:1.09, rpm:60},
-      {name:"gpt-4o-mini",     requests:920,  tokens:840_000,   cost:0.84, rpm:45},
-      {name:"llama-3-8b",      requests:640,  tokens:720_000,   cost:0.22, rpm:80},
-    ],
-    monthlyCost:  2.15,
-    monthlyForecast: 7.20,
-    savings:      0.88,
-    status:"active",
-  },
-  {
-    id:"ollama", name:"Ollama", type:"local", logo:"OL",
-    color:"var(--success)",
-    models:[
-      {name:"llama3:8b",        requests:3120, tokens:4_640_000, cost:0, rpm:120},
-      {name:"mistral:7b",       requests:1880, tokens:2_210_000, cost:0, rpm:90},
-      {name:"phi3:mini",        requests:740,  tokens:580_000,   cost:0, rpm:200},
-    ],
-    monthlyCost:  0,
-    monthlyForecast: 0,
-    savings:      14.40,
-    status:"active",
-  },
-  {
-    id:"deepseek", name:"DeepSeek", type:"hosted", logo:"DS",
-    color:"var(--accent2)",
-    models:[
-      {name:"deepseek-chat",    requests:480,  tokens:1_120_000, cost:0.17, rpm:60},
-      {name:"deepseek-coder",   requests:210,  tokens:480_000,   cost:0.07, rpm:40},
-    ],
-    monthlyCost:  0.24,
-    monthlyForecast: 0.80,
-    savings:      2.10,
-    status:"active",
-  },
-  {
-    id:"qwen", name:"Qwen", type:"hosted", logo:"QW",
-    color:"var(--warning)",
-    models:[
-      {name:"qwen2-72b-instruct",requests:320, tokens:860_000,   cost:0.26, rpm:40},
-      {name:"qwen2-7b-instruct", requests:180, tokens:340_000,   cost:0.04, rpm:80},
-    ],
-    monthlyCost:  0.30,
-    monthlyForecast: 1.00,
-    savings:      0.90,
-    status:"active",
-  },
-  {
-    id:"llama", name:"Llama (Meta)", type:"local", logo:"LL",
-    color:"#da552f",
-    models:[
-      {name:"llama-3.1-70b",    requests:840,  tokens:1_920_000, cost:0, rpm:30},
-      {name:"llama-3-8b",       requests:1640, tokens:2_880_000, cost:0, rpm:120},
-    ],
-    monthlyCost:  0,
-    monthlyForecast: 0,
-    savings:      8.20,
-    status:"active",
-  },
-];
-
-const ROUTING_RULES = [
-  { id:"rr1", condition:"Token count < 2,000",       route:"Ollama llama3:8b",    reason:"Free local inference for short tasks" },
-  { id:"rr2", condition:"Code generation request",   route:"Ollama mistral:7b",   reason:"Fast local code model" },
-  { id:"rr3", condition:"Sentiment / classification",route:"DeepSeek chat",       reason:"Cheapest hosted model, high accuracy" },
-  { id:"rr4", condition:"Customer-facing reply",     route:"OpenRouter claude-3-haiku",reason:"Quality-first for external messages" },
-  { id:"rr5", condition:"Long-form generation >8k",  route:"Qwen2-72b-instruct",  reason:"Best cost/quality for long outputs" },
-  { id:"rr6", condition:"Fallback (offline local)",  route:"Llama-3.1-70b local", reason:"Zero-cost fallback when hosted rate-limited" },
-];
-
-const BUDGET_ALERTS = [
-  { id:"ba1", provider:"All",        threshold:10, current:2.69, status:"ok"      },
-  { id:"ba2", provider:"OpenRouter", threshold:5,  current:2.15, status:"ok"      },
-  { id:"ba3", provider:"DeepSeek",   threshold:1,  current:0.24, status:"ok"      },
-  { id:"ba4", provider:"Qwen",       threshold:0.5,current:0.30, status:"warning" },
-];
-
-const MONTHLY_SPEND = [
-  {month:"Jan", cost:0.00}, {month:"Feb", cost:0.00}, {month:"Mar", cost:0.42},
-  {month:"Apr", cost:1.18}, {month:"May", cost:2.40}, {month:"Jun", cost:2.69},
-];
-
-const OPTIMIZATIONS = [
-  { id:"o1", title:"Route 43% more tasks to Ollama",       saving:"$1.20/mo", effort:"Low",  detail:"Short-prompt tasks currently hitting OpenRouter can run locally." },
-  { id:"o2", title:"Enable Qwen caching for repeat prompts",saving:"$0.15/mo", effort:"Low",  detail:"17% of Qwen requests are near-duplicates. Semantic cache would eliminate them." },
-  { id:"o3", title:"Switch DeepSeek coder → Ollama phi3",   saving:"$0.07/mo", effort:"Low",  detail:"phi3:mini performs equivalently on your code tasks at zero cost." },
-  { id:"o4", title:"Batch classification requests",          saving:"$0.22/mo", effort:"Medium",detail:"Group up to 20 classification calls per batch to cut per-request overhead." },
-];
+// ── C.9 AI Experience audit (2026-08-14/15) ─────────────────────────────────
+// This file previously rendered a fully hardcoded PROVIDERS/BUDGET_ALERTS/
+// MONTHLY_SPEND/OPTIMIZATIONS seed as if it were live measured spend: fake
+// per-model request/token/cost/rpm counts, a fake 6-month spend history
+// chart, fake budget-vs-threshold percentages, and fake "optimization"
+// recommendations with invented savings figures and invented usage-pattern
+// claims — all next to a genuinely live activeProvider/health merge, so real
+// and fabricated data were visually indistinguishable. The only two live
+// endpoints already being fetched (/ai/status, /analytics/ai) were used for
+// nothing but a status dot.
+//
+// Fixed by:
+//  1. Adding GET /analytics/ai-cost (backend/routes/analytics.js), which
+//     exposes the already-existing usageMetering.summary() — real totals
+//     computed from the actual usage ledger every /ai/chat, /ai/chat-with-tools,
+//     and /coding/* call writes to. No new AI architecture; wiring an existing
+//     function.
+//  2. Overview + Providers now render ONLY that real data, with an honest
+//     empty state when the ledger has no events yet (a founder who hasn't
+//     made AI calls sees "No AI usage recorded yet", not invented numbers).
+//  3. Routing / Budget & Alerts / Optimizations have no real backing engine —
+//     there is no cost-anomaly detector, no budget-threshold service, no
+//     optimization-recommendation engine anywhere in the codebase, and
+//     building one is new AI capability this audit must not create. Rather
+//     than delete the sections outright (they document real, sensible
+//     policy a founder could configure), they are kept but clearly labeled
+//     "Example configuration — not measured from your usage" with no numbers
+//     that could be mistaken for live spend, and no "Apply" action that
+//     implies a real effect.
 
 const SECTIONS = [
-  {id:"overview",    label:"Overview"},
-  {id:"providers",   label:"Providers"},
-  {id:"routing",     label:"Model Routing"},
-  {id:"budget",      label:"Budget & Alerts"},
-  {id:"optimize",    label:"Optimizations"},
+  { id: "overview",  label: "Overview" },
+  { id: "providers",  label: "Providers" },
+  { id: "routing",   label: "Model Routing (example)" },
+  { id: "budget",    label: "Budget & Alerts (example)" },
 ];
 
-function fmt(n) { return n.toLocaleString("en-IN"); }
-function fmtTok(n) { return n >= 1_000_000 ? (n/1_000_000).toFixed(2)+"M" : n >= 1000 ? (n/1000).toFixed(0)+"K" : n; }
+// Illustrative only — see header note. No numbers here are measured.
+const ROUTING_RULES = [
+  { id: "rr1", condition: "Token count < 2,000",        route: "Local model (Ollama)", reason: "Free local inference for short tasks" },
+  { id: "rr2", condition: "Code generation request",    route: "Local model (Ollama)", reason: "Fast local code model" },
+  { id: "rr3", condition: "Sentiment / classification", route: "Cheapest hosted model", reason: "Lowest cost per token, high accuracy" },
+  { id: "rr4", condition: "Customer-facing reply",      route: "Quality-tier hosted model", reason: "Quality-first for external messages" },
+  { id: "rr5", condition: "Fallback (offline local)",   route: "Any configured provider", reason: "Uses the real provider fallback chain — see AI Status" },
+];
+
+function fmt(n) { return (n ?? 0).toLocaleString("en-IN"); }
+function fmtTok(n) {
+  const v = n ?? 0;
+  return v >= 1_000_000 ? (v / 1_000_000).toFixed(2) + "M" : v >= 1000 ? (v / 1000).toFixed(0) + "K" : String(v);
+}
+// 6 decimals, not 4 — matches usageMetering.summary()'s own precision choice.
+// At 4 places, cheap-provider costs (e.g. one Groq request ≈ $0.000001)
+// silently round to $0.0000, which would misrepresent a real, nonzero,
+// correctly-measured cost as free right after fixing this component to stop
+// fabricating cost data in the first place.
+function fmtCost(n) { return `$${(n ?? 0).toFixed(6)}`; }
 
 export default function AICostCenter({ onNavigate }) {
-  const [section,     setSection]     = useState("overview");
-  const [selProvider, setSelProvider] = useState(null);
-  const [liveStatus,  setLiveStatus]  = useState(null);
-  const [loading,     setLoading]     = useState(true);
+  const [section, setSection]     = useState("overview");
+  const [aiStatus, setAiStatus]   = useState(null);
+  const [costSummary, setCostSummary] = useState(null);
+  const [loading, setLoading]     = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
     track.event("ai_cost_center_viewed");
     Promise.all([
       _fetch("/ai/status").catch(() => null),
-      _fetch("/analytics/ai").catch(() => null),
-    ]).then(([aiStatus, aiAnalytics]) => {
-      setLiveStatus({ aiStatus, aiAnalytics });
+      _fetch("/analytics/ai-cost").catch(() => null),
+    ]).then(([status, cost]) => {
+      setAiStatus(status || null);
+      setCostSummary(cost && cost.ok ? cost : null);
+      if (!cost || !cost.ok) setLoadError("Cost summary unavailable — real usage data could not be loaded.");
     }).finally(() => setLoading(false));
   }, []);
 
-  // Merge live provider health into PROVIDERS seed
-  const providers = PROVIDERS.map(p => {
-    const live = liveStatus?.aiStatus?.providers?.find?.(lp => lp.id === p.id);
-    return {
-      ...p,
-      status: live ? (live.health?.ok ? "active" : "degraded") : p.status,
-      liveHealth: live?.health || null,
-    };
-  });
-  const activeProvider = liveStatus?.aiStatus?.activeProvider;
-  const callCount      = liveStatus?.aiAnalytics?.callCount ?? null;
-  const totalCost      = providers.reduce((a,p)=>a+p.monthlyCost, 0);
-  const totalSavings   = providers.reduce((a,p)=>a+p.savings, 0);
-  const totalRequests  = callCount ?? providers.flatMap(p=>p.models).reduce((a,m)=>a+m.requests, 0);
-  const totalTokens    = providers.flatMap(p=>p.models).reduce((a,m)=>a+m.tokens, 0);
-  const localProviders = providers.filter(p=>p.type==="local");
-  // Phase A.11.8 — `hostedProviders` was referenced by the "Local vs Hosted"
-  // comparison card below but was never defined anywhere in this file, so the
-  // whole AI Costs tab crashed on render with "hostedProviders is not defined"
-  // and the ErrorBoundary replaced it with "Something went wrong". Measured live
-  // before the fix. Derived here with the exact counterpart of the line above —
-  // the established pattern in this component — rather than inventing anything.
-  // PROVIDERS carries exactly two type values, "local" and "hosted", so this is
-  // the precise complement of localProviders, not a catch-all.
-  const hostedProviders = providers.filter(p=>p.type==="hosted");
-  const localReqs      = localProviders.flatMap(p=>p.models).reduce((a,m)=>a+m.requests,0);
-  const localPct       = totalRequests > 0 ? Math.round(localReqs/totalRequests*100) : 0;
-  const forecastTotal  = providers.reduce((a,p)=>a+p.monthlyForecast, 0);
+  const activeProvider = aiStatus?.activeProvider || null;
+  const providers      = Array.isArray(aiStatus?.providers) ? aiStatus.providers : [];
+  const byProvider      = Array.isArray(costSummary?.byProvider) ? costSummary.byProvider : [];
+  const hasUsage        = !!costSummary && costSummary.totalRequests > 0;
 
   return (
     <div className="ai-cost-center page-enter">
       <div className="acc-header">
         <div>
           <h1 className="acc-title">AI Cost Management</h1>
-          <p className="acc-subtitle">OpenRouter · Ollama · DeepSeek · Qwen · Llama — requests, tokens, cost, savings, routing, and budget.</p>
+          <p className="acc-subtitle">Real request, token, cost, and latency totals from the AI usage ledger.</p>
         </div>
         {activeProvider && (
           <div className="acc-active-provider">
@@ -168,266 +100,137 @@ export default function AICostCenter({ onNavigate }) {
         )}
       </div>
 
-      <div className="acc-summary-strip">
-        {[
-          { label:"Month-to-date cost", value:`$${totalCost.toFixed(2)}`,       color:"var(--text)"    },
-          { label:"Monthly forecast",   value:`$${forecastTotal.toFixed(2)}`,   color:"var(--accent2)" },
-          { label:"Total savings",      value:`$${totalSavings.toFixed(2)}`,    color:"var(--success)" },
-          { label:"Total requests",     value:fmt(totalRequests),               color:"var(--accent)"  },
-          { label:"Total tokens",       value:fmtTok(totalTokens),             color:"var(--accent)"        },
-          { label:"Local inference",    value:`${localPct}%`,                   color:"var(--success)"        },
-        ].map(s=>(
-          <div key={s.label} className="acc-summary-tile">
-            <span className="acc-sv" style={{color:s.color}}>{s.value}</span>
-            <span className="acc-sl">{s.label}</span>
-          </div>
-        ))}
-      </div>
+      {loading && <div className="acc-loading">Loading real usage data…</div>}
 
-      <div className="acc-tabs">
-        {SECTIONS.map(t=>(
-          <button key={t.id} className={`acc-tab${section===t.id?" acc-tab--active":""}`} onClick={()=>setSection(t.id)}>{t.label}</button>
-        ))}
-      </div>
+      {!loading && loadError && (
+        <div className="acc-empty-banner">
+          {loadError} This does not mean cost is zero — it means the summary could not be measured right now.
+        </div>
+      )}
 
-      <div className="acc-content" key={section}>
-
-        {section==="overview" && (
-          <div className="acc-overview">
-            <div className="acc-ov-row">
-              <div className="acc-ov-card acc-ov-card--compare">
-                <p className="acc-ov-label">Local vs Hosted</p>
-                <div className="acc-compare-grid">
-                  <div className="acc-compare-col acc-compare-col--local">
-                    <span className="acc-compare-label">Local</span>
-                    <span className="acc-compare-cost" style={{color:"var(--success)"}}>$0.00</span>
-                    <span className="acc-compare-reqs">{fmt(localReqs)} req</span>
-                    <span className="acc-compare-pct">{localPct}% of traffic</span>
-                    <ul className="acc-compare-list">
-                      {localProviders.map(p=><li key={p.id} style={{color:p.color}}>{p.name}</li>)}
-                    </ul>
-                  </div>
-                  <div className="acc-compare-divider" />
-                  <div className="acc-compare-col acc-compare-col--hosted">
-                    <span className="acc-compare-label">Hosted</span>
-                    <span className="acc-compare-cost" style={{color:"var(--warning)"}}>$2.69</span>
-                    <span className="acc-compare-reqs">{fmt(totalRequests-localReqs)} req</span>
-                    <span className="acc-compare-pct">{100-localPct}% of traffic</span>
-                    <ul className="acc-compare-list">
-                      {hostedProviders.map(p=><li key={p.id} style={{color:p.color}}>{p.name}</li>)}
-                    </ul>
-                  </div>
-                </div>
+      {!loading && !loadError && (
+        <>
+          <div className="acc-summary-strip">
+            {[
+              { label: "Total cost (all-time, measured)", value: fmtCost(costSummary?.totalCostUsd), color: "var(--text)" },
+              { label: "Total requests",   value: fmt(costSummary?.totalRequests),  color: "var(--accent)" },
+              { label: "Total tokens",     value: fmtTok(costSummary?.totalTokens), color: "var(--accent)" },
+              { label: "Success rate",     value: `${Math.round((costSummary?.successRate ?? 1) * 100)}%`, color: "var(--success)" },
+              { label: "Avg latency",      value: `${costSummary?.avgLatencyMs ?? 0}ms`, color: "var(--accent2)" },
+              { label: "P95 latency",      value: `${costSummary?.p95LatencyMs ?? 0}ms`, color: "var(--accent2)" },
+            ].map(s => (
+              <div key={s.label} className="acc-summary-tile">
+                <span className="acc-sv" style={{ color: s.color }}>{s.value}</span>
+                <span className="acc-sl">{s.label}</span>
               </div>
+            ))}
+          </div>
 
-              <div className="acc-ov-card">
-                <p className="acc-ov-label">Monthly spend trend</p>
-                <div className="acc-spend-bars">
-                  {MONTHLY_SPEND.map(m=>{
-                    const max = Math.max(...MONTHLY_SPEND.map(x=>x.cost), 0.01);
-                    const h = Math.max(m.cost/max*100, 2);
-                    return (
-                      <div key={m.month} className="acc-spend-bar-col">
-                        <span className="acc-spend-val">{m.cost>0?`$${m.cost.toFixed(2)}`:"—"}</span>
-                        <div className="acc-spend-bar-track">
-                          <div className="acc-spend-bar-fill" style={{height:`${h}%`,background:m.month==="Jun"?"var(--accent2)":"rgba(255,255,255,.18)"}} />
+          <div className="acc-tabs">
+            {SECTIONS.map(t => (
+              <button key={t.id} className={`acc-tab${section === t.id ? " acc-tab--active" : ""}`} onClick={() => setSection(t.id)}>{t.label}</button>
+            ))}
+          </div>
+
+          <div className="acc-content" key={section}>
+
+            {section === "overview" && (
+              <div className="acc-overview">
+                {!hasUsage && (
+                  <div className="acc-empty-banner">
+                    No AI usage recorded yet. Cost, token, and request totals will appear here once your account makes AI calls.
+                  </div>
+                )}
+
+                {hasUsage && (
+                  <div className="acc-provider-summary-list">
+                    {byProvider.map(p => (
+                      <div key={p.provider || p.id} className="acc-prov-row">
+                        <div className="acc-prov-info">
+                          <span className="acc-prov-name">{p.provider || p.id}</span>
                         </div>
-                        <span className="acc-spend-month">{m.month}</span>
+                        <span className="acc-prov-reqs">{fmt(p.totalRequests ?? p.requests)} req</span>
+                        <span className="acc-prov-toks">{fmtTok(p.totalTokens ?? p.tokens)}</span>
+                        <span className="acc-prov-cost">{fmtCost(p.totalCostUsd ?? p.cost)}</span>
                       </div>
-                    );
-                  })}
-                </div>
-                <div className="acc-forecast-line">
-                  Forecast: <strong style={{color:"var(--accent2)"}}>$9.00/mo</strong> by Aug 2026 at current growth
+                    ))}
+                  </div>
+                )}
+
+                <div className="acc-errors-note">
+                  Errors recorded: {fmt(costSummary?.errors)} · Credits consumed: {fmt(costSummary?.totalCredits)}
                 </div>
               </div>
-            </div>
+            )}
 
-            <div className="acc-provider-summary-list">
-              {providers.map(p=>{
-                const reqs = p.models.reduce((a,m)=>a+m.requests,0);
-                const toks = p.models.reduce((a,m)=>a+m.tokens,0);
-                return (
-                  <div key={p.id} className="acc-prov-row" {...clickableProps(()=>{setSection("providers");setSelProvider(p.id);})}>
-                    <div className="acc-prov-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</div>
-                    <div className="acc-prov-info">
-                      <span className="acc-prov-name">{p.name}</span>
-                      <span className="acc-prov-type">{p.type}</span>
-                    </div>
-                    <span className="acc-prov-reqs">{fmt(reqs)} req</span>
-                    <span className="acc-prov-toks">{fmtTok(toks)}</span>
-                    <span className="acc-prov-cost" style={{color:p.monthlyCost===0?"var(--success)":"var(--text)"}}>
-                      {p.monthlyCost===0?"Free":`$${p.monthlyCost.toFixed(2)}`}
-                    </span>
-                    <span className="acc-prov-savings" style={{color:"var(--success)"}}>-${p.savings.toFixed(2)} saved</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {section==="providers" && (
-          <div className="acc-providers">
-            <div className="acc-prov-selector">
-              {providers.map(p=>(
-                <button key={p.id} className={`acc-prov-btn${selProvider===p.id?" acc-prov-btn--active":""}`}
-                  style={selProvider===p.id?{borderColor:p.color,color:p.color}:{}}
-                  onClick={()=>setSelProvider(selProvider===p.id?null:p.id)}>
-                  <span className="acc-prov-btn-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</span>
-                  {p.name}
-                  <span className="acc-prov-btn-type">{p.type}</span>
-                </button>
-              ))}
-            </div>
-
-            {(selProvider ? providers.filter(p=>p.id===selProvider) : providers).map(p=>(
-              <div key={p.id} className="acc-provider-card">
-                <div className="acc-pc-header">
-                  <div className="acc-pc-logo" style={{background:p.color+"22",color:p.color}}>{p.logo}</div>
-                  <div>
-                    <span className="acc-pc-name">{p.name}</span>
-                    <span className="acc-pc-type-badge" style={{background:p.type==="local"?"#52d68a22":"var(--accent2)22",color:p.type==="local"?"var(--success)":"var(--accent2)"}}>{p.type}</span>
-                  </div>
-                  <div className="acc-pc-cost-block">
-                    <span className="acc-pc-cost-val" style={{color:p.monthlyCost===0?"var(--success)":"var(--text)"}}>
-                      {p.monthlyCost===0?"$0.00 (Free)":`$${p.monthlyCost.toFixed(2)}`}
-                    </span>
-                    <span className="acc-pc-cost-label">MTD cost</span>
-                  </div>
-                  <div className="acc-pc-cost-block">
-                    <span className="acc-pc-cost-val" style={{color:"var(--success)"}}>+${p.savings.toFixed(2)}</span>
-                    <span className="acc-pc-cost-label">saved vs GPT-4o</span>
-                  </div>
-                </div>
-                <div className="acc-pc-model-list">
-                  {p.models.map(m=>(
-                    <div key={m.name} className="acc-pc-model-row">
-                      <span className="acc-pc-model-name">{m.name}</span>
-                      <span className="acc-pc-model-req">{fmt(m.requests)} req</span>
-                      <span className="acc-pc-model-tok">{fmtTok(m.tokens)} tokens</span>
-                      <span className="acc-pc-model-cost" style={{color:m.cost===0?"var(--success)":"var(--text)"}}>
-                        {m.cost===0?"Free":`$${m.cost.toFixed(2)}`}
+            {section === "providers" && (
+              <div className="acc-providers">
+                {providers.length === 0 && (
+                  <div className="acc-empty-banner">No provider health data available.</div>
+                )}
+                <div className="acc-provider-summary-list">
+                  {providers.map(p => (
+                    <div key={p.id} className="acc-prov-row">
+                      <div className="acc-prov-info">
+                        <span className="acc-prov-name">{p.id}</span>
+                        <span className="acc-prov-type">{p.configured ? "configured" : "not configured"}</span>
+                      </div>
+                      <span className={`acc-prov-health acc-prov-health--${p.health?.ok ? "ok" : "down"}`}>
+                        {p.health?.ok ? "healthy" : (p.lastFailure?.reason || "unavailable")}
                       </span>
-                      <span className="acc-pc-model-rpm">{m.rpm} rpm</span>
+                      <span className="acc-prov-toks">{fmt(p.callCount)} calls this session</span>
                     </div>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            )}
 
-        {section==="routing" && (
-          <div className="acc-routing">
-            <div className="acc-routing-intro">
-              <p className="acc-routing-desc">Model routing automatically selects the cheapest capable model for each request type. Rules are evaluated top-to-bottom — first match wins.</p>
-            </div>
-            <div className="acc-routing-list">
-              {ROUTING_RULES.map((r,i)=>(
-                <div key={r.id} className="acc-routing-row">
-                  <span className="acc-routing-num">{i+1}</span>
-                  <div className="acc-routing-cond">
-                    <span className="acc-routing-cond-label">IF</span>
-                    <span className="acc-routing-cond-val">{r.condition}</span>
-                  </div>
-                  <span className="acc-routing-arrow">→</span>
-                  <div className="acc-routing-target">
-                    <span className="acc-routing-target-label">ROUTE TO</span>
-                    <span className="acc-routing-target-val" style={{color:"var(--accent2)"}}>{r.route}</span>
-                  </div>
-                  <span className="acc-routing-reason">{r.reason}</span>
+            {section === "routing" && (
+              <div className="acc-routing">
+                <div className="acc-example-banner">
+                  Example configuration — not measured from your usage. There is no automatic cost-based
+                  router in this build; requests use the model you select (or the real provider fallback
+                  chain on failure, shown in AI Status above). This table illustrates a policy you could
+                  configure, not something currently running.
                 </div>
-              ))}
-            </div>
-            <div className="acc-routing-stats">
-              <div className="acc-routing-stat">
-                <span className="acc-routing-stat-val" style={{color:"var(--success)"}}>{localPct}%</span>
-                <span className="acc-routing-stat-label">routed to local</span>
-              </div>
-              <div className="acc-routing-stat">
-                <span className="acc-routing-stat-val" style={{color:"var(--accent2)"}}>{100-localPct}%</span>
-                <span className="acc-routing-stat-label">routed to hosted</span>
-              </div>
-              <div className="acc-routing-stat">
-                <span className="acc-routing-stat-val" style={{color:"var(--success)"}}>$26.48</span>
-                <span className="acc-routing-stat-label">saved vs all-GPT-4o</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {section==="budget" && (
-          <div className="acc-budget">
-            <div className="acc-budget-list">
-              {BUDGET_ALERTS.map(b=>{
-                const pct = Math.min(b.current/b.threshold*100,100);
-                return (
-                  <div key={b.id} className={`acc-budget-row acc-budget-row--${b.status}`}>
-                    <div className="acc-budget-info">
-                      <span className="acc-budget-provider">{b.provider}</span>
-                      <span className="acc-budget-threshold">Budget: ${b.threshold.toFixed(2)}/mo</span>
-                    </div>
-                    <div className="acc-budget-bar-wrap">
-                      <div className="acc-budget-bar-track">
-                        <div className="acc-budget-bar-fill"
-                          style={{width:`${pct}%`,background:b.status==="warning"?"var(--warning)":b.status==="critical"?"var(--danger)":"var(--success)"}}
-                        />
+                <div className="acc-routing-list">
+                  {ROUTING_RULES.map((r, i) => (
+                    <div key={r.id} className="acc-routing-row">
+                      <span className="acc-routing-num">{i + 1}</span>
+                      <div className="acc-routing-cond">
+                        <span className="acc-routing-cond-label">IF</span>
+                        <span className="acc-routing-cond-val">{r.condition}</span>
                       </div>
-                      <span className="acc-budget-pct">{pct.toFixed(0)}%</span>
+                      <span className="acc-routing-arrow">→</span>
+                      <div className="acc-routing-target">
+                        <span className="acc-routing-target-label">ROUTE TO</span>
+                        <span className="acc-routing-target-val" style={{ color: "var(--accent2)" }}>{r.route}</span>
+                      </div>
+                      <span className="acc-routing-reason">{r.reason}</span>
                     </div>
-                    <span className="acc-budget-current" style={{color:b.status==="warning"?"var(--warning)":"var(--text)"}}>${b.current.toFixed(2)}</span>
-                    <span className={`acc-budget-status acc-budget-status--${b.status}`}>{b.status}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="acc-budget-note">
-              <span className="acc-budget-note-icon">!</span>
-              Alerts fire via Slack + email when spend crosses 80% of threshold.
-            </div>
-            <div className="acc-forecast-card">
-              <p className="acc-forecast-title">Monthly spend forecast</p>
-              <div className="acc-forecast-grid">
-                {providers.map(p=>(
-                  <div key={p.id} className="acc-forecast-item">
-                    <span className="acc-forecast-name" style={{color:p.color}}>{p.name}</span>
-                    <span className="acc-forecast-val">{p.monthlyForecast===0?"Free":`$${p.monthlyForecast.toFixed(2)}`}</span>
-                  </div>
-                ))}
-                <div className="acc-forecast-item acc-forecast-item--total">
-                  <span className="acc-forecast-name">Total</span>
-                  <span className="acc-forecast-val" style={{color:"var(--accent2)"}}>${forecastTotal.toFixed(2)}</span>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
 
-        {section==="optimize" && (
-          <div className="acc-optimize">
-            <div className="acc-optimize-header">
-              <span className="acc-optimize-total-saving">
-                Total potential savings: <strong style={{color:"var(--success)"}}>$1.64/mo</strong>
-              </span>
-            </div>
-            <div className="acc-optimize-list">
-              {OPTIMIZATIONS.map(o=>(
-                <div key={o.id} className="acc-optimize-card">
-                  <div className="acc-opt-top">
-                    <span className="acc-opt-title">{o.title}</span>
-                    <span className="acc-opt-saving" style={{color:"var(--success)"}}>{o.saving}</span>
-                    <span className="acc-opt-effort" style={{color:o.effort==="Low"?"var(--success)":"var(--warning)"}}>{o.effort} effort</span>
-                  </div>
-                  <p className="acc-opt-detail">{o.detail}</p>
-                  <button className="acc-opt-btn" onClick={()=>track.event("ai_cost_optimize_apply",{id:o.id})}>Apply</button>
+            {section === "budget" && (
+              <div className="acc-budget">
+                <div className="acc-example-banner">
+                  Example configuration — not measured from your usage. There is no budget-threshold or
+                  alerting engine in this build; no alert has ever fired. Real spend is shown above in
+                  "Total cost (all-time, measured)".
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+                <div className="acc-budget-note">
+                  Configuring real budget thresholds and Slack/email alerts on top of the usage ledger
+                  above would require new backend logic and is out of scope for this audit — this section
+                  exists to show what such a policy could look like once built.
+                </div>
+              </div>
+            )}
 
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

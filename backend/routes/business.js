@@ -74,6 +74,7 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 const logger = require("../utils/logger");
 
 // attachOrg resolves req.org from X-Org-Id header/query/body, or — when none
@@ -94,8 +95,32 @@ const logger = require("../utils/logger");
 // /business/webhook/* is intentionally excluded — those routes are public,
 // unauthenticated ingestion endpoints for external systems (see "Public
 // webhooks" section below) and must not be gated by requireAuth/attachOrg.
-router.use((req, res, next) => {
-    if (req.path.startsWith("/business/webhook/")) return next();
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16, invitation-flow audit): this was
+// mounted with no path prefix (`router.use((req,res,next)=>{...})`), so —
+// since business.js itself is mounted with no prefix at "/" in
+// routes/index.js, ahead of ~20 other route files including workspace.js —
+// it silently gated EVERY unmatched request that fell through to this point
+// in the composed router stack, not just /business/* paths. Live-reproduced:
+// GET /invite-preview/:token (workspace.js), explicitly documented in that
+// file's own header comment as "Deliberately public (no requireAuth...)" so
+// an invitee with no account/session yet can preview an invite before
+// signing up, returned 401 Unauthorized — requireAuth was being invoked for
+// a route that never calls it, via this exact middleware, confirmed by
+// stack-trace instrumentation. Any other not-yet-matched path mounted after
+// business.js in routes/index.js was equally exposed to this same
+// unintended gate. Scoped to "/business" — every route below already
+// declares its own requireAuth/_requireOrg individually (this wrapper's only
+// unique purpose, per the comment above, is running attachOrg before that
+// per-route requireAuth for the org-scoped CRM routes), so scoping it
+// changes nothing for any real /business/* request.
+// req.path is mount-relative once scoped to "/business" (Express strips the
+// matched prefix), so the webhook exclusion check below must match against
+// "/webhook/" — not "/business/webhook/" — verified live: the unscoped
+// prefix string never matched post-scoping, which would have silently
+// re-broken the public webhook endpoints while fixing the interception bug.
+router.use("/business", (req, res, next) => {
+    if (req.path.startsWith("/webhook/")) return next();
     return requireAuth(req, res, () => attachOrg(req, res, next));
 });
 
@@ -153,12 +178,23 @@ router.get("/business/pipeline", requireAuth, _requireOrg, (req, res) => {
     } catch (e) { _err(res, e); }
 });
 
-router.get("/business/pipeline/:entityType", requireAuth, (req, res) => {
+// Remaining Execution & Tool Authorization Boundary Sweep follow-up
+// (Customer-Reachable API / Data-Access Boundary Audit, 2026-08-21):
+// this route never passed orgId to listBusinessMissions() at all — every
+// authenticated customer received every org's deals/customers/etc pipeline
+// data by default, no header forgery even required. Live-reproduced: org B
+// (zero relation to org A) called GET /business/pipeline/deal with no
+// special headers and received org A's real deal record verbatim. Fixed by
+// composing _requireOrg (the same gate business.js's own CRM routes and
+// customerOrg.js already use) and threading req.org.id through, matching
+// the sibling /business/pipeline route just above, which already does this
+// correctly.
+router.get("/business/pipeline/:entityType", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { entityType } = req.params;
-        const missions = bem.listBusinessMissions({ entityType, limit: 100 });
+        const missions = bem.listBusinessMissions({ entityType, limit: 100, orgId: req.org.id });
         const stages   = bem.getPipelineStages(entityType);
         const byStage  = {};
         for (const s of stages) byStage[s.id] = [];
@@ -570,87 +606,103 @@ router.get("/business/revenue/stats", requireAuth, _requireOrg, (req, res) => {
 });
 
 // ── Mission-layer aliases (deals / marketing / customers / ops) ───────────────
+//
+// Customer-Reachable API / Data-Access Boundary Audit (2026-08-21): all 8
+// routes below previously ran on requireAuth only, using `req.org?.id ||
+// null` as the orgId. Since attachOrg (mounted router-wide above) resolves
+// req.org from an ATTACKER-CONTROLLED X-Org-Id header without verifying
+// real membership, any authenticated customer could forge that header to
+// a foreign org's real id and have it accepted as the scope filter — no
+// requireOrgMember gate ever ran to catch the forgery. Live-reproduced:
+// org B, with zero relation to org A, sent X-Org-Id: <org A's real id> to
+// GET /business/deals and received org A's real deal records verbatim.
+// Fixed by composing _requireOrg (requireOrgMember) — the same gate this
+// file's own CRM routes (business/leads, /business/dashboard, etc.) and
+// customerOrg.js already use — which verifies req.orgRole (real membership,
+// set separately by attachOrg from getMemberRole()) before any handler
+// runs, and rejects a forged/unowned org id with 404 instead of silently
+// scoping to it.
 
-router.get("/business/deals", requireAuth, (req, res) => {
+router.get("/business/deals", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "deal", status: req.query.status, limit: 100, orgId: req.org?.id || null });
+        const result = bem.listBusinessMissions({ entityType: "deal", status: req.query.status, limit: 100, orgId: req.org.id });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/deals", requireAuth, (req, res) => {
+router.post("/business/deals", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { name, title, description, value, stage, priority } = req.body;
         if (!name && !title) return res.status(400).json({ success: false, error: "name or title required" });
         const entity = { id: `deal_${Date.now()}`, name: name || title, title, description, value, stage };
-        const mission = bem.createBusinessMission("deal", entity, { priority, orgId: req.org?.id || null });
+        const mission = bem.createBusinessMission("deal", entity, { priority, orgId: req.org.id });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
 
-router.get("/business/marketing/tasks", requireAuth, (req, res) => {
+router.get("/business/marketing/tasks", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "marketing_task", status: req.query.status, limit: 100, orgId: req.org?.id || null });
+        const result = bem.listBusinessMissions({ entityType: "marketing_task", status: req.query.status, limit: 100, orgId: req.org.id });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/marketing/tasks", requireAuth, (req, res) => {
+router.post("/business/marketing/tasks", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { title, campaign, channel, priority, subtasks } = req.body;
         if (!title) return res.status(400).json({ success: false, error: "title required" });
         const entity = { id: `mtask_${Date.now()}`, title, campaign, channel, subtasks };
-        const mission = bem.createBusinessMission("marketing_task", entity, { priority, orgId: req.org?.id || null });
+        const mission = bem.createBusinessMission("marketing_task", entity, { priority, orgId: req.org.id });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
 
-router.get("/business/customers", requireAuth, (req, res) => {
+router.get("/business/customers", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "customer", status: req.query.status, limit: 100, orgId: req.org?.id || null });
+        const result = bem.listBusinessMissions({ entityType: "customer", status: req.query.status, limit: 100, orgId: req.org.id });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/customers", requireAuth, (req, res) => {
+router.post("/business/customers", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { name, phone, email, plan, status, action, priority } = req.body;
         if (!name && !phone && !email) return res.status(400).json({ success: false, error: "name, phone, or email required" });
         const entity = { id: phone || email || `cust_${Date.now()}`, name, phone, email, plan, status: status || "active", action };
-        const mission = bem.createBusinessMission("customer", entity, { priority, orgId: req.org?.id || null });
+        const mission = bem.createBusinessMission("customer", entity, { priority, orgId: req.org.id });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
 
-router.get("/business/operations", requireAuth, (req, res) => {
+router.get("/business/operations", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
-        const result = bem.listBusinessMissions({ entityType: "operation", status: req.query.status, limit: 100, orgId: req.org?.id || null });
+        const result = bem.listBusinessMissions({ entityType: "operation", status: req.query.status, limit: 100, orgId: req.org.id });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/operations", requireAuth, (req, res) => {
+router.post("/business/operations", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { title, name, category, steps, priority } = req.body;
         if (!title && !name) return res.status(400).json({ success: false, error: "title or name required" });
         const entity = { id: `op_${Date.now()}`, title: title || name, category, steps: steps || [] };
-        const mission = bem.createBusinessMission("operation", entity, { priority, orgId: req.org?.id || null });
+        const mission = bem.createBusinessMission("operation", entity, { priority, orgId: req.org.id });
         _ok(res, { mission });
     } catch (e) { _err(res, e, 400); }
 });
@@ -692,34 +744,63 @@ router.get("/business/automation/capabilities", requireAuth, (req, res) => {
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/automation/run", requireAuth, async (req, res) => {
+// OOPLIX V1 MASTER AUDIT (2026-08-16): these two routes were requireAuth-only
+// — unlike every other /business/* CRM route in this file, neither composed
+// _requireOrg. businessMissionAutomation.cjs's capability handlers
+// (biz:crm:ingest_lead, qualify, closeWon/closeLost, recordCampaignEvent,
+// etc.) call bds.updateLead(entity.id, {...}), bds.closeWon(entity.id, ...),
+// etc. with NO orgId argument at all — and entity is taken directly from
+// req.body, fully caller-controlled. businessDataService.cjs's own _update/
+// _get/_remove already correctly reject a mismatched orgId (404), so the
+// fix is to require real org membership here (matching every sibling CRM
+// route) and thread req.org.id through into the entity object so those
+// existing checks actually run instead of being skipped via the missing
+// argument. Live-reproduced: an authenticated non-member of the target
+// org's real lead could invoke this route with that lead's real ID with no
+// membership check at all — masked from being an immediately observable
+// mutation only by an unrelated, separate crash bug in
+// autonomousExecutionRuntime.cjs's stage-execution entity deserialization
+// (documented, not fixed here — out of this authorization audit's scope).
+router.post("/business/automation/run", requireAuth, _requireOrg, async (req, res) => {
     try {
         const bma = _bma();
         if (!bma) return _err(res, new Error("automation unavailable"), 503);
         const { entityType, entity, missionId, priority, failFast } = req.body;
         if (!entityType) return res.status(400).json({ success: false, error: "entityType required" });
         if (!entity || typeof entity !== "object") return res.status(400).json({ success: false, error: "entity object required" });
-        const result = await bma.runTemplate(entityType, entity, { missionId, priority, failFast });
+        const result = await bma.runTemplate(entityType, { ...entity, orgId: req.org.id }, { missionId, priority, failFast, orgId: req.org.id });
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/automation/step", requireAuth, async (req, res) => {
+router.post("/business/automation/step", requireAuth, _requireOrg, async (req, res) => {
     try {
         const bma = _bma();
         if (!bma) return _err(res, new Error("automation unavailable"), 503);
         const { entityType, stepName, entity, missionId } = req.body;
         if (!entityType || !stepName) return res.status(400).json({ success: false, error: "entityType and stepName required" });
         if (!entity || typeof entity !== "object") return res.status(400).json({ success: false, error: "entity object required" });
-        const result = await bma.runStep(entityType, stepName, entity, missionId);
+        const result = await bma.runStep(entityType, stepName, { ...entity, orgId: req.org.id }, missionId);
         _ok(res, result);
     } catch (e) { _err(res, e); }
 });
 
-router.get("/business/automation/status/:missionId", requireAuth, (req, res) => {
+// Customer-Reachable API / Data-Access Boundary Audit (2026-08-21): getAutomationStatus()
+// has no orgId concept — filters executions by missionId alone. A caller who
+// knows/guesses another org's real missionId could read its execution status
+// and step logs. Fixed by verifying the mission's own recorded orgId (set at
+// creation time by every /business/* mission-layer route above, now that
+// they all correctly thread req.org.id through) matches the caller's
+// verified org, reusing missionMemory's existing getMission() rather than
+// adding a new ownership mechanism.
+router.get("/business/automation/status/:missionId", requireAuth, _requireOrg, (req, res) => {
     try {
         const bma = _bma();
         if (!bma) return _err(res, new Error("automation unavailable"), 503);
+        const mm = require("../services/missionMemory.cjs");
+        const mission = mm.getMission(req.params.missionId);
+        if (!mission) return _err(res, new Error("mission not found"), 404);
+        if ((mission.metadata?.orgId || null) !== req.org.id) return _err(res, new Error("mission not found"), 404);
         _ok(res, bma.getAutomationStatus(req.params.missionId));
     } catch (e) { _err(res, e); }
 });
@@ -883,13 +964,41 @@ async function _handleWebhook(source, req, res) {
 }
 
 // ── Public webhooks (no requireAuth — external systems post here) ─────────────
-router.post("/business/webhook/form",      (req, res) => _handleWebhook("form",      req, res));
-router.post("/business/webhook/email",     (req, res) => _handleWebhook("email",     req, res));
-router.post("/business/webhook/whatsapp",  (req, res) => _handleWebhook("whatsapp",  req, res));
-router.post("/business/webhook/telegram",  (req, res) => _handleWebhook("telegram",  req, res));
-router.post("/business/webhook/payment",   (req, res) => _handleWebhook("payment",   req, res));
-router.post("/business/webhook/calendar",  (req, res) => _handleWebhook("calendar",  req, res));
-router.post("/business/webhook/:source",   (req, res) => _handleWebhook(req.params.source, req, res));
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16, A-to-Z backend coverage audit):
+// live-reproduced these 7 routes accepting a completely unauthenticated,
+// unsigned payload — "protected by source validation" (the comment above)
+// only ever meant "the :source string matches a known normalizer key," not
+// any cryptographic authenticity check. A forged POST to
+// /business/webhook/payment with an arbitrary amount/name/email was
+// confirmed live to create a real, active, priority:"high",
+// platform-global (orgId: null — the already-documented, deliberately
+// out-of-scope multi-tenancy gap from the Business Automation IDOR Audit)
+// mission that immediately spawned real autonomous subtasks, indistinguishable
+// from a genuine business event, with zero rate limit. That combination
+// (free, repeatable, resource-consuming mission creation, no auth, no
+// signature, no rate limit) is a real abuse/DoS vector distinct from the
+// deferred multi-tenancy question — it does not require knowing which org
+// a forged event should belong to in order to be a problem.
+//
+// Adding a mandatory signature check here (the fix that closes /webhook/razorpay's
+// equivalent risk) is not code-controlled for these 6 generic sources: unlike
+// Razorpay's single, known, already-configured RAZORPAY_WEBHOOK_SECRET, these
+// routes are deliberately generic ingestion points for many possible external
+// systems with no fixed shared secret to check against — introducing one would
+// require a product decision (per-source secrets? per-tenant tokens in the
+// URL?) this audit has no authority to invent. Rate limiting the existing,
+// already-proven middleware (used 1156+ other places in this codebase) closes
+// the concrete abuse vector actually reproduced — unlimited free mission
+// creation — without guessing at that larger design question.
+const _webhookRL = rateLimiter(20, 60_000); // 20/min per IP per route — generous for real burst traffic, bounded against abuse
+router.post("/business/webhook/form",      _webhookRL, (req, res) => _handleWebhook("form",      req, res));
+router.post("/business/webhook/email",     _webhookRL, (req, res) => _handleWebhook("email",     req, res));
+router.post("/business/webhook/whatsapp",  _webhookRL, (req, res) => _handleWebhook("whatsapp",  req, res));
+router.post("/business/webhook/telegram",  _webhookRL, (req, res) => _handleWebhook("telegram",  req, res));
+router.post("/business/webhook/payment",   _webhookRL, (req, res) => _handleWebhook("payment",   req, res));
+router.post("/business/webhook/calendar",  _webhookRL, (req, res) => _handleWebhook("calendar",  req, res));
+router.post("/business/webhook/:source",   _webhookRL, (req, res) => _handleWebhook(req.params.source, req, res));
 
 // ── Authenticated event management ────────────────────────────────────────────
 router.post("/business/events/ingest", requireAuth, async (req, res) => {

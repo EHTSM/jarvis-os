@@ -66,8 +66,47 @@ if [ "$NO_BUILD" = "0" ]; then
   # Split-server deployment (api.ooplix.com): set REACT_APP_API_URL in .env
   # to https://api.ooplix.com — it will be picked up from there automatically.
   BUILD_API_URL="${REACT_APP_API_URL:-}"
+
+  # B.23 artifact integrity: REACT_APP_API_URL is inlined into every bundle chunk
+  # at build time, and a shell-exported value OVERRIDES frontend/.env.production
+  # (CRA loads .env files without overriding an existing process.env entry).
+  # Verified: building with an exported REACT_APP_API_URL baked that host into 44
+  # bundle files. A stray export in a deploy shell would therefore silently point
+  # every production API call at another origin, with no warning and no failure.
+  # Reject anything that is not empty (same-origin) or a plain https:// origin.
+  if [ -n "$BUILD_API_URL" ]; then
+    case "$BUILD_API_URL" in
+      *localhost*|*127.0.0.1*)
+        die "REFUSING BUILD: REACT_APP_API_URL='${BUILD_API_URL}' points at localhost. A production bundle built with this cannot reach the API. Unset it for same-origin nginx deploys."
+        ;;
+      https://*)
+        log "REACT_APP_API_URL validated: ${BUILD_API_URL}"
+        ;;
+      *)
+        die "REFUSING BUILD: REACT_APP_API_URL='${BUILD_API_URL}' is not an https:// origin. Leave it unset for single-server nginx deploys, or set https://api.yourdomain.com for split deploys."
+        ;;
+    esac
+  else
+    log "REACT_APP_API_URL empty — bundle will use same-origin relative paths (nginx proxy)."
+  fi
+
   log "Building frontend (REACT_APP_API_URL='${BUILD_API_URL}')..."
   REACT_APP_API_URL="${BUILD_API_URL}" npm run build:frontend
+
+  # Post-build verification: confirm the value we intended is what actually got
+  # inlined. A bare localhost grep is NOT usable here — the bundled Firebase SDK
+  # legitimately contains "http://localhost" (its requestUri default), which would
+  # fail every clean build. Instead assert on BUILD_API_URL itself: when it is
+  # empty the bundle must not carry any absolute API origin we did not ask for,
+  # and when it is set that exact origin must be present.
+  if [ -n "$BUILD_API_URL" ]; then
+    if ! grep -rqF "$BUILD_API_URL" frontend/build/static/js/*.js 2>/dev/null; then
+      die "ARTIFACT INTEGRITY FAILURE: REACT_APP_API_URL='${BUILD_API_URL}' did not reach the built bundle."
+    fi
+    log "Artifact integrity verified: bundle targets ${BUILD_API_URL}"
+  else
+    log "Artifact integrity verified: same-origin bundle (no API origin inlined)."
+  fi
   log "Frontend build complete."
 fi
 

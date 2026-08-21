@@ -62,6 +62,38 @@ function rollbackSession(sessionId) {
   return { rolled: results.length, results };
 }
 
+// Filesystem Execution Adapter Sandbox Security Audit (2026-08-21): the
+// lexical startsWith() check below correctly blocks textual traversal
+// ("../"), but path.resolve() never follows symlinks — a symlink placed
+// INSIDE the sandbox pointing outside it (or a symlinked ancestor
+// directory, for a target that doesn't exist yet) passes this lexical
+// check while the real fs.*Sync() call underneath follows the link to
+// wherever it truly points. Live-reproduced: a symlink at
+// sandbox/link.txt -> /outside/secret.txt let readFile('link.txt') return
+// the outside file's real content; a symlinked directory
+// sandbox/linked-dir -> /outside let writeFile('linked-dir/new.txt', ...)
+// land the write at /outside/new.txt. Not currently exploitable in this
+// live repo (no attacker-reachable symlink exists anywhere in the
+// sandboxed project tree, and this adapter exposes no primitive to create
+// one), but fixed as real defense-in-depth per the same realpath-
+// containment principle this mission calls for, since a symlink could be
+// introduced by any other legitimate process without this adapter's
+// knowledge. Walks up from the target to the nearest EXISTING ancestor
+// (fs.realpathSync throws ENOENT for a path that doesn't exist yet, so a
+// brand-new file's own path can't be realpath-checked directly — its
+// nearest real ancestor directory is what actually determines where the
+// write lands) and verifies that ancestor's real, symlink-resolved
+// location is still inside the sandbox root's own real location.
+function _nearestExistingAncestor(p) {
+  let cur = p;
+  while (true) {
+    try { fs.realpathSync(cur); return cur; } catch { /* keep walking up */ }
+    const parent = path.dirname(cur);
+    if (parent === cur) return null; // reached filesystem root without finding anything real
+    cur = parent;
+  }
+}
+
 // Resolve and validate a path against the sandbox root
 function _sandboxResolve(filePath) {
   if (!_sandboxRoot) return { safe: false, reason: "sandbox_not_configured" };
@@ -70,6 +102,15 @@ function _sandboxResolve(filePath) {
   const resolved = path.resolve(_sandboxRoot, filePath);
   if (!resolved.startsWith(_sandboxRoot + path.sep) && resolved !== _sandboxRoot) {
     return { safe: false, reason: "path_traversal_detected", resolved };
+  }
+
+  const ancestor = _nearestExistingAncestor(resolved);
+  if (ancestor) {
+    const realAncestor = fs.realpathSync(ancestor);
+    const realRoot = fs.realpathSync(_sandboxRoot);
+    if (!realAncestor.startsWith(realRoot + path.sep) && realAncestor !== realRoot) {
+      return { safe: false, reason: "symlink_escape_detected", resolved };
+    }
   }
   return { safe: true, resolved };
 }
@@ -88,15 +129,31 @@ function _receipt(op, filePath, result) {
 }
 
 // ── Phase 79: Protected directory rules ──────────────────────────────────────
-// Write and delete are blocked for paths that match a protected prefix.
-// These are relative to the sandbox root and are checked after path resolution.
+// Filesystem Execution Adapter Sandbox Security Audit (2026-08-21): this
+// list was previously only ever consulted by writeFile/deleteFile/makeDir —
+// readFile/readDir/fileExists/statFile applied ZERO protected-path check at
+// all. Since bootstrapRuntime.cjs configures this adapter's sandbox root as
+// the entire project directory (writeAllowed:true) and this adapter is
+// reachable by ANY ordinary, authenticated customer via a plain chat
+// message ("read file .env") through toolAgent.cjs's read_file case —
+// live-reproduced: readFile('.env') returned the real, live production
+// .env file's full content (real secrets/keys/tokens), and readFile() on
+// data/local-accounts.json and data/vault.json returned the real account
+// password-hash store and the real encrypted credential vault in full.
+// Fixed two ways: (1) _isProtectedPath() is now checked by every read
+// operation too, not just writes — the existing mechanism, applied
+// consistently instead of selectively; (2) the whole data/ directory is
+// now protected (superseding the previous single-file
+// "data/deploy_meta.json" entry), since it holds ~20 real credential/
+// session/token/account-adjacent stores and no real caller of this chat
+// tool has any legitimate reason to read from it.
 const PROTECTED_DIRS = [
   "node_modules",
   ".git",
   ".env",
   "backend/utils",
   "agents/runtime/control",
-  "data/deploy_meta.json",
+  "data",
 ];
 
 function _isProtectedPath(resolved) {
@@ -123,6 +180,7 @@ function getSandboxRoot() {
 function readFile(filePath, { encoding = "utf8" } = {}) {
   const check = _sandboxResolve(filePath);
   if (!check.safe) return _receipt("read", filePath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("read", filePath, { success: false, reason: "protected_path" });
 
   try {
     const stat = fs.statSync(check.resolved);
@@ -176,6 +234,7 @@ function writeFile(filePath, content, { encoding = "utf8", createDirs = false, s
 function readDir(dirPath, { recursive = false } = {}) {
   const check = _sandboxResolve(dirPath);
   if (!check.safe) return _receipt("list", dirPath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("list", dirPath, { success: false, reason: "protected_path" });
 
   try {
     const stat = fs.statSync(check.resolved);
@@ -195,12 +254,14 @@ function readDir(dirPath, { recursive = false } = {}) {
 function fileExists(filePath) {
   const check = _sandboxResolve(filePath);
   if (!check.safe) return { exists: false, reason: check.reason };
+  if (_isProtectedPath(check.resolved)) return { exists: false, reason: "protected_path" };
   return { exists: fs.existsSync(check.resolved), path: check.resolved };
 }
 
 function statFile(filePath) {
   const check = _sandboxResolve(filePath);
   if (!check.safe) return _receipt("stat", filePath, { success: false, reason: check.reason });
+  if (_isProtectedPath(check.resolved)) return _receipt("stat", filePath, { success: false, reason: "protected_path" });
 
   try {
     const s = fs.statSync(check.resolved);

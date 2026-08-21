@@ -74,7 +74,7 @@ export default function SelfHealingCenter({ onNavigate }) {
   const [rules,     setRules]     = useState(PREVENTION_RULES);
   const [toast,     setToast]     = useState(null);
   const [liveStatus, setLiveStatus] = useState(null);
-  const [liveHistory, setLiveHistory] = useState(RECOVERY_ACTIONS);
+  const [liveHistory, setLiveHistory] = useState(null);
   const [liveTimeline, setLiveTimeline] = useState(null);
   const [apiError,  setApiError]  = useState(null);
 
@@ -118,10 +118,11 @@ export default function SelfHealingCenter({ onNavigate }) {
     showToast("Rule updated");
   }, []);
 
+  const effectiveHistory = liveHistory || RECOVERY_ACTIONS;
   const passing     = liveStatus?.healthyChecks ?? HEALTH_CHECKS.filter(h => h.status === "passing").length;
   const failing     = liveStatus?.failingChecks ?? HEALTH_CHECKS.filter(h => h.status === "failing").length;
-  const recoveries  = liveHistory.length;
-  const successRate = recoveries ? Math.round((liveHistory.filter(r => r.success).length / recoveries) * 100) : 0;
+  const recoveries  = effectiveHistory.length;
+  const successRate = recoveries ? Math.round((effectiveHistory.filter(r => r.success).length / recoveries) * 100) : 0;
 
   // Failure prediction (heuristic from failCount)
   const atRisk = HEALTH_CHECKS.filter(h => h.failCount > 0 && h.status === "passing");
@@ -175,6 +176,9 @@ export default function SelfHealingCenter({ onNavigate }) {
         {/* Health Checks */}
         {section === "checks" && (
           <div className="shc-checks-list">
+            {!liveStatus && (
+              <div className="ac-api-banner ac-api-banner--error">⚠ No per-service health-check registry backend exists yet — this list is illustrative, not live.</div>
+            )}
             {HEALTH_CHECKS.map(h => (
               <div key={h.id} className={`shc-check-row shc-check-row--${h.status}`}>
                 <span className="shc-check-dot" style={{ background: h.status === "passing" ? "var(--success)" : "var(--danger)" }} />
@@ -197,7 +201,10 @@ export default function SelfHealingCenter({ onNavigate }) {
         {/* Recovery Actions */}
         {section === "recovery" && (
           <div className="shc-recovery-list">
-            {RECOVERY_ACTIONS.map(r => (
+            {!liveHistory && (
+              <div className="ac-api-banner ac-api-banner--error">⚠ No live recovery actions yet — showing illustrative examples.</div>
+            )}
+            {effectiveHistory.map(r => (
               <div key={r.id} className={`shc-rec-row shc-rec-row--${r.success ? "success" : "running"}`}>
                 <div className="shc-rec-type-icon" style={{ color: ACTION_COLORS[r.type] || "var(--accent2)" }}>
                   {TYPE_ICONS[r.type]}
@@ -273,6 +280,9 @@ export default function SelfHealingCenter({ onNavigate }) {
         {/* Failure Prediction */}
         {section === "predict" && (
           <div className="shc-predict-section">
+            {!liveStatus && (
+              <div className="ac-api-banner ac-api-banner--error">⚠ No per-service health-check registry backend exists yet — predictions below are illustrative, not live.</div>
+            )}
             <div className="shc-predict-header">
               <p className="shc-predict-note">
                 Failure prediction based on check failure history, current load, and recovery patterns.

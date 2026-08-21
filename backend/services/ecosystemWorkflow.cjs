@@ -250,16 +250,29 @@ function subscribeEcosystemEvents() {
   try {
     const bus = _bus();
     if (!bus) return;
+    // Runtime Event Bus Reliability, Isolation & Backpressure Audit
+    // (2026-08-16): same fix as akoWorkflow.cjs/aeoWorkflow.cjs/
+    // executiveWorkflow.cjs — subscribe(id, fn) calls fn with the full
+    // { seq, ts, type, payload } envelope for every event on the bus, not a
+    // type-filtered payload. Added a real evt.type check and moved
+    // destructuring to evt.payload.
+
     // Auto-record trust events when enterprise pipeline completes
-    bus.subscribe("enterprise:pipeline:completed", data => {
+    bus.subscribe("eco_sub_enterprise_pipeline_completed", evt => {
+      if (evt.type !== "enterprise:pipeline:completed") return;
+      const data = evt.payload || {};
       try { if (data.tenantId) _st().recordTrustEvent({ entityId: data.tenantId, entityType: "tenant", eventType: "pipeline_success", score: 1, detail: `pipeline health=${data.healthScore}` }); } catch {}
     });
     // Ecosystem goal created → add memory
-    bus.subscribe("ecosystem:goal:created", data => {
+    bus.subscribe("eco_sub_ecosystem_goal_created", evt => {
+      if (evt.type !== "ecosystem:goal:created") return;
+      const data = evt.payload || {};
       try { _st().addEcosystemMemory({ domainId: "eco_director", type: "goal", title: `Goal: ${data.command?.slice(0,80)}`, detail: JSON.stringify({ eosGoalId: data.eosGoalId }).slice(0,200) }); } catch {}
     });
     // Listing installed → update trust
-    bus.subscribe("ecosystem:listing:installed", data => {
+    bus.subscribe("eco_sub_ecosystem_listing_installed", evt => {
+      if (evt.type !== "ecosystem:listing:installed") return;
+      const data = evt.payload || {};
       try { if (data.tenantId) _st().recordTrustEvent({ entityId: data.tenantId, entityType: "tenant", eventType: "listing_install", score: 2 }); } catch {}
     });
   } catch {}

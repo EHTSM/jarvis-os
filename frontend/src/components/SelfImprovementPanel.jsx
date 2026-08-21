@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./SelfImprovementPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -8,19 +9,25 @@ import "./SelfImprovementPanel.css";
 // a network error. Same defect class as A.11 F1. Now mirrors the semantics of
 // the canonical _client.js _fetch: preserve the backend's own message and
 // attach the status, so callers can surface the real reason.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16, known-defect-family recovery): same
+// defect already found and fixed in the sibling components
+// EngineeringMemoryPanel.jsx, RepositoryMapPanel.jsx, and
+// AutonomousPlatformPanel.jsx — this helper called a bare fetch() against
+// `/api${path}` (e.g. /api/improvement/stats), but the real backend mounts
+// these routes at /improvement/* with NO /api prefix. Live-confirmed: GET
+// /api/improvement/stats -> 404; GET /improvement/stats (real route) -> 200,
+// real evolution-cycle data. All 8 of this panel's calls (evolve, patterns,
+// candidates, promote, measure, architecture, confidence, benchmark, stats)
+// were equally broken. Replaced with the canonical _fetch (_client.js),
+// preserving this file's existing API(method, path, body) call-site
+// signature and Error{message,status} contract so no other line in this
+// file needed to change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
+    return _fetch(path, {
         method,
-        headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    if (!r.ok) {
-        const err = await r.json().catch(() => ({}));
-        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
-        e.status = r.status;
-        throw e;
-    }
-    return r.json();
 };
 
 function formatMs(ms) {

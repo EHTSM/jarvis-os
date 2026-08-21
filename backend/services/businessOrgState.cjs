@@ -39,7 +39,7 @@ const PIPELINE_STAGES = ["prospect", "qualified", "demo", "proposal", "negotiati
 // constant so advanceDeal()'s idempotency guard and getPipelineStats()'s
 // won/active/closed filters (previously two separate inline array literals
 // that could silently drift out of sync) read from one source of truth.
-const TERMINAL_STAGES = ["closed_won", "closed_lost"];
+const TERMINAL_STAGES = ["closed_won", "closed_lost", "churned"];
 
 function _defaultState() {
   return {
@@ -347,6 +347,49 @@ function advanceDeal(id, { stage, actor, note = "", value } = {}) {
   }
   _save();
   return { ok: true, deal, prevStage: prev };
+}
+
+/**
+ * MASTER RECOVERY (2026-08-15, C10-029): advanceDeal() has a real, correct
+ * MRR increment on closed_won (with an idempotency guard against
+ * re-applying it — see the comment on advanceDeal above), but no function
+ * anywhere in this file ever decremented it. A won deal's MRR contribution
+ * was permanent even if the customer later churned or downgraded — a real,
+ * confirmed gap (grep for "mrr -=" returned 0 hits before this function
+ * existed). This deal model has no pre-existing churn/cancellation concept
+ * at all (no "churned" stage, no cancellation date field), so this is a
+ * minimal, clearly-scoped addition, not a larger rebuild: a deal already in
+ * closed_won can transition to churned exactly once, decrementing MRR by
+ * the same amount it was incremented by, using the identical idempotency
+ * pattern advanceDeal() already uses for TERMINAL_STAGES.
+ */
+const CHURNED_STAGE = "churned";
+
+function churnDeal(id, { actor, reason = "", churnedAt } = {}) {
+  _s();
+  const deal = _state.deals.find(d => d.id === id);
+  if (!deal) return { ok: false, error: "Deal not found" };
+  if (deal.stage !== "closed_won") {
+    return { ok: false, error: `Deal ${id} is in stage "${deal.stage}" — only a closed_won deal can churn`, deal, nonRetriable: true };
+  }
+  if (deal.churnedAt) {
+    // Idempotent no-op — same contract as advanceDeal()'s terminal-stage guard.
+    return { ok: false, error: `Deal ${id} has already churned (at ${deal.churnedAt})`, deal, nonRetriable: true };
+  }
+
+  const prevStage   = deal.stage;
+  deal.stage        = CHURNED_STAGE;
+  deal.churnedAt     = churnedAt || new Date().toISOString();
+  deal.churnReason   = reason;
+  deal.updatedAt     = new Date().toISOString();
+  deal.history.push({ ts: deal.churnedAt, stage: CHURNED_STAGE, actor: actor || deal.deptId, note: reason });
+
+  const k = _kpi(deal.deptId);
+  k.mrr = Math.max(0, k.mrr - Math.round(deal.value / 12));
+  k.dealsChurned = (k.dealsChurned || 0) + 1;
+
+  _save();
+  return { ok: true, deal, prevStage };
 }
 
 function getDeal(id) { _s(); return _state.deals.find(d => d.id === id) || null; }
@@ -712,7 +755,7 @@ module.exports = {
   // Campaigns
   createCampaign, updateCampaign, listCampaigns,
   // Deals
-  createDeal, advanceDeal, getDeal, listDeals, getPipelineStats,
+  createDeal, advanceDeal, churnDeal, getDeal, listDeals, getPipelineStats,
   // Tasks
   createTask, getTask, listTasks, updateTask, claimTask, getBacklog,
   // Handoffs

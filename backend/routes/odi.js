@@ -51,40 +51,54 @@ const router      = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter     = require("../middleware/rateLimiter");
 
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// every accessor below was an unguarded require() of a fixed, hardcoded
+// path — not a resolution-target vulnerability (the path is never
+// influenced by req.body/req.query/req.params), but live-reproduced: a
+// broken/missing service module (simulated safely by temporarily moving a
+// real service file aside, not by corrupting anything) surfaced Node's raw
+// "Cannot find module '...'\nRequire stack:\n- backend/routes/odi.js\n-
+// backend/routes/index.js\n- backend/server.js" directly to any
+// requireAuth-only customer via the nearest catch block's `error:
+// e.message`. Reuses the exact `_try` helper already established and
+// certified in auth.js/companyFactory.js/enterpriseSso.js/etc. for this
+// same idiom — no new module-loading mechanism.
+const _try = fn => { try { return fn(); } catch { return null; } };
+
 // Lazy-load all services
 const svc = {
-  capture:     () => require("../services/visualCaptureService.cjs"),
-  dom:         () => require("../services/domAnalyzerService.cjs"),
-  layout:      () => require("../services/layoutGraphService.cjs"),
-  components:  () => require("../services/componentGraphService.cjs"),
-  analyzer:    () => require("../services/screenshotAnalyzerService.cjs"),
-  tokens:      () => require("../services/designTokenEngine.cjs"),
-  a11y:        () => require("../services/accessibilityAuditor.cjs"),
-  responsive:  () => require("../services/responsiveSimulator.cjs"),
-  patcher:     () => require("../services/uiPatchGenerator.cjs"),
-  autonomy:    () => require("../services/autonomousUIEngineer.cjs"),
+  capture:     () => _try(() => require("../services/visualCaptureService.cjs")),
+  dom:         () => _try(() => require("../services/domAnalyzerService.cjs")),
+  layout:      () => _try(() => require("../services/layoutGraphService.cjs")),
+  components:  () => _try(() => require("../services/componentGraphService.cjs")),
+  analyzer:    () => _try(() => require("../services/screenshotAnalyzerService.cjs")),
+  tokens:      () => _try(() => require("../services/designTokenEngine.cjs")),
+  a11y:        () => _try(() => require("../services/accessibilityAuditor.cjs")),
+  responsive:  () => _try(() => require("../services/responsiveSimulator.cjs")),
+  patcher:     () => _try(() => require("../services/uiPatchGenerator.cjs")),
+  autonomy:    () => _try(() => require("../services/autonomousUIEngineer.cjs")),
   // ODI V2
-  regression:  () => require("../services/visualRegressionEngine.cjs"),
-  ux:          () => require("../services/uxOptimizerService.cjs"),
-  ds:          () => require("../services/designSystemAI.cjs"),
-  healing:     () => require("../services/selfHealingFrontend.cjs"),
-  generator:   () => require("../services/componentGenerator.cjs"),
-  visionQA:    () => require("../services/visionQA.cjs"),
-  interactions:() => require("../services/interactionIntelligence.cjs"),
-  brand:       () => require("../services/brandIntelligence.cjs"),
-  memory:      () => require("../services/designMemory.cjs"),
-  loop:        () => require("../services/autonomousDesignLoop.cjs"),
+  regression:  () => _try(() => require("../services/visualRegressionEngine.cjs")),
+  ux:          () => _try(() => require("../services/uxOptimizerService.cjs")),
+  ds:          () => _try(() => require("../services/designSystemAI.cjs")),
+  healing:     () => _try(() => require("../services/selfHealingFrontend.cjs")),
+  generator:   () => _try(() => require("../services/componentGenerator.cjs")),
+  visionQA:    () => _try(() => require("../services/visionQA.cjs")),
+  interactions:() => _try(() => require("../services/interactionIntelligence.cjs")),
+  brand:       () => _try(() => require("../services/brandIntelligence.cjs")),
+  memory:      () => _try(() => require("../services/designMemory.cjs")),
+  loop:        () => _try(() => require("../services/autonomousDesignLoop.cjs")),
   // ODI V3
-  planner:     () => require("../services/aiDesignPlanner.cjs"),
-  pageBuilder: () => require("../services/autonomousPageBuilder.cjs"),
-  refactor:    () => require("../services/globalDesignRefactor.cjs"),
-  themes:      () => require("../services/aiThemeEngine.cjs"),
-  inspector:   () => require("../services/liveDesignInspector.cjs"),
-  editor:      () => require("../services/liveDesignEditor.cjs"),
-  animations:  () => require("../services/animationEngine.cjs"),
-  review:      () => require("../services/enterpriseDesignReview.cjs"),
-  observer:    () => require("../services/continuousDesignObserver.cjs"),
-  sods:        () => require("../services/selfOperatingDesignSystem.cjs"),
+  planner:     () => _try(() => require("../services/aiDesignPlanner.cjs")),
+  pageBuilder: () => _try(() => require("../services/autonomousPageBuilder.cjs")),
+  refactor:    () => _try(() => require("../services/globalDesignRefactor.cjs")),
+  themes:      () => _try(() => require("../services/aiThemeEngine.cjs")),
+  inspector:   () => _try(() => require("../services/liveDesignInspector.cjs")),
+  editor:      () => _try(() => require("../services/liveDesignEditor.cjs")),
+  animations:  () => _try(() => require("../services/animationEngine.cjs")),
+  review:      () => _try(() => require("../services/enterpriseDesignReview.cjs")),
+  observer:    () => _try(() => require("../services/continuousDesignObserver.cjs")),
+  sods:        () => _try(() => require("../services/selfOperatingDesignSystem.cjs")),
 };
 
 router.use("/odi", requireAuth);

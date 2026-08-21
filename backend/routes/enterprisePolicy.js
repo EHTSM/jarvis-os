@@ -20,6 +20,16 @@ function _requirePolicyPermission(req, res) {
     res.status(403).json({ ok: false, error: "Forbidden — requires permission: manage_policy" });
     return false;
   }
+  // B25-01/GG-1 closure: deliberately NOT IP-gated. This is the one route
+  // that can fix a misconfigured allowlist — gating it too would let an
+  // org_owner permanently lock themselves out with no recovery path short
+  // of direct data-file editing. Live-reproduced during this pass's own
+  // verification before being caught: setting an allowlist that excluded
+  // the caller's own IP correctly 403'd /dashboard, /audit, /monitoring —
+  // but also 403'd this very route, with no way back in. The other 3
+  // enterprise route files remain fully IP-gated; only the policy
+  // management surface itself is exempt, matching how a locked door still
+  // needs one door that isn't locked from the same key.
   return true;
 }
 
@@ -37,7 +47,17 @@ router.get("/enterprise/policy/:orgId", requireAuth, (req, res) => {
 
 router.put("/enterprise/policy/:orgId", requireAuth, (req, res) => {
   try {
-    res.json(_policy().setPolicy(req.params.orgId, req.body || {}, req.user.sub));
+    const result = _policy().setPolicy(req.params.orgId, req.body || {}, req.user.sub);
+    // B25-01/GG-1 closure (2026-08-16): ipAllowlist is now enforced on this
+    // org's /enterprise/policy, /enterprise/audit, /enterprise/monitoring,
+    // and /enterprise/dashboard routes — warn the caller of the real scope
+    // (not platform-wide) rather than the old "does not restrict access"
+    // warning, which is no longer accurate.
+    if (req.body && req.body.ipAllowlist !== undefined && req.body.ipAllowlist?.length) {
+      result.warnings = [...(result.warnings || []),
+        "ipAllowlist is enforced on /enterprise/policy, /enterprise/audit, /enterprise/monitoring, and /enterprise/dashboard routes for this org. Ensure your own current IP is included before saving, or you may lock yourself out of these routes."];
+    }
+    res.json(result);
   } catch (e) {
     res.status(e.status || 500).json({ ok: false, error: e.message });
   }

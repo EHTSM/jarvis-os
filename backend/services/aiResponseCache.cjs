@@ -30,8 +30,18 @@ const _store = new Map(); // key -> { value, expiresAt, hits, createdAt }
 let _hits = 0;
 let _misses = 0;
 
-function _key(provider, model, messages, temperature) {
-  const payload = JSON.stringify({ provider, model, temperature: temperature ?? 0.7, messages });
+// AI Workspace OS pass: tenant was never part of the key — two different
+// accounts sending the exact same prompt text within the TTL received the
+// SAME cached response object, including whichever account's content
+// generated it first. Not just a hypothetical: the cache hit path in
+// aiOrchestrator.execute() returns before usageMetering.record()/
+// promptHistory.record() ever run, so a cross-tenant cache hit was also
+// invisible to both the receiving account's AND the originating account's
+// own usage/history — neither side would ever see it happened. tenantKey
+// defaults to "" (preserves prior behavior for any internal/unscoped
+// caller that never passes one) — real callers now pass accountId/orgId.
+function _key(provider, model, messages, temperature, tenantKey = "") {
+  const payload = JSON.stringify({ provider, model, temperature: temperature ?? 0.7, messages, tenantKey });
   return crypto.createHash("sha256").update(payload).digest("hex");
 }
 
@@ -51,9 +61,9 @@ function _evictOldestIfFull() {
 /**
  * Look up a cached response. Returns null on miss or expiry.
  */
-function get(provider, model, messages, temperature) {
+function get(provider, model, messages, temperature, tenantKey) {
   _evictExpired();
-  const k = _key(provider, model, messages, temperature);
+  const k = _key(provider, model, messages, temperature, tenantKey);
   const entry = _store.get(k);
   if (!entry) { _misses++; return null; }
   if (entry.expiresAt <= Date.now()) { _store.delete(k); _misses++; return null; }
@@ -65,10 +75,10 @@ function get(provider, model, messages, temperature) {
 /**
  * Store a response for later exact-match retrieval.
  */
-function set(provider, model, messages, temperature, value, ttlMs = DEFAULT_TTL_MS) {
+function set(provider, model, messages, temperature, value, ttlMs = DEFAULT_TTL_MS, tenantKey) {
   _evictExpired();
   _evictOldestIfFull();
-  const k = _key(provider, model, messages, temperature);
+  const k = _key(provider, model, messages, temperature, tenantKey);
   _store.set(k, { value, expiresAt: Date.now() + ttlMs, hits: 0, createdAt: Date.now() });
   return k;
 }

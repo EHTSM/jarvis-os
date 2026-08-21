@@ -1,0 +1,10 @@
+[2026-08-14T17:25:45.546Z] [INFO] [Billing] Trial started for 452db4fc98d8cd8320de1642 — expires Fri Aug 21 2026
+[2026-08-14T17:25:45.547Z] [INFO] [Account] Created: c9orga_1786728308@test.local (452db4fc98d8cd8320de1642)
+[2026-08-14T17:25:45.580Z] [INFO] [Billing] Trial started for 1caebfa1f91109e62658f271 — expires Fri Aug 21 2026
+[2026-08-14T17:25:45.580Z] [INFO] [Account] Created: c9orgb_1786728308@test.local (1caebfa1f91109e62658f271)
+accountA: {"success":true,"account":{"id":"452db4fc98d8cd8320de1642","email":"c9orga_1786728308@test.local","name":"C9 Org A User","role":"user","createdAt":"2026-08-14T17:25:45.538Z","lastLoginAt":null,"active":true,"emailVerified":false,"emailVerifiedAt":null}}
+accountB: {"success":true,"account":{"id":"1caebfa1f91109e62658f271","email":"c9orgb_1786728308@test.local","name":"C9 Org B User","role":"user","createdAt":"2026-08-14T17:25:45.578Z","lastLoginAt":null,"active":true,"emailVerified":false,"emailVerifiedAt":null}}
+[2026-08-14T17:25:45.608Z] [INFO] [OrgService] Created org org_1786728345592_1: C9-OrgA-1786728308 (owner: 452db4fc98d8cd8320de1642)
+[2026-08-14T17:25:45.619Z] [INFO] [OrgService] Created org org_1786728345611_2: C9-OrgB-1786728308 (owner: 1caebfa1f91109e62658f271)
+orgA: {"id":"org_1786728345592_1","name":"C9-OrgA-1786728308","description":"","slug":"c9-orga-1786728308","plan":"free","status":"active","archivedAt":null,"createdAt":"2026-08-14T17:25:45.592Z","updatedAt":"2026-08-14T17:25:45.592Z","memberCount":1,"deptCount":0,"members":[{"accountId":"452db4fc98d8cd8320de1642","orgRole":"org_owner","joinedAt":"2026-08-14T17:25:45.592Z"}]}
+orgB: {"id":"org_1786728345611_2","name":"C9-OrgB-1786728308","description":"","slug":"c9-orgb-1786728308","plan":"free","status":"active","archivedAt":null,"createdAt":"2026-08-14T17:25:45.611Z","updatedAt":"2026-08-14T17:25:45.611Z","memberCount":1,"deptCount":0,"members":[{"accountId":"1caebfa1f91109e62658f271","orgRole":"org_owner","joinedAt":"2026-08-14T17:25:45.611Z"}]}

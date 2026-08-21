@@ -11,7 +11,11 @@ const rateLimiter     = require("../middleware/rateLimiter");
 const g               = require("../services/growthOS.cjs");
 const crm             = require("../services/crmService");
 const { parseCsvRecords } = require("../utils/csvParse.cjs");
-const org             = () => require("../services/organizationService.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path require — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const org             = () => _try(() => require("../services/organizationService.cjs"));
 
 router.use("/growth", requireAuth);
 

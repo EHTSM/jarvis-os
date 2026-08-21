@@ -21,8 +21,33 @@ function _ensureDir() {
     try { if (!fs.existsSync(REPLAY_DIR)) fs.mkdirSync(REPLAY_DIR, { recursive: true }); } catch {}
 }
 
+// Agent Runtime Execution-Boundary Security & Reliability Triage
+// (2026-08-20): _replayPath(id) previously did a bare path.join(REPLAY_DIR,
+// `${id}.json`) with no validation of id at all. Every real ID this module
+// itself generates (record(), line ~67) is always the safe shape
+// `replay-<base36 timestamp>-<random>`, but get(id)/toChain(id)/remove(id)
+// accept ANY caller-supplied id and are reachable by any ordinary,
+// authenticated customer via GET/DELETE /runtime/replay/:id (requireAuth
+// only, backend/routes/runtime.js — the route's own `.slice(0, 80)` bounds
+// length but does not filter path-traversal characters). Live-reproduced:
+// an id of `../../../../../tmp/x/secret` let get() read an arbitrary
+// .json file's contents outside REPLAY_DIR, and the identical shape let
+// remove() delete an arbitrary file outside REPLAY_DIR. Fixed with the
+// same two-layer defense already used elsewhere in this codebase (e.g.
+// adapterSandboxPolicyEngine.cjs's own sandboxRoot check): reject any id
+// that isn't a bare filename component (no path separators, no ".."), and
+// as defense-in-depth, verify the resolved path still starts with
+// REPLAY_DIR before any read/write/delete touches it.
+function _isValidReplayId(id) {
+    return typeof id === "string" && id.length > 0 && id.length <= 80 &&
+        !id.includes("/") && !id.includes("\\") && id !== ".." && id !== ".";
+}
+
 function _replayPath(id) {
-    return path.join(REPLAY_DIR, `${id}.json`);
+    if (!_isValidReplayId(id)) return null;
+    const resolved = path.resolve(REPLAY_DIR, `${id}.json`);
+    if (!resolved.startsWith(REPLAY_DIR + path.sep)) return null;
+    return resolved;
 }
 
 function _listIds() {

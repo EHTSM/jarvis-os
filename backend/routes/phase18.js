@@ -35,7 +35,7 @@
  */
 
 const router     = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const rae   = require("../services/runtimeActionEngine.cjs");
 const aee   = require("../services/agentExecutionEngine.cjs");
 const mpl   = require("../services/memoryPersistenceLayer.cjs");
@@ -129,8 +129,29 @@ router.get("/p18/agents", (req, res) => {
 });
 
 // ── 18C — Memory Persistence Layer ───────────────────────────────────────
-
-router.post("/p18/memory", (req, res) => {
+//
+// Memory / Knowledge Storage Authorization & Tenant-Isolation Audit
+// (2026-08-21): mpl.save()/update()/archive() have zero orgId/ownership
+// concept — memoryPersistenceLayer.cjs is genuinely shared platform
+// operational memory, used internally by many autonomous systems
+// (missionMemory.cjs, akoWorkflow.cjs, autonomousTaskLoop.cjs, etc. — not
+// re-architected here, per this mission's explicit instruction). Live-
+// reproduced: an unrelated, ordinary customer (org B) read, overwrote, and
+// deleted another org's real memory node by ID with zero ownership check —
+// unauthorized destructive mutation, not merely a read-sharing question.
+// Whether the READ side (GET /p18/memory*) should remain customer-facing is
+// a genuine, separate, already-documented DECISION REQUIRED product
+// question (SharedMemoryCenter.jsx is a real, read-only customer feature
+// consuming it) — deliberately left untouched here, not guessed at. The
+// WRITE/UPDATE/DELETE side has no such legitimate consumer: MemoryCenter.jsx
+// is the only frontend code that ever calls saveMemoryNode/updateMemoryNode/
+// archiveMemoryNode, and it is not imported or rendered anywhere in App.jsx
+// — confirmed dead, unreachable code, not a feature this fix could break.
+// Fixed by gating the 3 mutation routes operatorOnly, the same established
+// mechanism already used throughout this codebase for exactly this shape of
+// gap — reads stay open, mutations require the role this platform already
+// reserves for genuine cross-tenant/platform-wide write access.
+router.post("/p18/memory", operatorOnly, (req, res) => {
     const { key, value, type, tags, importance, confidence, agentIds, expiresAt } = req.body || {};
     if (!key) return res.status(400).json({ error: "key required" });
     try {
@@ -157,13 +178,13 @@ router.get("/p18/memory/:nodeId", (req, res) => {
     res.json({ success: true, node });
 });
 
-router.patch("/p18/memory/:nodeId", (req, res) => {
+router.patch("/p18/memory/:nodeId", operatorOnly, (req, res) => {
     const updated = mpl.update(req.params.nodeId, req.body);
     if (!updated) return res.status(404).json({ error: "Node not found" });
     res.json({ success: true, node: updated });
 });
 
-router.delete("/p18/memory/:nodeId", (req, res) => {
+router.delete("/p18/memory/:nodeId", operatorOnly, (req, res) => {
     try {
         res.json({ success: true, ...mpl.archive(req.params.nodeId) });
     } catch (e) { res.status(404).json({ error: e.message }); }

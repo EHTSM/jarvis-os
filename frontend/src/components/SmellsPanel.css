@@ -23,7 +23,7 @@
 .smells-summary__counts { display: flex; align-items: center; gap: 8px; flex: 1; flex-wrap: wrap; }
 .smells-summary__count { font-size: 11px; font-weight: 600; }
 .smells-summary__count--high   { color: var(--danger); }
-.smells-summary__count--medium { color: #fbbf24; }
+.smells-summary__count--medium { color: var(--warning); }
 .smells-summary__count--low    { color: var(--text-dim); }
 .smells-summary__sep   { color: var(--text-faint); }
 .smells-summary__conf  { font-size: 10px; color: var(--text-faint); }
@@ -103,7 +103,7 @@
   padding: 2px 5px; border-radius: 3px;
 }
 .smell-sev-badge--high   { background: var(--danger-muted); color: var(--danger); }
-.smell-sev-badge--medium { background: var(--warning-muted); color: #fbbf24; }
+.smell-sev-badge--medium { background: var(--warning-muted); color: var(--warning); }
 .smell-sev-badge--low    { background: var(--surface-raised); color: var(--text-dim); }
 
 .smell-card__detail {

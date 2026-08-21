@@ -202,20 +202,33 @@ function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, so
 // STEP 5 — CRM qualifies lead
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function crmQualifyLead(dealId, { score = 75, notes = "", qualified = true } = {}) {
+/**
+ * @param {object} opts
+ * @param {boolean} [opts.synthetic] — true when `score` was simulated rather
+ *   than derived from a scoring model. Phase OS-5: the autonomous CRM tick
+ *   passes a Math.random() score, which previously landed in the deal's stage
+ *   note as a bare `Score: 87` and surfaced on GET /bizorg/v3/deals looking
+ *   like a measurement. When set, the score is labelled at every place it is
+ *   persisted or emitted, matching the `synthetic: true` convention already
+ *   used by growthCaptureLead().
+ */
+function crmQualifyLead(dealId, { score = 75, notes = "", qualified = true, synthetic = false } = {}) {
   const deal = st().getDeal(dealId);
   if (!deal) return { ok: false, error: "Deal not found" };
+  // Rendered wherever the score is written, so a simulated value can never be
+  // mistaken for a computed one.
+  const scoreLabel = synthetic ? `Score: ${score} (simulated — not measured)` : `Score: ${score}`;
   if (!qualified) {
     st().advanceDeal(dealId, { stage: "closed_lost", actor: "bizorg_crm", note: "Failed qualification" });
     _mem("bizorg_crm", "lead_disqualified", `Disqualified: ${deal.company}`, notes, { dealId });
     _emit("bizorg:lead:disqualified", { dealId, company: deal.company, notes });
     return { ok: true, qualified: false };
   }
-  st().advanceDeal(dealId, { stage: "qualified", actor: "bizorg_crm", note: `Score: ${score}. ${notes}` });
+  st().advanceDeal(dealId, { stage: "qualified", actor: "bizorg_crm", note: `${scoreLabel}. ${notes}` });
   _kpiUp("bizorg_crm", { leadsQualified: (st().getKpi("bizorg_crm").leadsQualified || 0) + 1 });
-  _mem("bizorg_crm", "lead_qualified", `Qualified: ${deal.company}`, `Score: ${score}`, { dealId });
-  _emit("bizorg:lead:qualified", { dealId, company: deal.company, score, value: deal.value });
-  return { ok: true, qualified: true, deal };
+  _mem("bizorg_crm", "lead_qualified", `Qualified: ${deal.company}`, scoreLabel, { dealId, synthetic });
+  _emit("bizorg:lead:qualified", { dealId, company: deal.company, score, scoreSynthetic: synthetic, value: deal.value });
+  return { ok: true, qualified: true, deal, scoreSynthetic: synthetic };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -233,6 +246,22 @@ function salesAdvanceDeal(dealId, { toStage, notes = "" } = {}) {
   if (toStage === "closed_won") {
     _emit("bizorg:deal:won", { dealId, company: deal.company, value: deal.value });
   }
+  return { ok: true, deal: r.deal };
+}
+
+/**
+ * MASTER RECOVERY (2026-08-15, C10-029): closeWon has always been reachable
+ * (above) with a real MRR increment; nothing symmetric existed for a won
+ * customer later churning — no route, no workflow step, no MRR decrement.
+ * Mirrors salesAdvanceDeal's real event/memory/KPI pattern exactly.
+ */
+function salesChurnDeal(dealId, { reason = "" } = {}) {
+  const deal = st().getDeal(dealId);
+  if (!deal) return { ok: false, error: "Deal not found" };
+  const r = st().churnDeal(dealId, { actor: "bizorg_sales", reason });
+  if (!r.ok) return r;
+  _mem("bizorg_sales", "deal_churned", `Deal churned: ${deal.company}`, reason, { dealId });
+  _emit("bizorg:deal:churned", { dealId, company: deal.company, value: deal.value, reason });
   return { ok: true, deal: r.deal };
 }
 
@@ -632,6 +661,7 @@ module.exports = {
   growthCaptureLead,
   crmQualifyLead,
   salesAdvanceDeal,
+  salesChurnDeal,
   billingProcessPayment,
   csOnboardCustomer,
   retentionMonitor,

@@ -262,6 +262,18 @@ function execute(cmd, opts = {}) {
 // Returns a cmdId; output lines are collected in the commands store.
 // For real streaming use the /computer/terminal/stream/:cmdId SSE endpoint.
 
+// Timeout, Cancellation & Long-Running Operation Safety Audit (2026-08-16):
+// this function's own sibling, execute() above, bounds its command via
+// execFileSync's real timeout option — but streamOutput() spawned the
+// identical allowlisted command (same _isSafe() check, same
+// ALLOWED_COMMANDS) with zero timeout and zero kill path anywhere in this
+// function. A hung streamed command (reachable live via the real, mounted
+// POST /computer/terminal/stream route) ran forever with no operator-visible
+// bound. Fixed with the same real timeout+process-group-kill pattern already
+// used by backend/core/safe-exec.js (this codebase's own established,
+// correct implementation for exactly this problem) — not a new mechanism.
+const STREAM_TIMEOUT_MS = 60_000;
+
 function streamOutput(cmd, opts = {}) {
   if (!cmd) return { ok: false, error: "command required" };
   if (!_isSafe(cmd)) return { ok: false, error: "Command blocked by safety policy" };
@@ -276,7 +288,23 @@ function streamOutput(cmd, opts = {}) {
   _save(d);
 
   const { bin, rest } = _parseCommand(cmd);
-  const child = spawn(bin, rest, { cwd, stdio: ["ignore","pipe","pipe"], env: _minimalEnv() });
+  // detached: true (POSIX) lets the timeout kill the whole process group,
+  // not just the immediate child — matching safe-exec.js's own reasoning
+  // for why a plain child.kill() isn't enough for commands that themselves
+  // spawn children (e.g. npm scripts, shell pipelines).
+  const child = spawn(bin, rest, { cwd, stdio: ["ignore","pipe","pipe"], env: _minimalEnv(), detached: process.platform !== "win32" });
+
+  let settled = false;
+  const timer = setTimeout(() => {
+    if (settled) return;
+    try {
+      if (process.platform !== "win32") process.kill(-child.pid, "SIGKILL");
+      else child.kill("SIGKILL");
+    } catch {
+      try { child.kill("SIGKILL"); } catch { /* already dead */ }
+    }
+  }, opts.timeoutMs || STREAM_TIMEOUT_MS);
+  if (typeof timer.unref === "function") timer.unref();
 
   child.stdout.on("data", chunk => {
     const lines = chunk.toString().split("\n").filter(Boolean);
@@ -290,6 +318,9 @@ function streamOutput(cmd, opts = {}) {
   });
 
   child.on("close", code => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(timer);
     const d2 = _load();
     const r  = d2.commands[cmdId];
     if (r) {
@@ -297,6 +328,21 @@ function streamOutput(cmd, opts = {}) {
       r.exitCode  = code;
       r.completedAt = _ts();
       if (code === 0) d2.stats.succeeded++; else d2.stats.failed++;
+      _save(d2);
+    }
+  });
+
+  child.on("error", err => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(timer);
+    const d2 = _load();
+    const r  = d2.commands[cmdId];
+    if (r) {
+      r.status      = "failed";
+      r.error       = err.message;
+      r.completedAt = _ts();
+      d2.stats.failed++;
       _save(d2);
     }
   });

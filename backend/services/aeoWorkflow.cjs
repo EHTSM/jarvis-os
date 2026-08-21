@@ -400,8 +400,17 @@ function subscribeWorkflowEvents() {
   const bus = _bus();
   if (!bus) return;
 
+  // Runtime Event Bus Reliability, Isolation & Backpressure Audit (2026-08-16):
+  // same fix as akoWorkflow.cjs's identical-shape defect — subscribe(id, fn)
+  // calls fn with the FULL event envelope for every event on the bus, not a
+  // type-filtered payload. Added a real evt.type check and moved
+  // destructuring to evt.payload, matching the already-correct pattern in
+  // businessOrgWorkflow.cjs/engineeringOrgWorkflow.cjs.
+
   // When objective created → create evolution tasks
-  bus.subscribe("aeo:objective:created", async ({ objectiveId, title }) => {
+  bus.subscribe("aeo_sub_aeo_objective_created", async (evt) => {
+    if (evt.type !== "aeo:objective:created") return;
+    const { objectiveId, title } = evt.payload || {};
     try {
       const tasks = [
         { title: `Observe: scan engineering org for weaknesses`, deptId: "aeo_self_assessment", type: "observe" },
@@ -415,28 +424,42 @@ function subscribeWorkflowEvents() {
   });
 
   // When evolution proposed → auto-validate
-  bus.subscribe("aeo:evolution:proposed", async ({ evoId }) => {
+  bus.subscribe("aeo_sub_aeo_evolution_proposed", async (evt) => {
+    if (evt.type !== "aeo:evolution:proposed") return;
+    const { evoId } = evt.payload || {};
     try { setTimeout(() => validateEvolution(evoId), 100); } catch {}
   });
 
   // When evolution validated → simulate
-  bus.subscribe("aeo:evolution:validated", async ({ evoId, confidence }) => {
+  bus.subscribe("aeo_sub_aeo_evolution_validated", async (evt) => {
+    if (evt.type !== "aeo:evolution:validated") return;
+    const { evoId, confidence } = evt.payload || {};
     try {
       if ((confidence || 0) >= 70) setTimeout(() => simulateEvolution(evoId), 150);
     } catch {}
   });
 
   // When evolution applied → schedule measurement
-  bus.subscribe("aeo:evolution:applied", async ({ evoId }) => {
+  bus.subscribe("aeo_sub_aeo_evolution_applied", async (evt) => {
+    if (evt.type !== "aeo:evolution:applied") return;
+    const { evoId } = evt.payload || {};
     try { setTimeout(() => measureEvolution(evoId), 200); } catch {}
   });
 
   // When evolution kept/reverted → learn
-  bus.subscribe("aeo:evolution:kept",     async ({ evoId }) => { try { recordEvolutionLesson(evoId); } catch {} });
-  bus.subscribe("aeo:evolution:reverted", async ({ evoId }) => { try { recordEvolutionLesson(evoId); } catch {} });
+  bus.subscribe("aeo_sub_aeo_evolution_kept", async (evt) => {
+    if (evt.type !== "aeo:evolution:kept") return;
+    try { recordEvolutionLesson(evt.payload?.evoId); } catch {}
+  });
+  bus.subscribe("aeo_sub_aeo_evolution_reverted", async (evt) => {
+    if (evt.type !== "aeo:evolution:reverted") return;
+    try { recordEvolutionLesson(evt.payload?.evoId); } catch {}
+  });
 
   // Cross-org: when engineering work completes → check for improvement opportunity
-  bus.subscribe("engorg:work:completed", async ({ domain, workItemId }) => {
+  bus.subscribe("aeo_sub_engorg_work_completed", async (evt) => {
+    if (evt.type !== "engorg:work:completed") return;
+    const { domain, workItemId } = evt.payload || {};
     try {
       const kpi = _engSt()?.getKpi?.(domain);
       if (kpi && (kpi.velocity || 0) < 3) {
@@ -452,7 +475,9 @@ function subscribeWorkflowEvents() {
   });
 
   // Cross-org: when business deal won → capture evolution signal
-  bus.subscribe("bizorg:deal:won", async ({ value }) => {
+  bus.subscribe("aeo_sub_bizorg_deal_won", async (evt) => {
+    if (evt.type !== "bizorg:deal:won") return;
+    const { value } = evt.payload || {};
     try {
       const obj = _st().listObjectives({ status: "active" })[0];
       if (value > 5000) {
@@ -462,7 +487,9 @@ function subscribeWorkflowEvents() {
   });
 
   // Cross-org: when AKO stores knowledge → check for evolution opportunity
-  bus.subscribe("ako:knowledge:validated", async ({ itemId, type }) => {
+  bus.subscribe("aeo_sub_ako_knowledge_validated", async (evt) => {
+    if (evt.type !== "ako:knowledge:validated") return;
+    const { itemId, type } = evt.payload || {};
     try {
       if (type === "engineering" || type === "lesson") {
         const obj = _st().listObjectives({ status: "active" })[0];
@@ -472,7 +499,9 @@ function subscribeWorkflowEvents() {
   });
 
   // Self-healing: when runtime heals → update reliability evolution
-  bus.subscribe("runtime:healed", async ({ strategy, taskId }) => {
+  bus.subscribe("aeo_sub_runtime_healed", async (evt) => {
+    if (evt.type !== "runtime:healed") return;
+    const { strategy, taskId } = evt.payload || {};
     try { _st().addMemory({ deptId: "aeo_reliability", type: "heal", title: `Runtime healed via ${strategy}`, detail: `Task: ${taskId}`, tags: ["reliability","heal"] }); } catch {}
   });
 }

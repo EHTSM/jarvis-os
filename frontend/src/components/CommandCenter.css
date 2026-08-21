@@ -177,7 +177,12 @@
   backdrop-filter: blur(2px);
 }
 .cmd-stop-confirm-panel {
-  background: var(--surface-2, #1a1a2e);
+  /* C.1 (C1-D3): was var(--surface-2, #1a1a2e). --surface-2 is defined nowhere,
+     so this always fell back to the hardcoded DARK #1a1a2e. In light mode
+     --text (#1a1f2e) rendered at 1.04:1 and --text-dim at 2.68:1 — the title of
+     a DESTRUCTIVE stop-confirmation was invisible, so a user could not read what
+     they were confirming. --surface-float is the theme-aware modal token. */
+  background: var(--surface-float);
   border: 1px solid rgba(245,91,91,0.30);
   border-radius: 12px;
   padding: 28px 28px 24px;

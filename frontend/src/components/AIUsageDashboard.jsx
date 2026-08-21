@@ -127,7 +127,15 @@ function HistoryPanel() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    _fetch("/ai-ecosystem/history/me?limit=20").then(r => {
+    // AI Workspace OS pass: promptHistory.query() (the default, no
+    // fromLedger param) only reads an in-memory ring that resets to empty on
+    // every backend restart — the underlying data/prompt-history.ndjson file
+    // still has it. Without fromLedger=true this panel silently showed "No
+    // prompt history yet" to a real user with real history, right after any
+    // backend restart, even though nothing was actually lost. Verified live:
+    // real history entries persisted correctly across a restart and were
+    // only reachable with this param.
+    _fetch("/ai-ecosystem/history/me?limit=20&fromLedger=true").then(r => {
       if (r.ok !== false) setEntries(r.entries || []);
       setLoading(false);
     }).catch(() => setLoading(false));

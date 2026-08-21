@@ -38,6 +38,7 @@
 const fs     = require("fs");
 const path   = require("path");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const VAULT_FILE   = path.join(__dirname, "../../data/vault.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/vault-history.json");
@@ -95,8 +96,15 @@ function _appendAudit(entry) {
   try {
     const dir = path.dirname(AUDIT_FILE);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(AUDIT_FILE, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
-    fs.chmodSync(AUDIT_FILE, 0o600);
+    // Persistence Sweep (2026-08-20): this used to write AUDIT_FILE directly
+    // — a crash/SIGKILL mid-writeFileSync could leave this security-sensitive
+    // reveal-audit-trail truncated/corrupted. Matches _save()'s own
+    // already-fixed VAULT_FILE pattern a few dozen lines below: a unique
+    // per-call tmp name + renameSync, which is atomic at the OS level (a
+    // reader/subsequent boot never observes a partially-written file).
+    const tmp = `${AUDIT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, AUDIT_FILE);
   } catch { /* non-fatal — audit logging must never block the underlying operation */ }
 }
 function getAccessAudit({ connectorId, limit = 200 } = {}) {
@@ -190,23 +198,42 @@ function _load() {
 }
 function _save(d) {
   const dir = path.dirname(VAULT_FILE);
-  fs.mkdirSync(dir, { recursive: true });
-  // Vault Security Hardening: the tmp filename used to be a fixed
-  // `${VAULT_FILE}.tmp` shared by every caller. Under concurrent
-  // storeSecret()/deleteSecret()/rotateSecret() calls in the same
-  // process (confirmed via a real test failure: two concurrent stores
-  // raced, one's renameSync() completed before the other's chmodSync()
-  // ran against the now-renamed-away path, throwing ENOENT), a second
-  // call's write could be silently lost or crash mid-save. A unique
-  // per-call tmp name (pid + random) makes concurrent saves independent;
-  // each still atomically replaces VAULT_FILE via renameSync.
   const tmp = `${VAULT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
-  // mode 0o600 set atomically at creation: vault holds AES-GCM ciphertext
-  // of live credentials — other local users/processes on the same host
-  // must not be able to read it. (A separate chmodSync() after the write
-  // was redundant AND the actual race window above — removed.)
-  fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
-  fs.renameSync(tmp, VAULT_FILE);
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    // Vault Security Hardening: the tmp filename used to be a fixed
+    // `${VAULT_FILE}.tmp` shared by every caller. Under concurrent
+    // storeSecret()/deleteSecret()/rotateSecret() calls in the same
+    // process (confirmed via a real test failure: two concurrent stores
+    // raced, one's renameSync() completed before the other's chmodSync()
+    // ran against the now-renamed-away path, throwing ENOENT), a second
+    // call's write could be silently lost or crash mid-save. A unique
+    // per-call tmp name (pid + random) makes concurrent saves independent;
+    // each still atomically replaces VAULT_FILE via renameSync.
+    //
+    // mode 0o600 set atomically at creation: vault holds AES-GCM ciphertext
+    // of live credentials — other local users/processes on the same host
+    // must not be able to read it. (A separate chmodSync() after the write
+    // was redundant AND the actual race window above — removed.)
+    fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, VAULT_FILE);
+  } catch (e) {
+    // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+    // (2026-08-21): unlike its siblings _appendHistory()/_appendAudit(),
+    // this write was completely unguarded — a real failure (disk full,
+    // permission change) threw Node's raw fs error straight up through
+    // storeSecret()/deleteSecret()/rotateSecret() into
+    // POST /company-factory/companies/:id/connectors/:connectorId/:type's
+    // route catch block (ordinary requireAuth customer, not operator-only),
+    // leaking the absolute path of the encrypted credential store plus its
+    // tmp-file naming scheme. Live-reproduced via a safe isolated
+    // read-only-directory test (never the real vault):
+    // "EACCES: permission denied, open '.../vault.json.<pid>.<hex>.tmp'".
+    // Full detail logged server-side; the error re-thrown to callers is now
+    // a fixed, path-free message.
+    logger.error(`[SecretVault] vault write failed: ${e.message}`);
+    throw new Error("Could not save credential vault");
+  }
 }
 function _loadHistory() {
   try { return JSON.parse(fs.readFileSync(HISTORY_FILE, "utf8")); }
@@ -219,8 +246,12 @@ function _appendHistory(entry) {
   try {
     const dir = path.dirname(HISTORY_FILE);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
-    fs.chmodSync(HISTORY_FILE, 0o600);
+    // Persistence Sweep (2026-08-20): same crash-safety fix as _appendAudit
+    // above — direct writeFileSync risked a truncated/corrupted history file
+    // on a crash mid-write. Same tmp+rename pattern as VAULT_FILE's _save().
+    const tmp = `${HISTORY_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, HISTORY_FILE);
   } catch { /* non-fatal */ }
 }
 
@@ -551,14 +582,32 @@ function validateSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccount
   const rec   = vault.secrets[vk];
 
   if (!rec) {
-    const envKey = ENV_MAP[`${connectorId}::${type}`];
+    // Integration & Connector Security / Tenant-Boundary Audit (2026-08-21):
+    // the env-var fallback below is correct ONLY for GLOBAL_ORG (the
+    // founder's own platform-wide vault partition — see getSecret()'s
+    // identical GLOBAL_ORG-only exemption for _assertOrgAccess above, and
+    // this file's own GLOBAL_ORG doc comment). For any real customer org
+    // it previously reported the FOUNDER's env-configured key (e.g.
+    // RAZORPAY_KEY_ID) as {present:true, valid:true, source:"env"} under
+    // that customer's own orgId — live-reproduced via both myConnectors.js
+    // (curated 9-provider subset) and companyFactory.js's connectorId/type
+    // path params (all ~56 connectors, caller-controlled): a customer with
+    // zero stored credentials of their own saw their Razorpay/OpenAI/etc
+    // connector reported as connected and valid, and could enumerate which
+    // of the founder's platform credentials exist across the full catalogue.
+    // getSecret() (the function actually used for live payment/AI-call
+    // execution) never had this bug — it returns null with no org match,
+    // confirmed by reading its body — so no financial/execution action was
+    // ever at risk, only this status-check surface. Fixed by scoping the
+    // fallback to GLOBAL_ORG only, matching getSecret's own convention.
+    const envKey = orgId === GLOBAL_ORG ? ENV_MAP[`${connectorId}::${type}`] : null;
     const envVal = envKey ? process.env[envKey] : null;
     return {
       connectorId, type,
       source:  envVal ? "env" : "none",
       present: !!envVal,
       valid:   !!envVal,
-      detail:  envVal ? `Found in env var ${envKey}` : (envKey ? `Not in vault or env (${envKey})` : "Not configured"),
+      detail:  envVal ? `Found in env var ${envKey}` : "Not configured",
     };
   }
 

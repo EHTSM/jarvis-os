@@ -131,7 +131,29 @@ router.get("/orgs", (req, res) => {
     catch (e) { _err(res, e); }
 });
 
-router.get("/orgs/:orgId", requireOrgMember, (req, res) => {
+// OOPLIX V1 MASTER AUDIT (2026-08-16, org-deletion lifecycle audit):
+// requireOrgMember now correctly 404s tenant-DATA access (business.js's
+// leads/deals/etc.) for an archived org — but this route only returns the
+// org's own metadata (name, slug, archivedAt), which a real member
+// legitimately needs to see WHILE archived: it's the only practical way to
+// retrieve the org's slug for POST /orgs/:orgId/purge's confirmation token
+// without already having memorized it, and to review an org before deciding
+// whether to restore or permanently delete it. Deliberately bypasses
+// requireOrgMember's archived-org block via a local, narrower membership
+// check that omits it — the one legitimate exception, not a general pattern.
+function _requireOrgMemberIncludingArchived(req, res, next) {
+    const org = _svc().getOrg(req.params.orgId);
+    if (!org) return res.status(404).json({ ok: false, error: "Organization not found" });
+    const accountId = req.user?.sub;
+    const isMember = org.members?.some?.(m => m.accountId === accountId);
+    if (isMember) { req.org = org; return next(); }
+    if (accountId && (_svc().isEnterpriseAdmin(accountId) || _svc().listGrantsForAccount(accountId).some(g => g.orgId === org.id))) {
+        req.org = org; return next();
+    }
+    return res.status(403).json({ ok: false, error: "Not a member of this organization" });
+}
+
+router.get("/orgs/:orgId", _requireOrgMemberIncludingArchived, (req, res) => {
     try {
         const org = _svc().getOrg(req.params.orgId);
         if (!org) return res.status(404).json({ ok: false, error: "Organization not found" });

@@ -31,15 +31,23 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _dash = () => _try(() => require("../services/enterpriseDashboard.cjs"));
 const _org = () => _try(() => require("../services/organizationService.cjs"));
+const _policy = () => _try(() => require("../services/policyService.cjs"));
 
 router.use("/enterprise/dashboard", requireAuth);
+
+// B25-01/GG-1 closure: shared so both permission tiers below enforce the
+// org's own IP allowlist identically, after real membership is confirmed.
+function _checkIpAllowed(req, res) {
+  try { _policy()?.assertIpAllowed?.(req.params.orgId, req); return true; }
+  catch (e) { res.status(e.status || 403).json({ ok: false, error: e.message }); return false; }
+}
 
 function _requireOrgMember(req, res) {
   if (!_org()?.hasPermission?.(req.params.orgId, req.user.sub, "view_members")) {
     res.status(403).json({ ok: false, error: "Forbidden — not a member of this organization" });
     return false;
   }
-  return true;
+  return _checkIpAllowed(req, res);
 }
 
 function _requireAdminTier(req, res) {
@@ -47,7 +55,7 @@ function _requireAdminTier(req, res) {
     res.status(403).json({ ok: false, error: "Forbidden — requires org_owner or org_admin" });
     return false;
   }
-  return true;
+  return _checkIpAllowed(req, res);
 }
 
 router.get("/enterprise/dashboard/:orgId", (req, res) => {

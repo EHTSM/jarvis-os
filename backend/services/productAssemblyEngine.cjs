@@ -11,6 +11,12 @@
  *         missionOrchestrator, improvementLoopEngine, founderWorkRegistry.
  *
  * Storage: data/product-assemblies.json
+ *
+ * ECOSYSTEM OS RECOVERY (2026-08-15): orgId now required — see
+ * productPlannerEngine.cjs's file header for the full blast-radius
+ * investigation and precedent this follows. Pre-existing unowned records
+ * (~54 assemblies) are correctly invisible to real orgId queries, not
+ * misattributed.
  */
 
 const fs   = require("fs");
@@ -34,6 +40,10 @@ const _pae = () => _try(() => require("./productArchitectureEngine.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `asm_${Date.now()}_${Math.random().toString(36).slice(2,6)}`; }
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+function _requireOrgId(orgId, fnName) {
+  if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
 
 // ── Assembly stages ───────────────────────────────────────────────────────────
 
@@ -92,6 +102,19 @@ async function _executeStage(stage, assembly, { skipExecute = false } = {}) {
 
   if (!skipExecute) {
     // Assign workforce team for this stage
+    //
+    // Product OS pass (2026-08-15): workforceManager.runMission() genuinely
+    // succeeds and returns {ok:true, id: missionId, ...} — but this read
+    // `mission?.ok` correctly, then `mission.mission?.id` (a field that
+    // does not exist on the real return shape; the real field is `id`).
+    // Reproduced live: server log showed a real mission created
+    // ("[MissionMemory] Created mission msn_...") while the assembly's own
+    // API response reported missionId: null for every stage. The `ok`
+    // check meant a genuine failure would already have been silently
+    // swallowed too (result.ok stayed true either way, matching the outer
+    // fake-success pattern fixed below) — fixing the field name alone
+    // doesn't change that a thrown/failed call is still silently absorbed
+    // by the catch{}; see the outer assemble()'s own fix for that half.
     try {
       const mission = await _wfm()?.runMission?.({
         title:         `Product assembly: ${stage}`,
@@ -102,10 +125,16 @@ async function _executeStage(stage, assembly, { skipExecute = false } = {}) {
         dryRun:        false,
       });
       if (mission?.ok) {
-        result.missionId   = mission.mission?.id;
+        result.missionId   = mission.id;
         result.minutesSaved += 30;
+      } else {
+        result.ok = false;
+        result.error = mission?.error || "workforce mission failed";
       }
-    } catch {}
+    } catch (e) {
+      result.ok = false;
+      result.error = e.message;
+    }
 
     // Route via workspace mesh
     try {
@@ -132,17 +161,18 @@ async function _executeStage(stage, assembly, { skipExecute = false } = {}) {
 
 // ── Core: assemble ────────────────────────────────────────────────────────────
 
-async function assemble(planId, archId, { skipExecute = false } = {}) {
-  const plan = _ppe()?.getPlan?.(planId);
+async function assemble(orgId, planId, archId, { skipExecute = false } = {}) {
+  _requireOrgId(orgId, "assemble");
+  const plan = _ppe()?.getPlan?.(orgId, planId);
   if (!plan) return { ok: false, error: `plan not found: ${planId}` };
 
-  const arch = _pae()?.getArchitecture?.(archId)
-    || _pae()?.getArchitectureForPlan?.(planId);
+  const arch = _pae()?.getArchitecture?.(orgId, archId)
+    || _pae()?.getArchitectureForPlan?.(orgId, planId);
   if (!arch) return { ok: false, error: `architecture not found for plan: ${planId}` };
 
   const id  = _id();
   const asm = {
-    id, planId, archId: arch.id,
+    id, planId, archId: arch.id, orgId,
     status:       "in_progress",
     stages:       {},
     minutesSaved: 0,
@@ -153,44 +183,79 @@ async function assemble(planId, archId, { skipExecute = false } = {}) {
   };
 
   // Create company lifecycle record (reuse P8 company factory)
+  //
+  // Product OS pass (2026-08-15): companyLifecycleEngine.createCompany()
+  // REQUIRES a real creatorAccountId (it provisions a real backing
+  // organization — by design, not incidental) — this call has never passed
+  // one, so it fails every single time with a real, deterministic
+  // "creatorAccountId is required" error, previously swallowed by a bare
+  // catch{}. Even on a hypothetical success the response shape read here
+  // (`co.company?.id`) was actually correct — only the missing required
+  // field was wrong. Not fixed by threading a real account through: doing
+  // so would mean deciding which of this call's own callers' accounts
+  // "owns" the resulting company/org, which is exactly the tenant-model
+  // question this pass documents as a genuine gap (see Security report)
+  // rather than retrofits. Recording the real failure honestly instead of
+  // silently discarding it.
   if (!skipExecute) {
     try {
       const co = _clc()?.createCompany?.({
         name:        `Product_${planId.replace("pp_", "")}`,
-        description: plan.objective,
         founder:     "autonomous_factory",
       });
-      if (co?.ok) asm.companyId = co.company?.id;
-    } catch {}
+      if (co?.ok) { asm.companyId = co.company?.id; }
+      else { asm.companyCreationError = co?.error || "company creation failed"; }
+    } catch (e) { asm.companyCreationError = e.message; }
 
     // Build workspace (reuse P8 workspace builder)
     if (asm.companyId) {
       try {
         const ws = _cwb()?.buildWorkspace?.({ blueprintId: arch.blueprint?.id, companyId: asm.companyId });
         if (ws?.ok) asm.workspaceId = ws.workspace?.id;
-      } catch {}
+        else asm.workspaceCreationError = ws?.error || "workspace build failed";
+      } catch (e) { asm.workspaceCreationError = e.message; }
     }
 
     // Create mission for the full assembly
+    //
+    // Same field-name mismatch as _executeStage's own workforceManager call
+    // above — missionOrchestrator.createManual() returns the record
+    // directly ({missionId, orchStatus, ...}), not {ok, mission:{id}}. This
+    // call genuinely succeeds (confirmed live via server log: "[MissionMemory]
+    // Created mission msn_...") but the read was always wrong, so
+    // orchestratorMissionId was always null even on success.
     try {
       const m = _mo()?.createManual?.({
         goal:    `Autonomous product assembly: ${plan.objective}`,
         title:   `Autonomous product assembly: ${plan.objective}`,
         context: { planId, archId: arch.id, complexity: plan.complexity?.level },
       });
-      if (m?.ok) asm.orchestratorMissionId = m.mission?.id;
-    } catch {}
+      if (m?.missionId) asm.orchestratorMissionId = m.missionId;
+      else asm.missionCreationError = "mission orchestrator returned no missionId";
+    } catch (e) { asm.missionCreationError = e.message; }
   }
 
   // Execute each assembly stage
   let totalMinutes = 0;
+  let anyStageFailed = false;
   for (const stage of ASSEMBLY_STAGES) {
     const stageResult = await _executeStage(stage, asm, { skipExecute });
     asm.stages[stage] = stageResult;
     totalMinutes += stageResult.minutesSaved;
+    if (stageResult.ok === false) anyStageFailed = true;
   }
   asm.minutesSaved = totalMinutes;
-  asm.status       = "completed";
+  // Product OS pass: this unconditionally reported "completed" regardless
+  // of whether any stage actually failed or the mission/company/workspace
+  // creation calls above succeeded — the response's outer `status` and
+  // `ok:true` were the same class of fake-success this mission's honesty
+  // requirement forbids. "completed" now genuinely means every stage's own
+  // ok flag was true; a real per-stage or per-integration failure surfaces
+  // as "completed_with_errors" instead, with the specific error fields
+  // (companyCreationError / workspaceCreationError / missionCreationError /
+  // each stage's own .error) intact for the caller to inspect — never
+  // silently absorbed into an indistinguishable "completed".
+  asm.status       = anyStageFailed ? "completed_with_errors" : "completed";
   asm.completedAt  = _ts();
   asm.updatedAt    = _ts();
 
@@ -202,10 +267,17 @@ async function assemble(planId, archId, { skipExecute = false } = {}) {
   return { ok: true, assembly: asm };
 }
 
-function getAssembly(id)         { return _load().assemblies.find(a => a.id === id) || null; }
-function getAssemblyForPlan(pid) { return _load().assemblies.filter(a => a.planId === pid).pop() || null; }
-function listAssemblies({ limit = 50, status } = {}) {
-  let list = _load().assemblies;
+function getAssembly(orgId, id) {
+  _requireOrgId(orgId, "getAssembly");
+  return _load().assemblies.find(a => a.id === id && _ownedBy(a, orgId)) || null;
+}
+function getAssemblyForPlan(orgId, pid) {
+  _requireOrgId(orgId, "getAssemblyForPlan");
+  return _load().assemblies.filter(a => a.planId === pid && _ownedBy(a, orgId)).pop() || null;
+}
+function listAssemblies(orgId, { limit = 50, status } = {}) {
+  _requireOrgId(orgId, "listAssemblies");
+  let list = _load().assemblies.filter(a => _ownedBy(a, orgId));
   if (status) list = list.filter(a => a.status === status);
   return { ok: true, assemblies: list.slice(-limit).reverse(), total: list.length };
 }

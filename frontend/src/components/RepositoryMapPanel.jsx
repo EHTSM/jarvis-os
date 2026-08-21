@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./RepositoryMapPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -8,19 +9,29 @@ import "./RepositoryMapPanel.css";
 // a network error. Same defect class as A.11 F1. Now mirrors the semantics of
 // the canonical _client.js _fetch: preserve the backend's own message and
 // attach the status, so callers can surface the real reason.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same defect found and fixed in the
+// sibling component EngineeringMemoryPanel.jsx — this helper called a bare
+// fetch() against `/api${path}` (e.g. /api/repo-viz/stats), but the real
+// backend mounts these routes at /repo-viz/* with NO /api prefix (confirmed:
+// only /api/auth/*, /api/accounts/*, and /api/status are real duplicate-
+// mounted routes across the entire codebase). Live-confirmed: GET
+// /api/repo-viz/stats with real auth -> 404 "Not Found: GET
+// /api/repo-viz/stats"; GET /repo-viz/stats (the real route) -> 200, real
+// data. Every one of this panel's 8 API calls (stats, map build, module
+// graph, dep graph, hotspots, critical paths, AI nav, benchmark, node
+// detail) was equally broken — the entire "Repository" tab (ACP-9 Visual
+// Repository Intelligence) has been completely non-functional. The bare
+// fetch() also omitted credentials:"include", a second compounding defect
+// identical to EngineeringMemoryPanel.jsx's. Replaced with the canonical
+// _fetch (_client.js), preserving this file's existing API(method, path,
+// body) call-site signature and Error{message,status} contract so none of
+// its other call sites needed to change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
+    return _fetch(path, {
         method,
-        headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    if (!r.ok) {
-        const err = await r.json().catch(() => ({}));
-        const e = new Error(err.error || err.message || `HTTP ${r.status}`);
-        e.status = r.status;
-        throw e;
-    }
-    return r.json();
 };
 
 function badge(status) {

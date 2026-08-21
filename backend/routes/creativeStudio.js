@@ -83,6 +83,49 @@ router.use("/creative", rateLimiter(30, 60_000));
 function _account(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }
 
+// Creative Studio OS pass (2026-08-15): every service behind this route
+// keys its records purely by their own generated id — creativeAssetLibrary,
+// brandStudio, and creativeJobQueue's getters/mutators take no accountId
+// argument at all, so any authenticated caller who knew or guessed another
+// account's real asset/brand-kit/job id could read, edit, or (for assets and
+// brand kits) permanently delete/overwrite it. Live-reproduced with two real
+// accounts: account B read account A's private asset by id (200), then
+// deleted it (200, confirmed gone from A's own view); B also renamed A's
+// brand kit to prove a persisted cross-account write. This route file is the
+// only enforcement point available (the services have no owner concept to
+// add a check to without expanding their API across every caller), so the
+// fix is a record-ownership check here, immediately after each lookup and
+// before any mutation — mirroring the record-not-found response (404) an
+// outsider already gets for a nonexistent id, so this never discloses
+// whether an id exists for someone else's account.
+function _ownedOrDenied(res, record, accountId) {
+  if (!record) { res.status(404).json({ error: "not_found" }); return null; }
+  if (record.accountId && record.accountId !== accountId) {
+    res.status(404).json({ error: "not_found" });
+    return null;
+  }
+  return record;
+}
+
+// Same-pass companion for the generated-file serving routes below
+// (/creative/image|video/file/:filename, /creative/audio/:filename): those
+// routes already independently verify the file exists on disk and the
+// resolved path stays inside its own directory BEFORE this check runs, so
+// unlike _ownedOrDenied() above, "no matching asset record" here is not
+// proof of nonexistence — the asset index only gained a `url` field in this
+// same pass (see creativeAssetLibrary.cjs), so any file generated before
+// this fix has no record to check ownership against. Denying those would
+// incorrectly break legitimate access to already-generated files. Deny only
+// when a record IS found and belongs to someone else; allow through when no
+// record can be matched at all.
+function _fileOwnedOrDenied(res, record, accountId) {
+  if (record && record.accountId && record.accountId !== accountId) {
+    res.status(404).json({ error: "not_found" });
+    return false;
+  }
+  return true;
+}
+
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: Creative Registry
 // ══════════════════════════════════════════════════════════════════
@@ -146,6 +189,12 @@ router.post("/creative/route/detect", (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 async function _createCreativeJob(req, res, capability, studioType, promptKey = "prompt") {
+  // Hoisted so the outer catch (below) can reap a job stuck at "running" if
+  // something throws after createJob()/startJob() but before the job
+  // reaches its own completeJob()/failJob() call (e.g. assets.storeAsset()
+  // itself throwing) — otherwise that job would stay "running" forever with
+  // no restart-recovery mechanism to ever detect or reap it.
+  let job = null;
   try {
     const body   = req.body || {};
     const prompt = body[promptKey] || body.prompt;
@@ -175,7 +224,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
       return res.status(402).json({ error: "insufficient_credits", creditCheck: reservation });
     }
 
-    const job = jobQueue.createJob({
+    job = jobQueue.createJob({
       capability, studioType,
       provider: decision.provider, model: decision.model,
       prompt, accountId: _account(req), params: body,
@@ -186,6 +235,18 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
     let aiOutput    = null;
     let generated   = false;
     let generatedVia = null;
+    // Queue Layer Reliability & Safety Audit (2026-08-16): failJob() was
+    // defined and exported by creativeJobQueue.cjs but never called from
+    // anywhere in the codebase — every job reaching this point in the
+    // handler, including ones whose real generator threw a genuine
+    // exception, ended up calling completeJob() regardless. A real DALL-E/
+    // TTS/Sora/image-processor exception (provider outage, invalid key,
+    // content-policy rejection, network error) is a real failure, distinct
+    // from the "no generator is wired for this capability" branch below,
+    // which intentionally and honestly returns a text-only description as
+    // its own successful (if limited) outcome. Only the genuine-exception
+    // paths set this flag.
+    let hardFailure = null;
 
     if (REAL_IMAGE_CAPABILITIES.has(capability)) {
       // Real path: DALL-E 3 via imageGeneratorAgent.cjs.
@@ -198,7 +259,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
           generatedVia = result.via;
         }
         aiOutput = result;
-      } catch (e) { aiOutput = { error: e.message }; }
+      } catch (e) { aiOutput = { error: e.message }; hardFailure = e.message; }
     } else if (REAL_VOICE_CAPABILITIES.has(capability)) {
       // Real path: ElevenLabs/OpenAI TTS via voiceCloningAgent.cjs. Writes a
       // real local MP3 — served via the new /creative/audio/:filename
@@ -212,7 +273,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
           generatedVia = result.via;
         }
         aiOutput = result;
-      } catch (e) { aiOutput = { error: e.message }; }
+      } catch (e) { aiOutput = { error: e.message }; hardFailure = e.message; }
     } else if (REAL_VIDEO_CAPABILITIES.has(capability)) {
       // Real path: OpenAI Sora via videoGeneratorAgent.cjs's
       // generateRealVideo(). Writes a real local MP4 — served via
@@ -228,7 +289,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
           generatedVia = result.via;
         }
         aiOutput = result;
-      } catch (e) { aiOutput = { error: e.message }; }
+      } catch (e) { aiOutput = { error: e.message }; hardFailure = e.message; }
     } else if (REAL_IMAGE_PROCESSING_CAPABILITIES.has(capability) && body.imageUrl) {
       // Real path: sharp-backed pixel processing via imageProcessorAgent.cjs.
       // Requires a real source image (body.imageUrl) — image_edit's
@@ -248,7 +309,7 @@ async function _createCreativeJob(req, res, capability, studioType, promptKey = 
           generatedVia = result.via;
         }
         aiOutput = result;
-      } catch (e) { aiOutput = { error: e.message, generated: false, note: e.message }; }
+      } catch (e) { aiOutput = { error: e.message, generated: false, note: e.message }; hardFailure = e.message; }
     } else {
       // No real generator exists for this capability (image-to-video,
       // image edit/upscale/background-remove, stt, music). Honest
@@ -283,14 +344,28 @@ Respond with a JSON object: { "result": "description of what was generated", "me
 
     // Credits were already reserved (deducted) atomically above, before the
     // slow provider call — nothing left to consume here.
-    const completed = jobQueue.completeJob(job.id, { assetId: storedAsset.id, outputUrl, credits: decision.creditsRequired });
+    // A genuine exception from a real generator (hardFailure set above) is a
+    // real failure — the job must reach status "failed", not "complete",
+    // so the queue's own state honestly reflects what happened. The asset
+    // record above is still stored either way (matches prior behavior) so
+    // the error/context isn't lost, but jobQueue.getSummary()'s
+    // queued/running/complete/failed counts are no longer silently wrong.
+    const completed = hardFailure
+      ? jobQueue.failJob(job.id, hardFailure)
+      : jobQueue.completeJob(job.id, { assetId: storedAsset.id, outputUrl, credits: decision.creditsRequired });
 
     res.json({
       ok: true, job: completed, asset: storedAsset, decision,
       output: aiOutput, creditsUsed: decision.creditsRequired,
       generated, generatedVia, url: outputUrl,
     });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) {
+    // If a job was created (and possibly started) before this exception,
+    // reap it now — otherwise it would stay "running" forever with no
+    // stale-job recovery to ever detect it (see the hoisted `job` comment).
+    if (job?.id) { try { jobQueue.failJob(job.id, e.message); } catch { /* best-effort */ } }
+    res.status(500).json({ error: e.message });
+  }
 }
 
 router.post("/creative/image/generate",          (req, res) => _createCreativeJob(req, res, "image_generate",        "image"));
@@ -322,6 +397,13 @@ router.get("/creative/image/file/:filename", requireAuth, (req, res) => {
   const abs = _imgPath.join(PROCESSED_IMAGE_DIR, filename);
   if (!abs.startsWith(PROCESSED_IMAGE_DIR + _imgPath.sep)) return res.status(400).json({ error: "invalid_path" });
   if (!_imgFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  // Creative Studio OS pass: filename is only a millisecond timestamp
+  // (`upscale_<ts>.<ext>`), not cryptographically random, so requireAuth
+  // alone let any authenticated account fetch another account's processed
+  // image by guessing/enumerating nearby timestamps. Every processed file
+  // has a corresponding asset record recording who generated it — deny
+  // unless the requester owns that asset.
+  if (!_fileOwnedOrDenied(res, assets.getAssetByUrl(`/creative/image/file/${filename}`), _account(req))) return;
   res.setHeader("Content-Type", IMAGE_MIME[m[1]] || "application/octet-stream");
   res.sendFile(abs);
 });
@@ -363,6 +445,8 @@ router.get("/creative/video/file/:filename", requireAuth, (req, res) => {
   const abs = _videoPath.join(VIDEO_DIR, filename);
   if (!abs.startsWith(VIDEO_DIR + _videoPath.sep)) return res.status(400).json({ error: "invalid_path" });
   if (!_videoFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  // Creative Studio OS pass: same fix as /creative/image/file/:filename above.
+  if (!_fileOwnedOrDenied(res, assets.getAssetByUrl(`/creative/video/file/${filename}`), _account(req))) return;
   res.setHeader("Content-Type", "video/mp4");
   res.sendFile(abs);
 });
@@ -412,6 +496,8 @@ router.get("/creative/audio/:filename", requireAuth, (req, res) => {
   const abs = _audioPath.join(AUDIO_DIR, filename);
   if (!abs.startsWith(AUDIO_DIR + _audioPath.sep)) return res.status(400).json({ error: "invalid_path" });
   if (!_audioFs.existsSync(abs)) return res.status(404).json({ error: "not_found" });
+  // Creative Studio OS pass: same fix as /creative/image/file/:filename above.
+  if (!_fileOwnedOrDenied(res, assets.getAssetByUrl(`/creative/audio/${filename}`), _account(req))) return;
   res.setHeader("Content-Type", "audio/mpeg");
   res.sendFile(abs);
 });
@@ -434,22 +520,23 @@ router.post("/creative/brand", (req, res) => {
 
 router.get("/creative/brand/:id", (req, res) => {
   try {
-    const kit = brandStudio.getKit(req.params.id);
-    if (!kit) return res.status(404).json({ error: "not_found" });
+    const kit = _ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req));
+    if (!kit) return;
     res.json({ ok: true, kit });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.put("/creative/brand/:id", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const kit = brandStudio.updateKit(req.params.id, req.body);
-    if (!kit) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, kit });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.delete("/creative/brand/:id", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const ok = brandStudio.deleteKit(req.params.id);
     res.json({ ok });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -457,8 +544,8 @@ router.delete("/creative/brand/:id", (req, res) => {
 
 router.put("/creative/brand/:id/voice", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const kit = brandStudio.updateBrandVoice(req.params.id, req.body);
-    if (!kit) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, kit });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -467,31 +554,32 @@ router.post("/creative/brand/:id/logo", (req, res) => {
   try {
     const { assetId, variant } = req.body || {};
     if (!assetId) return res.status(400).json({ error: "assetId required" });
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const kit = brandStudio.attachLogo(req.params.id, assetId, variant);
-    if (!kit) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, kit });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.post("/creative/brand/:id/template", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const kit = brandStudio.addTemplate(req.params.id, req.body);
-    if (!kit) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, kit });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.get("/creative/brand/:id/brief", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
     const brief = brandStudio.buildIdentityBrief(req.params.id);
-    if (!brief) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, brief });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.post("/creative/brand/:id/generate", async (req, res) => {
   try {
-    const brief     = brandStudio.buildIdentityBrief(req.params.id);
+    if (!_ownedOrDenied(res, brandStudio.getKit(req.params.id), _account(req))) return;
+    const brief = brandStudio.buildIdentityBrief(req.params.id);
     if (!brief) return res.status(404).json({ error: "brand_kit_not_found" });
 
     const { what = "logo" } = req.body || {};
@@ -629,11 +717,12 @@ router.delete("/creative/social/publish/:postId", attachOrg, async (req, res) =>
 router.get("/creative/workspace", (req, res) => {
   try {
     const accountId = _account(req);
-    const jobSummary = jobQueue.getSummary();
+    const jobSummary = jobQueue.getSummary(accountId);
     // Phase A.11.3 — same fix as GET /creative/assets: these three were global
     // while recentAssets/favoriteAssets below are account-scoped, so the
     // Workspace tab rendered other accounts' totals next to this account's own
-    // (empty) asset list. Scope them the same way.
+    // (empty) asset list. Scope them the same way. jobSummary joined this same
+    // fix in the Creative Studio OS pass — see creativeJobQueue.cjs.
     const assetStats = assets.getStats(accountId);
     const recentJobs = jobQueue.listJobs({ accountId, limit: 10 });
     const recentAssets = assets.listAssets({ accountId, limit: 12 });
@@ -659,9 +748,15 @@ router.get("/creative/workspace", (req, res) => {
 
 router.get("/creative/workspace/queue", (req, res) => {
   try {
-    const running = jobQueue.listJobs({ status: "running",  limit: 20 });
-    const queued  = jobQueue.listJobs({ status: "queued",   limit: 20 });
-    res.json({ ok: true, running, queued, summary: jobQueue.getSummary() });
+    // Creative Studio OS pass: was unscoped — any authenticated account saw
+    // every other account's in-flight job prompts (running/queued lists) and
+    // a platform-wide summary. There is no operator role distinction on this
+    // route (unlike e.g. support inbox), so scope it the same as every other
+    // list in this file rather than leaving it as the one unscoped exception.
+    const accountId = _account(req);
+    const running = jobQueue.listJobs({ status: "running",  accountId, limit: 20 });
+    const queued  = jobQueue.listJobs({ status: "queued",   accountId, limit: 20 });
+    res.json({ ok: true, running, queued, summary: jobQueue.getSummary(accountId) });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -691,8 +786,8 @@ router.get("/creative/workspace/favorites", (req, res) => {
 
 router.get("/creative/workspace/jobs/:id", (req, res) => {
   try {
-    const job = jobQueue.getJob(req.params.id);
-    if (!job) return res.status(404).json({ error: "not_found" });
+    const job = _ownedOrDenied(res, jobQueue.getJob(req.params.id), _account(req));
+    if (!job) return;
     res.json({ ok: true, job });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -737,8 +832,8 @@ router.get("/creative/assets/tags", (req, res) => {
 
 router.get("/creative/assets/:id", (req, res) => {
   try {
-    const asset = assets.getAsset(req.params.id);
-    if (!asset) return res.status(404).json({ error: "not_found" });
+    const asset = _ownedOrDenied(res, assets.getAsset(req.params.id), _account(req));
+    if (!asset) return;
     res.json({ ok: true, asset });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -752,8 +847,8 @@ router.post("/creative/assets", (req, res) => {
 
 router.post("/creative/assets/:id/favorite", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, assets.getAsset(req.params.id), _account(req))) return;
     const asset = assets.toggleFavorite(req.params.id);
-    if (!asset) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, asset });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -762,8 +857,8 @@ router.post("/creative/assets/:id/tag", (req, res) => {
   try {
     const { tag } = req.body || {};
     if (!tag) return res.status(400).json({ error: "tag required" });
+    if (!_ownedOrDenied(res, assets.getAsset(req.params.id), _account(req))) return;
     const asset = assets.addTag(req.params.id, tag);
-    if (!asset) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, asset });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -772,14 +867,15 @@ router.post("/creative/assets/:id/move", (req, res) => {
   try {
     const { folder } = req.body || {};
     if (!folder) return res.status(400).json({ error: "folder required" });
+    if (!_ownedOrDenied(res, assets.getAsset(req.params.id), _account(req))) return;
     const asset = assets.moveToFolder(req.params.id, folder);
-    if (!asset) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, asset });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.delete("/creative/assets/:id", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, assets.getAsset(req.params.id), _account(req))) return;
     const ok = assets.deleteAsset(req.params.id);
     res.json({ ok });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -788,8 +884,8 @@ router.delete("/creative/assets/:id", (req, res) => {
 // Reuse ref for Browser Automation and Engineering Workspace
 router.get("/creative/assets/:id/reuse", (req, res) => {
   try {
+    if (!_ownedOrDenied(res, assets.getAsset(req.params.id), _account(req))) return;
     const ref = assets.getReuseRef(req.params.id);
-    if (!ref) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, ref });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

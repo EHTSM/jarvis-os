@@ -86,6 +86,7 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const registry   = require("../services/aiRegistry.cjs");
 const capRouter  = require("../services/capabilityRouter.cjs");
@@ -495,7 +496,12 @@ router.get("/ai-ecosystem/orchestrator/recommend/:capability", async (req, res) 
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, async (req, res) => {
+// requireUsageQuota bounds total spend per billing period but doesn't stop a
+// rapid burst within that budget — the rate limiter is complementary, not
+// redundant, protecting against short-window abuse instead of period totals.
+const _orchestratorRL = rateLimiter(30, 60_000, "ai-ecosystem-orchestrator");
+
+router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, _orchestratorRL, async (req, res) => {
   try {
     const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId, noCache } = req.body || {};
     const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
@@ -518,7 +524,7 @@ router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, asy
 // the same metadata /execute returns (provider, cost, latency) once the
 // stream completes, so a client can render tokens live and still get the
 // same accounting summary as the non-streaming endpoint.
-router.post("/ai-ecosystem/orchestrator/execute/stream", billing.requireUsageQuota, async (req, res) => {
+router.post("/ai-ecosystem/orchestrator/execute/stream", billing.requireUsageQuota, _orchestratorRL, async (req, res) => {
   const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId } = req.body || {};
   const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
   if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });

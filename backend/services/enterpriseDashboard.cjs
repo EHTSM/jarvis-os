@@ -65,7 +65,13 @@ function getCompliance(orgId) {
     { id: "mfa_required", label: "MFA required org-wide", pass: !!policy.mfa?.required },
     { id: "password_policy_hardened", label: "Password policy exceeds 8-char default", pass: (policy.password?.minLength || 8) > 8 },
     { id: "connector_restrictions_set", label: "Connector allow/deny list configured", pass: !!(policy.connectorRestrictions?.allow?.length || policy.connectorRestrictions?.deny?.length) },
-    { id: "ip_allowlist_set", label: "IP allowlist configured", pass: !!policy.ipAllowlist?.length },
+    // B25-01/GG-1 closure (2026-08-16): assertIpAllowed() is now called from
+    // the 4 enterprise route files' own membership checks (policy/audit/
+    // monitoring/dashboard) — real enforcement, not just storage. A
+    // configured allowlist now genuinely restricts access to those routes.
+    { id: "ip_allowlist_set", label: "IP allowlist configured", pass: !!policy.ipAllowlist?.length,
+      configured: !!policy.ipAllowlist?.length, enforced: true,
+      note: "Enforced on /enterprise/policy, /enterprise/audit, /enterprise/monitoring, and /enterprise/dashboard routes." },
   ];
   const passed = checks.filter(c => c.pass).length;
   return { ok: true, orgId, score: Math.round((passed / checks.length) * 100), checks };
@@ -84,6 +90,11 @@ function getSecurity(orgId) {
     sessionTimeoutSeconds: policy.sessionTimeoutSeconds || null,
     allowedProviders: policy.allowedProviders || null,
     ipAllowlistSize: policy.ipAllowlist?.length || 0,
+    // B25-01/GG-1 closure (2026-08-16): enforced for real on the 4 enterprise
+    // route files (policy/audit/monitoring/dashboard). See policyService.cjs's
+    // assertIpAllowed().
+    ipAllowlistEnforced: true,
+    ipAllowlistNote: "IP allowlist is enforced on /enterprise/policy, /enterprise/audit, /enterprise/monitoring, and /enterprise/dashboard routes.",
     recentPermissionEvents: permissionHistory?.entries?.slice(0, 10) || [],
   };
 }

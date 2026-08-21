@@ -23,6 +23,57 @@ const BASE_BACKOFF   = 1_000;   // ms
 const MAX_BACKOFF    = 30_000;  // ms
 const DEFAULT_TIMEOUT = 30_000; // ms
 
+// Timeout, Cancellation & Long-Running Operation Safety Audit (2026-08-20):
+// _withTimeout() below is a Promise.race — when the timeout wins, the real
+// handler promise is NOT cancelled; it keeps running in the background,
+// fully disconnected from this function. Without this guard, the retry
+// loop's next iteration re-invokes the same handler for the same task
+// while the orphaned first invocation may still be running and could still
+// complete, mutating state a second time (duplicate CRM write, duplicate
+// payment call, duplicate mission execution). Threading a real
+// AbortController into every one of the ~14 files that register a handler
+// via agentRegistry.register() would be the new cancellation framework /
+// architecture redesign this mission explicitly prohibits, so instead: a
+// (taskId, task.type) pair that just timed out is marked here, and the
+// retry loop below refuses to start a NEW concurrent attempt for that same
+// pair while the mark is still set (bailing straight to dead-letter, same
+// as the existing nonRetriable short-circuit) — closing the
+// duplicate-execution risk without touching a single handler. Keyed by
+// BOTH taskId and task.type, not taskId alone, because
+// runtimeOrchestrator.dispatch() reuses one taskId across every task in a
+// multi-task batch (agents/runtime/runtimeOrchestrator.cjs:293-310) — a
+// taskId-only key would incorrectly block an unrelated sibling task in the
+// same batch. Cleared once the orphaned promise itself finally settles.
+const _orphanedAttempts = new Set();
+function _orphanKey(taskId, taskType) { return `${taskId}::${taskType}`; }
+
+async function _withTimeout(promise, ms, label, orphanKey) {
+    let timedOut = false;
+    try {
+        return await Promise.race([
+            promise,
+            new Promise((_, reject) =>
+                setTimeout(() => {
+                    timedOut = true;
+                    if (orphanKey) _orphanedAttempts.add(orphanKey);
+                    reject(new Error(`Timeout: ${label} exceeded ${ms}ms`));
+                }, ms).unref()
+            ),
+        ]);
+    } finally {
+        if (timedOut && orphanKey) {
+            // The orphaned promise is still running — whenever it finally
+            // settles (either way), clear the mark so a later, genuinely
+            // fresh dispatch of the same (taskId, type) is never blocked
+            // forever.
+            promise.then(
+                () => _orphanedAttempts.delete(orphanKey),
+                () => _orphanedAttempts.delete(orphanKey)
+            );
+        }
+    }
+}
+
 // Lazy-load the existing executor as the universal fallback
 let _legacyExecutor = null;
 function _getLegacy() {
@@ -62,15 +113,6 @@ function _backoffMs(attempt) {
 
 function _sleep(ms) {
     return new Promise(r => setTimeout(r, ms).unref());
-}
-
-function _withTimeout(promise, ms, label) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) =>
-            setTimeout(() => reject(new Error(`Timeout: ${label} exceeded ${ms}ms`)), ms).unref()
-        ),
-    ]);
 }
 
 // Universal Composition Engine Phase 11 — steps 8 (emit telemetry) and 9
@@ -272,6 +314,18 @@ async function executeTask(task, options = {}) {
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         if (attempt > 0) {
+            // A prior attempt for this exact (taskId, task.type) timed out
+            // and its underlying handler promise is still orphaned/in-flight
+            // (see _withTimeout above) — starting a second concurrent
+            // invocation risks a genuine duplicate side effect (double
+            // CRM write, double payment call, double mission execution).
+            // Bail straight to dead-letter instead, same as the existing
+            // nonRetriable short-circuit a few lines below.
+            if (_orphanedAttempts.has(_orphanKey(taskId, task.type))) {
+                lastError = new Error(`prior attempt for ${taskId}/${task.type} timed out and may still be running — refusing to start a duplicate concurrent attempt`);
+                logger.warn(`[ExecEngine] ${task.type} attempt ${attempt + 1} for ${taskId} blocked: orphaned prior attempt still in flight`);
+                break;
+            }
             await _sleep(_backoffMs(attempt - 1));
             // Audit lineage: record retry with parent taskId
             try {
@@ -295,9 +349,39 @@ async function executeTask(task, options = {}) {
                 const result = await _withTimeout(
                     agent.handler(task, extendedCtx),
                     timeoutMs,
-                    `${agent.id}/${task.type}`
+                    `${agent.id}/${task.type}`,
+                    _orphanKey(taskId, task.type)
                 );
                 const durationMs = Date.now() - t0;
+                // Runtime OS verification pass (2026-08-15) — RUNTIME-1: a registered
+                // agent's handler can report its own failure by RETURNING
+                // { success:false, error } instead of throwing (e.g. terminalAgent on
+                // an allowlist/blocked-command rejection, the "ai" agent when no
+                // provider credentials are configured). Not throwing isn't the same
+                // as succeeding — same reasoning already applied to the legacy-executor
+                // branch below (`softFailed`) and to autonomousLoop.cjs's own task-queue
+                // path; this branch was the one place that reasoning was missing,
+                // making runtimeOrchestrator.dispatch()'s aggregate `success` (and
+                // CommandCenter.jsx's dispatch bar, which reads it directly) report a
+                // false positive for a genuinely blocked/failed command.
+                const softFailed = result && result.success === false;
+                if (softFailed) {
+                    agent.recordFailure();
+                    lastError = new Error(result?.error || result?.result || `${agent.id} reported failure`);
+                    history.record({
+                        agentId: agent.id, taskType: task.type, taskId,
+                        success: false, durationMs,
+                        input:  task.input || task.label || "",
+                        error:  lastError.message,
+                    });
+                    logger.warn(`[ExecEngine] ${agent.id}/${task.type} attempt ${attempt + 1} soft-failed: ${lastError.message}`);
+                    // Deterministic rejections (allowlist blocks, missing credentials)
+                    // won't change on retry — bail immediately rather than burning
+                    // backoff time and inflating the circuit breaker's failure count
+                    // for something a retry can never fix. Mirrors the legacy
+                    // branch's own `nonRetriable` short-circuit below.
+                    return { success: false, result, agentId: agent.id, durationMs, attempts: attempt + 1, error: lastError.message };
+                }
                 agent.recordSuccess(durationMs);
                 history.record({
                     agentId: agent.id, taskType: task.type, taskId,
@@ -327,7 +411,8 @@ async function executeTask(task, options = {}) {
                     const result = await _withTimeout(
                         legacy.execute(task, instanceCtx),
                         timeoutMs,
-                        `legacy/${task.type}`
+                        `legacy/${task.type}`,
+                        _orphanKey(taskId, task.type)
                     );
                     const durationMs = Date.now() - t0;
                     // The legacy executor can return a soft failure

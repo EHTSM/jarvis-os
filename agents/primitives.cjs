@@ -11,7 +11,7 @@
  * terminalAgent.cjs is its own canonical primitive (security whitelist, not here).
  */
 
-const { exec } = require("child_process");
+const { exec, spawn } = require("child_process");
 
 // Lazy-load robotjs — system works without it
 let _robot = null;
@@ -46,19 +46,66 @@ function _exec(cmd, timeoutMs = 8000) {
     });
 }
 
+// Remaining Execution & Tool Authorization Boundary Sweep (2026-08-21):
+// openURL/openApp used to build a shell command STRING (`open "${safe}"`,
+// interpolated into exec()) — SAFE_URL_REGEX's allowed charset includes
+// "$", "(", ")" (needed for legitimate URL characters), which together
+// permit real shell command substitution (`$(...)`) that the regex never
+// accounted for. Live-reproduced, non-destructively: a url of
+// `https://example.com/$(touch$IFS/tmp/PROOF)` passed SAFE_URL_REGEX
+// (every individual character is allowed) and genuinely executed `touch`
+// via /bin/sh's command substitution when exec() ran the interpolated
+// string — $IFS (the shell's field-separator variable) supplies the
+// whitespace the payload needs without requiring a literal space
+// character. Reachable by any ordinary, authenticated customer via a
+// plain chat message ("open https://...") — backend/utils/parser.js's
+// raw-URL matcher (line ~154) accepts any http(s):// URL with no
+// whitespace and passes it straight through to this function with zero
+// further validation. Fixed with the same principle already established
+// throughout this codebase this session (safe-exec.js,
+// terminalExecutionAdapter.cjs, browserController.cjs's downloadFile
+// fix): spawn(shell:false) with an argument array instead of a shell
+// string. openApp()'s own regex-strip sanitizer (`;&|`$`) already
+// correctly excludes "$", so it was not independently vulnerable to this
+// same technique — fixed anyway for consistency and defense-in-depth,
+// since it shares the exact same shell-string-construction shape.
+function _spawnExec(cmd, args, timeoutMs = 8000) {
+    return new Promise(resolve => {
+        let settled = false;
+        const child = spawn(cmd, args, { shell: false, stdio: "ignore" });
+        const timer = setTimeout(() => {
+            if (settled) return;
+            settled = true;
+            try { child.kill("SIGKILL"); } catch {}
+            resolve({ success: false, error: `timed out after ${timeoutMs}ms` });
+        }, timeoutMs);
+        child.on("close", (code) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve(code === 0 ? { success: true } : { success: false, error: `exited with code ${code}` });
+        });
+        child.on("error", (err) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timer);
+            resolve({ success: false, error: err.message });
+        });
+    });
+}
+
 // ── openURL ──────────────────────────────────────────────────────
 async function openURL(url) {
     if (!url || !SAFE_URL_REGEX.test(url)) {
         return { success: false, error: "URL rejected — unsafe or missing" };
     }
-    const safe = url.replace(/"/g, "");
-    if (process.platform === "darwin")  return _exec(`open "${safe}"`);
-    if (process.platform === "win32")   return _exec(`start "" "${safe}"`);
+    if (process.platform === "darwin")  return _spawnExec("open", [url]);
+    if (process.platform === "win32")   return _spawnExec("cmd.exe", ["/c", "start", "", url]);
     // Linux — headless VPS: no browser, return the URL so the caller can surface it
     if (!process.env.DISPLAY && !process.env.WAYLAND_DISPLAY) {
         return { success: true, message: `URL ready: ${url}`, url, headless: true };
     }
-    return _exec(`xdg-open "${safe}"`);
+    return _spawnExec("xdg-open", [url]);
 }
 
 // ── webSearch ────────────────────────────────────────────────────
@@ -72,11 +119,12 @@ async function webSearch(query) {
 // ── openApp ──────────────────────────────────────────────────────
 async function openApp(appName) {
     if (!appName) return { success: false, error: "No app name provided" };
-    // Strip shell metacharacters before building the command
+    // Strip shell metacharacters — retained as defense-in-depth even
+    // though spawn(shell:false) below no longer depends on it for safety.
     const safe = appName.replace(/"/g, "").replace(/[;&|`$]/g, "");
-    if (process.platform === "win32") return _exec(`start "" "${safe}"`);
-    if (process.platform !== "darwin") return _exec(`${safe} &`);
-    return _exec(`open -a "${safe}"`);
+    if (process.platform === "win32") return _spawnExec("cmd.exe", ["/c", "start", "", safe]);
+    if (process.platform !== "darwin") return _spawnExec(safe, []);
+    return _spawnExec("open", ["-a", safe]);
 }
 
 // ── typeText ─────────────────────────────────────────────────────

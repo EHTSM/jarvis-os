@@ -19,8 +19,9 @@
  * accounts, or operator-created records) keep working unchanged.
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 
 const DATA_FILE = path.join(__dirname, "../../data/leads.json");
 
@@ -33,10 +34,24 @@ function _read() {
     } catch { return []; }
 }
 
+// OOPLIX V1 MASTER AUDIT (2026-08-16, load-test coverage audit): the old
+// fixed `DATA_FILE + ".tmp"` path meant every concurrent saveLead() call's
+// read-modify-write cycle shared one literal tmp filename — the same defect
+// class already found and fixed in taskQueue.cjs's _save() (Final
+// Production Integration mission, Blocker #6) and missionMemory.cjs's
+// _saveMissions() — this file was never swept for the identical pattern.
+// Fixed with the same proven per-call-unique tmp filename (pid + random
+// suffix), eliminating the literal-path collision. Note: this file is not
+// actually the write path POST /business/leads exercises (that route calls
+// businessDataService.cjs's createLead(), a separate module also fixed this
+// same pass); saveLead() here is used by the WhatsApp/webhook ingestion
+// pipeline instead — fixed on the same evidence-driven sweep for the
+// identical pattern, not because a defect was live-reproduced through this
+// specific file.
 function _write(data) {
     const dir = path.dirname(DATA_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmp = DATA_FILE + ".tmp";
+    const tmp = `${DATA_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
     fs.renameSync(tmp, DATA_FILE);
 }

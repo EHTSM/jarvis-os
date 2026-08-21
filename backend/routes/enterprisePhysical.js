@@ -22,6 +22,12 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
+
+// Real storageService.cjs upload (S3/R2 PUT) triggered by base64 payload —
+// zero rate limit meant an authenticated org member could flood external
+// storage with repeated large uploads (cost + concurrency exhaustion).
+const _uploadRL = rateLimiter(20, 60_000, "enterprise-physical-folder-sync-upload");
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _store = () => _try(() => require("../services/storageService.cjs"));
@@ -36,7 +42,7 @@ router.use("/enterprise/physical", requireAuth, attachOrg, requireOrgMember);
 // root (assigned client-side by the Electron folder-sync watcher) — used
 // only as the object-storage key suffix, never resolved against a real
 // filesystem path server-side.
-router.post("/enterprise/physical/folder-sync/upload", async (req, res) => {
+router.post("/enterprise/physical/folder-sync/upload", _uploadRL, async (req, res) => {
   const { relativePath, base64, contentType } = req.body || {};
   if (!relativePath || typeof relativePath !== "string") return res.status(400).json({ ok: false, error: "relativePath required" });
   if (!base64 || typeof base64 !== "string") return res.status(400).json({ ok: false, error: "base64 required" });

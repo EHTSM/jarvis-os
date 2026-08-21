@@ -41,6 +41,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 const oauth  = require("../services/oauthIntegrationLayer.cjs");
 const obs    = require("../services/observabilityEngine.cjs");
 const live   = require("../services/autonomousCompanyLiveMode.cjs");
@@ -71,7 +72,10 @@ router.get("/oauth/:provider/url", requireAuth, (req, res) => {
 
 // Callback: browser lands here after provider auth — returns JSON for API clients
 // or redirects for browser flows
-router.get("/oauth/:provider/callback", async (req, res) => {
+// Unauthenticated by design (the IdP redirects the browser here before any
+// Jarvis session exists) — rate-limited per IP+provider so it can't be used
+// to hammer oauth.handleCallback()'s token-exchange calls to the provider.
+router.get("/oauth/:provider/callback", rateLimiter(20, 60_000, "oauth-callback"), async (req, res) => {
     const { code, state, error: oauthError } = req.query;
     if (oauthError) return res.status(400).json({ error: `OAuth denied: ${oauthError}` });
     if (!code || !state) return res.status(400).json({ error: "code and state required" });

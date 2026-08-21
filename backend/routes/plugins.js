@@ -24,7 +24,7 @@ const { requireFeature } = require("../services/featureGate.cjs");
 const mgr = require("../services/pluginManagerService.cjs");
 
 router.use("/plugins", requireAuth);
-router.use(attachWorkspace);
+router.use("/plugins", attachWorkspace);
 
 function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";

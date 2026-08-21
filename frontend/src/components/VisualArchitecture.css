@@ -66,6 +66,6 @@
 .va-service-tile__dot--err  { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
 .va-service-tile__status { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
 .va-service-tile--ok   .va-service-tile__status { color: var(--success); }
-.va-service-tile--warn .va-service-tile__status { color: #fbbf24; }
+.va-service-tile--warn .va-service-tile__status { color: var(--warning); }
 .va-service-tile--err  .va-service-tile__status { color: var(--danger); }
 .va-service-tile__meta { font-size: 10px; color: var(--text-faint); }

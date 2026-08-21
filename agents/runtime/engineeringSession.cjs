@@ -18,8 +18,9 @@
  * Session states: "active" | "paused" | "blocked" | "completed" | "abandoned"
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 
 const SESSION_DIR  = path.join(__dirname, "../../data/sessions");
 const MAX_SESSIONS = 20;
@@ -45,10 +46,24 @@ function _load(id) {
     try { return JSON.parse(fs.readFileSync(_sessionPath(id), "utf8")); } catch { return null; }
 }
 
+// Persistence Sweep (2026-08-20): both this and heartbeat() below used to
+// write a session's file directly with no tmp+rename — a crash mid-write
+// could leave that one session's file truncated/corrupted (one-file-
+// per-session, so blast radius is scoped to a single session, not the
+// whole store, but still a real gap on a store this file's own header
+// comment says must "survive reload, reconnect, adapter restart"). Same
+// established fix as every other store this mission: unique per-call tmp
+// name (pid + random) + renameSync, atomic at the OS level.
+function _writeSession(sessionPath, data) {
+    const tmp = `${sessionPath}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+    fs.renameSync(tmp, sessionPath);
+}
+
 function _save(session) {
     _ensureDir();
     session.updatedAt = Date.now();
-    try { fs.writeFileSync(_sessionPath(session.id), JSON.stringify(session, null, 2)); } catch {}
+    try { _writeSession(_sessionPath(session.id), session); } catch {}
 }
 
 function _evictOldest() {
@@ -225,7 +240,7 @@ function heartbeat(sessionId) {
     const s = _load(sessionId);
     if (!s) return false;
     s.heartbeat = Date.now();
-    try { fs.writeFileSync(_sessionPath(s.id), JSON.stringify(s, null, 2)); } catch {}
+    try { _writeSession(_sessionPath(s.id), s); } catch {}
     return true;
 }
 

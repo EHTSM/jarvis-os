@@ -14,8 +14,24 @@ const _try  = fn => { try { return fn(); } catch { return null; } };
 // `router.use("/workforce-os", requireAuth)` gate before mounting this
 // file. Now pointing at the real module/export, with a fail-closed
 // fallback (403, not next()) if it were ever somehow still unavailable.
-const { requireAuth: _realRequireAuth } = _try(() => require("../middleware/authMiddleware")) || {};
+const { requireAuth: _realRequireAuth, operatorOnly } = _try(() => require("../middleware/authMiddleware")) || {};
 const requireAuth = _realRequireAuth || ((req, res) => res.status(500).json({ ok: false, error: "auth middleware unavailable" }));
+
+// Founder/Ops Authorization Cluster audit (2026-08-20): workforceManager.cjs
+// and its siblings (skillEngine, teamBuilder, capacityPlanner,
+// performanceEngine) have zero orgId concept — real, platform-wide,
+// mutable state (missions, team composition, capacity assignments).
+// requireAuth alone let any signed-up customer trigger these mutations
+// (live-reproduced: POST /workforce-os/mission/run reached the handler
+// unauthorized-checked only on missing "title", not auth). The ONLY
+// confirmed real frontend consumer (AgentRegistryCenter.jsx) calls exactly
+// one route, GET /workforce-os/agents — every mutation below has zero
+// confirmed frontend usage (workforceOSApi.js defines client functions for
+// them, but nothing imports and calls those functions). Matches the
+// established businessOrg.js/autonomousKnowledgeOrg.js precedent: gate the
+// mutations with operatorOnly, leave reads at requireAuth since some are
+// genuinely used and none return data more sensitive than the confirmed-
+// safe /agents read.
 
 const _wm  = () => _try(() => require("../services/workforceManager.cjs"));
 const _se  = () => _try(() => require("../services/skillEngine.cjs"));
@@ -34,7 +50,7 @@ router.get("/workforce-os/stats", requireAuth, (req, res) =>
 
 // ── Workforce manager ─────────────────────────────────────────────────────────
 
-router.post("/workforce-os/mission/run", requireAuth, async (req, res) => {
+router.post("/workforce-os/mission/run", requireAuth, operatorOnly, async (req, res) => {
   const { title, description, domain, priority, requiredSkills, teamType, minAgents, maxAgents, dryRun } = req.body || {};
   if (!title) return res.status(400).json({ ok: false, error: "title required" });
   try {
@@ -59,7 +75,7 @@ router.get("/workforce-os/missions/:id", requireAuth, (req, res) => {
 router.get("/workforce-os/report", requireAuth, (req, res) =>
   res.json(_wm()?.getWorkforceReport?.() || { ok: false }));
 
-router.post("/workforce-os/reassign", requireAuth, (req, res) => {
+router.post("/workforce-os/reassign", requireAuth, operatorOnly, (req, res) => {
   const { teamId, agentId, reason } = req.body || {};
   if (!teamId || !agentId) return res.status(400).json({ ok: false, error: "teamId and agentId required" });
   res.json(_wm()?.reassignAgent?.(teamId, agentId, { reason }) || { ok: false });
@@ -93,7 +109,7 @@ router.get("/workforce-os/skills/stats", requireAuth, (req, res) =>
 
 // ── Team builder ──────────────────────────────────────────────────────────────
 
-router.post("/workforce-os/teams/build", requireAuth, (req, res) => {
+router.post("/workforce-os/teams/build", requireAuth, operatorOnly, (req, res) => {
   const { missionId, missionTitle, missionDomain, teamType, requiredSkills, size } = req.body || {};
   if (!missionId) return res.status(400).json({ ok: false, error: "missionId required" });
   res.json(_tb()?.buildTeam?.({ missionId, missionTitle, missionDomain, teamType, requiredSkills, size }) || { ok: false });
@@ -110,13 +126,13 @@ router.get("/workforce-os/teams/:id", requireAuth, (req, res) => {
   res.json({ ok: true, team });
 });
 
-router.post("/workforce-os/teams/:id/replace", requireAuth, (req, res) => {
+router.post("/workforce-os/teams/:id/replace", requireAuth, operatorOnly, (req, res) => {
   const { agentId, reason } = req.body || {};
   if (!agentId) return res.status(400).json({ ok: false, error: "agentId required" });
   res.json(_tb()?.replaceAgent?.(req.params.id, agentId, { reason }) || { ok: false });
 });
 
-router.post("/workforce-os/teams/:id/disband", requireAuth, (req, res) => {
+router.post("/workforce-os/teams/:id/disband", requireAuth, operatorOnly, (req, res) => {
   const { outcome, minutesSaved } = req.body || {};
   res.json(_tb()?.disbandTeam?.(req.params.id, { outcome, minutesSaved }) || { ok: false });
 });
@@ -132,21 +148,21 @@ router.get("/workforce-os/capacity", requireAuth, (req, res) =>
 router.get("/workforce-os/capacity/snapshot", requireAuth, (req, res) =>
   res.json(_cp()?.snapshot?.() || { ok: false }));
 
-router.post("/workforce-os/capacity/rebalance", requireAuth, (req, res) =>
+router.post("/workforce-os/capacity/rebalance", requireAuth, operatorOnly, (req, res) =>
   res.json(_cp()?.rebalance?.() || { ok: false }));
 
-router.post("/workforce-os/capacity/queue", requireAuth, (req, res) => {
+router.post("/workforce-os/capacity/queue", requireAuth, operatorOnly, (req, res) => {
   const { title, skillsRequired, priority, teamId, missionId } = req.body || {};
   res.json(_cp()?.enqueueWork?.({ title, skillsRequired, priority, teamId, missionId }) || { ok: false });
 });
 
-router.post("/workforce-os/capacity/assign", requireAuth, (req, res) => {
+router.post("/workforce-os/capacity/assign", requireAuth, operatorOnly, (req, res) => {
   const { workItemId, agentId } = req.body || {};
   if (!workItemId || !agentId) return res.status(400).json({ ok: false, error: "workItemId and agentId required" });
   res.json(_cp()?.assignWork?.(workItemId, agentId) || { ok: false });
 });
 
-router.post("/workforce-os/capacity/complete", requireAuth, (req, res) => {
+router.post("/workforce-os/capacity/complete", requireAuth, operatorOnly, (req, res) => {
   const { workItemId, outcome } = req.body || {};
   res.json(_cp()?.completeWork?.(workItemId, { outcome }) || { ok: false });
 });
@@ -161,7 +177,7 @@ router.get("/workforce-os/performance/rankings", requireAuth, (req, res) => {
   res.json(_pe()?.getRankings?.({ org, limit: limit ? +limit : 20 }) || { ok: false });
 });
 
-router.post("/workforce-os/performance/record", requireAuth, (req, res) =>
+router.post("/workforce-os/performance/record", requireAuth, operatorOnly, (req, res) =>
   res.json(_pe()?.record?.(req.body || {}) || { ok: false }));
 
 router.get("/workforce-os/performance/teams/:id", requireAuth, (req, res) =>

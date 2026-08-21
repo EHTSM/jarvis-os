@@ -54,7 +54,7 @@
   border-radius: 4px;
 }
 .mc-sys-badge--ok      { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid rgba(52,211,153,0.3); }
-.mc-sys-badge--degraded{ background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.mc-sys-badge--degraded{ background: rgba(245,158,11,0.15); color: var(--warning); border: 1px solid rgba(251,191,36,0.3); }
 .mc-sys-badge--critical{ background: rgba(239,68,68,0.15);  color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
 .mc-sys-badge--unknown { background: rgba(148,163,184,0.12); color: var(--text-dim); border: 1px solid rgba(148,163,184,0.25); }
 .mc-uptime,
@@ -81,7 +81,7 @@
 .mc-alert--warn {
   background: rgba(245,158,11,0.1);
   border: 1px solid rgba(251,191,36,0.25);
-  color: #fbbf24;
+  color: var(--warning);
 }
 .mc-alert--critical {
   background: rgba(239,68,68,0.1);
@@ -236,7 +236,7 @@
   flex-shrink: 0;
 }
 .mc-dot--ok   { background: #34d399; box-shadow: 0 0 0 2px rgba(52,211,153,0.2); }
-.mc-dot--warn { background: #fbbf24; box-shadow: 0 0 0 2px rgba(251,191,36,0.2); }
+.mc-dot--warn { background: var(--warning); box-shadow: 0 0 0 2px rgba(251,191,36,0.2); }
 .mc-dot--err  { background: #f87171; box-shadow: 0 0 0 2px rgba(248,113,113,0.2); }
 
 /* ── Service rows (AI Provider card) ── */
@@ -518,7 +518,7 @@
 }
 .mc-lc-event-ts    { color: var(--text-faint); flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .mc-lc-event-type  { color: var(--info); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mc-lc-event-stage { color: #fbbf24; font-size: 10px; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; }
+.mc-lc-event-stage { color: var(--warning); font-size: 10px; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; }
 
 /* ── Emergency stop confirm modal ──────────────────────────────── */
 .mc-stop-overlay {

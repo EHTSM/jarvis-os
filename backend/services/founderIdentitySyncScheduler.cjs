@@ -80,4 +80,19 @@ function startIdentitySyncSchedule(intervalMs = 6 * 60 * 60 * 1000) {
     return _scheduleHandle;
 }
 
-module.exports = { runSyncCycle, startIdentitySyncSchedule };
+// Scheduler Reliability & Recovery Audit (2026-08-16): no way existed to
+// stop this timer at all — confirmed via grep, unlike orgAutomationScheduler.
+// stop()/browserScheduler.stop(), which both exist and are already wired
+// into server.js's graceful shutdown sequence. .unref() means it never
+// blocked process exit, but that's a different property from being able to
+// cleanly stop it (e.g. before a controlled restart, or in a test that
+// starts and needs to tear down its own timers). Same minimal
+// clearInterval-and-null-out pattern as its two sibling schedulers.
+function stopIdentitySyncSchedule() {
+    if (!_scheduleHandle) return { ok: true, wasRunning: false };
+    clearInterval(_scheduleHandle);
+    _scheduleHandle = null;
+    return { ok: true, wasRunning: true };
+}
+
+module.exports = { runSyncCycle, startIdentitySyncSchedule, stopIdentitySyncSchedule };

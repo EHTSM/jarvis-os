@@ -57,6 +57,18 @@ function requireWorkspaceMember(req, res, next) {
         _ts: Date.now(),
       });
     } catch {}
+    // OOPLIX V1 MASTER AUDIT (2026-08-16): the emit() above is real-time-only
+    // — runtimeEventBus has no persistence beyond a shared 500-entry ring
+    // buffer across every event type platform-wide, so this signal is lost
+    // forever unless an SSE client happens to be connected at that exact
+    // moment. Also write it to the same durable data/logs/audit.ndjson trail
+    // operatorOnly/requireOrgMember/requireOrgPermission now use, so a real
+    // cross-workspace probing attempt survives being missed live.
+    try {
+      require("../utils/auditLog.cjs").recordAuth({
+        action: "workspace_access_denied", operator: req.user, method: `${req.originalUrl}::${req.workspace.id}`,
+      });
+    } catch { /* audit logging must never block the actual denial */ }
     return res.status(403).json({ error: "Not a member of this workspace" });
   }
   next();

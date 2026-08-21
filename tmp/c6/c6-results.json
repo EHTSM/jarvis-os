@@ -1,0 +1,138 @@
+[
+  {
+    "engine": "chromium",
+    "version": "149.0.7827.55",
+    "blocked": null,
+    "journeys": {
+      "authLogin": {
+        "status": 200
+      },
+      "authVerified": true,
+      "dashboardLoaded": true,
+      "orgSwitcherDropdown": {
+        "found": true,
+        "visible": true,
+        "hitsDropdown": true
+      },
+      "commandPalette": {
+        "open": true,
+        "resultCount": 93
+      },
+      "paletteSearch": {
+        "resultCount": 2
+      },
+      "paletteEscapeCloses": true,
+      "crm": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "finance": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "sales": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "ai": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "settings": {
+        "hasContent": true
+      },
+      "formValidation": {
+        "errorShown": true,
+        "text": "Enter a valid amount."
+      },
+      "cssSupport": {
+        "flex": true,
+        "grid": true,
+        "sticky": true,
+        "backdropFilter": true,
+        "cssVars": true,
+        "gap": true
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "jsErrors": []
+  },
+  {
+    "engine": "firefox",
+    "version": "151.0",
+    "blocked": null,
+    "journeys": {
+      "authLogin": {
+        "status": 200
+      },
+      "authVerified": true,
+      "dashboardLoaded": true,
+      "orgSwitcherDropdown": {
+        "found": true,
+        "visible": true,
+        "hitsDropdown": true
+      },
+      "commandPalette": {
+        "open": true,
+        "resultCount": 93
+      },
+      "paletteSearch": {
+        "resultCount": 2
+      },
+      "paletteEscapeCloses": true,
+      "crm": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "finance": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "sales": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "ai": {
+        "hasContent": true,
+        "docOverflow": 0
+      },
+      "settings": {
+        "hasContent": true
+      },
+      "formValidation": {
+        "errorShown": true,
+        "text": "Enter a valid amount."
+      },
+      "cssSupport": {
+        "flex": true,
+        "grid": true,
+        "sticky": true,
+        "backdropFilter": true,
+        "cssVars": true,
+        "gap": true
+      }
+    },
+    "consoleErrors": [],
+    "jsErrors": []
+  },
+  {
+    "engine": "webkit",
+    "version": "26.5",
+    "blocked": "auth did not verify (hasTabs=false) after login 200",
+    "journeys": {
+      "authLogin": {
+        "status": 200
+      },
+      "authVerified": false
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    ],
+    "jsErrors": []
+  }
+]

@@ -223,11 +223,31 @@ const indexHtmlPath = path.join(frontendBuild, "index.html");
 // tag in the HTML and the browser blocks every script — the entire SPA fails
 // to load (blank page) for every visitor. We inject the nonce as a `nonce`
 // attribute on every <script> tag at serve time instead.
+// C.1 (C1-D4): the template was cached for the process lifetime. CRA emits
+// content-hashed bundles, so after a redeploy the still-running server kept
+// serving the OLD index.html, which referenced main.<oldhash>.js — files that
+// no longer exist on disk. Every visitor got a blank page (the browser refuses
+// the 404 as a script) until someone remembered to restart the process.
+// Measured live during C.1: served main.ee3b42b3.js while disk had
+// main.51b4f711.js.
+//
+// Fixed by keying the cache on the file's mtime+size: still one read per
+// deploy rather than per request, but a rebuilt index.html is picked up
+// automatically. A stat() per request is negligible next to serving a blank app.
 let _indexHtmlTemplate = null;
+let _indexHtmlStamp = null;
 function _renderIndexHtml(req, res) {
-    if (_indexHtmlTemplate === null) {
-        try { _indexHtmlTemplate = require("fs").readFileSync(indexHtmlPath, "utf8"); }
-        catch { return res.status(500).send("Frontend build not found"); }
+    let stamp = null;
+    try {
+        const st = require("fs").statSync(indexHtmlPath);
+        stamp = `${st.mtimeMs}:${st.size}`;
+    } catch { return res.status(500).send("Frontend build not found"); }
+
+    if (_indexHtmlTemplate === null || _indexHtmlStamp !== stamp) {
+        try {
+            _indexHtmlTemplate = require("fs").readFileSync(indexHtmlPath, "utf8");
+            _indexHtmlStamp = stamp;
+        } catch { return res.status(500).send("Frontend build not found"); }
     }
     const nonce = res.locals.cspNonce;
     const html = nonce
@@ -244,6 +264,26 @@ if (hasFrontendBuild) {
     // SPA fallback further down) render it dynamically instead.
     app.use(express.static(frontendBuild, { index: false }));
     app.get("/", _renderIndexHtml);
+
+    // Phase C.1 (C1-D1). express.static calls next() when a build asset is
+    // missing, so the request continued into the API stack and came back as
+    // 401 {"error":"Unauthorized"} — a *missing file* reported as an *auth
+    // failure*. During a partial or stale deploy that sends an operator to
+    // debug authentication while the real cause is an absent bundle, and it
+    // is what blocked the C.1 accessibility scan: the SPA could not boot and
+    // every route measured as zero focusable elements.
+    //
+    // Build assets are public static files; they are never auth-gated when
+    // present, so they must not become auth-gated by being absent. Anything
+    // under a build asset directory that reaches this point does not exist.
+    app.use(["/static", "/assets"], (req, res) => {
+        res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.baseUrl}${req.path}`,
+            hint: "Static build asset not found — the frontend build may be stale or incomplete.",
+        });
+    });
+
     logger.info("Serving frontend build from /frontend/build");
 }
 
@@ -355,6 +395,19 @@ app.use((err, req, res, _next) => {
             service: "http", path: req.originalUrl, method: req.method,
         });
     } catch { /* non-fatal — must never block the error response */ }
+    // MASTER FINAL GAP CLOSURE (2026-08-15, C10-028): sentryService.cjs
+    // exported real capture functions that nothing ever called. Wired here
+    // (and at the two process-level handlers below) — no new error-tracking
+    // system, reuses the existing HTTP-envelope service as-is. Honestly a
+    // no-op until SENTRY_DSN is set (captureException's own early return),
+    // so this introduces no fake success and requires no credential to be
+    // correct code — only to actually deliver anywhere.
+    try {
+        require("./services/sentryService.cjs").captureException(err, {
+            tags: { service: "http" },
+            extra: { path: req.originalUrl, method: req.method },
+        }).catch(() => {});
+    } catch { /* non-fatal — must never block the error response */ }
     const body = { success: false, error: "Internal server error" };
     if (process.env.NODE_ENV !== "production") body.details = err.message;
     res.status(500).json(body);
@@ -424,13 +477,49 @@ function _gracefulShutdown(signal) {
     // 3a. Stop browser schedule executor
     try { require("../agents/browser/browserScheduler.cjs").stop(); } catch { /* ignore */ }
 
+    // 3a2. Stop content post scheduler (see the matching start() comment above)
+    try { require("../agents/content/contentScheduler.cjs").stop(); } catch { /* ignore */ }
+
+    // 3b. Stop org automation's real node-cron dispatcher — Scheduler
+    // Reliability & Recovery Audit (2026-08-16): orgAutomationScheduler.cjs
+    // has a working stop() (cronTask.stop() + clears the handle) but it was
+    // never called anywhere in this file, confirmed via grep — the same
+    // "real stop() exists but isn't wired into shutdown" gap already fixed
+    // once for closeDB() above. Not calling it left the cron task running
+    // (and its own dispatcher, in-flight fireRule calls) through the entire
+    // shutdown sequence instead of stopping cleanly alongside every other
+    // scheduler here.
+    try { require("./services/orgAutomationScheduler.cjs").stop(); } catch { /* ignore */ }
+
+    // 3c. Stop the founder identity sync 6h timer — same audit, same class
+    // of gap: this scheduler previously had no stop() at all (fixed
+    // separately in founderIdentitySyncScheduler.cjs) and consequently was
+    // never part of any shutdown sequence either.
+    try { require("./services/founderIdentitySyncScheduler.cjs").stopIdentitySyncSchedule(); } catch { /* ignore */ }
+
     // 4. Stop memory sampler
     try { memTracker.stop(); } catch { /* ignore */ }
 
     // 5a. Stop event bus (closes SSE connections cleanly)
     try { require("../agents/runtime/runtimeEventBus.cjs").stop(); } catch { /* ignore */ }
 
-    // 5. Give in-flight work 5 s to drain, then exit
+    // 5b. Close the SQLite shadow connection — checkpoints and truncates the
+    // WAL file. OOPLIX V1 MASTER AUDIT (2026-08-16, graceful-shutdown
+    // coverage audit): closeDB() was never called anywhere in this file,
+    // confirmed by direct grep. WAL mode is crash-safe by design (already
+    // live-verified this session under real SIGKILL — no data loss, no
+    // corruption), so this was never a correctness risk, but a real,
+    // measured consequence was found live: data/jarvis.db-wal had grown to
+    // 4.1 MB — LARGER than the main jarvis.db file itself (930 KB) —
+    // because nothing ever checkpoints it on a clean exit. A manual
+    // `PRAGMA wal_checkpoint(TRUNCATE)` was confirmed to shrink it to 0
+    // bytes. Left unaddressed, this grows unboundedly across a long-running
+    // production deployment's restarts. Calling the connection manager's
+    // own existing closeDB() (which better-sqlite3 checkpoints on close by
+    // default) fixes this with no new architecture.
+    try { require("./db/sqlite.cjs").closeDB(); } catch { /* ignore */ }
+
+    // 6. Give in-flight work 5 s to drain, then exit
     setTimeout(() => {
         logger.info("[Shutdown] Clean exit");
         process.exit(0);
@@ -507,6 +596,11 @@ process.on("uncaughtException", (err) => {
     errTracker.record("uncaughtException", err.message || String(err));
     logger.error("FATAL uncaughtException — exiting for clean restart:");
     logger.error(err.stack || err.message || String(err));
+    // C10-028: best-effort — the process is exiting in 200ms regardless, so
+    // this capture races the exit and may not complete delivery even with a
+    // real DSN configured. Still correct to attempt: honest best-effort, not
+    // a claim of guaranteed delivery.
+    try { require("./services/sentryService.cjs").captureException(err, { tags: { service: "process", handler: "uncaughtException" } }).catch(() => {}); } catch {}
     process.exitCode = 1;
     setTimeout(() => process.exit(1), 200);
 });
@@ -516,6 +610,10 @@ process.on("unhandledRejection", (reason) => {
     const msg = reason instanceof Error ? reason.stack : String(reason);
     errTracker.record("unhandledRejection", msg);
     logger.error(`Unhandled promise rejection: ${msg}`);
+    try {
+        const err = reason instanceof Error ? reason : new Error(String(reason));
+        require("./services/sentryService.cjs").captureException(err, { tags: { service: "process", handler: "unhandledRejection" } }).catch(() => {});
+    } catch {}
 });
 
 // SIGTERM: PM2/systemd graceful stop.
@@ -895,12 +993,39 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[EventBus] failed to start:", err.message);
     }
 
+    // ── Automation OS: event-triggered rule execution ──────────────
+    // MASTER FINAL GAP CLOSURE (2026-08-15, C10-007): the only trigger type
+    // wired to actually fire is "event" — reuses the event bus started
+    // just above. schedule/threshold/webhook remain correctly unimplemented
+    // (see automationService.cjs's own header comment for why).
+    try {
+        const r = require("../backend/services/automationService.cjs").startEventLoop();
+        logger.info(`[Automation] event-triggered rule execution ${r.started ? "started" : "not started (" + r.reason + ")"}`);
+    } catch (err) {
+        logger.warn("[Automation] event loop failed to start:", err.message);
+    }
+
     // ── Browser schedule executor ─────────────────────────────────
     try {
         require("../agents/browser/browserScheduler.cjs").start();
         logger.info("[BrowserScheduler] schedule executor started — checks every 60s");
     } catch (err) {
         logger.warn("[BrowserScheduler] failed to start:", err.message);
+    }
+
+    // ── Content post scheduler ────────────────────────────────────
+    // Scheduler Reliability & Recovery Audit (2026-08-16): contentScheduler.
+    // cjs's processDue() was real and fully built (pending → ready → sent/
+    // failed, WhatsApp broadcast dispatch) but nothing anywhere ever called
+    // it automatically — confirmed via grep. A post scheduled for a future
+    // time sat at "pending" forever unless something explicitly dispatched
+    // a "process_due" task. Wires the same start()/stop() tick pattern
+    // browserScheduler.cjs already establishes, not a new mechanism.
+    try {
+        require("../agents/content/contentScheduler.cjs").start();
+        logger.info("[ContentScheduler] due-post executor started — checks every 60s");
+    } catch (err) {
+        logger.warn("[ContentScheduler] failed to start:", err.message);
     }
 
     // ── Long-session drift monitor ────────────────────────────────

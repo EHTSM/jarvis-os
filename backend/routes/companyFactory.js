@@ -7,6 +7,12 @@
 const router = require("express").Router();
 
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter      = require("../middleware/rateLimiter");
+
+// Real storageService.cjs upload (S3/R2 PUT) triggered by base64 payload —
+// zero rate limit meant an authenticated org member could flood external
+// storage with repeated large uploads (cost + concurrency exhaustion).
+const _assetUploadRL = rateLimiter(20, 60_000, "company-factory-asset-upload");
 
 const _try  = fn => { try { return fn(); } catch { return null; } };
 
@@ -406,7 +412,7 @@ router.get("/company-factory/companies/:id/assets", requireAuth, (req, res) => {
   res.json({ ok: true, orgId: company.orgId, assets });
 });
 
-router.post("/company-factory/companies/:id/assets", requireAuth, async (req, res) => {
+router.post("/company-factory/companies/:id/assets", requireAuth, _assetUploadRL, async (req, res) => {
   const company = _requireCompanyOrgPermission(req, res);
   if (!company) return;
   const { type, prompt, tags, folder, url, dataUrl, mimeType, base64, key, contentType } = req.body || {};

@@ -357,7 +357,24 @@ async function drainQueue() {
     try {
         return await dispatch(entry.task.input);
     } catch (err) {
+        // Queue Layer Reliability & Safety Audit (2026-08-16): dispatch()
+        // already catches and reports per-task execution failures via its
+        // own `settled` results (memory.recordExecution() logs those), so
+        // this catch is the rare path — a genuinely unexpected throw before
+        // dispatch() reaches that point (e.g. _plan() itself throwing).
+        // Previously that just logged and returned null: the priorityQueue
+        // entry was already dequeued, so the task vanished with only a log
+        // line — no retry, no record. Pushed to the same deadLetterQueue
+        // executionEngine.cjs already uses for its own exhausted-retry
+        // failures, so this rare path is no longer silently lost.
         logger.error(`[Runtime] drain error for id=${entry.id}: ${err.message}`);
+        try {
+            require("./deadLetterQueue.cjs").push({
+                taskId: `pq-${entry.id}`, taskType: "priorityQueue-drain",
+                input: entry.task?.input || "", error: err.message,
+                attempts: 1, agentId: null,
+            });
+        } catch { /* non-critical */ }
         return null;
     }
 }

@@ -7,7 +7,7 @@
  */
 
 const router      = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _aee = () => _try(() => require("../services/autonomousExecutionEngine.cjs"));
@@ -17,7 +17,26 @@ const _ev  = () => _try(() => require("../services/executionEvidence.cjs"));
 const _rec = () => _try(() => require("../services/executionRecovery.cjs"));
 const _met = () => _try(() => require("../services/executionMetrics.cjs"));
 
-router.use("/execution", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): this whole file (autonomousExecutionEngine.cjs,
+// "the top-level autonomous execution orchestrator for Class A FOUNDER
+// workflows" — its own header comment) is the same class of platform-wide,
+// not-tenant-scoped surface already fixed for /eos, /ent, /eco, /civ, /auto,
+// and the ACP-9-12 family (/repo-viz, /memory, /memory-index, /improvement,
+// /platform) earlier this session: zero orgId anywhere in
+// autonomousExecutionEngine.cjs's backing store (grep-confirmed), and "founder"
+// is only a default triggeredBy label, not a real access-control role (the
+// real roles are operator/user/enterprise_admin/portfolio_owner —
+// accountService.js's own doc comment). Previously gated by requireAuth
+// alone; live-reproduced with a real, non-operator customer account: GET
+// /execution/dashboard returned the real founder automation dashboard
+// (execution counts, founderHoursEliminated, per-domain breakdowns), GET
+// /execution/runs returned the full real run history, and POST
+// /execution/execute/:workflowId was blocked only by a nonexistent test
+// workflow ID — not by any role check; a real workflow ID would have
+// executed. No frontend consumer of any /execution/* route exists anywhere
+// in the codebase (grep-confirmed) — there is no tenant-scoped equivalent
+// surface to preserve. Same fix as the precedent surfaces: add operatorOnly.
+router.use("/execution", requireAuth, operatorOnly);
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 router.get("/execution/dashboard", (req, res) => {

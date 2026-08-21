@@ -35,12 +35,16 @@
 
 const router = require("express").Router();
 
-const cal = () => require("../services/capitalAllocationEngine.cjs");
-const ian = () => require("../services/investmentAnalysisEngine.cjs");
-const pfs = () => require("../services/portfolioStrategyEngine.cjs");
-const rsk = () => require("../services/riskAssessmentEngine.cjs");
-const iat = () => require("../services/investmentAutomationEngine.cjs");
-const idb = () => require("../services/investmentDashboard.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const cal = () => _try(() => require("../services/capitalAllocationEngine.cjs"));
+const ian = () => _try(() => require("../services/investmentAnalysisEngine.cjs"));
+const pfs = () => _try(() => require("../services/portfolioStrategyEngine.cjs"));
+const rsk = () => _try(() => require("../services/riskAssessmentEngine.cjs"));
+const iat = () => _try(() => require("../services/investmentAutomationEngine.cjs"));
+const idb = () => _try(() => require("../services/investmentDashboard.cjs"));
 
 function ok(res, data)           { res.json({ ok: true, ...data }); }
 function err(res, msg, code=400) { res.status(code).json({ ok: false, error: msg }); }

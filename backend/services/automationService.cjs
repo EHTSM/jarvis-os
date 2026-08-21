@@ -307,25 +307,56 @@ function createTemplate(workspaceId, { name, description = "", category = "opera
   return tpl;
 }
 
-async function fireRule(workspaceId, ruleId, context = {}, requestingAccountId = "system", dryRun = false) {
-  const { all, ws } = _wsData(workspaceId);
-  const rule = ws.rules.find(r => r.id === ruleId);
-  if (!rule) throw new Error("Rule not found");
-  if (!dryRun && !rule.enabled) return { outcome: "skipped", detail: "Rule is disabled" };
+// Serializes every fireRule() call (including reentrant ones triggered by
+// an "emit_event" action synchronously firing another rule mid-execution —
+// see the comment inside fireRule() below) onto a single promise chain, so
+// the read-modify-write against data/automation-layer.json never overlaps
+// across two in-flight calls. Cheap and correct for this store's actual
+// concurrency level (rule firings are not a hot path); avoids inventing a
+// real file-lock or moving off JSON-file storage, neither of which this
+// pass's minimal-fix mandate calls for.
+let _fireChain = Promise.resolve();
+function fireRule(...args) {
+  const run = _fireChain.then(() => _fireRuleImpl(...args));
+  // Keep the chain alive even if this call rejects, so one failure doesn't
+  // wedge every subsequent rule firing.
+  _fireChain = run.catch(() => {});
+  return run;
+}
 
-  // Evaluate conditions
-  if (!_evalConditions(rule.conditions, context)) {
+async function _fireRuleImpl(workspaceId, ruleId, context = {}, requestingAccountId = "system", dryRun = false) {
+  const { ws: wsPre } = _wsData(workspaceId);
+  const rulePre = wsPre.rules.find(r => r.id === ruleId);
+  if (!rulePre) throw new Error("Rule not found");
+  if (!dryRun && !rulePre.enabled) return { outcome: "skipped", detail: "Rule is disabled" };
+
+  // Evaluate conditions (read-only against the pre-fetched snapshot — no
+  // write happens yet, so no re-read is needed for this branch).
+  if (!_evalConditions(rulePre.conditions, context)) {
+    const { all, ws } = _wsData(workspaceId);
+    const rule = ws.rules.find(r => r.id === ruleId) || rulePre;
     _addHistory(ws, ruleId, rule.name, "skipped", "Conditions not met", dryRun);
     _save(all);
     return { outcome: "skipped", detail: "Conditions not met" };
   }
 
-  // Execute
-  const result = await _executeAction(rule, context, workspaceId, dryRun);
+  // Execute. NOTE: _executeAction() can synchronously re-enter this exact
+  // function (e.g. an "emit_event" action whose listener is another rule's
+  // event-triggered fireRule() call — see startEventLoop() below). That
+  // reentrant call reads, mutates, and saves data/automation-layer.json to
+  // disk BEFORE this call resumes below, so the `all`/`ws` object captured
+  // above the await is now stale and must not be written back verbatim —
+  // doing so would silently clobber the reentrant call's own history/
+  // runCount write (live-reproduced: the inner rule's history entry
+  // vanished when the outer rule's stale snapshot was saved on top of it).
+  const result = await _executeAction(rulePre, context, workspaceId, dryRun);
 
-  // Record
+  // Record against a FRESH read taken after the action ran, so any
+  // reentrant writes that happened during the await are preserved.
+  const { all, ws } = _wsData(workspaceId);
+  const rule = ws.rules.find(r => r.id === ruleId) || rulePre;
   if (!dryRun) {
-    rule.runCount++;
+    rule.runCount = (rule.runCount || 0) + 1;
     rule.lastRunAt   = Date.now();
     rule.lastOutcome = result.outcome;
   }
@@ -379,10 +410,67 @@ function getStatistics(workspaceId) {
   };
 }
 
+function deleteRule(workspaceId, ruleId, requestingAccountId) {
+  const { all, ws } = _wsData(workspaceId);
+  const idx = ws.rules.findIndex(r => r.id === ruleId);
+  if (idx === -1) throw new Error("Rule not found");
+  const [removed] = ws.rules.splice(idx, 1);
+  try { _sec()?.addAuditEntry(workspaceId, requestingAccountId, "automation.rule_deleted", `id=${ruleId} name=${removed.name}`); } catch {}
+  _evtBus()?.emit("automation:rule:deleted", { workspaceId, ruleId, _ts: Date.now() });
+  _save(all);
+  return { deleted: true, ruleId };
+}
+
+// ── MASTER FINAL GAP CLOSURE (2026-08-15, C10-007) ─────────────────
+// Live execution loop for `event`-type triggers only. Reuses the existing
+// runtimeEventBus.subscribe() — no new scheduler, no new observer, no new
+// polling loop. `schedule`/`threshold`/`webhook` triggers remain correctly
+// unimplemented: firing them would require inventing cron semantics, a
+// metrics-threshold monitor, or an inbound-webhook-to-tenant-identity
+// mapping — none of which exist elsewhere in the codebase to reuse, and
+// each is a real product decision (see MASTER-OPEN-FINDINGS.md C10-007),
+// not something this pass may invent unilaterally. `manual`/`approval`
+// triggers were already reachable via fireRule()'s existing API path.
+//
+// Design: one process-wide subscription (idempotent — registered once per
+// process, guarded by _loopStarted) receives every event on the bus and,
+// for each enabled `event`-type rule across every workspace whose
+// `trigger.eventName` matches, calls the already-real fireRule() with the
+// event's payload as context. All existing safety (approval gates,
+// condition evaluation, history, runCount) applies unchanged because it
+// goes through the same fireRule() the manual/API path already used.
+let _loopStarted = false;
+function startEventLoop() {
+  if (_loopStarted) return { started: false, reason: "already running" };
+  const bus = _evtBus();
+  if (!bus) return { started: false, reason: "runtimeEventBus unavailable" };
+  bus.subscribe("automation-service-event-loop", (evt) => {
+    const type = evt?.type;
+    if (!type) return;
+    let all;
+    try { all = _read(); } catch { return; }
+    for (const [workspaceId, ws] of Object.entries(all || {})) {
+      const rules = ws?.rules || [];
+      for (const rule of rules) {
+        if (!rule.enabled || rule.status !== "active") continue;
+        if (rule.trigger?.type !== "event") continue;
+        if (rule.trigger?.eventName !== type) continue;
+        // Fire asynchronously — never let one workspace's rule execution
+        // block the event bus's synchronous emit() loop for other subscribers.
+        fireRule(workspaceId, rule.id, evt.payload || {}, "system:event-loop", false).catch(() => {});
+      }
+    }
+  });
+  _loopStarted = true;
+  return { started: true };
+}
+function isEventLoopRunning() { return _loopStarted; }
+
 module.exports = {
   TRIGGER_TYPES, ACTION_TYPES,
-  getRules, createRule, updateRule,
+  getRules, createRule, updateRule, deleteRule,
   getTemplates, createTemplate,
   fireRule, dryRun,
   getHistory, getStatistics,
+  startEventLoop, isEventLoopRunning,
 };

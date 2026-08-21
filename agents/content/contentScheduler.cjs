@@ -131,15 +131,29 @@ function stats() {
     };
 }
 
+// Scheduler Reliability & Recovery Audit (2026-08-16): processDue() was
+// real and fully built, but confirmed via grep that nothing anywhere in
+// the codebase ever called it automatically — a post scheduled for a
+// future time sat at "pending" forever unless a human/agent explicitly
+// dispatched a "process_due" task. In-flight guard here (mirroring
+// browserScheduler.cjs's _inFlight Set — the established pattern for this
+// exact class of problem) closes the real overlap window it otherwise has:
+// getDue() reads status==="pending" before this loop updates any status,
+// so two genuinely concurrent processDue() calls (a scheduled tick racing
+// a manual "process_due" task dispatch) could both select the same due
+// post before either one's _updateStatus("ready") lands.
+const _processingIds = new Set();
+
 /**
  * Process due posts — mark ready and optionally trigger marketingAgent.
  * Returns list of posts that were marked ready.
  */
 async function processDue() {
-    const due     = getDue();
+    const due     = getDue().filter(p => !_processingIds.has(p.id));
     const ready   = [];
 
     for (const post of due) {
+        _processingIds.add(post.id);
         _updateStatus(post.id, "ready");
 
         // Optional: trigger WhatsApp distribution via marketingAgent
@@ -152,6 +166,7 @@ async function processDue() {
                 markFailed(post.id, err.message);
             }
         }
+        _processingIds.delete(post.id);
 
         ready.push(post);
     }
@@ -196,4 +211,32 @@ async function run(task) {
     }
 }
 
-module.exports = { add, list, getDue, markSent, markFailed, cancel, remove, stats, processDue, run };
+// ── Autonomous tick ──────────────────────────────────────────────────────
+// 60s interval, matching browserScheduler.cjs's own TICK_MS — this queue's
+// due-time resolution is per-post scheduledAt, not cron-field granularity,
+// so a 1-minute check is more than tight enough without adding load.
+const TICK_MS = 60_000;
+let _interval = null;
+let _active   = false;
+
+function start() {
+    if (_active) return { ok: true, alreadyRunning: true };
+    _active = true;
+    processDue().catch(() => {}); // immediate first check, non-blocking
+    _interval = setInterval(() => { processDue().catch(() => {}); }, TICK_MS);
+    if (typeof _interval.unref === "function") _interval.unref();
+    return { ok: true, alreadyRunning: false };
+}
+
+function stop() {
+    if (_interval) { clearInterval(_interval); _interval = null; }
+    const wasRunning = _active;
+    _active = false;
+    return { ok: true, wasRunning };
+}
+
+function getStatus() {
+    return { active: _active };
+}
+
+module.exports = { add, list, getDue, markSent, markFailed, cancel, remove, stats, processDue, run, start, stop, getStatus };

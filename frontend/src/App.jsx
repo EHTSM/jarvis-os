@@ -289,8 +289,14 @@ const MORE_TABS = [
   // ── Growth & Revenue
   { id: "creative",   label: "Creative Studio",    group: "Growth", alias: "brand brand kit" },
   { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing campaign email sms push broadcast audience segment newsletter whatsapp message messaging chat outreach" },
-  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page docs documentation doc blog article keyword calendar" },
-  { id: "distribution",label:"Distribution",       group: "Growth", alias: "publish publishing social post channel influencer community launch" },
+  // B.22 founder-stress finding: a founder searching "campaign" — the single
+  // most natural word for this work — matched ONLY "growth", even though both
+  // of these surfaces run campaigns (contentseo has a content calendar and
+  // article campaigns; distribution has /distrib/campaigns and publish jobs).
+  // Measured live in the real More-menu search. Alias-only, same mechanism as
+  // the C.1 vocabulary recovery: no new UI, no renamed labels, no new routes.
+  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page docs documentation doc blog article keyword calendar campaign content campaign editorial" },
+  { id: "distribution",label:"Distribution",       group: "Growth", alias: "publish publishing social post channel influencer community launch campaign distribution campaign broadcast" },
   { id: "referral",   label: "Referral Engine",    group: "Growth", alias: "referral affiliate invite reward advocacy word of mouth" },
   { id: "partners",   label: "Partners",           group: "Growth", alias: "partner partnership reseller channel agency alliance" },
   { id: "aicost",     label: "AI Costs",           group: "Growth", alias: "ai cost spend token cost llm cost budget credits pricing" },

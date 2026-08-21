@@ -16,8 +16,9 @@
  *   recall({ agentId, input })    → { nodes[] }  — agent context injection
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 const logger = require("../utils/logger");
 
 const STORE_FILE   = path.join(__dirname, "../../data/memory-store.json");
@@ -35,7 +36,18 @@ function _readJson(file, fallback = []) {
 function _writeJson(file, data) {
     const dir = path.dirname(file);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmp = file + ".tmp";
+    // Persistence Sweep (2026-08-20): the tmp filename used to be a fixed
+    // `${file}.tmp` shared by every caller of this one helper across all 3
+    // backing files (STORE_FILE/ARCHIVE_FILE/INDEX_FILE) — crash-mid-write
+    // corruption risk regardless of concurrency (a SIGKILL during the write
+    // syscall could leave a truncated/torn file, since the old fixed tmp
+    // path itself was never a unique, collision-proof staging file). Same
+    // fix already applied to secretVault.cjs's VAULT_FILE/AUDIT_FILE/
+    // HISTORY_FILE this mission: a unique per-call tmp name (pid + random)
+    // makes every write independent; renameSync() is still what makes the
+    // real file's replacement atomic (a reader/subsequent boot never
+    // observes a partially-written file).
+    const tmp = `${file}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
     fs.renameSync(tmp, file);
 }
@@ -278,15 +290,31 @@ function recall({ agentId, input = "", limit = 10 } = {}) {
         n => n.agentIds.length === 0 || n.agentIds.includes(agentId)
     );
 
-    // Score each node: importance + keyword matches
+    // Relevance must outrank importance. The previous score was
+    // `importance + hits * 10`, so a single keyword hit was worth only 10 points
+    // — on the live store (1918 of 2000 nodes written at importance >= 95 by the
+    // autonomous RCA writer) an EXACT keyword match at importance 88 scored 98 and
+    // lost to completely unrelated nodes sitting at importance 100. Measured:
+    // recall@10 = 0/3 for exact-keyword queries against memories written seconds
+    // earlier, and a known exact match ranked #82 of 1946.
+    //
+    // Rank by match count FIRST, then by importance as the tie-breaker within an
+    // equal number of matches. A node that matches nothing can no longer displace
+    // a node that matches the query, regardless of importance. Nothing about
+    // storage, the cap, the schema, or agent scoping changes — only the ordering.
+    // `_score` is preserved for callers/telemetry that already read it.
     const scored = nodes.map(n => {
         const haystack = [n.key, ...(n.tags || [])].join(" ").toLowerCase();
         const hits     = words.filter(w => haystack.includes(w)).length;
-        return { ...n, _score: n.importance + hits * 10 };
+        return { ...n, _hits: hits, _score: n.importance + hits * 10 };
     });
 
-    scored.sort((a, b) => b._score - a._score);
-    return { nodes: scored.slice(0, limit).map(n => { const c = { ...n }; delete c._score; return c; }) };
+    scored.sort((a, b) =>
+        (b._hits - a._hits) ||
+        ((b.importance || 0) - (a.importance || 0)) ||
+        ((b.usageCount || 0) - (a.usageCount || 0)));
+
+    return { nodes: scored.slice(0, limit).map(n => { const c = { ...n }; delete c._score; delete c._hits; return c; }) };
 }
 
 module.exports = { save, load, update, archive, list, search, stats, recall };

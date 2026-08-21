@@ -371,15 +371,74 @@ function authenticate({ profileId, service, credentials = {} } = {}) {
 
 // ── downloadFile ────────────────────────────────────────────────────────────
 
-function downloadFile({ url, destination, browser = null } = {}) {
-  const { execSync } = require("child_process");
-  const dest = destination || require("path").join(require("os").homedir(), "Downloads", `download_${Date.now()}`);
-  try {
-    execSync(`curl -L -o "${dest}" "${url}"`, { timeout: 60000, stdio: "ignore" });
-    return { ok: true, url, destination: dest, downloadedAt: _ts() };
-  } catch (e) {
-    return { ok: false, url, error: e.message };
+// Browser Controller Command-Injection & Download Safety Audit (2026-08-20):
+// this used to build a shell command string via template-literal
+// interpolation (`curl -L -o "${dest}" "${url}"`) and run it through
+// execSync — both `url` and `destination` came straight from req.body with
+// zero escaping. Live-reproduced, in isolation, non-destructively: a url of
+// `http://x"; touch /tmp/PROOF; echo "` broke out of the intended argument
+// and ran an arbitrary second shell command; the identical injection also
+// worked via `destination`. Separately, `destination` had no containment
+// check at all — `/tmp/sandbox/../../etc_passwd_copy_test` resolved
+// (confirmed live) to a path one level outside the intended directory,
+// proving arbitrary-path write. Separately again, unlike every other real
+// navigation entry point in this file (openTab already calls
+// assertSafeNavigationTarget), `downloadFile` had no SSRF guard — nothing
+// stopped `url` from pointing at 169.254.169.254 or an internal service.
+// Fixed with 3 independent, minimal changes, no new framework:
+//   1. spawn(shell:false) with an argument array instead of a shell
+//      string — the same principle backend/core/safe-exec.js already
+//      establishes, applied directly here since safe-exec.js itself
+//      hard-blocks "curl" and restricts cwd to the project root, neither
+//      of which fits this function's real job (downloading to an
+//      arbitrary user-chosen destination, typically ~/Downloads).
+//   2. assertSafeNavigationTarget(url) — the exact SSRF guard already
+//      shared by every other real navigation path in this codebase
+//      (backend/utils/urlSafety.cjs), reused as-is.
+//   3. destination containment — resolved and required to stay inside the
+//      same ~/Downloads directory this function's own prior default
+//      already implied, closing the arbitrary-path-write vector. A
+//      caller-supplied destination outside that directory is rejected,
+//      not silently redirected.
+async function downloadFile({ url, destination } = {}) {
+  if (!url) return { ok: false, error: "url required" };
+
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, url, error: `unsafe download target: ${safety.reason}` };
+
+  const downloadsDir = path.join(require("os").homedir(), "Downloads");
+  const dest = path.resolve(destination || path.join(downloadsDir, `download_${Date.now()}`));
+  if (!dest.startsWith(downloadsDir + path.sep) && dest !== downloadsDir) {
+    return { ok: false, url, error: `destination must stay within ${downloadsDir}` };
   }
+
+  const { spawn } = require("child_process");
+  return new Promise((resolve) => {
+    let settled = false;
+    const child = spawn("curl", ["-L", "--max-redirs", "5", "-o", dest, "--", url], {
+      shell: false,
+      stdio: "ignore",
+    });
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      try { process.kill(-child.pid, "SIGKILL"); } catch { try { child.kill("SIGKILL"); } catch {} }
+      resolve({ ok: false, url, error: "download timed out after 60000ms" });
+    }, 60_000);
+    child.on("close", (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (code === 0) resolve({ ok: true, url, destination: dest, downloadedAt: _ts() });
+      else resolve({ ok: false, url, error: `curl exited with code ${code}` });
+    });
+    child.on("error", (e) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve({ ok: false, url, error: e.message });
+    });
+  });
 }
 
 // ── stats ───────────────────────────────────────────────────────────────────

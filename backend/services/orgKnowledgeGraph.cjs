@@ -165,15 +165,57 @@ function getOrgGraph(orgId, accountId, opts = {}) {
 }
 
 /** Real impact analysis, scoped to one org's subgraph — thin wrapper over
- * knowledgeGraph.impactAnalysis, with a post-hoc org-membership filter so a
- * traversal that happens to cross into another org's nodes (e.g. via a
- * shared rule) doesn't leak that org's node details to a caller who isn't
- * a member of it. */
+ * knowledgeGraph.impactAnalysis.
+ *
+ * Knowledge OS pass (2026-08-15): this function's own doc comment described
+ * a "post-hoc org-membership filter" that never actually existed — the body
+ * called kg.impactAnalysis(type, id) directly and returned it unfiltered.
+ * _assertMember() only checks that the CALLER belongs to orgId; it never
+ * checks that the (type, id) node being analyzed — a completely separate,
+ * caller-controlled pair — belongs to that org at all. Live-reproduced: a
+ * genuine member of Org B, supplying Org B's own orgId in the path (passing
+ * the membership check) but Org A's real lead id in type/id, received Org
+ * A's lead name/email/status and Org A's organization name in a 200 — a
+ * real cross-tenant data leak, not hypothetical.
+ *
+ * Fixed by verifying the root node actually has a belongs_to edge to THIS
+ * org before running analysis at all — the same edge getOrgGraph()'s own
+ * traversal already relies on for its (correctly-isolated) results, so this
+ * uses no new authorization concept, just applies the existing one here too.
+ * A node with no belongs_to-to-this-org edge (including one that legitimately
+ * belongs to a different org, or one that predates org-scoping entirely) is
+ * treated as not found for this org — 404, not a data disclosure either way. */
 function getOrgImpact(orgId, accountId, type, id) {
   _assertMember(orgId, accountId);
   const kg = _kg();
   if (!kg) return { ok: false };
-  return kg.impactAnalysis(type, id);
+
+  const ownership = kg.getEdges({ fromType: type, fromId: id, toType: "org", toId: orgId, relation: kg.RELATIONS.BELONGS_TO });
+  if (!ownership.edges.length) {
+    const e = new Error(`Not found in this organization's knowledge graph: ${type}/${id}`);
+    e.status = 404;
+    throw e;
+  }
+
+  const result = kg.impactAnalysis(type, id);
+
+  // Belt-and-suspenders: even for a root node that IS this org's own, a
+  // multi-hop traversal can walk OUT to a node that belongs to a different
+  // org (e.g. a shared rule, or a mission with no org tag at all) — strip
+  // any affected node that carries a resolvable orgId that isn't this one.
+  // Nodes with no orgId field in their resolved data (users, artifacts,
+  // steps — genuinely no org concept) are left as-is, matching the same
+  // "additive, nullable convention" already established across this
+  // codebase's org-scoping (see crmService.js's own doc comment on the
+  // identical convention).
+  if (result.affected) {
+    for (const t of Object.keys(result.affected)) {
+      result.affected[t] = result.affected[t].filter(n => !n.data?.orgId || n.data.orgId === orgId);
+    }
+    result.affectedCount = Object.values(result.affected).reduce((sum, arr) => sum + arr.length, 0);
+  }
+
+  return result;
 }
 
 module.exports = {

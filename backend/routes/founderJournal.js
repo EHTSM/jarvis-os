@@ -5,10 +5,16 @@
  */
 
 const router      = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const j           = require("../services/founderJournal.cjs");
 
-router.use("/fop", requireAuth);
+// Founder/Ops Authorization Cluster audit (2026-08-20): founderJournal.cjs
+// has zero orgId/accountId concept — a single, platform-wide daily journal
+// (narrative, mood, frictions, blockers), not per-tenant data. requireAuth
+// alone let any signed-up customer read/write the founder's own journal
+// entries. Same defect class as founderAutomation.js's already-fixed
+// /founder/* and /bible/*.
+router.use("/fop", requireAuth, operatorOnly);
 
 function _today() { return new Date().toISOString().slice(0, 10); }
 

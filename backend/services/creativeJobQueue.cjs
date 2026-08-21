@@ -123,9 +123,17 @@ function listJobs(opts = {}) {
              .slice(0, opts.limit || 50);
 }
 
-function getSummary() {
+// Creative Studio OS pass: accepts an optional accountId, same convention as
+// listJobs()/creativeAssetLibrary.cjs's getStats(). Previously always
+// counted every account's jobs — the Workspace tab's "jobs" stat block paired
+// this global total with the account-scoped recentJobs/assets right next to
+// it, showing e.g. "32 complete" to an account with 0 jobs of its own.
+// Passing no accountId preserves the previous global behavior for internal
+// callers that intentionally want a platform-wide count.
+function getSummary(accountId) {
   const store = _load();
-  const list  = Object.values(store.jobs);
+  let   list  = Object.values(store.jobs);
+  if (accountId) list = list.filter(j => j.accountId === accountId);
   return {
     queued:   list.filter(j => j.status === "queued").length,
     running:  list.filter(j => j.status === "running").length,

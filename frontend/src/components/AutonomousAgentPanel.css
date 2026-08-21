@@ -194,7 +194,7 @@
   font-weight: 600; border: 1px solid; transition: background 0.12s;
 }
 .aap-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.aap-btn--pause  { background: #1c1a0a; border-color: #b45309; color: #fbbf24; }
+.aap-btn--pause  { background: #1c1a0a; border-color: #b45309; color: var(--warning); }
 .aap-btn--resume { background: var(--success-muted); border-color: #059669; color: var(--success); }
 .aap-btn--retry  { background: var(--accent-glow); border-color: #4f46e5; color: #a5b4fc; }
 .aap-btn--cancel { background: transparent; border-color: #374151; color: var(--text-dim); margin-left: auto; }

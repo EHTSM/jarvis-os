@@ -18,6 +18,7 @@
 const router = require("express").Router();
 const logger = require("../utils/logger");
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 function _ce() {
     try { return require("../services/aiComposerEngine.cjs"); }
@@ -25,7 +26,7 @@ function _ce() {
 }
 
 // ── POST /composer/create ─────────────────────────────────────────────────────
-router.post("/composer/create", requireAuth, async (req, res) => {
+router.post("/composer/create", requireAuth, rateLimiter(15, 60_000, "composer-create"), async (req, res) => {
     try {
         const { goal, cwd, forceApproval } = req.body;
         if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });

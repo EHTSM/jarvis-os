@@ -9,10 +9,39 @@
  * memoryPersistenceLayer.cjs — it borrows the atomic-write
  * pattern and uses its own dedicated file for mission objects.
  *
+ * MASTER RECOVERY (2026-08-15, C10-004/C9 mission-context leak): this file
+ * has 74 internal consumers across the codebase — autonomous engineering,
+ * knowledge graphs, executive/platform/civilization state, business
+ * automation, and more — the large majority of which use missions as
+ * shared, cross-cutting platform infrastructure, NOT as tenant-owned
+ * business objects. Making orgId a REQUIRED parameter (the pattern used for
+ * Developer OS, C10-003) would break dozens of legitimate internal
+ * integrations that were never meant to be org-scoped — exactly what the
+ * recovery mandate warns against ("do not break legitimate shared
+ * engineering knowledge").
+ *
+ * Instead: orgId is OPTIONAL everywhere in this file. createMission()
+ * stores it if the caller supplies one (data.orgId); every existing caller
+ * that doesn't pass one is completely unaffected — same behavior as before.
+ * listMissions() gained an OPTIONAL opts.orgId filter: when supplied, it
+ * returns ONLY missions with that exact orgId (never falls back to
+ * unscoped/global missions, and never returns another org's missions) —
+ * when omitted, behavior is byte-identical to before this change, which is
+ * what the 74 platform-internal callers need to keep working.
+ *
+ * The actual tenant-facing leak this closes: codingAssistant.js's
+ * _missionContext() (the function that injects "recent missions" into the
+ * AI's prompt) now passes the caller's real orgId, so the AI's mission
+ * context is scoped to the requesting tenant's own missions — proven live
+ * in C.9 to previously inject an unrelated org's mission objective text.
+ * Missions created with no orgId (the vast majority — genuine shared
+ * platform/autonomous-engineering missions) are correctly EXCLUDED from an
+ * orgId-filtered query, not incorrectly included as "everyone's".
+ *
  * Public API:
- *   createMission(data)                  → mission
+ *   createMission(data)                  → mission   (data.orgId optional)
  *   getMission(missionId)                → mission | null
- *   listMissions(opts)                   → { missions[], total }
+ *   listMissions(opts)                   → { missions[], total }   (opts.orgId optional filter)
  *   updateMission(missionId, patch)      → mission
  *   addSubtask(missionId, subtask)       → mission
  *   recordDecision(missionId, decision)  → mission
@@ -212,6 +241,11 @@ function _buildMission(data) {
     const now = new Date().toISOString();
     const mission = {
         id:          _uid("msn"),
+        // Optional — see file header comment. Most callers (74 internal
+        // consumers) never pass this and get identical behavior to before
+        // this field existed. When a real tenant-facing caller passes it,
+        // listMissions({orgId}) can filter correctly.
+        orgId:       typeof data.orgId === "string" && data.orgId ? data.orgId : null,
         objective:   (data.objective || "").trim(),
         status:      "planned",
         priority:    data.priority || "medium",
@@ -325,14 +359,22 @@ function getMission(missionId) {
 
 /**
  * listMissions(opts)
- * opts: { status, priority, limit, since, search }
+ * opts: { status, priority, limit, since, search, orgId }
+ * orgId is OPTIONAL — see file header comment. When supplied, returns ONLY
+ * missions whose own orgId exactly matches (never falls back to unscoped
+ * missions, never returns another org's). When omitted, behavior is
+ * unchanged from before this parameter existed — required for the 74
+ * existing internal, non-tenant-scoped consumers of this function.
  * Returns { missions[], total }
  */
 function listMissions(opts = {}) {
-    const { status, priority, limit = 100, since, search } = opts;
+    const { status, priority, limit = 100, since, search, orgId } = opts;
     const store = _loadMissions();
     let   list  = store.missions;
 
+    if (orgId) {
+        list = list.filter(m => m.orgId === orgId);
+    }
     if (status) {
         if (!VALID_STATUSES.has(status)) throw new Error(`listMissions: invalid status "${status}"`);
         list = list.filter(m => m.status === status);

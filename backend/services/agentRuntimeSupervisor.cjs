@@ -705,9 +705,17 @@ async function _crmTick(s) {
     let created = 0;
 
     // 1. Stale leads (created > 7 days ago, still "new")
+    //
+    // OS-AGENT verification finding: businessDataService.listLeads() returns
+    // { items, total } (confirmed by reading _list()'s real return shape),
+    // never { leads }. This tick read leads.leads — always undefined, always
+    // falling back to [] — so this check has never fired since I5 shipped it,
+    // for any org, regardless of how stale the real data was. Fixed to read
+    // the real field. Purely a read-side correction; listLeads()'s own
+    // contract is unchanged.
     try {
-        const leads = _bds()?.listLeads?.({ status: "new", limit: 50 }) || { leads: [] };
-        const stale = (leads.leads || []).filter(l =>
+        const leads = _bds()?.listLeads?.({ status: "new", limit: 50 }) || { items: [] };
+        const stale = (leads.items || []).filter(l =>
             l.createdAt && (Date.now() - new Date(l.createdAt).getTime()) > 7 * 24 * 3600 * 1000
         );
         if (stale.length > 0) {
@@ -737,9 +745,15 @@ async function _crmTick(s) {
     } catch {}
 
     // 3. Revenue health check
+    //
+    // OS-AGENT verification finding: getRevenueStats() returns { total, ... }
+    // (confirmed by reading its real return shape), never { totalRevenue }.
+    // revStats.totalRevenue was always undefined, so `undefined === 0` was
+    // always false — this check could never fire, including on a genuinely
+    // empty pipeline. Fixed to read the real field.
     try {
         const revStats = _bds()?.getRevenueStats?.();
-        if (revStats && revStats.totalRevenue === 0 && revStats.count === 0) {
+        if (revStats && revStats.total === 0 && revStats.count === 0) {
             const m = _createMission(id, {
                 objective: "Revenue pipeline empty — initiate outbound",
                 priority:  "high",
@@ -921,10 +935,29 @@ async function _executiveTick(s) {
 // UNIFIED _tick DISPATCHER
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Scheduler Reliability & Recovery Audit (2026-08-16): _startAgent's
+// `if (s._intervalHandle) return` guard only prevents a second setInterval
+// from being registered for the same agent — it does not prevent the
+// interval's own callback from invoking _tick(id) again while a prior
+// invocation is still awaiting its role-specific handler. Real, reachable
+// window: planner's interval is 60s (the tightest of ROLE_INTERVALS), and
+// with 200+ agents registered in this one process (11 org registries x
+// ~20 depts each), a tick handler doing real async I/O (mission creation,
+// cross-domain correlation reads) can genuinely exceed its own interval
+// under load/contention — at which point setInterval fires the next tick
+// regardless of whether the previous one resolved, producing two
+// concurrent _tick(id) calls racing writes to the same `s` state object
+// and potentially double-creating missions/decisions inside the handler.
+// Minimal in-flight guard, same pattern as browserScheduler.cjs's
+// _inFlight Set and contentScheduler.cjs's _processingIds Set.
+const _tickInFlight = new Set();
+
 async function _tick(id) {
     const s = _agents.get(id);
     if (!s || !s.enabled) return;
     if (s.status === "paused" || s.status === "stopped" || s.status === "failed" || s.status === "recovering") return;
+    if (_tickInFlight.has(id)) return; // previous tick for this agent hasn't finished yet — skip, don't overlap
+    _tickInFlight.add(id);
 
     const t0 = Date.now();
     try {
@@ -958,6 +991,7 @@ async function _tick(id) {
         }
     } finally {
         s.tickCount++;
+        _tickInFlight.delete(id);
     }
 }
 

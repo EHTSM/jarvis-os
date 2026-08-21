@@ -13,6 +13,7 @@
 const router = require("express").Router();
 const logger = require("../utils/logger");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { safeCwd } = require("../utils/cwdSafety.cjs");
 
 function _re() {
     try { return require("../services/repositoryEditingEngine.cjs"); }
@@ -22,12 +23,20 @@ function _re() {
 // ── POST /coding/bundle/plan ──────────────────────────────────────────────────
 router.post("/coding/bundle/plan", requireAuth, async (req, res) => {
     try {
-        const { goal, cwd } = req.body;
+        const { goal } = req.body;
         if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
 
         const re = _re();
         if (!re) return res.status(503).json({ ok: false, error: "repository editing engine unavailable" });
 
+        // Command Injection & Process Execution Deep Security Sweep
+        // (2026-08-21): planBundle() -> _analyzeRepo() walks the entire
+        // file tree at `root` AND runs a raw execSync('git diff
+        // --name-only...', {cwd: root}) — both fully reachable in this
+        // route's response (repoInfo.recentFiles/totalFiles/entryPoints)
+        // with zero AI-provider dependency. Same finding, same fix as
+        // codingAssistant.js's _safeCwd — see cwdSafety.cjs.
+        const cwd    = safeCwd(req.body.cwd, req);
         const root   = cwd || require("path").join(__dirname, "../../");
         const bundle = await re.planBundle(goal, root);
         res.json({ ok: true, bundle });

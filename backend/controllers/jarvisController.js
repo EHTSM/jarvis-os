@@ -224,6 +224,15 @@ async function _executionPipeline(input, phone = "") {
 //  PIPELINE 3 — INTELLIGENCE FLOW
 // ════════════════════════════════════════════════════════════════
 async function _intelligencePipeline(input, history, ctx = {}) {
+    // AI Workspace OS pass: this legacy gateway short-circuit ignores
+    // ctx.provider/ctx.model entirely (its own signature doesn't accept
+    // them). It's checked first, so on the rare setups where
+    // orchestrator.cjs actually resolves and returns a reply, a user's
+    // explicit model selection would be silently overridden even after the
+    // fix below. Confirmed no live provider ever reaches this branch in this
+    // environment (orchestrator.cjs is legacy/unconfigured here), but the
+    // condition is structural, not environmental, so it's noted rather than
+    // silently left inconsistent with the real fix a few lines down.
     if (_orchestrator?.gateway) {
         try {
             const result = await _orchestrator.gateway("smart", { input });
@@ -258,8 +267,20 @@ async function _intelligencePipeline(input, history, ctx = {}) {
     try {
         const messages = [...(Array.isArray(history) ? history : []), { role: "user", content: input }];
         if (systemOverride) messages.unshift({ role: "system", content: systemOverride });
+        // AI Workspace OS pass: the AI Chat tab's model selector
+        // (Chat.jsx's MODELS list) has always sent {provider, model} in the
+        // POST /jarvis body (see frontend/src/api.js's sendMessage()), but
+        // handleJarvis() never read either field from req.body and this call
+        // never forwarded them — so picking "GPT-4o mini" or "Claude Haiku"
+        // in the UI had zero effect on which model actually answered; every
+        // selection silently fell through to the same auto-routed chain.
+        // aiOrchestrator.execute() already supports both (userPref for
+        // provider preference, model to force a specific model on whichever
+        // provider is chosen) — this just threads the real user selection
+        // through instead of dropping it.
         const result = await aiOrchestrator.execute(messages, {
             capability: "chat", accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
+            userPref: ctx.provider || undefined, model: ctx.model || undefined,
         });
         return { reply: result.text, action: "ai_reply", data: { provider: result.provider, model: result.model, cached: !!result.cached } };
     } catch (err) {
@@ -349,12 +370,18 @@ async function handleJarvis(req, res) {
             else crm.updateLead(phone, { lastMessage: input, lastInteraction: new Date().toISOString() });
         }
 
+        // AI Workspace OS pass: forward the AI Chat tab's model selector —
+        // see _intelligencePipeline's own comment on the fix this enables.
+        const provider = _clean(req.body.provider || "", 100) || undefined;
+        const model    = _clean(req.body.model    || "", 100) || undefined;
+
         let result;
         if      (mode === "sales")     result = await _salesPipeline(input, phone);
         else if (mode === "execution") result = await _executionPipeline(input, phone);
         else                           result = await _intelligencePipeline(input, history, {
             accountId: req.user?.sub || req.user?.id,
             orgId: req.org?.id, workspaceId: req.workspace?.id,
+            provider, model,
         });
 
         const elapsed = Date.now() - startMs;
@@ -374,7 +401,18 @@ async function handleJarvis(req, res) {
         // still need this generic fallback recording.
         const accountId = req.user?.sub || req.user?.id;
         if (accountId && mode !== "intelligence") {
-            usageMetering.record({ accountId, provider: "jarvis", model: mode, requestType: "chat", latencyMs: elapsed, success: true });
+            // AI Workspace OS pass: orgId/workspaceId were never forwarded here,
+            // unlike _intelligencePipeline's own recording a few lines above
+            // (which correctly passes ctx.orgId/ctx.workspaceId) — so every
+            // sales/execution-mode chat request was ledgered with orgId:null
+            // regardless of the caller's real org membership. Reproduced live:
+            // an authenticated account with a real org sent real requests and
+            // every resulting "provider":"jarvis" ledger entry read
+            // orgId:null. attachOrg is already mounted on this route (see
+            // routes/jarvis.js) — req.org?.id was available and simply not
+            // read here. This under-counts org-level AI usage/spend dashboards
+            // for any request that isn't the "intelligence" mode.
+            usageMetering.record({ accountId, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: "jarvis", model: mode, requestType: "chat", latencyMs: elapsed, success: true });
         }
 
         return _ok(res, { ...result, intent, mode, traceId });
@@ -385,7 +423,10 @@ async function handleJarvis(req, res) {
         logger.error("[Jarvis] Error:", err.message);
         const accountId = req.user?.sub || req.user?.id;
         if (accountId) {
-            usageMetering.record({ accountId, provider: "jarvis", latencyMs: Date.now() - startMs, success: false, errorCode: err.message });
+            // Same fix as above — the total-failure fallback path lost org
+            // attribution too, so a failed request's ledger entry was
+            // invisible to org-level AI usage/failure-rate reporting.
+            usageMetering.record({ accountId, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: "jarvis", latencyMs: Date.now() - startMs, success: false, errorCode: err.message });
         }
         return res.status(500).json({
             success: false,

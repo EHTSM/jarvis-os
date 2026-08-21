@@ -18,6 +18,7 @@ const router = require("express").Router();
 const path   = require("path");
 const logger = require("../utils/logger");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { safeCwd } = require("../utils/cwdSafety.cjs");
 
 function _de() {
     try { return require("../services/engineeringDecisionEngine.cjs"); }
@@ -27,7 +28,12 @@ function _de() {
 // ── POST /coding/decisions/compute ────────────────────────────────────────────
 router.post("/coding/decisions/compute", requireAuth, async (req, res) => {
     try {
-        const { cwd } = req.body;
+        // Command Injection & Process Execution Deep Security Sweep
+        // (2026-08-21): computeOpportunities() -> sd.scan(root) is the same
+        // arbitrary-directory content-walk already fixed in
+        // codingAssistant.js's GET /coding/smells and GET /coding/context —
+        // same fix (cwdSafety.cjs), same root cause.
+        const cwd     = safeCwd(req.body.cwd, req);
         const root    = cwd || path.join(__dirname, "../../");
         const de      = _de();
         if (!de) return res.status(503).json({ ok: false, error: "decision engine unavailable" });

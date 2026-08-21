@@ -390,6 +390,28 @@ function assertConnectorAllowed(orgId, connectorId) {
 }
 
 // ── IP allowlist ──────────────────────────────────────────────────────────────
+//
+// OOPLIX V1 MASTER AUDIT — B25-01/GG-1 closure (2026-08-16): this middleware
+// was written correctly in the original Enterprise & Physical Integration
+// pass but was never actually mounted anywhere — B25 disclosed this honestly
+// (ipAllowlistEnforced:false everywhere) rather than fake-enforcing it.
+// Live inspection this pass found 8 real org policy records already carry a
+// populated allowlist (test IP 203.0.113.9) from that same B24/B25 testing —
+// meaning a careless global mount would have retroactively locked out real
+// access for those orgs. Fixed narrowly instead: assertIpAllowed() is called
+// from the 4 enterprise route files' own existing per-route membership-check
+// helpers (enterprisePolicy.js, enterpriseAudit.js, enterpriseMonitoring.js,
+// enterpriseDashboard.js), AFTER real org-membership is confirmed — never
+// before, so an unrelated caller cannot learn an org has IP restrictions
+// from the check itself. This matches the module's own original design
+// intent ("compose after requireAuth on specific routers... never applied
+// globally") and scopes enforcement to exactly the enterprise-tier surface
+// the feature was built for, leaving the rest of the platform (hundreds of
+// other routes) untouched.
+
+function _requestIp(req) {
+  return req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket?.remoteAddress || req.ip;
+}
 
 function isIpAllowed(orgId, ip) {
   const { ipAllowlist } = getPolicy(orgId);
@@ -397,16 +419,30 @@ function isIpAllowed(orgId, ip) {
   return ipAllowlist.includes(ip);
 }
 
+/** Throwing variant, matching assertProviderAllowed/assertConnectorAllowed's
+ * own shape — call from an existing per-route permission check, after real
+ * org membership has already been confirmed. */
+function assertIpAllowed(orgId, req) {
+  const ip = _requestIp(req);
+  if (!isIpAllowed(orgId, ip)) {
+    auditLog.append({ type: "policy.ip_denied", orgId, ip, actorId: req.user?.sub });
+    const err = new Error("Access denied — your IP address is not on this organization's allowlist");
+    err.status = 403; err.code = "ip_not_allowed";
+    throw err;
+  }
+}
+
 /** Express middleware factory — compose after requireAuth + attachOrg on any
  * router that wants IP enforcement, exactly like operatorOnly composes after
- * requireAuth. Never applied globally. */
+ * requireAuth. Never applied globally. Kept for routers that resolve orgId
+ * via attachOrg rather than a real per-route membership-check helper. */
 function requireIpAllowed(req, res, next) {
   const orgId = req.org?.id || req.params?.orgId;
   if (!orgId) return next(); // no org context resolved — nothing to enforce against
-  const ip = req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.socket?.remoteAddress || req.ip;
-  if (!isIpAllowed(orgId, ip)) {
-    auditLog.append({ type: "policy.ip_denied", orgId, ip, actorId: req.user?.sub });
-    return res.status(403).json({ ok: false, error: "Access denied — your IP address is not on this organization's allowlist" });
+  try {
+    assertIpAllowed(orgId, req);
+  } catch (e) {
+    return res.status(e.status || 403).json({ ok: false, error: e.message });
   }
   next();
 }
@@ -428,5 +464,6 @@ module.exports = {
   assertProviderAllowed,
   assertConnectorAllowed,
   isIpAllowed,
+  assertIpAllowed,
   requireIpAllowed,
 };

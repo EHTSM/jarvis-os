@@ -63,14 +63,14 @@
 .rd-badge { display: inline-block; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
 .rd-badge--green  { background: #05271820; color: var(--success); border: 1px solid #059669; }
 .rd-badge--blue   { background: #1e3a5f20; color: var(--info); border: 1px solid #1d4ed8; }
-.rd-badge--yellow { background: #451a0320; color: #fbbf24; border: 1px solid #78350f; }
+.rd-badge--yellow { background: #451a0320; color: var(--warning); border: 1px solid #78350f; }
 .rd-badge--red    { background: #450a0a20; color: var(--danger); border: 1px solid #7f1d1d; }
 .rd-badge--gray   { background: #1f293740; color: var(--text-dim); border: 1px solid #374151; }
 
 .rd-method { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; font-family: monospace; }
 .rd-method--get    { background: #1e3a5f20; color: var(--info); }
 .rd-method--post   { background: #05271820; color: var(--success); }
-.rd-method--put, .rd-method--patch { background: #451a0320; color: #fbbf24; }
+.rd-method--put, .rd-method--patch { background: #451a0320; color: var(--warning); }
 .rd-method--delete { background: #450a0a20; color: var(--danger); }
 
 .rd-path     { font-family: monospace; font-size: 11.5px; color: var(--text); }

@@ -23,9 +23,13 @@
  */
 
 const router = require("express").Router();
-const _st  = () => require("../services/platformState.cjs");
-const _org = () => require("../services/platformOrg.cjs");
-const _orgSvc = () => require("../services/organizationService.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _st  = () => _try(() => require("../services/platformState.cjs"));
+const _org = () => _try(() => require("../services/platformOrg.cjs"));
+const _orgSvc = () => _try(() => require("../services/organizationService.cjs"));
 
 const ok  = (res, data)     => res.json({ ok: true,  ...data });
 const err = (res, msg, code)=> res.status(code || 400).json({ ok: false, error: msg });

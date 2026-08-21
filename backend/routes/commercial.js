@@ -49,6 +49,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const credits  = require("../services/creditEngine.cjs");
 const router_  = require("../services/smartRouter.cjs");
@@ -85,7 +86,12 @@ router.get("/commercial/credits/status", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/commercial/credits/consume", (req, res) => {
+// Called on every AI-provider request, so this needs a real per-account
+// ceiling rather than a strict throttle — bounds abuse without blocking
+// legitimate rapid-fire usage during a normal working session.
+const _creditsRL = rateLimiter(120, 60_000, "commercial-credits-mutate");
+
+router.post("/commercial/credits/consume", _creditsRL, (req, res) => {
   try {
     const { requestType, missionId, provider, cost } = req.body || {};
     const check = credits.checkCredit(_accountId(req), requestType || "default", _plan(req));
@@ -97,7 +103,7 @@ router.post("/commercial/credits/consume", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/commercial/credits/topup", (req, res) => {
+router.post("/commercial/credits/topup", _creditsRL, (req, res) => {
   try {
     const { amount, expiresAt, reason } = req.body || {};
     if (!amount || amount <= 0) return res.status(400).json({ error: "invalid_amount" });
@@ -243,10 +249,29 @@ router.post("/commercial/usage/record", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// OOPLIX V1 MASTER AUDIT (2026-08-16): all 3 usage routes below previously
+// let a caller read another account's real billing/usage data — a genuine
+// cross-tenant leak, distinct from and more severe than every other route
+// in this file (all of which already correctly use _accountId(req), the
+// real authenticated identity, with no caller override). /usage/summary
+// let req.query.accountId silently override _accountId(req); /usage/history
+// (metering.loadHistory) and /usage/by/:dimension (metering.aggregateCost)
+// took no account filter at all, returning/aggregating the ENTIRE
+// platform's raw usage ledger regardless of caller. Live-reproduced: a real,
+// unrelated authenticated account read real usage events (real accountId,
+// orgId, cost, token counts) belonging to a completely different account via
+// GET /commercial/usage/history. Fixed by pinning all 3 to _accountId(req)
+// — the same real authenticated identity every other route in this file
+// already correctly uses — with no caller-supplied override. metering.query/
+// aggregateCost/summary already correctly filter by accountId when given
+// one (confirmed: usageMetering.cjs's own query() does `if (opts.accountId)
+// events = events.filter(e => e.accountId === opts.accountId)`) — the gap
+// was purely that these 3 call sites never passed it, not a defect in the
+// underlying filtering logic.
 router.get("/commercial/usage/summary", (req, res) => {
   try {
     const opts = {
-      accountId:   req.query.accountId || _accountId(req),
+      accountId:   _accountId(req),
       workspaceId: req.query.workspaceId,
       since:       req.query.since,
       limit:       parseInt(req.query.limit || "500", 10),
@@ -258,7 +283,9 @@ router.get("/commercial/usage/summary", (req, res) => {
 router.get("/commercial/usage/history", (req, res) => {
   try {
     const limit = parseInt(req.query.limit || "200", 10);
-    res.json({ ok: true, events: metering.loadHistory(limit) });
+    const accountId = _accountId(req);
+    const events = metering.loadHistory(limit).filter(e => e.accountId === accountId);
+    res.json({ ok: true, events });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -267,7 +294,7 @@ router.get("/commercial/usage/by/:dimension", (req, res) => {
     const { dimension } = req.params;
     const valid = ["provider","accountId","workspaceId","missionId","model","requestType"];
     if (!valid.includes(dimension)) return res.status(400).json({ error: "invalid_dimension" });
-    const agg = metering.aggregateCost(dimension, { limit: parseInt(req.query.limit || "500", 10) });
+    const agg = metering.aggregateCost(dimension, { limit: parseInt(req.query.limit || "500", 10), accountId: _accountId(req) });
     res.json({ ok: true, dimension, data: agg });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

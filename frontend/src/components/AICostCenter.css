@@ -158,3 +158,12 @@
 .acc-ap-label strong { color:var(--success); }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
 
+/* ── C.9 honesty fix: real-data empty/example/loading states ─────────── */
+.acc-loading        { padding:24px; text-align:center; color:var(--text-dim); font-size:13.5px; }
+.acc-empty-banner    { padding:14px 16px; background:var(--surface-base); border:1px solid var(--border); border-left:3px solid var(--accent2); border-radius:var(--radius-sm); color:var(--text-dim); font-size:13px; line-height:1.55; margin-bottom:14px; }
+.acc-example-banner  { padding:14px 16px; background:var(--warning-bg, #f5a62318); border:1px solid var(--warning); border-radius:var(--radius-sm); color:var(--text-dim); font-size:13px; line-height:1.55; margin-bottom:14px; }
+.acc-errors-note     { margin-top:12px; font-size:12.5px; color:var(--text-dim); }
+.acc-prov-health      { font-size:12.5px; font-weight:700; }
+.acc-prov-health--ok  { color:var(--success); }
+.acc-prov-health--down{ color:var(--danger, var(--warning)); }
+

@@ -162,7 +162,7 @@
     font-size: 9px; padding: 1px 5px; border-radius: 3px; border: 1px solid; font-weight: 600;
 }
 .rmp-tag--danger { background: rgba(239,68,68,0.1); border-color: #7f1d1d; color: var(--danger); }
-.rmp-tag--warn   { background: rgba(245,158,11,0.1); border-color: #92400e; color: #fbbf24; }
+.rmp-tag--warn   { background: rgba(245,158,11,0.1); border-color: #92400e; color: var(--warning); }
 
 .rmp-kpis-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--surface-base);

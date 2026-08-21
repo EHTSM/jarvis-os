@@ -140,7 +140,7 @@
 .aipp-issue--error    .aipp-issue__sev,
 .aipp-issue--high     .aipp-issue__sev { background: var(--danger-muted); color: var(--danger); }
 .aipp-issue--warning  .aipp-issue__sev,
-.aipp-issue--medium   .aipp-issue__sev { background: var(--warning-muted); color: #fbbf24; }
+.aipp-issue--medium   .aipp-issue__sev { background: var(--warning-muted); color: var(--warning); }
 .aipp-issue--info     .aipp-issue__sev,
 .aipp-issue--low      .aipp-issue__sev { background: var(--info-muted); color: var(--info); }
 .aipp-issue__body { flex: 1; min-width: 0; }

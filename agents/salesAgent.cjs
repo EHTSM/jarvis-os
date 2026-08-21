@@ -46,7 +46,17 @@ class SalesAgent {
                         { role: "user", content: userMessage }
                     ]
                 },
-                { headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` } }
+                {
+                    headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+                    // Timeout, Cancellation & Long-Running Operation Safety Audit
+                    // (2026-08-16): axios has no default timeout — this call had
+                    // none set, so a hung Groq response hung the real, live
+                    // POST /jarvis request (jarvisController.js -> generateReply)
+                    // indefinitely. 15s matches the same-purpose AI-closer call's
+                    // own established bound elsewhere in this codebase
+                    // (apiManager.cjs's default).
+                    timeout: 15_000,
+                }
             );
 
             let aiReply = response.data.choices[0].message.content;

@@ -19,6 +19,25 @@ const crypto = require("crypto");
 
 const DATA_DIR = path.join(__dirname, "../../data");
 
+// OOPLIX V1 MASTER AUDIT (2026-08-16, load-test coverage audit): unlike
+// every other JSON-file store already fixed for atomicity this session
+// (taskQueue.cjs, missionMemory.cjs, authMiddleware.js's revoked-tokens
+// ledger, crmService.js), _writeStore() called fs.writeFileSync() directly
+// on the real target file with no atomic tmp+rename step. A live 100-
+// concurrent-write test (50 POST /business/leads per tenant, 2 real
+// tenants, real HTTP against :5050) was run to check for the lost-update
+// race this shape of code invites; all 100 writes were independently
+// confirmed to have persisted correctly (verified via `total` and a raised
+// query limit — an earlier measurement using the default-paginated GET
+// response length looked like data loss but was a read-side pagination
+// artifact, not a real gap, and was corrected before concluding anything).
+// The write path itself showed no measured defect. This fix is still
+// applied as a genuine hardening against the class of risk every sibling
+// store in this codebase was already fixed for (a crash or external file
+// replacement mid-write, not concurrency) — matching the proven
+// per-call-unique-tmp-filename pattern used throughout, no new
+// architecture — but is not, itself, closing a live-reproduced defect.
+
 function _uid(prefix) {
     return `${prefix}_${Date.now()}_${crypto.randomBytes(3).toString("hex")}`;
 }
@@ -39,7 +58,10 @@ function _readStore(file) {
 function _writeStore(file, store) {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
     store.updatedAt = new Date().toISOString();
-    fs.writeFileSync(path.join(DATA_DIR, file), JSON.stringify(store, null, 2));
+    const target = path.join(DATA_DIR, file);
+    const tmp = `${target}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(store, null, 2));
+    fs.renameSync(tmp, target);
 }
 
 // ── Generic CRUD helpers ──────────────────────────────────────────────────────

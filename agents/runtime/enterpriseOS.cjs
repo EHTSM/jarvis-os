@@ -858,11 +858,23 @@ function getEnterpriseDashboard() {
     const opGoals  = ge ? ge.listGoals({ type: "operational", status: "active", limit: 5 }) : [];
     const goalSum  = ge ? ge.getGoalSummary() : null;
 
-    // Cross-OS stats
+    // Cross-OS stats. developerOS.getStats(orgId) has required orgId since
+    // the C10-003 org-isolation recovery (developerOS.cjs, 2026-08-15) —
+    // this platform-wide, non-org-scoped dashboard was never updated to
+    // match, so calling it with zero args here unconditionally threw,
+    // making GET /enterprise/dashboard permanently return 500 for every
+    // caller (confirmed: the route's own try/catch swallows the throw into
+    // a generic "internal_error", so the dashboard silently never worked).
+    // This aggregator has no single org context to pass (personalStats/
+    // businessStats below are deliberately platform-wide too), so the
+    // correct fix is the same defensive try/catch already used elsewhere in
+    // this exact file for optional cross-module lookups, not fabricating an
+    // orgId that doesn't apply here.
     const pos = _pos(); const bosStats = _bos(); const dosStats = _dos();
     const personalStats  = pos    ? pos.getStats()    : null;
     const businessStats  = bosStats ? bosStats.getStats()  : null;
-    const developerStats = dosStats ? dosStats.getStats()  : null;
+    let developerStats = null;
+    try { developerStats = dosStats ? dosStats.getStats("_platform_") : null; } catch { developerStats = null; }
 
     // Lifecycle maturity
     const lifecycle = (_readJson("lifecycle-reports.json") || [])[0] || null;

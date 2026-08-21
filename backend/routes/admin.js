@@ -19,8 +19,8 @@ const { attachWorkspace, requireWorkspaceMember, requireRole } = require("../mid
 const svc = require("../services/adminService.cjs");
 
 router.use("/admin", requireAuth);
-router.use(attachWorkspace);
-router.use(requireWorkspaceMember);
+router.use("/admin", attachWorkspace);
+router.use("/admin", requireWorkspaceMember);
 
 // Workspace is always the authenticated requester's validated membership —
 // never a raw client-supplied id. requireWorkspaceMember (above) confirms

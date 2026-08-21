@@ -126,7 +126,7 @@
 .dec-card__expand { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12px; }
 .dec-card__biz-tag {
   font-size: 9px; padding: 2px 5px; background: #451a0340; border: 1px solid #78350f;
-  border-radius: 3px; color: #fbbf24;
+  border-radius: 3px; color: var(--warning);
 }
 
 .dec-card__file {
@@ -149,7 +149,7 @@
 .dec-card__conf   { font-size: 9px; color: var(--text-faint); }
 .dec-risk { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
 .risk--high   { background: var(--danger-muted); color: var(--danger); }
-.risk--medium { background: var(--warning-muted); color: #fbbf24; }
+.risk--medium { background: var(--warning-muted); color: var(--warning); }
 .risk--low    { background: var(--surface-raised); color: var(--text-dim); }
 
 /* Expanded body */
@@ -163,7 +163,7 @@
   font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 3px; flex-shrink: 0;
 }
 .dec-card__smell-sev--high   { background: var(--danger-muted); color: var(--danger); }
-.dec-card__smell-sev--medium { background: var(--warning-muted); color: #fbbf24; }
+.dec-card__smell-sev--medium { background: var(--warning-muted); color: var(--warning); }
 .dec-card__smell-sev--low    { background: var(--surface-raised); color: var(--text-dim); }
 .dec-card__smell-detail { color: var(--text-dim); flex: 1; }
 .dec-card__smell-line   { color: var(--text-faint); font-family: monospace; font-size: 10px; }

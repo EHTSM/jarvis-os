@@ -3851,23 +3851,39 @@ router.delete("/runtime/persistent-workspace/:id", rateLimiter(10, 60_000), (req
 
 // ── Phase 542 — VS Code Operations ───────────────────────────────────────────
 const vsCode = _tryRequirePhase("../../agents/runtime/vsCodeOperations.cjs");
+// Residual Filesystem Path & Sensitive Error Leakage Deep Sweep (2026-08-21):
+// vsCodeOperations.cjs's absPath/filePath fields are the server's real
+// absolute install path (see that file's comment for the full finding) —
+// stripped here at the response boundary via _clientFacingPath(), rather
+// than changing the underlying functions' internal contract (absPath is
+// still used internally for the real fs reads/writes).
+function _sanitizeVsCodeResult(result) {
+    if (!result || typeof result !== "object") return result;
+    const out = { ...result };
+    if (typeof out.absPath === "string") out.absPath = vsCode._clientFacingPath(out.absPath);
+    if (typeof out.filePath === "string") out.filePath = vsCode._clientFacingPath(out.filePath);
+    return out;
+}
 router.post("/runtime/vscode/validate-file", rateLimiter(30, 60_000), (req, res) => {
     if (!vsCode) return res.status(503).json({ success: false, error: "vsCodeOperations_unavailable" });
-    return res.json({ success: true, ...vsCode.validateFileTarget(req.body?.filePath) });
+    return res.json({ success: true, ..._sanitizeVsCodeResult(vsCode.validateFileTarget(req.body?.filePath)) });
 });
 router.post("/runtime/vscode/preview-patch", rateLimiter(20, 60_000), (req, res) => {
     if (!vsCode) return res.status(503).json({ success: false, error: "vsCodeOperations_unavailable" });
     const { filePath, patchContent, ...opts } = req.body || {};
-    return res.json({ success: true, ...vsCode.previewPatch(filePath, patchContent, opts) });
+    return res.json({ success: true, ..._sanitizeVsCodeResult(vsCode.previewPatch(filePath, patchContent, opts)) });
 });
 router.post("/runtime/vscode/record-patch", rateLimiter(20, 60_000), (req, res) => {
     if (!vsCode) return res.status(503).json({ success: false, error: "vsCodeOperations_unavailable" });
     const { filePath, patchContent, ...opts } = req.body || {};
-    return res.json({ success: true, ...vsCode.recordPatchApplication(filePath, patchContent, opts) });
+    return res.json({ success: true, ..._sanitizeVsCodeResult(vsCode.recordPatchApplication(filePath, patchContent, opts)) });
 });
 router.get("/runtime/vscode/patch-history", rateLimiter(20, 60_000), (req, res) => {
     if (!vsCode) return res.status(503).json({ success: false, error: "vsCodeOperations_unavailable" });
-    return res.json({ success: true, ...vsCode.patchHistory({ sessionId: req.query.sessionId, replayId: req.query.replayId }) });
+    const history = vsCode.patchHistory({ sessionId: req.query.sessionId, replayId: req.query.replayId });
+    // Same absolute-path fix as the three routes above — each persisted
+    // patch record's filePath is the real absolute install path.
+    return res.json({ success: true, ...history, patches: (history.patches || []).map(_sanitizeVsCodeResult) });
 });
 
 // ── Phase 543 — Terminal Execution Hardening ──────────────────────────────────
@@ -4872,9 +4888,18 @@ router.get("/runtime/patch-sets/:id", rateLimiter(20, 60_000), (req, res) => {
 });
 
 // Phase B1: Engineering Pipeline Routes (pipelineOrchestrator + projectRunner exposed via HTTP)
-const _pipelineOrch  = _tryRequirePhase571("../../agents/dev/pipelineOrchestrator.cjs");
-const _projectRunner  = _tryRequirePhase571("../../agents/dev/projectRunner.cjs");
-const _blueprintGen   = _tryRequirePhase571("../../agents/dev/blueprintGenerator.cjs");
+//
+// Phase OS-5 repair: an external `git stash pop` resolved a conflict here by
+// keeping BOTH branches' versions of these three requires, producing
+// "SyntaxError: Identifier '_pipelineOrch' has already been declared" and
+// preventing the server from starting at all.
+//
+// The two versions are semantically identical — _tryRequirePhase571(p) is
+// defined at line 4095 as `try { return require(p); } catch { return null; }`,
+// exactly what the earlier inline IIFEs at lines 4158/4213/4298 already do,
+// loading the same three modules. The earlier declarations are kept (they come
+// first and are already in scope here); this duplicate block is removed.
+// No behaviour changes — the same three bindings resolve to the same modules.
 
 // POST /runtime/pipeline/run — 7-stage Plan→Code→Patch→Apply→Test→Review→Deploy
 router.post("/runtime/pipeline/run", rateLimiter(5, 60_000), async (req, res) => {

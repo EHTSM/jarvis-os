@@ -10,9 +10,14 @@
  *   captureException(err, context)          → { ok, eventId? }
  *   captureMessage(msg, level, context)     → { ok, eventId? }
  *   createRelease(version, projects)        → { ok }
- *   uploadSourcemap(version, files)         → { ok } (stub — real upload needs CLI)
  *   verifyDelivery()                        → { ok, detail }
  *   getConfig()                             → { dsn, environment, release, configured }
+ *
+ * OOPLIX V1 MASTER AUDIT — SENTRY_DSN blocker investigation (2026-08-16):
+ * sourcemap upload was never implemented (a real upload needs the Sentry
+ * CLI, not this HTTP-envelope client) — the doc line claiming a stub
+ * existed was itself inaccurate and has been removed rather than left to
+ * imply a capability this file doesn't have.
  */
 
 const https  = require("https");

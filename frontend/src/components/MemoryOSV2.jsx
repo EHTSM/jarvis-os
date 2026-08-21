@@ -597,10 +597,11 @@ function TabKnowledge({ addToast }) {
 
 // ── Search & Retrieval tab ────────────────────────────────────────────
 
-function TabSearch({ allEntries }) {
+function TabSearch() {
   const [query, setQuery]         = useState("");
   const [results, setResults]     = useState(null);
   const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
   const [recentQs, setRecentQs]   = useState(RECENT_QUERIES);
   const inputRef = useRef(null);
 
@@ -610,6 +611,7 @@ function TabSearch({ allEntries }) {
     if (!q.trim()) return;
     setSearching(true);
     setResults(null);
+    setSearchError(null);
     try {
       const r = await searchMemory(q);
       // Real /p18/memory/search response shape is {success, nodes, total} —
@@ -617,23 +619,21 @@ function TabSearch({ allEntries }) {
       // payload), which silently discarded every real search hit and fell
       // through to the local fallback on every query.
       const hits = Array.isArray(r) ? r : (r?.nodes || r?.results || r?.entries || []);
-      setResults(hits.length > 0 ? hits : _localSearch(q));
-    } catch {
-      setResults(_localSearch(q));
+      setResults(hits);
+    } catch (e) {
+      // OOPLIX V1 MASTER AUDIT (2026-08-16): a real search-API failure
+      // (network error / non-2xx — _fetch always throws a real Error, see
+      // _client.js) previously fell through to searching allEntries — which
+      // is SEED_ENTRIES, fabricated data, whenever the root component's own
+      // refresh() had also failed — with the result presented identically
+      // to a genuine live search, no error shown. Now surfaces the real
+      // failure honestly instead of silently substituting fabricated hits.
+      setResults([]);
+      setSearchError(e.message || "Search failed — memory API not available");
     } finally {
       setSearching(false);
       setRecentQs(prev => [{ q, ts: "just now", results: 0 }, ...prev.slice(0, 4)]);
     }
-  }
-
-  function _localSearch(q) {
-    const lq = q.toLowerCase();
-    return allEntries.filter(e =>
-      _entryTitle(e).toLowerCase().includes(lq) ||
-      _entrySnippet(e).toLowerCase().includes(lq) ||
-      (e.key || "").toLowerCase().includes(lq) ||
-      (e.tags || []).some(t => t.includes(lq))
-    );
   }
 
   function handleKey(e) {
@@ -703,7 +703,15 @@ function TabSearch({ allEntries }) {
         </div>
       )}
 
-      {results !== null && !searching && (
+      {searchError && !searching && (
+        <div className="mov2-empty">
+          <span className="mov2-empty-icon">⚠</span>
+          <p className="mov2-empty-title">Search failed</p>
+          <p className="mov2-empty-sub">{searchError}</p>
+        </div>
+      )}
+
+      {results !== null && !searching && !searchError && (
         <div className="mov2-search-results">
           <div className="mov2-sr-header">
             <p className="mov2-sr-count">
@@ -777,7 +785,21 @@ export default function MemoryOSV2({ onNavigate }) {
       if (statsRes && !statsRes.error) setStats(statsRes);
       setApiDown(false);
     } catch {
-      setApiDown(false); // keep SEED_ENTRIES, don't mark down
+      // OOPLIX V1 MASTER AUDIT (2026-08-16): this previously set apiDown to
+      // false unconditionally on a genuine thrown error from _fetch (real
+      // network failure or non-2xx response — see _client.js's _fetch,
+      // which always throws a real Error on !res.ok), with a comment
+      // literally saying "keep SEED_ENTRIES, don't mark down" — silently
+      // presenting 10 fabricated memory entries (fake lead names, fake
+      // WhatsApp batches, fake payment errors) as a normal, healthy state
+      // with zero error indication, the exact "fake success" class C.2's
+      // C2-01/C2-02 already found and fixed elsewhere this audit programme.
+      // TabIndex already has a correct, honest apiDown===true branch
+      // ("Memory API not available… Contact your administrator") that this
+      // catch block prevented from ever being reachable. A real API failure
+      // must mark apiDown true and stop presenting SEED_ENTRIES as if real.
+      setApiDown(true);
+      setIsLive(false);
     } finally {
       setLoading(false);
     }
@@ -849,7 +871,7 @@ export default function MemoryOSV2({ onNavigate }) {
         {tab === "shared"       && <TabShared />}
         {tab === "intelligence" && <TabIntelligence />}
         {tab === "knowledge"    && <TabKnowledge addToast={addToast} />}
-        {tab === "search"       && <TabSearch allEntries={entries} />}
+        {tab === "search"       && <TabSearch />}
       </div>
 
       {/* Toasts */}

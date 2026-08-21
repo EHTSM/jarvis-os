@@ -16,12 +16,17 @@ const { requireAuth } = require("../middleware/authMiddleware");
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _audit = () => _try(() => require("../services/auditService.cjs"));
 const _org = () => _try(() => require("../services/organizationService.cjs"));
+const _policy = () => _try(() => require("../services/policyService.cjs"));
 
 function _requireAuditPermission(req, res) {
   if (!_org()?.hasPermission?.(req.params.orgId, req.user.sub, "view_audit_log")) {
     res.status(403).json({ ok: false, error: "Forbidden — requires permission: view_audit_log" });
     return false;
   }
+  // B25-01/GG-1 closure: real org membership confirmed above — now enforce
+  // the org's own IP allowlist, if it has configured one.
+  try { _policy()?.assertIpAllowed?.(req.params.orgId, req); }
+  catch (e) { res.status(e.status || 403).json({ ok: false, error: e.message }); return false; }
   return true;
 }
 

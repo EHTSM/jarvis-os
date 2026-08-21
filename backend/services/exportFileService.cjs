@@ -31,6 +31,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const logger = require("../utils/logger");
 
 const _try = fn => { try { return fn(); } catch { return null; } };
 const _storage = () => _try(() => require("./storageService.cjs"));
@@ -85,11 +86,23 @@ async function persist(buffer, opts = {}) {
     }
 
     if (!url) {
-        const dir = path.join(EXPORT_ROOT, orgScope);
-        fs.mkdirSync(dir, { recursive: true });
-        fs.writeFileSync(path.join(dir, filename), buffer);
-        url = `/exports/${orgScope}/${filename}`;
-        storedVia = "local";
+        // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+        // (2026-08-21): unlike the cloud-upload branch above (which
+        // already catches its own failures), this local-disk fallback was
+        // unguarded — a real write failure reached GET /accounts/me/export
+        // (a real customer-facing GDPR self-service route) and
+        // GET /company-factory/blueprints/:id/export's catch blocks as a
+        // raw fs error embedding the absolute export-storage root path.
+        try {
+            const dir = path.join(EXPORT_ROOT, orgScope);
+            fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(path.join(dir, filename), buffer);
+            url = `/exports/${orgScope}/${filename}`;
+            storedVia = "local";
+        } catch (e) {
+            logger.error(`[ExportFileService] local export write failed: ${e.message}`);
+            throw new Error("Could not save export");
+        }
     }
 
     // Record as a real asset in the same library images/voice/video use —

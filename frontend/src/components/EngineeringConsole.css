@@ -174,7 +174,7 @@
   line-height: 1.5;
 }
 .log-line--error { color: var(--danger); background: #450a0a10; }
-.log-line--warn  { color: #fbbf24; }
+.log-line--warn  { color: var(--warning); }
 .log-line--info  { color: var(--info); }
 
 /* Table */
@@ -582,5 +582,5 @@
 .ec-collab-lc__evt:nth-child(even) { background: rgba(255,255,255,0.015); }
 .ec-collab-lc__evt-ts   { font-size: 10px; color: var(--text-faint); flex-shrink: 0; font-variant-numeric: tabular-nums; min-width: 60px; }
 .ec-collab-lc__evt-type { font-size: 11px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ec-collab-lc__evt-stage { font-size: 10px; color: #fbbf24; background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+.ec-collab-lc__evt-stage { font-size: 10px; color: var(--warning); background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
 .ec-collab-lc__evt-conf  { font-size: 10px; color: var(--accent); background: rgba(167,139,250,0.1); padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }

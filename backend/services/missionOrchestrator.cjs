@@ -101,14 +101,31 @@ let _orcState    = null;   // lazy-loaded
 let _orcDirty    = false;
 let _orcWriting  = false;
 
+// Terminal (completed/failed/cancelled/rolledback) missions recovered from disk.
+// They are deliberately kept OUT of _live — the scheduler must not resume them —
+// but they must still be written back by _saveOrch(), which serializes from _live.
+// Without this, _loadOrch() dropped every terminal record and the next save (any
+// stage transition, seconds after boot) rewrote the file from _live alone,
+// permanently erasing all finished mission history. Verified: a mission that had
+// completed with orchStatus "failed" was absent from orchestrator-state.json after
+// one restart, and the file contained only records created after that restart.
+let _terminalArchive = [];
+const MAX_TERMINAL_ARCHIVE = 500;   // bounded so the file cannot grow without limit
+
 function _loadOrch() {
     if (_orcState) return _orcState;
     try { _orcState = JSON.parse(fs.readFileSync(ORCH_FILE, "utf8")); } catch { _orcState = { records: [] }; }
     // Restore live map from persisted state
+    _terminalArchive = [];
     for (const rec of _orcState.records || []) {
         if (!TERMINAL_STATES.has(rec.orchStatus)) {
             _live.set(rec.missionId, rec);
+        } else {
+            _terminalArchive.push(rec);
         }
+    }
+    if (_terminalArchive.length > MAX_TERMINAL_ARCHIVE) {
+        _terminalArchive = _terminalArchive.slice(-MAX_TERMINAL_ARCHIVE);
     }
     return _orcState;
 }
@@ -127,7 +144,16 @@ function _saveOrch() {
     _orcWriting = true;
     const _flush = () => {
         _orcDirty = false;
-        const data  = JSON.stringify({ records: [..._live.values()], savedAt: new Date().toISOString() }, null, 2);
+        // Merge: live (in-flight) records + terminal records recovered from disk.
+        // A mission that reached a terminal state during THIS process is still in
+        // _live, so it wins over any stale archived copy of the same missionId.
+        const liveRecords = [..._live.values()];
+        const liveIds     = new Set(liveRecords.map(r => r.missionId));
+        const archived    = _terminalArchive.filter(r => !liveIds.has(r.missionId));
+        const data  = JSON.stringify({
+            records: [...archived, ...liveRecords].slice(-(MAX_TERMINAL_ARCHIVE * 2)),
+            savedAt: new Date().toISOString(),
+        }, null, 2);
         const tmp   = ORCH_FILE + ".tmp";
         fs.writeFile(tmp, data, "utf8", err => {
             if (err) logger.warn(`[Orchestrator] save error: ${err.message}`);
@@ -652,8 +678,12 @@ async function _advance(missionId) {
 // Poll the loop queue for task status. Cap at 5 minutes.
 async function _monitorStage(missionId, stg) {
     if (!stg.loopTaskId) {
-        // No loop task — mark complete immediately (graceful degradation)
-        _stageComplete(missionId, stg, null);
+        // No loop task was ever queued — this only happens when _getLoop()
+        // returned null at dispatch time (see the dispatch block above), i.e. the
+        // stage never ran at all. Marking it complete here was "graceful
+        // degradation" that reported unexecuted work as successful; a mission
+        // could reach "completed" having dispatched nothing. Fail honestly.
+        _stageFailed(missionId, stg, "stage was never dispatched — execution runtime unavailable");
         return;
     }
     const POLL_MS  = 3_000;
@@ -667,10 +697,21 @@ async function _monitorStage(missionId, stg) {
 
         try {
             const loop = _getLoop();
-            if (!loop) { _stageComplete(missionId, stg, null); return; }
+            // A missing loop or a vanished task is NOT evidence of success.
+            // These two branches previously called _stageComplete(), so a stage
+            // whose task had failed and then rotated out of the bounded task
+            // queue was recorded as "completed" — observed live: a goal_decompose
+            // stage with retries=2 (i.e. it had exhausted its retries and failed)
+            // was marked completed with the "AI backend unavailable" sentinel as
+            // its only output. That is a fake success: the mission-level status is
+            // derived from stage statuses, so an unobservable stage silently
+            // counted as a passing one. Report the honest state instead — the
+            // stage's own retry/failure handling in _stageFailed() decides whether
+            // the mission fails or the stage is retried.
+            if (!loop) { _stageFailed(missionId, stg, "execution runtime unavailable — stage outcome unknown"); return; }
             const all  = loop.getQueue();
             const task = all.find(t => t.id === stg.loopTaskId);
-            if (!task) { _stageComplete(missionId, stg, null); return; }
+            if (!task) { _stageFailed(missionId, stg, "loop task no longer in queue — stage outcome unverifiable"); return; }
 
             if (task.status === "completed") {
                 // autonomousLoop's _runTask() never writes a top-level task.result —
@@ -690,8 +731,13 @@ async function _monitorStage(missionId, stg) {
             }
         } catch { /* non-fatal — keep polling */ }
     }
-    // Timeout — treat as complete (optimistic: loop ran to execution)
-    _stageComplete(missionId, stg, "timeout-assumed-complete");
+    // Timeout — the stage never reported an outcome within 5 minutes. This used
+    // to call _stageComplete("timeout-assumed-complete"), i.e. an unobserved
+    // stage was optimistically recorded as a success and could carry a mission to
+    // "completed" with no evidence any work happened. A timeout is an honest
+    // failure state, not a pass; _stageFailed() still applies the normal retry
+    // budget before the mission itself is failed.
+    _stageFailed(missionId, stg, "stage timed out after 5m without reporting an outcome");
 }
 
 function _stageComplete(missionId, stg, output) {

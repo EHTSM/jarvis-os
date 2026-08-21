@@ -606,6 +606,25 @@ async function _healthCheck(provider) {
  * @param {string}  [opts.provider]  force a specific provider
  * @param {string}  [opts.model]     override model for chosen provider
  */
+// OOPLIX V1 MASTER AUDIT (2026-08-16, A-to-Z backend coverage audit):
+// callAI() tries up to 14 providers sequentially, each with its own 20-30s
+// individual timeout (see TIMEOUTS above) — a worst case of several minutes
+// cumulative, even though callers like agents/autonomousLoop.cjs wrap the
+// whole call in a single 30s _withTimeout() and treat that as a hard
+// ceiling. Confirmed live in this session's own real logs: tasks reporting
+// "ERROR ... (5304216ms)" — 5.3 minutes — for a single AI call, because the
+// outer timeout only stops the CALLER from waiting, it does not cancel the
+// still-running sequential fallback chain underneath (no AbortController
+// exists anywhere in this call path — threading one through all 14 provider
+// helper functions would be a real architecture change, out of scope for
+// this pass). This overall deadline is the safe, minimal fix available
+// without that larger change: once the cumulative time already spent
+// trying providers would leave no reasonable time for the outer caller's
+// own ceiling, stop trying further providers and return the same honest
+// "AI backend unavailable" sentinel immediately, rather than continuing to
+// burn time nothing is still waiting for.
+const CALL_AI_OVERALL_BUDGET_MS = 28_000; // stays under autonomousLoop.cjs's 30s TASK_TIMEOUT_MS
+
 async function callAI(prompt, opts = {}) {
     const systemMsg = { role: "system", content: opts.system || _getSystemPrompt() };
     const history   = Array.isArray(opts.history) ? opts.history : [];
@@ -613,8 +632,13 @@ async function callAI(prompt, opts = {}) {
     const model     = opts.model || null;
 
     const providers = opts.provider ? [opts.provider] : _providerOrder();
+    const _callStart = Date.now();
 
     for (const provider of providers) {
+        if (Date.now() - _callStart >= CALL_AI_OVERALL_BUDGET_MS) {
+            logger.warn(`AI: overall budget (${CALL_AI_OVERALL_BUDGET_MS}ms) exhausted — stopping before trying "${provider}"`);
+            break;
+        }
         try {
             let reply;
             switch (provider) {
@@ -803,7 +827,16 @@ async function chat(messages, opts = {}) {
 
     const providers = chosenProvider ? [chosenProvider] : _providerOrder();
 
+    // Same overall-deadline fix as callAI() above, and for the same
+    // reason: a sequential fallback across up to 14 providers, each with
+    // its own 20-30s individual timeout, can legitimately run for minutes
+    // even though callers wrap this whole function in a much shorter
+    // single-call timeout.
     for (const p of providers) {
+        if (Date.now() - t0 >= CALL_AI_OVERALL_BUDGET_MS) {
+            logger.warn(`AI chat: overall budget (${CALL_AI_OVERALL_BUDGET_MS}ms) exhausted — stopping before trying "${p}"`);
+            break;
+        }
         try {
             let text;
             const allMessages = systemMsg ? [systemMsg, ...rest] : rest;
@@ -1320,4 +1353,5 @@ module.exports = {
     // verified against a real running instance either — both would need a
     // real verified implementation before being added, not a guess.
     streamChat, isStreamCapable,
+    CALL_AI_OVERALL_BUDGET_MS,
 };

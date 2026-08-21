@@ -4,10 +4,18 @@
  * /op1/* with requireAuth
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/op1PublicLaunch.cjs");
 
-router.use("/op1", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same fix and same reasoning as rc1.js
+// (backend/routes/rc1.js — see that file's comment for the full precedent
+// chain). op1PublicLaunch.cjs confirmed 0 orgId occurrences. This route
+// family's only real frontend consumer, PublicLaunch.jsx, is mounted inside
+// ElectronWorkspace.jsx, itself a documented pure passthrough
+// (`if (!isElectron()) return children`) in the actual web app — these
+// executive/blockers/KPI/releases tabs render only inside the Electron
+// desktop shell, never for a customer using the web product.
+router.use("/op1", requireAuth, operatorOnly);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

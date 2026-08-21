@@ -918,9 +918,22 @@ function FinancePanel() {
 
   const issueRefund = async () => {
     if (!refForm.accountId) return;
-    await post("/revenue/finance/refund", { ...refForm, amount: Number(refForm.amount) || 0 });
+    // POST /revenue/finance/refund does NOT issue a credit note — it enqueues an
+    // approval request (202 pending_approval / auto_approved) and only the
+    // separate /refund/:reqId/execute call creates the credit note. This used to
+    // toast "Credit note issued" unconditionally and reload the credit-note list,
+    // so an operator saw a refund-succeeded message and an unchanged list for a
+    // refund that was still sitting unapproved — reporting money moved when none
+    // had. Report the real returned state instead.
+    const res = await post("/revenue/finance/refund", { ...refForm, amount: Number(refForm.amount) || 0 });
     setRefForm({ accountId: "", invoiceId: "", reason: "customer_request", amount: "" });
-    toast("Credit note issued");
+    if (res?.reqId && res.status === "auto_approved") {
+      toast("Refund auto-approved — awaiting execution");
+    } else if (res?.reqId) {
+      toast("Refund requires approval before it is issued");
+    } else {
+      toast(res?.error || "Refund request failed");
+    }
     reloadCN();
     reloadRpt();
   };

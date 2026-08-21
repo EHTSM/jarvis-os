@@ -105,7 +105,18 @@ function _buildHandlers() {
             const { callAI } = require("../backend/services/aiService.js");
             const query = task.payload?.query || task.input || task.label || "";
             const reply = await callAI(query);
-            return { type: "ai", result: reply, message: reply, success: !!reply };
+            // `success: !!reply` treated aiService's own failure sentinel as a
+            // success: callAI() returns the literal string "AI backend unavailable.
+            // Check provider API keys in your .env file." (aiService.js:650) when
+            // every provider fails, and a non-empty string is truthy. The identical
+            // check in agents/runtime/bootstrapRuntime.cjs:224 already excludes that
+            // sentinel, so the same reply was reported success here and failure
+            // there. Consequence: mission stages whose only output was
+            // "AI backend unavailable" were stamped "completed" — a fake success one
+            // layer below autonomousLoop's allFailed guard, which reads this flag.
+            // Match the existing correct handler rather than inventing a new rule.
+            const unavailable = typeof reply === "string" && reply.startsWith("AI backend unavailable");
+            return { type: "ai", result: reply, message: reply, success: !!reply && !unavailable, ...(unavailable ? { error: reply } : {}) };
         },
 
         research: async (task) => {
@@ -534,7 +545,18 @@ function _buildHandlers() {
             if (p.mode) st.setMode(p.mode);
             if (p.autonomyLevel !== undefined) st.setAutonomyLevel(p.autonomyLevel);
             const cycle = await lp.runCycle();
-            return { success: true, command: p.command || task.input, cycle };
+            // Core Runtime Engines audit (2026-08-20): runCycle() genuinely
+            // returns { ok:false, reason:"paused" } when the loop is paused
+            // (backend/services/autonomousLoop.cjs:505) — a real no-op
+            // signal this handler previously discarded by hardcoding
+            // success:true regardless. Same bug class as the already-fixed
+            // "ai" handler sentinel-exclusion a few hundred lines above:
+            // a sub-call's own failure/no-op result was being reported as
+            // success. Any caller checking result.success (autonomousLoop's
+            // own allFailed guard, executionEngine's softFailed check) would
+            // never see that the cycle did nothing.
+            const cycleOk = cycle?.ok !== false;
+            return { success: cycleOk, command: p.command || task.input, cycle, ...(cycleOk ? {} : { error: cycle?.reason || "cycle did not run" }) };
         },
 
         // ── Health Layer ─────────────────────────────────────────────

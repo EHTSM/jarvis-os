@@ -19,7 +19,7 @@ const { requireFeature } = require("../services/featureGate.cjs");
 const svc = require("../services/marketplaceService.cjs");
 
 router.use("/marketplace", requireAuth);
-router.use(attachWorkspace);
+router.use("/marketplace", attachWorkspace);
 router.use("/marketplace", requireFeature("plugins.marketplace"));
 
 function _wsId(req) {

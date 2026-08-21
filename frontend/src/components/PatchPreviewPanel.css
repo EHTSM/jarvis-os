@@ -31,7 +31,7 @@
   padding: 3px 7px; border-radius: 3px; border: 1px solid;
 }
 .risk--low    { color: var(--success); background: #05271820; border-color: #059669; }
-.risk--medium { color: #fbbf24; background: #451a0320; border-color: #d97706; }
+.risk--medium { color: var(--warning); background: #451a0320; border-color: #d97706; }
 .risk--high   { color: var(--danger); background: #450a0a20; border-color: #dc2626; }
 
 /* Confidence */
@@ -52,7 +52,7 @@
 .ppp-risk-reason-btn:hover { color: var(--text-dim); }
 .ppp-risk-reason {
   padding: 6px 12px; background: #1a1005; border-left: 2px solid #d97706;
-  font-size: 11px; color: #fbbf24; line-height: 1.5;
+  font-size: 11px; color: var(--warning); line-height: 1.5;
 }
 
 /* Explanation */
@@ -205,7 +205,7 @@
 .ppp-hist-item__meta { display: flex; gap: 8px; align-items: center; }
 .ppp-hist-status { font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 5px; border-radius: 3px; }
 .ppp-hist-status--staged          { background: #1e3a5f30; color: var(--info); }
-.ppp-hist-status--pipeline_running{ background: #451a0330; color: #fbbf24; }
+.ppp-hist-status--pipeline_running{ background: #451a0330; color: var(--warning); }
 .ppp-hist-status--undone          { background: #1f293730; color: var(--text-dim); }
 .ppp-hist-status--completed       { background: #05271830; color: var(--success); }
 .ppp-hist-files { font-size: 10px; color: var(--text-dim); }

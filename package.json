@@ -12,7 +12,7 @@
     "dev:full": "concurrently \"npm start\" \"npm run frontend\" \"npm run desktop\"",
     "build:frontend": "cd frontend && npm run build",
     "test:api": "curl -s -X POST http://localhost:5050/jarvis -H 'Content-Type: application/json' -d '{\"input\":\"hello\"}'",
-    "test:runtime": "node --test tests/runtime/01-taskRouter.test.cjs tests/runtime/02-priorityQueue.test.cjs tests/runtime/03-executionHistory.test.cjs tests/runtime/04-agentRegistry.test.cjs tests/runtime/05-dispatch.test.cjs tests/runtime/06-retry.test.cjs tests/runtime/07-queue.test.cjs tests/runtime/08-terminal.test.cjs",
+    "test:runtime": "node --test tests/runtime/01-taskRouter.test.cjs tests/runtime/02-priorityQueue.test.cjs tests/runtime/03-executionHistory.test.cjs tests/runtime/04-agentRegistry.test.cjs tests/runtime/05-dispatch.test.cjs tests/runtime/06-retry.test.cjs tests/runtime/07-queue.test.cjs tests/runtime/08-terminal.test.cjs tests/runtime/09-c9-ai-experience-honesty.test.cjs tests/runtime/10-c10-cross-system-closure.test.cjs",
     "test:runtime:fast": "node --test tests/runtime/01-taskRouter.test.cjs tests/runtime/02-priorityQueue.test.cjs tests/runtime/03-executionHistory.test.cjs tests/runtime/04-agentRegistry.test.cjs",
     "test:stress": "node --test tests/stress/02-queue-pressure.test.cjs tests/stress/04-recovery-simulation.test.cjs && node --expose-gc --test tests/stress/03-memory-stability.test.cjs",
     "test:stress:http": "node --test tests/stress/01-http-stress.test.cjs",

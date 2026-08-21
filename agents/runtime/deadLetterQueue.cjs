@@ -7,8 +7,9 @@
  * Exposed read-only via GET /runtime/dead-letter.
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 
 const DLQ_FILE = path.join(__dirname, "../../data/dead-letter.json");
 const DLQ_CAP  = 1000;
@@ -18,9 +19,18 @@ function _read() {
     catch { return []; }
 }
 
+// Queue Layer Reliability & Safety Audit (2026-08-16): was a fixed
+// `DLQ_FILE + ".tmp"` path — the exact real cross-process tmp-path
+// collision class already reproduced and fixed in taskQueue.cjs (Blocker
+// #6): push() (called from executionEngine.cjs on every exhausted-retry
+// failure) and remove() (called from dlqDrainEngine.cjs's drain loop) are
+// genuinely concurrent in production, and two calls landing on the
+// identical literal ".tmp" path could each race the other's renameSync,
+// producing a real ENOENT crash or a lost write. Per-call-unique tmp
+// filename (pid + random suffix), same certified pattern as taskQueue.cjs.
 function _write(arr) {
     try {
-        const tmp = DLQ_FILE + ".tmp";
+        const tmp = `${DLQ_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
         fs.writeFileSync(tmp, JSON.stringify(arr, null, 2));
         fs.renameSync(tmp, DLQ_FILE);
     } catch { /* non-critical */ }

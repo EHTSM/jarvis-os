@@ -238,8 +238,17 @@ function listAnalyses({ limit = 50 } = {}) {
     .filter(Boolean);
 }
 
+// Customer-Facing Sensitive Data, Export & File-Access Boundary Audit
+// (2026-08-21): filename was joined into DOM_DIR with zero sanitization —
+// live-reproduced, an authenticated customer requesting
+// GET /odi/dom/..%2F..%2F..%2Fpackage.json read a real file outside
+// DOM_DIR. Same path.basename() + containment-check pattern already used
+// by exportFileService.cjs's resolveLocal(), applied at the one place the
+// unsafe join happens rather than in the route.
 function getAnalysis(filename) {
-  const fp = path.join(DOM_DIR, filename);
+  const base = path.basename(String(filename || ""));
+  const fp = path.join(DOM_DIR, base);
+  if (!fp.startsWith(DOM_DIR + path.sep)) return null;
   if (!fs.existsSync(fp)) return null;
   return JSON.parse(fs.readFileSync(fp, "utf8"));
 }

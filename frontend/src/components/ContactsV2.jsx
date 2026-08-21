@@ -626,8 +626,14 @@ export default function ContactsV2({ onNavigate }) {
       <div className="cv2-toolbar">
         <div className="cv2-search-wrap">
           <span className="cv2-search-icon" aria-hidden="true">⌕</span>
+          {/* C.1 (G1-B193): placeholder-only, so the control had no accessible
+              name — a placeholder disappears on input and is not a label under
+              WCAG 3.3.2. There is no visible label to associate here (the field
+              is icon-prefixed), so aria-label carries the name, matching the
+              clear button beside it. */}
           <input
             className="cv2-search"
+            aria-label="Search contacts by name, phone or service"
             placeholder="Search by name, phone, service…"
             value={search}
             onChange={e => setSearch(e.target.value)}

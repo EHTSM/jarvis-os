@@ -2,7 +2,7 @@
 const router      = require("express").Router();
 const crypto      = require("crypto");
 const rateLimiter = require("../middleware/rateLimiter");
-const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
+const { signJWT, verifyJWT, revokeToken, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
 const auditLog    = require("../utils/auditLog.cjs");
 const accountSvc  = require("../services/accountService");
 const logger      = require("../utils/logger");
@@ -152,6 +152,22 @@ function _handleLogin(req, res) {
 }
 
 function _handleLogout(req, res) {
+  // MASTER RECOVERY (2026-08-15, C10-027): this previously only cleared the
+  // cookie — the token itself remained fully valid (accepted by verifyJWT)
+  // until its natural expiry, even after explicit logout. This route has no
+  // requireAuth gate (a client with an already-invalid/expired cookie must
+  // still be able to call logout without erroring), so req.user is not
+  // populated here — read the raw cookie directly to recover the token's
+  // jti and revoke it server-side via the new revocation ledger.
+  const cookies = req.headers.cookie || "";
+  const match = cookies.split(";").map(s => s.trim()).find(s => s.startsWith(`${COOKIE_NAME}=`));
+  if (match) {
+    try {
+      const token   = decodeURIComponent(match.slice(COOKIE_NAME.length + 1));
+      const payload = verifyJWT(token);
+      if (payload?.jti) revokeToken(payload.jti, payload.exp);
+    } catch { /* malformed cookie — nothing to revoke, still clear it below */ }
+  }
   auditLog.recordAuth({ action: "logout", operator: req.user });
   res.clearCookie(COOKIE_NAME, { path: "/" });
   res.json({ success: true });
@@ -171,6 +187,13 @@ function _handleRefresh(req, res) {
       iat:   Math.floor(Date.now() / 1000),
       exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
     });
+    // MASTER RECOVERY (2026-08-15, C10-027): revoke the OLD token's jti on
+    // refresh, not just on explicit logout. Without this, refreshing (which
+    // requireAuth's own success already proves the caller holds a valid
+    // token for) issued a second, independently-valid token while leaving
+    // the first one live until its original expiry — two valid tokens for
+    // one session where only one should exist after a refresh.
+    if (u.jti) revokeToken(u.jti, u.exp);
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
     auditLog.recordAuth({ action: "refresh", operator: u.sub || u.role, method: "cookie" });
     res.json({ success: true, role: u.role });
@@ -299,6 +322,11 @@ const _forgotRL       = rateLimiter(5,  15 * 60_000);
 const _firebaseRL     = rateLimiter(20, 5 * 60_000);
 
 const _resetRL = rateLimiter(5, 15 * 60_000);
+// Security Token Audit (2026-08-16): verify-email had no rate limit at all
+// (unlike reset-password's identical-shape _resetRL). 256-bit token entropy
+// already makes brute force computationally infeasible either way, but this
+// closes the inconsistency defense-in-depth, matching established precedent.
+const _verifyEmailRL = rateLimiter(10, 15 * 60_000);
 
 router.post("/auth/login",              _loginRL,    _handleLogin);
 router.post("/auth/logout",                          _handleLogout);
@@ -306,8 +334,8 @@ router.get("/auth/me",                  requireAuth, _handleMe);
 router.post("/auth/refresh",            requireAuth, _handleRefresh);
 router.post("/auth/forgot-password",    _forgotRL,   _handleForgotPassword);
 router.post("/auth/reset-password",     _resetRL,    _handleResetPassword);  // Mission 6: real reset
-router.get("/auth/verify-email",                     _handleVerifyEmail);    // Mission 6: email verify
-router.post("/auth/verify-email",                    _handleVerifyEmail);    // Mission 6: email verify (POST form)
+router.get("/auth/verify-email",        _verifyEmailRL, _handleVerifyEmail); // Mission 6: email verify
+router.post("/auth/verify-email",       _verifyEmailRL, _handleVerifyEmail); // Mission 6: email verify (POST form)
 router.post("/auth/firebase-session",   _firebaseRL, _handleFirebaseSession);
 
 // /api/* aliases — same handlers, respond before ops.js requireAuth gate
@@ -317,7 +345,7 @@ router.get("/api/auth/me",              requireAuth, _handleMe);
 router.post("/api/auth/refresh",        requireAuth, _handleRefresh);
 router.post("/api/auth/forgot-password",_forgotRL,   _handleForgotPassword);
 router.post("/api/auth/reset-password", _resetRL,    _handleResetPassword);
-router.get("/api/auth/verify-email",                 _handleVerifyEmail);
+router.get("/api/auth/verify-email",    _verifyEmailRL, _handleVerifyEmail);
 router.post("/api/auth/firebase-session",_firebaseRL, _handleFirebaseSession);
 
 module.exports = router;

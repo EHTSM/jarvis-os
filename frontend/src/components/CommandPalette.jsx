@@ -113,8 +113,13 @@ const NAV_ACTIONS = [
   // Growth & Revenue
   { id: "nav-creative",   label: "Creative Studio",       icon: "✦", group: "Growth & Revenue",    tab: "creative"   , keywords: "brand brand kit" },
   { id: "nav-growth",     label: "Growth",                icon: "◇", group: "Growth & Revenue",    tab: "growth"     , keywords: "marketing campaign email sms push broadcast audience segment newsletter whatsapp message messaging chat outreach" },
-  { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" , keywords: "website forms landing page docs documentation doc blog article keyword calendar" },
-  { id: "nav-distribution",label:"Distribution",          icon: "◉", group: "Growth & Revenue",    tab: "distribution", keywords: "publish publishing social post channel influencer community launch"},
+  // C.2 (C2-05): "campaign"/"editorial"/"broadcast" were added to these two
+  // MORE_TABS aliases during the Marketing/Growth OS work but never mirrored
+  // here, so searching "campaign" found them in the More menu and NOT in ⌘K —
+  // the same search returning different results on two surfaces. Suite 89's
+  // static drift check (F5) caught it.
+  { id: "nav-contentseo", label: "Content & SEO",         icon: "◈", group: "Growth & Revenue",    tab: "contentseo" , keywords: "website forms landing page docs documentation doc blog article keyword calendar campaign content editorial" },
+  { id: "nav-distribution",label:"Distribution",          icon: "◉", group: "Growth & Revenue",    tab: "distribution", keywords: "publish publishing social post channel influencer community launch campaign distribution broadcast"},
   { id: "nav-referral",   label: "Referral Engine",       icon: "★", group: "Growth & Revenue",    tab: "referral", keywords: "affiliate invite reward advocacy word of mouth"   },
   { id: "nav-partners",   label: "Partners",              icon: "◈", group: "Growth & Revenue",    tab: "partners", keywords: "partnership reseller channel agency alliance"   },
   { id: "nav-aicost",     label: "AI Costs",              icon: "◇", group: "Growth & Revenue",    tab: "aicost", keywords: "spend token llm budget credits pricing"     },
@@ -476,8 +481,13 @@ export default function CommandPalette({ open, onClose, onNavigate, onAsk, onSig
                 <div className="cp-group-label section-label" data-group={group}>{group}</div>
                 {items.map(action => {
                   const isPinned = pins.includes(action.id);
+                  // B25/G2-B195: role="presentation" so the pin button is not an
+                  // invalid listbox child. ARIA allows only option/group inside a
+                  // listbox; a bare button here may be dropped or misannounced.
+                  // Presentation keeps the row's layout while removing it from the
+                  // listbox's child contract — the option below stays valid.
                   return (
-                    <div key={action.id} className="cp-row">
+                    <div key={action.id} className="cp-row" role="presentation">
                       <button
                         data-idx={action._idx}
                         id={`cp-opt-${action._idx}`}

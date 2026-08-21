@@ -121,7 +121,10 @@ router.post("/computer/browser/workflow",   requireAuth, async (req, res) => {
   try { res.json(await _bc()?.executeWorkflow?.(intent, { tabId, context }) || { ok: false }); }
   catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
-router.post("/computer/browser/download",   requireAuth, (req, res) => res.json(_bc()?.downloadFile?.(req.body) || { ok: false }));
+router.post("/computer/browser/download",   requireAuth, async (req, res) => {
+  try { res.json(await _bc()?.downloadFile?.(req.body) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
 router.post("/computer/browser/auth",       requireAuth, (req, res) => res.json(_bc()?.authenticate?.(req.body) || { ok: false }));
 
 // ── Editor ────────────────────────────────────────────────────────────────────

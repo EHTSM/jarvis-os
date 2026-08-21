@@ -1,0 +1,449 @@
+{
+  "generatedAt": "2026-08-14T11:39:25.397Z",
+  "cold": {
+    "health": {
+      "path": "/health",
+      "status": 200,
+      "ms": 1.4,
+      "bytes": 200
+    },
+    "business": {
+      "path": "/business/stats",
+      "status": 200,
+      "ms": 71.7,
+      "bytes": 253
+    },
+    "crm": {
+      "path": "/crm/leads",
+      "status": 200,
+      "ms": 74.8,
+      "bytes": 2
+    },
+    "growth": {
+      "path": "/growth/audiences",
+      "status": 200,
+      "ms": 201.8,
+      "bytes": 26
+    },
+    "finance": {
+      "path": "/cbeta/billing/invoices",
+      "status": 200,
+      "ms": 106.4,
+      "bytes": 25
+    },
+    "developer": {
+      "path": "/coding/smells",
+      "status": 200,
+      "ms": 3959.7,
+      "bytes": 1490565
+    },
+    "memory": {
+      "path": "/p20/memory/rank",
+      "status": 200,
+      "ms": 163.8,
+      "bytes": 120829
+    },
+    "mission": {
+      "path": "/p27/missions",
+      "status": 200,
+      "ms": 82,
+      "bytes": 205991
+    },
+    "executive": {
+      "path": "/exec/dashboard",
+      "status": 404,
+      "ms": 1279.4,
+      "bytes": 58
+    },
+    "organization": {
+      "path": "/orgs",
+      "status": 200,
+      "ms": 515,
+      "bytes": 278
+    },
+    "support": {
+      "path": "/co3/feedback",
+      "status": 200,
+      "ms": 690.3,
+      "bytes": 1508
+    },
+    "automation": {
+      "path": "/automation/templates",
+      "status": 200,
+      "ms": 87.7,
+      "bytes": 1845
+    },
+    "ai": {
+      "path": "/ai-ecosystem/creative",
+      "status": 200,
+      "ms": 250.9,
+      "bytes": 2727
+    },
+    "runtime": {
+      "path": "/runtime/tasks",
+      "status": 404,
+      "ms": 94,
+      "bytes": 57
+    },
+    "agent": {
+      "path": "/agents",
+      "status": 404,
+      "ms": 86,
+      "bytes": 50
+    },
+    "product": {
+      "path": "/product-factory/products",
+      "status": 404,
+      "ms": 89.1,
+      "bytes": 68
+    },
+    "enterprise": {
+      "path": "/security/sessions",
+      "status": 200,
+      "ms": 72.6,
+      "bytes": 15
+    }
+  },
+  "warm": {
+    "health": {
+      "path": "/health",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 0.3,
+      "p75": 0.4,
+      "p95": 0.6,
+      "p99": null,
+      "min": 0.3,
+      "max": 0.6,
+      "bytes": 200
+    },
+    "business": {
+      "path": "/business/stats",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 68.7,
+      "p75": 69.8,
+      "p95": 80.8,
+      "p99": null,
+      "min": 59.2,
+      "max": 80.8,
+      "bytes": 253
+    },
+    "crm": {
+      "path": "/crm/leads",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 70.4,
+      "p75": 74.3,
+      "p95": 128.8,
+      "p99": null,
+      "min": 62.8,
+      "max": 128.8,
+      "bytes": 2
+    },
+    "growth": {
+      "path": "/growth/audiences",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 145.6,
+      "p75": 184.6,
+      "p95": 212.4,
+      "p99": null,
+      "min": 135.3,
+      "max": 212.4,
+      "bytes": 26
+    },
+    "finance": {
+      "path": "/cbeta/billing/invoices",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 82.1,
+      "p75": 85.1,
+      "p95": 1319,
+      "p99": null,
+      "min": 79.2,
+      "max": 1319,
+      "bytes": 25
+    },
+    "developer": {
+      "path": "/coding/smells",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 1675.7,
+      "p75": 2181.8,
+      "p95": 2815,
+      "p99": null,
+      "min": 1423.7,
+      "max": 2815,
+      "bytes": 1490565
+    },
+    "memory": {
+      "path": "/p20/memory/rank",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 2.3,
+      "p75": 2.6,
+      "p95": 837.6,
+      "p99": null,
+      "min": 1.8,
+      "max": 837.6,
+      "bytes": 120829
+    },
+    "mission": {
+      "path": "/p27/missions",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 1.8,
+      "p75": 2,
+      "p95": 2.2,
+      "p99": null,
+      "min": 1.5,
+      "max": 2.2,
+      "bytes": 204840
+    },
+    "executive": {
+      "path": "/exec/dashboard",
+      "n": 12,
+      "ok": 0,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": null,
+      "p75": null,
+      "p95": null,
+      "p99": null,
+      "min": null,
+      "max": null,
+      "bytes": 0
+    },
+    "organization": {
+      "path": "/orgs",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 64.7,
+      "p75": 68.4,
+      "p95": 70.8,
+      "p99": null,
+      "min": 60.4,
+      "max": 70.8,
+      "bytes": 278
+    },
+    "support": {
+      "path": "/co3/feedback",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 82.3,
+      "p75": 84.7,
+      "p95": 91.1,
+      "p99": null,
+      "min": 78.8,
+      "max": 91.1,
+      "bytes": 1508
+    },
+    "automation": {
+      "path": "/automation/templates",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 74.4,
+      "p75": 76.2,
+      "p95": 80.1,
+      "p99": null,
+      "min": 71.9,
+      "max": 80.1,
+      "bytes": 1845
+    },
+    "ai": {
+      "path": "/ai-ecosystem/creative",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 85.9,
+      "p75": 88,
+      "p95": 98.3,
+      "p99": null,
+      "min": 78.4,
+      "max": 98.3,
+      "bytes": 2727
+    },
+    "runtime": {
+      "path": "/runtime/tasks",
+      "n": 12,
+      "ok": 0,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": null,
+      "p75": null,
+      "p95": null,
+      "p99": null,
+      "min": null,
+      "max": null,
+      "bytes": 0
+    },
+    "agent": {
+      "path": "/agents",
+      "n": 12,
+      "ok": 0,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": null,
+      "p75": null,
+      "p95": null,
+      "p99": null,
+      "min": null,
+      "max": null,
+      "bytes": 0
+    },
+    "product": {
+      "path": "/product-factory/products",
+      "n": 12,
+      "ok": 0,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": null,
+      "p75": null,
+      "p95": null,
+      "p99": null,
+      "min": null,
+      "max": null,
+      "bytes": 0
+    },
+    "enterprise": {
+      "path": "/security/sessions",
+      "n": 12,
+      "ok": 12,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 65.8,
+      "p75": 66.9,
+      "p95": 68.1,
+      "p99": null,
+      "min": 63.6,
+      "max": 68.1,
+      "bytes": 15
+    }
+  },
+  "unauth": {
+    "business": {
+      "path": "/business/stats",
+      "status": 401,
+      "p50": 0.5
+    },
+    "crm": {
+      "path": "/crm/leads",
+      "status": 401,
+      "p50": 0.3
+    },
+    "growth": {
+      "path": "/growth/audiences",
+      "status": 401,
+      "p50": 0.4
+    },
+    "finance": {
+      "path": "/cbeta/billing/invoices",
+      "status": 401,
+      "p50": 0.4
+    },
+    "developer": {
+      "path": "/coding/smells",
+      "status": 401,
+      "p50": 0.4
+    }
+  },
+  "concurrency": {
+    "1": {
+      "n": 1,
+      "ok": 1,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 84.2,
+      "p75": 84.2,
+      "p95": 84.2,
+      "p99": null,
+      "min": 84.2,
+      "max": 84.2,
+      "bytes": 253
+    },
+    "5": {
+      "n": 5,
+      "ok": 5,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 191,
+      "p75": 250.6,
+      "p95": 315.1,
+      "p99": null,
+      "min": 63.6,
+      "max": 315.1,
+      "bytes": 253
+    },
+    "10": {
+      "n": 10,
+      "ok": 10,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 411,
+      "p75": 530.7,
+      "p95": 651.9,
+      "p99": null,
+      "min": 108.9,
+      "max": 651.9,
+      "bytes": 253
+    },
+    "25": {
+      "n": 25,
+      "ok": 25,
+      "rateLimited": 0,
+      "errors": 0,
+      "timeouts": 0,
+      "p50": 894.7,
+      "p75": 1269.1,
+      "p95": 1572.5,
+      "p99": 1633.2,
+      "min": 106.3,
+      "max": 1633.2,
+      "bytes": 253
+    }
+  }
+}

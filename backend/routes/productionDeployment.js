@@ -4,10 +4,14 @@
  * Routes at /pm7/*
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/productionDeployment.cjs");
 
-router.use("/pm7", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same fix and same reasoning as rc1.js
+// — see that file's comment. productionDeployment.cjs confirmed 0 orgId
+// occurrences. Live-reproduced: GET /pm7/health returned real reachability
+// status to a non-operator customer account.
+router.use("/pm7", requireAuth, operatorOnly);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

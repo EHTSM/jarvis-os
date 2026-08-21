@@ -20,12 +20,21 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
-const _sre = () => require("../services/selfReviewEngine.cjs");
-const _ca  = () => require("../services/consolidationAudit.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _sre = () => _try(() => require("../services/selfReviewEngine.cjs"));
+const _ca  = () => _try(() => require("../services/consolidationAudit.cjs"));
 
-router.use("/pomena", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same fix and same reasoning as rc1.js
+// — see that file's comment. selfReviewEngine.cjs and consolidationAudit.cjs
+// both confirmed 0 orgId occurrences. Live-reproduced: GET /pomena/status
+// returned the real self-review/consolidation-audit dashboard to a
+// non-operator customer account.
+router.use("/pomena", requireAuth, operatorOnly);
 
 // ── Status ────────────────────────────────────────────────────────────────────
 router.get("/pomena/status", (req, res) => {

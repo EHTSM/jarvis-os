@@ -18,7 +18,11 @@ router.use("/content", requireAuth);
 // Tenant isolation — mirrors growthOS.js's req.orgId middleware (see that
 // file for the full incident writeup). Resolved once per request, threaded
 // into every service call below.
-const org = () => require("../services/organizationService.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path require — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const org = () => _try(() => require("../services/organizationService.cjs"));
 router.use("/content", (req, res, next) => {
   try {
     const ctx = org().resolveContext(req.user.sub);

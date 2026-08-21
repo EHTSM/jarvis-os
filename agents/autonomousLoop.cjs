@@ -185,7 +185,93 @@ async function _runTask(task) {
             return `[${r.type}] ${text}`;
         }).join("\n");
 
+        // Executors report failure by RETURNING { success:false, error } rather than
+        // throwing (see agents/executor.cjs and runtime/bootstrapRuntime.cjs:224, which
+        // sets success:false for "AI backend unavailable"). Because nothing threw, the
+        // catch block below never ran and every task was stamped "completed" — so a
+        // mission whose stages all failed (no AI provider, command blocked by the
+        // allowlist) still reported orchStatus "completed" with the error text sitting
+        // in its output. That is a fake success: missionOrchestrator's _pollLoopTask()
+        // reads task.status, so the failure never propagated to the mission.
+        // Honour the failure signal the executors already return.
+        const failed = results.filter(r => r.result && r.result.success === false);
+        const allFailed = results.length > 0 && failed.length === results.length;
+
         const fresh = taskQueue.getAll().find(t => t.id === task.id) || task;
+
+        if (allFailed) {
+            const errMsg = failed
+                .map(r => r.result.error || r.result.result || `${r.type} failed`)
+                .join("; ")
+                .slice(0, 300);
+            const elapsedF = Date.now() - _taskStart;
+            _recordExecTiming(task, elapsedF, false);
+
+            // OOPLIX V1 MASTER AUDIT (2026-08-16, A-to-Z backend coverage
+            // audit): this branch previously always went straight to a
+            // permanent "failed" on the very first attempt, completely
+            // bypassing the retry/backoff logic the catch{} block below
+            // already has for THROWN failures. A transient error (network
+            // blip, temporary AI provider outage) that an executor reports
+            // via {success:false} rather than throwing got zero retries,
+            // while the identical failure surfacing as a thrown exception
+            // got up to maxRetries with backoff — a real asymmetry, not by
+            // design. agents/runtime/executionEngine.cjs already has the
+            // correct, proven pattern for this exact scenario (its own
+            // comment: "legacy executor can return a soft failure... without
+            // throwing") — check result.nonRetriable (a real, established,
+            // dozens-of-call-sites-wide convention: engineeringCapabilities.cjs,
+            // businessMissionAutomation.cjs, growthOS.cjs, etc. already set
+            // it correctly; only this loop never read it) and only skip
+            // retry when a handler explicitly says retrying can't help.
+            // Recurring tasks are unaffected — they were already correctly
+            // rescheduled via their own cron, not this retry path.
+            const anyNonRetriable = failed.some(r => r.result?.nonRetriable);
+            if (task.recurringCron || anyNonRetriable) {
+                taskQueue.update(task.id, {
+                    status: task.recurringCron ? "pending" : "failed",
+                    lastError: errMsg,
+                    scheduledFor: task.recurringCron
+                        ? new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString()
+                        : fresh.scheduledFor,
+                    executionLog: [
+                        ...(fresh.executionLog || []),
+                        logEntry("failed_execution", { error: errMsg, nonRetriable: anyNonRetriable })
+                    ]
+                });
+                return { success: false, summary, error: errMsg };
+            }
+
+            const retries = (fresh.retries || 0) + 1;
+            const delay = (task.retryDelay || 15000) * retries;
+            if (retries >= (task.maxRetries || 3)) {
+                taskQueue.update(task.id, {
+                    status: "failed",
+                    retries,
+                    lastError: errMsg,
+                    executionLog: [
+                        ...(fresh.executionLog || []),
+                        logEntry("failed_final", { error: errMsg, retries })
+                    ]
+                });
+                console.log(`[AutoLoop] FAIL  task ${task.id} — exhausted ${retries} retries (soft failure)`);
+            } else {
+                const nextRun = new Date(Date.now() + delay).toISOString();
+                taskQueue.update(task.id, {
+                    status: "pending",
+                    retries,
+                    scheduledFor: nextRun,
+                    lastError: errMsg,
+                    executionLog: [
+                        ...(fresh.executionLog || []),
+                        logEntry("retry_scheduled", { attempt: retries, nextRun, error: errMsg })
+                    ]
+                });
+                console.log(`[AutoLoop] RETRY task ${task.id} attempt ${retries}/${task.maxRetries} @ ${nextRun} (soft failure)`);
+            }
+            return { success: false, summary, error: errMsg };
+        }
+
         taskQueue.update(task.id, {
             status: task.recurringCron ? "pending" : "completed",
             completedAt: new Date().toISOString(),
@@ -193,6 +279,9 @@ async function _runTask(task) {
             scheduledFor: task.recurringCron
                 ? new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString()
                 : fresh.scheduledFor,
+            // partialFailure: some sub-tasks failed but at least one succeeded — the
+            // task still completed, but the degradation is recorded rather than hidden.
+            ...(failed.length ? { partialFailure: failed.length } : {}),
             executionLog: [
                 ...(fresh.executionLog || []),
                 logEntry("completed", { output: summary.slice(0, 500) })
@@ -357,4 +446,4 @@ function addTask(opts) {
     return task;
 }
 
-module.exports = { start, stop, addTask, getQueue: () => taskQueue.getAll(), getFailureReport, getTimingReport };
+module.exports = { start, stop, addTask, getQueue: () => taskQueue.getAll(), getFailureReport, getTimingReport, _runTask };

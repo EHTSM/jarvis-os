@@ -14,7 +14,7 @@
 
 const fs   = require("fs");
 const path = require("path");
-const { execSync, spawnSync } = require("child_process");
+const { execFileSync, spawnSync } = require("child_process");
 
 const INDEX_PATH = path.join(__dirname, "../../data/repo-index.json");
 
@@ -34,19 +34,42 @@ const SKIP_DIRS = ["node_modules", ".git", "_archive", "dist", "build", "coverag
 const CODE_EXTS = ["*.js", "*.cjs", "*.mjs", "*.jsx", "*.ts", "*.tsx", "*.py", "*.go", "*.rs", "*.java", "*.c", "*.cpp"];
 
 function _grepArgs(repoPath) {
-    const excl = SKIP_DIRS.map(d => `--exclude-dir=${d}`).join(" ");
-    const incl = CODE_EXTS.map(e => `--include=${e}`).join(" ");
+    const excl = SKIP_DIRS.map(d => `--exclude-dir=${d}`);
+    const incl = CODE_EXTS.map(e => `--include=${e}`);
     return { excl, incl, absPath: path.resolve(repoPath || ".") };
 }
 
+// Command Injection & Process Execution Deep Security Sweep (2026-08-21):
+// this previously built a shell command STRING via execSync, quoting
+// `pattern`/`absPath` with JSON.stringify() — which produces a
+// double-quoted string, and /bin/sh performs $()/backtick command
+// substitution INSIDE double quotes (it only escapes `"` and `\`, not `$`
+// or a backtick). Live-reproduced end-to-end via a real HTTP request from
+// an ordinary authenticated customer: POST /p25/search with
+// repoPath:"$(touch /tmp/PROOF)" executed the substituted command as the
+// backend process — full RCE, not merely a bad-argument issue. Fixed by
+// switching to execFileSync with a real argument array: grep receives
+// each flag/pattern/path as its own argv element with no shell parsing at
+// all, so $(), backticks, `;`, `&&`, `|` are all inert data, never syntax.
 function _runGrep(pattern, absPath, excl, incl, maxResults = 500) {
     try {
-        const raw = execSync(
-            `grep -rn ${excl} ${incl} -m ${maxResults} -- ${JSON.stringify(pattern)} ${JSON.stringify(absPath)} 2>/dev/null`,
-            { encoding: "utf8", maxBuffer: 16 * 1024 * 1024, timeout: 15000 }
-        );
+        const args = [
+            "-rn",
+            ...excl,
+            ...incl,
+            "-m", String(maxResults),
+            "--", pattern, absPath,
+        ];
+        const raw = execFileSync("grep", args, {
+            encoding: "utf8", maxBuffer: 16 * 1024 * 1024, timeout: 15000,
+            stdio: ["ignore", "pipe", "ignore"], // 2>/dev/null equivalent
+        });
         return raw.trim().split("\n").filter(Boolean);
-    } catch { return []; }
+    } catch (e) {
+        // grep exits 1 (and execFileSync throws) when there are simply no
+        // matches — same as the prior execSync behavior's empty-result path.
+        return e.stdout ? String(e.stdout).trim().split("\n").filter(Boolean) : [];
+    }
 }
 
 function _parseLine(raw, absPath) {
@@ -221,10 +244,12 @@ function findRelated(filePath, repoPath, opts = {}) {
         const { excl, incl } = _grepArgs(repoPath);
         const query = symbols.slice(0, 3).join("|");
         try {
-            const lines = execSync(
-                `grep -rln ${excl} ${incl} -E ${JSON.stringify(query)} ${JSON.stringify(absPath)} 2>/dev/null`,
-                { encoding: "utf8", maxBuffer: 4 * 1024 * 1024, timeout: 8000 }
-            ).trim().split("\n").filter(Boolean);
+            // Same fix as _runGrep() above — execFileSync with an argument
+            // array, no shell parsing, query/absPath cannot break out.
+            const lines = execFileSync("grep", ["-rln", ...excl, ...incl, "-E", query, absPath], {
+                encoding: "utf8", maxBuffer: 4 * 1024 * 1024, timeout: 8000,
+                stdio: ["ignore", "pipe", "ignore"],
+            }).trim().split("\n").filter(Boolean);
             for (const l of lines) {
                 const rel = path.relative(absPath, l);
                 if (rel !== relFile) coOccurring.push(rel);
@@ -271,14 +296,19 @@ function repoStats(repoPath) {
         if (repo) return { indexed: true, ...repo, files: undefined }; // omit full file map
     } catch { /* no index */ }
 
-    // fallback: live count
-    const { excl, incl } = _grepArgs(repoPath);
+    // fallback: live count. Same execFileSync-with-argument-array fix as
+    // _runGrep()/findRelated() above — `find | wc -l` is replaced with a
+    // single find call (argument array, no shell) and the line count is
+    // taken in JS instead of piping through wc, since execFileSync can't
+    // express a shell pipeline without reintroducing shell parsing.
     try {
-        const out = execSync(
-            `find ${JSON.stringify(absPath)} ${SKIP_DIRS.map(d => `-not -path "*/${d}/*"`).join(" ")} -type f 2>/dev/null | wc -l`,
-            { encoding: "utf8" }
-        );
-        return { indexed: false, totalFiles: parseInt(out.trim()) };
+        const notPathArgs = SKIP_DIRS.flatMap(d => ["-not", "-path", `*/${d}/*`]);
+        const out = execFileSync("find", [absPath, ...notPathArgs, "-type", "f"], {
+            encoding: "utf8", maxBuffer: 16 * 1024 * 1024,
+            stdio: ["ignore", "pipe", "ignore"],
+        });
+        const totalFiles = out.trim() ? out.trim().split("\n").length : 0;
+        return { indexed: false, totalFiles };
     } catch { return { indexed: false }; }
 }
 

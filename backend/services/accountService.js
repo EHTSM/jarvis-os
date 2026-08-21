@@ -44,7 +44,19 @@ function _load() {
 function _save(data) {
   try {
     fs.mkdirSync(path.dirname(ACCOUNTS_FILE), { recursive: true });
-    fs.writeFileSync(ACCOUNTS_FILE, JSON.stringify(data, null, 2));
+    // Persistence Sweep (2026-08-20): this used to write ACCOUNTS_FILE
+    // directly with no tmp+rename at all — the highest-stakes file in the
+    // whole persistence layer (every real signup/login/account mutation)
+    // had zero crash-safety; a SIGKILL/crash mid-writeFileSync could leave
+    // the entire user account store truncated/corrupted. Same fix already
+    // established and reused across this codebase (missionMemory.cjs,
+    // secretVault.cjs, organizationService.cjs, memoryPersistenceLayer.cjs):
+    // a unique per-call tmp name (pid + random) plus renameSync, which is
+    // atomic at the OS level — a reader/subsequent boot never observes a
+    // partially-written file.
+    const tmp = `${ACCOUNTS_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+    fs.renameSync(tmp, ACCOUNTS_FILE);
   } catch (e) { logger.error("[Account] persist failed:", e.message); }
 }
 
@@ -124,12 +136,29 @@ function createAccount({ email, password, name = "", role = "user" }) {
  * Find account by email and verify password.
  * Returns { success, account, token_sub } or { success: false, error }.
  */
+// Authentication, Session & Account Security Deep Audit (2026-08-21): a
+// request for a nonexistent email used to return immediately, before
+// verifyPassword() ever ran — scrypt (deliberately CPU-expensive) only ran
+// on the real-account path. Live-measured: ~30-40ms for a real account vs
+// ~0.5-1.4ms for a nonexistent one, a ~60x gap easily distinguishable over a
+// real network — a genuine account-enumeration oracle distinct from the
+// already-certified response-BODY enumeration resistance (identical error
+// message either way; this is a timing side-channel the message-level fix
+// never addressed). Fixed by always running an equivalent-cost hash
+// comparison, even when no account exists, against a fixed dummy hash built
+// with the same hashPassword() every real account uses — no new crypto
+// primitive, reuses the exact functions every real login already calls.
+const _DUMMY_HASH = hashPassword("dummy-constant-time-comparison-value");
+
 function loginByEmail(email, password) {
   const normalEmail = (email || "").toLowerCase().trim();
   const accounts    = _load();
 
   const account = Object.values(accounts).find(a => a.email === normalEmail && a.active);
-  if (!account) return { success: false, error: "Invalid email or password" };
+  if (!account) {
+    verifyPassword(password, _DUMMY_HASH); // constant-cost path — closes the timing oracle above
+    return { success: false, error: "Invalid email or password" };
+  }
 
   if (!verifyPassword(password, account.passwordHash)) {
     return { success: false, error: "Invalid email or password" };
@@ -226,13 +255,16 @@ function listAccounts() {
  * Update account fields. Most callers touch name/role/active; passwordHash is
  * written directly by password-reset flows (already hashed by the caller —
  * see betaReadiness.resetPassword), and emailVerified/emailVerifiedAt by the
- * email-verification flow (see betaReadiness.verifyEmail).
+ * email-verification flow (see betaReadiness.verifyEmail). passwordChangedAt
+ * (Security Token Audit, 2026-08-16) is set alongside passwordHash on a
+ * successful reset and read by authMiddleware.verifyJWT to invalidate any
+ * session token issued before that moment.
  */
 function updateAccount(id, updates) {
   const accounts = _load();
   if (!accounts[id]) return { success: false, error: "Account not found" };
 
-  const allowed = ["name", "role", "active", "passwordHash", "emailVerified", "emailVerifiedAt"];
+  const allowed = ["name", "role", "active", "passwordHash", "emailVerified", "emailVerifiedAt", "passwordChangedAt"];
   for (const k of allowed) {
     if (updates[k] !== undefined) accounts[id][k] = updates[k];
   }

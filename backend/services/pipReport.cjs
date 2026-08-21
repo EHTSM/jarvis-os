@@ -102,7 +102,17 @@ const INTEGRATIONS = [
     id: "email_smtp", category: "Email", name: "SMTP / Transactional Email",
     description: "Outbound transactional email (welcome, OTP, billing alerts)",
     check: () => {
-      if (_env("SMTP_HOST") && _env("SMTP_USER")) return { status: "production_ready", detail: `SMTP: ${process.env.SMTP_HOST}` };
+      // Configuration, Secrets & Environment Exposure Deep Security Audit
+      // (2026-08-22): this used to interpolate the real SMTP_HOST value
+      // into `detail`, reachable via requireAuth-only GET /launch/pip-report
+      // (no operatorOnly) — any ordinary authenticated customer could read
+      // the platform's real mail-relay hostname. Live-reproduced with a
+      // synthetic marker value, never a real credential. Every other check
+      // in this file already uses the presence-only _env() helper defined
+      // above for exactly this reason; these two lines were the only ones
+      // that bypassed it. Now presence-only, matching the file's own
+      // established convention.
+      if (_env("SMTP_HOST") && _env("SMTP_USER")) return { status: "production_ready", detail: "SMTP_HOST+SMTP_USER set" };
       if (_env("SENDGRID_API_KEY")) return { status: "production_ready", detail: "SendGrid configured" };
       if (_env("MAILGUN_API_KEY"))  return { status: "production_ready", detail: "Mailgun configured" };
       return { status: "needs_credentials", detail: "Set SMTP_HOST+SMTP_USER or SENDGRID_API_KEY or MAILGUN_API_KEY" };
@@ -381,7 +391,11 @@ const INTEGRATIONS = [
     id: "deploy_domain", category: "Deployment", name: "Production Domain",
     description: "ooplix.com / app.ooplix.com DNS configuration",
     check: () => {
-      if (_env("PRODUCTION_DOMAIN")) return { status: "production_ready", detail: `Domain: ${process.env.PRODUCTION_DOMAIN}` };
+      // Same fix and reasoning as the email_smtp check above — presence-
+      // only, matching this file's established convention. Lower severity
+      // than the SMTP case (a production domain is often public-facing
+      // anyway), fixed for consistency and to close the finding fully.
+      if (_env("PRODUCTION_DOMAIN")) return { status: "production_ready", detail: "PRODUCTION_DOMAIN set" };
       return { status: "needs_credentials", detail: "Set PRODUCTION_DOMAIN env var" };
     },
   },

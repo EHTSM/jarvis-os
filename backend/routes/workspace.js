@@ -15,14 +15,16 @@
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
 const { attachWorkspace, requireWorkspaceMember } = require("../middleware/workspaceMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 const svc = require("../services/workspaceService.cjs");
 
 // GET /invite-preview/:token — preview an invitation before accepting.
 // Deliberately public (no requireAuth, no /workspace prefix) — the invitee
 // may not have an account or session yet when they first open the emailed
 // link, and needs to see "You've been invited to join <workspace>" before
-// being asked to sign up or log in.
-router.get("/invite-preview/:token", (req, res) => {
+// being asked to sign up or log in. Rate-limited per IP since it's an
+// unauthenticated token-lookup surface (invite-token enumeration/guessing).
+router.get("/invite-preview/:token", rateLimiter(30, 60_000, "invite-preview"), (req, res) => {
   const info = svc.getInvitationByToken(req.params.token);
   if (!info) return res.status(404).json({ error: "Invitation not found" });
   res.json({ invitation: info });
@@ -30,7 +32,7 @@ router.get("/invite-preview/:token", (req, res) => {
 
 // All workspace routes require auth
 router.use("/workspace", requireAuth);
-router.use(attachWorkspace);
+router.use("/workspace", attachWorkspace);
 
 // POST /workspace/accept-invite — consume a token, join the workspace.
 // Requires auth: the invitee must be logged in (or have just registered) —

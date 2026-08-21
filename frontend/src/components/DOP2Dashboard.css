@@ -5,7 +5,7 @@
 .dop2-header   { padding: 10px 16px 6px; border-bottom: 1px solid #1e293b; }
 .dop2-title    { font-size: 14px; font-weight: 700; color: var(--dop2-accent); }
 .dop2-subtitle { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-.dop2-msg      { font-size: 11px; color: #fbbf24; margin-top: 4px; }
+.dop2-msg      { font-size: 11px; color: var(--warning); margin-top: 4px; }
 
 .dop2-tabs     { display: flex; gap: 2px; padding: 6px 10px; background: var(--surface-base); border-bottom: 1px solid #1e293b; overflow-x: auto; flex-shrink: 0; }
 .dop2-tab      { background: none; border: 1px solid transparent; border-radius: 5px; padding: 4px 9px; font-size: 10px; color: var(--text-dim); cursor: pointer; white-space: nowrap; }
@@ -26,7 +26,7 @@
 .dop2-stat-l   { font-size: 10px; color: var(--text-dim); }
 .dop2-green    { color: var(--success); }
 .dop2-red      { color: var(--danger); }
-.dop2-yellow   { color: #fbbf24; }
+.dop2-yellow   { color: var(--warning); }
 .dop2-violet   { color: var(--dop2-accent); }
 
 /* ── Verdict badge ─────────────────────────────────────────────── */
@@ -51,7 +51,7 @@
 .dop2-checks   { display: flex; flex-direction: column; gap: 3px; }
 .dop2-check    { display: flex; align-items: flex-start; gap: 8px; background: var(--surface-raised); border-radius: 5px; padding: 7px 10px; border-left: 3px solid transparent; cursor: pointer; }
 .dop2-check.pass { border-left-color: #34d399; }
-.dop2-check.warn { border-left-color: #fbbf24; }
+.dop2-check.warn { border-left-color: var(--warning); }
 .dop2-check.fail { border-left-color: #f87171; }
 .dop2-check:hover { background: #263347; }
 .dop2-check-icon  { font-size: 12px; flex-shrink: 0; padding-top: 1px; }
@@ -59,7 +59,7 @@
 .dop2-check-label { font-size: 11px; font-weight: 600; }
 .dop2-check-detail{ margin-top: 4px; }
 .dop2-check-detail-text { font-size: 10px; color: var(--text-dim); }
-.dop2-check-fix   { font-size: 10px; color: #fbbf24; background: rgba(251,191,36,0.07); border-radius: 3px; padding: 2px 6px; margin-top: 3px; display: inline-block; font-family: monospace; }
+.dop2-check-fix   { font-size: 10px; color: var(--warning); background: rgba(251,191,36,0.07); border-radius: 3px; padding: 2px 6px; margin-top: 3px; display: inline-block; font-family: monospace; }
 .dop2-check-expand{ font-size: 9px; color: var(--text-faint); flex-shrink: 0; }
 
 /* ── Failing / warning blocks ──────────────────────────────────── */
@@ -70,7 +70,7 @@
 
 .dop2-fail-row  { display: flex; align-items: flex-start; gap: 6px; padding: 4px 0; border-bottom: 1px solid #1e293b; font-size: 11px; }
 .dop2-crit      { font-size: 9px; font-weight: 700; background: rgba(248,113,113,0.15); color: var(--danger); border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
-.dop2-warn      { font-size: 9px; font-weight: 700; background: rgba(251,191,36,0.12); color: #fbbf24; border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
+.dop2-warn      { font-size: 9px; font-weight: 700; background: rgba(251,191,36,0.12); color: var(--warning); border-radius: 3px; padding: 1px 5px; white-space: nowrap; flex-shrink: 0; }
 .dop2-fail-label{ flex: 1; }
 .dop2-fail-fix  { font-size: 10px; color: var(--text-dim); }
 

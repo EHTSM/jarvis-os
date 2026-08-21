@@ -162,7 +162,7 @@
 
 /* Lists */
 .cp-list { margin: 0; padding: 0 0 0 16px; font-size: 11px; color: var(--text-dim); line-height: 1.6; }
-.cp-list--risk li { color: #fbbf24; }
+.cp-list--risk li { color: var(--warning); }
 
 /* Bundle files */
 .cp-bundle-files { display: flex; flex-direction: column; gap: 3px; }

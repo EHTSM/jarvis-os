@@ -30,9 +30,34 @@ function Empty({ title, sub }) {
 function OverviewPanel({ org, myRole, onToast, onReload }) {
   const [busy, setBusy] = useState(false);
   const [confirm, ConfirmUI] = useConfirm();
+  // OOPLIX V1 MASTER AUDIT (2026-08-16): backend/routes/organizations.js's
+  // POST /orgs/:orgId/purge (irreversible, requires the org already archived
+  // AND a real {confirm: slug} body match — organizationService.purgeOrg())
+  // was already live-verified correct in the Org Deletion Lifecycle audit,
+  // but had zero frontend consumer anywhere in the product — a founder had
+  // no way to actually complete the permanent-deletion step through the UI
+  // at all, only the archive/restore half was wired. useConfirm() only
+  // supports a boolean yes/no, not the type-to-confirm slug match the
+  // backend requires, so this uses a plain controlled input matching this
+  // file's own existing "add member"/"new department" show*+form pattern
+  // rather than building a new shared dialog component.
+  const [showPurge, setShowPurge] = useState(false);
+  const [purgeSlug, setPurgeSlug] = useState("");
   if (!org) return <Empty title="No organization selected" sub="Use the organization switcher in the header to select or create one." />;
 
   const isArchived = org.status === "archived";
+
+  const handlePurge = async () => {
+    setBusy(true);
+    const r = await _fetch(`/orgs/${org.id}/purge`, { method: "POST", body: JSON.stringify({ confirm: purgeSlug }) })
+      .catch(e => ({ ok: false, error: e.message }));
+    setBusy(false);
+    if (r.ok === false) { onToast?.("error", r.error || "Failed to permanently delete organization"); return; }
+    setShowPurge(false);
+    setPurgeSlug("");
+    onToast?.("success", "Organization permanently deleted");
+    onReload?.();
+  };
 
   const handleArchive = async () => {
     if (!await confirm({
@@ -64,6 +89,43 @@ function OverviewPanel({ org, myRole, onToast, onReload }) {
           <p className="oac-empty-title" style={{ color: "var(--warning)" }}>This organization is archived</p>
           <p className="oac-empty-sub">Members cannot access it while archived. Restore it to resume normal access.</p>
           <button className="oac-btn primary" disabled={busy} onClick={handleRestore} style={{ marginTop: 8 }}>Restore organization</button>
+        </div>
+      )}
+      {isArchived && myRole === "org_owner" && (
+        <div className="oac-section" style={{ marginTop: 8 }}>
+          <h3 className="oac-section-title" style={{ color: "var(--danger)" }}>Danger zone</h3>
+          <div className="oac-form-card" style={{ flexDirection: "column", alignItems: "stretch", gap: 10 }}>
+            <span className="oac-card-desc">
+              Permanently delete this organization. This cannot be undone — CRM records, missions,
+              and other data are not cascade-deleted but become permanently unreachable through the
+              normal org-scoped API. Type the organization's slug (<strong>{org.slug}</strong>) to confirm.
+            </span>
+            {!showPurge ? (
+              <button className="oac-btn" style={{ borderColor: "var(--danger)", color: "var(--danger)", alignSelf: "flex-start" }}
+                onClick={() => setShowPurge(true)}>
+                Permanently delete organization
+              </button>
+            ) : (
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input
+                  className="oac-input"
+                  placeholder={org.slug}
+                  value={purgeSlug}
+                  onChange={e => setPurgeSlug(e.target.value)}
+                  autoFocus
+                />
+                <button
+                  className="oac-btn"
+                  style={{ borderColor: "var(--danger)", color: "var(--danger)" }}
+                  disabled={busy || purgeSlug !== org.slug}
+                  onClick={handlePurge}
+                >
+                  {busy ? "Deleting…" : "Confirm permanent delete"}
+                </button>
+                <button className="oac-btn" onClick={() => { setShowPurge(false); setPurgeSlug(""); }}>Cancel</button>
+              </div>
+            )}
+          </div>
         </div>
       )}
       <div className="oac-stats-grid">

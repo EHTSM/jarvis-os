@@ -1,0 +1,639 @@
+[
+  {
+    "route": "/",
+    "theme": "dark",
+    "axe": [],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 37
+      },
+      "focusable": 38,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 37
+      }
+    }
+  },
+  {
+    "route": "/dashboard",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/missions",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/business",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/crm",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/growth",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/enterprise",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/developer",
+    "theme": "dark",
+    "axe": [],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 24
+      },
+      "focusable": 25,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 24
+      }
+    }
+  },
+  {
+    "route": "/revenue",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/distribution",
+    "theme": "dark",
+    "axe": [],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 37
+      },
+      "focusable": 38,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 37
+      }
+    }
+  },
+  {
+    "route": "/settings",
+    "theme": "dark",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 4,
+        "sample": [
+          "<span class=\"cfr-step-count\">1/5</span>",
+          "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 37
+      },
+      "focusable": 38,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 37
+      }
+    }
+  },
+  {
+    "route": "/dashboard",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/missions",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/business",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/crm",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/growth",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/enterprise",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/developer",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 4,
+        "sample": [
+          "<span class=\"cfr-step-count\">1/5</span>",
+          "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 37
+      },
+      "focusable": 38,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 37
+      }
+    }
+  },
+  {
+    "route": "/revenue",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  },
+  {
+    "route": "/distribution",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 4,
+        "sample": [
+          "<span class=\"cfr-step-count\">1/5</span>",
+          "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {
+        "a": 1,
+        "button": 37
+      },
+      "focusable": 38,
+      "dialogs": 0,
+      "byRole": {
+        "a": 1,
+        "button": 37
+      }
+    }
+  },
+  {
+    "route": "/settings",
+    "theme": "light",
+    "axe": [
+      {
+        "id": "document-title",
+        "impact": "serious",
+        "help": "Documents must have <title> element to aid in navigation",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      },
+      {
+        "id": "html-has-lang",
+        "impact": "serious",
+        "help": "<html> element must have a lang attribute",
+        "nodes": 1,
+        "sample": [
+          "<html>"
+        ]
+      }
+    ],
+    "inv": {
+      "controls": [],
+      "counts": {},
+      "focusable": 0,
+      "dialogs": 0,
+      "byRole": {}
+    }
+  }
+]

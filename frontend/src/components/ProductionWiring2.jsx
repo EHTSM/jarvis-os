@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import "./ProductionWiring2.css";
 
 const api = (path, opts = {}) =>
-  fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
+  fetch(path, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
     .then(r => r.json());
 
 function usePW2(path, deps = []) {

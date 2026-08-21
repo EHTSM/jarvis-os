@@ -73,7 +73,40 @@ function _rid() { return `rec_${Date.now()}_${(++_seq).toString(36)}`; }
 // (autonomousEvolutionOrg, autonomousKnowledgeOrg, businessOrg), making this
 // the dominant steady-state leak. Reassigning keeps memory and disk bounded
 // together — same fix as autonomousTaskLoop.cjs's _cycles/_learning.
-function _saveLessons() { try { _lessons = _lessons.slice(-2000); _wj(LESSONS_FILE, _lessons); } catch { /* non-fatal */ } }
+// The plain slice(-2000) above is pure FIFO, which is correct for bounding the
+// leak but discards by age alone. Measured on the live store: the cap was full at
+// exactly 2000 with a retention window of ~71 MINUTES, because autonomous writers
+// churn it continuously (businessIntelligenceEngine alone held 960 entries).
+// A memory written through the user-facing POST /memory/remember therefore
+// returned { stored: true } and was genuinely on disk, but was silently evicted
+// within the hour — confirmed: two probe lessons written during this pass were
+// absent from lessons.json minutes later while the file sat at exactly 2000.
+//
+// Retention is now two-tier, with the SAME overall cap and no schema change:
+// explicitly-authored lessons (anything not written by an autonomous engine) are
+// kept in a reserved slice, and machine-generated churn fills the remainder.
+// Autonomous lessons still evict FIFO exactly as before.
+const LESSON_CAP          = 2000;
+const AUTHORED_RESERVE    = 500;   // authored lessons protected from machine churn
+const _AUTONOMOUS_SOURCE  = /^(?:acp10|auto|ako_|bizorg_|biz_|reviewer_agent|businessIntelligenceEngine|autonomous|evolution|knowledge)/i;
+
+function _isAuthored(l) {
+    return !_AUTONOMOUS_SOURCE.test(String(l && l.source || ""));
+}
+
+function _trimLessons(list) {
+    if (list.length <= LESSON_CAP) return list;
+    const authored = list.filter(_isAuthored);
+    const machine  = list.filter(l => !_isAuthored(l));
+    const keepAuthored = authored.slice(-Math.min(authored.length, AUTHORED_RESERVE));
+    const keepMachine  = machine.slice(-Math.max(0, LESSON_CAP - keepAuthored.length));
+    // Restore original chronological order so downstream slice(-N)/timeline
+    // consumers keep seeing oldest→newest exactly as before.
+    const keep = new Set([...keepAuthored, ...keepMachine]);
+    return list.filter(l => keep.has(l));
+}
+
+function _saveLessons() { try { _lessons = _trimLessons(_lessons); _wj(LESSONS_FILE, _lessons); } catch { /* non-fatal */ } }
 function _saveRecs()    { try { _recs    = _recs.slice(-500);    _wj(RECS_FILE,    _recs);    } catch { /* non-fatal */ } }
 
 // ── Data loading ─────────────────────────────────────────────────────────

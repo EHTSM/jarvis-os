@@ -196,8 +196,8 @@ export default function OoplixRunsOoplixCenter({ onNavigate }) {
           { label:"Human dependency",      value:`${humanDependency}%`,       color:"var(--warning)" },
           { label:"Autonomous exec score", value:`${autonomousExecScore}%`,   color:"var(--accent2)" },
           { label:"Domains automated",     value:`${DOMAINS.filter(d=>d.score>=80).length}/${DOMAINS.length}`, color:"var(--accent)" },
-          { label:"Agents running 24/7",   value:"31",                        color:"var(--success)"        },
-          { label:"Human interventions/d", value:"2",                         color:"var(--text-faint)" },
+          { label:"Agents running 24/7",   value:liveStatus?.activeAgents ?? DOMAINS.reduce((a,d)=>a+d.agents.length,0), color:"var(--success)"        },
+          { label:"Human interventions/d", value:liveStatus?.humanInterventionsPerDay ?? "—",  color:"var(--text-faint)" },
         ].map(s=>(
           <div key={s.label} className="oro-summary-tile">
             <span className="oro-sv" style={{color:s.color}}>{s.value}</span>

@@ -16,41 +16,58 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireRole, requireWorkspaceMember } = require("../middleware/workspaceMiddleware.cjs");
 const rt = require("../services/extensionRuntime.cjs");
 
 router.use("/extensions", requireAuth);
-router.use(attachWorkspace);
+router.use("/extensions", attachWorkspace);
 
 function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
 }
 
+// OOPLIX V1 MASTER AUDIT (2026-08-16): the 5 read-only routes below relied
+// on _wsId(req), which accepts a caller-supplied ?workspaceId= directly with
+// NO membership check — attachWorkspace only resolves req.workspace/
+// req.workspaceRole (non-blocking by its own header comment); the mutating
+// routes below already correctly compose requireRole(), which does enforce
+// real membership via req.workspaceRole, but these reads had no equivalent
+// gate at all. Live-reproduced: a real, unrelated account (Org B) supplied
+// a real Org A workspace ID and successfully read its extension runtime
+// list, metrics (including the full platform event-bus subscriber list),
+// hooks, and quotas — 200, not 403. Fixed by adding requireWorkspaceMember
+// (the same real membership check already used elsewhere in this codebase,
+// e.g. workspace.js's own GET /workspace/:id/members) after attachWorkspace
+// — a caller with no membership in the requested/resolved workspace is
+// now correctly denied 403, while the default "view my own workspace" case
+// (no workspaceId supplied) is unaffected, since attachWorkspace's own
+// fallback (getActiveWorkspace) always resolves to a real workspace the
+// caller is trivially a member of.
 // ── Read-only ─────────────────────────────────────────────────────
-router.get("/extensions/runtime", (req, res) => {
+router.get("/extensions/runtime", requireWorkspaceMember, (req, res) => {
   try {
     const { state } = req.query;
     res.json({ extensions: rt.listRuntime(_wsId(req), { state }), total: rt.listRuntime(_wsId(req), { state }).length });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/extensions/metrics", (req, res) => {
+router.get("/extensions/metrics", requireWorkspaceMember, (req, res) => {
   try { res.json(rt.getMetrics(_wsId(req))); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/extensions/hooks", (req, res) => {
+router.get("/extensions/hooks", requireWorkspaceMember, (req, res) => {
   try { res.json(rt.getHooks(_wsId(req))); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/extensions/quotas", (req, res) => {
+router.get("/extensions/quotas", requireWorkspaceMember, (req, res) => {
   try { res.json({ quotas: rt.getQuotas(_wsId(req)) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ── Single (must be after named routes) ──────────────────────────
-router.get("/extensions/runtime/:id", (req, res) => {
+router.get("/extensions/runtime/:id", requireWorkspaceMember, (req, res) => {
   try {
     const record = rt.getRuntime(_wsId(req), req.params.id);
     if (!record) return res.status(404).json({ error: "Extension not in runtime" });

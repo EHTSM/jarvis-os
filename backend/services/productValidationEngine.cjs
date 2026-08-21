@@ -11,6 +11,12 @@
  *         continuousLearningEngine.
  *
  * Storage: data/product-validations.json
+ *
+ * ECOSYSTEM OS RECOVERY (2026-08-15): orgId now required — see
+ * productPlannerEngine.cjs's file header for the full blast-radius
+ * investigation and precedent this follows. Pre-existing unowned records
+ * (~82 validations) are correctly invisible to real orgId queries, not
+ * misattributed.
  */
 
 const fs   = require("fs");
@@ -32,6 +38,10 @@ const _pasm = () => _try(() => require("./productAssemblyEngine.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `pv_${Date.now()}_${Math.random().toString(36).slice(2,6)}`; }
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+function _requireOrgId(orgId, fnName) {
+  if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
 
 // ── Validation dimensions ─────────────────────────────────────────────────────
 
@@ -161,8 +171,9 @@ function _save(d) {
 
 // ── Core: validate ────────────────────────────────────────────────────────────
 
-async function validate(planId, { skipExecute = false } = {}) {
-  const plan = _ppe()?.getPlan?.(planId);
+async function validate(orgId, planId, { skipExecute = false } = {}) {
+  _requireOrgId(orgId, "validate");
+  const plan = _ppe()?.getPlan?.(orgId, planId);
   if (!plan) return { ok: false, error: `plan not found: ${planId}` };
 
   const id   = _id();
@@ -187,6 +198,22 @@ async function validate(planId, { skipExecute = false } = {}) {
   const allPassed    = Object.values(dimensions).every(d => d.passed);
   const failures     = VALIDATION_DIMENSIONS.filter(dim => !dimensions[dim]?.passed);
 
+  // Product OS pass (2026-08-15): every _validate* function silently falls
+  // back to a hardcoded, always-passing score+source:"fallback" when its
+  // real underlying service call fails or returns nothing — confirmed by
+  // reading all 6 dimension functions. Before this fix, `productionReady`
+  // was computed from overallScore/passed alone, so a run where every real
+  // check failed and every dimension silently used its fallback would
+  // report productionReady:true, indistinguishable from a genuinely
+  // measured pass to any caller that doesn't separately inspect each
+  // dimension's own `source` field. Counting how many dimensions actually
+  // used a real measurement (not skipExecute's honest "mock" label, and not
+  // an unrequested "fallback") makes that distinction visible at the top
+  // level, and productionReady now requires at least one real measurement
+  // — an all-fallback run can no longer look identical to a real pass.
+  const measuredDimensions = Object.values(dimensions).filter(d => d.source && d.source !== "fallback" && d.source !== "mock").length;
+  const totalDimensions    = Object.keys(dimensions).length;
+
   // Record lesson in CLE
   try {
     _cle()?.createLesson?.({
@@ -198,12 +225,13 @@ async function validate(planId, { skipExecute = false } = {}) {
   } catch {}
 
   const validation = {
-    id, planId,
+    id, planId, orgId,
     overallScore,
     status:        allPassed ? "passed" : "failed",
     dimensions,
     failures,
-    productionReady: allPassed && overallScore >= 75,
+    measuredDimensions, totalDimensions,
+    productionReady: allPassed && overallScore >= 75 && (skipExecute || measuredDimensions > 0),
     createdAt:     _ts(),
     updatedAt:     _ts(),
   };
@@ -244,10 +272,17 @@ async function validate(planId, { skipExecute = false } = {}) {
   return { ok: true, validation };
 }
 
-function getValidation(id)       { return _load().validations.find(v => v.id === id) || null; }
-function getValidationForPlan(pid) { return _load().validations.filter(v => v.planId === pid).pop() || null; }
-function listValidations({ limit = 50, status } = {}) {
-  let list = _load().validations;
+function getValidation(orgId, id) {
+  _requireOrgId(orgId, "getValidation");
+  return _load().validations.find(v => v.id === id && _ownedBy(v, orgId)) || null;
+}
+function getValidationForPlan(orgId, pid) {
+  _requireOrgId(orgId, "getValidationForPlan");
+  return _load().validations.filter(v => v.planId === pid && _ownedBy(v, orgId)).pop() || null;
+}
+function listValidations(orgId, { limit = 50, status } = {}) {
+  _requireOrgId(orgId, "listValidations");
+  let list = _load().validations.filter(v => _ownedBy(v, orgId));
   if (status) list = list.filter(v => v.status === status);
   return { ok: true, validations: list.slice(-limit).reverse(), total: list.length };
 }

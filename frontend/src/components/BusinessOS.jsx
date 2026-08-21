@@ -645,7 +645,14 @@ function OpportunitiesView({ onToast }) {
                   </div>
                 </div>
                 <div className="bos-opp-card-meta">
-                  <span className="bos-opp-prob">Probability: {o.probability}%</span>
+                  {/* MASTER GAP CLOSURE (2026-08-15, C10-026 pass): the backend
+                      opportunity record (businessDataService.cjs) has no
+                      `probability` field — this line previously rendered
+                      "Probability: undefined%" on every card, a fabricated-
+                      looking number with no real measurement behind it.
+                      Removed rather than invented; if a real probability
+                      model is added to the backend later, render it here
+                      from that real field. */}
                   {o.assignee && <span className="bos-opp-assign">{o.assignee}</span>}
                   <span className="bos-opp-age">{_timeAgo(o.createdAt)}</span>
                 </div>

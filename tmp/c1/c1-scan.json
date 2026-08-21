@@ -1,0 +1,601 @@
+{
+  "generatedAt": "2026-08-14T08:51:41.063Z",
+  "runs": [
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "tab": "Dashboard",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "tab": "Contacts",
+      "inv": {
+        "formControls": 1,
+        "namedForm": 0,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search by name, phone, service…",
+            "cls": "cv2-search",
+            "outer": "<input class=\"cv2-search\" placeholder=\"Search by name, phone, service…\" value=\"\">"
+          }
+        ],
+        "focusable": 54,
+        "buttons": 52,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "tab": "Payments",
+      "inv": {
+        "formControls": 6,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search contacts…",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Search contacts…\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "15000",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"15000\" inputmode=\"numeric\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Website redesign — 50% advance",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Website redesign — 50% advance\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "+91-9876543210",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"+91-9876543210\" inputmode=\"tel\" value=\"\">"
+          },
+          {
+            "tag": "textarea",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Type a message or choose a template above…",
+            "cls": "pv2-input pv2-textarea",
+            "outer": "<textarea class=\"pv2-input pv2-textarea\" placeholder=\"Type a message or choose a template above…\" rows=\"4\"></textarea>"
+          }
+        ],
+        "focusable": 51,
+        "buttons": 44,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "tab": "Pipeline",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "tab": "AI",
+      "inv": {
+        "formControls": 2,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Message Ooplix, or type a command…",
+            "cls": "chat-input",
+            "outer": "<input class=\"chat-input\" placeholder=\"Message Ooplix, or type a command…\" autocomplete=\"off\" spellcheck=\"false\" value=\"\">"
+          }
+        ],
+        "focusable": 38,
+        "buttons": 35,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "tablet",
+      "tab": "Dashboard",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "tablet",
+      "tab": "Contacts",
+      "inv": {
+        "formControls": 1,
+        "namedForm": 0,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search by name, phone, service…",
+            "cls": "cv2-search",
+            "outer": "<input class=\"cv2-search\" placeholder=\"Search by name, phone, service…\" value=\"\">"
+          }
+        ],
+        "focusable": 54,
+        "buttons": 52,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "tablet",
+      "tab": "Payments",
+      "inv": {
+        "formControls": 6,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search contacts…",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Search contacts…\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "15000",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"15000\" inputmode=\"numeric\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Website redesign — 50% advance",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Website redesign — 50% advance\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "+91-9876543210",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"+91-9876543210\" inputmode=\"tel\" value=\"\">"
+          },
+          {
+            "tag": "textarea",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Type a message or choose a template above…",
+            "cls": "pv2-input pv2-textarea",
+            "outer": "<textarea class=\"pv2-input pv2-textarea\" placeholder=\"Type a message or choose a template above…\" rows=\"4\"></textarea>"
+          }
+        ],
+        "focusable": 51,
+        "buttons": 44,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "tablet",
+      "tab": "Pipeline",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "tablet",
+      "tab": "AI",
+      "inv": {
+        "formControls": 2,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Message Ooplix, or type a command…",
+            "cls": "chat-input",
+            "outer": "<input class=\"chat-input\" placeholder=\"Message Ooplix, or type a command…\" autocomplete=\"off\" spellcheck=\"false\" value=\"\">"
+          }
+        ],
+        "focusable": 38,
+        "buttons": 35,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "tab": "Dashboard",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "tab": "Contacts",
+      "inv": {
+        "formControls": 1,
+        "namedForm": 0,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search by name, phone, service…",
+            "cls": "cv2-search",
+            "outer": "<input class=\"cv2-search\" placeholder=\"Search by name, phone, service…\" value=\"\">"
+          }
+        ],
+        "focusable": 54,
+        "buttons": 52,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "tab": "Payments",
+      "inv": {
+        "formControls": 6,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search contacts…",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Search contacts…\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "15000",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"15000\" inputmode=\"numeric\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Website redesign — 50% advance",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Website redesign — 50% advance\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "+91-9876543210",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"+91-9876543210\" inputmode=\"tel\" value=\"\">"
+          },
+          {
+            "tag": "textarea",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Type a message or choose a template above…",
+            "cls": "pv2-input pv2-textarea",
+            "outer": "<textarea class=\"pv2-input pv2-textarea\" placeholder=\"Type a message or choose a template above…\" rows=\"4\"></textarea>"
+          }
+        ],
+        "focusable": 51,
+        "buttons": 44,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "tab": "Pipeline",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "tab": "AI",
+      "inv": {
+        "formControls": 2,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Message Ooplix, or type a command…",
+            "cls": "chat-input",
+            "outer": "<input class=\"chat-input\" placeholder=\"Message Ooplix, or type a command…\" autocomplete=\"off\" spellcheck=\"false\" value=\"\">"
+          }
+        ],
+        "focusable": 38,
+        "buttons": 35,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": []
+    },
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "tab": "Dashboard",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 4,
+          "sample": [
+            "<span class=\"cfr-step-count\">1/5</span>",
+            "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>",
+            "<p class=\"cfr-body\">Your 7-day free trial has started. Here's how to get the most out of it in the next few minutes.</p>"
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "tab": "Contacts",
+      "inv": {
+        "formControls": 1,
+        "namedForm": 0,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search by name, phone, service…",
+            "cls": "cv2-search",
+            "outer": "<input class=\"cv2-search\" placeholder=\"Search by name, phone, service…\" value=\"\">"
+          }
+        ],
+        "focusable": 54,
+        "buttons": 52,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 3,
+          "sample": [
+            "<span class=\"cfr-step-count\">1/5</span>",
+            "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>",
+            "<button class=\"cfr-btn-skip\">Skip for now</button>"
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "tab": "Payments",
+      "inv": {
+        "formControls": 6,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Search contacts…",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Search contacts…\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "15000",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"15000\" inputmode=\"numeric\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Website redesign — 50% advance",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"Website redesign — 50% advance\" value=\"\">"
+          },
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "+91-9876543210",
+            "cls": "pv2-input",
+            "outer": "<input class=\"pv2-input\" placeholder=\"+91-9876543210\" inputmode=\"tel\" value=\"\">"
+          },
+          {
+            "tag": "textarea",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Type a message or choose a template above…",
+            "cls": "pv2-input pv2-textarea",
+            "outer": "<textarea class=\"pv2-input pv2-textarea\" placeholder=\"Type a message or choose a template above…\" rows=\"4\"></textarea>"
+          }
+        ],
+        "focusable": 51,
+        "buttons": 44,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 4,
+          "sample": [
+            "<span class=\"cfr-step-count\">1/5</span>",
+            "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>",
+            "<p class=\"cfr-body\">Your 7-day free trial has started. Here's how to get the most out of it in the next few minutes.</p>"
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "tab": "Pipeline",
+      "inv": {
+        "formControls": 0,
+        "namedForm": 0,
+        "unnamed": [],
+        "focusable": 38,
+        "buttons": 37,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 3,
+          "sample": [
+            "<span class=\"cfr-step-count\">1/5</span>",
+            "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>",
+            "<button class=\"cfr-btn-skip\">Skip for now</button>"
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "tab": "AI",
+      "inv": {
+        "formControls": 2,
+        "namedForm": 1,
+        "unnamed": [
+          {
+            "tag": "input",
+            "via": "placeholder-ONLY",
+            "type": null,
+            "placeholder": "Message Ooplix, or type a command…",
+            "cls": "chat-input",
+            "outer": "<input class=\"chat-input\" placeholder=\"Message Ooplix, or type a command…\" autocomplete=\"off\" spellcheck=\"false\" value=\"\">"
+          }
+        ],
+        "focusable": 38,
+        "buttons": 35,
+        "links": 1,
+        "dialogs": 0
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "nodes": 3,
+          "sample": [
+            "<span class=\"cfr-step-count\">1/5</span>",
+            "<h2 class=\"cfr-title\">Welcome to Ooplix</h2>",
+            "<button class=\"cfr-btn-skip\">Skip for now</button>"
+          ]
+        }
+      ]
+    }
+  ]
+}
