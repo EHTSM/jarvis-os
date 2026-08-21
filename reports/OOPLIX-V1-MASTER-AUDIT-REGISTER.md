@@ -3858,3 +3858,83 @@ untouched, no credentials rotated, no packages installed, server restarted once,
 merge, no push.
 
 **No OS-track record altered.**
+
+---
+
+## SSRF & Outbound HTTP Security Audit — 2026-08-22
+
+**Scope**: every customer-reachable outbound HTTP/network request path — `fetch`, `axios`,
+`http`/`https` clients, URL-controlled requests, localhost/RFC1918/link-local/cloud-metadata/IPv6
+loopback ranges, redirects, DNS-rebinding-sensitive paths, webhook/callback URLs, internal-service
+access, credential/header forwarding. Full report: [SSRF-OUTBOUND-HTTP-SECURITY-AUDIT.md](SSRF-OUTBOUND-HTTP-SECURITY-AUDIT.md).
+
+**Methodology**: inventoried ~55 outbound call sites across 24 `axios`-, 6 `fetch`-, and 26
+`http`/`https`-requiring files in `backend/` and `agents/`; traced each to its real caller chain; every
+customer-controlled-target candidate live-reproduced end-to-end (real HTTP route → real service function)
+using a disposable local "internal service" listener standing in for a target a customer should never
+reach — never a forged token, never simulated results.
+
+**Existing infrastructure reused, not rebuilt**: `backend/utils/urlSafety.cjs`'s
+`assertSafeNavigationTarget()` — a DNS-resolving guard already the single shared choke point for the
+entire ODI browser-automation family (14 files) — blocks RFC1918/loopback/link-local (incl. the
+`169.254.169.254` cloud-metadata address)/IPv6 unique-local/loopback ranges and non-http(s) schemes,
+resolving hostnames via DNS first to close naive DNS-rebinding bypasses. Both fixes below call this exact
+function; no second validation mechanism introduced.
+
+**2 genuine P1 SSRF defects found and fixed, both live-reproduced before fixing.**
+
+**1) `operationsAlertingLayer.cjs`'s webhook notification channel** — `PUT /p22/alerts/channels/webhook`
++ `POST /p22/alerts/fire` (both `requireAuth`-only, no `operatorOnly`) let any ordinary customer point the
+ops-alert webhook at an arbitrary URL, then immediately dispatch real alert content (title, detail,
+internal alert ID, org context) to it via raw `https.request`/`http.request` with zero validation.
+**Live-reproduced** in-process: a real HTTP POST carrying the full alert JSON arrived at a disposable
+`127.0.0.1` listener. Not blind — usable to reach internal services, cloud metadata, or port-scan the
+internal network by response timing. **Fixed** by validating the URL through
+`assertSafeNavigationTarget()` inside `_notify()`, matching the function's existing try/catch/log-warning
+shape. Telegram channel checked, confirmed clean (fixed `api.telegram.org` host, env-gated).
+
+**2) `vsCodeExtensionService.cjs`'s `_ollamaCompletion()`** — `POST /p24/vscode/{chat,explain,generate,
+refactor,fix}` (`requireAuth`-only) spread `req.body` directly into a customer-controlled `ollamaUrl`
+passed straight to a real `http.request` with zero validation — **non-blind**: the target's response body
+flowed back into the customer's HTTP response via `_extractReply()`. **Live-reproduced** the same way.
+**Fixed** by validating `ollamaUrl` through the same guard, but only when the customer actually supplies
+an override — the safe, intentional default (`http://localhost:11434`, the operator's own local Ollama)
+is left untouched, since validating it would break the one legitimate same-host use case the parameter
+exists for.
+
+**Confirmed reachable, confirmed clean (no fix needed)**: `webScraperAgent.cjs`'s `scrape()` and
+`apiFetcherAgent.cjs`'s `_request()` — both fully generic, zero-validation, customer-URL-accepting HTTP
+clients (the latter also accepts an injectable `Authorization` header) — traced their entire registration
+chain back to every HTTP entrypoint that can reach a registered agent; the only customer-facing free-text
+dispatch route (`POST /runtime/dispatch`) always intercepts any `https?://` substring as `open_url`
+*before* it can reach either function (confirmed live: `orchestrator.dispatch("scrape http://127.0.0.1:…
+")` resolved to `open_url`/`browserAgent`, never touched `webScraperAgent`), and no route exposes either
+function by name or wires structured `{payload:{url}}` into the dispatch pipeline. Not reachable by a
+customer today — per mission rule 3, not fixed, flagged for re-check if either gap changes.
+`ecosystemState.cjs`'s `registerWebhook()` stores a customer URL but is never dispatched anywhere
+(confirmed via a dedicated `.url`-usage search) — a stub, not a sink. `dop1InfraValidation.cjs`,
+`dop2Deployment.cjs`, `deploymentValidator.cjs`, `sentryService.cjs`, `gitHubEngineeringAgent.cjs`,
+`aiService.js` (14 providers), and all other `axios`/`fetch`/`http`/`https` call sites inventoried:
+hostnames are fixed literals or env-derived only (`APP_URL`, `VPS_HOST`, `SENTRY_DSN`, `GITHUB_TOKEN`,
+`LM_STUDIO_URL` — none customer-overridable per-request, unlike finding 2's `ollamaUrl`) — no
+customer-controlled hostname found on any of them. `agents/browserAgent.cjs`'s `open_url` OS-`open`
+spawn (a different vulnerability class, local process execution not server-side SSRF) reconfirmed already
+fixed in a prior mission, out of this mission's scope. `locationAgent.cjs`'s customer `ip` param is a URL
+*path segment* under a fixed host — cannot redirect off-origin, not an SSRF vector. `business.js`'s
+`/business/webhook/*` family are inbound receivers, not outbound sinks.
+
+**481/481 effective** (476/476 baseline + 5 new tests, block 176 — 2 live SSRF closures + 1 structural + 2
+negative controls). The full 219-file suite hung mid-run because the backend process had independently
+exited between an earlier live-reproduction step and the regression pass (every backend-dependent test
+failed identically with `'Promise resolution is still pending but the event loop has already resolved'`
+— the signature of an unreachable server, not a code regression). Restarted the server, confirmed healthy
+(`GET /health` → 200), re-ran the officially documented `npm run test:runtime` baseline clean at
+476/476, then added and passed the 5 new tests. Negative-tested both fixes independently: reverted each
+guard alone, confirmed the exact expected assertion failure (webhook: real alert payload reaching the
+listener; Ollama: loopback URL silently succeeding), restored both, confirmed `git diff` showed no
+residual change and both tests passed again. Production build not re-run this mission (no
+frontend/build-artifact code touched). `tests/security/97-enterprise-isolation-integrity.cjs`: 8/8 PASS.
+`.env` untouched, no credentials rotated, no packages installed, server restarted once (root cause
+independent of this mission's fixes), confirmed healthy, no merge, no push.
+
+**No OS-track record altered.**

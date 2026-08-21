@@ -16,7 +16,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachOrg } = require("../middleware/orgMiddleware.cjs");
+const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter = require("../middleware/rateLimiter");
 
 const creativeRegistry = require("../services/creativeRegistry.cjs");
@@ -681,7 +681,30 @@ router.get("/creative/social/history", (req, res) => {
 // single-tenant fallback socialPostingService.cjs already documents).
 function _socialPoster() { try { return require("../services/socialPostingService.cjs"); } catch { return null; } }
 
-router.post("/creative/social/publish", attachOrg, async (req, res) => {
+// Queue/Worker/Background Execution Audit (2026-08-22): attachOrg alone is
+// non-blocking by design (see comment above) — it resolves req.org from a
+// caller-supplied X-Org-Id header / query / body orgId with no membership
+// check (organizationService.getOrg() is a plain lookup by id). These two
+// routes then hand req.org.id straight to socialPostingService's vault-scoped
+// credential lookup, which fetches and USES that org's real X (Twitter)
+// OAuth token to post or delete on its behalf — unlike the read/auto-resolve
+// uses of attachOrg elsewhere, this is a credential-consuming write/delete
+// action. Live-traced: an authenticated caller from org A could set
+// X-Org-Id/body.orgId to org B and socialPostingService would post/delete
+// using org B's own stored credential. Same bug class already found and
+// fixed on crm.js/business.js/myConnectors.js/customerOrg.js/intelligence.js/
+// productFactory.js (each has its own comment documenting the identical
+// attachOrg-without-requireOrgMember gap) — missed here. Fixed by requiring
+// real membership (or enterprise_admin / cross-org grant, requireOrgMember's
+// existing logic) ONLY when an org actually resolved, mirroring jarvis.js's
+// _requireUseAiIfOrgContext contract so a solo caller with no org at all
+// still falls through to the documented global TWITTER_BEARER_TOKEN fallback.
+function _requireOrgMemberIfOrgContext(req, res, next) {
+  if (!req.org) return next(); // no org context — preserve the single-tenant fallback
+  return requireOrgMember(req, res, next);
+}
+
+router.post("/creative/social/publish", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
   try {
     const poster = _socialPoster();
     if (!poster) return res.status(503).json({ error: "socialPostingService unavailable" });
@@ -700,7 +723,7 @@ router.post("/creative/social/publish", attachOrg, async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.delete("/creative/social/publish/:postId", attachOrg, async (req, res) => {
+router.delete("/creative/social/publish/:postId", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
   try {
     const poster = _socialPoster();
     if (!poster) return res.status(503).json({ error: "socialPostingService unavailable" });

@@ -14,6 +14,21 @@ const { execFile } = require("child_process");
 let _running = false;
 let _intervalHandle = null;
 const _cronJobs = {};       // task.id → cron.ScheduledTask
+// Queue/Worker/Background Execution Audit (2026-08-22): cron.schedule()'s
+// callback fires on its own timer regardless of whether the PREVIOUS fire's
+// _runTask for the same task.id is still awaiting — unlike _tick()'s own
+// _dispatching guard below, nothing here stopped a slow recurring task from
+// overlapping itself. _runTask can run multiple planner sub-tasks
+// sequentially, each individually timeout-capped at TASK_TIMEOUT_MS, so a
+// 2-3-subtask job can genuinely exceed a tight (e.g. once-a-minute) cron
+// interval — a client-supplied recurringCron via POST /tasks has no minimum-
+// interval floor. Live-reproduced with the real node-cron dependency (1s
+// interval, 1.8s simulated task): maxConcurrent 2, both invocations writing
+// taskQueue.update(task.id, ...) concurrently. Same duplicate-execution bug
+// class already fixed for browserScheduler._inFlight and
+// contentScheduler._processingIds — reusing that exact in-flight-Set pattern
+// here rather than inventing a new one.
+const _cronInFlight = new Set();  // task.id currently executing via its own cron fire
 const POLL_MS = 10_000;   // check queue every 10 seconds
 const TASK_TIMEOUT_MS = 30_000;   // single task must complete within 30s
 const STUCK_AGE_HOURS = 2;        // abandon pending tasks older than this
@@ -377,6 +392,10 @@ function _registerCron(task) {
     }
     console.log(`[AutoLoop] cron register ${task.id} pattern="${task.recurringCron}" input="${task.input}"`);
     const job = cron.schedule(task.recurringCron, async () => {
+        if (_cronInFlight.has(task.id)) {
+            console.warn(`[AutoLoop] cron fire for ${task.id} skipped — prior run still in flight`);
+            return;
+        }
         const all = taskQueue.getAll();
         const fresh = all.find(t => t.id === task.id);
         if (!fresh || fresh.status === "cancelled" || fresh.status === "failed") {
@@ -384,9 +403,14 @@ function _registerCron(task) {
             delete _cronJobs[task.id];
             return;
         }
-        // Temporarily mark pending so _runTask sees a fresh copy
-        taskQueue.update(task.id, { status: "pending", scheduledFor: new Date().toISOString() });
-        await _runTask({ ...fresh, status: "pending" });
+        _cronInFlight.add(task.id);
+        try {
+            // Temporarily mark pending so _runTask sees a fresh copy
+            taskQueue.update(task.id, { status: "pending", scheduledFor: new Date().toISOString() });
+            await _runTask({ ...fresh, status: "pending" });
+        } finally {
+            _cronInFlight.delete(task.id);
+        }
     });
     _cronJobs[task.id] = job;
 }

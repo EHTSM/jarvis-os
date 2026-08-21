@@ -33,7 +33,8 @@ const SEED_AGENTS = [
 ];
 
 export default function AgentFactoryCenter({ onNavigate }) {
-  const [agents, setAgents]   = useState(() => _load(KEY, SEED_AGENTS));
+  const [agents, setAgents]   = useState(() => _load(KEY, null));
+  const [agentsLive, setAgentsLive] = useState(false);
   const [modal, setModal]     = useState(null);
   const [cloneSource, setClone] = useState(null);
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
@@ -56,14 +57,19 @@ export default function AgentFactoryCenter({ onNavigate }) {
     listManagedAgents().then(res => {
       if (cancelled) return;
       const live = res?.agents;
-      if (Array.isArray(live) && live.length > 0) {
-        const mapped = live.map(a => ({
-          id:       a.id, name: a.name, template: a.type || "custom",
-          status:   a.status || "idle", runsToday: a.runsToday ?? 0,
-          model:    a.model || "claude-sonnet-4-6",
-          created:  a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—",
-        }));
-        setAgents(mapped); _save(KEY, mapped);
+      if (Array.isArray(live)) {
+        setAgentsLive(true);
+        if (live.length > 0) {
+          const mapped = live.map(a => ({
+            id:       a.id, name: a.name, template: a.type || "custom",
+            status:   a.status || "idle", runsToday: a.runsToday ?? 0,
+            model:    a.model || "claude-sonnet-4-6",
+            created:  a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—",
+          }));
+          setAgents(mapped); _save(KEY, mapped);
+        } else {
+          setAgents([]); _save(KEY, []);
+        }
       }
     }).catch(err => { if (!cancelled) setApiError(err.message); });
     return () => { cancelled = true; };
@@ -113,9 +119,11 @@ export default function AgentFactoryCenter({ onNavigate }) {
   }
 
   const tmplOf = id => TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
-  const active  = agents.filter(a => a.status !== "retired").length;
-  const retired = agents.filter(a => a.status === "retired").length;
-  const runsToday = agents.reduce((s, a) => s + (a.runsToday || 0), 0);
+  const showingFallback = !agentsLive && !!apiError;
+  const effectiveAgents = agents ?? (showingFallback ? SEED_AGENTS : []);
+  const active  = effectiveAgents.filter(a => a.status !== "retired").length;
+  const retired = effectiveAgents.filter(a => a.status === "retired").length;
+  const runsToday = effectiveAgents.reduce((s, a) => s + (a.runsToday || 0), 0);
 
   return (
     <div className="afc">
@@ -129,6 +137,10 @@ export default function AgentFactoryCenter({ onNavigate }) {
           <button className="afc-btn afc-btn-primary" onClick={openCreate}>+ Create Agent</button>
         </div>
       </div>
+
+      {showingFallback && (
+        <div className="ac-api-banner ac-api-banner--error">⚠ Live agent data unavailable — showing example data ({apiError}).</div>
+      )}
 
       <div className="afc-stats">
         <div className="afc-stat"><span className="afc-stat-val">{agents.length}</span><span className="afc-stat-lbl">Total</span></div>

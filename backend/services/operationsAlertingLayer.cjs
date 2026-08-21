@@ -37,6 +37,7 @@ const https  = require("https");
 const http   = require("http");
 const logger = require("../utils/logger");
 const execLog  = require("../utils/execLog.cjs");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const ALERT_FILE   = path.join(__dirname, "../../data/ops-alerts.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/ops-alert-history.json");
@@ -122,6 +123,17 @@ async function _notify(alert) {
     if (_channels.webhook.enabled && _channels.webhook.config.url) {
         const webhookUrl = _channels.webhook.config.url;
         try {
+            // SSRF & Outbound HTTP Security Audit (2026-08-22): setNotificationChannel()
+            // is reachable by any ordinary authenticated customer via
+            // PUT /p22/alerts/channels/webhook (requireAuth-only), and fire()
+            // (POST /p22/alerts/fire, also requireAuth-only) immediately dispatches
+            // through here — live-reproduced delivering real alert content to an
+            // arbitrary internal/loopback address with zero validation. Reuses the
+            // same shared choke point already established for the ODI
+            // browser-automation family (backend/utils/urlSafety.cjs) rather than a
+            // new validation mechanism.
+            const safety = await assertSafeNavigationTarget(webhookUrl);
+            if (!safety.safe) throw new Error(`webhook URL rejected: ${safety.reason}`);
             const body = JSON.stringify({ alert, message: msg, ts: new Date().toISOString() });
             const u    = new URL(webhookUrl);
             const mod  = u.protocol === "https:" ? https : http;
