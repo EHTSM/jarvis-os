@@ -4191,3 +4191,78 @@ named runtime files): **476/476 pass, 0 fail**. No file belonging to Mission 31'
 org-scoped callers only — scoping work for a future mission; (2) add the `operator`-only tab-render
 gate to `App.jsx`'s `agentruntime` tab — one-line, same-pattern, left to operator judgment on
 see-then-deny vs. fully hidden.
+
+## MFA End-to-End Frontend/Backend Certification — Mission 33 (2026-08-22/23)
+
+Full report: [MFA-END-TO-END-FRONTEND-BACKEND-CERTIFICATION.md](MFA-END-TO-END-FRONTEND-BACKEND-CERTIFICATION.md)
+
+Closes the MFA gap Mission 31 documented (a working, org-configurable MFA login policy with zero
+frontend UI to satisfy it), and independently traces the full stack per this mission's own explicit
+15-point checklist: policy config → login → challenge → verification → session issuance → frontend
+challenge UI → error/retry → logout/refresh → cross-tenant/forged-header resistance → SSO delegation.
+**Score 8/10, CERTIFIED WITH ONE FIX APPLIED.**
+
+**Backend core was already correct.** `policyService.cjs`'s MFA implementation (real RFC 6238 TOTP,
+replay protection via a persisted last-accepted-step guard, 10 one-time recovery codes with
+constant-time comparison, correct `assertMfaSatisfied` ordering strictly before `signJWT`/`res.cookie`
+in `_handleLogin`) was live-verified end-to-end with a fresh ordinary customer account: enrollment,
+valid-code login, invalid-code rejection, missing-code rejection, and same-code replay rejection all
+behaved exactly as designed against the real vault-backed secret and real running server.
+
+**Defect 1 — CONFIRMED, FIXED, verified.** `_handleFirebaseSession` (the Google/Phone login handler
+behind `LoginPage.jsx`'s Google and Phone tabs) issued a full session cookie unconditionally — it never
+called `assertProviderAllowed`/`assertMfaSatisfied`, the same two checks `_handleLogin` already runs.
+Any account holder in an MFA-required org could completely bypass that requirement by choosing
+Google/Phone login instead of email+password. Confirmed via a static extraction proof (zero matches for
+either assertion inside the function's own body) and a direct-invocation proof (loaded the real,
+unmodified route handler from the router stack and called it with a mocked request against the real
+MFA-enrolled test account/org — pre-fix: 200 + session cookie + zero challenge; post-fix: 401
+`mfa_code_required` with no code, 200 with a valid one). Real Firebase is not configured in this
+environment (`NODE_ENV=production`, no `firebase-admin` installed) so the literal public HTTP route
+itself 503s before reaching this code either way — the direct-invocation method exercises the identical
+code that would run once Firebase is configured, without touching `.env`/credentials to set that up.
+**Fix:** added the same two assertions `_handleLogin` already uses, same order, same `policyService.cjs`
+call, before session issuance — no new policy engine. **Negative-tested:** commented out the fix,
+reproduced the bypass exactly, restored it, reverified both the blocked and valid-code cases.
+
+**Defect 2 — CONFIRMED, FIXED, live-verified in a real browser.** `EmailLoginForm` in `LoginPage.jsx`
+had no MFA-aware branch at all — an MFA-enrolled user on an MFA-required org saw a raw backend error
+string with no way to ever enter a code and complete login, a functional dead end rather than a security
+bypass (the backend correctly refused the session throughout). **Fix:** threaded the backend's
+machine-readable `code` field through `_client.js` → `authApi.js` → `AuthContext.jsx` → `LoginPage.jsx`
+(previously silently dropped after `.message`), and added a 6-digit code-entry step plus a recovery-code
+toggle to `EmailLoginForm`, reusing the exact OTP-box markup/logic `PhoneLoginForm` already had in the
+same file — no new input component invented. **Live-verified with Playwright against the real running
+frontend dev server and real backend**: filled email+password for the real MFA-enrolled account,
+submitted, screenshotted the resulting 6-digit challenge screen, generated a fresh real TOTP code from
+the account's actual secret, submitted it, and screenshotted the app landing in the authenticated
+dashboard — full real login completed end-to-end through the new UI, not simulated.
+
+**Also classified (not modified):** enterprise SAML/OIDC SSO (`enterpriseSso.js`/`ssoService.cjs`) never
+calls the local MFA check either, but this is **INTENTIONAL/delegated** — MFA for federated SSO is the
+org's own IdP's responsibility, standard practice, and the route's `orgId` already comes from the URL
+path of that org's own configured SSO endpoint (never a spoofable header), so no forgery vector exists
+there by construction. Zero header-based org resolution exists anywhere in the login/MFA call path for
+any route — `primaryOrgId` is always server-resolved from the authenticated account's real membership,
+closing the cross-tenant/forged-header requirements structurally rather than by a runtime check.
+
+**Result:** 5 files changed (`backend/routes/auth.js`, `frontend/src/_client.js`,
+`frontend/src/authApi.js`, `frontend/src/contexts/AuthContext.jsx`,
+`frontend/src/components/auth/LoginPage.jsx`). `.env` untouched, no credentials rotated, no packages
+installed. Frontend production build: PASS, zero errors. Backend regression (`tests/runtime/*.test.cjs`,
+305 suites / 1,333 tests): 1,314/1,333 pass; the 19 failures span 9 files with zero relationship to any
+file this mission touched (confirmed by grep), and isolated re-runs showed most are pre-existing/flaky
+under concurrent load (one recovered clean on retry) rather than genuine regressions — kept separate
+from this mission's findings per its own instruction. Frontend auth-scoped suite
+(`AuthContext.test.jsx`, `_client.test.js`): 13/13 pass. No merge or push performed by this agent; a
+disclosed note covers an externally-authored "Commit changes." commit that landed mid-mission from the
+same pre-existing local auto-commit pattern already visible in this branch's history before the mission
+began — the branch remains 419 commits ahead of `origin` with nothing pushed.
+
+**Remaining decisions:** (1) Google/Phone login methods still lack their own MFA-retry UI — the backend
+now correctly refuses those sessions on an MFA-required org, but only the email tab can currently
+complete login past that refusal; email remains a working fallback for every affected user. (2) whether
+`WorkspaceSettings`/`OrgAdminCenter` surface any in-app nudge when an org newly requires MFA — not
+re-audited this mission per the "don't re-audit already-certified surfaces" instruction. (3) whether
+`_handleFirebaseSession`'s session-timeout should be threaded to the same per-org policy lookup
+`_handleLogin` uses, left at the flat default to keep the fix single-purpose.

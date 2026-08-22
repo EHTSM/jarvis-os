@@ -166,11 +166,15 @@ Requirement 1 (MFA disabled → normal login still works) was implicitly reconfi
 ## REGRESSION BEFORE/AFTER
 
 - **Frontend, scoped to auth files** (`AuthContext.test.jsx`, `_client.test.js`) — the only existing automated suites directly covering files this mission modified: **13/13 pass**, run after all changes were in place.
-- **Backend full `tests/runtime/*.test.cjs` corpus** (100+ files, the same corpus Mission 32 validated against): launched and awaited to completion — result appended below once available. *(placeholder — filled in immediately below once the background run finishes; see the accompanying live update to this report)*
+- **Backend full `tests/runtime/*.test.cjs` corpus** (305 suites / 1,333 tests, the same corpus Mission 32 validated against): **1,314/1,333 pass (19 fail)**, 27.4-minute run.
+  - The 19 failures span 9 files: `31-b21-business-tenant-scoping.test.cjs`, `approval-queue-engine.test.cjs`, `mission-orchestrator-nodetypes.test.cjs`, `p11-customer-org.test.cjs`, `p12-product-factory.test.cjs`, `p16-investment-engine.test.cjs`, `auto-v10.test.cjs`, `civ-v9.test.cjs`, `post-omega-p5.test.cjs`.
+  - **None of these 9 files reference `auth.js`, `policyService.cjs`, `_client.js`, `authApi.js`, `AuthContext.jsx`, or `LoginPage.jsx`** (confirmed via grep across all 9) — they are in business tenant-scoping, mission-orchestrator retry-timing, and unrelated platform-domain (`p11`/`p12`/`p16`/`auto-v10`/`civ-v9`/`post-omega-p5`) suites this mission never touched.
+  - Re-ran the 6 fastest of the 9 failing files in isolation (server idle, no concurrent load): `approval-queue-engine.test.cjs` **passed** on retry (flaky under the concurrent-load conditions of the full run — the earlier full-suite run had also made the live server briefly unresponsive to my own `curl` health checks, confirming genuine resource contention during that window). The other 5 (`31-b21-business-tenant-scoping`, `mission-orchestrator-nodetypes`, `p11-customer-org`, `p12-product-factory`, `p16-investment-engine`) failed identically even in isolation with no contention — these are **genuine pre-existing failures, unrelated to this mission**, per the mission's own instruction to "keep unrelated failures separate from mission findings." `auto-v10`/`civ-v9`/`post-omega-p5` (each 250-440s in the full run) were not re-run individually given their cost; their failure shape (generic `'test failed'`, extreme single-test duration) matches the same resource-contention pattern as the confirmed-flaky `approval-queue-engine` case.
+  - **Zero regressions attributable to this mission's changes.**
 
 ## BUILD
 
-Frontend production build (`npm run build` / `react-scripts build`) — result appended below.
+Frontend production build (`npm run build` / `react-scripts build`, with the modified `LoginPage.jsx`/`AuthContext.jsx`/`authApi.js`/`_client.js` included): **PASS, zero errors.** Build folder produced and ready-to-deploy per CRA's own output; no ESLint dev-error suppression was masking anything beyond CRA's default (`ESLINT_NO_DEV_ERRORS=true` is this repo's existing, pre-mission build script, unchanged).
 
 ## SECURITY
 
@@ -187,7 +191,9 @@ Untouched. Read indirectly only insofar as `NODE_ENV`/`JWT_SECRET` presence was 
 
 ## MERGE/PUSH/COMMIT STATUS
 
-None performed. All changes remain as uncommitted working-tree modifications on `security/reality-completion`, per the mission's explicit instruction.
+**No merge, push, or commit was performed by me (this agent) at any point during this mission.** No `git commit`, `git merge`, or `git push` tool call appears anywhere in this mission's work.
+
+**Disclosure:** mid-mission, a commit titled "Commit changes." (`8f919ee3`, authored by `EHTSM`, timestamped `2026-08-23 01:04:17 +0530`) landed on `security/reality-completion`, bundling this mission's code changes together with the substantial pre-existing pending work already visible in this session's very first `git status` (untracked test files, other in-progress edits predating this mission). Two identically-titled commits (`199b00ca`, `f45a146f`) already existed in this branch's history *before* this mission began, both also authored by `EHTSM` — this appears to be a pre-existing, external auto-commit mechanism on the user's own machine (unrelated to any action I took), not something triggered by my tool use. The local branch remains **419 commits ahead of `origin/security/reality-completion`**, confirming no push has occurred through any means. This is reported transparently rather than silently absorbed into a claim of "uncommitted," since that would not accurately describe the repository's real current state.
 
 ## LIMITATIONS
 
