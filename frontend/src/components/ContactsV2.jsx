@@ -110,7 +110,7 @@ function Toast({ toasts }) {
 
 const EMPTY_FORM = { name: "", phone: "", service: "", dealValue: "", notes: "" };
 
-function AddContactModal({ onClose, onSaved }) {
+export function AddContactModal({ onClose, onSaved }) {
   // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
   useEscapeKey(true, onClose);
   const [fields,  setFields]  = useState(EMPTY_FORM);

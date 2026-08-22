@@ -844,8 +844,9 @@ export default function AutonomousAgentDashboard() {
         setBusyMap(m => ({ ...m, [agentId]: busyKey }));
         try {
             const r = await _fetch(path, { method });
-            if (r?.ok) await load();
-        } catch {}
+            if (r?.ok) { setError(null); await load(); }
+            else setError(r?.error || "Action failed");
+        } catch (e) { setError(e.message || "Action failed"); }
         setBusyMap(m => { const n = { ...m }; delete n[agentId]; return n; });
     };
 
@@ -855,8 +856,16 @@ export default function AutonomousAgentDashboard() {
     const handleEnable  = id => _action(id, "enabling",  `/agents/runtime/registry/${id}/enable`);
     const handleDisable = id => _action(id, "disabling", `/agents/runtime/registry/${id}/disable`);
 
-    const handleStart  = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/start", { method: "POST" }); await load(); };
-    const handleStop   = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/stop",  { method: "POST" }); await load(); };
+    const handleStart  = async () => {
+        setLoading(true);
+        try { await _fetch("/agents/runtime/supervisor/start", { method: "POST" }); setError(null); await load(); }
+        catch (e) { setError(e.message || "Start failed"); setLoading(false); }
+    };
+    const handleStop   = async () => {
+        setLoading(true);
+        try { await _fetch("/agents/runtime/supervisor/stop", { method: "POST" }); setError(null); await load(); }
+        catch (e) { setError(e.message || "Stop failed"); setLoading(false); }
+    };
 
     if (loading && !status) return (
         <div className="aad-root"><div className="aad-loading">Connecting to Agent Runtime…</div></div>

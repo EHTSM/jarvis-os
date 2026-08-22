@@ -90,7 +90,7 @@ function RazorpayGuide({ onDismiss }) {
 
 // ── Payment Link Generator Panel ───────────────────────────────────────────────
 
-function LinkGenerator({ leads, onLinkCreated }) {
+export function LinkGenerator({ leads, onLinkCreated }) {
   const [form,       setForm]       = useState({ name: "", phone: "", amount: "", description: "" });
   const [loading,    setLoading]    = useState(false);
   const [result,     setResult]     = useState(null);

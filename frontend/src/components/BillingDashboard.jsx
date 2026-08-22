@@ -88,6 +88,7 @@ export default function BillingDashboard({ onUpgrade }) {
   const [cancelling, setCancelling] = useState(false);
   const [cancelled,  setCancelled]  = useState(false);
   const [showCancel, setShowCancel] = useState(false);
+  const [cancelError, setCancelError] = useState(null);
 
   const fetchBilling = useCallback(async () => {
     setLoading(true);
@@ -103,6 +104,7 @@ export default function BillingDashboard({ onUpgrade }) {
 
   const handleCancel = useCallback(async () => {
     setCancelling(true);
+    setCancelError(null);
     const res = await cancelSubscription();
     setCancelling(false);
     if (res?.success) {
@@ -110,6 +112,13 @@ export default function BillingDashboard({ onUpgrade }) {
       setShowCancel(false);
       track.event("subscription_cancelled");
       fetchBilling();
+    } else {
+      // cancelSubscription() never throws — a failed request resolves
+      // {success:false, error}, but this silently did nothing: no message,
+      // no toast, cancelling reset to false with zero indication the click
+      // didn't work. A user retrying a failed cancellation deserves to know
+      // it failed, on a revenue/account-status-critical action.
+      setCancelError(res?.error || "Could not cancel your subscription. Please try again.");
     }
   }, [fetchBilling]);
 
@@ -317,6 +326,7 @@ export default function BillingDashboard({ onUpgrade }) {
                 Cancel now? Your access continues until the end of the billing period.
                 Data is retained for 30 days after cancellation.
               </p>
+              {cancelError && <p className="bd-error-sub" role="alert">{cancelError}</p>}
               <div className="bd-cancel-actions">
                 <button
                   className="bd-cancel-yes"

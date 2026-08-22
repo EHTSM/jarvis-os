@@ -41,6 +41,7 @@ function TeamDirectoryPanel() {
   const [team,      setTeam]      = useState([]);
   const [depts,     setDepts]     = useState([]);
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
   const [search,    setSearch]    = useState("");
   const [statusF,   setStatusF]   = useState("");
   const [selected,  setSelected]  = useState([]);
@@ -53,14 +54,22 @@ function TeamDirectoryPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); setError(null);
     try {
       const [t, d] = await Promise.all([
         _fetch("/admin/team").then(r => r.team || []),
         _fetch("/admin/departments").then(r => r.departments || []),
       ]);
       setTeam(t); setDepts(d);
-    } catch {}
+    } catch (e) {
+      // This panel's own K3ErrorState (defined above, already used correctly
+      // by every sibling panel in this file — Departments/OrgProfile/
+      // Statistics/Quotas) was never wired up here. A real backend failure
+      // silently rendered "No members match the current filter" — a
+      // fabricated empty roster indistinguishable from a genuinely empty
+      // team, with no error and no way to retry.
+      setError(e.message || "Failed to load team directory");
+    }
     setLoading(false);
   }, []);
   useEffect(() => { load(); }, [load]);
@@ -105,6 +114,7 @@ function TeamDirectoryPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading team…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k3-team-panel">

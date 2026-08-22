@@ -642,6 +642,11 @@ function ApprovalCard({ item, onDecide }) {
     setExiting(decision);
     try {
       await onDecide(item.id || item.itemId, decision, item.queueType || "patch");
+    } catch {
+      // onDecide throws when the backend rejected the decision (see
+      // handleDecide in ApprovalQueue) — the item stays in the pending list,
+      // so cancel the exit animation that was optimistically started above.
+      setExiting(null);
     } finally {
       setBusy(null);
     }
@@ -729,7 +734,7 @@ function ApprovalCard({ item, onDecide }) {
   );
 }
 
-function ApprovalQueue({ onNavigate }) {
+export function ApprovalQueue({ onNavigate }) {
   const [items,   setItems]   = useState([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
@@ -738,6 +743,14 @@ function ApprovalQueue({ onNavigate }) {
   const load = useCallback(async () => {
     try {
       const res = await getApprovalQueue();
+      // getApprovalQueue() never throws — it catches internally and resolves
+      // {success:false, error} on a real backend failure. Without this check,
+      // that shape fell through to `res || []` (an object, not an array),
+      // Array.isArray(raw) was false, and the queue silently rendered as
+      // "Queue clear" — hiding a real outage on the panel that exists
+      // specifically to surface risk. Same bug class fixed across BusinessOS
+      // (Mission 24) and DevOps emergency controls (Mission 25).
+      if (res?.success === false) throw new Error(res.error || "Failed to load approvals");
       const raw = res?.queue || res?.items || res?.approvals || res || [];
       setItems(Array.isArray(raw) ? raw : []);
       setError(null);
@@ -755,7 +768,14 @@ function ApprovalQueue({ onNavigate }) {
   }, [load]);
 
   const handleDecide = useCallback(async (id, decision, queueType) => {
-    await decideApprovalItem(id, decision, queueType);
+    // decideApprovalItem() never throws — it catches internally and resolves
+    // {success:false, error} on a real backend failure. Without this check,
+    // the item was optimistically marked "decided" (removed from the
+    // pending list) regardless of whether the backend actually recorded the
+    // approve/reject — an operator could believe they rejected a risky
+    // agent action while the backend never received it.
+    const res = await decideApprovalItem(id, decision, queueType);
+    if (res?.success === false) throw new Error(res.error || `Failed to ${decision}`);
     setDecided(prev => new Set([...prev, id]));
     setTimeout(load, 800);
   }, [load]);

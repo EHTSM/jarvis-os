@@ -9,6 +9,7 @@ import {
 import { getKnowledge, addKnowledge, deleteKnowledge } from "../personalApi";
 import "./MemoryOSV2.css";
 import { clickableProps } from "../hooks/useClickableProps";
+import SampleDataNotice from "./SampleDataNotice";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -464,6 +465,24 @@ function TabIntelligence() {
 
 // ── Knowledge tab ─────────────────────────────────────────────────────
 
+function _mapKnowledgeEntry(e) {
+  // Real /personal/knowledge entries are {key,category,content,tags,source,
+  // createdAt,updatedAt} — a different shape than the illustrative SEED_DOCS
+  // rows (id,name,type,size,status,chunks,added). Map onto the same display
+  // shape rather than rendering fabricated rows over real data.
+  return {
+    id: e.key,
+    name: e.key,
+    type: "txt",
+    size: e.content ? `${e.content.length} chars` : "—",
+    category: e.category || "personal",
+    status: "indexed",
+    chunks: null,
+    added: e.createdAt,
+    tags: e.tags || [],
+  };
+}
+
 function TabKnowledge({ addToast }) {
   const [docs, setDocs]       = useState(SEED_DOCS);
   const [catF, setCatF]       = useState("all");
@@ -477,7 +496,10 @@ function TabKnowledge({ addToast }) {
     }).catch(() => {});
   }, []);
 
-  const filtered = docs.filter(d => {
+  const isSample = liveData === null;
+  const displayDocs = liveData ? liveData.map(_mapKnowledgeEntry) : docs;
+
+  const filtered = displayDocs.filter(d => {
     const matchCat = catF === "all" || d.category === catF;
     const q = search.toLowerCase();
     const matchQ = !q || d.name.toLowerCase().includes(q) || (d.tags || []).some(t => t.includes(q));
@@ -485,7 +507,11 @@ function TabKnowledge({ addToast }) {
   });
 
   function handleDelete(id) {
-    setDocs(d => d.filter(x => x.id !== id));
+    if (liveData) {
+      setLive(d => d.filter(x => x.key !== id));
+    } else {
+      setDocs(d => d.filter(x => x.id !== id));
+    }
     deleteKnowledge(id).catch(() => {});
     addToast("Document removed", "info");
   }
@@ -505,6 +531,8 @@ function TabKnowledge({ addToast }) {
           <p className="mov2-coming-sub">Direct document upload and ingestion is under development. Existing documents shown below.</p>
         </div>
       </div>
+
+      {isSample && <SampleDataNotice label="illustrative documents — connect your knowledge base to see real entries" />}
 
       <div className="mov2-know-notify">
         <div className="mov2-know-notify-body">

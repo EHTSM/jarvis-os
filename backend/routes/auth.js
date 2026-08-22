@@ -298,6 +298,38 @@ async function _handleFirebaseSession(req, res) {
     }
   }
 
+  // Mission 33 — MFA End-to-End Certification (2026-08-22): this path issued
+  // a session cookie unconditionally, with none of _handleLogin's three
+  // login-policy checks (provider-allowed, MFA) — confirmed via source trace
+  // (grep for assertMfaSatisfied/assertProviderAllowed in this function
+  // returned zero hits) that a Google/Phone login for an org that requires
+  // password-login MFA completely bypassed it, since this route never
+  // consulted the org's policy at all. Same fix as _handleLogin: resolve the
+  // account's primary org and run the identical two assertions, in the same
+  // order, before signing the session token — no new policy engine, reusing
+  // policyService.cjs exactly as the password path already does.
+  const primaryOrgId = _try(() => require("../services/organizationService.cjs")?.resolveContext?.(account.id)?.primaryOrg?.orgId) || null;
+  if (primaryOrgId) {
+    try {
+      _policy()?.assertProviderAllowed?.(primaryOrgId, provider || "firebase");
+    } catch (e) {
+      if (e?.code === "provider_not_allowed") {
+        auditLog.recordAuth({ action: "login_denied", operator: account.id, method: provider || "firebase", reason: "provider_not_allowed" });
+        return res.status(403).json({ error: e.message, code: e.code });
+      }
+      throw e;
+    }
+    try {
+      _policy()?.assertMfaSatisfied?.(primaryOrgId, account, req.body?.mfaToken);
+    } catch (e) {
+      if (e?.code) {
+        auditLog.recordAuth({ action: "login_denied", operator: account.id, method: provider || "firebase", reason: e.code });
+        return res.status(e.status || 403).json({ error: e.message, code: e.code });
+      }
+      throw e;
+    }
+  }
+
   try {
     const token = signJWT({
       role:  account.role || "user",

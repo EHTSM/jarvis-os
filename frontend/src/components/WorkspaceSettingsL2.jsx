@@ -71,6 +71,7 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   const [newRating, setNewRating] = useState(5);
   const [newBody, setNewBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
   useEscapeKey(true, onClose);
 
@@ -87,12 +88,19 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   const submitReview = async () => {
     if (!newBody.trim()) return;
     setSubmitting(true);
-    await _fetch(`/marketplace/plugin/${plugin.id}/review`, {
-      method: "POST",
-      body: JSON.stringify({ rating: newRating, body: newBody }),
-    }).catch(() => {});
-    setNewBody(""); setSubmitting(false);
-    _fetch(`/marketplace/plugin/${plugin.id}`).then(r => setReviews(r.plugin?.reviews || [])).catch(() => {});
+    setSubmitError(null);
+    try {
+      await _fetch(`/marketplace/plugin/${plugin.id}/review`, {
+        method: "POST",
+        body: JSON.stringify({ rating: newRating, body: newBody }),
+      });
+      setNewBody("");
+      _fetch(`/marketplace/plugin/${plugin.id}`).then(r => setReviews(r.plugin?.reviews || [])).catch(() => {});
+    } catch (e) {
+      setSubmitError(e.message || "Failed to submit review");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!plugin) return null;
@@ -166,6 +174,7 @@ function PluginDetail({ plugin, onClose, onInstall }) {
         <button className="k2-form-btn" style={{ marginTop: 6 }} disabled={submitting || !newBody.trim()} onClick={submitReview}>
           {submitting ? "Submitting…" : "Submit Review"}
         </button>
+        {submitError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginTop: 4 }}>{submitError}</div>}
       </div>
     </div>
   );
@@ -173,8 +182,10 @@ function PluginDetail({ plugin, onClose, onInstall }) {
 
 function useMarketplaceInstall(reload) {
   const [installing, setInstalling] = useState(null);
+  const [installError, setInstallError] = useState(null);
   const doInstall = async (plugin) => {
     setInstalling(plugin.id);
+    setInstallError(null);
     try {
       await _fetch("/plugins/install", {
         method: "POST",
@@ -186,11 +197,17 @@ function useMarketplaceInstall(reload) {
           tags: plugin.tags, minSDKVersion: plugin.minSDKVersion || "1.0.0",
         }),
       });
-    } catch {}
+      reload?.();
+    } catch (e) {
+      // A failed install previously reverted silently to the plain "Install"
+      // button with zero indication anything went wrong — indistinguishable
+      // from the click doing nothing. Same fix shape as PluginDetail's
+      // submitError just below (already fixed, Mission 22).
+      setInstallError(`Failed to install ${plugin.name}: ${e.message || "unknown error"}`);
+    }
     setInstalling(null);
-    reload?.();
   };
-  return { installing, doInstall };
+  return { installing, installError, doInstall };
 }
 
 function MarketplaceCatalogPanel() {
@@ -212,13 +229,14 @@ function MarketplaceCatalogPanel() {
   }, []);
   useEffect(() => { reload(); }, [reload]);
 
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading marketplace…</div>;
   if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       <div className="l2-cat-bar">
         {cats.map(c => (
           <button key={c.id} className={`l2-cat-btn${activeCat === c.id ? " l2-cat-btn--active" : ""}`}
@@ -253,12 +271,13 @@ function MarketplaceFeaturedPanel() {
     _fetch("/marketplace/featured").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading featured plugins…</div>;
   if (error) return <L2ErrorState error={error} onRetry={reload} />;
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       <div className="l2-grid">
         {(data?.plugins || []).map(p => (
           <PluginCard key={p.id} plugin={{ ...p, installing: installing === p.id }}
@@ -288,12 +307,13 @@ function MarketplaceSearchPanel() {
     return () => clearTimeout(t);
   }, [doSearch]);
 
-  const { installing, doInstall } = useMarketplaceInstall(() => doSearch());
+  const { installing, installError, doInstall } = useMarketplaceInstall(() => doSearch());
 
   return (
     <div className="l2-panel">
       <input className="k2-form-input" placeholder="Search by name, capability, tag, author…"
         value={query} onChange={e => setQuery(e.target.value)} autoFocus />
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, margin: "8px 0" }}>{installError}</div>}
       {loading && <div className="k2-loading">Searching…</div>}
       {!loading && error && <L2ErrorState error={error} onRetry={doSearch} />}
       {!loading && !error && results && results.total === 0 && <div className="k2-empty">No results for "{query}".</div>}
@@ -325,13 +345,14 @@ function MarketplaceRecsPanel() {
     _fetch("/marketplace/recommendations").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Computing recommendations…</div>;
   if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       {(!data?.recommendations?.length) ? (
         <div className="k2-empty">All recommended plugins are already installed — great coverage!</div>
       ) : (

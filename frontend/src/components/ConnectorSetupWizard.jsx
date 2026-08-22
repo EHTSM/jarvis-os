@@ -141,10 +141,15 @@ export default function ConnectorSetupWizard({ onToast }) {
   if (loading) return <div className="connector-setup-wizard csw-loading">Loading connectors…</div>;
 
   if (error) {
+    // Previously a dead end: no Retry affordance, unlike every other
+    // error state in the app (BosError, CdErrorState, WorkspaceSettingsL2's
+    // L2ErrorState, etc.) — a transient failure here permanently hid the
+    // customer's own connector list until they navigated away and back.
     return (
       <div className="connector-setup-wizard">
         <div className="csw-empty">
           <p className="csw-empty-title">{error}</p>
+          <button className="csw-btn primary" onClick={load}>Retry</button>
         </div>
       </div>
     );

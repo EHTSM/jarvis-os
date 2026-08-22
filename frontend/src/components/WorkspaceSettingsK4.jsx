@@ -36,6 +36,7 @@ function PolicyLibraryPanel() {
   const [policies,  setPolicies]  = useState([]);
   const [templates, setTemplates] = useState([]);
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
   const [tab,       setTab]       = useState("policies"); // policies | templates
   const [creating,  setCreating]  = useState(false);
   const [form,      setForm]      = useState({ name: "", type: "change", enforcement: "advisory", description: "" });
@@ -44,14 +45,21 @@ function PolicyLibraryPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); setError(null);
     try {
       const [p, t] = await Promise.all([
         _fetch("/governance/policies").then(r => r.policies || []),
         _fetch("/governance/templates").then(r => r.templates || []),
       ]);
       setPolicies(p); setTemplates(t);
-    } catch {}
+    } catch (e) {
+      // K4ErrorState (defined above) was already used correctly by every
+      // sibling panel in this file (Compliance/RiskMatrix/GovernanceOverview/
+      // GovReports) — this panel alone swallowed the failure silently,
+      // showing "0 active" policies indistinguishable from a real empty
+      // governance library on a genuine backend outage.
+      setError(e.message || "Failed to load policy library");
+    }
     setLoading(false);
   }, []);
   useEffect(() => { load(); }, [load]);
@@ -73,6 +81,7 @@ function PolicyLibraryPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading policies…</div>;
+  if (error) return <K4ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k4-policy-panel">

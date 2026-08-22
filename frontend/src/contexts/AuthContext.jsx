@@ -106,9 +106,10 @@ export function AuthProvider({ children }) {
 
   // login(password) — legacy operator login
   // login(password, email) — per-user email+password login (P10)
-  const login = useCallback(async (password, email) => {
+  // login(password, email, mfaToken) — retry after an mfa_code_required response
+  const login = useCallback(async (password, email, mfaToken) => {
     const result = email
-      ? await loginWithEmail(email, password)
+      ? await loginWithEmail(email, password, mfaToken)
       : await loginOperator(password);
     if (result.success) {
       const u = { role: result.role || "user", email: result.email || null };

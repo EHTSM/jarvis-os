@@ -15,6 +15,7 @@ import {
   getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl,
 } from "../phase21Api";
 import "./DeveloperCopilotV2.css";
+import SampleDataNotice from "./SampleDataNotice";
 import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
@@ -563,8 +564,9 @@ function TabBlueprint({ addToast }) {
 
 const LANG_COLORS = { "Node.js": "#68a063", React: "#61dafb", Capacitor: "#119eff", CJS: "#f7df1e", Terraform: "#7b42bc", Dart: "#00b4ab", Python: "#3572a5", Go: "#00add8" };
 
-function TabRepos({ addToast }) {
+export function TabRepos({ addToast }) {
   const [repos,        setRepos]        = useState(SEED_REPOS);
+  const [isSample,     setIsSample]     = useState(true);
   const [search,       setSearch]       = useState("");
   const [loading,      setLoading]      = useState(true);
   const [analyzing,    setAnalyzing]    = useState(null);
@@ -579,7 +581,7 @@ function TabRepos({ addToast }) {
   useEffect(() => {
     listIndexedRepos().then(r => {
       const arr = Array.isArray(r) ? r : (r?.repos || r?.items || []);
-      if (arr.length > 0) setRepos(arr);
+      if (arr.length > 0) { setRepos(arr); setIsSample(false); }
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
@@ -590,6 +592,7 @@ function TabRepos({ addToast }) {
 
   async function handleAnalyze(repo) {
     if (analyzing) return;
+    if (isSample) { addToast("Connect a real repository first", "info"); return; }
     setAnalyzing(repo.id);
     try {
       await sendMessage(`analyze repo ${repo.name}`, "code");
@@ -625,6 +628,12 @@ function TabRepos({ addToast }) {
     setSymResults(null);
     try {
       const r = await symbolSearch(symQ.trim());
+      // symbolSearch() never throws — it catches internally and resolves
+      // {success:false, error} on a real failure (this endpoint currently
+      // has no backend route at all — see Mission 31's contract audit), so
+      // this branch never saw it: hits fell through to [], and the UI
+      // showed "0 matches" indistinguishable from a genuine empty result.
+      if (r?.success === false) throw new Error(r.error || "Symbol search unavailable");
       const hits = r?.results || r?.matches || (Array.isArray(r) ? r : []);
       setSymResults({ query: symQ, hits });
       track.event("repo_search", { q: symQ, mode: "symbol" });
@@ -637,6 +646,7 @@ function TabRepos({ addToast }) {
 
   return (
     <div className="dcv2-repos-root">
+      {!loading && isSample && <SampleDataNotice label="illustrative repositories — connect a repo to see real indexed data" />}
       <div className="dcv2-repos-toolbar">
         <div className="dcv2-search-wrap">
           <span className="dcv2-search-icon">🔍</span>

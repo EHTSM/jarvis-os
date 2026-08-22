@@ -241,7 +241,7 @@ function DashboardView({ onToast }) {
 
 const EMPTY_LEAD = { name: "", email: "", phone: "", company: "", source: "inbound", score: 50, notes: "" };
 
-function LeadsView({ onToast }) {
+export function LeadsView({ onToast }) {
   const [leads,    setLeads]   = useState(null);
   const [loading,  setLoading] = useState(true);
   const [error,    setError]   = useState(null);
@@ -257,6 +257,12 @@ function LeadsView({ onToast }) {
     setLoading(true);
     try {
       const r = await getLeadsV5({ status: filter === "all" ? undefined : filter, limit: 100 });
+      // getLeadsV5 (businessApi.js) never throws — it catches internally and
+      // resolves {success:false, error, leads:[]} on any real backend failure
+      // (500, timeout, auth expiry). Reading only r.leads here always saw the
+      // empty-array fallback and reported "no leads" instead of a failure,
+      // so this catch block never actually ran for a real outage.
+      if (r?.success === false) throw new Error(r.error || "Failed to load leads");
       setLeads(r.leads ?? (Array.isArray(r) ? r : []));
       setError(null);
     } catch (e) {
@@ -400,9 +406,10 @@ function LeadsView({ onToast }) {
 
 const EMPTY_CONTACT = { name: "", email: "", phone: "", company: "", title: "", notes: "" };
 
-function ContactsView({ onToast }) {
+export function ContactsView({ onToast }) {
   const [contacts, setContacts] = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [search,   setSearch]   = useState("");
   const [form,     setForm]     = useState(EMPTY_CONTACT);
   const [editing,  setEditing]  = useState(null);
@@ -413,8 +420,17 @@ function ContactsView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getContacts({ search: search || undefined, limit: 100 });
-    setContacts(r.contacts ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getContacts({ search: search || undefined, limit: 100 });
+      // See the matching comment in LeadsView.load() above — this view
+      // previously had no error branch at all, so a real backend failure
+      // rendered "No contacts yet" identically to a genuinely empty account.
+      if (r?.success === false) throw new Error(r.error || "Failed to load contacts");
+      setContacts(r.contacts ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load contacts");
+    }
     setLoading(false);
   }, [search]);
 
@@ -481,7 +497,9 @@ function ContactsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !contacts?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !contacts?.length ? (
         <Empty title={search ? "No contacts found" : "No contacts yet"} sub={search ? "Try a different search." : "Add your first contact above."} />
       ) : (
         <table className="bos-table">
@@ -513,7 +531,7 @@ function ContactsView({ onToast }) {
 
 const EMPTY_OPP = { title: "", value: "", currency: "USD", stage: "prospect", company: "", assignee: "", notes: "" };
 
-function OpportunitiesView({ onToast }) {
+export function OpportunitiesView({ onToast }) {
   const [opps,    setOpps]    = useState(null);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
@@ -528,6 +546,10 @@ function OpportunitiesView({ onToast }) {
     setLoading(true);
     try {
       const r = await getOpportunities({ stage: filter === "all" ? undefined : filter, limit: 100 });
+      // See the matching comment in LeadsView.load() above — the domain API
+      // functions never throw, so a real failure must be detected via
+      // r.success rather than relying on an unreachable catch block.
+      if (r?.success === false) throw new Error(r.error || "Failed to load pipeline");
       setOpps(r.opportunities ?? (Array.isArray(r) ? r : []));
       setError(null);
     } catch (e) {
@@ -697,6 +719,8 @@ function CustomersView({ onToast, onNavigate }) {
     setLoading(true);
     try {
       const r = await getCustomers({ status: filter === "all" ? undefined : filter });
+      // See the matching comment in LeadsView.load() above.
+      if (r?.success === false) throw new Error(r.error || "Failed to load customers");
       setMissions(r.missions ?? (Array.isArray(r) ? r : []));
       setError(null);
     } catch (e) {
@@ -831,6 +855,8 @@ function CampaignsView({ onToast }) {
     setLoading(true);
     try {
       const r = await getCampaigns({ status: filter === "all" ? undefined : filter, limit: 50 });
+      // See the matching comment in LeadsView.load() above.
+      if (r?.success === false) throw new Error(r.error || "Failed to load campaigns");
       setCamps(r.campaigns ?? (Array.isArray(r) ? r : []));
       setError(null);
     } catch (e) {

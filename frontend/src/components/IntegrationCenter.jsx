@@ -8,6 +8,7 @@ import {
 } from "../connectorApi";
 import "./IntegrationCenter.css";
 import { clickableProps } from "../hooks/useClickableProps";
+import { useConfirm } from "./ConfirmDialog";
 
 // ── Connector Center (Module 5) ──────────────────────────────────────────────
 // Rebuilt on the real backend: founderVault.js (54 connectors, 12 credential
@@ -184,7 +185,7 @@ function SetupForm({ connectorId, credentialTypes, onSaved, onCancel, showToast 
   );
 }
 
-function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, onClose, showToast, onChanged }) {
+export function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, onClose, showToast, onChanged }) {
   const [adding, setAdding]   = useState(false);
   const [busy, setBusy]       = useState(false);
   const [history, setHistory] = useState(null);
@@ -192,6 +193,7 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
   const [storedType, setStoredType] = useState(null); // the actual credential type on file, if any
   const [storedRecord, setStoredRecord] = useState(null); // full record (rotationDueAt/lastValidatedAt/lastFailure) — metadata only, never a value
   const isOAuth = OAUTH_CONNECTORS.has(connectorId);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const refetchStoredState = useCallback(() => {
     if (!canManageVault) return;
@@ -237,6 +239,17 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
   }, [connectorId, showToast]);
 
   const handleOAuthDisconnect = useCallback(async () => {
+    // This revokes a real OAuth grant (Google/GitHub/Discord/LinkedIn/
+    // Microsoft/Apple) for the whole organization — previously fired
+    // immediately on click with zero confirmation, the same gap fixed in
+    // ConnectorSetupWizard.jsx's customer-facing Disconnect (Mission 25).
+    const ok = await confirm({
+      title: `Disconnect ${_label(connectorId)}?`,
+      message: `This revokes your organization's ${_label(connectorId)} authorization. Anything Ooplix runs through it will stop working until you reconnect.`,
+      danger: true,
+      confirmLabel: "Disconnect",
+    });
+    if (!ok) return;
     const providerId = OAUTH_PROVIDER_ID[connectorId];
     if (!providerId) return;
     setBusy(true);
@@ -246,7 +259,7 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
       onChanged();
     } catch { showToast("Disconnect failed"); }
     finally { setBusy(false); }
-  }, [connectorId, showToast, onChanged]);
+  }, [connectorId, showToast, onChanged, confirm]);
 
   const handleValidate = useCallback(async () => {
     if (!storedType) return;
@@ -267,6 +280,18 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
   }, [connectorId, showToast, onChanged]);
 
   const handleDelete = useCallback(async (type) => {
+    // Permanently deletes a real stored credential from the vault — for 54
+    // connectors this can be a production Stripe/AWS/database secret —
+    // previously fired immediately on click with zero confirmation, the same
+    // gap fixed in ConnectorSetupWizard.jsx's customer-facing Disconnect
+    // (Mission 25). Reusing that identical useConfirm pattern.
+    const ok = await confirm({
+      title: `Remove ${_label(connectorId)} credential?`,
+      message: `This permanently deletes the stored ${type.replace(/_/g, " ")} credential for ${_label(connectorId)}. Anything Ooplix runs through it will stop working until you add a new one.`,
+      danger: true,
+      confirmLabel: "Remove",
+    });
+    if (!ok) return;
     setBusy(true);
     try {
       await deleteSecret(connectorId, type);
@@ -274,10 +299,11 @@ function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, 
       refetchStoredState();
       onChanged();
     } finally { setBusy(false); }
-  }, [connectorId, showToast, onChanged, refetchStoredState]);
+  }, [connectorId, showToast, onChanged, refetchStoredState, confirm]);
 
   return (
     <div className="ic-detail">
+      {ConfirmUI}
       <div className="ic-detail-header">
         <div className="ic-icon-wrap ic-icon-wrap--lg">
           <span className="ic-icon ic-icon--lg">{_label(connectorId).slice(0, 2).toUpperCase()}</span>

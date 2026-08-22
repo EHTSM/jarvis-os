@@ -1,6 +1,9 @@
 # OOPLIX V1 — MASTER AUDIT REGISTER
 
-Last updated: 2026-08-14 (B.24) · Branch: `security/reality-completion`
+Last updated: 2026-08-22 (Mission 31) · Branch: `security/reality-completion`
+Note: Mission 30 (Multi-Vendor Agent Skills Intelligence Audit) ran concurrently with Mission 31 in a
+separate session, both branching from the post-Mission-29 state — hence the two missions' entries
+appear out of strict numeric-then-content order below; no conflict exists, they touched disjoint files.
 Audit-track register. **Separate from the OS development track** — see [OS-REGISTER.md](OS-REGISTER.md).
 
 ---
@@ -12,8 +15,63 @@ Audit-track register. **Separate from the OS development track** — see [OS-REG
 | **B.22** | Founder Stress Certification | **COMPLETE** | **CERTIFIED WITH LIMITATIONS** — 8.7/10, confidence 88% |
 | **B.23** | Production Certification | **COMPLETE** | **CERTIFIED WITH LIMITATIONS** — 8.5/10, confidence 90%, 0 failures |
 | **B.24** | Enterprise World-Class Certification | **COMPLETE** | **CERTIFIED WITH LIMITATIONS** — 8.6/10, confidence 90%, **33/33 attack vectors denied** |
+| **Mission 21** | Frontend A-Z Production Maturity Audit | **COMPLETE** | 7/10 frontend maturity — 3 defects fixed, 20 orphan components (~7,700 lines) identified, no automated tests found |
+| **Mission 22** | Frontend Automated Testing & Backend-Parity Audit | **COMPLETE** | Real Jest+RTL harness bootstrapped (0 → 64 tests, 9 suites), backend-parity gap reported honestly, not closed |
+| **Mission 23** | Frontend Critical Screen & Component Coverage Audit | **COMPLETE** | All 87 nav-reachable screens classified; 35 new tests (64 → 99) on 3 Critical revenue/security surfaces + shared destructive-action primitive; 0 new defects (negative-testing proved existing behavior correct) |
+| **Mission 24** | Business OS / Core Customer Journey Frontend Certification | **COMPLETE** | Full CRM journey traced in `BusinessOS.jsx` (3 of 9 sub-views deeply covered) + `BillingDashboard.jsx`; 40 new tests (99 → 139); **2 genuine defect classes found and fixed** (5 occurrences) — a systemic "false empty state on real backend failure" bug across 4-5 CRM views, and a silent subscription-cancellation failure |
+| **Mission 25** | Remaining Critical Frontend Screens Certification | **COMPLETE** | Home/Settings/Integrations/DevOps audited; 41 new tests (139 → 180); **5 defects found, 4 fixed** — most severe: Emergency Stop (the app's single most destructive control) had zero confirmation and could report false success on failure; Critical screen coverage 5/10 → 8/10 (by highest-risk-surface-certified standard, honestly stated as 5-6/10 by full-screen-every-role standard) |
+| **Mission 26** | Command Center & Integration Center Deep Frontend Certification | **COMPLETE** | Deepened `CommandCenter.jsx` (ApprovalQueue + Emergency Stop) and `IntegrationCenter.jsx` (credential vault + OAuth) — 29 new tests (180 → 209); **4 defects found and fixed** — deleting a stored production credential and revoking an OAuth grant both fired with zero confirmation; a failed approval decision silently reported success. Neither screen certified as a whole — operator-facing depth added, most sub-panels remain open and named |
+| **Mission 27** | Workspace Settings & Frontend Failure-Honesty Systemic Sweep | **COMPLETE** | `WorkspaceSettings.jsx` + ~30 sub-panels inventoried (6 tested, ~22 remain unread/untested, named exactly); 20 new tests (209 → 229); **3 defects found and fixed** — Team Directory and Policy Library both silently swallowed load failures into fabricated empty states, and a shared marketplace-install hook (used by 4 panels) silently discarded install failures. Systemic sweep of 6 direct-mutation files outside WorkspaceSettings found 5 SAFE, 1 INTENTIONAL — the recurring bug class appears contained, not sprawling, though a 44-file broader set remains unaudited and is named as the next target |
+| **Mission 28** | DevOps Remaining Tabs & Residual Frontend Failure-Honesty Audit | **COMPLETE** | Corrected DevOps tab count to 13 (not 8); tested Deployments/Docker/Recovery(DLQ) — 25 new tests (229 → 254); **3 defects found and fixed** — Rollback and Docker Stop both had zero confirmation, and the dead-letter-queue's load failure showed a false, reassuring "Dead letter queue is empty ✓" instead of an honest error. Extended the residual sweep to 15 of ~44 files total across Missions 27-28: 14 SAFE/INTENTIONAL, 1 minor Electron-only defect flagged. 8 of 13 DevOps tabs and 29 of ~44 sweep files remain unaudited, named exactly |
+| **Mission 29** | JARVIS Skill System Consolidation & External Skill Catalog Audit | **COMPLETE** | Confirmed JARVIS has no Claude-Code-style Agent Skills system (no `SKILL.md`, no `skills/` dir); inventoried 4 unrelated internal "skill" constructs (no naming conflict). Audited the live NVIDIA `nvidia/skills` catalog (343 skills) against JARVIS's actual stack — **0 installed**: all 343 are either mission-excluded domains (DOCA/Jetson/TAO/DeepStream/robotics/physical-AI/medical-imaging) or tied to specific NVIDIA products JARVIS doesn't run (RAG Blueprint, NeMo Relay, Dynamo); JARVIS's only NVIDIA touchpoint is NIM as 1-of-14 interchangeable chat-completion providers. No architecture built (nothing approved to load), no files modified, no packages installed, `.env` untouched, no merge/push |
+| **Mission 31** | Frontend/Backend Contract Parity & API Honesty Deep Audit | **COMPLETE** | Statically cross-referenced all 768 unique frontend `_fetch()` contracts (40 API files, 817 call sites) against all 4,725 backend route registrations (151 route files). Raw mismatch count started at 104, corrected to 55 after fixing the extraction script's own query-string parsing bug (disclosed, since it would have overstated findings ~2x); individual investigation of all 55 found real mismatch rate under 0.5% of total contracts — 2 gaps already gracefully handled by existing sample-data disclosure, ~15 dead/unreachable code, and **1 genuine live P2 defect found and fixed** (symbol search — the same recurring unreachable-catch bug found in 12 prior files, now in a 13th). Also found and documented (not fixed, requires new UI = architecture expansion) a real gap: the backend has a working, org-configurable MFA login policy with zero frontend UI to satisfy it. Frontend/backend parity scored 7/10. 4 new tests (254 → 258, 31 → 32 suites), backend server confirmed healthy throughout, 0 backend files touched |
+| **Mission 30** | Multi-Vendor Agent Skills Intelligence & JARVIS Consolidation Audit | **COMPLETE** | Deepened Mission 29's JARVIS-internal trace across 11 systems (skillRegistry/skillEngine/capabilityContract/agentRegistry + 7 more) via two independent passes, correcting several prior characterizations ("no tests" → real coverage found; "confirmed dead" AGENT_CATALOGUE → live behind one real route) and surfacing 2 new security findings: a real, tested org-scoped approval gate in `executionEngine.cjs` that is currently **unreachable from production** (no caller threads `task.orgId`), and `agentRuntimeSupervisor.cjs`'s autonomous-agent registry API has `requireAuth` but **no RBAC role check**. Live-audited 7 vendor skill ecosystems (Anthropic, OpenAI, NVIDIA, Google, Vercel, Qwen, Microsoft/GitHub — all existence/counts/licenses verified via `gh api`, not assumed): 612 total `SKILL.md` files across 5 catalogs. **0 skills installed** (JARVIS has no Agent-Skills-compatible runtime); ~24 candidates individually classified A-F, with `security-ownership-map`, `security-threat-model`, `gh-fix-ci`, and Vercel's `composition-patterns`/`react-best-practices` identified as genuinely additive **patterns** worth studying (not installing), and `playwright`/`webapp-testing`/`sentry` skills confirmed as duplicates of JARVIS's existing `browserRegistry.cjs`/ODI/`sentryService.cjs` capabilities. Architecture recommendation: Option D (no new skill system) now. No code modified, no packages installed, `.env` untouched, no merge/push |
 
 *(This register was created in B.22. Earlier audit phases are documented in their own reports at repo root: `PHASE_B19_*`, `PHASE_B18_*`, `C1.1_*`, etc.)*
+
+---
+
+## MISSION 21-28 — FRONTEND PRODUCTION MATURITY & TESTING TRACK
+
+Reports: [Mission 21 — A-Z Maturity Audit](FRONTEND-A-Z-PRODUCTION-MATURITY-AUDIT.md) · [Mission 22 — Testing & Backend-Parity Audit](FRONTEND-AUTOMATED-TESTING-BACKEND-PARITY-AUDIT.md) · [Mission 23 — Critical Screen & Component Coverage Audit](FRONTEND-CRITICAL-SCREEN-COMPONENT-COVERAGE-AUDIT.md) · [Mission 24 — Business OS / Core Customer Journey Certification](BUSINESS-OS-CORE-CUSTOMER-JOURNEY-FRONTEND-CERTIFICATION.md) · [Mission 25 — Remaining Critical Frontend Screens Certification](REMAINING-CRITICAL-FRONTEND-SCREENS-CERTIFICATION.md) · [Mission 26 — Command Center & Integration Center Deep Certification](COMMAND-CENTER-INTEGRATION-CENTER-FRONTEND-CERTIFICATION.md) · [Mission 27 — Workspace Settings & Failure-Honesty Sweep](WORKSPACE-SETTINGS-FRONTEND-FAILURE-HONESTY-AUDIT.md) · [Mission 28 — DevOps Remaining Tabs & Residual Sweep](DEVOPS-REMAINING-TABS-FRONTEND-HONESTY-AUDIT.md)
+
+An 8-mission arc auditing whether `frontend/src/` (87 nav-reachable screens, 275 component files) is at the same production maturity as the extensively-certified backend (151 route files, this register's B/C-track entries above).
+
+**Mission 21** inventoried the full frontend against a 30-point checklist. Found and fixed 3 genuine defects (fetched-but-discarded real data in `MemoryOSV2.jsx`, undisclosed sample data enabling a broken action in `DeveloperCopilotV2.jsx`, a silent submit-failure data-loss bug in `WorkspaceSettingsL2.jsx`), and identified 20 fully orphaned components (~7,700 lines, unreachable from any nav path, some still being edited by later accessibility passes despite being dead). Frontend maturity scored 7/10. Single largest structural finding: **zero automated frontend tests existed**, versus the backend's extensive `tests/runtime`/`tests/smoke` regression harness.
+
+**Mission 22** closed that gap's foundation: installed the standard CRA-companion testing libraries (Jest was already bundled via `react-scripts`; no new framework), built 9 test suites / 64 tests covering the shared `_fetch` client, `AuthContext` (including a direct regression guard for a documented prior cross-tenant-data-leak bug), App-level deep-link/routing logic, the primary AI `sendMessage` gateway, billing API functions, the shared `clickableProps` touch/keyboard primitive, and a repo-wide static audit that scans for the SEED_/MOCK_ fake-data anti-pattern automatically. Every test was negative-tested (break → confirm fail → restore → confirm pass) before being counted. Reported the remaining gap honestly rather than claiming parity: file-count coverage was still under 1%, deliberately traded for leverage (shared primitives many screens depend on).
+
+**Mission 23** classified all 87 nav-reachable screens into Critical/Important/Low-risk tiers (10 Critical, ~26 Important, ~51 Low-risk) and added 35 more tests (64 → 99, 9 → 14 suites) targeting 3 previously-uncovered Critical revenue/security surfaces end-to-end: CRM lead capture (`ContactsV2`), the payment-link revenue path (`PaymentsV2`), and team invite/removal (`TeamWorkspace`) — plus the shared destructive-action confirmation primitive (`ConfirmDialog`/`useConfirm`, used by 5+ sites app-wide including OrgAdminCenter, CRM, connector Disconnect) and the primary AI chat surface's offline/loading/duplicate-submit behavior. **No new defects were found** — instead, negative-testing converted several previously-documented-but-unenforced correct behaviors (honest `"—"` on load failure instead of a false `0`, honest disclosure of email-delivery failure on invite, input preservation on submit failure) into permanently guarded invariants. The single highest-value result: proved that `ConfirmDialog`'s cancel path, if it ever silently resolved `true` instead of `false`, would turn every "Cancel" button on every destructive action app-wide into a hidden "Confirm" — and that this is now caught by a test, not just hoped not to happen.
+
+**Mission 24** targeted the single largest remaining gap Mission 23 named explicitly: `BusinessOS.jsx` (1,345 lines, the app's core CRM). Traced the complete customer journey (discover → filter → create → edit → status-change → convert → close-won/lost → delete → error-recovery) across its 3 highest-write-volume views — Leads, Contacts, Opportunities/Pipeline — plus fully covered `BillingDashboard.jsx`, the next-highest-priority uncovered Critical screen. Per the mission's own instruction not to assume a screen is correct because its API call exists, this mission's tests were written against the real, unmodified components first — and **found 2 genuine defect classes this way, not by manual reading**: a systemic bug where every domain API function in `businessApi.js` catches its own errors and resolves `{success:false}` rather than throwing, which meant 4-5 CRM views' own `try/catch` error handling was structurally unreachable — a real backend outage rendered as a false "no records yet" empty state instead of an honest error with retry (worst in `ContactsView`, which had no error handling at all). Also found a silent-failure bug in `BillingDashboard`'s subscription cancellation — a failed cancel gave the user zero feedback. Both fixed with the smallest existing-pattern change (reusing each file's own already-correct error-display convention), negative-tested, and verified to touch no backend code — the backend already returned correct, honest failure payloads; only the frontend wasn't reading them. 40 new tests added (99 → 139, 14 → 18 suites).
+
+**Mission 25** closed out the 4 Critical screens Mission 24 left at gate-only or zero coverage: Home, Settings, Integrations, DevOps. Each screen split into a customer-facing and an operator-facing surface; the customer-facing (or highest-real-risk) half of all 4 was certified: `CustomerDashboard.jsx` (home), `WorkspaceSettings.jsx`'s permission gate + Branding mutation (settings), `ConnectorSetupWizard.jsx` (integrations), and `DevOpsCenterV2.jsx`'s `TabRuntime` (devops). **Found 5 defects, fixed 4** — the most severe finding across all 5 missions in this arc: **Emergency Stop, the single control capable of halting all in-flight work for every customer on the platform, fired immediately on click with zero confirmation of any kind** — less friction than deleting one CRM contact, and unlike every other destructive action audited across this arc (CRM delete, team removal, connector disconnect), which all already used the shared `useConfirm` pattern this fix now reuses. The same "unreachable catch block" false-success bug class from Mission 24's BusinessOS findings was also found in Emergency Stop *and* its Resume counterpart (the latter meaning a failed resume could leave the platform silently halted while telling the operator it was back to normal) — both fixed identically. A smaller dead-end-error-state bug (no Retry on a failed connector list load) was also found and fixed in Integrations. `CustomerDashboard.jsx` and `WorkspaceSettings.jsx` were both verified correct by negative-testing with zero fix needed. 41 new tests added (139 → 180, 18 → 22 suites). Explicitly left open and named rather than rounded away: `CommandCenter.jsx` (1,991 lines, the operator home dashboard — the largest single component in the app), `IntegrationCenter.jsx` (549 lines, operator connector management), ~30 `WorkspaceSettings` sub-panels, and 7 of `DevOpsCenterV2`'s 8 tabs.
+
+**Mission 26** deepened the two files Mission 25 had left entirely untouched: `CommandCenter.jsx` (1,991 lines, the operator home dashboard — the largest single component in the app) and `IntegrationCenter.jsx` (549 lines, operator credential/OAuth management for 54 connectors). Rather than spread thin across ~20 CommandCenter sub-panels, this mission targeted the two highest-consequence workflows in each file: CommandCenter's `ApprovalQueue` (the operator's risk-decision gate) and its Emergency Stop/Resume control (a second, independent implementation from `DevOpsCenterV2`'s, fixed in Mission 25); IntegrationCenter's credential-deletion and OAuth-revocation flows. **Found 4 more genuine P1 defects, all fixed**: a failed approval-queue load silently became a false "Queue clear" state (hiding real risk from the one panel built to surface it); a failed approve/reject decision still silently marked the item resolved; deleting a stored vault credential (any of 54 connectors, including live payment/infrastructure secrets) fired with zero confirmation; and revoking an OAuth grant had the identical gap. All 4 fixed with the now-established pattern (`useConfirm` for missing confirmations, `res?.success === false` checks for unreachable-catch-block false-success bugs) and negative-tested. CommandCenter's own Emergency Stop/Resume flow was also directly verified clean — a genuinely correct confirmation-and-false-success implementation, proven by 7 tests including 2 deliberately-broken negative controls. 29 new tests added (180 → 209, 22 → 25 suites). Neither file certified as a whole: 14 of CommandCenter's ~20 sub-panels and most of IntegrationCenter's dashboard/health-check surface remain open, named explicitly in the mission's own report.
+
+**Mission 27** had two parts. Part A inventoried `WorkspaceSettings.jsx`'s ~30 real sub-panels (`K2`-`K6`, `L1`-`L3`, `Desktop`, ~4,452 lines) and found a structurally important fact: unlike the wrapped API modules that caused Missions 24-26's recurring bug, every WorkspaceSettings sub-panel calls `_fetch` directly, which genuinely throws on failure — making the file tree structurally resistant to that specific defect class. The 3 defects found here were a narrower variant: a `catch {}` block left completely empty despite the file's own correctly-built error-state component sitting unused right next to it. `TeamDirectoryPanel` (K3, the real org roster) and `PolicyLibraryPanel` (K4, governance/compliance) both silently swallowed load failures into fabricated empty states while all their sibling panels in the same files handled it correctly; the shared `useMarketplaceInstall` hook (L2, used by all 4 marketplace panels) silently discarded install failures with zero user feedback — one fix corrected all 4 panels at once. Part B swept 6 direct-mutation files outside WorkspaceSettings for the same bug class using Missions 24-26's evidence as a template, classifying each SAFE/GENUINE DEFECT/INTENTIONAL/DEAD/ALREADY CERTIFIED per the mission's explicit instruction not to blindly modify every occurrence: 5 came back SAFE (already correctly checking `.success`/`.ok`), 1 was a documented INTENTIONAL degrade for a low-stakes header widget (`OrgSwitcher.jsx`), and 3 were DEAD (orphan components, correctly left untouched). 20 new tests added (209 → 229, 25 → 28 suites). Explicitly not certified: ~22 of ~30 WorkspaceSettings sub-panels remain unread or untested, and a 44-file broader set of `catch {}` occurrences outside the 6 directly checked remains unaudited — both named exactly rather than rounded away.
+
+**Mission 28** had two parts. Part A corrected a factual error carried since Mission 25: `DevOpsCenterV2.jsx` has **13 tabs**, not 8 — `runtime, deployments, observability, telemetry, models, logs, alerts, services, patches, dlq, docker, dependencies, terminal`. It then tested the 3 tabs with the most "deploy/restart/rollback"-relevant real mutations: `TabDeployments` (Rollback had zero confirmation and mislabeled real failures as an "info"-level non-issue rather than an error — fixed), `TabDocker` (Stop, which takes down a running container with no auto-recovery, had zero confirmation — fixed; Restart was deliberately left unconfirmed as self-healing and lower-risk, mirroring Mission 25's identical scope decision), and `TabDLQ`/Recovery (the load failure silently rendered a reassuring green "Dead letter queue is empty ✓" instead of an honest error — the single most severe finding this mission, since a false all-clear on the screen that exists to surface recoverable failed tasks is close to the worst possible failure mode for that specific surface). Part B extended Mission 27's residual sweep by 9 more files/components (15 total across both missions): every one came back SAFE or INTENTIONAL except one minor, Electron-desktop-only defect in `WorkspaceTemplates.jsx` (flagged, not fixed, given its narrow reach and the higher-priority DevOps fixes already made). 25 new tests added (229 → 254, 28 → 31 suites). 8 of 13 DevOps tabs remain completely unread, and 29 of the original ~44 sweep-candidate files remain unchecked — both named exactly.
+
+**Explicitly deferred, not chased for percentage** (per each mission's own instruction to prioritize leverage over raw coverage): 14 of CommandCenter's sub-panels (MissionFeed, ActiveAgents, EngineeringTimeline, CommandDispatch, LiveActivityStream, RevenuePulse, and others), IntegrationCenter's dashboard grid/Validate/Check-health/Refresh-token actions, ~22 of ~30 WorkspaceSettings sub-panels (K2's Policies, K3's OrgProfile, all of K4's four report panels, all of K5, all of K6, L1's plugin-management panels, all of L3, all of Desktop), 8 of 13 DevOps tabs (Observability, Telemetry, AI Models, Logs, Alerts, Patches — which has its own Apply/Rollback actions, flagged as the clear next target — Dependencies, Terminal), `CustomersView`/`CampaignsView` in BusinessOS, 29 of ~44 residual `catch {}` sweep files, `WorkspaceTemplates.jsx`'s flagged-not-fixed Electron scaffolding defect, and smoke-level coverage across the ~26 Important-tier screens. The 20 orphaned components identified in Mission 21 were explicitly preserved (not deleted) across all 8 missions per direct instruction.
+
+**Regression across the 8-mission arc:** frontend test suite grew 0 → 64 → 99 → 139 → 180 → 209 → 229 → 254 tests (9 → 14 → 18 → 22 → 25 → 28 → 31 suites), 100% pass throughout, ~10.7s runtime. Frontend production build clean after every mission (bundle size unchanged throughout, except +2 bytes in Mission 24 and +57 bytes in Mission 26 for new error-message/confirmation strings; Missions 27 and 28's fixes produced no measurable size delta). No backend route, contract, or security control was touched by any of the 8 missions — each verified via `git diff` that only additive frontend-side changes persisted (3 genuine bug fixes in Mission 21, `export` keyword additions in Missions 22-23-25-26-28 to make existing pure functions/components testable without behavior change, 2 genuine defect-class fixes in Mission 24, 4 genuine defect fixes in Mission 25, 4 more in Mission 26, 3 more in Mission 27, and 3 more in Mission 28 — all consuming existing, unchanged backend contracts, no auth/security logic modified).
+
+**Frontend maturity, stated honestly:** not 10/10. Critical-screen coverage remains where Mission 25 left it (8/10 by "highest-risk surface certified," 5-6/10 by "entire screen, every role") — Missions 26-28 deepened already-partially-covered screens rather than closing new ones. `CommandCenter.jsx`, `IntegrationCenter.jsx`, `WorkspaceSettings.jsx`, and now `DevOpsCenterV2.jsx` each have real operator-facing depth added on top of their already-certified highest-risk surface, but most sub-panels/tabs across all four remain open — 14 of CommandCenter's ~20, most of IntegrationCenter's dashboard/health-check surface, ~22 of WorkspaceSettings' ~30, and 8 of DevOps's 13. 275 total component files exist against 23 with direct tests. This is a real, evidenced floor where none existed 8 missions ago, and one that has now caught genuine, previously-invisible production bugs in 6 of its 8 missions. The recurring failure-honesty bug class (unreachable-catch-block or empty-catch-block false success/false-empty-state) has now been found and fixed in 12 separate files across 5 different missions; two missions of residual sweeping (15 of ~44 candidate files checked, 14 clean) suggest the pattern clusters specifically around screens with real destructive/operational mutations rather than being uniformly distributed — a genuinely useful refinement, though 29 files remain unchecked, so it stays a working hypothesis. Not a claim of parity with the backend's far more mature regression harness.
+
+---
+
+## MISSION 31 — FRONTEND/BACKEND CONTRACT PARITY & API HONESTY DEEP AUDIT
+
+Report: [Frontend/Backend Contract Parity Audit](FRONTEND-BACKEND-CONTRACT-PARITY-AUDIT.md)
+
+A different method from the Mission 21-28 arc above: rather than deepening UI/behavior test coverage screen-by-screen, this mission statically cross-referenced **every** frontend `_fetch()` call site against **every** backend route registration — 768 unique frontend contracts (40 API files, 817 call sites) against 4,725 backend route registrations (151 route files) — to find contract mismatches the behavior-testing arc's per-screen method could miss (wrong endpoint, wrong method, frontend calls with no backend route, backend routes no frontend ever calls).
+
+The automated extraction's raw diff found 104 apparent mismatches; investigating them surfaced a bug in the extraction script itself (a query-string interpolation pattern like `` `/path${qs ? "?" + qs : ""}` `` was mis-parsed because the `?` inside the interpolation's own string literal triggered a premature split) — fixed and disclosed rather than silently corrected, since reporting the uncorrected 104 would have overstated the real mismatch rate by roughly 2x. The corrected count was 55, and individual investigation of all 55 found: **the real mismatch rate is under 0.5% of all 768 contracts** — ~38 were further parsing artifacts (verified individually, not real), ~15 were genuine dead/unreachable frontend code (functions imported but never called, zero customer reachability, not fixed per the instruction to prioritize customer-facing workflows), 2 were genuine backend-capability gaps already gracefully absorbed by existing sample-data disclosure UI (`/p24/repo` listing, `/p20/ooplix/status|score|history|mode` — both consumed by real, nav-reachable screens that correctly show an honest "illustrative data" banner rather than fabricating live-looking numbers), and **1 was a genuine, live, reachable defect**: `DeveloperCopilotV2.jsx`'s symbol search called a `/runtime/symbol-search` route that has never existed anywhere in the backend, and the same recurring "unreachable catch, false empty state" bug from Missions 24-28 meant a real search failure showed "0 matches" instead of an honest error — found and fixed, negative-tested, the 13th file across this audit program to carry that exact bug class.
+
+Beyond the static route diff, targeted contract-shape review of the mission's named priority list found one significant, real feature gap worth full documentation: the backend has a working, org-configurable MFA enforcement policy (`policyService.cjs`'s `assertMfaSatisfied`, three distinct error codes, an `mfaToken` request field, default off but real and admin-activatable) — **the frontend login flow has zero UI to satisfy it.** Any organization that turns on this real backend security feature would lock its own users out with no way to enter an MFA code. Not fixed this mission (building a code-entry step is a new UI surface — architecture expansion, explicitly out of scope for a contract-parity audit) but documented in full and named as the clearest next-mission candidate this audit produced.
+
+4 new tests added (254 → 258, 31 → 32 suites). Backend server confirmed healthy (`GET /health` → 200) both before and after the mission. Zero backend files touched, zero `.env`/credential/package changes, no architecture expanded, no orphan components deleted, no already-certified security findings re-litigated. Frontend/backend contract parity scored **7/10** — sound on the paths that matter most (Auth's base flow, Chat/AI, BusinessOS), held back by the one real MFA gap and by response-body field-shape parity being verified only for the spot-checked priority areas rather than at scale across all 768 contracts.
 
 ---
 
@@ -3938,3 +3996,198 @@ frontend/build-artifact code touched). `tests/security/97-enterprise-isolation-i
 independent of this mission's fixes), confirmed healthy, no merge, no push.
 
 **No OS-track record altered.**
+
+---
+
+## JARVIS Skill System Consolidation & External Skill Catalog Audit — Mission 29 (2026-08-22)
+
+Full report: [JARVIS-SKILL-SYSTEM-CONSOLIDATION-AUDIT.md](JARVIS-SKILL-SYSTEM-CONSOLIDATION-AUDIT.md)
+
+Mission scope: determine whether JARVIS should adopt an Agent Skills system (the Claude-Code
+`SKILL.md`/trigger-routing mechanism), inventory anything already present, and audit the live
+NVIDIA `nvidia/skills` catalog as the named source-of-truth for external candidates — installing
+only what is genuinely high-value, with an explicit instruction not to blindly install, not to
+duplicate existing systems, and not to alter production architecture.
+
+**Existing infrastructure (Task A):** a repo-wide search (excluding `node_modules`) for `SKILL.md`,
+`skills/` directories, and skill-loader/trigger/routing identifiers returned zero matches — JARVIS
+has no Claude-Code-style Agent Skills system today, and no `.claude/skills/` directory exists at the
+project level (`.claude/` holds only `settings.json`, `settings.local.json`, an empty `worktrees/`).
+JARVIS does use the word "skill" internally, but for an unrelated concept: `skillRegistry.cjs`
+(320 lines, a metadata/discovery layer over already-existing capability handlers, part of the
+"Universal Composition Engine"), `skillEngine.cjs` (274 lines, a confirmed-dead 27-entry
+`AGENT_CATALOGUE` workforce-capacity simulation), and `capabilityContract.cjs` (358 lines, a
+blueprint-graph schema validator) — none of these implement filesystem-based skill discovery or
+description-based trigger matching, so there is no naming or architectural collision with a genuine
+Agent Skills system.
+
+**NVIDIA catalog audit (Tasks B-C):** fetched the live catalog via `npx skills add nvidia/skills
+--list` (read-only, no install) — **343 skills**, verified current, not assumed from memory. The
+catalog is NVIDIA's own product-support surface: dominated by `doca-*` (58, BlueField/ConnectX
+networking), `tao-*` (40, vision-model training), `jetson-*` (26, embedded-device flashing),
+`nemo-mbridge-perf-*`/`nemo-rl-*`/`nemo-automodel-*`/`mcore-*` (~55, Megatron distributed-training
+tuning), `i4h-*`/`physical-ai-*` (20, robotics/physical-AI), `vss-*`/`rtvi-*`/`deepstream-*`/`amc-*`
+(30, video analytics), `holohub-*`/`holoscan-*`/`hsb-*` (15, medical-device SDK), `dicom-*`/
+`digital-health-*`/`nv-generate-*`/`nv-segment-*` (13, medical imaging), `earth2studio-*` (6,
+weather forecasting), `cuopt-*`/`cupynumeric-*`/`warp-*`/`tilegym-*` (20, CUDA numerical kernels),
+plus `rag-*` (3, NVIDIA's packaged RAG Blueprint product), `dynamo-*` (4, Kubernetes LLM-serving
+deployment), `nemo-relay-*` (10, NeMo-Relay-specific call instrumentation), `data-designer` (1),
+and catalog meta-tools (`nvidia-skill-finder`, `skill-card-generator`). Cross-checked against
+JARVIS's actual dependencies (`package.json`: `groq-sdk`, `openai`, `axios`, `express`,
+`better-sqlite3` — no NVIDIA SDK, no vector-store client, no Kubernetes/Triton/Dynamo client) and a
+grep of `backend/services/` for `nvidia|nemo|triton|nim|rag|vector-store|embedding`: JARVIS's only
+NVIDIA touchpoint is a single `NVIDIA_URL` chat-completion endpoint in `aiService.js`, one of 14
+interchangeable hosted LLM providers — no GPU workload, no RAG pipeline, no vector store, no
+deployed NVIDIA infrastructure exists anywhere in the codebase for any of the 343 skills to attach
+to. **All 343 classified DO NOT INSTALL** — 343 irrelevant (explicitly excluded domains or tied to
+NVIDIA products JARVIS doesn't run); 0 duplicate, 0 install, 0 adapt, 0 investigate.
+
+**Architecture (Task D):** no skill-loading engine was built, per the mission's own instruction not
+to implement new architecture without a proven need — there is nothing approved to load. The reuse
+point for a future mission is identified and documented rather than built: `agentRegistry.cjs`
+(`agents/runtime/`, JARVIS's real live capability dispatcher with circuit breakers and dead-letter
+queue) plus `capabilityContract.cjs`'s existing `Skill` schema shape, for *executable*-capability
+skills; a markdown-frontmatter-plus-trigger-matching mechanism (the actual Claude-Code Agent Skills
+model) would need its own small loader and does not yet exist in any form.
+
+**Result:** 0 skills installed, 0 files modified, 0 packages installed, `.env` untouched, server not
+restarted (no runtime change made). Baseline regression check (`tests/runtime/04-agentRegistry.test.cjs`,
+the dispatcher identified as the reuse point) ran clean at 16/16 before and remained unchanged after,
+since no code was touched. No merge, no push.
+
+**No OS-track record altered.**
+
+---
+
+## Multi-Vendor Agent Skills Intelligence & JARVIS Consolidation Audit — Mission 30 (2026-08-22)
+
+Full report: [MULTI-VENDOR-AGENT-SKILLS-INTELLIGENCE-AUDIT.md](MULTI-VENDOR-AGENT-SKILLS-INTELLIGENCE-AUDIT.md)
+
+Follows Mission 29 directly, expanding from a single-vendor (NVIDIA) pass to seven vendor ecosystems
+and deepening the internal JARVIS trace via two independent passes (this session's own direct
+verification plus an 11-system, 55-tool-call background trace) — explicitly instructed not to trust
+prior-mission characterizations at face value.
+
+**Phase 1 corrections to prior understanding:** Mission 29 characterized `skillRegistry.cjs` as
+having no test coverage and `skillEngine.cjs`'s `AGENT_CATALOGUE` as fully dead. Both needed
+correction under deeper tracing: `skillRegistry.cjs` is covered by `tests/runtime/skill-registry.test.cjs`
+(46/46 passing this mission) plus 3 more transitively-reached test files; `AGENT_CATALOGUE` genuinely
+has no execution handler (still true) but sits behind one real, live, `requireAuth`-gated route
+(`GET /workforce-os/agents`) that is the confirmed sole data source for the `AgentRegistryCenter.jsx`
+frontend panel — dead as a dispatcher, live as a read path. The agent-count for `AGENT_CATALOGUE`
+was also corrected from Mission 29's reported 27 to a directly-verified **36** via source read.
+
+**Two new security findings, not previously flagged by any prior mission:** (1) `executionEngine.cjs`
+contains a real, tested, org-scoped permission gate — it blocks `riskLevel:"high"` skills pending
+human approval when `task.orgId` is present — but every real production caller of the dispatch chain
+(`routes/runtime.js`, `agentExecutionEngine.cjs`, `runtimeActionEngine.cjs`,
+`executionCoordinator.cjs`, `missionRuntime.cjs`) fails to thread `orgId` through, leaving this gate
+**currently unreachable in production** despite being real, working, and covered by tests that call
+it directly. (2) `agentRuntimeSupervisor.cjs`'s autonomous-agent registry API
+(`POST /agents/runtime/registry/register`, `/supervisor/start`/`/stop`) is gated only by
+`requireAuth` with **no RBAC role check** — any authenticated user can register or start/stop
+platform-wide autonomous agents, a materially weaker posture than the sibling `/workforce-os/*`
+routes, which do enforce `operatorOnly` on mutations. Neither was fixed this mission (no code changes
+permitted per the mission's own rules) — both are named exactly, with file-level evidence, as
+concrete candidates for the security-audit track.
+
+**External-vendor findings:** live-verified (via `gh api`, not the potentially-lossy `npx skills
+--list` CLI parse Mission 29 relied on) that the Agent Skills format has become a genuine cross-vendor
+standard — Anthropic (`anthropics/skills` + `anthropics/claude-plugins-official`), OpenAI
+(`openai/skills`, official, launched Nov 2025), NVIDIA (`nvidia/skills`, re-confirmed 344 skills),
+Google (`google/skills`, 112 unique skills, entirely GCP-product-specific), and Vercel
+(`vercel-labs/agent-skills`, 9 skills) all maintain official catalogs; Qwen Code supports the format
+natively but has no official skill catalog of its own; Microsoft/GitHub's closest analog
+(`github/awesome-copilot`, 412 community-contributed skills) deliberately keeps `skills/`,
+`instructions/`, `agents/`, and `plugins/` as separate top-level mechanisms, not synonyms — confirming
+the mission's own instruction to distinguish these concepts was well-founded. Of ~24 individually
+classified candidates, 3 are confirmed/probable duplicates of existing JARVIS capability
+(`playwright`/`webapp-testing` vs. `browserRegistry.cjs`/ODI visual intelligence; `sentry` skill vs.
+`sentryService.cjs`), and a genuinely additive handful — `security-ownership-map`'s bus-factor
+technique, `security-threat-model`'s structured report format, `gh-fix-ci`/`gh-address-comments` for
+JARVIS's real existing CI, and Vercel's `composition-patterns`/`react-best-practices` for the
+still-open frontend maturity track — were identified as worth studying as **patterns**, not
+installing as code, since JARVIS has no Agent-Skills-compatible runtime to load them into.
+
+**Architecture decision (documented, not implemented):** Option D (no new skill system; existing
+capability infrastructure is sufficient) for now. Option C (a thin external-Agent-Skills compatibility
+adapter) was named as the lowest-effort path if a future mission finds multiple candidates whose value
+specifically requires dynamic description-triggered loading — none of this mission's candidates meet
+that bar; all are better absorbed as human-read pattern knowledge applied directly to existing JARVIS
+subsystems (`rootCauseAnalysisEngine.cjs`, the audit-mission convention itself, the frontend-maturity
+track).
+
+**Result:** 0 skills installed, 0 packages installed, 0 files modified besides this report and this
+register entry, `.env` untouched, no deletion, no credential changes, no merge, no push. Baseline
+tests (`tests/runtime/04-agentRegistry.test.cjs`: 16/16; combined `skill-registry.test.cjs` +
+`capability-contract.test.cjs` run: 46/46) ran clean before and after, unchanged, since no product
+code was touched.
+
+**No OS-track record altered.**
+
+## Autonomous Agent Registry & Execution Authorization Deep Audit — Mission 32 (2026-08-22)
+
+Full report: [AUTONOMOUS-AGENT-REGISTRY-EXECUTION-AUTHORIZATION-AUDIT.md](AUTONOMOUS-AGENT-REGISTRY-EXECUTION-AUTHORIZATION-AUDIT.md)
+
+Independently closes the two named security findings from Mission 30's side-audit (above), which were
+static/source-read only and explicitly unfixed. This mission required concrete reachability evidence
+before calling anything a vulnerability, so both were re-derived from scratch via full route/call-chain
+tracing and, for the first, live reproduction with a fresh ordinary customer account — not assumed from
+Mission 30's prior text.
+
+**Finding 1 — CONFIRMED, FIXED, live-verified.** `backend/routes/agentsRuntime.js` (the I5-1 registry
+API: `register`/`unregister`/`enable`/`disable`, plus supervisor `start`/`stop`/`pause`/`resume`/`tick`)
+carried only `requireAuth`, no `operatorOnly` — unlike its three sibling org-agent route files
+(`autonomousKnowledgeOrg.js`, `businessOrg.js`, `engineeringOrg.js`), which already correctly gate their
+own mutating routes with `requireAuth, operatorOnly`. `agentRuntimeSupervisor.cjs` (1,278 lines) was
+confirmed to be a single platform-wide singleton with **zero** `orgId`/tenant concept anywhere in the
+file (210 real agents: 10 built-in + ~200 registered by org modules) — so the correct authorization
+model is operator-vs-everyone, not tenant isolation, reframing (and confirming) Mission 30's framing.
+Live-reproduced with a brand-new `role:"user"` account created via the standard `/accounts/register` +
+`/auth/login` flow: it read the full 210-agent registry (including other agents' live mission
+IDs/objectives), registered a new agent into the shared fleet (`agentCount` 210→211), and unregistered
+it again — zero pushback at any step. **Fix:** `router.use("/agents/runtime", operatorOnly)` added at
+the barrel mount in `backend/routes/index.js`, matching the exact precedent already used twice in this
+same file for `/runtime/stream` and `/p22` (reused existing middleware, no new authorization framework).
+**Negative-tested live:** fix applied → 403 confirmed → fix reverted → vulnerability reproduced exactly
+as originally found → fix restored → 403 confirmed again, across 3 real backend restarts.
+
+**Finding 2 — CONFIRMED via full caller trace, left unfixed as DECISION REQUIRED.**
+`executionEngine.cjs`'s high-risk-capability approval gate (`if (task.orgId && skill)`) is real and
+correctly written, but every one of the 11 real production callers of `runtimeOrchestrator.dispatch()`
+was traced and confirmed to never populate `task.orgId` — not a per-caller oversight but one missing
+plumbing connection at `dispatch()`/`_plan()`'s task-construction point itself, which has no `orgId`
+concept anywhere in the file. All 11 callers classified **B** (reachable, org propagation missing).
+Deliberately not fixed: correctly threading `orgId` through a shared choke point used by both
+customer-facing and operator/founder-internal automation callers is a scoping decision (which callers
+are genuinely org-scoped) that this mission's own "no speculative architecture" constraint correctly
+prohibits guessing at — recommended as a narrowly-scoped next mission.
+
+**Third finding, found during the mandated frontend-consumer audit (not from Mission 30):**
+`AutonomousAgentDashboard.jsx` (the sole customer-reachable consumer of the routes just fixed) silently
+swallowed every action failure — `_action()`'s catch block was fully empty and `handleStart`/
+`handleStop` had no error handling at all, so the new 403s from Finding 1's fix would have failed
+completely silently (button un-busies, no explanation). **Fixed** by routing failures into the
+component's own pre-existing `error` state/banner — no new UI pattern, reused what was already there.
+
+**Also observed:** `App.jsx`'s `agentruntime` tab lacks the `user?.role === "operator"` render gate
+already used for `home`/`integrations`/`devops` — recorded as DECISION REQUIRED (cosmetic/defense-in-
+depth now that the backend correctly denies and the frontend honestly reports; not a live exploit).
+Six lifecycle concurrency scenarios (duplicate start/stop/tick, register-while-deleting, stale/cross-
+tenant IDs) were checked and found already safely defended (singleton guards, idempotent stop, an
+explicit `_tickInFlight` dedup set, and Node's single-threaded event loop ruling out true interleaving
+since no lifecycle function contains an `await`) — classified SAFE, no changes needed.
+
+**Result:** 2 files changed (`backend/routes/index.js`, `frontend/src/components/
+AutonomousAgentDashboard.jsx`), both additive/minimal, reusing only existing `operatorOnly` middleware
+and the component's own existing error-state pattern. `.env` untouched, no packages installed, no
+merge, no push, no commit. One fresh ordinary-customer PoC account created and its one test agent
+cleanly unregistered as part of the same live reproduction. Full `npm run test:runtime` regression
+suite (476 tests, 128 suites, includes the broader master-audit regression corpus, not just the 10
+named runtime files): **476/476 pass, 0 fail**. No file belonging to Mission 31's concurrent work
+(`DeveloperCopilotV2.jsx` and its own report/register entries) was touched.
+
+**Remaining decisions:** (1) thread `orgId` through `runtimeOrchestrator.dispatch()` for genuinely
+org-scoped callers only — scoping work for a future mission; (2) add the `operator`-only tab-render
+gate to `App.jsx`'s `agentruntime` tab — one-line, same-pattern, left to operator judgment on
+see-then-deny vs. fully hidden.

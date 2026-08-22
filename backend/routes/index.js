@@ -88,6 +88,20 @@ router.use("/missions", requireAuth);  // gate all /missions/* routes
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*
 router.use("/agents", requireAuth);    // gate all /agents/* routes (agents.js has no in-file guard; barrel comment claimed one that never existed)
 router.use(require("./agents"));       // /agents/conversation/*, /agents/status/*, /agents/delegation/*, /agents/message, /agents/override, /agents/task/*
+// Mission 32 — Autonomous Agent Registry & Execution Authorization audit
+// (2026-08-22): agentsRuntime.js's own router.use("/agents", requireAuth)
+// left every I5-1 registry route (register/unregister/enable/disable) and
+// every supervisor control (start/stop/pause/resume/tick) reachable by ANY
+// authenticated customer — live-reproduced with a brand-new role:"user"
+// account: it registered a real agent into the shared platform-wide fleet
+// (agentCount 210→211), read the full registry incl. other agents'
+// mission IDs/objectives, and unregistered it again, all with zero pushback.
+// This runtime is a single global singleton (one _agents Map, no orgId
+// concept anywhere in agentRuntimeSupervisor.cjs) — there is no tenant to
+// scope to, only operator vs. customer, so operatorOnly is the correct and
+// only applicable gate. Same fix pattern already used for /runtime/stream
+// and /p22 above (mount-level operatorOnly, not a new framework).
+router.use("/agents/runtime", operatorOnly);
 router.use(require("./agentsRuntime")); // /agents/runtime/supervisor — Phase I4 long-running agent runtime
 router.use(require("./lifecycle"));    // /runtime/lifecycle/*, /runtime/stage/*, /runtime/events/*, /runtime/pause/*, /runtime/resume/*, /runtime/retry/*
 router.use("/intelligence", requireAuth); // gate all /intelligence/* routes

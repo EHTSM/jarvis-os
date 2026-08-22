@@ -35,12 +35,59 @@ function PhoneIcon() {
 }
 
 // ── Email Login Form ──────────────────────────────────────────────────────────
+// Mission 33 — MFA End-to-End Certification: the backend's /auth/login has
+// always correctly rejected an MFA-required org's login with a distinct,
+// machine-readable code (mfa_code_required / mfa_code_invalid /
+// mfa_enrollment_required) — but this form had no branch that recognized
+// those codes, so an MFA-enrolled user saw the raw error string with no way
+// to actually enter their code and complete login. mfaStep below adds that
+// missing step, reusing the same 6-digit boxed-input pattern PhoneLoginForm
+// already uses lower in this file — no new input component invented.
 function EmailLoginForm({ onSuccess, onSignup, onForgot, busy, setBusy }) {
   const { login } = useAuth();
   const [email,  setEmail]  = useState("");
   const [pw,     setPw]     = useState("");
   const [showPw, setShowPw] = useState(false);
   const [err,    setErr]    = useState("");
+  const [mfaStep, setMfaStep] = useState(false); // true once the backend has asked for a code
+  const [mfaCode, setMfaCode] = useState(["", "", "", "", "", ""]);
+  const [mfaUseRecovery, setMfaUseRecovery] = useState(false);
+  const [mfaRecoveryCode, setMfaRecoveryCode] = useState("");
+  const mfaRefs = useRef([]);
+
+  const _attemptLogin = useCallback(async (mfaToken) => {
+    const result = email.trim()
+      ? await login(pw, email.trim().toLowerCase(), mfaToken)
+      : await login(pw); // legacy operator fallback — no MFA concept
+
+    if (result.success) {
+      track.login("email");
+      onSuccess?.();
+      return;
+    }
+
+    if (result.code === "mfa_code_required" || result.code === "mfa_code_invalid") {
+      setMfaStep(true);
+      setErr(result.code === "mfa_code_invalid" ? "Invalid or expired code. Please try again." : "");
+      setTimeout(() => mfaRefs.current[0]?.focus(), 50);
+      return;
+    }
+    if (result.code === "mfa_enrollment_required") {
+      // No code-entry step can help here — this account has never enrolled,
+      // so there is nothing to prompt for. Say so honestly rather than
+      // showing a code box the user can't possibly fill in correctly.
+      setMfaStep(false);
+      setErr(result.error || "This organization requires MFA. Contact your administrator to enroll.");
+      return;
+    }
+
+    setMfaStep(false);
+    setErr(
+      result.error === "Auth not configured — OPERATOR_PASSWORD_HASH missing"
+        ? "Server auth not configured. Contact your administrator."
+        : result.error || "Incorrect email or password."
+    );
+  }, [email, pw, login, onSuccess]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -48,23 +95,78 @@ function EmailLoginForm({ onSuccess, onSignup, onForgot, busy, setBusy }) {
     if (!pw.trim()) { setErr("Please enter your password."); return; }
     setBusy(true);
     setErr("");
-
-    const result = email.trim()
-      ? await login(pw, email.trim().toLowerCase())
-      : await login(pw); // legacy operator fallback
-
-    if (!result.success) {
-      setErr(
-        result.error === "Auth not configured — OPERATOR_PASSWORD_HASH missing"
-          ? "Server auth not configured. Contact your administrator."
-          : result.error || "Incorrect email or password."
-      );
-    } else {
-      track.login("email");
-      onSuccess?.();
-    }
+    await _attemptLogin();
     setBusy(false);
-  }, [busy, email, pw, login, onSuccess, setBusy]);
+  }, [busy, pw, _attemptLogin, setBusy]);
+
+  const handleMfaChange = (idx, val) => {
+    const cleaned = val.replace(/\D/g, "").slice(0, 1);
+    const next = [...mfaCode];
+    next[idx] = cleaned;
+    setMfaCode(next);
+    if (cleaned && idx < 5) mfaRefs.current[idx + 1]?.focus();
+  };
+
+  const handleMfaKey = (idx, e) => {
+    if (e.key === "Backspace" && !mfaCode[idx] && idx > 0) mfaRefs.current[idx - 1]?.focus();
+  };
+
+  const handleMfaSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    const code = mfaUseRecovery ? mfaRecoveryCode.trim() : mfaCode.join("");
+    if ((mfaUseRecovery ? code.length < 5 : code.length < 6) || busy) return;
+    setBusy(true);
+    setErr("");
+    await _attemptLogin(code);
+    setBusy(false);
+  }, [mfaUseRecovery, mfaRecoveryCode, mfaCode, busy, _attemptLogin, setBusy]);
+
+  if (mfaStep) {
+    return (
+      <form className="auth-form" onSubmit={handleMfaSubmit}>
+        <div className="auth-phone-step">
+          <button type="button" className="auth-phone-back"
+            onClick={() => { setMfaStep(false); setMfaCode(["","","","","",""]); setMfaRecoveryCode(""); setMfaUseRecovery(false); setErr(""); }}
+            disabled={busy}>
+            ← Back
+          </button>
+          <span>{mfaUseRecovery ? "Enter a recovery code" : "Enter your 6-digit authentication code"}</span>
+        </div>
+
+        {mfaUseRecovery ? (
+          <div className="auth-field">
+            <input
+              type="text" className="auth-input" placeholder="xxxxx-xxxxx"
+              value={mfaRecoveryCode} onChange={e => setMfaRecoveryCode(e.target.value)}
+              disabled={busy} autoFocus autoComplete="one-time-code"
+            />
+          </div>
+        ) : (
+          <div className="auth-otp-group">
+            {mfaCode.map((v, i) => (
+              <input key={i} ref={el => mfaRefs.current[i] = el}
+                type="text" inputMode="numeric" className="auth-otp-input"
+                maxLength={1} value={v}
+                onChange={e => handleMfaChange(i, e.target.value)}
+                onKeyDown={e => handleMfaKey(i, e)}
+                disabled={busy}
+              />
+            ))}
+          </div>
+        )}
+
+        {err && <div className="auth-error" role="alert"><span className="auth-error-icon">✕</span> {err}</div>}
+        <button className="auth-btn" type="submit"
+          disabled={busy || (mfaUseRecovery ? mfaRecoveryCode.trim().length < 5 : mfaCode.join("").length < 6)}>
+          {busy ? <><span className="auth-spinner" /> Verifying…</> : "Verify & Sign in →"}
+        </button>
+        <button type="button" className="auth-link" style={{ alignSelf: "center", marginTop: 4 }}
+          onClick={() => { setMfaUseRecovery(v => !v); setErr(""); }} disabled={busy}>
+          {mfaUseRecovery ? "Use my 6-digit code instead" : "Lost your device? Use a recovery code"}
+        </button>
+      </form>
+    );
+  }
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>

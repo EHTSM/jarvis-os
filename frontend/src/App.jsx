@@ -330,20 +330,22 @@ function tabMeta(id) {
 // ── Context detection ─────────────────────────────────────────────
 // desktop=1 query param → Electron shell; skip landing + onboarding
 // app.* hostname         → SaaS web app;  skip marketing landing page
-function _isDesktopShell() {
+// Exported (alongside _initialScreen below) so the deep-link/onboarding
+// routing priority can be unit-tested without mounting the full App tree.
+export function _isDesktopShell() {
   try {
     return new URLSearchParams(window.location.search).get("desktop") === "1";
   } catch { return false; }
 }
 
-function _isSaasApp() {
+export function _isSaasApp() {
   try {
     return window.location.hostname.startsWith("app.");
   } catch { return false; }
 }
 
 // ── Determine initial screen from localStorage ───────────────────
-function _initialScreen() {
+export function _initialScreen() {
   // Emailed deep links (password reset / email verification) take priority
   // over every other screen — they carry a one-time token in the query
   // string and must render regardless of onboarding/auth state.

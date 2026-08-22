@@ -12,6 +12,7 @@ import * as deployStrategyApi from "../deploymentStrategyApi";
 import * as depAuditApi from "../dependencyAuditApi";
 import * as terminalApi from "../computerTerminalApi";
 import SampleDataNotice from "./SampleDataNotice";
+import { useConfirm } from "./ConfirmDialog";
 import "./DevOpsCenterV2.css";
 import { clickableProps } from "../hooks/useClickableProps";
 
@@ -142,7 +143,7 @@ function sc(s) { return STATUS_COLOR[s] || "var(--text-dim)"; }
 
 // ── Tab: Runtime ──────────────────────────────────────────────────────
 
-function TabRuntime({ addToast }) {
+export function TabRuntime({ addToast }) {
   const [status,     setStatus]     = useState(null);
   const [history,    setHistory]    = useState([]);
   const [loading,    setLoading]    = useState(true);
@@ -150,6 +151,7 @@ function TabRuntime({ addToast }) {
   const [resuming,    setResuming]    = useState(false);
   const [restarting,  setRestarting]  = useState(false);
   const [emergency,   setEmergency]   = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   useEffect(() => {
     setLoading(true);
@@ -168,9 +170,26 @@ function TabRuntime({ addToast }) {
   const mode = status?.mode || "normal";
 
   async function handleStop() {
+    // The single most destructive control in the app — halts all queued and
+    // in-flight tasks platform-wide, for every customer — previously fired
+    // immediately on click with zero confirmation, less friction than
+    // deleting a single CRM contact. Reusing the same useConfirm pattern
+    // every other destructive action in the app already goes through.
+    const ok = await confirm({
+      title: "Activate emergency stop?",
+      message: "This halts all queued and in-flight tasks for every customer on the platform, immediately. Resume restores normal operation.",
+      danger: true,
+      confirmLabel: "Emergency Stop",
+    });
+    if (!ok) return;
     setStopping(true);
     try {
-      await emergencyStop("operator_initiated");
+      // emergencyStop() never throws — it catches internally and resolves
+      // {success:false, error} on a real failure, same class of bug fixed
+      // across BusinessOS in the prior mission. Without this check, a
+      // rejected emergency stop still showed "activated" as if it worked.
+      const r = await emergencyStop("operator_initiated");
+      if (r?.success === false) throw new Error(r.error || "Emergency stop failed");
       setEmergency(true);
       addToast("Emergency stop activated", "error");
       track.event("emergency_stop");
@@ -181,7 +200,13 @@ function TabRuntime({ addToast }) {
   async function handleResume() {
     setResuming(true);
     try {
-      await emergencyResume();
+      // Same class of bug as handleStop above — emergencyResume() never
+      // throws, so a real failure must be read from the response, not
+      // assumed from a successful promise resolution. A false "resumed"
+      // here would be worse than the false "activated": the platform stays
+      // in emergency stop while the UI claims it's back to normal.
+      const r = await emergencyResume();
+      if (r?.success === false) throw new Error(r.error || "Resume failed");
       setEmergency(false);
       addToast("Execution resumed", "success");
       track.event("emergency_resume");
@@ -214,6 +239,7 @@ function TabRuntime({ addToast }) {
 
   return (
     <div className="dv2-runtime-root">
+      {ConfirmUI}
       {emergency && (
         <div className="dv2-emergency-banner">
           <span>⏹ EMERGENCY STOP ACTIVE</span>
@@ -393,13 +419,14 @@ function StrategyDeployPanel({ addToast }) {
   );
 }
 
-function TabDeployments({ addToast }) {
+export function TabDeployments({ addToast }) {
   const [deployments, setDeployments] = useState(SEED_DEPLOYMENTS);
   const [isSample,    setIsSample]    = useState(true);
   const [loading,     setLoading]     = useState(true);
   const [envFilter,   setEnvFilter]   = useState("all");
   const [expanded,    setExpanded]    = useState(null);
   const [rolling,     setRolling]     = useState(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   useEffect(() => {
     Promise.all([
@@ -432,6 +459,7 @@ function TabDeployments({ addToast }) {
 
   return (
     <div className="dv2-deploy-root">
+      {ConfirmUI}
       {!loading && isSample && <SampleDataNotice label="sample deployment history" />}
       <div className="dv2-deploy-summary">
         {Object.entries(counts).map(([k, v]) => (
@@ -474,10 +502,28 @@ function TabDeployments({ addToast }) {
                     <div className="dv2-dr-detail-row"><span>Duration</span><span>{d.duration}</span></div>
                     {d.status === "failed" && (
                       <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={async () => {
+                        // Rollback reverses a real deployment — previously fired
+                        // immediately on click with zero confirmation (the same
+                        // gap fixed for every other destructive action across
+                        // this audit arc), and a real backend failure (a 404
+                        // "deployment not found" or a 500 error, both thrown by
+                        // rollbackDeploy) was mislabeled "Rollback API not
+                        // available" at "info" severity — misrepresenting a
+                        // genuine failure as a harmless non-issue.
+                        const ok = await confirm({
+                          title: `Roll back ${d.repo}?`,
+                          message: `This reverts the ${d.env} deployment of ${d.repo} (${d.version}) to its previous version.`,
+                          danger: true,
+                          confirmLabel: "Roll back",
+                        });
+                        if (!ok) return;
                         setRolling(d.id);
-                        try { await import("../phase25Api").then(m => m.rollbackDeploy(d.id)); addToast(`Rollback initiated for ${d.repo}`, "info"); }
-                        catch { addToast("Rollback API not available", "info"); }
-                        finally { setRolling(null); }
+                        try {
+                          await import("../phase25Api").then(m => m.rollbackDeploy(d.id));
+                          addToast(`Rollback initiated for ${d.repo}`, "success");
+                        } catch (e) {
+                          addToast(`Rollback failed: ${e.message || "unknown error"}`, "error");
+                        } finally { setRolling(null); }
                       }} disabled={rolling === d.id}>
                         {rolling === d.id ? "⟳ Rolling back…" : "↩ Rollback"}
                       </button>
@@ -1207,13 +1253,14 @@ function TabServices({ addToast }) {
 // since /computer/docker/* returns genuine live daemon/container state
 // with no illustrative gap to fill.
 
-function TabDocker({ addToast }) {
+export function TabDocker({ addToast }) {
   const [dashboard, setDashboard] = useState(null);
   const [loading,   setLoading]   = useState(true);
   const [error,     setError]     = useState(null);
   const [acting,    setActing]    = useState(null); // containerId currently being acted on
   const [expanded,  setExpanded]  = useState(null);
   const [logs,      setLogs]      = useState({});   // containerId -> log text
+  const [confirm, ConfirmUI] = useConfirm();
 
   const refresh = useCallback(() => {
     setLoading(true);
@@ -1264,6 +1311,7 @@ function TabDocker({ addToast }) {
 
   return (
     <div className="dv2-svc-root">
+      {ConfirmUI}
       <div className="dv2-svc-header">
         <div className="dv2-svc-hkpis">
           <div className="dv2-kpi">
@@ -1321,7 +1369,21 @@ function TabDocker({ addToast }) {
                 {running ? (
                   <>
                     <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"restart"} onClick={() => act(ref, "restart", dockerApi.restartContainer)}>Restart</button>
-                    <button className="dv2-btn dv2-btn--xs dv2-btn--danger" disabled={acting === ref+"stop"} onClick={() => act(ref, "stop", dockerApi.stopContainer)}>Stop</button>
+                    <button className="dv2-btn dv2-btn--xs dv2-btn--danger" disabled={acting === ref+"stop"} onClick={async () => {
+                      // Stopping a running container has no auto-recovery
+                      // (unlike Restart, which comes back up on its own) —
+                      // previously fired immediately on click with zero
+                      // confirmation, the same gap fixed for every other
+                      // destructive action across this audit arc.
+                      const ok = await confirm({
+                        title: `Stop ${c.Names}?`,
+                        message: "The container will stop immediately and will not restart on its own. Anything depending on it will go down until it's started again.",
+                        danger: true,
+                        confirmLabel: "Stop",
+                      });
+                      if (!ok) return;
+                      act(ref, "stop", dockerApi.stopContainer);
+                    }}>Stop</button>
                   </>
                 ) : (
                   <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"start"} onClick={() => act(ref, "start", dockerApi.startContainer)}>Start</button>
@@ -1684,21 +1746,32 @@ function TabPatches({ addToast }) {
 
 // ── Tab: Recovery (DLQ) ───────────────────────────────────────────────
 
-function TabDLQ({ addToast }) {
+export function TabDLQ({ addToast }) {
   const [entries,    setEntries]    = useState([]);
   const [total,      setTotal]      = useState(0);
   const [loading,    setLoading]    = useState(true);
+  const [error,      setError]      = useState(null);
   const [recovering, setRecovering] = useState(false);
   const [removing,   setRemoving]   = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
+      // getDLQ() never throws — it catches internally and resolves
+      // {success:false, error} on a real backend failure. Without this
+      // check, that shape fell through to entries=[], and the panel showed
+      // a green "Dead letter queue is empty ✓" — a false all-clear on the
+      // one screen that exists to surface recoverable failed tasks. Same
+      // bug class fixed across BusinessOS/CommandCenter/WorkspaceSettings.
       const r = await getDLQ(30);
+      if (r?.success === false) throw new Error(r.error || "Failed to load recovery queue");
       setEntries(r?.entries || []);
       setTotal(r?.total || 0);
-    } catch { setEntries([]); }
-    finally { setLoading(false); }
+      setError(null);
+    } catch (e) {
+      setEntries([]);
+      setError(e.message || "Failed to load recovery queue");
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -1750,7 +1823,14 @@ function TabDLQ({ addToast }) {
         </div>
       </div>
 
-      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
+      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : error ? (
+        <div className="dv2-empty">
+          <span className="dv2-empty-icon" style={{ color: "var(--danger)" }}>⚠</span>
+          <p className="dv2-empty-title">Couldn't load the recovery queue</p>
+          <p className="dv2-empty-sub">{error}</p>
+          <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={load}>Retry</button>
+        </div>
+      ) : (
         entries.length === 0 ? (
           <div className="dv2-empty">
             <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
