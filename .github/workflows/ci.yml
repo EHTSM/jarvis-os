@@ -33,7 +33,7 @@ jobs:
 
   # ── 2. Backend regression ───────────────────────────────────────────────────
   regression:
-    name: Regression Suite (144 checks)
+    name: Regression Suite
     runs-on: ubuntu-latest
     needs: audit
 
@@ -72,13 +72,14 @@ jobs:
           curl -sf http://localhost:5050/health || (echo "Server failed to start" && exit 1)
 
       - name: Run regression suite
+        # Discovers and runs every tests/runtime/*.test.cjs file that exists at
+        # checkout time (see package.json's test:runtime script) — the corpus
+        # grows over time, so this step's own pass/fail exit code is the gate,
+        # not a hardcoded expected count that would silently go stale again.
         run: npm run test:runtime
 
-      - name: Verify 144/144 pass
-        run: |
-          RESULT=$(npm run test:runtime 2>&1)
-          echo "$RESULT"
-          echo "$RESULT" | grep -E "pass 144" || (echo "::error::Regression suite did not pass 144/144" && exit 1)
+      - name: Run security suite
+        run: npm run test:security
 
       - name: Stop server
         if: always()

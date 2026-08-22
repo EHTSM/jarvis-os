@@ -1582,6 +1582,29 @@
       "Bash(node -e \"console.log\\('axe-core installed:', require\\('axe-core/package.json'\\).version\\)\")",
       "Bash(node --check scripts/a11y-live-scan.cjs)"
     ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.production)",
+      "Read(./.env.production.local)",
+      "Read(./.env.local)",
+      "Edit(./.env)",
+      "Edit(./.env.production)",
+      "Edit(./.env.production.local)",
+      "Edit(./.env.local)",
+      "Write(./.env)",
+      "Write(./.env.production)",
+      "Write(./.env.production.local)",
+      "Write(./.env.local)",
+      "Bash(cat .env)",
+      "Bash(cat .env.production)",
+      "Bash(cat .env.local)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push --force-with-lease*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -f*)",
+      "Bash(git branch -D*)"
+    ],
     "additionalDirectories": [
       "/private/tmp/claude-501/-Users-ehtsm-jarvis-os/587828c9-1978-479e-8bd4-705fcbe4ca10/scratchpad",
       "/Users/ehtsm/jarvis-os/tests/security"

@@ -21,7 +21,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License](https://img.shields.io/badge/license-Proprietary-ef4444?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/EHTSM/jarvis-os/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EHTSM/jarvis-os/actions)
-[![Regression](https://img.shields.io/badge/regression-144%2F144-22c55e?style=flat-square)](tests/)
+[![Regression](https://img.shields.io/badge/regression-full%20suite%20on%20every%20push-22c55e?style=flat-square)](tests/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20VPS-888?style=flat-square)](https://ooplix.com)
 [![Security](https://img.shields.io/badge/security-responsible%20disclosure-7c6fff?style=flat-square)](SECURITY.md)
 
@@ -192,7 +192,8 @@ See [docs/guides/DEPLOYMENT.md](docs/guides/DEPLOYMENT.md) for the complete guid
 ## Tests
 
 ```bash
-npm run test:runtime     # 144 regression checks (50 suites)
+npm run test:runtime     # backend regression suite (runs every tests/runtime/*.test.cjs file)
+npm run test:security    # security/tenant-isolation suite (runs every numbered tests/security/*.cjs file)
 npm run test:api         # API smoke tests
 bash deploy/validate-production.sh   # 30-point production validation
 ```
