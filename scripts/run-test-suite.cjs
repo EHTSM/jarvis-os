@@ -47,9 +47,9 @@ const MISSION_MUTATING = {
         "tests/runtime/mission-orchestrator-nodetypes.test.cjs",
     ],
     security: [
-        // MISSION-42-NEGATIVE-TEST: deliberately emptied to prove the
-        // collision returns without serialization. Restored immediately
-        // after the negative-test evidence is captured.
+        "tests/security/13-mission-memory-race-verification.cjs",
+        "tests/security/18-mission-runtime-lifecycle.cjs",
+        "tests/security/52-runtime-stability-fixes.cjs",
     ],
 };
 
