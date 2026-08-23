@@ -207,8 +207,17 @@ function _missionExists(objectivePrefix) {
     try {
         const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
         const target = _normalizeObjective(objectivePrefix?.slice(0, 50));
+        // Mission 40 (2026-08-23): "pending" is not a valid missionMemory.cjs
+        // status (VALID_STATUSES is planned/active/running/paused/completed/
+        // failed/cancelled — see missionMemory.cjs) and every mission this
+        // function's own caller creates starts as "planned", never
+        // "pending". This dedup check never matched a freshly-created
+        // mission, so it was structurally unable to catch duplicates —
+        // proven live: 1,535 of 2,669 real planned missions are exact-
+        // objective duplicates (Mission 39 audit). Corrected to the real
+        // status string; no other behavior of this function changed.
         return (all.missions || []).some(m =>
-            (m.status === "active" || m.status === "pending") &&
+            (m.status === "active" || m.status === "planned") &&
             _normalizeObjective(m.objective?.slice(0, 50)) === target
         );
     } catch { return false; }
