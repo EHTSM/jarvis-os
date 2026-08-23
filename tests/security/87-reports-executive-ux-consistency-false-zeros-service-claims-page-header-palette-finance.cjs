@@ -333,8 +333,15 @@ async function main() {
         if (e.isDirectory()) { if (e.name !== "node_modules") walk(p); continue; }
         if (!/\.(jsx?|cjs|mjs)$/.test(e.name)) continue;
         if (p.endsWith("components/ExecutiveReports.jsx")) continue;
+        // Mission 38 (2026-08-23): frontend/src/staticAudits/sampleData.test.js
+        // legitimately names "ExecutiveReports.jsx" as a plain string literal
+        // inside its own KNOWN_ORPHAN_COMPONENTS allowlist — a different
+        // audit test's own data structure, not a real import/JSX wiring.
+        // Narrowed to real usage patterns so that string literal in an
+        // unrelated file's own allowlist doesn't false-positive as a wire-up.
+        if (p.endsWith("staticAudits/sampleData.test.js")) continue;
         let s = ""; try { s = fs.readFileSync(p, "utf8"); } catch { continue; }
-        if (/ExecutiveReports/.test(s)) execReportsRefs.push(p);
+        if (/import\s+ExecutiveReports\b|<ExecutiveReports\b/.test(s)) execReportsRefs.push(p);
       }
     };
     walk(path.join(__dirname, "../..", dir));

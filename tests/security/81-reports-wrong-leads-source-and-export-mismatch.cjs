@@ -106,8 +106,15 @@ async function main() {
     "the old getLeads import (userId-scoped /crm/leads via api.js/crmApi.js) has been removed", "old getLeads import from ../api still present — the wrong-store bug may still be active");
   assert(/getLeadsV5\(\{\s*limit:\s*1000\s*\}\)/.test(rvSrc),
     "refresh() calls getLeadsV5({ limit: 1000 })", "getLeadsV5 call not found in refresh()");
-  assert(/setLeads\(Array\.isArray\(ledsResp\?\.leads\)\s*\?\s*ledsResp\.leads\s*:\s*\[\]\)/.test(rvSrc),
-    "leads state is set from ledsResp.leads (the real /business/leads response shape: {success, leads, total})", "setLeads() does not read the real .leads field from getLeadsV5()'s response");
+  // Mission 38 (2026-08-23): a later, separate Phase A.11.6 finding (see
+  // ReportsV2.jsx's own inline comment above this line) found the original
+  // `Array.isArray(ledsResp?.leads) ? ledsResp.leads : []` check couldn't
+  // distinguish a genuinely empty account from a totally failed fetch
+  // (businessApi.js's catch returns `{success:false, leads:[]}`, satisfying
+  // Array.isArray either way) — fixed to key off the real `success` envelope
+  // field instead and set leads to null (unknown) rather than [] on failure.
+  assert(/const leadsFailed = ledsResp\?\.success === false \|\| !Array\.isArray\(ledsResp\?\.leads\);\s*\n\s*setLeads\(leadsFailed \? null : ledsResp\.leads\);/.test(rvSrc),
+    "leads state is set from ledsResp.leads, with a real success-envelope failure check (not just Array.isArray)", "setLeads() does not correctly discriminate a failed fetch from a genuinely empty leads array");
 
   section("Static — STATUS_META and leadStats recognize the real /business/leads status vocabulary");
   assert(/converted:\s*\{\s*label:\s*"Converted"/.test(rvSrc),
@@ -122,17 +129,33 @@ async function main() {
   section("Static — Export button now exports the real on-screen report data instead of an unrelated runtime-analytics endpoint");
   assert(!/fetch\("\/runtime\/export\/analytics"/.test(rvSrc),
     "handleExport() no longer fetches the unrelated /runtime/export/analytics endpoint", "handleExport() still fetches /runtime/export/analytics — the wrong-export-content bug is still present");
-  assert(/summary:\s*\{/.test(rvSrc) && /totalLeads:\s*items\.length/.test(rvSrc),
+  // Mission 38 (2026-08-23): the same later, separate `known`-flag mission
+  // (Phase A.11.6) that changed the on-screen KPI cards (see file 57) also
+  // guarded the export payload the same way — totalLeads/pipelineBreakdown
+  // are `known ? realValue : null` rather than always the bare real value,
+  // so a genuinely failed load exports honest nulls instead of a fabricated
+  // empty report. The underlying real values (items.length, byStatus) are
+  // unchanged; only the honesty guard around them is new.
+  assert(/summary:\s*\{/.test(rvSrc) && /totalLeads:\s*known \? items\.length : null/.test(rvSrc),
     "the exported payload includes a summary.totalLeads derived from the real leads array", "export payload does not include summary.totalLeads");
-  assert(/pipelineBreakdown:\s*byStatus/.test(rvSrc),
+  assert(/pipelineBreakdown:\s*known \? byStatus : null/.test(rvSrc),
     "the exported payload includes the real pipelineBreakdown (by status)", "export payload does not include pipelineBreakdown");
-  assert(/\bleads,\n/.test(rvSrc) || /^\s*leads,\s*$/m.test(rvSrc),
+  // Mission 38 (2026-08-23): the export payload's `leads` field is an
+  // explicit `leads: known ? leads : null` (part of the same Phase A.11.6
+  // honesty-guard fix as summary.totalLeads/pipelineBreakdown above), not
+  // the bare ES6 shorthand `leads,` this assertion originally expected.
+  assert(/leads:\s*known \? leads : null/.test(rvSrc),
     "the exported payload includes the real leads array itself", "export payload does not include the full leads array");
 
   section("Precondition — real frontend (:3000) and backend (:5050) dev servers reachable");
+  // Mission 38 (2026-08-23): a bare fetch() with no timeout hangs
+  // indefinitely if the target accepts the TCP connection but never
+  // responds (a genuinely listening-but-overloaded server, not a down one)
+  // — reproduced live. AbortSignal.timeout() turns that hang into the same
+  // honest "not reachable" skip path a connection-refused already takes.
   const serversUp = await Promise.all([
-    fetch("http://localhost:3000").then(r => r.ok).catch(() => false),
-    fetch("http://localhost:5050/health").then(r => r.ok).catch(() => false),
+    fetch("http://localhost:3000", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
+    fetch("http://localhost:5050/health", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
   ]).then(([fe, be]) => fe && be);
   if (!serversUp) {
     console.log("  ⚠  Frontend/backend dev servers not reachable on :3000/:5050.");

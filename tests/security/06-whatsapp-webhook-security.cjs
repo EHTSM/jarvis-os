@@ -98,7 +98,14 @@ function webhookPayload(id = "msg-123", text = "Hello") {
 
 async function waitForServer() {
     const start = Date.now();
-    while (Date.now() - start < 10000) {
+    // Mission 38 (2026-08-23): directly measured — a fresh backend/server.js
+    // boot now takes ~30-60s to become HTTP-responsive (heavy synchronous
+    // autonomous-agent bootstrap: RCA analysis, mission creation, learning-
+    // engine full analysis, multiple 5s+ git subprocess calls — all before
+    // the listener stabilizes), driven up further by data/missions.json's
+    // current real size. 10s was correct when this test was written; raised
+    // with real margin above the measured ~61s worst case observed live.
+    while (Date.now() - start < 75000) {
         try {
             const res = await _req("GET", "/test", null, {}, 2000);
             if (res.status === 200) return;

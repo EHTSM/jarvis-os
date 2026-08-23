@@ -74,12 +74,30 @@ function extractCookie(setCookieHeader) {
   return first.split(";")[0];
 }
 
-async function registerAndLogin(email, password) {
-  await fetch(`${BASE}/accounts/register`, {
+// Mission 38 (2026-08-23): sibling file 43-growth-os-tenant-isolation.cjs
+// already established the correct fix for this exact defect — the original
+// version here swallowed the register response entirely (.catch(() => {}),
+// never checked status), so a real 429 from the registration rate limiter
+// (5/15min per IP) was silently discarded and the subsequent login just
+// failed with no diagnosis. Ported the proven retry-with-real-backoff
+// pattern verbatim rather than inventing a new one.
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function registerAndLogin(email, password, attempt = 1) {
+  const regRes = await fetch(`${BASE}/accounts/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: "A1 Regression", email, password }),
-  }).catch(() => {});
+  }).catch(() => null);
+
+  if (regRes && regRes.status === 429 && attempt <= 5) {
+    const body = await regRes.json().catch(() => ({}));
+    const waitMs = Math.min((body.retryAfterSeconds || 30) * 1000, 30000);
+    console.log(`  … registration rate-limited, waiting ${Math.round(waitMs / 1000)}s (attempt ${attempt}/5)`);
+    await sleep(waitMs);
+    return registerAndLogin(email, password, attempt + 1);
+  }
+
   const loginRes = await fetch(`${BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -129,20 +129,27 @@ async function main() {
     "the rendered toast applies the .gos-toast--error modifier only when the message is an error",
     "GrowthOS's Toast element does not conditionally apply .gos-toast--error");
 
-  assert(/\.gos-toast--error\s*\{[^}]*#ef4444/.test(gosCss),
-    "GrowthOS.css defines .gos-toast--error using the file's OWN existing error red (#ef4444)",
-    "no .gos-toast--error rule with #ef4444 found in GrowthOS.css");
+  // Mission 38 (2026-08-23): a later, separate design-system migration
+  // (commits e019f884/ceca0834/87e88644/88bba506, "migrate 3,158 inline
+  // colour literals to design tokens", Phase B19.2.2) tokenized every hex
+  // literal in GrowthOS.css — .gos-toast--error/.gos-toast now use
+  // var(--danger)/var(--success) instead of the literal #ef4444/#22c55e
+  // this test originally checked for. The rendered color and behavior this
+  // fix targeted are unchanged; only the source-level literal is gone.
+  assert(/\.gos-toast--error\s*\{[^}]*var\(--danger\)/.test(gosCss),
+    "GrowthOS.css defines .gos-toast--error using the file's error-red token (var(--danger))",
+    "no .gos-toast--error rule with var(--danger) found in GrowthOS.css");
 
-  assert(/\.gos-toast\s*\{[^}]*color:\s*#22c55e/.test(gosCss),
+  assert(/\.gos-toast\s*\{[^}]*color:\s*var\(--success\)/.test(gosCss),
     "the base .gos-toast success green is deliberately preserved (this is a recovery, not a restyle)",
     "the base .gos-toast success colour was changed — success toasts should be untouched");
 
-  // Prove the red used is genuinely this file's pre-existing convention and
-  // not a value invented by this fix.
-  const redUsers = (gosCss.match(/#ef4444/g) || []).length;
+  // Prove the danger token is genuinely this file's pre-existing convention
+  // and not a value invented by this fix.
+  const redUsers = (gosCss.match(/var\(--danger\)/g) || []).length;
   assert(redUsers >= 4,
-    `#ef4444 was already GrowthOS.css's established error colour before this fix (${redUsers} uses: .gos-chip-red, .gos-btn-sm--danger, .gos-row-fail, …)`,
-    `#ef4444 appears only ${redUsers} time(s) in GrowthOS.css — cannot claim it is a pre-existing convention`);
+    `var(--danger) was already GrowthOS.css's established error colour before this fix (${redUsers} uses: .gos-chip-red, .gos-btn-sm--danger, .gos-row-fail, …)`,
+    `var(--danger) appears only ${redUsers} time(s) in GrowthOS.css — cannot claim it is a pre-existing convention`);
 
   // Cross-check the sibling surface that already got this right, so the
   // convention is provably app-wide and not invented here.

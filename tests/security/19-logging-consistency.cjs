@@ -47,6 +47,7 @@ const ALLOWLIST = new Set([
   "backend/services/credentialImportTool.cjs",    // security-invariant doc comment
   "backend/services/engineeringSmellDetector.cjs",// detects "console.log"/"console.warn" as a code-smell string pattern
   "backend/services/dop2Deployment.cjs",          // shell command string for the operator to run manually
+  "backend/services/companyWorkspaceBuilder.cjs", // template string for a generated company's scaffolded server.js
 ]);
 
 function listFiles(dir) {

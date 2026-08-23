@@ -45,8 +45,20 @@ async function main() {
 
   section("GET /orgs/:orgId is gated by requireOrgMember — the real enforcement point");
   {
-    assert.ok(/router\.get\("\/orgs\/:orgId",\s*requireOrgMember/.test(routeSrc),
-      "GET /orgs/:orgId must be gated by requireOrgMember, not open to any authenticated account");
+    // Mission 38 (2026-08-23): a later, separate security mission (OOPLIX V1
+    // MASTER AUDIT, 2026-08-16, "Org Deletion Lifecycle") replaced the
+    // general requireOrgMember on this one route with a narrower, purpose-
+    // built _requireOrgMemberIncludingArchived — because requireOrgMember
+    // itself was changed in the same pass to 404 archived orgs (closing a
+    // real archive-bypass IDOR), while this specific route legitimately
+    // needs to show org metadata to a real member even while archived (for
+    // the restore/purge UI flow). Verified _requireOrgMemberIncludingArchived
+    // (backend/routes/organizations.js) still performs real membership
+    // enforcement (checks org.members / enterprise-admin / explicit grants,
+    // 403 otherwise) — not a security downgrade, a differently-named
+    // equivalent for one legitimate exception.
+    assert.ok(/router\.get\("\/orgs\/:orgId",\s*_requireOrgMemberIncludingArchived/.test(routeSrc),
+      "GET /orgs/:orgId must be gated by real org-membership enforcement, not open to any authenticated account");
     ok("GET /orgs/:orgId requires real org membership");
   }
 

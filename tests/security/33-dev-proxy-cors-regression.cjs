@@ -60,9 +60,12 @@ function startServer() {
     delete env.NODE_ENV; // matches the real `npm start`/`npm run dev` invocation — no explicit NODE_ENV on the command line
     const proc = spawn("node", ["backend/server.js"], { env, stdio: ["ignore", "pipe", "pipe"] });
     let settled = false;
+    // Mission 38 (2026-08-23): same real cold-start latency measured for
+    // file 06 (~30-60s, driven by data/missions.json's current size plus
+    // the synchronous autonomous-agent bootstrap) — raised with margin.
     const timer = setTimeout(() => {
-      if (!settled) { settled = true; reject(new Error("server did not become healthy within 20s")); }
-    }, 20000);
+      if (!settled) { settled = true; reject(new Error("server did not become healthy within 75s")); }
+    }, 75000);
 
     const tryHealth = async () => {
       for (let i = 0; i < 40; i++) {

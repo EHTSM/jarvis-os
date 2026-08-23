@@ -213,7 +213,13 @@ async function main() {
 
   const bizLeads = JSON.parse(fsMod.readFileSync("data/biz-leads.json", "utf8"));
   const leadItems = bizLeads.items || bizLeads;
-  const filteredLeads = leadItems.filter(l => !(l.name || "").startsWith("Lead for org"));
+  // Mission 38 (2026-08-23): data/biz-leads.json is shared, mutable state
+  // across the whole security suite — a different test's own malformed-
+  // input fixture (name: {}, an object, not a string) was found left behind
+  // in real data, crashing this cleanup's .startsWith() call. Guard against
+  // any non-string name defensively rather than assuming every lead in a
+  // shared store matches this file's own expected shape.
+  const filteredLeads = leadItems.filter(l => typeof l.name !== "string" || !l.name.startsWith("Lead for org"));
   if (bizLeads.items) bizLeads.items = filteredLeads; else { bizLeads.length = 0; bizLeads.push(...filteredLeads); }
   fsMod.writeFileSync("data/biz-leads.json", JSON.stringify(bizLeads, null, 2));
 

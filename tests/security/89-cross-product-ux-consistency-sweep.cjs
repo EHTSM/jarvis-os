@@ -264,19 +264,29 @@ async function main() {
     ok("the backend's own feature_gated message and required plan reach the user");
   });
 
-  section("F2 static — AI Costs' missing hostedProviders is defined");
+  section("F2 static — AI Costs' provider list is real and honestly empty-stated");
   group("F2 static", () => {
+    // Mission 38 (2026-08-23): AICostCenter.jsx was rewritten after this test
+    // was written — the original local/hosted provider split
+    // (localProviders/hostedProviders) no longer exists anywhere in the
+    // component; it was replaced with a single, real `providers` array
+    // derived from aiStatus?.providers (real API data, not a stub) with its
+    // own honest "No provider health data available." empty state. The
+    // underlying finding this section targeted (a missing/fake provider
+    // list) is verifiably still fixed under the new, simpler structure.
     const accCode = verifyStrip(stripLineComments(acc),
-      ["const localProviders", "hostedProviders.map"], "AICostCenter.jsx");
+      ["const providers", "providers.map", "No provider health data available."],
+      "AICostCenter.jsx");
 
-    assert.ok(/const hostedProviders\s*=\s*providers\.filter\(p=>p\.type==="hosted"\)/.test(accCode),
-      "hostedProviders must be defined as the precise complement of localProviders");
-    ok("hostedProviders is defined with the counterpart filter of localProviders");
+    assert.ok(/const providers\s*=\s*Array\.isArray\(aiStatus\?\.providers\)\s*\?\s*aiStatus\.providers\s*:\s*\[\]/.test(accCode),
+      "providers is derived from the real aiStatus API response, not a hardcoded/stubbed list");
+    ok("providers is a real derivation from aiStatus?.providers, not a stub");
 
-    // NEGATIVE: it must be a real derivation, not a silenced empty array
-    assert.ok(!/const hostedProviders\s*=\s*\[\]/.test(accCode),
-      "hostedProviders must not be stubbed to [] — that would hide the hosted column");
-    ok("negative: hostedProviders is a real derivation, not an empty-array stub");
+    // NEGATIVE: an empty real result must render an honest empty state, not
+    // fabricated placeholder provider rows.
+    assert.ok(/providers\.length === 0[\s\S]{0,80}No provider health data available\./.test(accCode),
+      "an empty real providers list must render an honest empty state, not fabricated rows");
+    ok("negative: a genuinely empty providers list renders an honest empty banner, not fake data");
   });
 
   section("F3 static — destructive actions are gated by the established ConfirmDialog");

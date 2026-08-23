@@ -155,13 +155,26 @@ async function main() {
     "the Memory Index list key/expand-state now uses e.id || e.nodeId (real id field)", "rowId fix not found — list key still relies on the nonexistent e.id alone");
   assert(/const hits = Array\.isArray\(r\) \? r : \(r\?\.nodes \|\| r\?\.results \|\| r\?\.entries \|\| \[\]\);/.test(memSrc),
     "TabSearch's doSearch() reads r?.nodes first (the real /p18/memory/search response field)", "doSearch() does not read the real .nodes field — search results will still be silently discarded");
-  assert(/_entryTitle\(e\)\.toLowerCase\(\)\.includes\(lq\)/.test(memSrc),
-    "_localSearch() fallback also uses _entryTitle/_entrySnippet (consistent with the main fix)", "_localSearch() still uses the old broken field names");
+  // Mission 38 (2026-08-23): a later, separate mission (OOPLIX V1 MASTER
+  // AUDIT, 2026-08-16) deliberately DELETED _localSearch() entirely — it was
+  // itself the bug: a real search-API failure silently fell back to
+  // searching fabricated SEED_ENTRIES with no error shown, "the exact 'fake
+  // success' class C.2's C2-01/C2-02 already found and fixed elsewhere" (see
+  // doSearch()'s own inline comment). doSearch() now surfaces a real failure
+  // honestly via setSearchError() instead of falling back to any local data.
+  assert(!/function _localSearch/.test(memSrc),
+    "_localSearch() fake-data fallback has been removed entirely (not fixed, deleted)", "_localSearch() fallback still exists — the fake-success-on-search-failure bug may be back");
+  assert(/setSearchError\(e\.message \|\| "Search failed/.test(memSrc),
+    "a real search failure sets an honest searchError instead of falling back to any local/fabricated data", "doSearch()'s catch block does not honestly surface a real search failure");
 
   section("Precondition — real frontend (:3000) and backend (:5050) dev servers reachable");
+  // Mission 38 (2026-08-23): a bare fetch() with no timeout hangs
+  // indefinitely against a listening-but-overloaded server (reproduced
+  // live) — AbortSignal.timeout() turns that into the same honest skip a
+  // connection-refused already takes.
   const serversUp = await Promise.all([
-    fetch("http://localhost:3000").then(r => r.ok).catch(() => false),
-    fetch("http://localhost:5050/health").then(r => r.ok).catch(() => false),
+    fetch("http://localhost:3000", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
+    fetch("http://localhost:5050/health", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
   ]).then(([fe, be]) => fe && be);
   if (!serversUp) {
     console.log("  ⚠  Frontend/backend dev servers not reachable on :3000/:5050.");

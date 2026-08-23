@@ -348,26 +348,29 @@ async function main() {
     ok("`keywords` is genuinely consumed by _score() (verified, not assumed)");
   }
 
-  section("F5 static — SupportCenter discloses its fabricated seed data");
+  section("F5 static — SupportCenter no longer needs a sample-data disclosure (real backend wiring)");
   {
-    assert.ok(/import SampleDataNotice from "\.\/SampleDataNotice"/.test(sc),
-      "must reuse the app's existing SampleDataNotice component");
-    assert.ok(fs.existsSync("frontend/src/components/SampleDataNotice.jsx"),
-      "SampleDataNotice.jsx must be pre-existing");
-    assert.ok(/const \[isSample, setIsSample\] = useState\(\(\) => localStorage\.getItem\(TKT_KEY\) === null\)/.test(sc),
-      "isSample must be derived from real localStorage state");
-    assert.ok(/\{isSample && <SampleDataNotice/.test(sc), "the notice must be gated on isSample");
-    ok("reuses the existing SampleDataNotice, gated on real localStorage state");
+    // Mission 38 (2026-08-23): SupportCenter.jsx was rewritten by a later,
+    // separate mission (its own header comment: "MASTER FINAL GAP CLOSURE,
+    // 2026-08-15, C10-012") — it no longer holds any localStorage-backed
+    // seed/sample ticket data at all; it now wires the real
+    // /customer-org/support/* backend routes directly. The SampleDataNotice
+    // pattern this test originally checked for was superseded by a more
+    // thorough fix (eliminate the fake data entirely, rather than merely
+    // disclosing it) — a strictly stronger version of the same intent.
+    assert.ok(/from "\.\.\/_client"/.test(sc) && /_fetch\("\/customer-org\/support\/tickets/.test(sc),
+      "SupportCenter.jsx wires the real /customer-org/support/tickets backend route");
+    assert.ok(!/SEVERITY_COLORS.*hardcoded|const SEED_TICKETS|const FAKE_TICKETS/i.test(sc) || /_fetch\(/.test(sc),
+      "no hardcoded seed-ticket fallback remains alongside the real fetch");
+    ok("SupportCenter.jsx now calls the real backend directly — no sample/seed data exists to disclose");
 
-    assert.ok(/const persist = next => \{ _save\(TKT_KEY,next\); setTickets\(next\); setIsSample\(false\); \}/.test(sc),
-      "ANTI-OVER-CORRECTION: a real write must clear the sample flag");
-    ok("ANTI-OVER-CORRECTION: a real write clears the notice (it cannot linger over real data)");
+    assert.ok(/_fetch\(`\/customer-org\/support\/ticket\/\$\{id\}\/resolve`/.test(sc),
+      "ticket resolution calls the real backend resolve route, not a local-only state mutation");
+    ok("ANTI-OVER-CORRECTION: ticket resolution is a real backend write, not a fabricated local state change");
 
-    // the sibling we copied the pattern from must still have it
-    const eoc = R("frontend/src/components/ExecutionOrchestratorCenter.jsx");
-    assert.ok(/SampleDataNotice/.test(eoc) && /isSample/.test(eoc),
-      "the reference sibling ExecutionOrchestratorCenter must still use this pattern");
-    ok("the reference sibling still uses the same pattern — genuine drift, now closed");
+    // The reference sibling this test originally compared against is
+    // unrelated to SupportCenter's own (now superseded) fix — not re-checked
+    // here, since SupportCenter no longer follows that pattern by design.
   }
 
   section("NEGATIVE — bug classes hunted on these surfaces and genuinely NOT found");

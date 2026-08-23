@@ -24,6 +24,23 @@
  * recoverStaleMissions(), wired into backend/server.js's startup sequence
  * alongside the existing tq.recoverStale() call.
  *
+ * Mission 38 (2026-08-23) — KNOWN ENVIRONMENT PRECONDITION, not a code
+ * defect: this test calls missionMemory.cjs's synchronous createMission/
+ * getMission/updateMission directly, in-process — which is provably race-
+ * free on its own (verified: no `await` between any read and write in
+ * these functions or their callers; see docs/audits/
+ * PRODUCTION-BLOCKER-ELIMINATION.md's Module 6). If a SEPARATE OS process
+ * (e.g. the real backend/server.js dev server on :5050) is ALSO running
+ * and writing to the same data/missions.json concurrently, its own
+ * _saveMissions() write can genuinely lose an update made by this test's
+ * process between that other process's read and write — a real, pre-
+ * existing cross-process lost-update race missionMemory.cjs's own header
+ * comment already documents as out of scope for its .tmp-path atomicity
+ * fix. Run this test with no other JARVIS backend process holding
+ * data/missions.json for a deterministic result; an intermittent "Mission
+ * not found" here while another server is live is this race, not a
+ * regression.
+ *
  * Usage: node tests/security/18-mission-runtime-lifecycle.cjs
  */
 

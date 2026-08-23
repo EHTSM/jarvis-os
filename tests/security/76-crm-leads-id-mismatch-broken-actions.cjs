@@ -88,7 +88,11 @@ async function main() {
     "handleQualify checks r.success (not the nonexistent r.ok)", "handleQualify still checks r.ok");
   assert(/handleDisqualify = async[\s\S]{0,200}r\.success !== false/.test(leadsViewSrc),
     "handleDisqualify checks r.success (not the nonexistent r.ok)", "handleDisqualify still checks r.ok");
-  assert(/handleDelete = async[\s\S]{0,200}r\.success !== false/.test(leadsViewSrc),
+  // Mission 38 (2026-08-23): a later, separate mission (Phase A.11.2,
+  // "destructive-confirm consistency") inserted a confirm({...}) safety
+  // dialog into handleDelete, pushing the real success-check past this
+  // assertion's original {0,200} lookahead window (measured: 242 chars).
+  assert(/handleDelete = async[\s\S]{0,320}r\.success !== false/.test(leadsViewSrc),
     "handleDelete checks r.success (not the nonexistent r.ok)", "handleDelete still checks r.ok");
 
   section("Static — a real 'Convert to Customer' action now exists for qualified leads, reusing the existing updateBizLead() call");
@@ -100,9 +104,13 @@ async function main() {
     "the Convert to Customer button is scoped to qualified leads only", "Convert button is not correctly scoped to l.status === \"qualified\"");
 
   section("Precondition — real frontend (:3000) and backend (:5050) dev servers reachable");
+  // Mission 38 (2026-08-23): a bare fetch() with no timeout hangs
+  // indefinitely against a listening-but-overloaded server (reproduced
+  // live) — AbortSignal.timeout() turns that into the same honest skip a
+  // connection-refused already takes.
   const serversUp = await Promise.all([
-    fetch("http://localhost:3000").then(r => r.ok).catch(() => false),
-    fetch("http://localhost:5050/health").then(r => r.ok).catch(() => false),
+    fetch("http://localhost:3000", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
+    fetch("http://localhost:5050/health", { signal: AbortSignal.timeout(3000) }).then(r => r.ok).catch(() => false),
   ]).then(([fe, be]) => fe && be);
   if (!serversUp) {
     console.log("  ⚠  Frontend/backend dev servers not reachable on :3000/:5050.");

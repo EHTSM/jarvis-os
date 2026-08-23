@@ -74,12 +74,27 @@ function extractCookie(setCookieHeader) {
   return first.split(";")[0];
 }
 
-async function registerAndLogin(email, password) {
-  await fetch(`${BASE}/accounts/register`, {
+// Mission 38 (2026-08-23): same fix as sibling files 36/43 — the original
+// version here swallowed the register response entirely, silently
+// discarding a real 429 from the registration rate limiter. Ported the
+// proven retry-with-real-backoff pattern from 43-growth-os-tenant-isolation.cjs.
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function registerAndLogin(email, password, attempt = 1) {
+  const regRes = await fetch(`${BASE}/accounts/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: "Dashboard Scoping Test", email, password }),
-  }).catch(() => {});
+  }).catch(() => null);
+
+  if (regRes && regRes.status === 429 && attempt <= 5) {
+    const body = await regRes.json().catch(() => ({}));
+    const waitMs = Math.min((body.retryAfterSeconds || 30) * 1000, 30000);
+    console.log(`  … registration rate-limited, waiting ${Math.round(waitMs / 1000)}s (attempt ${attempt}/5)`);
+    await sleep(waitMs);
+    return registerAndLogin(email, password, attempt + 1);
+  }
+
   const loginRes = await fetch(`${BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

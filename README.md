@@ -17,7 +17,7 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-1.0.0--rc6-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0--rc1-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License](https://img.shields.io/badge/license-Proprietary-ef4444?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/EHTSM/jarvis-os/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EHTSM/jarvis-os/actions)

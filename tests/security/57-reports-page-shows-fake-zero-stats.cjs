@@ -79,8 +79,14 @@ async function main() {
   {
     const totalLeadsMatch = reportsSrc.match(/label="Total Leads"[\s\S]{0,120}?value=\{([^}]+)\}/);
     assert.ok(totalLeadsMatch, "could not find the Total Leads KpiCard");
-    assert.strictEqual(totalLeadsMatch[1].trim(), "leadStats.total",
-      `Total Leads value must be leadStats.total, found "${totalLeadsMatch[1].trim()}"`);
+    // Mission 38 (2026-08-23): a later, separate mission (Phase A.11.6,
+    // "recover false zeros under failed load") added a `known` flag to
+    // leadStats distinguishing "we genuinely don't know yet" from "we know
+    // it's zero" — a real, intentional honesty fix for a different bug than
+    // this test targets. leadStats.total is still the real underlying
+    // source; the guard just governs whether it's safe to display yet.
+    assert.strictEqual(totalLeadsMatch[1].trim(), 'leadStats.known ? leadStats.total : "—"',
+      `Total Leads value must be leadStats.known ? leadStats.total : "—", found "${totalLeadsMatch[1].trim()}"`);
 
     const closeRateSubMatch = reportsSrc.match(/label="Close Rate"[\s\S]{0,150}?sub=\{([^}]+)\}/);
     assert.ok(closeRateSubMatch, "could not find the Close Rate KpiCard's sub label");

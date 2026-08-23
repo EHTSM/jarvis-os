@@ -4,10 +4,10 @@
 
 | Version | Supported |
 |---|---|
-| 1.0.0-rc6 (current, per package.json) | ✅ Active security support |
+| 1.0.0-rc1 (current, per package.json) | ✅ Active security support |
 | Earlier pre-release tags | ❌ End of life |
 
-This table previously claimed a "3.x" current version that does not match `package.json` (`1.0.0-rc6`) or the latest GitHub release (`v1.0.0-rc8`, pre-release) — corrected 2026-08-05 as part of the Zero-Trust Competitor Remediation pass. We release security patches for the current version only. If you are running an older tag, upgrade before reporting.
+This table previously claimed a "3.x" current version that does not match `package.json`. Corrected 2026-08-23 (Mission 38) to match `package.json`'s real version string exactly. We release security patches for the current version only. If you are running an older tag, upgrade before reporting.
 
 ---
 

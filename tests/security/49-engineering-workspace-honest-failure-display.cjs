@@ -92,10 +92,22 @@ async function main() {
 
   section("API — POST /runtime/pipeline/run returns the real, honest failure shape (no file path in prompt)");
   const email = `honesty-test-${Date.now()}@ooplix-test.local`;
-  await fetch("http://localhost:5050/accounts/register", {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: "Honesty Test", email, password: "HonestyTest12345!" }),
-  }).catch(() => {});
+  // Mission 38 (2026-08-23): same fix as sibling files 36/39/43 — the
+  // original register call here swallowed its response entirely, silently
+  // discarding a real 429 from the registration rate limiter. Ported the
+  // proven retry-with-real-backoff pattern from 43-growth-os-tenant-isolation.cjs.
+  const sleep49 = ms => new Promise(r => setTimeout(r, ms));
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    const regRes = await fetch("http://localhost:5050/accounts/register", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "Honesty Test", email, password: "HonestyTest12345!" }),
+    }).catch(() => null);
+    if (!regRes || regRes.status !== 429) break;
+    const body = await regRes.json().catch(() => ({}));
+    const waitMs = Math.min((body.retryAfterSeconds || 30) * 1000, 30000);
+    console.log(`  … registration rate-limited, waiting ${Math.round(waitMs / 1000)}s (attempt ${attempt}/5)`);
+    await sleep49(waitMs);
+  }
   const loginRes = await fetch("http://localhost:5050/auth/login", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password: "HonestyTest12345!" }),

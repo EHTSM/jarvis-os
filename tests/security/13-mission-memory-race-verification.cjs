@@ -37,6 +37,19 @@
  * docs/audits/PRODUCTION-BLOCKER-ELIMINATION.md Module 6 for the full
  * writeup. No code change was made to missionMemory.cjs.
  *
+ * Mission 38 (2026-08-23) — KNOWN ENVIRONMENT PRECONDITION, not a
+ * regression of the above: the "atomic under Node's single-threaded event
+ * loop" reasoning above only covers concurrency WITHIN one process. It was
+ * never a claim that a SEPARATE OS process (e.g. the real backend/server.js
+ * dev server, if also running concurrently on :5050 and independently
+ * writing its own missions to the same data/missions.json) can't interleave
+ * with this test's own reads/writes at the OS file level — that cross-
+ * process case is a real, different race, and this test's own HTTP-request
+ * scenario runs its "concurrent" requests all through ONE server process,
+ * so it never actually exercised that case either. Run this test with no
+ * other JARVIS backend process holding data/missions.json for a
+ * deterministic result.
+ *
  * Usage: node tests/security/13-mission-memory-race-verification.cjs
  */
 

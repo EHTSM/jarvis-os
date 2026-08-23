@@ -53,7 +53,16 @@ async function main() {
   ];
   for (const rel of filesToCheck) {
     const content = fs.readFileSync(path.join(process.cwd(), rel), "utf8");
-    const stillHasOldName = oldNames.some(n => content.includes(`"${n}"`));
+    // Mission 38 (2026-08-23): scope the check to actual .emit() call sites,
+    // not any occurrence of the string anywhere in the file — a later,
+    // separate mission (OOPLIX V1 MASTER AUDIT, 2026-08-16) added a durable
+    // audit-log entry in workspaceMiddleware.cjs whose `action` field value
+    // is literally "workspace_access_denied", per this file's own header
+    // comment already documenting the audit-log naming convention as a
+    // separate, not-conflated system. A bare substring match couldn't tell
+    // that field value apart from a real stale emit() call and false-flagged
+    // it.
+    const stillHasOldName = oldNames.some(n => new RegExp(`\\.emit\\(\\s*"${n}"`).test(content));
     assert(!stillHasOldName, `${rel} contains no old snake_case event names`, "found a stale snake_case emit() call");
   }
 
