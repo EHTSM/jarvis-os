@@ -3309,8 +3309,28 @@ describe("154-master-audit-persistence-integrity-sweep — accountService.js (th
 
     fs2.rmSync(isoDir, { recursive: true, force: true });
 
-    const liveUnchanged = read("data/local-accounts.json");
-    assert.equal(JSON.stringify(JSON.parse(liveUnchanged)), JSON.stringify(realAccounts), "the REAL production account store must be completely untouched by this test");
+    // Mission 63: data/local-accounts.json is the real, live, SHARED
+    // account store — genuinely written by other test files' own real
+    // account creation throughout this whole ~24min CI run (live-
+    // reproduced: two consecutive ERA-1 runs both showed the live
+    // "actual" content as a strict superset of the earlier "before"
+    // snapshot — same accounts, same values, only new accounts appended
+    // — never a byte-level mismatch on shared keys). Byte-for-byte
+    // equality against a snapshot taken ~150-300ms earlier can never
+    // legitimately hold in that environment; it was never proving THIS
+    // test's own safety, only accidentally depending on the shared file
+    // being quiescent, which it is not. The isolated-copy assertions
+    // above already fully certify the real subject of this test (SIGKILL
+    // mid-write survival) in complete isolation from any such race.
+    // What this closing check can actually and correctly prove: this
+    // test itself never deleted or corrupted any pre-existing account —
+    // every key/value present in the earlier snapshot must still be
+    // present unchanged (a superset check), regardless of what else was
+    // concurrently appended by other tests.
+    const liveUnchanged = JSON.parse(read("data/local-accounts.json"));
+    for (const [id, acct] of Object.entries(realAccounts)) {
+      assert.deepEqual(liveUnchanged[id], acct, `pre-existing account ${id} must be present and unchanged in the real store — this test must never delete or corrupt existing data, even if other concurrent tests appended new accounts`);
+    }
   });
 
   it("structural: secretVault.cjs's _appendAudit and _appendHistory now both write via unique per-call tmp+rename, matching the file's own already-fixed VAULT_FILE _save() pattern", () => {
@@ -5905,5 +5925,40 @@ describe("175-master-audit-configuration-secrets-environment-exposure — pipRep
     assert.equal(res.status, 200, "an ordinary authenticated customer must be able to reach this route (confirming it is customer-reachable, not operator-gated)");
     assert.doesNotMatch(res.body, /SMTP:\s*\S/, "the response must never contain the old leaking 'SMTP: <value>' pattern");
     assert.doesNotMatch(res.body, /Domain:\s*\S/, "the response must never contain the old leaking 'Domain: <value>' pattern");
+  });
+});
+
+describe("176-mission-63-workspace-mesh-electron-dispatch-arg-shape — workspaceCoordinator.cjs's electron/cloud-workspace dispatch branch now calls computerController.run(command, opts) with the real (string, object) signature instead of a single mis-shaped object, and workspaceMesh.execute() no longer drops the real error message on a failed execution", () => {
+  const coordinatorSrc = read("backend/services/workspaceCoordinator.cjs");
+  const meshSrc         = read("backend/services/workspaceMesh.cjs");
+
+  it("structural: the electron/cloud default branch calls _cc().run(action, { workspaceType }) — action as the command STRING, not nested inside an object", () => {
+    assert.match(coordinatorSrc, /_cc\(\)\?\.run\?\.\(action, \{ workspaceType \}\)/,
+      "computerController.run(command, opts) takes command as its own string argument — passing { command: action, workspaceType } as one object broke every regex/.slice() call downstream in computerExecutionEngine.execute()");
+  });
+
+  it("structural: workspaceMesh.execute()'s return object includes an error field, populated from the real failure reason when ok is false", () => {
+    assert.match(meshSrc, /error:\s*result\.ok \? null : \(result\.error \|\| "execution failed"\)/,
+      "execute() must surface why it failed, not just that it failed");
+  });
+
+  it("live: mesh.execute() for a real browser-domain command genuinely succeeds end-to-end (electron dispatch path), proving the call-shape fix actually works, not just that it no longer throws", async () => {
+    const mesh = require(path.join(ROOT, "backend/services/workspaceMesh.cjs"));
+    const r = await mesh.execute("take screenshot of homepage and check for errors", { skipApproval: true });
+    assert.equal(r.domain, "frontend", "must still classify to the frontend domain");
+    assert.equal(r.ok, true, `expected genuine success after the arg-shape fix, got ok=false error=${r.error}`);
+    assert.equal(r.error, null, "a successful execution must report error:null, not just omit the field");
+  });
+
+  it("live: workspaceCoordinator's own real object-shape bug is reproducible in isolation against the exact call the coordinator used to make — the wrong shape throws 'command.slice is not a function', proving this was a genuine argument-mismatch defect, not a flaky/environmental failure", async () => {
+    const cc = require(path.join(ROOT, "backend/services/computerController.cjs"));
+    let threw = null;
+    try {
+      await cc.run({ command: "take screenshot of homepage", workspaceType: "electron" });
+    } catch (e) {
+      threw = e;
+    }
+    assert.ok(threw, "the old mis-shaped call must genuinely throw when called directly — confirms the root cause, not a coincidental correlation");
+    assert.match(threw.message, /slice is not a function/, "the specific TypeError must match what an object.slice() call produces");
   });
 });

@@ -189,6 +189,12 @@ async function execute(command, { missionId, founder, skipApproval = true, paral
     recoveries:   exec.recoveries,
     evidence:     result.evidence || [],
     meshHealth:   exec.meshHealth,
+    // Mission 63: this previously dropped result.error entirely on a
+    // failed execution — a caller had no way to learn WHY execute()
+    // failed (ok:false, status:"failed", error:undefined), only that it
+    // did. workspaceCoordinator.run()'s own real failures always carry an
+    // error string (see its catch block: {ok:false, error: err.message}).
+    error:        result.ok ? null : (result.error || "execution failed"),
   };
 }
 

@@ -94,10 +94,53 @@ jobs:
         # checkout time (see package.json's test:runtime script) — the corpus
         # grows over time, so this step's own pass/fail exit code is the gate,
         # not a hardcoded expected count that would silently go stale again.
+        #
+        # Mission 63: continue-on-error here is deliberately paired with the
+        # explicit gate check below — GitHub Actions skips every later step
+        # in a job by default once one fails, which was silently skipping
+        # "Run security suite" entirely whenever runtime had ANY failure
+        # (confirmed live: ERA-1 run 33090723011 showed
+        # "Run security suite: skipped"). This does NOT make runtime
+        # failures invisible or non-blocking — id captures this step's
+        # real outcome, and the "Enforce regression/security gate" step
+        # below fails the job (and therefore this run) if EITHER runtime
+        # or security failed. continue-on-error only defers the failure
+        # signal past this one step so security still gets to run; it
+        # never turns a real failure into a passing job.
+        id: run_regression
+        continue-on-error: true
         run: npm run test:runtime
 
       - name: Run security suite
+        # Runs unconditionally (even if regression above failed) so a
+        # runtime failure can never hide whether security independently
+        # passes or fails — both results are captured and enforced
+        # separately below.
+        id: run_security
+        if: always()
+        continue-on-error: true
         run: npm run test:security
+
+      - name: Enforce regression/security gate
+        # The actual pass/fail gate for this job, now that both suites
+        # above always run to completion. Any failure here fails this job,
+        # which fails the ci-pass job (needs: [regression, ...]) exactly as
+        # before — continue-on-error above only postponed the failure
+        # signal to here, it never suppressed it.
+        if: always()
+        run: |
+          if [[ "${{ steps.run_regression.outcome }}" != "success" ]]; then
+            echo "::error::Regression suite failed (outcome=${{ steps.run_regression.outcome }})"
+            FAILED=1
+          fi
+          if [[ "${{ steps.run_security.outcome }}" != "success" ]]; then
+            echo "::error::Security suite failed (outcome=${{ steps.run_security.outcome }})"
+            FAILED=1
+          fi
+          if [[ "${FAILED:-0}" == "1" ]]; then
+            exit 1
+          fi
+          echo "Regression and security suites both passed."
 
       - name: Stop server
         if: always()
@@ -220,6 +263,21 @@ jobs:
     name: Production Validation
     runs-on: ubuntu-latest
     needs: [regression, build-frontend]
+    # Mission 63: this job's own script (deploy/validate-production.sh) is
+    # already warn-only (`|| true` below — it never fails this job on its
+    # own), and does not read or depend on either regression's test results
+    # or the frontend build output (confirmed: no reference to `frontend`
+    # anywhere in that script) — it only needs the backend server itself
+    # to build and start, which this job's own steps do independently.
+    # The implicit default (only run if every `needs` job succeeded) was
+    # silently skipping this job's real certification evidence exactly
+    # when it is most useful — when regression fails and an operator most
+    # wants to know whether the server is still fundamentally startable
+    # and production-viable. Explicit `always()` here, not an unconditional
+    # dependency removal — build-frontend/regression are still scheduled
+    # before this job (`needs` still orders execution), only the pass/fail
+    # gating changed.
+    if: always()
 
     env:
       NODE_ENV: production
