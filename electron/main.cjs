@@ -388,6 +388,20 @@ function _makeWebPrefs(extra = {}) {
         contextIsolation:    true,
         enableRemoteModule:  false,
         webSecurity:         true,
+        // Mission 54 (2026-08-27): Electron's OS-level Chromium renderer
+        // sandbox was never explicitly enabled (Mission 53 finding).
+        // Verified compatible before enabling, not assumed: preload.cjs
+        // requires only "electron" itself (contextBridge/ipcRenderer) —
+        // zero Node built-ins, zero third-party modules — which is exactly
+        // the supported sandboxed-preload shape; the renderer bundle
+        // (frontend/build) has zero direct Node/require() usage anywhere
+        // (confirmed by a full-repo grep — the only fs/path requires in
+        // frontend/src are Jest-only staticAudits test files, never bundled
+        // into frontend/build); and every filesystem/shell/git/pty
+        // operation already lives in the main process behind ipcMain.handle,
+        // which this flag does not sandbox — only the renderer process is
+        // affected, so no IPC handler's own logic changes.
+        sandbox:             true,
         ...extra,
     };
 }
@@ -533,6 +547,12 @@ function createFloatingWindow() {
     windows.floating.once("ready-to-show", () => windows.floating.show());
     windows.floating.on("closed", () => { windows.floating = null; });
 
+    // Mission 54 (2026-08-27): this window loads the same real app content
+    // as windows.main via _loadApp, but never got the will-navigate/
+    // window.open guard main.cjs's own createMainWindow() applies —
+    // Electron's un-hardened defaults applied here instead (Mission 53).
+    _installNavigationGuard(windows.floating);
+
     return windows.floating;
 }
 
@@ -558,6 +578,11 @@ function createSettingsWindow() {
     windows.settings.on("closed", () => { windows.settings = null; });
     // Remove menu bar in settings window
     windows.settings.setMenuBarVisibility(false);
+
+    // Mission 54 (2026-08-27): same gap as windows.floating above — this
+    // window also loads real app content via _loadApp and needs the same
+    // navigation guard windows.main already has.
+    _installNavigationGuard(windows.settings);
 
     return windows.settings;
 }
@@ -1117,7 +1142,15 @@ ipcMain.handle("fs-show-save-dialog", async (_e, opts = {}) => {
 });
 
 ipcMain.handle("fs-open-path", async (_e, p) => {
-    await shell.openPath(path.resolve(p));
+    // Mission 54 (2026-08-27): every other fs IPC handler (fs-read-file,
+    // fs-write-file, folder-sync-start, folder-sync-read-file) gates on
+    // _isSafePath() — this one didn't, so it could open any absolute path
+    // on the machine via the OS file handler/shell. Same containment as
+    // its siblings, not a new rule.
+    if (typeof p !== "string") return { ok: false, error: "Invalid path" };
+    const safe = path.resolve(p);
+    if (!_isSafePath(safe)) return { ok: false, error: "Access denied" };
+    await shell.openPath(safe);
     return { ok: true };
 });
 
@@ -1605,15 +1638,40 @@ ipcMain.handle("fs-read-tree", async (_e, { dir, depth = 3 }) => {
     }
 });
 
+// Mission 54 (2026-08-27): both handlers previously built a shell command
+// STRING via template-literal interpolation of renderer-controlled
+// query/pattern, then ran it through exec() (which invokes a real shell).
+// Neither the double-quote wrapping nor preload.cjs's _str() length/type
+// check escapes shell metacharacters — live-verified command injection
+// (Mission 53 audit) via a query/pattern like `x" ; touch <file> ; echo "`.
+// Fixed the same way git-diff/git-checkout already do in this same file:
+// spawn() with a real argv array, no shell involved, so there is no syntax
+// for injected metacharacters to break out into. The `head -N` pipe stage
+// is replaced by the same in-process `.slice(0, maxResults)` truncation
+// these handlers already applied to the shell output anyway.
 ipcMain.handle("fs-search", async (_e, { dir, query, maxResults = 50 }) => {
     return new Promise((resolve) => {
         if (!query || query.length < 2) return resolve({ ok: true, results: [] });
-        const cmd = process.platform === "win32"
-            ? `dir /s /b "${path.resolve(dir)}" | findstr /i "${query}"`
-            : `find "${path.resolve(dir)}" -not \\( -name "node_modules" -prune \\) -not \\( -name ".git" -prune \\) -iname "*${query}*" 2>/dev/null | head -${maxResults}`;
-        exec(cmd, { timeout: 8_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
-            const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
-            resolve({ ok: true, results });
+        const safeDir = path.resolve(dir);
+        const args = process.platform === "win32"
+            ? ["/c", "dir", "/s", "/b", safeDir]
+            : ["-L", safeDir, "-not", "(", "-name", "node_modules", "-prune", ")", "-not", "(", "-name", ".git", "-prune", ")", "-iname", `*${query}*`];
+        const bin = process.platform === "win32" ? (process.env.COMSPEC || "cmd.exe") : "find";
+        const proc = spawn(bin, args);
+        let stdout = "";
+        proc.stdout.on("data", d => { stdout += d; });
+        proc.on("error", () => resolve({ ok: true, results: [] }));
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 8_000);
+        proc.on("close", () => {
+            clearTimeout(timer);
+            let lines = stdout.trim().split("\n").filter(Boolean);
+            // win32: findstr has no native glob-in-path equivalent to `dir /s /b | findstr`,
+            // so filter the recursive listing in-process instead of piping to a second process.
+            if (process.platform === "win32") {
+                const needle = query.toLowerCase();
+                lines = lines.filter(l => l.toLowerCase().includes(needle));
+            }
+            resolve({ ok: true, results: lines.slice(0, maxResults) });
         });
     });
 });
@@ -1621,8 +1679,20 @@ ipcMain.handle("fs-search", async (_e, { dir, query, maxResults = 50 }) => {
 ipcMain.handle("fs-grep", async (_e, { dir, pattern, maxResults = 100 }) => {
     return new Promise((resolve) => {
         if (!pattern) return resolve({ ok: true, results: [] });
-        const cmd = `grep -rn --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --include="*.json" --include="*.md" -l "${pattern}" "${path.resolve(dir)}" 2>/dev/null | head -${maxResults}`;
-        exec(cmd, { timeout: 10_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
+        const safeDir = path.resolve(dir);
+        const args = [
+            "-rn",
+            "--include=*.js", "--include=*.jsx", "--include=*.ts", "--include=*.tsx",
+            "--include=*.json", "--include=*.md",
+            "-l", "--", pattern, safeDir,
+        ];
+        const proc = spawn("grep", args);
+        let stdout = "";
+        proc.stdout.on("data", d => { stdout += d; });
+        proc.on("error", () => resolve({ ok: true, results: [] }));
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 10_000);
+        proc.on("close", () => {
+            clearTimeout(timer);
             const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
             resolve({ ok: true, results });
         });
@@ -1953,7 +2023,13 @@ function _installSecurityHeaders() {
 function _installNavigationGuard(win) {
     // Prevent navigation away from the app origin
     win.webContents.on("will-navigate", (e, url) => {
-        const allowed = url.startsWith("http://localhost") ||
+        // Mission 58 (2026-08-27): the only real http://localhost load target
+        // in this codebase is the CRA dev server on port 3000 (_loadApp's
+        // `win.loadURL(\`http://localhost:3000?...\`)` in dev mode) — this
+        // previously allowed http://localhost on ANY port, wider than
+        // anything the app itself ever navigates to. Scoped to the exact
+        // dev port; production always loads file://, which is unaffected.
+        const allowed = url.startsWith("http://localhost:3000") ||
                         url.startsWith("file://") ||
                         url.startsWith("data:");
         if (!allowed) {

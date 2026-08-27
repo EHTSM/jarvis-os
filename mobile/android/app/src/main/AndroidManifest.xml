@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Mission 57 (2026-08-27): reconciled against mobile/android-config/AndroidManifest.xml
+  (the reference template, itself found stale in places — see mobile/BUILD.md
+  and Mission 55's audit). Only genuinely required production hardening was
+  applied to this LIVE file, not a wholesale template copy:
+
+    - fullBackupContent / dataExtractionRules: new (Mission 55 finding) —
+      excludes the WebView-held session JWT (mobile/src/api.js) from
+      Android cloud backup / device transfer. See res/xml/backup_rules.xml
+      and res/xml/data_extraction_rules.xml for the excluded paths.
+    - usesCleartextTraffic="false": now explicit. Verified NOT a live
+      vulnerability before this change — targetSdkVersion=34 already
+      defaults to blocking cleartext regardless — this makes the existing
+      effective behavior explicit rather than implicit, and can never
+      loosen it (the attribute can only restrict, not permit, cleartext
+      beyond what targetSdkVersion already blocks).
+    - ACCESS_NETWORK_STATE (present in the template, absent here): NOT
+      added. @capacitor/network is a real package.json dependency but is
+      never imported anywhere in mobile/src/ (confirmed by full-tree grep)
+      — adding the permission without a real caller would not fix
+      anything and would only widen the permission surface for no
+      functional benefit. Documented per this mission's "otherwise
+      document it" instruction rather than silently added or the
+      dependency silently removed — a product decision on whether to wire
+      real network-state UI (and then add this permission) or drop the
+      unused dependency is unresolved, out of this mission's scope.
+    - minSdkVersion (22 live vs. 23 in the template): NOT changed. Lowering
+      compatibility is not warranted by anything in this mission's scope;
+      the template's higher value was itself just a documentation choice,
+      not a requirement — variables.gradle's real value (22) is what
+      actually governs the live build and remains authoritative.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="false"
         android:theme="@style/AppTheme">
 
         <activity

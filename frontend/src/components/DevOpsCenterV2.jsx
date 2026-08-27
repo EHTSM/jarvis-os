@@ -541,7 +541,7 @@ export function TabDeployments({ addToast }) {
 
 // ── Tab: Observability ────────────────────────────────────────────────
 
-function TabObservability({ addToast }) {
+export function TabObservability({ addToast }) {
   const [slos,     setSlos]     = useState(SEED_SLOS);
   const [isSample, setIsSample] = useState(true);
   const [svcMap,   setSvcMap]   = useState(null);
@@ -605,6 +605,11 @@ function TabObservability({ addToast }) {
 
       <div className="dv2-panel dv2-dep-panel">
         <p className="dv2-section-label">Dependency Map</p>
+        {/* Mission 46: DEPS is a static illustrative array with no live
+            source (getServiceMap() is fetched into svcMap but never rendered
+            anywhere in this component) — disclosed like the SLO panel above
+            rather than left presented as a live topology. */}
+        {!loading && <SampleDataNotice label="illustrative dependency topology" />}
         <div className="dv2-dep-list">
           {DEPS.map((d, i) => (
             <div key={i} className="dv2-dep-row">
@@ -630,7 +635,7 @@ function TabObservability({ addToast }) {
 
 // ── Tab: Telemetry ────────────────────────────────────────────────────
 
-function TabTelemetry({ addToast }) {
+export function TabTelemetry({ addToast }) {
   const [ops,      setOps]      = useState(null);
   const [metrics,  setMetrics]  = useState(null);
   const [sysM,     setSysM]     = useState(null);
@@ -740,6 +745,11 @@ function TabTelemetry({ addToast }) {
 
       <div className="dv2-panel" style={{ marginTop: 14 }}>
         <p className="dv2-section-label">Endpoint Latency (avg)</p>
+        {/* Mission 46: 4 of 5 rows are permanently hardcoded (only the
+            first row falls back to the real avgMs when available) — no
+            per-endpoint latency API exists yet, so this is disclosed as
+            illustrative rather than presented as live measurement. */}
+        {!loading && <SampleDataNotice label="illustrative endpoint latency" />}
         {PERF_EPS.map(ep => {
           const pct = Math.min(Math.round((ep.ms / ep.max) * 100), 100);
           const color = ep.ms < 200 ? "var(--success)" : ep.ms < 600 ? "var(--warning)" : "var(--danger)";
@@ -911,16 +921,25 @@ function TabModels({ addToast }) {
 
       <div className="dv2-panel dv2-suggestions-panel">
         <p className="dv2-section-label">AI Suggestions</p>
+        {/* Mission 58: EVO_SUGGESTIONS is a hardcoded illustrative array —
+            Approve/Dismiss previously called only addToast() with no
+            backend mutation, no state change; the item stayed "pending"
+            forever regardless of clicks (Mission 43B finding: false-success
+            UI action, not merely stale data — CLAUDE.md §17). No real
+            backend endpoint exists for suggestion approve/dismiss (checked:
+            zero matching routes anywhere in backend/routes/), so wiring a
+            real mutation is out of this mission's smallest-fix scope —
+            disclosed instead, same SampleDataNotice pattern already used
+            for this file's other two illustrative panels (Dependency Map,
+            Endpoint Latency — both fixed by Mission 46) and the buttons
+            that claimed a fake action are removed rather than left
+            clickable-but-inert. */}
+        {!loading && <SampleDataNotice label="illustrative AI suggestions — no backend action wired" />}
         {EVO_SUGGESTIONS.map(sg => (
           <div key={sg.id} className="dv2-sg-row">
             <span className="dv2-sg-dot" style={{ color: sg.status === "applied" ? "var(--success)" : "var(--accent)" }}>○</span>
             <span className="dv2-sg-text">{sg.text}</span>
-            {sg.status === "pending" ? (
-              <div className="dv2-sg-actions">
-                <button className="dv2-btn dv2-btn--ghost dv2-btn--xs" onClick={() => addToast("Suggestion approved", "success")}>Approve</button>
-                <button className="dv2-btn dv2-btn--ghost dv2-btn--xs" onClick={() => addToast("Suggestion dismissed", "info")}>Dismiss</button>
-              </div>
-            ) : (
+            {sg.status === "applied" && (
               <span className="dv2-chip dv2-chip--xs" style={{ color:"var(--success)", background:"rgba(82,214,138,.1)", borderColor:"rgba(82,214,138,.2)" }}>applied</span>
             )}
           </div>
@@ -1039,7 +1058,7 @@ function TabLogs({ addToast }) {
 
 // ── Tab: Alerts ───────────────────────────────────────────────────────
 
-function TabAlerts({ addToast }) {
+export function TabAlerts({ addToast }) {
   const [alerts,   setAlerts]   = useState(SEED_ALERTS);
   const [isSample, setIsSample] = useState(true);
   const [loading,  setLoading]  = useState(true);
@@ -1058,13 +1077,18 @@ function TabAlerts({ addToast }) {
   async function handleResolve(a) {
     setResolving(a.id);
     try {
-      await resolveAlert(a.id);
+      const r = await resolveAlert(a.id);
+      if (r?.success === false) throw new Error(r.error || "Failed to resolve alert");
       setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
       addToast(`Alert resolved: ${a.title.slice(0, 40)}…`, "success");
       track.event("alert_resolve", { alertId: a.id });
-    } catch {
-      setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
-      addToast("Alert marked resolved", "info");
+    } catch (e) {
+      // Mission 46 P1: this catch previously marked the alert resolved
+      // locally and toasted "Alert marked resolved" at info severity even
+      // when resolveAlert() actually failed — a genuine backend failure
+      // (network error, 500, timeout — _fetch throws on all of these) was
+      // presented as success, hiding that the alert is still open.
+      addToast(`Resolve failed: ${e.message}`, "error");
     } finally {
       setResolving(null);
     }
@@ -1605,13 +1629,14 @@ function TabTerminal({ addToast }) {
 
 const PATCH_STATUS_COLOR = { pending:"var(--warning)", applied:"var(--success)", rolled_back:"var(--danger)", failed:"var(--danger)" };
 
-function TabPatches({ addToast }) {
+export function TabPatches({ addToast }) {
   const [patches,    setPatches]    = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [statusF,    setStatusF]    = useState("all");
   const [applying,   setApplying]   = useState(null);
   const [verifying,  setVerifying]  = useState(null);
   const [expanded,   setExpanded]   = useState(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -1626,6 +1651,16 @@ function TabPatches({ addToast }) {
 
   async function handleApply(p) {
     if (applying) return;
+    // Applying an AI-generated patch writes to a real repository file —
+    // same risk class as TabDeployments' Rollback / TabDocker's Stop,
+    // which both gate on confirm() (Mission 28). This tab had none.
+    const ok = await confirm({
+      title: `Apply patch to ${p.filePath || p.id}?`,
+      message: "This will write the AI-generated change to the real file. You can roll it back afterward, but the file on disk changes immediately.",
+      danger: true,
+      confirmLabel: "Apply",
+    });
+    if (!ok) return;
     setApplying(p.id);
     try {
       const r = await fetch(`/runtime/patches/${p.id}/apply`, {
@@ -1662,6 +1697,15 @@ function TabPatches({ addToast }) {
   }
 
   async function handleRollback(p) {
+    // Reverting an applied patch also writes to the real file — same
+    // confirmation requirement as Apply above.
+    const ok = await confirm({
+      title: `Revert patch to ${p.filePath || p.id}?`,
+      message: "This will undo the applied change on the real file immediately.",
+      danger: true,
+      confirmLabel: "Revert",
+    });
+    if (!ok) return;
     try {
       const r = await fetch(`/runtime/patches/${p.id}/rollback`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1679,6 +1723,7 @@ function TabPatches({ addToast }) {
 
   return (
     <div style={{ padding: "4px 0" }}>
+      {ConfirmUI}
       <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, flexWrap: "wrap" }}>
         {["all","pending","applied","rolled_back"].map(s => (
           <button key={s}

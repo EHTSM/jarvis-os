@@ -54,6 +54,9 @@
     "copyright": "Copyright © 2026 Ooplix",
     "files": [
       "electron/**/*",
+      "!electron/node_modules/**",
+      "!electron/src/**",
+      "!electron/public/**",
       "frontend/build/**/*",
       "backend/**/*",
       "agents/**/*",

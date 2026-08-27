@@ -530,17 +530,29 @@ function ActiveAgents({ opsData }) {
 function EngineeringTimeline({ opsData }) {
   const [events, setEvents]     = useState([]);
   const [hovered, setHovered]   = useState(null);
+  // Mission 58: fetchEvents had no try/catch at all — a rejected
+  // getRuntimeHistory() promise was an unhandled rejection, and the
+  // timeline silently showed only its static placeholder dots forever,
+  // indistinguishable from a genuinely quiet 60 minutes (Mission 43B
+  // finding). Same CmdPanelError pattern this file already uses elsewhere.
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
+  const load = useCallback(async () => {
+    try {
       const r = await getRuntimeHistory(60);
       const items = r?.history || r?.items || r || [];
       setEvents(Array.isArray(items) ? items.slice(0, 40) : []);
-    };
-    fetchEvents();
-    const id = setInterval(() => { if (!document.hidden) fetchEvents(); }, 15000);
-    return () => clearInterval(id);
+      setError(null);
+    } catch (e) {
+      setError(e?.message || "Could not load engineering timeline.");
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+    const id = setInterval(() => { if (!document.hidden) load(); }, 15000);
+    return () => clearInterval(id);
+  }, [load]);
 
   const now    = Date.now();
   const WINDOW = 60 * 60 * 1000; // 60 min
@@ -565,6 +577,7 @@ function EngineeringTimeline({ opsData }) {
         <span className="mono-sm text-faint">Last 60 min</span>
       </div>
 
+      {error ? <CmdPanelError error={error} onRetry={load} /> : null}
       <div className="cmd-timeline-body">
         <div className="cmd-timeline-track">
           <div className="cmd-timeline-rail" />
@@ -1377,22 +1390,32 @@ function DeploymentPulse({ onNavigate }) {
   const [active, setActive] = useState([]);
   const [stats, setStats]   = useState(null);
   const [forbidden, setForbidden] = useState(false);
+  // Mission 58: a non-401 failure (e.g. a real 500) previously never set
+  // `stats`, so the component stayed on "Loading deployments…" forever — a
+  // silent stuck-loading state, not an honest error (Mission 43B finding).
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    const load = async () => {
-      const [a, s] = await Promise.all([getDeploymentActive(), getDeploymentStats()]);
-      if (cancelled) return;
-      if (a?.status === 401 || s?.status === 401) { setForbidden(true); return; }
-      if (a?.ok !== false) setActive(a.deployments || []);
-      if (s?.ok !== false) setStats(s.stats || null);
-    };
-    load();
-    const t = setInterval(() => { if (!document.hidden) load(); }, 20000);
-    return () => { cancelled = true; clearInterval(t); };
+  const load = useCallback(async () => {
+    const [a, s] = await Promise.all([getDeploymentActive(), getDeploymentStats()]);
+    if (a?.status === 401 || s?.status === 401) { setForbidden(true); return; }
+    if (a?.ok === false && s?.ok === false) {
+      setError(a.error || s.error || "Could not load deployment data.");
+      return;
+    }
+    setError(null);
+    if (a?.ok !== false) setActive(a.deployments || []);
+    if (s?.ok !== false) setStats(s.stats || null);
   }, []);
 
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 20000);
+    return () => clearInterval(t);
+  }, [load]);
+
   if (forbidden) return null;
+
+  if (error && !stats) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!stats) return (
     <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading deployments…</div>
@@ -1442,19 +1465,29 @@ function DeploymentPulse({ onNavigate }) {
 
 function ProviderHealth() {
   const [providers, setProviders] = useState([]);
+  // Mission 58: catch {} was fully empty, no error state — a genuine
+  // failure to reach /p27/ai/providers was indistinguishable from "no
+  // providers configured" (Mission 43B finding).
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' })).json();
+      const list = r.providers || (Array.isArray(r) ? r : []);
+      setProviders(list.slice(0, 6));
+      setError(null);
+    } catch (e) {
+      setError(e?.message || "Could not load AI provider status.");
+    }
+  }, []);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const r = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' })).json();
-        const list = r.providers || (Array.isArray(r) ? r : []);
-        setProviders(list.slice(0, 6));
-      } catch {}
-    };
     load();
     const t = setInterval(() => { if (!document.hidden) load(); }, 30000);
     return () => clearInterval(t);
-  }, []);
+  }, [load]);
+
+  if (error) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!providers.length) return (
     <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '8px 0' }}>No provider data</div>
@@ -1519,7 +1552,13 @@ function SystemHealth({ opsData, online }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    getSystemHealthReport().then(r => { if (r) setReport(r); });
+    // Mission 58: no .catch() — a rejected promise was an unhandled
+    // rejection (Mission 43B finding). The Health Score section is a
+    // non-critical enhancement over the row-based health display below,
+    // which is derived from opsData and unaffected by this failing — so a
+    // silent no-op (score section just doesn't appear) is the correct,
+    // proportionate fix here, not a full CmdPanelError state.
+    getSystemHealthReport().then(r => { if (r) setReport(r); }).catch(() => {});
   }, []);
 
   // Trigger stagger animation on first render

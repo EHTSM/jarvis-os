@@ -152,6 +152,20 @@ async function runBackup() {
     }
 
     console.log('[+] Backup Cycle Complete.');
+
+    // 6. Offsite export (encrypt + optionally transfer). Runs in the same
+    // cron cycle as the local snapshot above so a forgotten second cron
+    // entry can't silently leave backups local-only. No-ops cleanly (with a
+    // console warning) when BACKUP_PASSWORD isn't set — see export-offsite.cjs.
+    try {
+        const { runExport } = require('./export-offsite.cjs');
+        const result = await runExport();
+        if (result && result.transferred && !result.ok) {
+            console.error('[!] Offsite transfer FAILED — encrypted backup retained locally only:', result.encryptedPath);
+        }
+    } catch (err) {
+        console.error('[!] Offsite export step failed:', err.message);
+    }
 }
 
 runBackup().catch(console.error);

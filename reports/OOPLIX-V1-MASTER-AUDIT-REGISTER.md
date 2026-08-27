@@ -4266,3 +4266,407 @@ complete login past that refusal; email remains a working fallback for every aff
 re-audited this mission per the "don't re-audit already-certified surfaces" instruction. (3) whether
 `_handleFirebaseSession`'s session-timeout should be threaded to the same per-org policy lookup
 `_handleLogin` uses, left at the flat default to keep the fix single-purpose.
+
+---
+
+## MISSION 43C — Production Infrastructure & Operations Gap Discovery (2026-08-23)
+
+**Audit only, no code changes.** Full report:
+[MISSION-43C-PRODUCTION-INFRASTRUCTURE-OPS-GAP-DISCOVERY.md](MISSION-43C-PRODUCTION-INFRASTRUCTURE-OPS-GAP-DISCOVERY.md).
+
+Scope: PM2/process topology, startup/shutdown, health checks, backup/restore, offsite
+backup, retention, recovery, logging, observability, CI/CD, build pipeline, deployment
+config, crash recovery, restart behavior, resource limits, filesystem safety, config
+validation — cross-referenced against CO1, Production Mission 4, RC-3, RC-4.
+
+**CERTIFIED:** PM2 topology, startup/shutdown sequencing, health checks, crash
+forensics/alerting, backup content completeness + local retention, recovery/rollback
+scripts, CI (5 jobs incl. a deploy-script `bash -n`/shellcheck verification job not
+previously documented), observability endpoints, boot-time config validation.
+
+**REAL DEFECTS (live-verified, unresolved):**
+1. `BACKUP_OFFSITE_DIR` is documented (`ecosystem.config.cjs` comment) but never
+   implemented — `grep` across the repo shows no code ever reads the env var; all
+   backups live on the same local disk as production data. HIGH severity (single
+   point of physical failure), already tracked as an open RC-4 founder-checklist
+   item but now confirmed as a genuinely missing code path, not just a manual step.
+2. PM2 log rotation (`max_size`/`retain` in `ecosystem.config.cjs`) is inert — those
+   are `pm2-logrotate` module options and the module isn't installed
+   (`~/.pm2/modules` empty). Live-measured on disk: `logs/pm2-out.log` = 88.6 MB,
+   `logs/pm2-err.log` = 20.9 MB, zero rotated files. Known since Mission 4/RC-3,
+   still open.
+3. No disk-space/filesystem-capacity monitoring anywhere in the runtime (only
+   heap/RSS is sampled) — new finding, shares root cause with #2.
+
+**DECISION REQUIRED (not defects):**
+1. CLAUDE.md §9's "CI greps `pass 144` against a stale 10-file subset" claim appears
+   outdated — current `test:runtime` self-discovers the full `tests/runtime/*.test.cjs`
+   corpus (116 files) via `scripts/run-test-suite.cjs`, gated on exit code, not a
+   string match. Surfaced per CLAUDE.md's own instruction rather than silently
+   corrected; needs user confirmation before §9 is updated.
+2. No OS-level `ulimit`/file-descriptor tuning found for the PM2-managed process —
+   not proven as an active failure (no VPS load test performed, out of scope), but
+   unverified.
+
+**Remediation missions proposed (2, combining related gaps):**
+- **Mission A — Offsite Backup Implementation**: wire the actual rsync/remote-copy
+  step for `BACKUP_OFFSITE_DIR` in `scripts/safe-backup.cjs` + post-copy
+  verification. Closes defect #1.
+- **Mission B — Log & Disk Capacity Safety**: install/wire `pm2-logrotate` so the
+  existing config takes effect, plus a disk-space sampler reusing the existing
+  `memoryTracker` pattern and Telegram alert path. Closes defects #2 and #3.
+
+No files modified, no packages installed, no VPS/production touched, no `.env`/
+credentials read or modified, no git commit/push/merge performed.
+
+---
+
+## MISSION 43A — Backend A-Z Production Gap Discovery (2026-08-23)
+
+**Audit only, no code changes.** Full report:
+[MISSION-43A-BACKEND-ROUTE-GAP-DISCOVERY.md](MISSION-43A-BACKEND-ROUTE-GAP-DISCOVERY.md).
+
+Scope: inventory of all 150 `backend/routes/*.js` files (151 with `index.js`),
+cross-referenced against the register's ~50+ prior named missions, checking
+auth/RBAC/tenant isolation/IDOR/input validation/error honesty/data
+leakage/rate limits/filesystem/credential access/destructive mutations/
+async-concurrency/response-contract correctness. Runs alongside, and does not
+duplicate, MISSION 43C (production infrastructure/ops).
+
+**CERTIFIED:** ~111 of 150 route files backed by a specific named mission
+with live-verification evidence (auth/session, payments/billing, business/CRM
+IDOR, customer-data boundary, the Level 2–10 org `operatorOnly` chain,
+enterprise SCIM/audit/policy/physical/monitoring/dashboard family,
+founder/ops/RC/launch-tooling cluster, org V5 M1–M7 org-scoped family, and
+more — see full report §3).
+
+**REAL DEFECTS (live-verified via direct code read, unresolved):**
+1. `backend/routes/mission.js` (mounted `/mission`,`/missions`,
+   `requireAuth` only) — `GET /mission/timeline|graph|replay|state/:id`
+   pass `req.params.id` straight into the runtime/memory layer with **no
+   caller-org ownership check**; `missionMemory.cjs`'s own header comment
+   documents `orgId` as fully optional. Any authenticated account (not just
+   operators) can read/replay any other org's mission. Same defect class as
+   the already-fixed Business Automation/Graph API/customerOrg IDOR
+   findings — this file was simply never swept. **HIGH.**
+2. `backend/routes/collaboration.js` (mounted `/collaboration`,
+   `requireAuth` only) — all 7 routes key off a caller-supplied `missionId`
+   with zero ownership check; `collaborationLayer.cjs` has zero `orgId`
+   references anywhere. Any authenticated customer can read another org's
+   mission collaboration history or call `/approve`/`/reject` against
+   another org's mission. **HIGH.**
+3. `backend/routes/plan-management.js:18-28` calls `crm.getStats()` with
+   **zero arguments**; `crmService.getStats(orgId)` (line 160-162) falls
+   through to the entire unfiltered lead store when `orgId === undefined`.
+   Every authenticated customer's `GET /plan/current` returns platform-wide
+   aggregate revenue/paid/conversion figures as if it were their own org's
+   plan data. `POST /plan/upgrade` is also a non-functional stub (never
+   calls `billingService`) — flagged as a decision item, not a security
+   defect. **MEDIUM-HIGH.**
+
+**LOWER-CONFIDENCE TRIAGE FLAGS (not deep-verified, no confirmed cross-tenant
+read):** platform-wide read-only intelligence surfaces with no orgId concept
+(`engineering.js`, `researchInstitute.js`, `workspaceMesh.js`, `okb-x.js`,
+`obi-x.js`, `ose-x.js`); mutation-triggering `pipeline.js` and
+`autonomousAgent.js` (requireAuth only, no visible org scoping);
+`browserPlatform.js` (709 lines, never named, less mature than sibling
+`browser.js`). Full list with rationale in the report §5 — not recommended
+for immediate mission scope.
+
+**Dead code / mount mismatches:** none — all 150 route files mounted exactly
+once, all mount targets resolve.
+
+**Remediation mission proposed (grouped, one mission-sized unit per
+CLAUDE.md §16):**
+- **Proposed backend tenant-isolation fix mission (number TBD — see
+  follow-up entry below re: numbering collision with the separately-run
+  frontend "Mission 43B") — Mission/Collaboration/Plan Tenant-Isolation
+  Fix**: add
+  caller-org ownership checks to `mission.js` and `collaboration.js`
+  (the latter first needs an `orgId` concept added to
+  `collaborationLayer.cjs`, which currently has none), and pass the
+  server-resolved `orgId` into `crm.getStats()` in `plan-management.js`
+  (the function already supports it correctly). Decide separately whether
+  `POST /plan/upgrade` should be wired to `billingService` or removed.
+  Each fix follows the existing IDOR-fix pattern already used elsewhere in
+  this repo — no new architecture required.
+
+No files modified, no packages installed, no VPS/production touched, no
+`.env`/credentials read or modified, no git commit/push/merge performed.
+
+---
+
+## MISSION 43A FOLLOW-UP — Deep Verification of Low-Confidence Flags (2026-08-23)
+
+**Audit only, no code changes.** Full report:
+[MISSION-43A-FOLLOWUP-DEEP-VERIFICATION.md](MISSION-43A-FOLLOWUP-DEEP-VERIFICATION.md).
+
+Scope: deep-verified (full file read + one level into backing services) the
+9 files Mission 43A §5 had only skimmed. Result: 6 of 9 are confirmed real
+defects — one materially more severe than anything found in the original
+43A pass — and 3 are confirmed fine (genuinely platform-wide, no tenant
+model exists to violate).
+
+**NEW DEFECTS (live-verified via direct code read):**
+1. **`browserPlatform.js`** — **HIGH.** `GET /browser-platform/sessions?all=true`
+   bypasses account filtering entirely (client-controlled query param);
+   `GET/PUT/DELETE /sessions/:id` and its `/cookies`/`/storage` sub-routes
+   call `browserSessionManager.getProfile/saveCookies/getCookies/
+   updateProfile/deleteProfile()` with **no accountId check at all** —
+   confirmed at the function-signature level in `browserSessionManager.cjs`
+   (only `listProfiles()` supports account filtering). Any authenticated
+   user who can guess/enumerate a profile ID can read or hijack another
+   account's saved browser session, cookies, and localStorage for whatever
+   third-party site it's authenticated to. `POST /control/navigate` also
+   takes a raw caller-supplied URL server-side with no allow-list
+   (SSRF-shaped, chainable with `/control/screenshot`/`/control/pdf` to
+   exfiltrate results). Zero rate limiting anywhere in the file, unlike its
+   properly-hardened sibling `browser.js`.
+2. **`workspaceMesh.js`** — **HIGH.** `POST /workspace-mesh/execute` reaches
+   the exact same `browserController`/`editorController`/
+   `terminalController`/`computerController` execution stack that
+   `backend/routes/index.js:301-310` explicitly gates `operatorOnly` on
+   `/computer/*` for being "real arbitrary shell command execution... real
+   desktop/browser/editor automation" — but reaches it via `requireAuth`
+   only, a parallel ungated door to a capability this codebase's own
+   author already judged too dangerous for ordinary authenticated users.
+3. **`obi-x.js`** — **MEDIUM-HIGH.** Reintroduces the exact `plan-management.js`
+   defect (crmService.getStats() called with no orgId, falling through to
+   the entire unfiltered cross-org lead store) through a route family
+   (`/business/x/*`) whose sibling `business.js` was already fixed for
+   this precise defect class — this sibling was simply never swept.
+4. **`pipeline.js`** — **MEDIUM-HIGH.** Same IDOR shape as
+   `mission.js`/`collaboration.js`: `GET/POST /pipeline/:id[/approve|cancel]`
+   trust a caller-supplied ID with no ownership check; `/pipeline/run` and
+   `/pipeline/validate` (fire-and-forget, unthrottled) trigger real
+   patch/build/test/commit cycles against the live repo.
+5. **`engineering.js`** — **MEDIUM.** Mostly legitimate platform-wide
+   read-only analytics (barrel comment undersells the file's actual
+   scope), but `/engineering/scenario/run` and `/engineering/benchmark/*`
+   are real repo-patching-and-committing operations gated by `requireAuth`
+   only, no `operatorOnly`, no rate limit; the commit-approval flag on
+   `/scenario/run` is caller-supplied, not operator-verified.
+6. **`autonomousAgent.js`** — **MEDIUM.** Same IDOR shape as `mission.js`:
+   `pause/resume/cancel/retry` on a caller-supplied mission ID with no
+   ownership check.
+
+**NO DEFECT FOUND:** `researchInstitute.js`, `okb-x.js`, `ose-x.js` — traced
+fully into their service families, zero `orgId` references anywhere, and
+none operate over customer/business data. Genuinely platform/founder-level
+R&D, knowledge-graph, and self-evolution systems with no tenant model to
+violate — same conclusion class as the already-certified `oai-x.js`/
+`odi-x.js` siblings.
+
+**Updated remediation scope:** the proposed backend tenant-isolation fix
+mission should be **expanded** (not run as a separate mission) to cover
+all 9 confirmed defects — 5 share
+the identical ownership-check/orgId-passthrough pattern already scoped for
+`mission.js`/`collaboration.js`/`plan-management.js`; `workspaceMesh.js`
+follows the already-precedented `operatorOnly` mount-gate pattern used for
+`/computer/*`; `engineering.js` needs the same gate scoped to just its two
+mutating routes; `browserPlatform.js` needs both the ownership check
+(using its own already-present but inconsistently-applied `_accountId()`
+helper) and rate limiting (reusing the pattern already in `browser.js`).
+Still one mission-sized unit of work — same fix primitives, wider file set,
+no new architecture.
+
+No files modified, no packages installed, no VPS/production touched, no
+`.env`/credentials read or modified, no git commit/push/merge performed.
+
+---
+
+## MISSION 43B — Frontend A-Z Remaining Production Gap Discovery (2026-08-23)
+
+**Audit only, no code changes.** Full report:
+[FRONTEND-A-Z-MISSION-43B-GAP-DISCOVERY.md](FRONTEND-A-Z-MISSION-43B-GAP-DISCOVERY.md).
+
+Scope: frontend surfaces not already certified by Missions 21-28/33 —
+CommandCenter's 14 remaining sub-panels, IntegrationCenter's parent
+dashboard + 3 named handlers, a risk-prioritized sample of WorkspaceSettings'
+~22 remaining sub-panels, all 8 previously-unread DevOpsCenterV2 tabs,
+OrgAdminCenter, and 20 of the 29 residual `catch{}` files flagged by
+Missions 27-28. Read-only: direct source reading, no new tests written, no
+negative-testing cycle performed — a materially lower evidentiary tier than
+Missions 21-33's live-verified certifications, stated explicitly in the report.
+
+**16 total findings (4 P1, 5 P2, 4 OTHER/minor, 3 clean-verified)**, zero fixed
+per the mission's read-only constraint:
+
+1. **P1 — `DevOpsCenterV2.jsx` `TabPatches`**: `handleApply`/`handleRollback`
+   (applying/reverting an AI-generated patch to a real repo file) fire with
+   zero confirmation — the exact gap Mission 28 predicted for this
+   specifically-named next-target tab.
+2. **P1 — `IntegrationCenter.jsx` parent `load()`**: no error state for any
+   non-401/403 failure; a real backend outage renders as a false-empty
+   "0 of 54 configured" grid instead of an honest error.
+3. **P1 — `DevOpsCenterV2.jsx` `TabAlerts` `handleResolve`**: a failed
+   `resolveAlert()` call is still marked resolved locally and toasted as
+   success at `"info"` severity — false success on an operator alert action.
+4. **P1 — `WorkspaceSettingsL3.jsx` `ExtRuntimePanel`**: Unload (removing an
+   extension, destructive/no auto-recovery) has zero confirmation, unlike the
+   sibling `WorkspaceSettingsL1.jsx`'s equivalent Uninstall which already
+   uses `useConfirm`.
+5. **P2 (new category)** — two fake-data-as-live panels in
+   `DevOpsCenterV2.jsx` (`TabObservability`'s Dependency Map, `TabTelemetry`'s
+   Endpoint Latency) use plain non-`SEED_`/`MOCK_`-prefixed constants
+   (`DEPS`, `PERF_EPS`), which the repo's own static `sampleData.test.js`
+   audit's regex cannot catch — a real blind spot in the audit tool itself,
+   not just the two panels. `TabModels`'s Approve/Dismiss buttons are fully
+   non-functional theater (toast-only, no backend call, `EVO_SUGGESTIONS`
+   hardcoded).
+6. Five smaller P2 findings (CommandCenter's `EngineeringTimeline`/
+   `ProviderHealth`/`DeploymentPulse` missing error states, `SystemHealth`
+   unhandled rejection, `WorkspaceSwitcher.jsx`'s initial `load()`
+   inconsistent with its own already-fixed sibling handlers) and 4 OTHER/minor
+   findings (`IntegrationCenter` `handleValidate`, `WorkspaceSettingsL1`
+   uninstall/toggle catch, `PatchPreviewPanel.jsx`/`SmellsPanel.jsx`'s
+   identical silent-no-op `convertToMission`, `AutonomousOps.jsx`'s
+   Restart/Apply handlers) — full detail and fix-pattern references in the
+   report's backlog table.
+
+**Clean/verified (equal weight, no defect):** CommandCenter's `CommandDispatch`
+NL command bar (the mission's named "never audited" mutation surface) checks
+out fully correct; `IntegrationCenter`'s `handleReconnect`; `OrgAdminCenter`'s
+purge/archive `useConfirm` gates (5 sites, all present).
+
+**Residual `catch{}` sweep**: 20 of the 29 files left open by Missions 27-28
+individually checked this mission (16 SAFE/INTENTIONAL, 3 genuine minor
+defects, 1 inconclusive/flagged-open). Combined cumulative sweep across
+Missions 27+28+43B: 35 of the original ~44-file population. ~13 files remain
+genuinely never opened by any mission, named exactly in the full report.
+
+**Explicitly not reached** (named, not rounded away): ~11 WorkspaceSettings
+sub-panels (K2/K3/K5/K6/L3/Desktop remainder), ~13 residual `catch{}` files,
+~10 of `OrgAdminCenter`'s non-destructive read/edit flows. See report §4 for
+the full list.
+
+No files modified, no packages installed, no VPS/production touched, no
+`.env`/credentials read or modified, no git commit/push/merge performed.
+
+---
+
+## MISSION 48 — Backend A-Z Remaining Production Gap Consolidation (2026-08-24)
+
+**Audit/consolidation only, no code changes.** Full report:
+[MISSION-48-BACKEND-A-Z-GAP-CONSOLIDATION.md](MISSION-48-BACKEND-A-Z-GAP-CONSOLIDATION.md).
+
+Consolidates Mission 43A + its follow-up, Mission 43C, the unexecuted
+Backend Tenant-Isolation Fix plan, and all 60+ prior named backend
+missions in this register into one status map (CERTIFIED / PARTIALLY
+CERTIFIED / UNCERTIFIED / REAL DEFECT / DECISION REQUIRED) across every
+route family, service, auth/RBAC, tenant isolation, credentials, billing,
+integrations, filesystem, background jobs, schedulers, agents, runtime,
+error handling, rate limiting, concurrency, data integrity, and
+observability. No new sweep performed — the vast majority of backend
+surface area is already CERTIFIED by prior live-verified work and is not
+re-litigated here.
+
+**Confirmed still open, via direct spot-check of current
+`backend/routes/index.js`** (not re-derived): all 9 tenant-isolation/
+authorization-gate defects from Mission 43A + follow-up remain unfixed
+(`mission.js`, `collaboration.js`, `browserPlatform.js`, `workspaceMesh.js`,
+`obi-x.js`, `pipeline.js`, `plan-management.js`, `engineering.js`,
+`autonomousAgent.js`) — the implementation plan for all 9 already exists
+(`MISSION-PLAN-BACKEND-TENANT-ISOLATION-FIX.md`) and only needs sign-off.
+Mission 43C's 3 infrastructure defects (offsite backup unimplemented, PM2
+log rotation inert, no disk-capacity monitoring) are likewise still open.
+
+**Grouped into 3 remediation missions, not one per finding**, per this
+mission's own instruction: **Mission I** (Backend Tenant-Isolation &
+Authorization-Gate Fix — the existing 43D plan, all 9 route defects, 3
+reused fix primitives, no new architecture); **Mission II** (Offsite
+Backup + Log/Disk Capacity Safety — the existing 43C-proposed pair,
+combined since they share one root cause); **Mission III** (optional,
+lower priority — sweep of ~25 route files that remain genuinely
+uncertified but have no concrete defect found across two prior passes).
+9 further items are DECISION REQUIRED (product/scope calls, e.g. the
+`/plan/upgrade` dead-stub question, `orgId` threading through
+`runtimeOrchestrator.dispatch()`, CLAUDE.md §9's now-outdated CI claim) —
+listed but explicitly not resolved unilaterally.
+
+No files modified, no packages installed, no VPS/production touched, no
+`.env`/credentials read or modified, no git commit/push/merge performed.
+
+---
+
+## MISSION 49 — Frontend A-Z Final Gap Consolidation (2026-08-24)
+
+**Audit/consolidation only, no code changes.** Full report:
+[MISSION-49-FRONTEND-A-Z-FINAL-GAP-CONSOLIDATION.md](MISSION-49-FRONTEND-A-Z-FINAL-GAP-CONSOLIDATION.md).
+
+Frontend counterpart to Mission 48. Consolidates Missions 21-28 and 43B (the
+brief's "43D" does not exist as a report — no such file/entry exists anywhere
+in this register or `reports/`; the closest referent is Mission 48's informal
+label for `MISSION-PLAN-BACKEND-TENANT-ISOLATION-FIX.md`, which is backend
+tenant-isolation scoped and out of this mission's frontend brief, so it was
+not pulled in) into one status map across Critical/Important screens,
+WorkspaceSettings/CommandCenter/IntegrationCenter/DevOps panels,
+mobile-critical interactions, frontend/backend parity, fake/sample data,
+failure honesty, destructive confirmations, and RBAC visibility parity. No
+new sweep performed — synthesizes existing findings rather than re-reading
+already-covered surfaces.
+
+**Two things surfaced that no prior report named in this form:** (1)
+`frontend/src/components/DevOpsCenterV2.jsx` has an uncommitted, in-progress
+working-tree diff wiring `useConfirm` into `TabPatches` — a candidate fix for
+Mission 43B's P1 finding #1 — flagged, not evaluated or touched. (2) **RBAC
+frontend visibility parity has zero coverage from any mission** — the
+existing `RBAC-ROLE-EXERCISE-AUDIT.md` explicitly certified only the backend
+authorization boundary and named UI-level role gating as out of its scope;
+no other mission has ever picked that up. This is a genuine unscoped gap, not
+merely a low-confidence area.
+
+**25 open backlog items catalogued** (13 from Mission 43B's read-only
+findings, carried forward unmodified with their original evidentiary caveat
+preserved; 2 from the C5 mobile certification's own stated open items; the
+RBAC gap; the ~26 never-audited Important-tier screens; and 3 residual
+coverage-sweep categories — WorkspaceSettings sub-panels, `catch{}` files,
+OrgAdminCenter flows). **Grouped into 6 remediation missions**: A (DevOps/
+IntegrationCenter P1 fix pass, 4 items), B (fake-data disclosure + static
+audit regex hardening, 4 items), C (CommandCenter/WorkspaceSwitcher
+failure-honesty batch, 10 items), D (RBAC frontend visibility parity audit —
+new, DECISION REQUIRED on scoping), E (mobile real-device + overflow
+root-cause — DECISION REQUIRED, 6 prior root-cause hypotheses already
+rejected), F (residual coverage sweep, lowest priority, no confirmed defects).
+
+No files modified, no packages installed, no VPS/production touched, no
+`.env`/credentials read or modified, no git commit/push/merge performed.
+
+**No OS-track record altered.**
+
+---
+
+## MISSION 50 — ERA-1 Final A-Z Production Certification Gap Map (2026-08-24)
+
+Full report: [MISSION-50-ERA1-FINAL-AZ-CERTIFICATION-GAP-MAP.md](MISSION-50-ERA1-FINAL-AZ-CERTIFICATION-GAP-MAP.md)
+
+Consolidation-only mission (no new live testing). Built a 30-domain certification matrix
+(Backend → Security Regression) from the full register and 312-report corpus, verdicting each
+CERTIFIED / PARTIAL / OPEN / DEFECT / MANUAL CREDENTIAL / DECISION against cited prior-mission
+evidence only. **9 confirmed backend tenant-isolation/auth-gate defects (4 P0, 5 P1) from Mission
+43A + Follow-Up remain unfixed** — verified via `git log` that the existing remediation plan
+(`MISSION-PLAN-BACKEND-TENANT-ISOLATION-FIX.md`) has never been executed. Two domains scored
+**OPEN** for having zero dedicated audit coverage: the Capacitor Android mobile app (only
+responsive-web-at-mobile-viewport was ever certified, under C.5) and the Electron desktop shell
+(IPC/preload/auto-update/signing — never named in any of the 312 reports). Two domains scored
+**DEFECT**: Offsite recovery (`BACKUP_OFFSITE_DIR` is dead config, single point of physical
+failure) and Disk/resource monitoring (does not exist anywhere in the runtime).
+
+**Counted backlog**: 4 remaining P0, 9 remaining P1, 12 remaining P2, 2 manual-credential items
+(Razorpay sandbox, real mobile device testing), 5 decisions requiring founder sign-off (CLAUDE.md
+§9 staleness, ulimit tuning, `browserPlatform.js ?all=true`, `POST /plan/upgrade` dead-stub,
+Electron audit scoping).
+
+**Calculated smallest remediation set: 4 missions** — (A) Backend Tenant-Isolation Fix, already
+fully planned and ready to execute; (B) Frontend Failure-Honesty Fix Pass (Mission 43B's 4 P1 + 5
+P2); (C) Log & Disk Capacity Safety + Offsite Backup (Mission 43C's two already-scoped
+remediations, combined on shared root cause); (D) Electron Desktop-Shell Security Audit — the one
+domain with zero prior coverage of any kind.
+
+Full matrix and evidence citations published as an artifact:
+https://claude.ai/code/artifact/88002644-e75c-4e20-866d-aae098243824
+
+No files modified other than this register entry and the new report. No packages installed, no
+production/VPS touched, no `.env`/credentials touched, no git commit/push/merge performed.
+
+**No OS-track record altered.**

@@ -27,7 +27,16 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       const d = await _fetch("/workspace");
       setWs(d.workspaces || []);
       setActiveId(d.activeWorkspaceId || null);
-    } catch {}
+      setError(null);
+    } catch (e) {
+      // Mission 58: this catch was bare — inconsistent with doSwitch/
+      // doCreate below, which already correctly call setError() for this
+      // exact same risk class (Mission 43B finding). A failed initial load
+      // left the switcher dropdown permanently empty with no error shown,
+      // even though the `error` state already exists in this file for
+      // exactly this purpose.
+      setError(e?.message || "Could not load workspaces.");
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);

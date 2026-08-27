@@ -317,7 +317,16 @@ router.use("/workforce-os", requireAuth);      // gate all /workforce-os/* route
 router.use(require("./workforceOS"));          // POST-Ω P7: /workforce-os/* agents+teams+capacity+performance+dashboard
 router.use("/company-factory", requireAuth);   // gate all /company-factory/* routes
 router.use(require("./companyFactory"));       // POST-Ω P8: /company-factory/* create+blueprints+workspace+lifecycle+dashboard
-router.use("/workspace-mesh", requireAuth);   // gate all /workspace-mesh/* routes
+// Mission 51 (2026-08-26): workspaceMesh.js's mesh.execute()/route()/coord.run()
+// reach the identical controller stack /computer/* is deliberately gated
+// operatorOnly for above (line ~311: real arbitrary shell/desktop/browser
+// automation) — this file was mounted on requireAuth alone, so any
+// authenticated customer could reach the same execution surface through a
+// different door. workspaceMesh.cjs/workspaceRegistry.cjs have zero orgId
+// concept (platform-wide singleton mesh, confirmed by trace), so there is no
+// tenant-scoped equivalent to preserve — same reasoning as /computer's own
+// comment above, copied forward.
+router.use("/workspace-mesh", requireAuth, operatorOnly);   // gate all /workspace-mesh/* routes
 router.use(require("./workspaceMesh"));       // POST-Ω P9: /workspace-mesh/* registry+coordinator+sync+health+dashboard
 router.use("/research", requireAuth);        // gate all /research/* routes
 router.use(require("./researchInstitute"));  // POST-Ω P10: /research/* planner+knowledge+benchmark+experiments+publications+dashboard
@@ -325,6 +334,25 @@ router.use("/odi", requireAuth);            // gate all /odi/* routes (incl. /od
 router.use(require("./odi-x"));             // ODI X V1:   /odi/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use(require("./oai-x"));             // OAI X V1:   /engineering/x/* reasoning+quality+benchmark+predict+evolution+dashboard (guarded above by /engineering requireAuth)
 router.use("/business", requireAuth);       // gate all /business/* routes (incl. /business/x/*)
+// Mission 51 (2026-08-26): obi-x.js's own businessReasoningEngine.cjs calls
+// crmService.getStats() with zero args (same unscoped-call class as the
+// already-fixed business.js defect) — that one call is fixed at the source
+// below (analyze() now threads orgId through). But the rest of this file's
+// backing engines (businessOrgState.cjs's getAllKpis/getPipelineStats/
+// listDeals, customerSuccess.cjs's getOverview, revenueOS.cjs's
+// getRevenueDashboard/listChurnRisks, and businessReasoningEngine.cjs's own
+// data/business-reasoning.json analysis store) have ZERO orgId concept in
+// their data model — confirmed by trace, not assumed — so there is no
+// per-tenant record to scope getAnalysis/listAnalyses/getStats by. Faking
+// an orgId filter over data that was never partitioned by org would be
+// worse than no filter (silently hides/exposes analyses inconsistently).
+// requireOrgMember is added here as the correct minimal fix available
+// within this mission's bounds: it stops a caller with no real org
+// membership from reaching this surface at all, matching the sibling
+// /business/* org gate, while the deeper per-analysis tenant model question
+// is flagged in the Mission 51 report rather than faked.
+const { attachOrg: _obixAttachOrg, requireOrgMember: _obixRequireOrgMember } = require("../middleware/orgMiddleware.cjs");
+router.use("/business/x", _obixAttachOrg, _obixRequireOrgMember);
 router.use(require("./obi-x"));             // OBI X V1:   /business/x/* reasoning+quality+benchmark+predict+evolution+dashboard
 router.use("/knowledge", requireAuth);      // gate all /knowledge/* routes
 router.use(require("./okb-x"));             // OKB X V1:   /knowledge/x/* reasoning+quality+benchmark+predict+evolution+dashboard

@@ -34,7 +34,10 @@ function wrap(fn) {
 
 router.post("/business/x/reasoning/analyze", wrap(async (req, res) => {
   const { context, revenueData, dealsData, campaignData } = req.body;
-  const r = await _bre()?.analyze?.(context, { revenueData, dealsData, campaignData });
+  // Mission 51: crmService.getStats(orgId) supports scoping — thread the
+  // caller's server-resolved org (req.org, set by requireOrgMember above)
+  // through so this reasoning pass only sees this org's lead/revenue data.
+  const r = await _bre()?.analyze?.(context, { revenueData, dealsData, campaignData, orgId: req.org.id });
   if (!r?.ok) return err(res, r?.error || "analyze failed");
   ok(res, { analysis: r.analysis });
 }));

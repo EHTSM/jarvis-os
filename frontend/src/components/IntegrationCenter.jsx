@@ -267,7 +267,8 @@ export function DetailPanel({ connectorId, connected, credentialTypes, canManage
     try {
       const res = await validateSecret(connectorId, storedType);
       showToast(res.valid ? "✓ Credential is valid" : (res.error || "Validation failed"));
-    } finally { setBusy(false); }
+    } catch { showToast("Validation failed"); } // Mission 58: try/finally had no catch — matches handleReconnect/handleDisconnect's existing pattern
+    finally { setBusy(false); }
   }, [connectorId, storedType, showToast]);
 
   const handleReconnect = useCallback(async () => {
@@ -435,10 +436,12 @@ export default function IntegrationCenter({ onNavigate }) {
   const [selected, setSelected] = useState(null);
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const showToast = useCallback((m) => { setToast(m); setTimeout(() => setToast(null), 2800); }, []);
 
   const load = useCallback(async () => {
+    setLoading(true);
     const [vd, ct, oauthConns, allInteg] = await Promise.all([
       getVaultDashboard(),
       getCredentialTypes(),
@@ -447,10 +450,22 @@ export default function IntegrationCenter({ onNavigate }) {
     ]);
 
     if (vd.status === 401 || vd.status === 403) {
+      // Expected for non-operator roles — vault management is hidden, not an error.
       setCanManageVault(false);
       setDashboard(null);
+      setError(null);
     } else if (vd.ok !== false) {
       setDashboard(vd);
+      setError(null);
+    } else {
+      // Mission 46 P1: a genuine backend failure (500, timeout, network
+      // error — anything that isn't 401/403) previously fell through with
+      // no branch at all: dashboard stayed null, loading still flipped to
+      // false, and allConnectorIds fell back to every known connector id
+      // marked "missing" — rendering a false "0 of 54 configured" screen
+      // indistinguishable from a genuinely fresh account.
+      setDashboard(null);
+      setError(vd.error || "Failed to load connector dashboard");
     }
     if (ct.ok !== false) setCredTypes(ct.types || []);
 
@@ -510,12 +525,14 @@ export default function IntegrationCenter({ onNavigate }) {
               : "Connector health overview. Credential management requires operator access."}
           </p>
         </div>
-        <div className="ic-header-stat">
-          <span className="ic-stat-num" style={{ color: connectedCount > 0 ? "var(--success)" : "var(--text-faint)" }}>
-            {connectedCount}
-          </span>
-          <span className="ic-stat-label">of {allConnectorIds.length} configured</span>
-        </div>
+        {!error && (
+          <div className="ic-header-stat">
+            <span className="ic-stat-num" style={{ color: connectedCount > 0 ? "var(--success)" : "var(--text-faint)" }}>
+              {connectedCount}
+            </span>
+            <span className="ic-stat-label">of {allConnectorIds.length} configured</span>
+          </div>
+        )}
       </div>
 
       <div className="ic-cats">
@@ -546,6 +563,11 @@ export default function IntegrationCenter({ onNavigate }) {
         <div className="ic-grid">
           {loading ? (
             <p className="ic-detail-sub">Loading connectors…</p>
+          ) : error ? (
+            <div className="ic-detail-sub" style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start", padding: "20px 4px" }}>
+              <p style={{ margin: 0, color: "var(--danger, #e5484d)" }}>Couldn't load connector status: {error}</p>
+              <button className="ic-detail-btn ic-detail-btn--secondary" onClick={load}>Retry</button>
+            </div>
           ) : visible.map(id => (
             <ConnectorCard
               key={id}

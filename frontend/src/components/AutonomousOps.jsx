@@ -92,6 +92,12 @@ function FailingServices() {
   const { data, error, loading, refresh } = usePolled('/runtime/health/services', 8000);
   const services = Array.isArray(data) ? data : (data?.services || []);
   const failing  = services.filter(s => s.status !== 'ok' && s.status !== 'healthy' && s.status !== 'up');
+  // Mission 58: the Restart button's catch {} was completely silent — no
+  // toast, no error state either way (Mission 43B finding). No toast
+  // infrastructure exists in this file, so a local, dismissable error
+  // banner (matching this file's own .ao-error styling) is the smallest
+  // fix.
+  const [actionError, setActionError] = useState(null);
 
   if (loading) return <div className="ao-empty">Scanning services…</div>;
   if (error)   return <div className="ao-error">Service scan unavailable: {error}</div>;
@@ -102,6 +108,7 @@ function FailingServices() {
         <span className="ao-count">{services.length} services · {failing.length} failing</span>
         <button className="ao-btn" onClick={refresh}>↻</button>
       </div>
+      {actionError && <div className="ao-error">{actionError}</div>}
       {!failing.length ? (
         <div className="ao-ok">All services healthy.</div>
       ) : failing.map((s, i) => (
@@ -120,8 +127,9 @@ function FailingServices() {
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ service: s.name }),
                 });
+                setActionError(null);
                 refresh();
-              } catch {}
+              } catch (e) { setActionError(`Restart failed for ${s.name || s.service}: ${e.message}`); }
             }}>Restart</button>
           )}
         </div>
@@ -261,6 +269,9 @@ function OptimizationSuggestions() {
   const { data, error, loading, refresh } = usePolled('/jarvis/optimize-suggest', 60000);
   const suggestions = Array.isArray(data) ? data : (data?.suggestions || []);
   const [dismissed, setDismissed] = useState(new Set());
+  // Mission 58: catch {} was silent (Mission 43B finding) — same fix as
+  // FailingServices above.
+  const [actionError, setActionError] = useState(null);
 
   if (loading) return <div className="ao-empty">Scanning for optimizations…</div>;
   if (error)   return <div className="ao-error">Optimization scan unavailable: {error}</div>;
@@ -273,6 +284,7 @@ function OptimizationSuggestions() {
         <span className="ao-count">{visible.length} suggestions</span>
         <button className="ao-btn" onClick={refresh}>↻</button>
       </div>
+      {actionError && <div className="ao-error">{actionError}</div>}
       {!visible.length ? (
         <div className="ao-ok">Nothing to optimize right now.</div>
       ) : visible.map((s, i) => (
@@ -291,8 +303,9 @@ function OptimizationSuggestions() {
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ id: s.id }),
                 });
+                setActionError(null);
                 setDismissed(d => new Set([...d, s.id]));
-              } catch {}
+              } catch (e) { setActionError(`Could not apply "${s.title || s.description}": ${e.message}`); }
             }}>
               {s.action}
             </button>
@@ -309,6 +322,9 @@ function ProactiveFixes() {
   const fixes = Array.isArray(data) ? data : (data?.fixes || []);
   const [applying, setApplying] = useState(null);
   const [applied,  setApplied]  = useState(new Set());
+  // Mission 58: catch {} was silent (Mission 43B finding) — same fix as
+  // FailingServices/OptimizationSuggestions above.
+  const [actionError, setActionError] = useState(null);
 
   const apply = useCallback(async (fix) => {
     const key = fix.id || fix.title;
@@ -319,8 +335,9 @@ function ProactiveFixes() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fix),
       });
+      setActionError(null);
       setApplied(a => new Set([...a, key]));
-    } catch {}
+    } catch (e) { setActionError(`Could not apply fix "${fix.title || key}": ${e.message}`); }
     setApplying(null);
   }, []);
 
@@ -335,6 +352,7 @@ function ProactiveFixes() {
         <span className="ao-count">{visible.length} proactive fixes available</span>
         <button className="ao-btn" onClick={refresh}>↻</button>
       </div>
+      {actionError && <div className="ao-error">{actionError}</div>}
       {!visible.length ? (
         <div className="ao-ok">No issues detected. System is healthy.</div>
       ) : visible.map((f, i) => (

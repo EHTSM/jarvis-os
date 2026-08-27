@@ -3,6 +3,7 @@ import { _fetch } from "../_client";
 import { useEscapeKey } from "../hooks/useEscapeKey";
 import { clickableProps } from "../hooks/useClickableProps";
 import { overlayProps } from "../hooks/useClickableProps";
+import { useConfirm } from "./ConfirmDialog";
 
 // ── Shared panel constants ────────────────────────────────────────
 const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
@@ -38,6 +39,7 @@ function ExtRuntimePanel() {
   const [detail,  setDetail]  = useState(null);
   const [loadForm, setLoadForm] = useState(false);
   const [loadOpts, setLoadOpts] = useState({ extId: "", hooks: "", subscriptions: "", restartPolicy: "on_crash" });
+  const [confirm, ConfirmUI] = useConfirm();
   // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
   useEscapeKey(true, () => setDetail(null));
 
@@ -51,6 +53,21 @@ function ExtRuntimePanel() {
     setBusy(extId);
     await _fetch(endpoint, { method: "POST", body: JSON.stringify({ extId }) }).catch(() => {});
     setBusy(null); reload();
+  };
+
+  // Mission 46 P1: Unload removes the extension from the runtime with no
+  // auto-recovery (unlike Suspend/Resume/Restart, all reversible in place)
+  // — same risk class as WorkspaceSettingsL1's plugin Uninstall, which
+  // already gates on useConfirm. This panel had no confirmation at all.
+  const handleUnload = async (extId) => {
+    const ok = await confirm({
+      title: `Unload "${extId}"?`,
+      message: "This removes the extension from the runtime. You can load it again afterward, but it stops running immediately.",
+      danger: true,
+      confirmLabel: "Unload",
+    });
+    if (!ok) return;
+    action("/extensions/unload", extId);
   };
 
   const handleLoad = async () => {
@@ -76,6 +93,7 @@ function ExtRuntimePanel() {
 
   return (
     <div className="l3-panel">
+      {ConfirmUI}
       <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
         <button className="k2-form-btn" onClick={() => setLoadForm(f => !f)}>{loadForm ? "Cancel" : "+ Load Extension"}</button>
         <button className="k2-form-btn" style={{ background: "none", color: "var(--text-dim)" }} onClick={reload}>↺ Refresh</button>
@@ -127,7 +145,7 @@ function ExtRuntimePanel() {
                 {ext.state === "active"    && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/suspend", ext.id)}>Suspend</button>}
                 {ext.state === "suspended" && <button className="k5-toggle-btn k5-toggle-btn--on" disabled={busy === ext.id} onClick={() => action("/extensions/resume", ext.id)}>Resume</button>}
                 {(ext.state === "error" || ext.state === "suspended") && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/restart", ext.id)}>Restart</button>}
-                {ext.state !== "unloaded" && <button className="k2-revoke-btn" disabled={busy === ext.id} onClick={() => action("/extensions/unload", ext.id)}>Unload</button>}
+                {ext.state !== "unloaded" && <button className="k2-revoke-btn" disabled={busy === ext.id} onClick={() => handleUnload(ext.id)}>Unload</button>}
               </div>
             </div>
           ))}

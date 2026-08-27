@@ -83,7 +83,8 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const browserRegistry  = require("../services/browserRegistry.cjs");
 const sessionManager   = require("../services/browserSessionManager.cjs");
@@ -102,6 +103,19 @@ function _getStore()    { return require("../../agents/browser/browserWorkflowSt
 router.use("/browser-platform", requireAuth);
 
 function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
+
+// Mission 51 (2026-08-26): the 3 routes at ~157/164/171 already scope by
+// _accountId(req) on create/list; these 8 sibling routes read/mutate a
+// profile by bare :id with no equivalent check — any authenticated account
+// could read/update/delete another account's browser profile, cookies, and
+// localStorage. Same IDOR convention as the rest of this codebase: 404 (not
+// 403) on a real profile owned by someone else, so a caller can't
+// distinguish "not yours" from "doesn't exist".
+function _ownsProfile(req, res, profile) {
+  if (!profile) { res.status(404).json({ error: "not_found" }); return false; }
+  if (profile.accountId !== _accountId(req)) { res.status(404).json({ error: "not_found" }); return false; }
+  return true;
+}
 
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: Browser Registry
@@ -152,9 +166,17 @@ router.get("/browser-platform/sessions/status", (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Mission 51 (2026-08-26): ?all=true bypassed _accountId(req) scoping
+// entirely — any authenticated customer could list every account's browser
+// session profiles (real profile metadata, not just their own). Confirmed
+// as a legitimate operator feature (a dashboard needs to see all sessions
+// for support/ops), not dead code, so restricted to operatorOnly rather
+// than removed — an ordinary customer's ?all=true now silently falls back
+// to their own scoped list instead of widening access.
 router.get("/browser-platform/sessions", (req, res) => {
   try {
-    const profiles = sessionManager.listProfiles({ accountId: req.query.all ? undefined : _accountId(req), type: req.query.type });
+    const wantsAll = req.query.all && req.user?.role === "operator";
+    const profiles = sessionManager.listProfiles({ accountId: wantsAll ? undefined : _accountId(req), type: req.query.type });
     res.json({ ok: true, profiles });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -176,13 +198,15 @@ router.post("/browser-platform/sessions/incognito", (req, res) => {
 router.get("/browser-platform/sessions/:id", (req, res) => {
   try {
     const p = sessionManager.getProfile(req.params.id);
-    if (!p) return res.status(404).json({ error: "not_found" });
+    if (!_ownsProfile(req, res, p)) return;
     res.json({ ok: true, profile: p });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.put("/browser-platform/sessions/:id", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const p = sessionManager.updateProfile(req.params.id, req.body);
     if (!p) return res.status(404).json({ error: "not_found" });
     res.json({ ok: true, profile: p });
@@ -191,6 +215,8 @@ router.put("/browser-platform/sessions/:id", (req, res) => {
 
 router.delete("/browser-platform/sessions/:id", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const ok = sessionManager.deleteProfile(req.params.id);
     res.json({ ok });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -198,6 +224,8 @@ router.delete("/browser-platform/sessions/:id", (req, res) => {
 
 router.post("/browser-platform/sessions/:id/cookies", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const { domain, cookies } = req.body || {};
     if (!domain) return res.status(400).json({ error: "domain required" });
     const result = sessionManager.saveCookies(req.params.id, domain, cookies || []);
@@ -207,6 +235,8 @@ router.post("/browser-platform/sessions/:id/cookies", (req, res) => {
 
 router.get("/browser-platform/sessions/:id/cookies", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const cookies = sessionManager.getCookies(req.params.id, req.query.domain || null);
     res.json({ ok: true, cookies });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -214,6 +244,8 @@ router.get("/browser-platform/sessions/:id/cookies", (req, res) => {
 
 router.delete("/browser-platform/sessions/:id/cookies", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const ok = sessionManager.clearCookies(req.params.id, req.query.domain || null);
     res.json({ ok });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -221,6 +253,8 @@ router.delete("/browser-platform/sessions/:id/cookies", (req, res) => {
 
 router.post("/browser-platform/sessions/:id/storage", (req, res) => {
   try {
+    const existing = sessionManager.getProfile(req.params.id);
+    if (!_ownsProfile(req, res, existing)) return;
     const { origin, data } = req.body || {};
     if (!origin) return res.status(400).json({ error: "origin required" });
     const saved = sessionManager.saveStorage(req.params.id, origin, data || {});
@@ -232,7 +266,12 @@ router.post("/browser-platform/sessions/:id/storage", (req, res) => {
 // MODULE 3: Visual Browser Controller
 // ══════════════════════════════════════════════════════════════════
 
-router.post("/browser-platform/control/run", async (req, res) => {
+// Mission 51 (2026-08-26): zero rate limiting on real browser
+// automation/navigation, despite the sibling /browser/* routes
+// (browser.js) already rate-limiting the equivalent actions. Reusing the
+// exact same thresholds already established there — not inventing new
+// limits.
+router.post("/browser-platform/control/run", rateLimiter(10, 60_000), async (req, res) => {
   try {
     const { steps, pageId, profileId } = req.body || {};
     if (!steps?.length) return res.status(400).json({ error: "steps required" });
@@ -252,7 +291,7 @@ router.post("/browser-platform/control/run", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/browser-platform/control/action", async (req, res) => {
+router.post("/browser-platform/control/action", rateLimiter(30, 60_000), async (req, res) => {
   try {
     const { action, selector, url, value, pageId, ...rest } = req.body || {};
     if (!action) return res.status(400).json({ error: "action required" });
@@ -270,7 +309,7 @@ router.post("/browser-platform/control/action", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/browser-platform/control/navigate", async (req, res) => {
+router.post("/browser-platform/control/navigate", rateLimiter(20, 60_000), async (req, res) => {
   try {
     const { url, pageId } = req.body || {};
     if (!url) return res.status(400).json({ error: "url required" });
@@ -280,7 +319,7 @@ router.post("/browser-platform/control/navigate", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/browser-platform/control/screenshot", async (req, res) => {
+router.post("/browser-platform/control/screenshot", rateLimiter(10, 60_000), async (req, res) => {
   try {
     const { pageId, fullPage } = req.body || {};
     const runner = _getRunner();
@@ -292,7 +331,7 @@ router.post("/browser-platform/control/screenshot", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/browser-platform/control/pdf", async (req, res) => {
+router.post("/browser-platform/control/pdf", rateLimiter(10, 60_000), async (req, res) => {
   try {
     const { pageId, format, landscape, printBackground } = req.body || {};
     const runner = _getRunner();

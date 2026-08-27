@@ -75,6 +75,13 @@ function SummaryBar({ summary, loading, onRefresh }) {
 function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
   const [expanded, setExpanded] = useState(false);
   const [converting, setConverting] = useState(false);
+  // Mission 58: identical silent-no-op pattern as PatchPreviewPanel.jsx's
+  // own convertToMission (Mission 43B finding) — a failed conversion was
+  // zero feedback, button just returns to idle. No toast infrastructure
+  // exists in this file, so a minimal inline error (same shape
+  // PatchPreviewPanel.jsx already uses) is the smallest fix, scoped to
+  // this one card.
+  const [convertError, setConvertError] = useState(null);
 
   const convertToMission = useCallback(async () => {
     if (converting) return;
@@ -87,8 +94,10 @@ function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
         confidence: smell.confidence,
         riskLevel: smell.severity === 'high' ? 'high' : smell.severity === 'medium' ? 'medium' : 'low',
       });
-      if (r?.ok) onConvertToMission?.(r.mission);
-    } catch {} finally { setConverting(false); }
+      if (r?.ok) { onConvertToMission?.(r.mission); setConvertError(null); }
+      else setConvertError(r?.error || 'Could not convert to a mission.');
+    } catch (e) { setConvertError(e?.message || 'Could not convert to a mission.'); }
+    finally { setConverting(false); }
   }, [converting, smell, onConvertToMission]);
 
   return (
@@ -142,6 +151,8 @@ function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
           )}
         </div>
       )}
+
+      {convertError && <div className="smell-card__error">{convertError}</div>}
 
       <div className="smell-card__actions">
         {smell.aiPatchSpec && (

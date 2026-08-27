@@ -236,8 +236,14 @@ export default function PatchPreviewPanel({
         confidence:   proposal?.confidence,
         riskLevel:    proposal?.riskLevel,
       });
-      if (r?.ok) onConvertToMission?.(r.mission);
-    } catch {} finally { setConverting(false); }
+      if (r?.ok) { onConvertToMission?.(r.mission); setError(null); }
+      // Mission 58: previously a failed conversion was a silent no-op —
+      // no false success, but zero feedback either (Mission 43B finding).
+      // Reuses this component's own `error` state/render, already used by
+      // the sibling handleApply mutation above.
+      else setError(r?.error || 'Could not convert to a mission.');
+    } catch (e) { setError(e?.message || 'Could not convert to a mission.'); }
+    finally { setConverting(false); }
   }, [converting, goal, proposal, onConvertToMission]);
 
   if (!proposal) return null;

@@ -122,6 +122,60 @@ jobs:
           path: frontend/build/
           retention-days: 7
 
+  # ── 3b. Mobile build validation ─────────────────────────────────────────────
+  # Mission 57 (2026-08-27): mobile/ had zero CI coverage of any kind before
+  # this — no build, no test run, on any PR or push. Mirrors build-frontend's
+  # exact pattern (a separate CRA app, same install/build/verify shape).
+  # No lint/typecheck script exists in mobile/package.json (same as the rest
+  # of this repo — CLAUDE.md §8), so none is run here; would be added if one
+  # is ever introduced. Release signing is intentionally NOT run here — no
+  # KEYSTORE_* secrets exist in this repo's CI config (confirmed absent),
+  # and this job must not fabricate or attempt one.
+  build-mobile:
+    name: Mobile Build & Test
+    runs-on: ubuntu-latest
+    needs: audit
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install mobile dependencies
+        run: npm ci --prefix mobile
+
+      - name: Run mobile tests
+        run: npm test --prefix mobile -- --watchAll=false
+        env:
+          CI: true
+
+      - name: Build mobile web bundle
+        run: npm run build --prefix mobile
+        env:
+          CI: false
+          # Placeholder values — this job only validates that the CRA build
+          # itself succeeds and produces real output, matching build-frontend's
+          # own REACT_APP_API_URL:"" pattern. No real backend URL or Firebase
+          # project is required for a build-only validation.
+          REACT_APP_API_URL: "https://ci-placeholder.invalid"
+          REACT_APP_FIREBASE_API_KEY: "ci-placeholder"
+          REACT_APP_FIREBASE_AUTH_DOMAIN: "ci-placeholder.firebaseapp.com"
+          REACT_APP_FIREBASE_PROJECT_ID: "ci-placeholder"
+          REACT_APP_FIREBASE_STORAGE_BUCKET: "ci-placeholder.appspot.com"
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: "000000000000"
+          REACT_APP_FIREBASE_APP_ID: "1:000000000000:web:0000000000000000000000"
+
+      - name: Verify build output
+        run: |
+          test -f mobile/build/index.html || (echo "::error::Mobile build did not produce index.html" && exit 1)
+          test -d mobile/build/static || (echo "::error::Mobile build missing static assets" && exit 1)
+          echo "Build size: $(du -sh mobile/build | cut -f1)"
+
   # ── 4. Deploy script verification ───────────────────────────────────────────
   # rollback.sh/update.sh/etc had zero automated verification — a broken
   # rollback script would only be discovered during an actual incident.
@@ -192,7 +246,7 @@ jobs:
   ci-pass:
     name: CI Pass
     runs-on: ubuntu-latest
-    needs: [regression, build-frontend, deploy-scripts, validate]
+    needs: [regression, build-frontend, build-mobile, deploy-scripts, validate]
     if: always()
     steps:
       - name: Check all jobs passed
@@ -203,6 +257,10 @@ jobs:
           fi
           if [[ "${{ needs.build-frontend.result }}" != "success" ]]; then
             echo "::error::Frontend build failed"
+            exit 1
+          fi
+          if [[ "${{ needs.build-mobile.result }}" != "success" ]]; then
+            echo "::error::Mobile build/test failed"
             exit 1
           fi
           if [[ "${{ needs.deploy-scripts.result }}" != "success" ]]; then

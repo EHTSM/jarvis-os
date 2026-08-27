@@ -25,6 +25,7 @@ const router  = require("express").Router();
 const runtime = require("../../agents/runtime/missionRuntime.cjs");
 const memory  = require("../services/missionMemory.cjs");
 const logger  = require("../utils/logger");
+const { assertOwnable } = require("../services/resourceOwnership.cjs");
 
 function _send(res, fn) {
     try {
@@ -90,21 +91,38 @@ router.get("/mission/runtime/active", (req, res) => {
 });
 
 // ── Mission Timeline API ──────────────────────────────────────────────────────
+// Mission 51 (2026-08-26): cross-tenant IDOR — any authenticated caller
+// could read another org's mission timeline/graph/replay/state by
+// caller-supplied ID, no ownership check at all. assertOwnable() (see
+// resourceOwnership.cjs) allows orgId-less missions unchanged (the majority
+// of production data — shared/operator missions), denies only when the
+// mission has a real orgId the caller doesn't belong to — thrown message
+// matches the existing "not found" convention this file's _send() already
+// maps to 404.
 
 router.get("/mission/timeline/:id", (req, res) => {
-    _send(res, () => ({ timeline: runtime.getExecutionTimeline(req.params.id) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { timeline: runtime.getExecutionTimeline(req.params.id) };
+    });
 });
 
 // ── Mission Graph API ─────────────────────────────────────────────────────────
 
 router.get("/mission/graph/:id", (req, res) => {
-    _send(res, () => ({ graph: runtime.getDependencyGraph(req.params.id) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { graph: runtime.getDependencyGraph(req.params.id) };
+    });
 });
 
 // ── Mission Replay API (delegates to missionMemory) ──────────────────────────
 
 router.get("/mission/replay/:id", (req, res) => {
-    _send(res, () => ({ replay: memory.replayMission(req.params.id) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { replay: memory.replayMission(req.params.id) };
+    });
 });
 
 // ── Mission State API ─────────────────────────────────────────────────────────
@@ -113,6 +131,7 @@ router.get("/mission/state/:id", (req, res) => {
     _send(res, () => {
         const mission = memory.getMission(req.params.id);
         if (!mission) throw new Error(`Mission not found: ${req.params.id}`);
+        assertOwnable(req, mission, `Mission not found: ${req.params.id}`);
         return {
             state: {
                 id:          mission.id,

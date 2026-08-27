@@ -78,6 +78,13 @@
   border-radius: 4px; color: var(--danger); font-size: 12px;
 }
 
+/* Mission 58: same visual treatment as .smells-error, scoped inline within
+   a single card (convertToMission failure) rather than the whole panel. */
+.smell-card__error {
+  margin: 8px 0 0; padding: 6px 9px; background: #450a0a20; border: 1px solid #7f1d1d;
+  border-radius: 4px; color: var(--danger); font-size: 11px;
+}
+
 /* Smell card */
 .smell-card {
   border-bottom: 1px solid #111827; padding: 10px 12px;

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Mission 57 (2026-08-27): legacy Auto Backup scoping for API 23-30 devices
+  (this app's minSdkVersion is 22, below Android 12's data_extraction_rules
+  API — android:fullBackupContent is the pre-Android-12 equivalent
+  mechanism and must be kept alongside data_extraction_rules.xml for full
+  minSdkVersion..targetSdkVersion coverage). Same exclusion as
+  data_extraction_rules.xml — see that file's comment for the full
+  rationale (excludes the WebView-held session JWT from Android's cloud
+  Auto Backup).
+-->
+<full-backup-content>
+    <exclude domain="sharedpref" path="."/>
+    <exclude domain="file" path="app_webview/"/>
+</full-backup-content>

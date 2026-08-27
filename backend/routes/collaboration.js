@@ -12,13 +12,27 @@
  */
 const router = require("express").Router();
 const layer  = require("../../agents/runtime/collaborationLayer.cjs");
+const memory = require("../services/missionMemory.cjs");
+const { assertOwnable } = require("../services/resourceOwnership.cjs");
 
 function _ok(res, data)       { res.json({ ok: true,  ...data }); }
 function _err(res, err, code) { res.status(code || 500).json({ ok: false, error: err.message || String(err) }); }
 
+// Mission 51 (2026-08-26): collaborationLayer.cjs has zero orgId concept of
+// its own — every function here operates on a missionId and internally
+// calls missionMemory.getMission(missionId) to load the underlying mission.
+// Ownership is derived transitively from THAT mission's orgId (same rule as
+// mission.js: no orgId → shared/allowed; real orgId → caller must belong).
+// No new persisted field, no change to collaborationLayer.cjs itself —
+// matches the mission plan's explicit design for this file.
+function _assertMissionOwnable(req, missionId) {
+    assertOwnable(req, memory.getMission(missionId), `Mission not found: ${missionId}`);
+}
+
 // ── GET /collaboration/session/:missionId ────────────────────────────────────
 router.get("/collaboration/session/:missionId", (req, res) => {
     try {
+        _assertMissionOwnable(req, req.params.missionId);
         const session = layer.getSession(req.params.missionId);
         _ok(res, { session });
     } catch (err) {
@@ -29,6 +43,7 @@ router.get("/collaboration/session/:missionId", (req, res) => {
 // ── GET /collaboration/history/:missionId ────────────────────────────────────
 router.get("/collaboration/history/:missionId", (req, res) => {
     try {
+        _assertMissionOwnable(req, req.params.missionId);
         const limit   = Math.max(1, parseInt(req.query.limit) || 50);
         const history = layer.getHistory(req.params.missionId, { limit });
         _ok(res, { history });
@@ -44,11 +59,12 @@ router.post("/collaboration/message", async (req, res) => {
         const { missionId, from, body, agentId, type } = req.body || {};
         if (!missionId)  return _err(res, new Error("missionId is required"), 400);
         if (!body?.trim()) return _err(res, new Error("body is required"),    400);
+        _assertMissionOwnable(req, missionId);
 
         const result = await layer.sendMessage(missionId, from || "operator", body, { agentId, type });
         _ok(res, { result });
     } catch (err) {
-        _err(res, err);
+        _err(res, err, err.message?.includes("not found") ? 404 : 500);
     }
 });
 
@@ -62,6 +78,7 @@ router.post("/collaboration/action", async (req, res) => {
         const { missionId, action, payload } = req.body || {};
         if (!missionId) return _err(res, new Error("missionId is required"), 400);
         if (!action)    return _err(res, new Error("action is required"),    400);
+        _assertMissionOwnable(req, missionId);
 
         const result = await layer.performAction(missionId, action, payload || {});
         _ok(res, { result });
@@ -76,6 +93,7 @@ router.post("/collaboration/replan", async (req, res) => {
     try {
         const { missionId, reason } = req.body || {};
         if (!missionId) return _err(res, new Error("missionId is required"), 400);
+        _assertMissionOwnable(req, missionId);
 
         const result = await layer.requestReplan(missionId, reason || "Operator requested");
         _ok(res, { result });
@@ -91,6 +109,7 @@ router.post("/collaboration/approve", async (req, res) => {
         const { missionId, itemId, approvedBy } = req.body || {};
         if (!missionId) return _err(res, new Error("missionId is required"), 400);
         if (!itemId)    return _err(res, new Error("itemId is required"),    400);
+        _assertMissionOwnable(req, missionId);
 
         const result = await layer.approve(missionId, itemId, approvedBy || "operator");
         _ok(res, { result });
@@ -106,6 +125,7 @@ router.post("/collaboration/reject", async (req, res) => {
         const { missionId, itemId, reason, rejectedBy } = req.body || {};
         if (!missionId) return _err(res, new Error("missionId is required"), 400);
         if (!itemId)    return _err(res, new Error("itemId is required"),    400);
+        _assertMissionOwnable(req, missionId);
 
         const result = await layer.reject(missionId, itemId, reason || "Rejected", rejectedBy || "operator");
         _ok(res, { result });

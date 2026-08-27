@@ -55,16 +55,28 @@ function PluginsPanel() {
     finally { setSaving(false); }
   };
 
+  // Mission 58: both handlers previously swallowed a failure via
+  // .catch(() => {}) and called reload() unconditionally regardless of
+  // success — a failed toggle/uninstall was completely silent (Mission
+  // 43B finding). Reuses this file's own handleInstall setErr() pattern,
+  // and only reloads on genuine success (matching handleInstall's own
+  // "only advance state on success" shape).
   const toggle = async (p) => {
     const endpoint = p.enabled ? "/plugins/disable" : "/plugins/enable";
-    await _fetch(endpoint, { method: "POST", body: JSON.stringify({ pluginId: p.id }) }).catch(() => {});
-    reload();
+    try {
+      await _fetch(endpoint, { method: "POST", body: JSON.stringify({ pluginId: p.id }) });
+      setErr(null);
+      reload();
+    } catch (e) { setErr(e.message || "Could not update plugin state"); }
   };
 
   const uninstall = async (pluginId) => {
     if (!await confirm({ title: `Uninstall "${pluginId}"?`, message: 'This plugin will be removed. You can reinstall it at any time.', danger: true, confirmLabel: 'Uninstall' })) return;
-    await _fetch("/plugins/uninstall", { method: "POST", body: JSON.stringify({ pluginId }) }).catch(() => {});
-    reload();
+    try {
+      await _fetch("/plugins/uninstall", { method: "POST", body: JSON.stringify({ pluginId }) });
+      setErr(null);
+      reload();
+    } catch (e) { setErr(e.message || "Could not uninstall plugin"); }
   };
 
   if (loading) return <div className="k2-loading">Loading plugins…</div>;

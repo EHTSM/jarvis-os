@@ -151,7 +151,24 @@ function requireAuth(req, res, next) {
   }
 
   const cookies = _parseCookies(req);
-  const token   = cookies[COOKIE_NAME];
+  let token = cookies[COOKIE_NAME];
+
+  // Mission 45 — Capacitor Mobile Auth Remediation (2026-08-24): a native
+  // Capacitor WebView's cross-origin cookie handling is not reliable the way
+  // a browser's is, so mobile clients cannot depend on the HttpOnly cookie
+  // this middleware otherwise requires. Accept the identical JARVIS JWT (the
+  // same token signJWT/verifyJWT already produce and validate for the cookie
+  // path — not a new token type, not a raw Firebase ID token) via a standard
+  // `Authorization: Bearer <jwt>` header as a fallback when no cookie is
+  // present. Every check below (signature, exp, revocation, password-change
+  // staleness) runs identically for both transports because both call the
+  // same verifyJWT(); this widens *how* the token is carried, not *what*
+  // counts as valid or *what* requireAuth accepts as proof of identity.
+  if (!token) {
+    const authHeader = req.headers.authorization || "";
+    if (authHeader.startsWith("Bearer ")) token = authHeader.slice(7).trim();
+  }
+
   if (!token) return res.status(401).json({ error: "Unauthorized" });
 
   const user = verifyJWT(token);

@@ -16,9 +16,50 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Mission 57 (2026-08-27): release signing was entirely absent from this
+    // live file — mobile/android-config/build.gradle.app documents a real
+    // signingConfigs.release block (env-var-sourced, matching the pattern
+    // already established for backend/electron signing in this repo — see
+    // .github/workflows/release.yml's CSC_LINK/WIN_CSC_LINK), but that
+    // template was never actually applied here. The template itself is
+    // otherwise STALE (missing namespace, aaptOptions, the capacitor.build.gradle
+    // apply, the google-services.json conditional, and uses hardcoded SDK
+    // versions instead of this project's real variables.gradle values) —
+    // copying it wholesale would have broken the live build. Only the
+    // signing/minify/shrink pieces are added here, to the real, current file.
+    //
+    // Unset env vars resolve storePassword/keyPassword to "" rather than
+    // failing the build — matches this same repo's existing, established
+    // "unset secret -> unsigned build, not a hard failure" pattern
+    // (.github/workflows/release.yml's own comment says the identical thing
+    // for Electron code-signing). A real release build with these unset
+    // will fail at the actual bundleRelease/signing step (a genuine,
+    // correct failure — not a silent bad signature) rather than at
+    // configuration-evaluation time; the real keystore file itself is never
+    // committed to this repo (confirmed absent).
+    signingConfigs {
+        release {
+            storeFile     file(System.getenv("KEYSTORE_PATH")    ?: "jarvis-release.keystore")
+            storePassword System.getenv("KEYSTORE_PASSWORD")     ?: ""
+            keyAlias      System.getenv("KEY_ALIAS")             ?: "jarvis"
+            keyPassword   System.getenv("KEY_PASSWORD")          ?: ""
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            // No custom native Java/Kotlin code exists in this app
+            // (MainActivity.java is a bare BridgeActivity, no custom
+            // @JavascriptInterface bridge) — all real business logic lives
+            // in the WebView's JS bundle, which R8/ProGuard does not touch.
+            // Capacitor's own Android library ships its own consumer
+            // ProGuard rules, merged automatically. Kept the live file's
+            // existing, more conservative getDefaultProguardFile
+            // ('proguard-android.txt') rather than switching to the
+            // template's '-optimize' variant, since that swap isn't needed
+            // to close this finding and is a separate, larger change.
+            minifyEnabled     true
+            shrinkResources   true
+            signingConfig     signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

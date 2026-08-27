@@ -19,7 +19,7 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireRole, requireWorkspaceMember } = require("../middleware/workspaceMiddleware.cjs");
 const { requireFeature } = require("../services/featureGate.cjs");
 const mgr = require("../services/pluginManagerService.cjs");
 
@@ -30,8 +30,24 @@ function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
 }
 
+// Mission 44: the read-only routes below relied on _wsId(req), which accepts
+// a caller-supplied ?workspaceId= directly with NO membership check —
+// attachWorkspace only resolves req.workspace/req.workspaceRole (non-blocking
+// by its own header comment); the mutating routes already correctly compose
+// requireRole(), which does enforce real membership via req.workspaceRole,
+// but these reads had no equivalent gate. A real, unrelated account could
+// supply another workspace's id and read its plugin list, health,
+// diagnostics, stats, manifest, and per-plugin config (which can hold
+// plugin-specific settings) — 200, not 403. Fixed the same way
+// extensions.js's identical defect was fixed: requireWorkspaceMember (the
+// existing real membership check) after attachWorkspace, on each previously-
+// unguarded read route. The default "view my own workspace" case (no
+// workspaceId supplied) is unaffected, since attachWorkspace's own fallback
+// (getActiveWorkspace) always resolves to a real workspace the caller is
+// trivially a member of. /plugins/validate is untouched — it validates a
+// manifest against a schema and never reads workspace-scoped data.
 // ── List ──────────────────────────────────────────────────────────
-router.get("/plugins", requireFeature("plugins.marketplace"), (req, res) => {
+router.get("/plugins", requireWorkspaceMember, requireFeature("plugins.marketplace"), (req, res) => {
   try {
     const { category, enabled, tag } = req.query;
     const enabledFilter = enabled === undefined ? undefined : enabled === "true";
@@ -41,7 +57,7 @@ router.get("/plugins", requireFeature("plugins.marketplace"), (req, res) => {
 });
 
 // ── Health ────────────────────────────────────────────────────────
-router.get("/plugins/health", (req, res) => {
+router.get("/plugins/health", requireWorkspaceMember, (req, res) => {
   try { res.json(mgr.getHealth(_wsId(req))); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -54,13 +70,13 @@ router.post("/plugins/health/check", requireRole("Operator"), (req, res) => {
 });
 
 // ── Diagnostics ───────────────────────────────────────────────────
-router.get("/plugins/diagnostics", (req, res) => {
+router.get("/plugins/diagnostics", requireWorkspaceMember, (req, res) => {
   try { res.json(mgr.getDiagnostics(_wsId(req), req.query.pluginId || null)); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ── Stats ─────────────────────────────────────────────────────────
-router.get("/plugins/stats", (req, res) => {
+router.get("/plugins/stats", requireWorkspaceMember, (req, res) => {
   try { res.json(mgr.getStats(_wsId(req))); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -119,7 +135,7 @@ router.post("/plugins/disable", requireRole("Admin"), (req, res) => {
 });
 
 // ── Manifest ──────────────────────────────────────────────────────
-router.get("/plugins/manifest/:id", (req, res) => {
+router.get("/plugins/manifest/:id", requireWorkspaceMember, (req, res) => {
   try { res.json(mgr.getManifest(_wsId(req), req.params.id)); }
   catch (e) {
     const status = e.message.includes("not installed") ? 404 : 500;
@@ -128,7 +144,7 @@ router.get("/plugins/manifest/:id", (req, res) => {
 });
 
 // ── Config ────────────────────────────────────────────────────────
-router.get("/plugins/:id/config", (req, res) => {
+router.get("/plugins/:id/config", requireWorkspaceMember, (req, res) => {
   try { res.json(mgr.getConfig(_wsId(req), req.params.id)); }
   catch (e) {
     const status = e.message.includes("not installed") ? 404 : 500;
@@ -145,7 +161,7 @@ router.patch("/plugins/:id/config", requireRole("Admin"), (req, res) => {
 });
 
 // ── Get single (must be after all named routes) ───────────────────
-router.get("/plugins/:id", (req, res) => {
+router.get("/plugins/:id", requireWorkspaceMember, (req, res) => {
   try {
     const plugin = mgr.get(_wsId(req), req.params.id);
     if (!plugin) return res.status(404).json({ error: "Plugin not found" });

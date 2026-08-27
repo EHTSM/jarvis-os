@@ -225,6 +225,14 @@ function _buildRun(goal, opts = {}) {
         pipelineId,
         goal:            goal.trim(),
         status:          "pending",
+        // Mission 51 (2026-08-26): optional, defaults to shared — identical
+        // pattern to missionMemory.cjs's own orgId field (see that file's
+        // header comment). null/undefined means a shared/operator-run
+        // pipeline (the vast majority, e.g. the I7-7 validation suite and
+        // any caller with no resolved org), unchanged behavior. When a real
+        // tenant-facing caller supplies one, resourceOwnership.cjs's
+        // assertOwnable() enforces it in pipeline.js's routes below.
+        orgId:           typeof opts.orgId === "string" && opts.orgId ? opts.orgId : null,
         missionId:       null,
         collaborationPlanId: null,
         commitHash:      null,

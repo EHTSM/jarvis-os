@@ -167,6 +167,20 @@ function _handleLogout(req, res) {
       const payload = verifyJWT(token);
       if (payload?.jti) revokeToken(payload.jti, payload.exp);
     } catch { /* malformed cookie — nothing to revoke, still clear it below */ }
+  } else {
+    // Mission 45: a mobile (Bearer-authenticated) client has no cookie to
+    // read here — this route intentionally has no requireAuth gate (see
+    // comment above), so recover the token from the Authorization header
+    // the same way, revoke its jti the same way, so mobile logout actually
+    // invalidates the token server-side instead of only "forgetting" it
+    // client-side while it remains valid until natural expiry.
+    const authHeader = req.headers.authorization || "";
+    if (authHeader.startsWith("Bearer ")) {
+      try {
+        const payload = verifyJWT(authHeader.slice(7).trim());
+        if (payload?.jti) revokeToken(payload.jti, payload.exp);
+      } catch { /* malformed/absent token — nothing to revoke */ }
+    }
   }
   auditLog.recordAuth({ action: "logout", operator: req.user });
   res.clearCookie(COOKIE_NAME, { path: "/" });
@@ -196,7 +210,10 @@ function _handleRefresh(req, res) {
     if (u.jti) revokeToken(u.jti, u.exp);
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
     auditLog.recordAuth({ action: "refresh", operator: u.sub || u.role, method: "cookie" });
-    res.json({ success: true, role: u.role });
+    // Mission 45: same rationale as _handleFirebaseSession — return the new
+    // token in the body too so a Bearer-authenticated (mobile) caller can
+    // rotate its stored token exactly like the cookie is rotated for web.
+    res.json({ success: true, role: u.role, token });
   } catch {
     res.status(500).json({ error: "JWT signing failed" });
   }
@@ -340,7 +357,15 @@ async function _handleFirebaseSession(req, res) {
     });
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
     auditLog.recordAuth({ action: "login", operator: account.id, method: provider || "firebase" });
-    res.json({ success: true, role: account.role, email: account.email });
+    // Mission 45 — Capacitor Mobile Auth Remediation (2026-08-24): also
+    // return the same signed JWT in the response body, alongside the cookie
+    // (web callers keep working unchanged, they simply ignore this field).
+    // A native Capacitor WebView cannot reliably rely on the HttpOnly cookie
+    // cross-origin, so the mobile client stores this token and sends it as
+    // `Authorization: Bearer` instead — the exact token requireAuth's new
+    // Bearer path already validates via the unmodified verifyJWT(). Never
+    // logged; returned once, directly in this single response body.
+    res.json({ success: true, role: account.role, email: account.email, token });
   } catch {
     res.status(500).json({ error: "JWT signing failed" });
   }

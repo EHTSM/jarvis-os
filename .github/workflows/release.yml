@@ -152,6 +152,47 @@ jobs:
           WIN_CSC_LINK: ${{ matrix.os == 'windows-latest' && secrets.WIN_CERT_PFX || '' }}
           WIN_CSC_KEY_PASSWORD: ${{ matrix.os == 'windows-latest' && secrets.WIN_CERT_PASSWORD || '' }}
 
+      # Mission 58 (2026-08-27): electron-builder's own documented behavior
+      # (see the comment above) is that an unset CSC_LINK/WIN_CSC_LINK
+      # produces an UNSIGNED build with no error and no warning — a real
+      # tagged release could ship unsigned with zero visible signal in this
+      # workflow's own output (Mission 53's audit finding). This step makes
+      # that outcome visible in the CI log for a real release run, using
+      # each platform's own pre-installed OS signature-verification tool
+      # (no new dependency, matching this workflow's own deploy-scripts job
+      # precedent of using tools already on the runner). Warn-only, not a
+      # hard failure: signing IS genuinely optional/opt-in by this repo's
+      # own documented design (mobile/BUILD.md's release process is the
+      # same opt-in-via-env-var shape), so this must not force a build
+      # failure over a deliberate choice — it closes the SILENT part of the
+      # gap, not the optionality itself.
+      - name: Verify code-signing status (warn-only)
+        if: matrix.os == 'macos-latest' || matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            APP_PATH=$(find dist -maxdepth 1 -iname "*.app" -o -iname "*.dmg" 2>/dev/null | head -1)
+            if [ -z "$APP_PATH" ]; then
+              echo "::warning::Could not locate a built .app/.dmg to verify signing status"
+            elif [[ "$APP_PATH" == *.app ]] && codesign --verify --deep "$APP_PATH" 2>/dev/null; then
+              echo "Signed: $APP_PATH (codesign verified)"
+            else
+              echo "::warning::Desktop build for macOS appears UNSIGNED (CSC_LINK/MACOS_CERT_P12 secret likely unset) — Gatekeeper will block this build on end-user machines"
+            fi
+          else
+            EXE_PATH=$(find dist -maxdepth 1 -iname "*.exe" 2>/dev/null | head -1)
+            if [ -z "$EXE_PATH" ]; then
+              echo "::warning::Could not locate a built .exe to verify signing status"
+            else
+              STATUS=$(powershell -NoProfile -Command "(Get-AuthenticodeSignature '$EXE_PATH').Status")
+              if [ "$STATUS" = "Valid" ]; then
+                echo "Signed: $EXE_PATH (Authenticode valid)"
+              else
+                echo "::warning::Desktop build for Windows appears UNSIGNED or invalidly signed (status=$STATUS) — WIN_CSC_LINK/WIN_CERT_PFX secret likely unset; SmartScreen will warn end users"
+              fi
+            fi
+          fi
+
   # ── 4. Extract changelog for this release ───────────────────────────────────
   changelog:
     name: Extract Changelog

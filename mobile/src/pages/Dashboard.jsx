@@ -63,12 +63,22 @@ export default function Insights() {
   const [ops,     setOps]     = useState(null);
   const [loading, setLoading] = useState(false);
   const [loaded,  setLoaded]  = useState(false);
+  // Mission 56: /stats and /ops are operator-only — a regular customer
+  // account gets a real 403 on every call, which getStats()/getOpsData()
+  // now report as { forbidden: true } instead of swallowing to null. This
+  // must render as a distinct "you don't have access" state, never as the
+  // "No clients yet" empty state a genuinely fresh account sees.
+  const [forbidden, setForbidden] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     const [s, o] = await Promise.allSettled([getStats(), getOpsData()]);
-    setStats(s.value  ?? null);
-    setOps(o.value    ?? null);
+    const statsResult = s.value ?? null;
+    const opsResult   = o.value ?? null;
+    const isForbidden = !!(statsResult?.forbidden || opsResult?.forbidden);
+    setForbidden(isForbidden);
+    setStats(isForbidden ? null : statsResult);
+    setOps(isForbidden ? null : opsResult);
     setLoading(false);
     setLoaded(true);
   }, []);
@@ -105,7 +115,13 @@ export default function Insights() {
               {/* Business KPIs */}
               <p className="section-label">Your Business</p>
 
-              {!crm || crm.total === 0 ? (
+              {forbidden ? (
+                <div className="empty-state">
+                  <span className="empty-icon">🔒</span>
+                  <span className="empty-title">Insights not available</span>
+                  <span className="empty-sub">Your account doesn't have access to this dashboard.</span>
+                </div>
+              ) : !crm || crm.total === 0 ? (
                 <div className="empty-state">
                   <span className="empty-icon">👥</span>
                   <span className="empty-title">No clients yet</span>
