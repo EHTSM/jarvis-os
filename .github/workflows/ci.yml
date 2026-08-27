@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Mission 60 (2026-08-27): manual one-shot certification gate — lets the
+  # existing `regression` job (full tests/runtime + tests/security corpus,
+  # run sequentially per scripts/run-test-suite.cjs) be dispatched against
+  # any branch/commit without requiring a push to main or an open PR.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
