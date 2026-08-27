@@ -191,8 +191,17 @@ test("inspectPage returns structured result", async () => {
   if (r.ok) assert(r.tabId === openTabId);
 });
 
-test("downloadFile with curl fallback works for small file", () => {
-  const r = bc.downloadFile({ url: "https://httpbin.org/get", destination: `/tmp/ucc_test_${Date.now()}.json` });
+test("downloadFile with curl fallback works for small file", async () => {
+  // Mission 63: downloadFile() is async (real spawn("curl", ...) + a
+  // 60s timeout race) — the missing `await` here meant `r` was the
+  // pending Promise object itself, not the resolved result, so
+  // `typeof r.ok === "boolean"` was checking Promise.ok (always
+  // undefined) rather than the real response. A stale test defect, not
+  // a production issue — browserController.cjs's downloadFile()
+  // destination containment is unrelated to createFile()'s separate
+  // ROOT guard (see the other Mission 63 fix in this same file), so no
+  // safety behavior changes here, just genuinely awaiting the real result.
+  const r = await bc.downloadFile({ url: "https://httpbin.org/get", destination: `/tmp/ucc_test_${Date.now()}.json` });
   // Ok depends on network; just check it returns structured response
   assert(typeof r.ok === "boolean");
   assert(r.url, "no url in result");
@@ -212,7 +221,16 @@ test("executeWorkflow gates dangerous actions", async () => {
   assert(typeof r.ok === "boolean");
 });
 
-test("getStats returns openTabs, browser list", () => {
+test("getStats returns openTabs, browser list", async () => {
+  // Mission 63: test() calls fn() immediately but does not block the
+  // top-level script on an async fn's first await — later test(...)
+  // registrations (like this one) can and do start executing before an
+  // earlier async test's own real work (openTab()'s real Playwright call)
+  // has resolved. This test depends on _openTabTest's side effect
+  // (openTabs >= 1), so it must await it first, matching the exact
+  // pattern "listTabs returns open tab"/"switchTab works for open tab"
+  // already established a few tests above for the same dependency.
+  await _openTabTest;
   const s = bc.getStats();
   assert(typeof s.openTabs === "number");
   assert(s.openTabs >= 1, `expected >=1 open tabs, got ${s.openTabs}`);
@@ -224,7 +242,17 @@ test("getStats returns openTabs, browser list", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 console.log("\n── Block 3: editorController ──");
 
-const testFilePath = `/tmp/ucc_test_${Date.now()}.js`;
+// Mission 63: editorController.cjs's createFile()/saveFile()/etc. all
+// route through _guardPath(), which intentionally rejects any path
+// outside the project root ("Path traversal rejected: path must be
+// inside project root") — a real, deliberate safety boundary, not
+// something to weaken. /tmp/... is genuinely outside the project root,
+// so this test's own fixture path was invalid, not the guard. Fixed by
+// using generated/ (gitignored, already the established location for
+// test-generated artifacts in this repo — see generated/pipeline-test.js,
+// generated/cert-test.txt), which is inside the project root and
+// therefore a legitimate target for these operations.
+const testFilePath = require("node:path").join(__dirname, "../../generated", `ucc_test_${Date.now()}.js`);
 
 test("openProject for repo root returns branch", () => {
   const r = ec.openProject(process.cwd());
@@ -327,10 +355,22 @@ test("execute npm --version returns success", () => {
   assert(r.output?.match(/^\d+\.\d+/), "unexpected npm version output");
 });
 
-test("execute ls returns file listing", () => {
+test("execute ls is rejected — not in the terminal facade's command allowlist", () => {
+  // Mission 63: terminalController.cjs's ALLOWED_COMMANDS is a narrow,
+  // deliberate per-binary allowlist (node/npm/git/sleep/docker only —
+  // see the 159-master-audit-agent-runtime-execution-boundary fix
+  // documented in this same test corpus, which closed an arbitrary-
+  // code-execution bypass by removing exactly this kind of general
+  // shell-command access). ls was never restored to the allowlist after
+  // that hardening — this test's original assumption of arbitrary
+  // command execution predates that fix and is now testing removed,
+  // intentionally-unsupported behavior. Do not weaken the allowlist to
+  // make the old assertion pass; assert the real, current, correct
+  // behavior instead — matching the sibling "blocked rm -rf /" test's
+  // own pattern for a disallowed command.
   const r = tc.execute("ls package.json backend/");
-  assert(r.ok, "ls failed");
-  assert(r.output?.includes("package.json"), "package.json not in output");
+  assert(!r.ok, "expected ls to be rejected — it is not in ALLOWED_COMMANDS");
+  assert(r.error?.includes("blocked"), `expected 'blocked', got: ${r.error}`);
 });
 
 test("blocked rm -rf / is rejected", () => {
@@ -360,11 +400,36 @@ test("getOutput retrieves command record", () => {
 });
 
 test("retry on failing command runs maxAttempts times", () => {
-  const failCmd = tc.execute("node -e 'process.exit(1)'");
-  assert(!failCmd.ok, "expected failure");
-  const r = tc.retry(failCmd.cmdId, 2);
-  assert(typeof r.ok === "boolean");
-  assert(r.attempts <= 2, `expected <=2 attempts, got ${r.attempts}`);
+  // Mission 63: terminalController.cjs's ALLOWED_COMMANDS only permits
+  // `node --version` or `node <path-inside-tests/>` (see
+  // _assertNodeArgs/_isPathInsideTests) — `node -e '...'` is not on that
+  // allowlist and was itself blocked by safety policy before this fix,
+  // meaning failCmd.cmdId was always undefined and retry() short-circuited
+  // on its own "command not found" branch (attempts never set) — this
+  // test was never exercising retry()'s real attempt-counting logic, only
+  // the (correct) allowlist rejection. Fixed by giving it a real, allowed
+  // node invocation that genuinely fails at runtime: a throwaway fixture
+  // file written inside tests/ (satisfying _isPathInsideTests), removed
+  // immediately after.
+  const nodeFs = require("node:fs");
+  const nodePath = require("node:path");
+  const repoRoot = nodePath.join(__dirname, "../..");
+  const fixturePath = nodePath.join(__dirname, `_t63_retry_fixture_${Date.now()}.cjs`);
+  nodeFs.writeFileSync(fixturePath, "process.exit(1);\n");
+  let r;
+  try {
+    // execute()'s default cwd is terminalController.cjs's own ROOT (the
+    // repo root) — the path argument must resolve from there, matching
+    // _isPathInsideTests(p) => path.resolve(ROOT, p).
+    const failCmd = tc.execute(`node ${nodePath.relative(repoRoot, fixturePath)}`);
+    assert(!failCmd.ok, "expected failure");
+    assert(failCmd.cmdId, "command must have been genuinely allowed and recorded (not rejected by the allowlist) for retry() to have anything real to retry");
+    r = tc.retry(failCmd.cmdId, 2);
+    assert(typeof r.ok === "boolean");
+    assert(r.attempts <= 2, `expected <=2 attempts, got ${r.attempts}`);
+  } finally {
+    nodeFs.rmSync(fixturePath, { force: true });
+  }
 });
 
 test("recover returns strategy for failed command", () => {
@@ -583,13 +648,17 @@ test("getCapabilities returns full UCC capability map", () => {
   const caps = cc.getCapabilities();
   assert(caps.ok, "capabilities failed");
   assert(caps.controller?.includes("Universal Computer Controller"), "wrong controller name");
-  // 5 domains
-  assert(Object.keys(caps.domains).length === 5, `expected 5 domains, got ${Object.keys(caps.domains).length}`);
+  // Mission 63: computerController.cjs's getCapabilities() genuinely
+  // added a 6th domain (docker — container/compose orchestration) since
+  // this test was written; a real capability addition, not a defect.
+  // 6 domains
+  assert(Object.keys(caps.domains).length === 6, `expected 6 domains, got ${Object.keys(caps.domains).length}`);
   assert(caps.domains.desktop?.capabilities?.length >= 7);
   assert(caps.domains.browser?.capabilities?.length >= 7);
   assert(caps.domains.editor?.capabilities?.length >= 9);
   assert(caps.domains.terminal?.capabilities?.length >= 7);
   assert(caps.domains.workspace?.capabilities?.length >= 5);
+  assert(caps.domains.docker?.capabilities?.length >= 10, `expected docker domain with >=10 capabilities, got ${caps.domains.docker?.capabilities?.length}`);
   // Reused services
   assert(caps.reusedServices.length >= 15, `expected >=15 reused services, got ${caps.reusedServices.length}`);
   // Architecture freeze compliance
@@ -626,9 +695,17 @@ test("browser.open() + browser.tabs() work", async () => {
 });
 
 test("terminal.run() executes via facade", () => {
-  const r = cc.terminal.run("echo hello");
+  // Mission 63: echo is not in terminalController.cjs's ALLOWED_COMMANDS
+  // (node/npm/git/sleep/docker only — same 159-master-audit hardening
+  // referenced by the "execute ls is rejected" fix above), so this was
+  // always going to be blocked — the test's real intent (verify the
+  // cc.terminal.run() facade correctly delegates to the real execute())
+  // is exercised just as well by an actually-allowed command, matching
+  // the sibling "execute node --version returns success" test's own
+  // pattern below.
+  const r = cc.terminal.run("node --version");
   assert(r?.ok, "terminal.run failed: " + r?.error);
-  assert(r?.output?.includes("hello"), `expected 'hello' in output, got: ${r?.output}`);
+  assert(r?.output?.match(/^v?\d+\.\d+/), `expected a version string in output, got: ${r?.output}`);
 });
 
 test("terminal.verify() works via facade", () => {

@@ -398,9 +398,20 @@ function listMissions(opts = {}) {
     }
 
     // Sort newest first
+    // Mission 63: every mission created through this file's own
+    // createMission()/_buildMission() always sets createdAt (confirmed —
+    // it is the only production write path into store.missions). A
+    // record missing createdAt can only reach here via a direct,
+    // out-of-band write to the store bypassing this API — a real one was
+    // found live-reproduced (a test fixture that pushed a raw record
+    // without going through createMission()). One such malformed record
+    // must not crash localeCompare() for every OTHER caller's listMissions()
+    // — sort it as oldest (empty string sorts last against any real
+    // ISO-8601 createdAt) rather than throwing, so a single bad record
+    // degrades gracefully instead of taking down the whole list.
     list = list
         .slice()
-        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
         .slice(0, limit);
 
     return { missions: list.map(m => ({ ...m })), total: list.length };

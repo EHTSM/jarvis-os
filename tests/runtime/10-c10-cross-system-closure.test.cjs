@@ -1188,6 +1188,45 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
     // cleanup — leave no test residue in the real mission store
     memory.updateMission(mission.id, { status: "cancelled" });
   });
+
+  it("live: listMissions() does not crash the whole scan when a malformed record (missing createdAt) exists in the store — Mission 63, real regression: a test fixture elsewhere in this corpus once bypassed createMission()/_buildMission() and pushed a raw record straight into data/missions.json, and the resulting missing createdAt threw TypeError inside listMissions()'s own newest-first sort (b.createdAt.localeCompare — undefined has no localeCompare), crashing recoverStaleMissions() for every OTHER caller too, not just whoever wrote the bad record", () => {
+    const memory = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const fs2 = require("node:fs");
+    const missionsPath = path.join(ROOT, "data/missions.json");
+
+    // A genuine, real mission via the proper API first, so its own write
+    // (and this test's later direct read of the store) reflect the same
+    // up-to-date file — not a stale pre-createMission() snapshot.
+    const marker = `t63_${Date.now()}`;
+    const good = memory.createMission({ objective: `133/63 malformed-record-resilience control ${marker}`, priority: "low" });
+
+    // Directly inject a malformed record the same way the real historical
+    // bug did — bypassing createMission() entirely, no createdAt field.
+    const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+    const badId = `t63_malformed_no_createdAt_${marker}`;
+    store.missions.push({ id: badId, objective: `Mission 63 regression — deliberately malformed, no createdAt ${marker}`, status: "planned" });
+    fs2.writeFileSync(missionsPath, JSON.stringify(store, null, 2));
+
+    try {
+      let result;
+      // search-scoped, not limit-scoped: the real store has 1000s of
+      // missions, so this must not depend on where these two land in a
+      // limited/sorted slice — it depends only on listMissions() not
+      // throwing over the whole scan and both markers still being findable.
+      assert.doesNotThrow(() => { result = memory.listMissions({ search: marker, limit: 10000 }); },
+        "listMissions() must not throw when one record in the store is missing createdAt");
+      assert.ok(result.missions.some(m => m.id === good.id),
+        "a genuine, well-formed mission must still be present and findable despite the malformed sibling record");
+      assert.ok(result.missions.some(m => m.id === badId),
+        "the malformed record itself must still be present (degrade gracefully in sort order, not silently dropped/hidden)");
+    } finally {
+      // cleanup — remove both the malformed record and the control mission,
+      // leaving the real store exactly as found.
+      const cleanup = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+      cleanup.missions = cleanup.missions.filter(m => m.id !== badId && m.id !== good.id);
+      fs2.writeFileSync(missionsPath, JSON.stringify(cleanup, null, 2));
+    }
+  });
 });
 
 describe("134-master-audit-dop-wiring-credentials-api-prefix — 6 dashboards no longer call the nonexistent /api prefix", () => {

@@ -187,6 +187,19 @@ test("generate({sources:['engineering']}) generates engineering hypotheses", () 
       id: `t60a_seed_mission_${Date.now()}_${i}`,
       objective: "Mission 60A-E test seed — safe to ignore",
       status: "failed",
+      // Mission 63: this fixture originally omitted createdAt (and every
+      // other field _buildMission() sets), directly bypassing
+      // missionMemory.createMission()'s canonical mission shape — a real,
+      // live-reproduced malformed record that crashed listMissions()'s
+      // own newest-first sort (b.createdAt.localeCompare — TypeError on
+      // undefined) for every OTHER caller elsewhere in the corpus,
+      // confirmed via ERA-1 run 33090723011's "133-master-audit-stale-
+      // active-mission-recovery" failure. createdAt is now set, matching
+      // every real record's shape (listMissions()'s sort was also
+      // hardened separately so a future malformed record degrades
+      // gracefully instead of crashing, but this fixture itself must not
+      // be the thing writing malformed data into the shared store).
+      createdAt: new Date().toISOString(),
       failures: [{ description: "seeded failure for hypothesis-generation coverage", phase }],
     });
   }
