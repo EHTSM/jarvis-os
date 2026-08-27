@@ -62,6 +62,19 @@ jobs:
       - name: Install backend dependencies
         run: npm ci
 
+      - name: Install Playwright Chromium
+        # playwright is a real production `dependencies` entry (package.json),
+        # used by browserController.cjs/browserRegistry.cjs/productionWiring.cjs
+        # for real headless browser automation — Chromium only, matching this
+        # codebase's own documented launch hint ("npx playwright install
+        # chromium" — see browserRegistry.cjs and productionWiring.cjs).
+        # `npm ci` installs the playwright npm package but not its browser
+        # binaries; without this step, tests/runtime/odi-x-v1.test.cjs,
+        # post-omega-p5.test.cjs, and post-omega-p9.test.cjs (all of which
+        # exercise real browser.open()/screenshot commands) fail with
+        # "Executable doesn't exist at .../chromium_headless_shell...".
+        run: npx playwright install --with-deps chromium
+
       - name: Create required directories
         run: mkdir -p data logs backups
 

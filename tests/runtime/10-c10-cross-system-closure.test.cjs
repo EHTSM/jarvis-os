@@ -1957,6 +1957,16 @@ describe("143-master-audit-legal-cross-tenant-idor — legal.js's caller-supplie
     // proving the fix's ownership logic against the real data shape.
     const fs = require("node:fs");
     const dataPath = path.join(ROOT, "data/legal-documents.json");
+    // legalDocumentEngine.cjs's _load() silently falls back to an in-memory
+    // default and never persists it — the file is only ever written by a
+    // mutating call (generateDocument/updateStatus). In a fresh environment
+    // (e.g. CI's empty data/ dir) listDocuments() above does not create it,
+    // so seed it here with the exact same default shape _load() returns,
+    // matching this repo's established data-file bootstrap convention.
+    if (!fs.existsSync(dataPath)) {
+      fs.mkdirSync(path.dirname(dataPath), { recursive: true });
+      fs.writeFileSync(dataPath, JSON.stringify({ documents: {}, stats: { generated: 0, byType: {} } }, null, 2));
+    }
     const raw = JSON.parse(fs.readFileSync(dataPath, "utf8"));
     raw.documents[docId] = {
       docId, type: "nda", typeLabel: "NDA", title: "test143 confidential",
@@ -2052,13 +2062,13 @@ describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is archite
   // CSRF Security Audit. The Master Coverage Matrix flagged "General
   // (non-OAuth) CSRF assessment — only OAuth state/nonce is currently
   // protected" as unverified. Investigated the actual authentication model
-  // rather than assuming a gap: authMiddleware.js's requireAuth is
-  // exclusively cookie-based (jarvis_auth, httpOnly JWT) — there is no
-  // Authorization:Bearer header path, no API-key-header path, anywhere in
-  // this codebase (confirmed by direct grep across every middleware file).
-  // All 3 real cookie-setting call sites (auth.js's password/refresh/
-  // Firebase logins, enterpriseSso.js's SSO logins) consistently set
-  // { httpOnly: true, secure: NODE_ENV==="production", sameSite: "strict" }.
+  // rather than assuming a gap: authMiddleware.js's requireAuth was, at the
+  // time of this audit, exclusively cookie-based (jarvis_auth, httpOnly
+  // JWT) — there was no Authorization:Bearer header path, no API-key-header
+  // path, anywhere in this codebase. All 3 real cookie-setting call sites
+  // (auth.js's password/refresh/Firebase logins, enterpriseSso.js's SSO
+  // logins) consistently set { httpOnly: true, secure:
+  // NODE_ENV==="production", sameSite: "strict" }.
   //
   // SameSite=Strict is the load-bearing protection: unlike SameSite=Lax
   // (which still allows the cookie on a top-level cross-site GET
@@ -2072,6 +2082,25 @@ describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is archite
   // produces for any cross-site request) is rejected 401 before reaching
   // any business logic — proving the actual end-to-end guarantee, not
   // just the presence of a cookie flag.
+  //
+  // Mission 45 — Capacitor Mobile Auth Remediation (2026-08-24) later added
+  // an `Authorization: Bearer <jwt>` fallback to authMiddleware.js's
+  // requireAuth, used only when no cookie is present, for native mobile
+  // clients whose WebView cross-origin cookie handling is unreliable. This
+  // does NOT reopen CSRF: a cross-site browser attacker cannot set a custom
+  // Authorization header on a forged cross-origin request without a
+  // CORS-preflight-approved origin (server.js's cors() allowlists specific
+  // origins, credentials:true does not relax this), and even if it could,
+  // it has no way to obtain the victim's JWT (never exposed to JS — the
+  // cookie is httpOnly, and the header path carries the identical token,
+  // not a separately-forgeable credential). The header path is therefore a
+  // different threat model (bearer-token possession) than CSRF (ambient
+  // cookie replay), and both the header and cookie transports are verified
+  // by the exact same verifyJWT() — no weaker check was introduced for
+  // either. Re-verified (Mission 60A, 2026-08-27) that the Bearer fallback
+  // is confined to authMiddleware.js only, not spread to org/workspace
+  // membership middleware, and that SameSite=Strict cookie behavior (the
+  // actual CSRF mitigation, asserted live below) is unaffected.
   //
   // OAuth-flow CSRF (the state/nonce parameter, RFC 6749 §10.12 — a
   // different, protocol-specific mechanism, not a substitute for
@@ -2087,17 +2116,27 @@ describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is archite
   const authSrc   = read("backend/routes/auth.js");
   const ssoSrc    = read("backend/routes/enterpriseSso.js");
 
-  it("requireAuth has no Authorization-header or API-key-header credential path anywhere in the codebase (structural)", () => {
-    const middlewareFiles = [
-      "backend/middleware/authMiddleware.js",
+  it("requireAuth's Authorization-header fallback (Mission 45, mobile-only) is confined to authMiddleware.js, carries the identical JWT via the same verifyJWT() as the cookie path, and org/workspace membership middleware still accept no header credential (structural)", () => {
+    // org/workspace middleware must remain cookie-derived-identity only —
+    // the Mission 45 fallback exists solely in requireAuth (authMiddleware.js).
+    const scopedFiles = [
       "backend/middleware/orgMiddleware.cjs",
       "backend/middleware/workspaceMiddleware.cjs",
     ];
-    for (const f of middlewareFiles) {
+    for (const f of scopedFiles) {
       const src = read(f);
       assert.doesNotMatch(src, /req\.headers\.authorization|req\.headers\['authorization'\]|req\.headers\["authorization"\]/i,
-        `${f} must not accept a Bearer/Authorization-header credential — the entire CSRF certification depends on cookie-only auth`);
+        `${f} must not accept a Bearer/Authorization-header credential of its own — org/workspace scoping must derive identity from req.user, itself only ever set by requireAuth`);
     }
+    // authMiddleware.js's fallback must be present, header-gated (only
+    // consulted when no cookie is present), and verified by the same
+    // verifyJWT() the cookie path uses — not a separate/weaker check.
+    assert.match(authMwSrc, /if \(!token\) \{\s*\n\s*const authHeader = req\.headers\.authorization/,
+      "authMiddleware.js's Authorization-header fallback must only be consulted when no cookie token was found");
+    assert.match(authMwSrc, /authHeader\.startsWith\("Bearer "\)/,
+      "the header fallback must require the standard Bearer scheme, not accept a raw token");
+    assert.match(authMwSrc, /const user = verifyJWT\(token\);/,
+      "both the cookie-sourced and header-sourced token must flow through the same verifyJWT() — no separate/weaker validation for the header path");
   });
 
   it("all 3 real cookie-setting call sites use httpOnly + sameSite:strict (structural)", () => {
@@ -2235,7 +2274,27 @@ describe("146-master-audit-rate-limit-completeness — genuinely-missing rate li
     assert.notEqual(result.status, 500, "an invalid/expired state must be a clean 400, not a crash — rate limiter must not have broken the handler chain");
   });
 
-  it("live: the real Razorpay webhook route (POST /webhook/razorpay, no /payment prefix) carries rate-limit headers and still runs real HMAC verification", async () => {
+  it("live: the real Razorpay webhook route (POST /webhook/razorpay, no /payment prefix) carries rate-limit headers, and the real webhookController runs (not short-circuited) regardless of signature outcome", async () => {
+    // NOTE on scope: the live backend server here is a SEPARATE OS process
+    // (started by the CI workflow's own "Start backend server" step /
+    // this file's server prerequisite), so mutating process.env in this
+    // test process cannot affect which branch paymentService.js's
+    // verifyWebhookSignature() takes server-side — unlike the in-process
+    // sentryService.cjs check above (113-...), which calls the module
+    // directly in this same process. This live subtest therefore only
+    // asserts what is genuinely observable through the HTTP boundary
+    // without touching env/secrets: the rate-limit headers are present,
+    // and the real webhookController executed (a JSON body came back, not
+    // a raw framework error) — status code itself legitimately depends on
+    // whether RAZORPAY_WEBHOOK_SECRET happens to be configured in this
+    // environment (unset here — no payment provider credentials in CI/dev
+    // per the "RAZORPAY_KEY / RAZORPAY_SECRET not set" startup warning),
+    // matching paymentService.js's own documented, intentional dev/test
+    // fail-open (accept) vs production fail-closed (reject) behavior — the
+    // same ALLOW_DEV_AUTH_BYPASS-style convention authMiddleware.js uses.
+    // The real HMAC math itself (does a correct/incorrect signature
+    // actually verify/reject) is covered in-process below, where
+    // RAZORPAY_WEBHOOK_SECRET can genuinely be controlled.
     const http = require("node:http");
     const body = JSON.stringify({});
     const result = await new Promise((resolve) => {
@@ -2250,8 +2309,36 @@ describe("146-master-audit-rate-limit-completeness — genuinely-missing rate li
       r.write(body); r.end();
     });
     assert.equal(result.headers["x-ratelimit-limit"], "30", "the webhook route must carry the new rate-limit headers");
-    assert.equal(result.status, 400, "with no valid x-razorpay-signature header, the real HMAC check must still reject the request — the rate limiter must not have replaced or bypassed signature verification");
-    assert.match(result.body, /Invalid signature/, "the real webhookController must still run, not be short-circuited");
+    assert.ok(result.status === 400 || result.status === 200, `expected the real webhookController to respond 400 (signature rejected) or 200 (dev fail-open, no RAZORPAY_WEBHOOK_SECRET configured) — got ${result.status}`);
+    let parsedBody = null;
+    try { parsedBody = JSON.parse(result.body); } catch { /* fall through to assertion failure below */ }
+    assert.ok(parsedBody && typeof parsedBody === "object", "the real webhookController must still run and return real JSON, not be short-circuited by the rate limiter or crash");
+  });
+
+  it("in-process: paymentService.verifyWebhookSignature() genuinely rejects a wrong/missing signature and genuinely accepts a correctly-computed HMAC, when a webhook secret IS configured (the real signature math, isolated from server-process env)", () => {
+    delete require.cache[require.resolve("../../backend/services/paymentService")];
+    const prevSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    process.env.RAZORPAY_WEBHOOK_SECRET = "test147_webhook_secret_for_hmac_check_only";
+    try {
+      delete require.cache[require.resolve("../../backend/services/paymentService")];
+      const payment = require("../../backend/services/paymentService");
+      const crypto  = require("node:crypto");
+      const rawBody = JSON.stringify({ event: "payment.captured" });
+
+      assert.equal(payment.verifyWebhookSignature(rawBody, ""), false,
+        "an empty signature must be rejected once a real webhook secret is configured");
+      assert.equal(payment.verifyWebhookSignature(rawBody, "not-the-real-signature"), false,
+        "an incorrect signature must be rejected");
+
+      const correctSig = crypto.createHmac("sha256", process.env.RAZORPAY_WEBHOOK_SECRET)
+        .update(rawBody).digest("hex");
+      assert.equal(payment.verifyWebhookSignature(rawBody, correctSig), true,
+        "the correctly-computed HMAC for the exact same raw body must be accepted — the real signature check must actually work, not just always reject");
+    } finally {
+      if (prevSecret === undefined) delete process.env.RAZORPAY_WEBHOOK_SECRET;
+      else process.env.RAZORPAY_WEBHOOK_SECRET = prevSecret;
+      delete require.cache[require.resolve("../../backend/services/paymentService")];
+    }
   });
 });
 
@@ -3033,6 +3120,68 @@ describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleM
     assert.equal(memory.getMission(mission.id), null, "test mission must be fully removed after cleanup");
   });
 
+  it("live: recoverStaleMissions() does not abort its whole sweep when one mission in its scanned snapshot vanishes before the per-subtask update runs (Mission 60A — genuine TOCTOU race against real concurrent mission activity, live-reproduced 2026-08-27 as 'Mission not found: msn_dc7055e8c5c349cc8d3f3a00aa2fe60f' propagating uncaught out of the whole scan)", async () => {
+    const memory  = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const runtime = require(path.join(ROOT, "agents/runtime/missionRuntime.cjs"));
+    const fs2 = require("node:fs");
+    const missionsPath = path.join(ROOT, "data/missions.json");
+
+    // Mission A: will be deleted out from under the scan, simulating the
+    // real race (concurrent autonomous activity completing/removing a
+    // mission between recoverStaleMissions()'s listMissions() snapshot and
+    // its later per-subtask updateSubtask() call for that same mission).
+    const missionA = memory.createMission({ objective: `t153_vanish_${Date.now()}`, priority: "low" });
+    memory.addSubtask(missionA.id, { description: "stuck-subtask-vanishing" });
+    const [subA] = memory.getMission(missionA.id).subtasks;
+    memory.updateSubtask(missionA.id, subA.id, { status: "running", startedAt: new Date().toISOString() });
+
+    // Mission B: a second, genuinely-recoverable stuck mission that must
+    // still be recovered even though mission A vanishes first in the same
+    // sweep — proves the fix doesn't just swallow the error, it actually
+    // continues processing the rest of the snapshot.
+    const missionB = memory.createMission({ objective: `t153_survives_${Date.now()}`, priority: "low" });
+    memory.addSubtask(missionB.id, { description: "stuck-subtask-surviving" });
+    const [subB] = memory.getMission(missionB.id).subtasks;
+    memory.updateSubtask(missionB.id, subB.id, { status: "running", startedAt: new Date().toISOString() });
+
+    // Delete mission A directly from the store now — recoverStaleMissions()
+    // has not run yet, so its upcoming listMissions() snapshot will already
+    // reflect A as present via in-process caching semantics is NOT assumed
+    // here; instead we monkey-patch memory.updateSubtask for this one test
+    // to delete A out from under the scan at the exact moment it is about
+    // to be touched, reproducing the real race deterministically rather
+    // than depending on timing against the live server's own background
+    // activity.
+    const originalUpdateSubtask = memory.updateSubtask;
+    let deletedA = false;
+    memory.updateSubtask = function (missionId, subtaskId, updates) {
+      if (missionId === missionA.id && !deletedA) {
+        deletedA = true;
+        const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+        store.missions = store.missions.filter(m => m.id !== missionA.id);
+        fs2.writeFileSync(missionsPath, JSON.stringify(store, null, 2));
+      }
+      return originalUpdateSubtask.call(memory, missionId, subtaskId, updates);
+    };
+
+    let result;
+    try {
+      result = runtime.recoverStaleMissions();
+    } finally {
+      memory.updateSubtask = originalUpdateSubtask;
+    }
+
+    assert.ok(result, "recoverStaleMissions() must not throw when a scanned mission vanishes mid-sweep");
+    assert.ok(result.missionIds.includes(missionB.id), "mission B's stuck subtask must still be recovered even though mission A vanished first in the same sweep");
+    const afterB = memory.getMission(missionB.id);
+    assert.equal(afterB.subtasks.find(s => s.id === subB.id).status, "pending", "mission B's subtask must be reset to pending — the fix must not silently skip everything after the failure, only the one vanished mission");
+
+    // Clean up mission B (A was already removed by the simulated race above).
+    const store2 = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+    store2.missions = store2.missions.filter(m => m.id !== missionB.id);
+    fs2.writeFileSync(missionsPath, JSON.stringify(store2, null, 2));
+  });
+
   it("structural: executor.cjs's autoOS handler now reads runCycle()'s real ok field instead of hardcoding success:true", () => {
     assert.match(executorSrc, /const cycleOk = cycle\?\.\ok !== false/, "autoOS must check the real cycle.ok field");
     assert.match(executorSrc, /success: cycleOk/, "autoOS's returned success must reflect the real cycle outcome, not a hardcoded true");
@@ -3475,6 +3624,44 @@ describe("158-master-audit-browser-controller-download-safety — browserControl
 
   it("structural: downloadFile() constrains destination to the user's Downloads directory", () => {
     assert.match(src, /if \(!dest\.startsWith\(downloadsDir \+ path\.sep\) && dest !== downloadsDir\)/, "must reject a destination that resolves outside the Downloads directory");
+  });
+
+  it("structural: downloadFile() creates the Downloads directory if it doesn't already exist, before ever invoking curl (Mission 60A — headless/server environments, including this repo's own CI runner and real production Linux deployments, have no ~/Downloads by default; curl -o then fails with exit 23/CURLE_WRITE_ERROR, a local write failure indistinguishable from a real bug)", () => {
+    assert.match(src, /fs\.mkdirSync\(downloadsDir, \{ recursive: true \}\)/, "must ensure the already-validated destination directory actually exists before spawning curl");
+    // Ordering: the mkdirSync call must come after the containment check
+    // (never create/touch a directory outside what was already validated
+    // as safe) and before the spawn("curl", ...) call.
+    const containmentIdx = src.indexOf("destination must stay within");
+    const mkdirIdx       = src.indexOf("fs.mkdirSync(downloadsDir");
+    const spawnIdx       = src.indexOf('spawn("curl"');
+    assert.ok(containmentIdx > 0 && mkdirIdx > containmentIdx, "mkdirSync must come after the destination-containment check, never before");
+    assert.ok(spawnIdx > mkdirIdx, "mkdirSync must run before curl is spawned, so the write target actually exists");
+  });
+
+  it("live: downloadFile() succeeds writing into a Downloads directory that does not exist yet, proving the fix actually prevents the exit-23 write failure (isolated: uses a fake HOME, never touches the real ~/Downloads)", async () => {
+    const bc = require(path.join(ROOT, "backend/services/browserController.cjs"));
+    const fs2 = require("node:fs");
+    const os2 = require("node:os");
+    // Isolated fake home so this never touches the real ~/Downloads or
+    // depends on it already existing — proves the fix works from a clean
+    // slate, matching a genuinely fresh headless environment.
+    const fakeHome = fs2.mkdtempSync(path.join(os2.tmpdir(), "t158-fakehome-"));
+    const prevHome = process.env.HOME;
+    process.env.HOME = fakeHome;
+    try {
+      const downloadsDir = path.join(fakeHome, "Downloads");
+      assert.equal(fs2.existsSync(downloadsDir), false, "test setup: the fake Downloads dir must not exist yet");
+      const result = await bc.downloadFile({ url: "https://raw.githubusercontent.com/torvalds/linux/master/README" });
+      if (!result.ok && /timed out|ENOTFOUND|ETIMEDOUT|ECONNREFUSED/.test(result.error || "")) {
+        return; // network unreachable in this environment — not what this test verifies, skip rather than fail
+      }
+      assert.equal(result.ok, true, `expected the download to succeed once the Downloads dir is auto-created, got: ${result.error}`);
+      assert.equal(fs2.existsSync(downloadsDir), true, "the Downloads directory must now exist");
+      assert.equal(fs2.existsSync(result.destination), true, "the downloaded file must exist at the reported destination");
+    } finally {
+      process.env.HOME = prevHome;
+      fs2.rmSync(fakeHome, { recursive: true, force: true });
+    }
   });
 
   it("live: the exact shell-injection payload that previously created an arbitrary file via url is now inert — curl treats it as a single literal (invalid) URL argument, not shell syntax", async () => {
@@ -4320,22 +4507,37 @@ describe("164-master-audit-connector-vault-env-fallback — secretVault.cjs's va
   });
 
   it("unit-level: a real customer org with no stored secret gets 'none'/not-present even when the founder has real configured credentials (vault- or env-backed) for the same connectorId/type, while GLOBAL_ORG (the founder's own partition) is completely unaffected by the fix", () => {
-    // pay:razorpay::api_key is real, live-configured founder data in this
-    // environment (this session's own live tests confirmed it) — whether it
-    // currently resolves via a migrated vault record or the raw env var is
-    // an implementation detail this test must not assume either way; what
-    // matters is a customer org never inherits it, and GLOBAL_ORG's own
-    // resolution is completely unchanged by the fix (it was never gated on
-    // orgId === GLOBAL_ORG before hitting the vault-record branch, and
-    // still isn't — only the ENV_MAP fallback branch, reached solely when
-    // no vault record exists, was scoped down).
-    const customerResult = vault.validateSecret("pay:razorpay", "api_key", "t164_fake_customer_org_no_relation_to_founder");
-    assert.equal(customerResult.source, "none", "a real customer org must not inherit the founder's credential via the env fallback");
-    assert.equal(customerResult.present, false, "present must be false for a customer org with no stored secret of its own");
-    assert.equal(customerResult.valid, false, "valid must be false for a customer org with no stored secret of its own");
+    // pay:razorpay::api_key (env var RAZORPAY_KEY_ID, per secretVault.cjs's
+    // ENV_MAP) is real, live-configured founder data in SOME environments,
+    // but not guaranteed in every one this suite runs in — this repo's own
+    // CI/local dev runs with no payment provider credentials configured at
+    // all (see the "RAZORPAY_KEY / RAZORPAY_SECRET not set" startup
+    // warning), which made this assertion depend on ambient environment
+    // state it cannot control. Set it here explicitly (Mission 60A) so the
+    // GLOBAL_ORG-resolves-its-real-credential assertion below is
+    // genuinely exercised in every environment, restoring the prior value
+    // afterward. Whether it resolves via a migrated vault record or this
+    // env var in an environment where a vault record ALSO exists is an
+    // implementation detail this test still must not assume either way —
+    // what matters is a customer org never inherits it, and GLOBAL_ORG's
+    // own resolution is completely unchanged by the fix (it was never
+    // gated on orgId === GLOBAL_ORG before hitting the vault-record
+    // branch, and still isn't — only the ENV_MAP fallback branch, reached
+    // solely when no vault record exists, was scoped down).
+    const prevRzpKey = process.env.RAZORPAY_KEY_ID;
+    process.env.RAZORPAY_KEY_ID = prevRzpKey || "test164_founder_razorpay_key_env_fallback_only";
+    try {
+      const customerResult = vault.validateSecret("pay:razorpay", "api_key", "t164_fake_customer_org_no_relation_to_founder");
+      assert.equal(customerResult.source, "none", "a real customer org must not inherit the founder's credential via the env fallback");
+      assert.equal(customerResult.present, false, "present must be false for a customer org with no stored secret of its own");
+      assert.equal(customerResult.valid, false, "valid must be false for a customer org with no stored secret of its own");
 
-    const founderResult = vault.validateSecret("pay:razorpay", "api_key");
-    assert.equal(founderResult.present, true, "the founder's own GLOBAL_ORG partition must still resolve its real credential — no regression on the legitimate operator path, regardless of whether it's vault- or env-backed");
+      const founderResult = vault.validateSecret("pay:razorpay", "api_key");
+      assert.equal(founderResult.present, true, "the founder's own GLOBAL_ORG partition must still resolve its real credential — no regression on the legitimate operator path, regardless of whether it's vault- or env-backed");
+    } finally {
+      if (prevRzpKey === undefined) delete process.env.RAZORPAY_KEY_ID;
+      else process.env.RAZORPAY_KEY_ID = prevRzpKey;
+    }
 
     // Directly exercise the env-only fallback path itself (no vault record
     // at all) using a connectorId/type this environment genuinely has no

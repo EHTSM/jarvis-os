@@ -781,14 +781,29 @@ console.log("\n[auto-v10] Block 14: Full OODA Cycle");
   });
 
   await asyncTest("threat detected → auto-mitigated in execute phase", async () => {
-    // Detect a threat and run a cycle — it should be auto-mitigated
-    const beforeMitigated = st.listThreats({ status: "mitigated" }).length;
-    st.detectThreat({ title: `HighThreat-${TS}`, source: "smoke_test", domain: "health", layer: "autonomous", severity: "critical", confidence: 0.95 });
+    // Mission 60A: detect() previously only ever fed its OWN
+    // freshly-generated T1-T5 threats (from this cycle's live observation)
+    // into plan()/execute() — a threat inserted directly via
+    // st.detectThreat() (exactly what this test does, and exactly what
+    // POST /auto/v10/threats in autonomousOrg.js does for any external
+    // caller) was stored but never re-scanned by detect(), so plan() never
+    // saw it and it sat "open" forever unless a human/another system
+    // explicitly called the manual mitigate endpoint. Fixed by having
+    // detect() also fold in genuinely-open stored threats (reusing the
+    // exact same listThreats({status:"open"}) call observe() already made
+    // for its openThreats metric — no new detection mechanism). Assert
+    // against THIS test's own specific threat id, not just an aggregate
+    // count, so the assertion cannot coincidentally pass from unrelated
+    // concurrent autonomous activity in this shared store.
+    const created = st.detectThreat({ title: `HighThreat-${TS}`, source: "smoke_test", domain: "health", layer: "autonomous", severity: "critical", confidence: 0.95 });
+    assert(created.ok, "test setup: detectThreat must succeed");
+    const threatId = created.threat.id;
+
     await lp.runCycle();
-    const afterMitigated = st.listThreats({ status: "mitigated" }).length;
-    // Either mitigated or moved to in_mitigation
-    const total = st.listThreats({ status: "mitigated" }).length + st.listThreats({ status: "in_mitigation" }).length;
-    assert(total > beforeMitigated || afterMitigated > beforeMitigated, "threat not being processed");
+
+    const after = st.listThreats({ status: "mitigated" }).find(t => t.id === threatId)
+               || st.listThreats({ status: "in_mitigation" }).find(t => t.id === threatId);
+    assert(after, `threat ${threatId} not being processed — still status=${st.listThreats({ status: "open" }).find(t => t.id === threatId)?.status || "not found in open either"}`);
   });
 
   await asyncTest("opportunity discovered → acted on in execute phase", async () => {

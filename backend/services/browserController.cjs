@@ -411,6 +411,17 @@ async function downloadFile({ url, destination } = {}) {
   if (!dest.startsWith(downloadsDir + path.sep) && dest !== downloadsDir) {
     return { ok: false, url, error: `destination must stay within ${downloadsDir}` };
   }
+  // Mission 60A: headless/server environments (this repo's own CI runner,
+  // and any real headless Linux deployment) do not have a ~/Downloads
+  // directory by default — curl -o then fails with exit 23
+  // (CURLE_WRITE_ERROR), a local write failure indistinguishable from a
+  // real bug in the caller's eyes. Containment above already constrains
+  // `dest` to inside downloadsDir; creating that one directory if missing
+  // is not a new destination, just ensuring the already-validated target
+  // is actually writable, matching the mkdirSync-before-write pattern this
+  // codebase's other data-file writers already use (e.g.
+  // legalDocumentEngine.cjs's _save(), accountService.js's _save()).
+  fs.mkdirSync(downloadsDir, { recursive: true });
 
   const { spawn } = require("child_process");
   return new Promise((resolve) => {

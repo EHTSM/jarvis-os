@@ -29,25 +29,55 @@
  * and reports failure (recordFailure() on the agent, not recordSuccess()),
  * mirroring the legacy branch's own established pattern — no new
  * failure-detection concept invented.
+ *
+ * Mission 60A: executeTask() routes via
+ * agentRegistry.findForCapability(router.resolveCapability(task.type)) —
+ * it looks up the RESOLVED capability, never the raw task.type. This test
+ * originally registered its synthetic agents under capabilities
+ * "honesty_probe"/"honesty_probe_ok", which are not in taskRouter.cjs's
+ * TASK_TYPE_MAP, so resolveCapability() fell back to the generic "ai"
+ * capability for both — meaning findForCapability("ai") never matched
+ * either registered agent (no "ai" agent is registered in this bare
+ * process), and both dispatches silently fell through to the legacy
+ * executor path instead of the registered-agent branch this test exists
+ * to verify. Fixed by using real, already-mapped task.type values —
+ * "web_search" (→"browser") and "open_app" (→"desktop") — matching the
+ * established, working pattern 06-retry.test.cjs already uses (real
+ * mapped task.type, unique capability, registered test agent for that
+ * exact capability). No assertion was weakened — the same success/result/
+ * error/agentId checks still run, now against the branch they were
+ * written to test.
  */
 const { describe, it, before } = require("node:test");
 const assert       = require("node:assert/strict");
 const orchestrator = require("../../agents/runtime/runtimeOrchestrator.cjs");
 const engine       = require("../../agents/runtime/executionEngine.cjs");
+const router       = require("../../agents/runtime/taskRouter.cjs");
 
 const RUN = `honesty-${Date.now().toString(36)}`;
 
+// Real task.type values already mapped by taskRouter.cjs's TASK_TYPE_MAP —
+// resolveCapability() must actually route to these agents' own
+// capabilities, not silently collapse to the "ai" fallback.
+const SOFT_FAIL_TASK_TYPE = "web_search";
+const GENUINE_TASK_TYPE   = "open_app";
+
 before(() => {
+    assert.equal(router.resolveCapability(SOFT_FAIL_TASK_TYPE), "browser",
+        `test setup: taskRouter.cjs must still map "${SOFT_FAIL_TASK_TYPE}" to "browser" — if this changed, update SOFT_FAIL_TASK_TYPE above to another mapped type`);
+    assert.equal(router.resolveCapability(GENUINE_TASK_TYPE), "desktop",
+        `test setup: taskRouter.cjs must still map "${GENUINE_TASK_TYPE}" to "desktop" — if this changed, update GENUINE_TASK_TYPE above to another mapped type`);
+
     // A registered agent whose handler does NOT throw but reports its own
     // failure via result.success === false — the exact shape terminalAgent/
     // the "ai" agent use in production for allowlist blocks / missing
     // credentials.
     orchestrator.registerAgent({
-        id: `${RUN}-soft-failer`, capabilities: ["honesty_probe"], maxConcurrent: 2,
+        id: `${RUN}-soft-failer`, capabilities: ["browser"], maxConcurrent: 2,
         handler: async () => ({ success: false, error: "simulated_blocked_command" }),
     });
     orchestrator.registerAgent({
-        id: `${RUN}-genuine`, capabilities: ["honesty_probe_ok"], maxConcurrent: 2,
+        id: `${RUN}-genuine`, capabilities: ["desktop"], maxConcurrent: 2,
         handler: async () => ({ success: true, message: "genuinely fine" }),
     });
 });
@@ -55,7 +85,7 @@ before(() => {
 describe("RUNTIME-1 — executeTask() honours a registered agent's own reported failure", () => {
     it("executeTask() reports success:false (not true) when the handler resolves with {success:false} instead of throwing", async () => {
         const r = await engine.executeTask(
-            { type: "honesty_probe", payload: {}, input: "probe" },
+            { type: SOFT_FAIL_TASK_TYPE, payload: {}, input: "probe" },
             { retries: 1 }
         );
         assert.equal(r.success, false, "executeTask() must not report success:true for a handler-reported soft failure");
@@ -66,7 +96,7 @@ describe("RUNTIME-1 — executeTask() honours a registered agent's own reported 
 
     it("executeTask() still reports success:true for a genuinely successful handler on a different capability (no false negative introduced)", async () => {
         const r = await engine.executeTask(
-            { type: "honesty_probe_ok", payload: {}, input: "probe-ok" },
+            { type: GENUINE_TASK_TYPE, payload: {}, input: "probe-ok" },
             { retries: 1 }
         );
         assert.equal(r.success, true);

@@ -128,6 +128,24 @@ function detect(obs) {
     if (r.ok) detected.threats.push(r.threat);
   }
 
+  // T6: Externally/manually-reported threats still sitting "open" (Mission
+  // 60A). T1-T5 above only ever generate a threat from this cycle's OWN
+  // live observation — a threat reported any other way (POST
+  // /auto/v10/threats, another subsystem, or a live-reproduced test) was
+  // stored by st.detectThreat() but never fed into plan()/execute() below,
+  // since those only consume `detected.threats` — this function's own
+  // return value — never a re-scan of the store. observe() already counts
+  // these via st.listThreats({status:"open"}) (obs.openThreats) but never
+  // acted on them. Reusing that same existing listThreats() call — not a
+  // new detection mechanism — and excluding threats T1-T5 already pushed
+  // this cycle (by id) so none is double-planned/double-mitigated in the
+  // same pass.
+  const alreadyDetectedIds = new Set(detected.threats.map(t => t.id));
+  const openThreats = _st().listThreats({ status: "open" });
+  for (const t of openThreats) {
+    if (!alreadyDetectedIds.has(t.id)) detected.threats.push(t);
+  }
+
   _emit("autonomous:detect:completed", { opportunities: detected.opportunities.length, threats: detected.threats.length });
   return detected;
 }

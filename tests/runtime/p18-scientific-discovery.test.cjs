@@ -159,6 +159,39 @@ test("generate() hypotheses have valid confidence (0-100)", () => {
 });
 
 test("generate({sources:['engineering']}) generates engineering hypotheses", () => {
+  // Mission 60A-E: hypothesisEngine.cjs's _fromEngineering() derives
+  // hypotheses from selfImprovementEngine.discoverPatterns(), which itself
+  // scans the real data/missions.json for missions sharing a failure phase
+  // (>= 2 occurrences) — genuinely real, live platform data, not
+  // fabricated (see selfImprovementEngine.cjs:208-228). A CI/local
+  // environment where fewer than 2 real missions happen to share a
+  // failure phase by the time this test runs (test-execution-order and
+  // data-accumulation dependent — data/ is gitignored, so a fresh
+  // checkout starts empty) legitimately yields 0 patterns → 0
+  // hypotheses, which is the correct, honest behavior (not a bug) but
+  // makes this specific assertion depend on ambient state it cannot
+  // control. Seed 2 minimal, uniquely-tagged mission records sharing a
+  // failure phase directly (append-only read-modify-write, matching the
+  // repo's own established pattern of directly seeding data/missions.json
+  // — see 10-c10-cross-system-closure.test.cjs's own mission cleanup code)
+  // so the real discoverPatterns() → generate() pipeline is genuinely
+  // exercised in every environment, not just ones with enough incidental
+  // prior failures.
+  const fs2 = require("node:fs");
+  const path2 = require("node:path");
+  const missionsPath = path2.join(__dirname, "../../data/missions.json");
+  const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+  const phase = `t60a_seed_phase_${Date.now()}`;
+  for (let i = 0; i < 2; i++) {
+    store.missions.push({
+      id: `t60a_seed_mission_${Date.now()}_${i}`,
+      objective: "Mission 60A-E test seed — safe to ignore",
+      status: "failed",
+      failures: [{ description: "seeded failure for hypothesis-generation coverage", phase }],
+    });
+  }
+  fs2.writeFileSync(missionsPath, JSON.stringify(store, null, 2));
+
   const r = hyp.generate({ sources: ["engineering"] });
   assert.ok(r.generated > 0);
   assert.ok(r.hypotheses.every(h => h.source === "engineering" || h.domain === "engineering"));

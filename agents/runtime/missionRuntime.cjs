@@ -188,8 +188,25 @@ function recoverStaleMissions() {
     for (const m of all) {
         const stuck = (m.subtasks || []).filter(s => s.status === "running");
         for (const st of stuck) {
-            memory.updateSubtask(m.id, st.id, { status: "pending" });
-            subtasksRecovered++;
+            // Mission 60A: this scan's `all` snapshot can go stale between
+            // being read and this specific updateSubtask() call — a mission
+            // genuinely completing/being deleted by concurrent autonomous
+            // activity in the window between the two throws "Mission not
+            // found" from missionMemory.cjs's _assertMission, which
+            // previously propagated uncaught and aborted the ENTIRE
+            // recovery pass, silently skipping every remaining mission's
+            // own stuck subtasks too. One mission vanishing mid-scan is not
+            // a reason to fail the whole sweep — skip just that subtask and
+            // continue, matching this file's own stale-mission recovery,
+            // which is itself a "best effort over whatever is scannable
+            // right now" operation, not a transaction.
+            try {
+                memory.updateSubtask(m.id, st.id, { status: "pending" });
+                subtasksRecovered++;
+            } catch (err) {
+                logger.warn(`[MissionRuntime] recoverStaleMissions: skipped subtask ${st.id} on mission ${m.id} (${err.message})`);
+                continue;
+            }
         }
         if (stuck.length > 0 && !missionIds.includes(m.id)) missionIds.push(m.id);
     }

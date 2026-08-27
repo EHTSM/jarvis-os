@@ -486,9 +486,29 @@ atest("E2E: parallel company creation", async () => {
 });
 
 atest("getStats returns factory stats", async () => {
+  // Mission 60A-E: atest() schedules fn via Promise.resolve().then(fn) —
+  // every atest()'s fn body starts on its own microtask turn as soon as
+  // the PRECEDING atest's fn yields to its own first real await (which
+  // every createCompany()-based atest above does almost immediately).
+  // Promise.all(promises) at the bottom only waits for all of them to
+  // eventually settle — it does not sequence them. This atest was
+  // registered last but its own fn could (and, live-reproduced, does)
+  // execute and call cf.getStats() BEFORE any of the file's own earlier
+  // createCompany() calls have finished writing their stats.byTemplate
+  // entry — genuinely producing an empty byTemplate in an environment
+  // whose data/company-factory.json starts empty (gitignored data/, a
+  // fresh CI checkout), independent of companyFactory.cjs's own logic
+  // (which is correct — see the passing structural coverage elsewhere in
+  // this file). Fixed by awaiting a real company creation of this atest's
+  // own here, making its stats assertion self-sufficient rather than
+  // depending on unguaranteed sibling-atest completion ordering.
+  const seed = await cf.createCompany({ idea: "Mission 60A-E getStats race-fix seed company", name: "T60ASeedCo", skipApproval: true, creatorAccountId: "test_p8_operator" });
+  assert(seed.ok, seed.error);
+
   const stats = cf.getStats();
   assert(typeof stats === "object", "not object");
   assert(typeof stats.totalCreated === "number", "no totalCreated");
+  assert(stats.totalCreated > 0, "totalCreated must reflect at least this atest's own seeded company");
   assert(typeof stats.minutesSaved === "number", "no minutesSaved");
   assert(stats.byTemplate && Object.keys(stats.byTemplate).length > 0, "no byTemplate");
 });
