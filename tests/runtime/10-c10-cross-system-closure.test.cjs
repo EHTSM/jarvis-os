@@ -36,6 +36,23 @@ const assert = require("node:assert/strict");
 const fs     = require("node:fs");
 const path   = require("node:path");
 
+// Mission 71: this file's 74 top-level describe() blocks ran under Node's
+// default CONCURRENT scheduling — a real, forced-reproduced lost-update
+// race in accountService.js's updateAccount() (identical class to
+// organizationService.cjs/businessOrgState.cjs, same session) let a sibling
+// describe block's concurrent account write silently drop block 147's own
+// resetPassword()-triggered passwordChangedAt write, making
+// verifyJWT(preResetToken) wrongly accept a session that should have been
+// invalidated by the reset (ERA-1 finding, 2026-08-28 CI run 33169866440).
+// The staleness-check logic itself (_isStaleAfterPasswordChange,
+// authMiddleware.js) is correct — confirmed via direct reproduction outside
+// this file, where the exact same sequence with no concurrent account
+// mutation always rejects the pre-reset token. { concurrency: false } on
+// every describe below serializes this file's own ~381 tests against each
+// other (this file is already serialized against sibling FILES via
+// MISSION_MUTATING/run-test-suite.cjs — this closes the identical hazard
+// one level down, within the file itself).
+
 // signJWT/verifyJWT (used directly by block 147's session-invalidation test)
 // require JWT_SECRET. Load the real env the same way the server does,
 // matching the established pattern in 30-b20-chaos-recovery.test.cjs — a
@@ -46,7 +63,7 @@ require("dotenv").config({ path: path.join(__dirname, "..", "..", ".env") });
 const ROOT = path.join(__dirname, "../..");
 const read = p => fs.readFileSync(path.join(ROOT, p), "utf8");
 
-describe("110-c10-cross-system-closure — /dev/* auth + org-scoping gates", () => {
+describe("110-c10-cross-system-closure — /dev/* auth + org-scoping gates", { concurrency: false }, () => {
   it("ops.js gates /dev/* with requireAuth + attachOrg + requireOrgMember before any /dev route handler is registered", () => {
     const src = read("backend/routes/ops.js");
     const authLine = src.indexOf('router.use("/dev", requireAuth, attachOrg, requireOrgMember)');
@@ -99,7 +116,7 @@ describe("110-c10-cross-system-closure — /dev/* auth + org-scoping gates", () 
   });
 });
 
-describe("110-c10-cross-system-closure — /cbeta/billing/* accountId-forgery gate", () => {
+describe("110-c10-cross-system-closure — /cbeta/billing/* accountId-forgery gate", { concurrency: false }, () => {
   it("closedBeta.js gates the accountId-accepting billing routes with operatorOnly", () => {
     const src = read("backend/routes/closedBeta.js");
     // Reproduced live: an authenticated account with no relationship to
@@ -123,7 +140,7 @@ describe("110-c10-cross-system-closure — /cbeta/billing/* accountId-forgery ga
   });
 });
 
-describe("110-c10-cross-system-closure — cross-OS flow evidence stays true", () => {
+describe("110-c10-cross-system-closure — cross-OS flow evidence stays true", { concurrency: false }, () => {
   it("business.js close-won handler still creates a linked revenue record (Flow 1 evidence)", () => {
     const src = read("backend/routes/business.js");
     assert.match(src, /close-won/);
@@ -141,7 +158,7 @@ describe("110-c10-cross-system-closure — cross-OS flow evidence stays true", (
   });
 });
 
-describe("111-master-recovery — C10-027 JWT logout revocation", () => {
+describe("111-master-recovery — C10-027 JWT logout revocation", { concurrency: false }, () => {
   it("signJWT stamps every token with a jti, verifyJWT checks it against a revocation ledger", () => {
     const src = read("backend/middleware/authMiddleware.js");
     assert.match(src, /jti: payload\.jti \|\| crypto\.randomUUID\(\)/, "every signed token must carry a jti — this is what makes individual-token revocation possible in a stateless-JWT architecture");
@@ -168,7 +185,7 @@ describe("111-master-recovery — C10-027 JWT logout revocation", () => {
   });
 });
 
-describe("111-master-recovery — C10-029 MRR decrement path (churnDeal)", () => {
+describe("111-master-recovery — C10-029 MRR decrement path (churnDeal)", { concurrency: false }, () => {
   it("businessOrgState.cjs exports a churnDeal function that decrements MRR exactly once, idempotently", () => {
     const src = read("backend/services/businessOrgState.cjs");
     assert.match(src, /function churnDeal\(/, "churnDeal must exist — live-verified this session: MRR incremented on close-won had no symmetric decrement anywhere");
@@ -185,7 +202,7 @@ describe("111-master-recovery — C10-029 MRR decrement path (churnDeal)", () =>
   });
 });
 
-describe("112-master-residual-closure — C10-009 Knowledge OS real graph frontend", () => {
+describe("112-master-residual-closure — C10-009 Knowledge OS real graph frontend", { concurrency: false }, () => {
   it("KnowledgeCenter.jsx contains no fabricated seed documents/websites/search-results", () => {
     const full = read("frontend/src/components/KnowledgeCenter.jsx");
     const src  = full.replace(/\/\*[\s\S]*?\*\//, "");
@@ -208,7 +225,7 @@ describe("112-master-residual-closure — C10-009 Knowledge OS real graph fronte
   });
 });
 
-describe("112-master-residual-closure — C10-017 unifiedIntelligenceLayer cross-tenant leak", () => {
+describe("112-master-residual-closure — C10-017 unifiedIntelligenceLayer cross-tenant leak", { concurrency: false }, () => {
   it("_readBizState and every function that calls it accept and thread an orgId parameter", () => {
     const src = read("backend/services/unifiedIntelligenceLayer.cjs");
     assert.match(src, /function _readBizState\(orgId\)/);
@@ -246,7 +263,7 @@ describe("112-master-residual-closure — C10-017 unifiedIntelligenceLayer cross
   });
 });
 
-describe("113-master-final-gap-closure — C10-007/C10-008 Automation live execution loop", () => {
+describe("113-master-final-gap-closure — C10-007/C10-008 Automation live execution loop", { concurrency: false }, () => {
   it("automationService exports deleteRule, startEventLoop, isEventLoopRunning", () => {
     const svc = require("../../backend/services/automationService.cjs");
     assert.equal(typeof svc.deleteRule, "function");
@@ -288,7 +305,7 @@ describe("113-master-final-gap-closure — C10-007/C10-008 Automation live execu
   });
 });
 
-describe("113-master-final-gap-closure — C10-028 Sentry error-handler wiring", () => {
+describe("113-master-final-gap-closure — C10-028 Sentry error-handler wiring", { concurrency: false }, () => {
   it("the global Express error handler calls sentryService.captureException", () => {
     const src = read("backend/server.js");
     assert.match(src, /sentryService\.cjs"\)\.captureException\(err, \{\s*\n\s*tags: \{ service: "http" \}/);
@@ -315,7 +332,7 @@ describe("113-master-final-gap-closure — C10-028 Sentry error-handler wiring",
   });
 });
 
-describe("117-master-audit-sentry-dsn-blocker — investigation findings (2026-08-16)", () => {
+describe("117-master-audit-sentry-dsn-blocker — investigation findings (2026-08-16)", { concurrency: false }, () => {
   it("sentryService.cjs does not document an uploadSourcemap function it never implemented", () => {
     // Found during the SENTRY_DSN blocker investigation: the module's own
     // header comment claimed uploadSourcemap() existed as a stub, but no
@@ -359,7 +376,7 @@ describe("117-master-audit-sentry-dsn-blocker — investigation findings (2026-0
   });
 });
 
-describe("113-master-final-gap-closure — C10-012 Support OS real ticket frontend", () => {
+describe("113-master-final-gap-closure — C10-012 Support OS real ticket frontend", { concurrency: false }, () => {
   it("SupportCenter.jsx contains no fabricated seed tickets/KB articles", () => {
     const src = read("frontend/src/components/SupportCenter.jsx");
     assert.doesNotMatch(src, /SEED_TICKETS/);
@@ -383,7 +400,7 @@ describe("113-master-final-gap-closure — C10-012 Support OS real ticket fronte
   });
 });
 
-describe("114-25-os-master-reconciliation — /ent, /eco, /civ platform-wide operatorOnly gate", () => {
+describe("114-25-os-master-reconciliation — /ent, /eco, /civ platform-wide operatorOnly gate", { concurrency: false }, () => {
   it("index.js gates /ent, /eco, /civ with BOTH requireAuth AND operatorOnly, matching /eos and /auto", () => {
     const src = read("backend/routes/index.js");
     // Live-reproduced during the 25-OS Master Reconciliation pass: a
@@ -401,7 +418,7 @@ describe("114-25-os-master-reconciliation — /ent, /eco, /civ platform-wide ope
   });
 });
 
-describe("115-engineering-os-dedicated-verification — /engorg/agents/:id control-plane operatorOnly gate", () => {
+describe("115-engineering-os-dedicated-verification — /engorg/agents/:id control-plane operatorOnly gate", { concurrency: false }, () => {
   it("engineeringOrg.js gates enable/disable/tick with operatorOnly, not requireAuth alone", () => {
     const src = read("backend/routes/engineeringOrg.js");
     // Live-reproduced during the Engineering OS dedicated verification pass:
@@ -433,7 +450,7 @@ describe("115-engineering-os-dedicated-verification — /engorg/agents/:id contr
   });
 });
 
-describe("116-master-audit-b25-01 — IP allowlist enforcement (GG-1 closure)", () => {
+describe("116-master-audit-b25-01 — IP allowlist enforcement (GG-1 closure)", { concurrency: false }, () => {
   it("policyService.cjs exports assertIpAllowed alongside the existing isIpAllowed/requireIpAllowed", () => {
     const src = read("backend/services/policyService.cjs");
     assert.match(src, /function assertIpAllowed\(orgId, req\)/);
@@ -481,7 +498,7 @@ describe("116-master-audit-b25-01 — IP allowlist enforcement (GG-1 closure)", 
   });
 });
 
-describe("118-master-audit-b23-03 — /coding/context route recovery", () => {
+describe("118-master-audit-b23-03 — /coding/context route recovery", { concurrency: false }, () => {
   it("codingAssistant.js exposes GET /coding/context, reusing existing services (no new architecture)", () => {
     // B23-03: 2 real, live-mounted components (WorkspaceHealth.jsx,
     // DevDashboard.jsx, both inside ElectronWorkspace.jsx) called this route
@@ -515,7 +532,7 @@ describe("118-master-audit-b23-03 — /coding/context route recovery", () => {
   });
 });
 
-describe("119-master-audit-org-deletion-lifecycle — archived orgs are read-only", () => {
+describe("119-master-audit-org-deletion-lifecycle — archived orgs are read-only", { concurrency: false }, () => {
   it("requireOrgMember denies ordinary tenant-data access to an archived org", () => {
     // Live-reproduced during this pass: an org's own owner could still freely
     // read AND write real tenant data (a real POST /business/leads succeeded)
@@ -549,7 +566,7 @@ describe("119-master-audit-org-deletion-lifecycle — archived orgs are read-onl
   });
 });
 
-describe("120-master-audit-rbac-role-exercise — /jarvis enforces use_ai", () => {
+describe("120-master-audit-rbac-role-exercise — /jarvis enforces use_ai", { concurrency: false }, () => {
   it("POST /jarvis checks hasPermission(orgId, accountId, \"use_ai\") when an org context is resolved", () => {
     // Live-reproduced during this pass: a real viewer-role account (a role
     // organizationService.cjs's own ACTIONS.use_ai deliberately excludes)
@@ -576,7 +593,7 @@ describe("120-master-audit-rbac-role-exercise — /jarvis enforces use_ai", () =
   });
 });
 
-describe("121-master-audit-invitation-flow — /business's unscoped auth gate no longer intercepts unrelated routes", () => {
+describe("121-master-audit-invitation-flow — /business's unscoped auth gate no longer intercepts unrelated routes", { concurrency: false }, () => {
   it("business.js's router-wide requireAuth/attachOrg gate is scoped to /business", () => {
     // Live-reproduced during this pass: business.js mounts a bare
     // `router.use((req,res,next)=>{...})` — no path prefix — and is itself
@@ -611,7 +628,7 @@ describe("121-master-audit-invitation-flow — /business's unscoped auth gate no
   });
 });
 
-describe("122-master-audit-memory-os-fake-success — MemoryOSV2 no longer masks real API failures with fabricated data", () => {
+describe("122-master-audit-memory-os-fake-success — MemoryOSV2 no longer masks real API failures with fabricated data", { concurrency: false }, () => {
   it("refresh()'s catch block marks apiDown true instead of unconditionally false", () => {
     // Live-reproduced during this pass: a real thrown error from listMemoryNodes()/
     // memoryStats() (_fetch always throws a real Error on a non-2xx response or
@@ -644,7 +661,7 @@ describe("122-master-audit-memory-os-fake-success — MemoryOSV2 no longer masks
   });
 });
 
-describe("123-master-audit-org-purge-ui — the real, backend-audited org-purge route has a frontend consumer", () => {
+describe("123-master-audit-org-purge-ui — the real, backend-audited org-purge route has a frontend consumer", { concurrency: false }, () => {
   it("OrgAdminCenter.jsx calls POST /orgs/:orgId/purge with a real {confirm: slug} body", () => {
     // Live-confirmed during the Org Deletion Lifecycle audit that
     // POST /orgs/:orgId/purge (organizationService.purgeOrg — requires the
@@ -683,7 +700,7 @@ describe("123-master-audit-org-purge-ui — the real, backend-audited org-purge 
   });
 });
 
-describe("124-master-audit-engineering-memory-panel-404 — EngineeringMemoryPanel calls real, mounted routes", () => {
+describe("124-master-audit-engineering-memory-panel-404 — EngineeringMemoryPanel calls real, mounted routes", { concurrency: false }, () => {
   it("the API() helper no longer prefixes calls with a nonexistent /api path", () => {
     // Live-reproduced during this pass: EngineeringMemoryPanel.jsx's local
     // API() helper called bare fetch(`/api${path}`, ...) — e.g.
@@ -719,7 +736,7 @@ describe("124-master-audit-engineering-memory-panel-404 — EngineeringMemoryPan
   });
 });
 
-describe("125-master-audit-repository-map-panel-404 — RepositoryMapPanel calls real, mounted routes", () => {
+describe("125-master-audit-repository-map-panel-404 — RepositoryMapPanel calls real, mounted routes", { concurrency: false }, () => {
   it("the API() helper no longer prefixes calls with a nonexistent /api path", () => {
     // Same defect class and same fix as 124 (EngineeringMemoryPanel.jsx),
     // found by systematically grepping for the same bespoke `/api${path}`
@@ -748,7 +765,7 @@ describe("125-master-audit-repository-map-panel-404 — RepositoryMapPanel calls
   });
 });
 
-describe("126-master-audit-defect-family-recovery — 4 more components fixed for the same /api-prefix + missing-credentials defect", () => {
+describe("126-master-audit-defect-family-recovery — 4 more components fixed for the same /api-prefix + missing-credentials defect", { concurrency: false }, () => {
   it("AutonomousPlatformPanel.jsx: API() delegates to _fetch, no /api-prefixed bare fetch remains", () => {
     // Live-confirmed: GET /api/platform/runs -> 404; GET /platform/runs
     // (real route) -> 200, real run history/stats.
@@ -804,7 +821,7 @@ describe("126-master-audit-defect-family-recovery — 4 more components fixed fo
   });
 });
 
-describe("127-master-audit-acp-9-12-operator-gate — /repo-viz, /memory, /memory-index, /improvement, /platform gated operatorOnly", () => {
+describe("127-master-audit-acp-9-12-operator-gate — /repo-viz, /memory, /memory-index, /improvement, /platform gated operatorOnly", { concurrency: false }, () => {
   it("index.js gates all 5 ACP-9-12 route groups with BOTH requireAuth AND operatorOnly, matching the /eos-/auto precedent", () => {
     // Live-reproduced during this pass: a real, non-operator authenticated
     // customer account (c10invitee) successfully read real internal
@@ -847,7 +864,7 @@ describe("127-master-audit-acp-9-12-operator-gate — /repo-viz, /memory, /memor
   });
 });
 
-describe("128-master-audit-business-automation-idor — /business/automation/run|step require org membership and thread orgId", () => {
+describe("128-master-audit-business-automation-idor — /business/automation/run|step require org membership and thread orgId", { concurrency: false }, () => {
   it("both automation routes compose _requireOrg, matching every sibling CRM route in business.js", () => {
     // Live-reproduced during this pass: these two routes were requireAuth-only
     // — unlike every other /business/* CRM route in this file — and
@@ -916,7 +933,7 @@ describe("128-master-audit-business-automation-idor — /business/automation/run
   });
 });
 
-describe("129-master-audit-autonomous-execution-runtime-recovery — businessMissionAutomation entity delivery fixed", () => {
+describe("129-master-audit-autonomous-execution-runtime-recovery — businessMissionAutomation entity delivery fixed", { concurrency: false }, () => {
   it("root cause: autonomousExecutionRuntime's real registered-capability contract never provides ctx.entity", () => {
     // Direct confirmation of the root cause, not assumed: _runAttempt hands
     // a capability handler { input, missionId, stageId, agentId, policy,
@@ -1005,7 +1022,7 @@ describe("129-master-audit-autonomous-execution-runtime-recovery — businessMis
   });
 });
 
-describe("130-master-audit-founder-automation-operator-gate — /execution, /founder, /bible gated operatorOnly", () => {
+describe("130-master-audit-founder-automation-operator-gate — /execution, /founder, /bible gated operatorOnly", { concurrency: false }, () => {
   it("autonomousExecution.js gates /execution/* with BOTH requireAuth AND operatorOnly", () => {
     // Live-reproduced during this pass: a real, non-operator authenticated
     // customer account read the real founder automation dashboard (GET
@@ -1044,7 +1061,7 @@ describe("130-master-audit-founder-automation-operator-gate — /execution, /fou
   });
 });
 
-describe("131-master-audit-rc-launch-tooling-operator-gate — /rc1-4, /pm7, /pomena, /op1 gated operatorOnly", () => {
+describe("131-master-audit-rc-launch-tooling-operator-gate — /rc1-4, /pm7, /pomena, /op1 gated operatorOnly", { concurrency: false }, () => {
   it("all 6 route files gate their prefix with BOTH requireAuth AND operatorOnly", () => {
     // Live-reproduced during this pass: a real, non-operator authenticated
     // customer account read real internal release-management data from all
@@ -1085,7 +1102,7 @@ describe("131-master-audit-rc-launch-tooling-operator-gate — /rc1-4, /pm7, /po
   });
 });
 
-describe("132-master-audit-extensions-commercial-tenant-isolation — real cross-tenant reads closed", () => {
+describe("132-master-audit-extensions-commercial-tenant-isolation — real cross-tenant reads closed", { concurrency: false }, () => {
   it("extensions.js: all 5 read-only routes now require real workspace membership", () => {
     // Live-reproduced during this pass: an unrelated, real authenticated
     // account supplied a real Org A workspace ID via ?workspaceId= and
@@ -1143,7 +1160,7 @@ describe("132-master-audit-extensions-commercial-tenant-isolation — real cross
   });
 });
 
-describe("133-master-audit-stale-active-mission-recovery — recoverStaleMissions() also recovers orphaned 'active' missions", () => {
+describe("133-master-audit-stale-active-mission-recovery — recoverStaleMissions() also recovers orphaned 'active' missions", { concurrency: false }, () => {
   it("root cause: missionOrchestrator's in-memory _live Map has no persistence or startup recovery", () => {
     // Confirmed by direct source read: missionOrchestrator.cjs's createManual()
     // → _queue() tracks in-progress execution in `const _live = new Map()`
@@ -1264,7 +1281,7 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
   });
 });
 
-describe("134-master-audit-dop-wiring-credentials-api-prefix — 6 dashboards no longer call the nonexistent /api prefix", () => {
+describe("134-master-audit-dop-wiring-credentials-api-prefix — 6 dashboards no longer call the nonexistent /api prefix", { concurrency: false }, () => {
   // Same defect class as EngineeringMemoryPanel.jsx / RepositoryMapPanel.jsx / the
   // 4-component batch fixed in earlier master-audit passes: a bespoke local api()
   // helper called `/api${path}` (e.g. /api/dop/report), but the real backend
@@ -1333,7 +1350,7 @@ describe("134-master-audit-dop-wiring-credentials-api-prefix — 6 dashboards no
   });
 });
 
-describe("135-master-audit-sqlite-shadow-restore-drill-orphaning — getDB() self-heals when jarvis.db is externally replaced", () => {
+describe("135-master-audit-sqlite-shadow-restore-drill-orphaning — getDB() self-heals when jarvis.db is externally replaced", { concurrency: false }, () => {
   // Root-caused live, during an actual real restore drill (scripts/test-restore.cjs)
   // run against the running dev server: the drill's own "simulate data loss" step
   // does fs.renameSync(data/jarvis.db, sidecar/jarvis.db) then restores a snapshot
@@ -1407,7 +1424,7 @@ describe("135-master-audit-sqlite-shadow-restore-drill-orphaning — getDB() sel
   });
 });
 
-describe("136-master-audit-crash-mid-write-atomic-safety — task-queue.json and jarvis.db survive a real SIGKILL mid-write", () => {
+describe("136-master-audit-crash-mid-write-atomic-safety — task-queue.json and jarvis.db survive a real SIGKILL mid-write", { concurrency: false }, () => {
   // Coverage-matrix category #3 (persistence: atomic writes, concurrent
   // writes, restart survival) and #12 (recovery: crash recovery, partial
   // failure, corrupted state) — genuinely never exercised with a real kill
@@ -1482,7 +1499,7 @@ describe("136-master-audit-crash-mid-write-atomic-safety — task-queue.json and
   });
 });
 
-describe("137-master-audit-authorization-denial-audit-trail — 403 denials from operatorOnly/requireOrgMember/requireOrgPermission/requireWorkspaceMember now write to the durable audit log", () => {
+describe("137-master-audit-authorization-denial-audit-trail — 403 denials from operatorOnly/requireOrgMember/requireOrgPermission/requireWorkspaceMember now write to the durable audit log", { concurrency: false }, () => {
   // Root cause: this session fixed 15+ platform-wide-surface authorization
   // gaps this pass alone couldn't re-audit (operatorOnly on /eos, /ent,
   // /eco, /civ, /auto, ACP-9-12, /execution, /founder, /bible, /rc1-4,
@@ -1597,7 +1614,7 @@ describe("137-master-audit-authorization-denial-audit-trail — 403 denials from
   });
 });
 
-describe("138-master-audit-business-data-service-write-atomicity — businessDataService.cjs writes are now atomic like every sibling JSON store", () => {
+describe("138-master-audit-business-data-service-write-atomicity — businessDataService.cjs writes are now atomic like every sibling JSON store", { concurrency: false }, () => {
   // Coverage-matrix "concurrency"/"concurrent writes" area — this session's
   // own B.23/B.24/B.25 evidence matrices explicitly carried "multi-tenant
   // concurrent load" as NOT MEASURED across 3 certification phases without
@@ -1704,7 +1721,7 @@ describe("138-master-audit-business-data-service-write-atomicity — businessDat
   });
 });
 
-describe("139-master-audit-business-webhook-rate-limit — the 7 unauthenticated /business/webhook/* routes are now rate-limited", () => {
+describe("139-master-audit-business-webhook-rate-limit — the 7 unauthenticated /business/webhook/* routes are now rate-limited", { concurrency: false }, () => {
   // A-to-Z backend coverage sweep: businessEventAdapter.cjs's own header
   // comment claims these routes are "protected by source validation" — live-
   // reproduced that this only means "the :source string matches a known
@@ -1776,7 +1793,7 @@ describe("139-master-audit-business-webhook-rate-limit — the 7 unauthenticated
   });
 });
 
-describe("140-master-audit-graceful-shutdown-sqlite-close — _gracefulShutdown() now closes the SQLite connection, checkpointing the WAL", () => {
+describe("140-master-audit-graceful-shutdown-sqlite-close — _gracefulShutdown() now closes the SQLite connection, checkpointing the WAL", { concurrency: false }, () => {
   // A-to-Z backend coverage: graceful shutdown / startup recovery. Direct
   // grep confirmed closeDB() (backend/db/sqlite.cjs's own exported shutdown
   // function) was never called anywhere in server.js. WAL mode is already
@@ -1820,7 +1837,7 @@ describe("140-master-audit-graceful-shutdown-sqlite-close — _gracefulShutdown(
   });
 });
 
-describe("141-master-audit-autolooop-soft-failure-retry — a soft-failed (non-throwing) task now retries instead of permanently failing on attempt 1", () => {
+describe("141-master-audit-autolooop-soft-failure-retry — a soft-failed (non-throwing) task now retries instead of permanently failing on attempt 1", { concurrency: false }, () => {
   // Root cause: agents/autonomousLoop.cjs's _runTask() has two failure paths
   // — a catch{} block for THROWN exceptions (already correctly retries up to
   // maxRetries with backoff), and an `allFailed` branch for executors that
@@ -1910,7 +1927,7 @@ describe("141-master-audit-autolooop-soft-failure-retry — a soft-failed (non-t
   });
 });
 
-describe("142-master-audit-aiservice-overall-budget — callAI()/chat() stop trying further providers once a real overall deadline is exhausted", () => {
+describe("142-master-audit-aiservice-overall-budget — callAI()/chat() stop trying further providers once a real overall deadline is exhausted", { concurrency: false }, () => {
   // Root cause, confirmed by direct source read AND this session's own real
   // logs: callAI() and chat() both try up to 14 providers SEQUENTIALLY, each
   // with its own individual 20-30s timeout (TIMEOUTS above), but callers
@@ -1984,7 +2001,7 @@ describe("142-master-audit-aiservice-overall-budget — callAI()/chat() stop try
   });
 });
 
-describe("143-master-audit-legal-cross-tenant-idor — legal.js's caller-supplied workspaceId/docId now requires real membership", () => {
+describe("143-master-audit-legal-cross-tenant-idor — legal.js's caller-supplied workspaceId/docId now requires real membership", { concurrency: false }, () => {
   // Endpoint Authorization Sweep: live-reproduced a real cross-tenant IDOR
   // in legal.js — every route trusted a caller-supplied workspaceId/docId
   // with zero membership verification. A real, unrelated tenant read
@@ -2070,7 +2087,7 @@ describe("143-master-audit-legal-cross-tenant-idor — legal.js's caller-supplie
   });
 });
 
-describe("144-master-audit-endpoint-sweep-operator-gates — computerController.js, /aeo, and the POST-Ω P13-P19 cluster now require operatorOnly", () => {
+describe("144-master-audit-endpoint-sweep-operator-gates — computerController.js, /aeo, and the POST-Ω P13-P19 cluster now require operatorOnly", { concurrency: false }, () => {
   // Endpoint Authorization Sweep: found 9 more platform-wide, zero-orgId
   // route groups matching the exact defect class already fixed 15+ times
   // this session for /eos, /ent, /eco, /civ, /auto, ACP-9-12, /execution,
@@ -2132,7 +2149,7 @@ describe("144-master-audit-endpoint-sweep-operator-gates — computerController.
   });
 });
 
-describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is architecturally mitigated by SameSite=Strict cookies, verified live", () => {
+describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is architecturally mitigated by SameSite=Strict cookies, verified live", { concurrency: false }, () => {
   // CSRF Security Audit. The Master Coverage Matrix flagged "General
   // (non-OAuth) CSRF assessment — only OAuth state/nonce is currently
   // protected" as unverified. Investigated the actual authentication model
@@ -2275,7 +2292,7 @@ describe("145-master-audit-csrf-security — general (non-OAuth) CSRF is archite
   });
 });
 
-describe("146-master-audit-rate-limit-completeness — genuinely-missing rate limits closed on unauthenticated + high-risk authenticated routes, verified live", () => {
+describe("146-master-audit-rate-limit-completeness — genuinely-missing rate limits closed on unauthenticated + high-risk authenticated routes, verified live", { concurrency: false }, () => {
   const paymentSrc        = read("backend/routes/payment.js");
   const phase21Src        = read("backend/routes/phase21.js");
   const workspaceSrc      = read("backend/routes/workspace.js");
@@ -2416,7 +2433,7 @@ describe("146-master-audit-rate-limit-completeness — genuinely-missing rate li
   });
 });
 
-describe("147-master-audit-password-reset-security-tokens — reset/verify tokens are real (256-bit), single-use is race-free, and password reset invalidates prior sessions", () => {
+describe("147-master-audit-password-reset-security-tokens — reset/verify tokens are real (256-bit), single-use is race-free, and password reset invalidates prior sessions", { concurrency: false }, () => {
   const betaSrc     = read("backend/services/betaReadiness.cjs");
   const authMwSrc   = read("backend/middleware/authMiddleware.js");
   const acctSvcSrc  = read("backend/services/accountService.js");
@@ -2572,7 +2589,7 @@ describe("147-master-audit-password-reset-security-tokens — reset/verify token
   });
 });
 
-describe("148-master-audit-queue-layer-reliability — approvalQueue/deadLetterQueue atomic writes, creativeJobQueue honest failure transitions, priorityQueue drain no longer silently drops work", () => {
+describe("148-master-audit-queue-layer-reliability — approvalQueue/deadLetterQueue atomic writes, creativeJobQueue honest failure transitions, priorityQueue drain no longer silently drops work", { concurrency: false }, () => {
   const approvalQueueSrc = read("backend/services/approvalQueue.cjs");
   const dlqSrc            = read("agents/runtime/deadLetterQueue.cjs");
   const creativeStudioSrc = read("backend/routes/creativeStudio.js");
@@ -2656,7 +2673,7 @@ describe("148-master-audit-queue-layer-reliability — approvalQueue/deadLetterQ
   });
 });
 
-describe("149-master-audit-scheduler-reliability-recovery — orgAutomationScheduler/founderIdentitySyncScheduler wired into graceful shutdown, contentScheduler gains a real autonomous tick with overlap protection", () => {
+describe("149-master-audit-scheduler-reliability-recovery — orgAutomationScheduler/founderIdentitySyncScheduler wired into graceful shutdown, contentScheduler gains a real autonomous tick with overlap protection", { concurrency: false }, () => {
   const serverSrc            = read("backend/server.js");
   const founderSyncSrc       = read("backend/services/founderIdentitySyncScheduler.cjs");
   const contentSchedulerSrc  = read("agents/content/contentScheduler.cjs");
@@ -2801,7 +2818,7 @@ describe("149-master-audit-scheduler-reliability-recovery — orgAutomationSched
   });
 });
 
-describe("150-master-audit-runtime-event-bus-reliability — 6 workflow files' subscribe() calls now correctly type-filter and read evt.payload, subscriber ids are unique (no more silent Map-key collisions), MAX_SUBS covers the real 70-subscriber population, /runtime/stream is operatorOnly", () => {
+describe("150-master-audit-runtime-event-bus-reliability — 6 workflow files' subscribe() calls now correctly type-filter and read evt.payload, subscriber ids are unique (no more silent Map-key collisions), MAX_SUBS covers the real 70-subscriber population, /runtime/stream is operatorOnly", { concurrency: false }, () => {
   const busSrc   = read("agents/runtime/runtimeEventBus.cjs");
   const indexSrc = read("backend/routes/index.js");
   const workflowFiles = {
@@ -2949,7 +2966,7 @@ describe("150-master-audit-runtime-event-bus-reliability — 6 workflow files' s
   });
 });
 
-describe("151-master-audit-timeout-cancellation-safety — terminalController.streamOutput() now bounds and kills its spawned child, vsCodeExtensionService's raw HTTP posts and salesAgent's Groq call and founderIdentityOS's Cloudflare fetch now all have a real bound instead of hanging forever", () => {
+describe("151-master-audit-timeout-cancellation-safety — terminalController.streamOutput() now bounds and kills its spawned child, vsCodeExtensionService's raw HTTP posts and salesAgent's Groq call and founderIdentityOS's Cloudflare fetch now all have a real bound instead of hanging forever", { concurrency: false }, () => {
   const terminalSrc = read("backend/services/terminalController.cjs");
   const vscSrc       = read("backend/services/vsCodeExtensionService.cjs");
   const salesSrc      = read("agents/salesAgent.cjs");
@@ -3063,7 +3080,7 @@ describe("151-master-audit-timeout-cancellation-safety — terminalController.st
   });
 });
 
-describe("152-master-audit-executionengine-duplicate-execution-guard — executionEngine.cjs's retry loop no longer starts a second concurrent handler invocation for a task whose prior attempt timed out and is still orphaned/running in the background", () => {
+describe("152-master-audit-executionengine-duplicate-execution-guard — executionEngine.cjs's retry loop no longer starts a second concurrent handler invocation for a task whose prior attempt timed out and is still orphaned/running in the background", { concurrency: false }, () => {
   const engineSrc = read("agents/runtime/executionEngine.cjs");
 
   it("structural: _withTimeout marks an orphan key on timeout and the retry loop checks it before starting a new attempt for the same (taskId, task.type)", () => {
@@ -3150,7 +3167,7 @@ describe("152-master-audit-executionengine-duplicate-execution-guard — executi
   });
 });
 
-describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleMissions() also recovers subtasks stuck at 'running' (292 real ones found orphaned up to 337h), executor.cjs's autoOS handler no longer reports fake success when the autonomous loop is paused, enterpriseOS's cross-OS dashboard no longer crashes on developerOS's now-mandatory orgId", () => {
+describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleMissions() also recovers subtasks stuck at 'running' (292 real ones found orphaned up to 337h), executor.cjs's autoOS handler no longer reports fake success when the autonomous loop is paused, enterpriseOS's cross-OS dashboard no longer crashes on developerOS's now-mandatory orgId", { concurrency: false }, () => {
   const missionRuntimeSrc = read("agents/runtime/missionRuntime.cjs");
   const executorSrc       = read("agents/executor.cjs");
   const enterpriseOsSrc   = read("agents/runtime/enterpriseOS.cjs");
@@ -3299,7 +3316,7 @@ describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleM
   });
 });
 
-describe("154-master-audit-persistence-integrity-sweep — accountService.js (the real, live account store), secretVault.cjs's audit/history files, memoryPersistenceLayer.cjs, and engineeringSession.cjs all now write via a unique-per-call tmp+rename instead of a raw/shared-tmp writeFileSync, closing a real crash-mid-write corruption risk", () => {
+describe("154-master-audit-persistence-integrity-sweep — accountService.js (the real, live account store), secretVault.cjs's audit/history files, memoryPersistenceLayer.cjs, and engineeringSession.cjs all now write via a unique-per-call tmp+rename instead of a raw/shared-tmp writeFileSync, closing a real crash-mid-write corruption risk", { concurrency: false }, () => {
   const accountSrc = read("backend/services/accountService.js");
   const vaultSrc    = read("backend/services/secretVault.cjs");
   const memSrc      = read("backend/services/memoryPersistenceLayer.cjs");
@@ -3437,7 +3454,7 @@ describe("154-master-audit-persistence-integrity-sweep — accountService.js (th
   });
 });
 
-describe("155-master-audit-express-router-interception — ops.js's array-form operator gate now covers /incidents, /rca-reports, /fix-plans, /healing-runs, /learning, /lifecycle, /goals, and /personal, closing a real unauthenticated-read-and-write surface on real personal task/note/reminder/knowledge data", () => {
+describe("155-master-audit-express-router-interception — ops.js's array-form operator gate now covers /incidents, /rca-reports, /fix-plans, /healing-runs, /learning, /lifecycle, /goals, and /personal, closing a real unauthenticated-read-and-write surface on real personal task/note/reminder/knowledge data", { concurrency: false }, () => {
   const opsSrc = read("backend/routes/ops.js");
 
   it("structural: the array-form operator gate in ops.js includes all 8 previously-uncovered route family prefixes", () => {
@@ -3510,7 +3527,7 @@ describe("155-master-audit-express-router-interception — ops.js's array-form o
   });
 });
 
-describe("155b-master-audit-productfactory-classification — productFactory.js's line-63 bare router.use is CLEAN, not a defect: every route in the file genuinely belongs to /product-factory/*, so the unscoped middleware never leaks beyond this file's own routes", () => {
+describe("155b-master-audit-productfactory-classification — productFactory.js's line-63 bare router.use is CLEAN, not a defect: every route in the file genuinely belongs to /product-factory/*, so the unscoped middleware never leaks beyond this file's own routes", { concurrency: false }, () => {
   const pfSrc = read("backend/routes/productFactory.js");
 
   it("structural: every router.get/post/patch/delete registration in productFactory.js is genuinely under /product-factory/*", () => {
@@ -3538,7 +3555,7 @@ describe("155b-master-audit-productfactory-classification — productFactory.js'
   });
 });
 
-describe("156-master-audit-bucketc-fixed-temp-path-sweep — 60 files sharing the fixed-tmp-name persistence pattern audited; 0 genuine defects found — every write is either fully synchronous (impossible to interleave intra-process under this deployment's instances:1/exec_mode:fork architecture) or protected by an explicit single-flight _writing/_dirty mutex that serializes writes to the shared tmp path regardless of the fixed name", () => {
+describe("156-master-audit-bucketc-fixed-temp-path-sweep — 60 files sharing the fixed-tmp-name persistence pattern audited; 0 genuine defects found — every write is either fully synchronous (impossible to interleave intra-process under this deployment's instances:1/exec_mode:fork architecture) or protected by an explicit single-flight _writing/_dirty mutex that serializes writes to the shared tmp path regardless of the fixed name", { concurrency: false }, () => {
   // This block intentionally has no fix to negative-test — the audit's own
   // finding was that no genuine defect exists in this 60-file inventory.
   // These structural checks document and pin the two independent safety
@@ -3595,7 +3612,7 @@ describe("156-master-audit-bucketc-fixed-temp-path-sweep — 60 files sharing th
   });
 });
 
-describe("157-master-audit-founder-ops-authorization-cluster — the ~15-file MEDIUM-priority founder/ops cluster deferred from the Endpoint Authorization Sweep is now closed: 13 files gated operatorOnly (zero orgId, platform-internal, reachable via unguarded operator-os frontend tabs), founderTwin.js/companyFactory.js confirmed CLEAN (genuinely customer-facing / already correctly org-scoped) and left untouched", () => {
+describe("157-master-audit-founder-ops-authorization-cluster — the ~15-file MEDIUM-priority founder/ops cluster deferred from the Endpoint Authorization Sweep is now closed: 13 files gated operatorOnly (zero orgId, platform-internal, reachable via unguarded operator-os frontend tabs), founderTwin.js/companyFactory.js confirmed CLEAN (genuinely customer-facing / already correctly org-scoped) and left untouched", { concurrency: false }, () => {
   const fdiosSrc     = read("backend/routes/founderIdentityOS.js");
   const fopSrc       = read("backend/routes/founderJournal.js");
   const wfosSrc      = read("backend/routes/workforceOS.js");
@@ -3701,7 +3718,7 @@ describe("157-master-audit-founder-ops-authorization-cluster — the ~15-file ME
   });
 });
 
-describe("158-master-audit-browser-controller-download-safety — browserController.cjs's downloadFile() no longer builds a shell command string from unescaped url/destination, applies the same assertSafeNavigationTarget SSRF guard every other real navigation path in this codebase already uses, and constrains destination to the user's Downloads directory", () => {
+describe("158-master-audit-browser-controller-download-safety — browserController.cjs's downloadFile() no longer builds a shell command string from unescaped url/destination, applies the same assertSafeNavigationTarget SSRF guard every other real navigation path in this codebase already uses, and constrains destination to the user's Downloads directory", { concurrency: false }, () => {
   const src = read("backend/services/browserController.cjs");
 
   it("structural: downloadFile() uses spawn(shell:false) with an argument array, not execSync with a template-literal shell string", () => {
@@ -3856,7 +3873,7 @@ describe("158-master-audit-browser-controller-download-safety — browserControl
   });
 });
 
-describe("159-master-audit-agent-runtime-execution-boundary — the terminal execution adapter's command allowlist no longer includes node/npm/npx, closing an arbitrary-code-execution bypass reachable by any ordinary, authenticated customer via a plain chat message to POST /jarvis", () => {
+describe("159-master-audit-agent-runtime-execution-boundary — the terminal execution adapter's command allowlist no longer includes node/npm/npx, closing an arbitrary-code-execution bypass reachable by any ordinary, authenticated customer via a plain chat message to POST /jarvis", { concurrency: false }, () => {
   const policySrc = read("agents/runtime/adapters/adapterSandboxPolicyEngine.cjs");
 
   it("structural: the terminal base allowlist no longer contains node, npm, or npx", () => {
@@ -4021,7 +4038,7 @@ describe("159-master-audit-agent-runtime-execution-boundary — the terminal exe
   });
 });
 
-describe("160-master-audit-filesystem-adapter-sandbox — filesystemExecutionAdapter.cjs's protected-path denylist is now checked on every read operation (not just writes), data/ is now fully protected (previously only a single file inside it was), and a symlink-based sandbox escape (both direct-file and parent-directory forms) is now blocked via realpath containment on the nearest existing ancestor", () => {
+describe("160-master-audit-filesystem-adapter-sandbox — filesystemExecutionAdapter.cjs's protected-path denylist is now checked on every read operation (not just writes), data/ is now fully protected (previously only a single file inside it was), and a symlink-based sandbox escape (both direct-file and parent-directory forms) is now blocked via realpath containment on the nearest existing ancestor", { concurrency: false }, () => {
   const src = read("agents/runtime/adapters/filesystemExecutionAdapter.cjs");
 
   it("structural: readFile/readDir/fileExists/statFile all call _isProtectedPath, not just writeFile/deleteFile/makeDir", () => {
@@ -4173,7 +4190,7 @@ describe("160-master-audit-filesystem-adapter-sandbox — filesystemExecutionAda
   });
 });
 
-describe("161-master-audit-primitives-shell-injection — agents/primitives.cjs's openURL()/openApp() no longer build a shell command string from a user-controlled value, closing a real command-substitution injection ($()/$IFS) reachable by any ordinary, authenticated customer via a plain chat message", () => {
+describe("161-master-audit-primitives-shell-injection — agents/primitives.cjs's openURL()/openApp() no longer build a shell command string from a user-controlled value, closing a real command-substitution injection ($()/$IFS) reachable by any ordinary, authenticated customer via a plain chat message", { concurrency: false }, () => {
   const src = read("agents/primitives.cjs");
 
   it("structural: openURL and openApp both use the spawn(shell:false)-based _spawnExec helper, not the shell-string _exec helper", () => {
@@ -4231,7 +4248,7 @@ describe("161-master-audit-primitives-shell-injection — agents/primitives.cjs'
   });
 });
 
-describe("162-master-audit-customer-data-access-boundary — business.js's mission-layer routes (deals/customers/marketing/operations/pipeline) now require real org membership instead of trusting a caller-suppliable X-Org-Id header, analytics.js's workspace routes now require real workspace membership, and customerOrg.js's remaining un-scoped :customerId mutation/read routes now verify ownership against the resource's own stored orgId", () => {
+describe("162-master-audit-customer-data-access-boundary — business.js's mission-layer routes (deals/customers/marketing/operations/pipeline) now require real org membership instead of trusting a caller-suppliable X-Org-Id header, analytics.js's workspace routes now require real workspace membership, and customerOrg.js's remaining un-scoped :customerId mutation/read routes now verify ownership against the resource's own stored orgId", { concurrency: false }, () => {
   const businessSrc     = read("backend/routes/business.js");
   const analyticsSrc    = read("backend/routes/analytics.js");
   const customerOrgSrc  = read("backend/routes/customerOrg.js");
@@ -4435,7 +4452,7 @@ describe("162-master-audit-customer-data-access-boundary — business.js's missi
   });
 });
 
-describe("163-master-audit-graph-tenant-isolation — graph.js's two ungated mutation routes (POST /graph/index, POST /graph/index/mission/:missionId) and its four reasoning routes (reasoning, reasoning/critical, reasoning/recommendations, reasoning/executive) now require operatorOnly, matching every other platform-wide graph route in this file — closing a real cross-tenant disclosure of individual mission/org/lead records through an ordinary customer's own dashboard views", () => {
+describe("163-master-audit-graph-tenant-isolation — graph.js's two ungated mutation routes (POST /graph/index, POST /graph/index/mission/:missionId) and its four reasoning routes (reasoning, reasoning/critical, reasoning/recommendations, reasoning/executive) now require operatorOnly, matching every other platform-wide graph route in this file — closing a real cross-tenant disclosure of individual mission/org/lead records through an ordinary customer's own dashboard views", { concurrency: false }, () => {
   const src = read("backend/routes/graph.js");
 
   it("structural: all 6 previously-ungated routes now compose _graphOperatorOnly", () => {
@@ -4591,7 +4608,7 @@ describe("163-master-audit-graph-tenant-isolation — graph.js's two ungated mut
   });
 });
 
-describe("164-master-audit-connector-vault-env-fallback — secretVault.cjs's validateSecret() no longer falls back to the founder's own env-configured credentials for a real customer org, closing a cross-tenant credential-metadata disclosure reachable via both myConnectors.js (curated 9-provider subset) and companyFactory.js's caller-controlled connectorId/type path params (all ~56 connectors)", () => {
+describe("164-master-audit-connector-vault-env-fallback — secretVault.cjs's validateSecret() no longer falls back to the founder's own env-configured credentials for a real customer org, closing a cross-tenant credential-metadata disclosure reachable via both myConnectors.js (curated 9-provider subset) and companyFactory.js's caller-controlled connectorId/type path params (all ~56 connectors)", { concurrency: false }, () => {
   const vaultSrc = read("backend/services/secretVault.cjs");
   const vault = require(path.join(ROOT, "backend/services/secretVault.cjs"));
 
@@ -4699,7 +4716,7 @@ describe("164-master-audit-connector-vault-env-fallback — secretVault.cjs's va
   });
 });
 
-describe("165-master-audit-p18-memory-mutation-boundary — POST/PATCH/DELETE /p18/memory* now require operatorOnly, closing a real cross-tenant unauthorized read/tamper/delete of another org's real memory node by id — GET /p18/memory* stays requireAuth-only, preserving SharedMemoryCenter.jsx's real, read-only customer feature; the broader question of whether reads should remain customer-facing stays DECISION REQUIRED, not resolved here", () => {
+describe("165-master-audit-p18-memory-mutation-boundary — POST/PATCH/DELETE /p18/memory* now require operatorOnly, closing a real cross-tenant unauthorized read/tamper/delete of another org's real memory node by id — GET /p18/memory* stays requireAuth-only, preserving SharedMemoryCenter.jsx's real, read-only customer feature; the broader question of whether reads should remain customer-facing stays DECISION REQUIRED, not resolved here", { concurrency: false }, () => {
   const src = read("backend/routes/phase18.js");
 
   it("structural: POST/PATCH/DELETE /p18/memory* compose operatorOnly; GET /p18/memory* routes remain requireAuth-only (no operatorOnly), preserving the existing read-side product decision", () => {
@@ -4796,7 +4813,7 @@ describe("165-master-audit-p18-memory-mutation-boundary — POST/PATCH/DELETE /p
   });
 });
 
-describe("166-master-audit-login-timing-enumeration — accountService.js's loginByEmail() now always runs an equivalent-cost scrypt comparison, even for a nonexistent email, closing a real timing side-channel distinct from the already-certified response-BODY enumeration resistance", () => {
+describe("166-master-audit-login-timing-enumeration — accountService.js's loginByEmail() now always runs an equivalent-cost scrypt comparison, even for a nonexistent email, closing a real timing side-channel distinct from the already-certified response-BODY enumeration resistance", { concurrency: false }, () => {
   const src = read("backend/services/accountService.js");
   const svc = require(path.join(ROOT, "backend/services/accountService.js"));
 
@@ -4835,7 +4852,7 @@ describe("166-master-audit-login-timing-enumeration — accountService.js's logi
   });
 });
 
-describe("167-master-audit-payment-external-call-rate-limit — /payment/link and /billing/upgrade now rate-limited, closing an unbounded real-external-API-call abuse vector matching the same defect class already fixed for commercial.js/composer.js/legal.js's equivalent single-shot external-API mutation routes", () => {
+describe("167-master-audit-payment-external-call-rate-limit — /payment/link and /billing/upgrade now rate-limited, closing an unbounded real-external-API-call abuse vector matching the same defect class already fixed for commercial.js/composer.js/legal.js's equivalent single-shot external-API mutation routes", { concurrency: false }, () => {
   const paymentSrc = read("backend/routes/payment.js");
   const billingSrc = read("backend/routes/billing.js");
 
@@ -4899,7 +4916,7 @@ describe("167-master-audit-payment-external-call-rate-limit — /payment/link an
   });
 });
 
-describe("168-master-audit-global-export-ownership — GET /exports/global/:filename now verifies the caller's accountId against the accountId creativeAssetLibrary.cjs recorded at persist() time (failing closed, not open, when no record is found), closing a real cross-tenant disclosure of another customer's GDPR data export and an operator-only-gate bypass letting any ordinary customer download the founder's own report — both previously protected only by 'the filename is unguessable', which every real generator in this codebase violates (Date.now()/date-string/weak Math.random() filenames, not a real secret)", () => {
+describe("168-master-audit-global-export-ownership — GET /exports/global/:filename now verifies the caller's accountId against the accountId creativeAssetLibrary.cjs recorded at persist() time (failing closed, not open, when no record is found), closing a real cross-tenant disclosure of another customer's GDPR data export and an operator-only-gate bypass letting any ordinary customer download the founder's own report — both previously protected only by 'the filename is unguessable', which every real generator in this codebase violates (Date.now()/date-string/weak Math.random() filenames, not a real secret)", { concurrency: false }, () => {
   const exportFilesSrc = read("backend/routes/exportFiles.js");
 
   it("structural: the global-scope route composes an ownership check via creativeAssetLibrary.getAssetByUrl(), and denies on both mismatch and missing record", () => {
@@ -4976,7 +4993,7 @@ describe("168-master-audit-global-export-ownership — GET /exports/global/:file
   });
 });
 
-describe("169-master-audit-odi-dom-path-traversal — domAnalyzerService.cjs's getAnalysis() no longer joins an unsanitized :filename into DOM_DIR, closing a real path-traversal reachable by any ordinary authenticated customer via GET /odi/dom/:filename that could read arbitrary JSON files elsewhere on disk (live-reproduced: an authenticated customer successfully read the repo's real package.json via GET /odi/dom/..%2F..%2F..%2Fpackage.json before this fix)", () => {
+describe("169-master-audit-odi-dom-path-traversal — domAnalyzerService.cjs's getAnalysis() no longer joins an unsanitized :filename into DOM_DIR, closing a real path-traversal reachable by any ordinary authenticated customer via GET /odi/dom/:filename that could read arbitrary JSON files elsewhere on disk (live-reproduced: an authenticated customer successfully read the repo's real package.json via GET /odi/dom/..%2F..%2F..%2Fpackage.json before this fix)", { concurrency: false }, () => {
   const domServiceSrc = read("backend/services/domAnalyzerService.cjs");
 
   it("structural: getAnalysis() sanitizes filename via path.basename() and enforces containment inside DOM_DIR before reading", () => {
@@ -5050,7 +5067,7 @@ describe("169-master-audit-odi-dom-path-traversal — domAnalyzerService.cjs's g
   });
 });
 
-describe("170-master-audit-client-error-leakage — codingAssistant.js's _applyPatchSpecs() no longer lets a raw Node fs error (which always embeds the absolute server path) reach the client via POST /coding/apply-patch or /coding/refactor, and whatsappService.js's sendMessage() no longer returns Meta's raw Graph API error body (which can contain real internal identifiers like the configured WA_PHONE_ID) to the client via POST /whatsapp/send — both live-reproduced as genuine leaks before fixing, both still fully logged server-side", () => {
+describe("170-master-audit-client-error-leakage — codingAssistant.js's _applyPatchSpecs() no longer lets a raw Node fs error (which always embeds the absolute server path) reach the client via POST /coding/apply-patch or /coding/refactor, and whatsappService.js's sendMessage() no longer returns Meta's raw Graph API error body (which can contain real internal identifiers like the configured WA_PHONE_ID) to the client via POST /whatsapp/send — both live-reproduced as genuine leaks before fixing, both still fully logged server-side", { concurrency: false }, () => {
   const codingSrc = read("backend/routes/codingAssistant.js");
   const waSrc = read("backend/services/whatsappService.js");
 
@@ -5140,7 +5157,7 @@ describe("170-master-audit-client-error-leakage — codingAssistant.js's _applyP
   });
 });
 
-describe("171-master-audit-client-error-sanitization-deep-sweep — aiOrchestrator.cjs's execute()/executeStream() no longer name every provider in the fallback chain plus each one's raw failure text when all providers fail (closing a provider-roster/config-state disclosure reachable via POST /ai-ecosystem/orchestrator/execute[/stream]), codingAssistant.js's /coding/generate-patch validation step no longer returns a raw Node fs error (customer-controlled cwd, live-reproduced EACCES leaking an absolute path) from its patchSpecs validator, and imageGeneratorAgent.cjs/voiceCloningAgent.cjs/videoGeneratorAgent.cjs no longer put raw provider (DALL-E/ElevenLabs/OpenAI-TTS/Sora) err.message text into the generationError/elevenlabsError/openaiError fields returned via /creative/*, all reachable by an ordinary authenticated customer, all still logged server-side in full", () => {
+describe("171-master-audit-client-error-sanitization-deep-sweep — aiOrchestrator.cjs's execute()/executeStream() no longer name every provider in the fallback chain plus each one's raw failure text when all providers fail (closing a provider-roster/config-state disclosure reachable via POST /ai-ecosystem/orchestrator/execute[/stream]), codingAssistant.js's /coding/generate-patch validation step no longer returns a raw Node fs error (customer-controlled cwd, live-reproduced EACCES leaking an absolute path) from its patchSpecs validator, and imageGeneratorAgent.cjs/voiceCloningAgent.cjs/videoGeneratorAgent.cjs no longer put raw provider (DALL-E/ElevenLabs/OpenAI-TTS/Sora) err.message text into the generationError/elevenlabsError/openaiError fields returned via /creative/*, all reachable by an ordinary authenticated customer, all still logged server-side in full", { concurrency: false }, () => {
   const orchestratorSrc = read("backend/services/aiOrchestrator.cjs");
   const codingSrc       = read("backend/routes/codingAssistant.js");
   const imageAgentSrc   = read("agents/content/imageGeneratorAgent.cjs");
@@ -5329,7 +5346,7 @@ describe("171-master-audit-client-error-sanitization-deep-sweep — aiOrchestrat
   });
 });
 
-describe("172-master-audit-command-injection-process-execution — largeContextCodeSearch.cjs, repoIntelligenceEngine.cjs and multiRepoEngineeringEngine.cjs no longer build shell command STRINGS via execSync where JSON.stringify() was mistaken for a shell-quoting function (it escapes only \" and \\, not $()/backticks) — all three now use execFileSync with real argument arrays, closing 4 live-reproduced full-RCE vectors reachable by any ordinary requireAuth-only customer via POST /p25/search, GET /p25/search/related, GET /p25/search/stats and POST /p24/repo/search (the last via a completely unquoted `limit` parameter, no escaping needed at all); and codingAssistant.js/codingBundle.js/codingDecisions.js's customer-supplied `cwd` parameter (a real information-disclosure vector — arbitrary-directory git log/diff/file-content-derived scan results, live-reproduced with a self-created test repo) now requires the operator role via a shared backend/utils/cwdSafety.cjs helper, since no per-customer workspace-boundary concept exists to scope it to instead", () => {
+describe("172-master-audit-command-injection-process-execution — largeContextCodeSearch.cjs, repoIntelligenceEngine.cjs and multiRepoEngineeringEngine.cjs no longer build shell command STRINGS via execSync where JSON.stringify() was mistaken for a shell-quoting function (it escapes only \" and \\, not $()/backticks) — all three now use execFileSync with real argument arrays, closing 4 live-reproduced full-RCE vectors reachable by any ordinary requireAuth-only customer via POST /p25/search, GET /p25/search/related, GET /p25/search/stats and POST /p24/repo/search (the last via a completely unquoted `limit` parameter, no escaping needed at all); and codingAssistant.js/codingBundle.js/codingDecisions.js's customer-supplied `cwd` parameter (a real information-disclosure vector — arbitrary-directory git log/diff/file-content-derived scan results, live-reproduced with a self-created test repo) now requires the operator role via a shared backend/utils/cwdSafety.cjs helper, since no per-customer workspace-boundary concept exists to scope it to instead", { concurrency: false }, () => {
   const lcsSrc  = read("backend/services/largeContextCodeSearch.cjs");
   const rieSrc  = read("backend/services/repoIntelligenceEngine.cjs");
   const mreSrc  = read("backend/services/multiRepoEngineeringEngine.cjs");
@@ -5566,7 +5583,7 @@ describe("172-master-audit-command-injection-process-execution — largeContextC
   });
 });
 
-describe("173-master-audit-module-loader-error-leak — 21 route files' unguarded lazy require() accessors of fixed, hardcoded service paths (odi.js, scientificDiscovery.js, productFactory.js, physicalWorld.js, organizationNetwork.js, odi-x.js, oai-x.js, knowledgeNetwork.js, globalInfrastructure.js, autonomousRevenue.js, autonomousMarketplace.js, autonomousInvestment.js, platformOrg.js, ecosystemOrg.js, civilizationOrg.js, autonomousOrg.js, postOmega.js, growthOS.js, distribution.js, contentSEO.js, closedBeta.js) now wrap require() in the same _try() helper already established and certified elsewhere in this codebase (auth.js/companyFactory.js/enterpriseSso.js/etc.) — closing a real information disclosure where a broken/missing service module surfaced Node's raw \"Cannot find module\" text plus its full require stack (internal route-file structure and mount chain) to any requireAuth-only customer via the nearest catch block's error: e.message, live-reproduced by safely and reversibly moving a real service file aside and observing the leak through the actual running server, not a resolution-target vulnerability (no require() target in this codebase is ever influenced by req.body/req.query/req.params — confirmed via a dedicated codebase-wide inventory)", () => {
+describe("173-master-audit-module-loader-error-leak — 21 route files' unguarded lazy require() accessors of fixed, hardcoded service paths (odi.js, scientificDiscovery.js, productFactory.js, physicalWorld.js, organizationNetwork.js, odi-x.js, oai-x.js, knowledgeNetwork.js, globalInfrastructure.js, autonomousRevenue.js, autonomousMarketplace.js, autonomousInvestment.js, platformOrg.js, ecosystemOrg.js, civilizationOrg.js, autonomousOrg.js, postOmega.js, growthOS.js, distribution.js, contentSEO.js, closedBeta.js) now wrap require() in the same _try() helper already established and certified elsewhere in this codebase (auth.js/companyFactory.js/enterpriseSso.js/etc.) — closing a real information disclosure where a broken/missing service module surfaced Node's raw \"Cannot find module\" text plus its full require stack (internal route-file structure and mount chain) to any requireAuth-only customer via the nearest catch block's error: e.message, live-reproduced by safely and reversibly moving a real service file aside and observing the leak through the actual running server, not a resolution-target vulnerability (no require() target in this codebase is ever influenced by req.body/req.query/req.params — confirmed via a dedicated codebase-wide inventory)", { concurrency: false }, () => {
   const files = [
     "backend/routes/odi.js", "backend/routes/scientificDiscovery.js", "backend/routes/productFactory.js",
     "backend/routes/physicalWorld.js", "backend/routes/organizationNetwork.js", "backend/routes/odi-x.js",
@@ -5644,7 +5661,7 @@ describe("173-master-audit-module-loader-error-leak — 21 route files' unguarde
   });
 });
 
-describe("174-master-audit-residual-filesystem-path-leakage — 8 genuine filesystem-path/sensitive-error leaks closed: secretVault.cjs's _save() (credential-store path, reachable via requireAuth-only POST /company-factory/companies/:id/connectors/:connectorId/:type), vscodeExecutionMaturity.cjs's getLaunchConfigs()/getWorkspaceSettings() (a deterministic, zero-setup absolute-path leak on every call via GET /runtime/vscode/launch-configs when no .vscode/launch.json exists), vsCodeOperations.cjs's absPath/filePath fields (a designed-in, not error-path, absolute-path disclosure across 4 /runtime/vscode/* routes — stripped to a relative path per a user decision since no real caller consumes it), engineeringPipelineCoordinator.cjs's _patchValidateGate (a real path-traversal via POST /pipeline/run's caller-controlled patchSpec.targetFile plus a raw fs-error leak on the resolved path, live-reproduced with a safe scratch fixture), codingAssistant.js's undo-patch/patch-history/ACP5-metrics unguarded writes, engineeringSmellDetector.cjs's unguarded dismissed-smells write, and exportFileService.cjs's unguarded local-export write (reachable via the real customer-facing GDPR self-service route GET /accounts/me/export)", () => {
+describe("174-master-audit-residual-filesystem-path-leakage — 8 genuine filesystem-path/sensitive-error leaks closed: secretVault.cjs's _save() (credential-store path, reachable via requireAuth-only POST /company-factory/companies/:id/connectors/:connectorId/:type), vscodeExecutionMaturity.cjs's getLaunchConfigs()/getWorkspaceSettings() (a deterministic, zero-setup absolute-path leak on every call via GET /runtime/vscode/launch-configs when no .vscode/launch.json exists), vsCodeOperations.cjs's absPath/filePath fields (a designed-in, not error-path, absolute-path disclosure across 4 /runtime/vscode/* routes — stripped to a relative path per a user decision since no real caller consumes it), engineeringPipelineCoordinator.cjs's _patchValidateGate (a real path-traversal via POST /pipeline/run's caller-controlled patchSpec.targetFile plus a raw fs-error leak on the resolved path, live-reproduced with a safe scratch fixture), codingAssistant.js's undo-patch/patch-history/ACP5-metrics unguarded writes, engineeringSmellDetector.cjs's unguarded dismissed-smells write, and exportFileService.cjs's unguarded local-export write (reachable via the real customer-facing GDPR self-service route GET /accounts/me/export)", { concurrency: false }, () => {
   const secretVaultSrc = read("backend/services/secretVault.cjs");
   const vscodeMaturitySrc = read("agents/runtime/vscodeExecutionMaturity.cjs");
   const vsCodeOpsSrc = read("agents/runtime/vsCodeOperations.cjs");
@@ -5875,7 +5892,7 @@ describe("174-master-audit-residual-filesystem-path-leakage — 8 genuine filesy
   });
 });
 
-describe("175-master-audit-configuration-secrets-environment-exposure — pipReport.cjs's email_smtp and deploy_domain integration checks no longer interpolate the real process.env.SMTP_HOST / process.env.PRODUCTION_DOMAIN values into their `detail` strings, closing a real environment-value disclosure reachable by any ordinary requireAuth-only customer via GET /launch/pip-report (no operatorOnly gate on that route) — both checks now use the file's own established presence-only _env() convention, matching all 40+ sibling checks in the same file; live-reproduced and re-verified with synthetic marker env-var values, never real credentials", () => {
+describe("175-master-audit-configuration-secrets-environment-exposure — pipReport.cjs's email_smtp and deploy_domain integration checks no longer interpolate the real process.env.SMTP_HOST / process.env.PRODUCTION_DOMAIN values into their `detail` strings, closing a real environment-value disclosure reachable by any ordinary requireAuth-only customer via GET /launch/pip-report (no operatorOnly gate on that route) — both checks now use the file's own established presence-only _env() convention, matching all 40+ sibling checks in the same file; live-reproduced and re-verified with synthetic marker env-var values, never real credentials", { concurrency: false }, () => {
   it("structural: pipReport.cjs's email_smtp and deploy_domain checks no longer contain a template-literal interpolation of process.env.SMTP_HOST or process.env.PRODUCTION_DOMAIN", () => {
     const src = fs.readFileSync(path.join(__dirname, "../../backend/services/pipReport.cjs"), "utf8");
     assert.doesNotMatch(src, /`SMTP:\s*\$\{process\.env\.SMTP_HOST\}`/, "email_smtp's detail must not interpolate the real SMTP_HOST value");
@@ -5963,7 +5980,7 @@ describe("175-master-audit-configuration-secrets-environment-exposure — pipRep
   });
 });
 
-describe("176-mission-63-workspace-mesh-electron-dispatch-arg-shape — workspaceCoordinator.cjs's electron/cloud-workspace dispatch branch now calls computerController.run(command, opts) with the real (string, object) signature instead of a single mis-shaped object, and workspaceMesh.execute() no longer drops the real error message on a failed execution", () => {
+describe("176-mission-63-workspace-mesh-electron-dispatch-arg-shape — workspaceCoordinator.cjs's electron/cloud-workspace dispatch branch now calls computerController.run(command, opts) with the real (string, object) signature instead of a single mis-shaped object, and workspaceMesh.execute() no longer drops the real error message on a failed execution", { concurrency: false }, () => {
   const coordinatorSrc = read("backend/services/workspaceCoordinator.cjs");
   const meshSrc         = read("backend/services/workspaceMesh.cjs");
 

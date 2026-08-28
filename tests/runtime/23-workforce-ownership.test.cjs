@@ -38,7 +38,28 @@ const SVC   = path.join(ROOT, "backend/services/organizationService.cjs");
 const STORE = path.join(ROOT, "data/organizations.json");
 
 const org = require("../../backend/services/organizationService.cjs");
-const read = p => fs.readFileSync(p, "utf8");
+
+// Mission 71: this file always assumed data/organizations.json already
+// existed (its every helper below reads it directly via fs.readFileSync,
+// with no guard) — true whenever some other parallel-batch test's
+// createOrg() call had already run first, which was common but never
+// guaranteed. Mission 68 moved every createOrg()-calling file into
+// MISSION_MUTATING's serialized batch (a real, separate fix for a real
+// lost-update race — see organizationService.cjs's own _write() comment),
+// which run-test-suite.cjs always runs strictly AFTER the parallel batch
+// completes. This file itself never calls createOrg(), so it was never a
+// candidate for that list — it now reliably runs to completion in the
+// parallel phase before any org has ever been created on a fresh checkout,
+// turning an occasional race into a guaranteed ENOENT. Mirrors
+// organizationService.cjs's own _read() contract (JSON.parse from disk,
+// {orgs:[]} on any read/parse failure — including a missing file) instead
+// of reading the real service's private state, so this file's fixture
+// helpers below establish their own precondition rather than assuming
+// ambient state seeded by another file.
+const read = p => {
+    try { return fs.readFileSync(p, "utf8"); }
+    catch { return JSON.stringify({ orgs: [] }); }
+};
 
 /** Build a throwaway org with a known role set, and always clean it up. */
 function withOrg(roles, fn) {

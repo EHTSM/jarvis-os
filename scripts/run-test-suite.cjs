@@ -72,6 +72,25 @@ const MISSION_MUTATING = {
         "tests/security/13-mission-memory-race-verification.cjs",
         "tests/security/18-mission-runtime-lifecycle.cjs",
         "tests/security/52-runtime-stability-fixes.cjs",
+        // Mission 71: these 6 files all call businessDataService.cjs's
+        // createLead()/mutating CRM API against the real, shared
+        // data/biz-leads.json (and siblings) — the identical unlocked
+        // lost-update race as organizationService.cjs/accountService.js
+        // above, now in a third shared store. Force-reproduced: a
+        // concurrent write losing 08-v5-production-validation.cjs's own
+        // freshly-created lead made orgKnowledgeGraph.cjs's node resolver
+        // return undefined for it, producing the ERA-1 "cross-org knowledge
+        // graph leak detected" failure — orgId propagation is correct at
+        // every layer (verified directly); the defect is purely storage-
+        // layer concurrency, not tenant isolation. Serializing these
+        // callers closes the same gap the runtime list above closes for
+        // organizations.json, without touching businessDataService.cjs.
+        "tests/security/08-v5-production-validation.cjs",
+        "tests/security/57-reports-page-shows-fake-zero-stats.cjs",
+        "tests/security/76-crm-leads-id-mismatch-broken-actions.cjs",
+        "tests/security/77-marketing-campaigns-id-mismatch-and-creative-error-surfacing.cjs",
+        "tests/security/81-reports-wrong-leads-source-and-export-mismatch.cjs",
+        "tests/security/83-crm-sales-ux-consistency-id-mismatch-response-shape-destructive-confirm.cjs",
     ],
 };
 
