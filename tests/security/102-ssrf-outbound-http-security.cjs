@@ -103,6 +103,33 @@ async function main() {
   assert.strictEqual(publicCheck.safe, true, "a legitimate public webhook URL must not be blocked");
   ok("legitimate public webhook URL (example.com) still passes validation — no over-blocking");
 
+  section("urlSafety.cjs — IPv6 bracket-notation SSRF bypass (ERA-1 forensic closure)");
+  // URL.hostname keeps the [...] brackets for an IPv6 literal (WHATWG URL
+  // spec), but net.isIP() never accepts them — net.isIP("[::1]") returns 0.
+  // The entire net.isIP(hostname) branch was silently skipped for every
+  // bracketed IPv6 literal (the only valid way to write one in a URL),
+  // falling through to the DNS-lookup path, which fails resolution on the
+  // literal string "[::1]" and returns {safe:true} by the function's own
+  // documented "don't block on DNS failure" design — live-reproduced: a
+  // real Node http.get("http://[::1]:PORT/") genuinely attempted a TCP
+  // connection to the loopback address (ECONNREFUSED, not a resolution
+  // error), proving this was a real bypass, not just a validator quirk.
+  for (const [url, label] of [
+    ["http://[::1]/admin", "loopback (bracketed ::1)"],
+    ["http://[0:0:0:0:0:0:0:1]/", "loopback (bracketed, expanded form)"],
+    ["http://[fe80::1]/", "link-local (bracketed fe80::)"],
+    ["http://[fc00::1]/", "unique-local (bracketed fc00::)"],
+    ["http://[fd00::1]/", "unique-local (bracketed fd00::)"],
+  ]) {
+    const r = await assertSafeNavigationTarget(url);
+    assert.strictEqual(r.safe, false, `${label} must be blocked, got safe=${r.safe} for ${url}`);
+  }
+  ok("all 5 bracketed IPv6 private/loopback/link-local literals are blocked");
+
+  const publicIPv6 = await assertSafeNavigationTarget("http://[2001:4860:4860::8888]/");
+  assert.strictEqual(publicIPv6.safe, true, "a legitimate public IPv6 literal must not be blocked");
+  ok("legitimate public IPv6 literal (bracketed) still passes validation — no over-blocking");
+
   console.log(`\n${pass} checks passed.`);
   process.exit(0);
 }
