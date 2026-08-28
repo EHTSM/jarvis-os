@@ -157,6 +157,7 @@ function _rebuildIndex() {
  *   value      : any      — the actual data
  *   type       : string   — entity|procedure|goal|metric|insight|technical|person
  *   tags       : string[]
+ *   orgId      : string | null — OPTIONAL, see M-4 fix comment below
  *   importance : number   0–100
  *   confidence : number   0–100
  *   agentIds   : string[] — which agents may read/write this node
@@ -166,6 +167,28 @@ function _rebuildIndex() {
  *   usageCount : number
  *   lastUsedAt : ISO string | null
  * }
+ *
+ * M-4 (2026-08-28): orgId is OPTIONAL everywhere in this file, same design
+ * as missionMemory.cjs's own orgId field (see that file's header comment).
+ * Confirmed live: ~15 distinct write call sites into this store, and only
+ * ONE (companyFactory.js's org-scoped company memory, via
+ * semanticMemorySearch.cjs's projectId partition) already carries real org
+ * context. The other ~14 are genuinely autonomous/background writers with
+ * no request context at all (RCA engines, rule-learning, self-improvement
+ * loops, agent factory, cron-driven maintenance) — making orgId REQUIRED
+ * would break all of them, exactly the mistake missionMemory.cjs's header
+ * comment warns against. createMission()-equivalent callers that DO have
+ * real org context (phase18.js's POST/PATCH/DELETE /p18/memory*, gated
+ * operatorOnly) now pass it through; list()/recall()/search()/stats() gained
+ * an OPTIONAL orgId filter — when supplied, returns/counts ONLY nodes with
+ * that exact orgId (or orgId-less nodes are excluded, matching
+ * missionMemory.cjs listMissions()'s never-fall-back-to-shared behavior);
+ * when omitted, every internal caller's existing behavior is unchanged byte
+ * -for-byte. Existing nodes created before this fix have no orgId and
+ * remain in the shared/unowned bucket — there is no reliable way to infer
+ * historical ownership after the fact, so no retroactive backfill was
+ * attempted (would require guessing, which is worse than leaving them
+ * correctly classified as "unknown owner, treat as shared").
  */
 
 function _defaults(partial) {
@@ -176,6 +199,7 @@ function _defaults(partial) {
         value:      partial.value      ?? null,
         type:       partial.type       || "insight",
         tags:       Array.isArray(partial.tags) ? partial.tags : [],
+        orgId:      typeof partial.orgId === "string" && partial.orgId ? partial.orgId : null,
         importance: Number.isFinite(partial.importance) ? Math.min(100, Math.max(0, partial.importance)) : 50,
         confidence: Number.isFinite(partial.confidence) ? Math.min(100, Math.max(0, partial.confidence)) : 80,
         agentIds:   Array.isArray(partial.agentIds) ? partial.agentIds : [],
@@ -233,8 +257,14 @@ function archive(nodeId) {
 }
 
 /** List active nodes with optional filters. */
-function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId } = {}) {
+// M-4: orgId is an OPTIONAL filter, same rule as missionMemory.cjs's
+// listMissions({orgId}) — when supplied, returns ONLY nodes with that exact
+// orgId (an orgId-less node is a different owner's context and must never
+// leak into a tenant-scoped query, so it is excluded, not included); when
+// omitted, behavior is byte-identical to before this parameter existed.
+function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId, orgId } = {}) {
     let nodes = Array.from(_store.values());
+    if (orgId)         nodes = nodes.filter(n => n.orgId === orgId);
     if (type)          nodes = nodes.filter(n => n.type === type);
     if (tag)           nodes = nodes.filter(n => (n.tags || []).includes(tag));
     if (minImportance) nodes = nodes.filter(n => (n.importance || 0) >= minImportance);
@@ -245,11 +275,13 @@ function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId }
     return { nodes: nodes.slice(offset, offset + limit), total: nodes.length };
 }
 
-/** Simple keyword search over key + tags + stringified value. */
-function search(query) {
-    if (!query) return list();
+/** Simple keyword search over key + tags + stringified value. orgId is an OPTIONAL filter (see list()). */
+function search(query, { orgId } = {}) {
+    if (!query) return list({ orgId });
     const q = query.toLowerCase();
-    const nodes = Array.from(_store.values()).filter(n => {
+    let nodes = Array.from(_store.values());
+    if (orgId) nodes = nodes.filter(n => n.orgId === orgId);
+    nodes = nodes.filter(n => {
         const haystack = [n.key, ...( n.tags || []), JSON.stringify(n.value || "")].join(" ").toLowerCase();
         return haystack.includes(q);
     });
@@ -257,9 +289,11 @@ function search(query) {
     return { nodes: nodes.slice(0, 50), total: nodes.length };
 }
 
-/** Stats snapshot. */
-function stats() {
-    const all  = Array.from(_store.values());
+/** Stats snapshot. orgId is an OPTIONAL filter (see list()). */
+function stats({ orgId } = {}) {
+    const all  = orgId
+        ? Array.from(_store.values()).filter(n => n.orgId === orgId)
+        : Array.from(_store.values());
     const byType = {};
     for (const n of all) { byType[n.type] = (byType[n.type] || 0) + 1; }
     const avgImportance = all.length
@@ -282,13 +316,14 @@ function stats() {
 
 /**
  * Agent context recall — given an agent + input, return relevant memory nodes.
- * Simple keyword + importance ranking.
+ * Simple keyword + importance ranking. orgId is an OPTIONAL filter (see list()).
  */
-function recall({ agentId, input = "", limit = 10 } = {}) {
+function recall({ agentId, input = "", limit = 10, orgId } = {}) {
     const words   = input.toLowerCase().split(/\s+/).filter(w => w.length > 3);
     let   nodes   = Array.from(_store.values()).filter(
         n => n.agentIds.length === 0 || n.agentIds.includes(agentId)
     );
+    if (orgId) nodes = nodes.filter(n => n.orgId === orgId);
 
     // Relevance must outrank importance. The previous score was
     // `importance + hits * 10`, so a single keyword hit was worth only 10 points

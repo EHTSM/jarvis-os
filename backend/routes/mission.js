@@ -54,32 +54,56 @@ async function _sendAsync(res, fn) {
 }
 
 // ── Mission Runtime API ───────────────────────────────────────────────────────
+// MSN-1 (2026-08-28): these 5 mutation routes called straight into
+// missionRuntime.cjs with a caller-supplied :id and no ownership check at
+// all — unlike their 4 sibling routes below (timeline/graph/replay/state),
+// which already gained assertOwnable() under Mission 51. That meant any
+// authenticated caller could start/complete/fail/cancel/patch-a-subtask-of
+// ANY mission system-wide by ID, including another org's running mission —
+// a strictly worse gap than the read-only IDOR Mission 51 fixed, since this
+// one is destructive. Same assertOwnable() helper, same allow-if-orgId-null
+// rule (the vast majority of missions are legitimately unscoped
+// shared/operator missions and must keep working unchanged), same 404-not
+// -403 convention as every other route in this file.
 
 router.post("/mission/runtime/start/:id", (req, res) => {
-    _send(res, () => ({ mission: runtime.startMission(req.params.id) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { mission: runtime.startMission(req.params.id) };
+    });
 });
 
 router.post("/mission/runtime/complete/:id", (req, res) => {
     const { summary } = req.body || {};
-    _send(res, () => ({ mission: runtime.completeMission(req.params.id, { summary }) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { mission: runtime.completeMission(req.params.id, { summary }) };
+    });
 });
 
 router.post("/mission/runtime/fail/:id", (req, res) => {
     const { reason } = req.body || {};
-    _send(res, () => ({ mission: runtime.failMission(req.params.id, reason) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { mission: runtime.failMission(req.params.id, reason) };
+    });
 });
 
 router.post("/mission/runtime/cancel/:id", (req, res) => {
     const { reason } = req.body || {};
-    _send(res, () => ({ mission: runtime.cancelMission(req.params.id, reason) }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { mission: runtime.cancelMission(req.params.id, reason) };
+    });
 });
 
 router.patch("/mission/runtime/:id/subtask/:sid", (req, res) => {
     const { status, output } = req.body || {};
     if (!status) return res.status(400).json({ success: false, error: "status required" });
-    _send(res, () => ({
-        mission: runtime.updateSubtaskStatus(req.params.id, req.params.sid, status, output ?? null),
-    }));
+    _send(res, () => {
+        assertOwnable(req, memory.getMission(req.params.id), `Mission not found: ${req.params.id}`);
+        return { mission: runtime.updateSubtaskStatus(req.params.id, req.params.sid, status, output ?? null) };
+    });
 });
 
 router.get("/mission/runtime/status", (req, res) => {
@@ -170,11 +194,27 @@ router.get("/missions/orchestrator/statistics", (req, res) => {
 });
 
 // POST /missions/orchestrator/create
+// MSN-1 (2026-08-28): never stamped orgId, so every mission created here
+// landed in resourceOwnership.cjs's "shared/unowned" bucket regardless of
+// the caller's real org — reachable/actionable by ANY authenticated user
+// system-wide (see mission.js's own MSN-1 comment above on the runtime
+// routes). attachOrg is not mounted on this barrel (only requireAuth is —
+// see routes/index.js), so resolve org context directly the same
+// server-side way attachOrg itself does, via organizationService, rather
+// than trusting any client-supplied field.
 router.post("/missions/orchestrator/create", (req, res) => {
     if (!_orch) return _orchErr(res);
     const { goal, priority, requiresApproval, rollbackPlan, skipCapabilities } = req.body;
     try {
-        const mission = _orch.createManual({ goal, priority, requiresApproval, rollbackPlan, skipCapabilities });
+        let orgId;
+        try {
+            const ctx = require("../services/organizationService.cjs").resolveContext(req.user?.sub);
+            orgId = ctx?.primaryOrg?.orgId || undefined;
+        } catch { orgId = undefined; }
+        const mission = _orch.createManual({
+            goal, priority, requiresApproval, rollbackPlan, skipCapabilities,
+            metadata: orgId ? { orgId } : null,
+        });
         return res.json({ success: true, mission });
     } catch (err) {
         return res.status(400).json({ success: false, error: err.message });

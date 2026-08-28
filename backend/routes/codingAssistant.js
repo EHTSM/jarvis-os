@@ -771,10 +771,25 @@ router.post("/coding/convert-to-mission", async (req, res) => {
             { description: "Commit with conventional commit message", status: "pending" },
         ];
 
+        // MSN-1 (2026-08-28): previously omitted orgId entirely. A mission
+        // with no orgId lands in resourceOwnership.cjs's "shared/unowned"
+        // bucket, actionable by any authenticated caller system-wide, not
+        // just the tenant whose AI session proposed the patch.
+        //
+        // Gated on req.orgRole, not bare req.org?.id: attachOrg (mounted
+        // above on this barrel) sets req.org from ANY client-suppliable
+        // selector (X-Org-Id header/query/body orgId) with no membership
+        // check of its own; req.orgRole is only ever set from a real
+        // organizationService lookup. Stamping bare req.org?.id would let a
+        // non-member mint another org's real id onto a mission they create
+        // simply by supplying that id in a header. A caller with no real
+        // membership falls through to orgId-less (shared), unchanged
+        // behavior.
         const mission = mm.createMission({
             objective: goal,
             priority:  riskLevel === "high" ? "high" : riskLevel === "medium" ? "medium" : "low",
             subtasks,
+            orgId: (req.org?.id && req.orgRole) ? req.org.id : undefined,
             metadata: {
                 source:       "ai-patch-proposal",
                 affectedFiles,

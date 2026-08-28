@@ -51,7 +51,9 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter = require("../middleware/rateLimiter");
+const { assertOwnable } = require("../services/resourceOwnership.cjs");
 
 const er   = require("../services/executiveReasoning.cjs");
 const mm   = require("../services/missionMemory.cjs");
@@ -60,6 +62,7 @@ const ai   = require("../services/aiService.js");
 const il   = require("../services/improvementLoop.cjs");
 
 router.use("/p27", requireAuth);
+router.use("/p27", attachOrg);
 router.use("/p27", rateLimiter(30, 60_000));
 
 // ── F1 Executive Reasoning ────────────────────────────────────────────────────
@@ -149,12 +152,39 @@ router.get("/p27/executive/decisions/:id", (req, res) => {
 });
 
 // ── F2 Mission Memory ─────────────────────────────────────────────────────────
+// MSN-1 (2026-08-28): this whole block called straight into missionMemory.cjs
+// with a caller-supplied :id and zero ownership check — a duplicate route
+// family alongside mission.js's /mission/timeline|graph|replay|state (which
+// gained assertOwnable() under Mission 51) and /mission/runtime/* (fixed
+// alongside this file, same mission). Same helper, same allow-if-orgId-null
+// rule (most missions here are legitimately unscoped platform/autonomous
+// missions and must keep working unchanged), same 404-not-403 convention.
+// POST /p27/missions previously never stamped orgId at all — every mission
+// created through this route landed in the unowned bucket, meaning ANY
+// authenticated caller could act on it regardless of the checks added below.
+//
+// Stamping is gated on req.orgRole, NOT bare req.org?.id: attachOrg (added
+// to this file's middleware chain above) sets req.org from ANY client-
+// suppliable selector (X-Org-Id header / query / body orgId) with no
+// membership check — "Does NOT block requests" per its own header comment.
+// req.orgRole is only ever set from a real organizationService lookup. Using
+// bare req.org?.id here would let a non-member stamp another org's real id
+// onto a mission they create by simply supplying that id in a header — a
+// mission-creation analog of the same spoofing risk found and fixed in
+// phase18.js's _ownOrgId() while writing this mission's own regression
+// tests. A caller with no real membership falls through to orgId-less
+// (shared, unchanged behavior), exactly like /coding/convert-to-mission's
+// existing pattern in codingAssistant.js does for a caller with no org at
+// all.
 
 router.post("/p27/missions", (req, res) => {
     try {
         const { objective, priority, subtasks } = req.body;
         if (!objective) return res.status(400).json({ success: false, error: "objective required" });
-        const mission = mm.createMission({ objective, priority, subtasks });
+        const mission = mm.createMission({
+            objective, priority, subtasks,
+            orgId: (req.org?.id && req.orgRole) ? req.org.id : undefined,
+        });
         res.status(201).json({ success: true, mission });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -182,11 +212,12 @@ router.get("/p27/missions", (req, res) => {
 
 router.get("/p27/missions/:id/replay", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.replayMission(req.params.id);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
@@ -194,89 +225,98 @@ router.get("/p27/missions/:id", (req, res) => {
     try {
         const mission = mm.getMission(req.params.id);
         if (!mission) return res.status(404).json({ success: false, error: "Mission not found" });
+        assertOwnable(req, mission, "Mission not found");
         res.json({ success: true, mission });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.patch("/p27/missions/:id", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const mission = mm.updateMission(req.params.id, req.body);
         if (!mission) return res.status(404).json({ success: false, error: "Mission not found" });
         res.json({ success: true, mission });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/subtasks", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.addSubtask(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/decisions", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.recordDecision(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/artifacts", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.recordArtifact(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/failures", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.recordFailure(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/deployments", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.recordDeployment(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/approvals", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.recordApproval(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 
 router.post("/p27/missions/:id/learnings", (req, res) => {
     try {
+        assertOwnable(req, mm.getMission(req.params.id), "Mission not found");
         const result = mm.addLearning(req.params.id, req.body);
         if (!result) return res.status(404).json({ success: false, error: "Mission not found" });
         res.status(201).json({ success: true, ...result });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        res.status(err.message === "Mission not found" ? 404 : 500).json({ success: false, error: err.message });
     }
 });
 

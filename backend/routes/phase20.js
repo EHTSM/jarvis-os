@@ -54,6 +54,23 @@ const oae = require("../services/ooplixAutonomyEngine.cjs");
 
 router.use("/p20", requireAuth);
 
+// M-4 (2026-08-28): see phase18.js's _ownOrgId() comment for why this
+// resolves the caller's own org directly from organizationService rather
+// than trusting attachOrg's client-suppliable X-Org-Id/query/body
+// selector — a first attempt using that selector (gated even on its
+// membership-verified req.orgRole field) still let a caller with a real
+// home org bypass scoping by supplying someone ELSE's org id, because
+// attachOrg's selector branch never falls back to the caller's own org on
+// verification failure.
+function _ownOrgId(req) {
+    const accountId = req.user?.sub;
+    if (!accountId) return undefined;
+    try {
+        const ctx = require("../services/organizationService.cjs").resolveContext(accountId);
+        return ctx?.primaryOrg?.orgId || undefined;
+    } catch { return undefined; }
+}
+
 // ── 20A Agent Factory Automation ──────────────────────────────────────────
 
 router.post("/p20/agents", (req, res) => {
@@ -120,9 +137,14 @@ router.get("/p20/agents", (req, res) => {
 
 // ── 20B Memory Intelligence Engine ────────────────────────────────────────
 
+// M-4 (2026-08-28): previously returned ranked memory content from the
+// entire cross-tenant store to any authenticated /p20 caller — one of the
+// two routes the tenant-isolation audit reproduced M-4 against (the other,
+// GET /p18/memory*, is fixed alongside this file).
+//
 router.get("/p20/memory/rank", (req, res) => {
     const { type, minScore, limit } = req.query;
-    res.json({ success: true, ...mie.rankMemories({ type, minScore: parseInt(minScore)||0, limit: parseInt(limit)||100 }) });
+    res.json({ success: true, ...mie.rankMemories({ type, minScore: parseInt(minScore)||0, limit: parseInt(limit)||100, orgId: _ownOrgId(req) }) });
 });
 
 router.post("/p20/memory/merge", (req, res) => {

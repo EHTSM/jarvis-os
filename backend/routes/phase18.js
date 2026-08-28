@@ -149,32 +149,71 @@ router.get("/p18/agents", (req, res) => {
 // — confirmed dead, unreachable code, not a feature this fix could break.
 // Fixed by gating the 3 mutation routes operatorOnly, the same established
 // mechanism already used throughout this codebase for exactly this shape of
-// gap — reads stay open, mutations require the role this platform already
-// reserves for genuine cross-tenant/platform-wide write access.
+// gap.
+//
+// M-4 (2026-08-28): the READ side (GET /p18/memory*) is now scoped to the
+// caller's own orgId, closing the "confirmed open P0" read half of M-4.
+//
+// Deliberately does NOT use attachOrg/req.org at all — attachOrg (see its
+// own header comment) resolves req.org from ANY client-suppliable selector
+// (X-Org-Id header / query / body orgId) with no membership check of its
+// own ("Does NOT block requests"). A first attempt at this fix gated on
+// req.orgRole (attachOrg's only real-membership-verified field) and still
+// leaked: when a caller supplies an org they DON'T belong to, attachOrg's
+// selector branch resolves req.org to that org but never falls back to the
+// caller's own real org — so "not verified for the org I asked about"
+// collapsed into "no org at all", which (correctly, for a genuinely orgless
+// caller) shows the full shared/unscoped pool. That let a caller with a
+// real home org bypass scoping entirely just by supplying someone ELSE's
+// org id. Reproduced live while writing this mission's own regression test
+// (tests/security/126-*, "header-based org spoofing" case).
+//
+// _ownOrgId() sidesteps the ambiguity by never trusting attachOrg's
+// selector for this decision: it always independently resolves the
+// caller's own real primary org straight from organizationService, the
+// same pattern already used correctly by mission.js's
+// /missions/orchestrator/create fix in this same mission. A client-supplied
+// org selector can never influence this result in either direction.
+function _ownOrgId(req) {
+    const accountId = req.user?.sub;
+    if (!accountId) return undefined;
+    try {
+        const ctx = require("../services/organizationService.cjs").resolveContext(accountId);
+        return ctx?.primaryOrg?.orgId || undefined;
+    } catch { return undefined; }
+}
+
 router.post("/p18/memory", operatorOnly, (req, res) => {
     const { key, value, type, tags, importance, confidence, agentIds, expiresAt } = req.body || {};
     if (!key) return res.status(400).json({ error: "key required" });
     try {
-        res.json({ success: true, ...mpl.save({ key, value, type, tags, importance, confidence, agentIds, expiresAt }) });
+        res.json({ success: true, ...mpl.save({ key, value, type, tags, importance, confidence, agentIds, expiresAt, orgId: _ownOrgId(req) }) });
     } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.get("/p18/memory/stats", (req, res) => {
-    res.json({ success: true, stats: mpl.stats() });
+    res.json({ success: true, stats: mpl.stats({ orgId: _ownOrgId(req) }) });
 });
 
 router.get("/p18/memory/search", (req, res) => {
-    res.json({ success: true, ...mpl.search(req.query.q) });
+    res.json({ success: true, ...mpl.search(req.query.q, { orgId: _ownOrgId(req) }) });
 });
 
 router.get("/p18/memory/recall", (req, res) => {
     const { agentId, input, limit } = req.query;
-    res.json({ success: true, ...mpl.recall({ agentId, input, limit: parseInt(limit)||10 }) });
+    res.json({ success: true, ...mpl.recall({ agentId, input, limit: parseInt(limit)||10, orgId: _ownOrgId(req) }) });
 });
 
 router.get("/p18/memory/:nodeId", (req, res) => {
     const node = mpl.load(req.params.nodeId);
     if (!node) return res.status(404).json({ error: "Node not found" });
+    // Cross-tenant read guard: a node WITH an orgId must match the caller's
+    // own VERIFIED org membership (same rule as list()/search()/recall()
+    // above). A node with no orgId (the historical majority) remains
+    // readable by any authenticated caller — unchanged.
+    if (node.orgId && node.orgId !== _ownOrgId(req)) {
+        return res.status(404).json({ error: "Node not found" });
+    }
     res.json({ success: true, node });
 });
 
@@ -197,6 +236,7 @@ router.get("/p18/memory", (req, res) => {
         minImportance: parseInt(minImportance)||0,
         limit:  parseInt(limit)||100,
         offset: parseInt(offset)||0,
+        orgId:  _ownOrgId(req),
     }) });
 });
 
