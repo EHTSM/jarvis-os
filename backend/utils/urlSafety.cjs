@@ -52,13 +52,27 @@ async function assertSafeNavigationTarget(url) {
     return { safe: false, reason: `blocked scheme: ${parsed.protocol}` };
   }
 
+  // ERA-1 forensic closure (2026-08-29): URL.hostname keeps the [...]
+  // brackets for an IPv6 literal (per the WHATWG URL spec), but net.isIP()
+  // never accepts them — net.isIP("[::1]") returns 0, so this whole block
+  // was silently skipped for EVERY bracketed IPv6 literal (the only valid
+  // way to put one in a URL), falling through to the DNS-lookup path, which
+  // fails resolution on the literal string "[::1]" and returns {safe:true}
+  // by design for DNS failures. Live-verified: http://[::1]/,
+  // http://[fe80::1]/, http://[fc00::1]/, http://[fd00::1]/ all bypassed
+  // the entire IPv6 blocklist, and a real Node http.get() to
+  // http://[::1]:PORT/ genuinely resolves and attempts the TCP connection —
+  // not just a validator quirk. Stripping the brackets before net.isIP()
+  // is the minimal fix; IPv4 hostnames never carry brackets so this is a
+  // no-op for that branch.
   const hostname = parsed.hostname.toLowerCase();
+  const ipLiteral = hostname.startsWith("[") && hostname.endsWith("]") ? hostname.slice(1, -1) : hostname;
   if (BLOCKED_HOSTNAMES.has(hostname)) {
     return { safe: false, reason: `blocked hostname: ${hostname}` };
   }
-  if (net.isIP(hostname)) {
-    if (net.isIP(hostname) === 4 && _isBlockedIPv4(hostname)) return { safe: false, reason: `blocked IP: ${hostname}` };
-    if (net.isIP(hostname) === 6 && _isBlockedIPv6(hostname)) return { safe: false, reason: `blocked IP: ${hostname}` };
+  if (net.isIP(ipLiteral)) {
+    if (net.isIP(ipLiteral) === 4 && _isBlockedIPv4(ipLiteral)) return { safe: false, reason: `blocked IP: ${ipLiteral}` };
+    if (net.isIP(ipLiteral) === 6 && _isBlockedIPv6(ipLiteral)) return { safe: false, reason: `blocked IP: ${ipLiteral}` };
     return { safe: true };
   }
 

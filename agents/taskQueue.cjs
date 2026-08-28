@@ -13,6 +13,48 @@ const QUEUE_FILE = path.join(__dirname, "../data/task-queue.json");
 let _counter = Date.now();
 let _lastPulse = Date.now(); // Internal heartbeat
 
+// ERA-1 Phase 2A (2026-08-28) — orphaned tmp sweep, same pattern as
+// missionMemory.cjs's _sweepOrphanedTmp(). _save()'s per-call-unique tmp
+// filename (pid + random suffix) correctly prevents the cross-process
+// collision/ENOENT class, but a process SIGKILLed between writeFileSync and
+// renameSync leaves that one tmp file behind with no code path that ever
+// removes it — reproduced live via tests/runtime/10-c10-cross-system-
+// closure.test.cjs's "136-master-audit-crash-mid-write-atomic-safety" block
+// (a real subprocess SIGKILLed mid-write-loop). No correctness impact
+// (nothing ever reads a .tmp file, and the real QUEUE_FILE is never
+// affected — renameSync only ever swaps in a COMPLETE file), but unbounded
+// disk growth across repeated crash cycles, same class already fixed for
+// missionMemory.cjs and secretVault.cjs. Swept once at module load, only for
+// this store's own `task-queue.json.<pid>.<hex>.tmp` shape, with a grace
+// window so a genuinely in-flight concurrent write is never touched.
+const _TMP_RE = /^task-queue\.json\.\d+\.[0-9a-f]+\.tmp$/;
+const _TMP_GRACE_MS = 5 * 60 * 1000;
+
+function _sweepOrphanedTmp() {
+    try {
+        const dir = path.dirname(QUEUE_FILE);
+        const now = Date.now();
+        let removed = 0, bytes = 0;
+        for (const name of fs.readdirSync(dir)) {
+            if (!_TMP_RE.test(name)) continue;
+            const full = path.join(dir, name);
+            try {
+                const st = fs.statSync(full);
+                if (now - st.mtimeMs < _TMP_GRACE_MS) continue; // possibly an in-flight write
+                bytes += st.size;
+                fs.unlinkSync(full);
+                removed++;
+            } catch { /* raced with another sweep or a rename — fine either way */ }
+        }
+        if (removed) {
+            logger.warn(`[TaskQueue] Swept ${removed} orphaned tmp file(s) (${Math.round(bytes / 1024)} KB) ` +
+                `left by an interrupted write.`);
+        }
+    } catch { /* directory unreadable — never block startup on cleanup */ }
+}
+
+_sweepOrphanedTmp();
+
 // ── SQLite Shadow-Write Layer ─────────────────────────────────────────────
 // Passive mirror. If SQLite fails, runtime continues with JSON authoritative.
 function _shadowUpsert(task) {

@@ -16,6 +16,7 @@
 const fs     = require("fs");
 const path   = require("path");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const DATA_DIR = path.join(__dirname, "../../data");
 
@@ -63,6 +64,46 @@ function _writeStore(file, store) {
     fs.writeFileSync(tmp, JSON.stringify(store, null, 2));
     fs.renameSync(tmp, target);
 }
+
+// ERA-1 Phase 2A (2026-08-28) — orphaned tmp sweep, same pattern already
+// applied to missionMemory.cjs and agents/taskQueue.cjs. _writeStore()'s
+// per-call-unique tmp filename correctly prevents cross-process collision/
+// ENOENT, but a process SIGKILLed between writeFileSync and renameSync
+// leaves that one tmp file behind with no code path that ever removes it —
+// reproduced live via tests/runtime/10-c10-cross-system-closure.test.cjs's
+// "138" block (a real subprocess calling createLead() in a loop, SIGKILLed
+// mid-burst; the same commit that closed Mission 63's other blockers left
+// this one explicitly UNKNOWN, "no safe fix identified" — this is that fix).
+// No correctness impact on any of the 5 biz-*.json stores this file writes
+// (renameSync only ever swaps in a COMPLETE file), but unbounded disk growth
+// across repeated crash cycles. One regex covers all 5 stores sharing this
+// write helper; swept once at module load, with a grace window so a
+// genuinely in-flight concurrent write is never touched.
+const _TMP_RE = /^biz-[a-z]+\.json\.\d+\.[0-9a-f]+\.tmp$/;
+const _TMP_GRACE_MS = 5 * 60 * 1000;
+
+function _sweepOrphanedTmp() {
+    try {
+        let removed = 0, bytes = 0;
+        const now = Date.now();
+        for (const name of fs.readdirSync(DATA_DIR)) {
+            if (!_TMP_RE.test(name)) continue;
+            const full = path.join(DATA_DIR, name);
+            try {
+                const st = fs.statSync(full);
+                if (now - st.mtimeMs < _TMP_GRACE_MS) continue; // possibly an in-flight write
+                bytes += st.size;
+                fs.unlinkSync(full);
+                removed++;
+            } catch { /* raced with another sweep or a rename — fine either way */ }
+        }
+        if (removed) {
+            logger.warn(`[BusinessData] Swept ${removed} orphaned tmp file(s) (${Math.round(bytes / 1024)} KB) left by an interrupted write.`);
+        }
+    } catch { /* directory unreadable — never block startup on cleanup */ }
+}
+
+_sweepOrphanedTmp();
 
 // ── Generic CRUD helpers ──────────────────────────────────────────────────────
 //
