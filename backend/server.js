@@ -959,12 +959,30 @@ _httpServer = app.listen(PORT, HOST, () => {
     }
 
     // ── Autonomous task loop ───────────────────────────────────────
-    try {
-        _autoLoopRef = require("../agents/autonomousLoop.cjs");
-        _autoLoopRef.start();
-        logger.info("[AutoLoop] autonomous task loop running");
-    } catch (err) {
-        logger.warn("[AutoLoop] failed to start:", err.message);
+    // Mission 65: this loop runs real, unattended writes for the server's
+    // entire lifetime — createMission()/organizationService writes via
+    // runFullPipeline(), delegateToMember(), publishCivMission(), etc.
+    // (agents/autonomousLoop.cjs's own runCycle()) — into the exact same
+    // data/missions.json / data/organizations.json files the regression
+    // and security test suites read/assert against. Live-reproduced as
+    // the root cause of a recurring cluster of CI-only failures
+    // (Tests 133/147/148/153/154's shared-store timing assertions, and
+    // security tests 36/39/43/44/45's org-creation races) — the test
+    // suites' own architecture has no way to account for a background
+    // writer neither they nor the CI workflow ever asked to run. This
+    // guard is opt-in and additive only: DISABLE_AUTONOMOUS_LOOP is unset
+    // everywhere except where a caller (e.g. CI) explicitly sets it, so
+    // every existing deployment's behavior is completely unchanged.
+    if (process.env.DISABLE_AUTONOMOUS_LOOP === "1") {
+        logger.info("[AutoLoop] autonomous task loop disabled (DISABLE_AUTONOMOUS_LOOP=1)");
+    } else {
+        try {
+            _autoLoopRef = require("../agents/autonomousLoop.cjs");
+            _autoLoopRef.start();
+            logger.info("[AutoLoop] autonomous task loop running");
+        } catch (err) {
+            logger.warn("[AutoLoop] failed to start:", err.message);
+        }
     }
 
     // ── n8n workflow registration ─────────────────────────────────

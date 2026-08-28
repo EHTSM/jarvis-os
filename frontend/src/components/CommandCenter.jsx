@@ -1472,8 +1472,23 @@ function ProviderHealth() {
 
   const load = useCallback(async () => {
     try {
-      const r = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' })).json();
-      const list = r.providers || (Array.isArray(r) ? r : []);
+      const r = await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' });
+      // Mission 65: same defect class as the /p27/missions fix above — an
+      // auth failure (401/403) or any non-2xx response can still return a
+      // parseable JSON error body. Calling .json() unconditionally and
+      // trusting its shape (r.providers || ...) silently produced an
+      // empty provider list while setError(null) cleared any prior error,
+      // presenting a genuine auth/server failure as "No provider data"
+      // instead of surfacing it.
+      if (!r.ok) {
+        setProviders([]);
+        setError(r.status === 401 || r.status === 403
+          ? 'Your session has expired or you lack access to provider status. Please sign in again.'
+          : `Could not load AI provider status (HTTP ${r.status}).`);
+        return;
+      }
+      const res = await r.json();
+      const list = res.providers || (Array.isArray(res) ? res : []);
       setProviders(list.slice(0, 6));
       setError(null);
     } catch (e) {

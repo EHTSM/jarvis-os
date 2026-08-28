@@ -75,7 +75,23 @@ async function main() {
   }
 
   section("C1-D1 — a missing build asset is 404, never 401");
-  if (live) {
+  // Mission 65: the real fix (backend/server.js's hasFrontendBuild-gated
+  // /static,/assets 404 fallback — see the comment at server.js:268-284)
+  // only registers when frontend/build actually exists on disk. This
+  // environment's regression CI job never runs `npm run build:frontend`
+  // before starting the backend (that happens in a separate "Frontend
+  // Build" job), so hasFrontendBuild is false there, the whole
+  // 404-fallback block never registers, and the request falls through to
+  // whatever generic auth-gated route handles it — reproducing the
+  // pre-fix symptom not because the fix regressed, but because its own
+  // precondition (a real build) isn't met in that job. Matches this same
+  // repo's own established skip pattern for the same precondition (see
+  // 96-production-build-artifact-integrity.cjs's identical guard).
+  const hasBuild = fs.existsSync("frontend/build/index.html");
+  if (live && !hasBuild) {
+    console.log("  —  SKIPPED (no production build present) — not counted as a pass");
+    console.log("     Build it with: cd frontend && npm run build");
+  } else if (live) {
     for (const p of ["/static/js/main.DOESNOTEXIST.js", "/static/css/nope.css"]) {
       const r = await request("GET", p);
       assert.notStrictEqual(r.status, 401,

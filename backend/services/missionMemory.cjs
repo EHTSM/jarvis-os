@@ -391,9 +391,18 @@ function listMissions(opts = {}) {
     if (search) {
         const q = search.toLowerCase();
         list = list.filter(m =>
-            m.objective.toLowerCase().includes(q) ||
-            m.id.toLowerCase().includes(q) ||
-            m.subtasks.some(s => s.description.toLowerCase().includes(q))
+            (m.objective || "").toLowerCase().includes(q) ||
+            (m.id || "").toLowerCase().includes(q) ||
+            // Mission 64: same class of gap as the sort fix above — a
+            // record missing subtasks (reachable the same way: a direct
+            // out-of-band write bypassing createMission()/_buildMission(),
+            // live-reproduced by this file's own Mission 63 regression
+            // test) threw "Cannot read properties of undefined (reading
+            // 'some')" here. (m.subtasks || []) matches the same
+            // graceful-degradation approach as the sort fix — a malformed
+            // record simply doesn't match on subtask text, it doesn't
+            // crash the whole search for every other caller.
+            (m.subtasks || []).some(s => (s.description || "").toLowerCase().includes(q))
         );
     }
 

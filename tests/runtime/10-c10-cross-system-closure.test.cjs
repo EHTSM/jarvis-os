@@ -1227,6 +1227,41 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
       fs2.writeFileSync(missionsPath, JSON.stringify(cleanup, null, 2));
     }
   });
+
+  it("live: listMissions() search does not crash when a malformed record (missing subtasks) forces evaluation into the subtask-search branch — Mission 65: the sibling regression test above never actually exercised this branch, because its own malformed record's objective already matched the search term, short-circuiting the || chain before m.subtasks.some() was ever reached. Live-reproduced in ERA-1 CI (run 33125960088) as 'Cannot read properties of undefined (reading .some.)' at missionMemory.cjs:396 — a genuinely different malformed record already present in the real, shared CI store (neither this test's objective/id nor its own) forced the subtask-search branch to execute", () => {
+    const memory = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const fs2 = require("node:fs");
+    const missionsPath = path.join(ROOT, "data/missions.json");
+
+    const marker = `t65_subtask_${Date.now()}`;
+    // Deliberately does NOT include `marker` in its own objective/id — the
+    // search term only appears in a real subtask's description, forcing
+    // the || chain to evaluate every operand, including subtasks.some()
+    // on any OTHER malformed sibling record present in the same scan.
+    const good = memory.createMission({ objective: "133/65 subtask-search control mission", priority: "low" });
+    memory.addSubtask(good.id, { description: `special subtask ${marker}` });
+
+    // A malformed record with neither a matching objective/id NOR a
+    // subtasks array — the exact shape that forces the crash path.
+    const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+    const badId = `t65_malformed_no_subtasks_${Date.now()}`;
+    store.missions.push({ id: badId, objective: "unrelated objective, no marker here", status: "planned" });
+    fs2.writeFileSync(missionsPath, JSON.stringify(store, null, 2));
+
+    try {
+      let result;
+      assert.doesNotThrow(() => { result = memory.listMissions({ search: marker, limit: 10000 }); },
+        "listMissions() must not throw when scanning past a record missing subtasks, even when the search term only matches via a real mission's subtask description");
+      assert.ok(result.missions.some(m => m.id === good.id),
+        "the mission whose subtask genuinely matches the search term must be found");
+      assert.ok(!result.missions.some(m => m.id === badId),
+        "the unrelated malformed record must not be a false-positive match — it has neither a matching objective/id nor any subtasks");
+    } finally {
+      const cleanup = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
+      cleanup.missions = cleanup.missions.filter(m => m.id !== badId && m.id !== good.id);
+      fs2.writeFileSync(missionsPath, JSON.stringify(cleanup, null, 2));
+    }
+  });
 });
 
 describe("134-master-audit-dop-wiring-credentials-api-prefix — 6 dashboards no longer call the nonexistent /api prefix", () => {
