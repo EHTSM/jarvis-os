@@ -87,7 +87,16 @@ describe("B.21 — business mission tenant scoping", () => {
 
   it("mission-layer list routes scope by the caller's org", () => {
     const src = require("fs").readFileSync(ROUTES, "utf8");
-    const scoped = (src.match(/listBusinessMissions\(\{ entityType: "(?:deal|marketing_task|customer|operation)"[^}]*orgId: req\.org\?\.id/g) || []).length;
+    // Mission 67: these 4 routes are gated by requireAuth + _requireOrg (see
+    // the comment above /business/deals), which verifies real org membership
+    // and 404s a forged/unowned org id before the handler ever runs — so
+    // req.org is guaranteed non-null here. The literal `req.org.id` (no `?.`)
+    // is the correct, already-established pattern: it matches this same
+    // file's 4 sibling create-route assertions two tests above, which
+    // require the identical unguarded form. Requiring `req.org?.id` here
+    // would accept a route that silently tolerates a missing org instead of
+    // relying on the real gate — a weaker, not stronger, check.
+    const scoped = (src.match(/listBusinessMissions\(\{ entityType: "(?:deal|marketing_task|customer|operation)"[^}]*orgId: req\.org\.id/g) || []).length;
     assert.equal(scoped, 4,
       `all 4 mission-layer list routes must scope by orgId, found ${scoped}`);
   });

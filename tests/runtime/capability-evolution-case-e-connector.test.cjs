@@ -64,7 +64,22 @@ function _seedAppliedBundle(bundleId, goal) {
 
 describe("Capability Evolution — Case E (new connector), full pipeline", () => {
 
-    it("STEP 1 — Gap Detection: ai:elevenlabs is a genuine, confirmed gap (zero adapter code, zero companies blocked — not fabricated)", () => {
+    it("STEP 1 — Gap Detection: ai:elevenlabs is a genuine, confirmed gap (zero adapter code, zero companies blocked — not fabricated)", async () => {
+        // Mission 68: getCompositionStatus() reads whatever record already
+        // exists in data/integration-connectors.json (gitignored, absent on a
+        // fresh checkout). Asserting on it cold assumed some prior real scan
+        // had already run in this process and recorded elevenlabs as MISSING/
+        // "Unknown provider" — true on a dev machine with scan history, false
+        // on a genuinely fresh CI checkout, where getStatus() returns null and
+        // _mapLegacyStatus(null) resolves to NOT_CONFIGURED instead of
+        // NOT_IMPLEMENTED. connectAIProvider() is the real function that
+        // produces this record (AI_PROVIDERS has no "elevenlabs" entry, so it
+        // takes the "Unknown provider" MISSING branch — integrationConnectors.cjs
+        // line ~186); calling it directly here establishes the test's own real
+        // precondition deterministically, without a network probe (no adapter
+        // exists to probe) and without fabricating any adapter code.
+        await integrationConnectors.connectAIProvider("elevenlabs");
+
         const status = integrationConnectors.getCompositionStatus("ai:elevenlabs");
         assert.equal(status.status, "NOT_IMPLEMENTED", "ai:elevenlabs must genuinely have no adapter — confirmed via this mission's own Phase 5 audit, not assumed");
 

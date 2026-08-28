@@ -109,7 +109,19 @@ async function main() {
   }
 
   section("C1-D4 — the served index.html matches the bundles on disk");
-  if (live) {
+  // Mission 66: same precondition gap as C1-D1 above — this section only
+  // checked `live`, not `hasBuild`. Without a real frontend build, GET /
+  // still returns 200 (e.g. a dev-mode placeholder or the bare SPA
+  // fallback), but it genuinely has no /static/js|css/*.{js,css} asset
+  // references to find, since there is no real build to reference —
+  // `referenced.length > 0` then fails for the same reason as C1-D1: a
+  // missing precondition, not a regression of the real fix. Matches the
+  // same skip pattern already applied to C1-D1 and to this file's own
+  // sibling (96-production-build-artifact-integrity.cjs).
+  if (live && !hasBuild) {
+    console.log("  —  SKIPPED (no production build present) — not counted as a pass");
+    console.log("     Build it with: cd frontend && npm run build");
+  } else if (live) {
     const html = (await request("GET", "/")).body;
     const referenced = [...html.matchAll(/\/static\/(js|css)\/([A-Za-z0-9._-]+\.(?:js|css))/g)].map(m => m[2]);
     assert.ok(referenced.length > 0, "the served shell must reference at least one build asset");

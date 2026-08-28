@@ -23,7 +23,26 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DIR          = path.join(__dirname, "../../data/bizorg");
+// Mission 69: same JARVIS_TEST_DATA_SUFFIX convention already used by
+// agentInstanceRegistry.cjs/skillRegistry.cjs/repositoryEditingEngine.cjs/
+// toolExecutionLayer.cjs/businessDataService.cjs — unset (all real server/
+// dev/production usage) means zero behavior change: DIR stays exactly
+// data/bizorg as before. A test process that sets it gets its own isolated
+// data/bizorg-<suffix>/ directory instead.
+//
+// Root cause this closes: tests/runtime/business-org-v3.test.cjs's own
+// mkdtempSync()'d tmpDir was NEVER actually wired into this module — DIR was
+// always the hardcoded real path below, so every run of that test (across
+// every mission that has touched it, this session included) read/wrote the
+// real, shared data/bizorg/{state,kpis,memory,reports}.json. Confirmed live:
+// data/bizorg/kpis.json's bizorg_billing entry carried tasksCompleted:44 and
+// a stale mrr:500 — residue accumulated across many prior unisolated runs,
+// including a value written before Mission 67 removed a since-deleted test
+// seed. The test's own tmpDir cleanup step (deleting state.json/kpis.json/
+// etc. from tmpDir) was deleting from a directory this module never touched,
+// silently doing nothing.
+const DIR          = path.join(__dirname, "../../data",
+    process.env.JARVIS_TEST_DATA_SUFFIX ? `bizorg-${process.env.JARVIS_TEST_DATA_SUFFIX}` : "bizorg");
 const STATE_FILE   = path.join(DIR, "state.json");
 const KPI_FILE     = path.join(DIR, "kpis.json");
 const MEMORY_FILE  = path.join(DIR, "memory.json");

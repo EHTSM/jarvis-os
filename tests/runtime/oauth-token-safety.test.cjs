@@ -49,6 +49,17 @@ describe("MANDATORY PROOF 7 — OAuth token safety", () => {
     });
 
     it("handleCallback() rejects a state that was issued for a DIFFERENT provider (provider-binding is real)", async () => {
+        // Mission 68: getAuthUrl() throws synchronously if <PROVIDER>_CLIENT_ID
+        // isn't set (oauthIntegrationLayer.cjs's _cfg() guard) — a real,
+        // correct config-safety check, not something to weaken. This test
+        // calls getAuthUrl("github", ...) to MINT the state it then replays
+        // against "google" below; without GITHUB_CLIENT_ID set it throws here,
+        // outside the assert.rejects() that follows, turning an unrelated env
+        // gap into what looks like a provider-binding failure. The test above
+        // already defends its own "google" call this same way (line 34) —
+        // this call needs the identical fallback for "github".
+        if (!process.env.GITHUB_CLIENT_ID) process.env.GITHUB_CLIENT_ID = "test-client-id-for-oauth-safety-test";
+        if (!process.env.GITHUB_REDIRECT_URI) process.env.GITHUB_REDIRECT_URI = "http://localhost:5050/oauth/github/callback";
         const { state } = oauth.getAuthUrl("github", "acct_oauth_provider_mismatch");
         await assert.rejects(
             () => oauth.handleCallback("google", "fake-code", state), // state was issued for github, used against google

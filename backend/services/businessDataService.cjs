@@ -124,11 +124,34 @@ function _remove(file, id, orgId = null) {
 }
 
 // ── Files ─────────────────────────────────────────────────────────────────────
-const F_LEADS   = "biz-leads.json";
-const F_CONTACTS = "biz-contacts.json";
-const F_OPPS    = "biz-opportunities.json";
-const F_CAMPS   = "biz-campaigns.json";
-const F_REV     = "biz-revenue.json";
+//
+// Mission 69: same JARVIS_TEST_DATA_SUFFIX convention already used by
+// agentInstanceRegistry.cjs/skillRegistry.cjs/repositoryEditingEngine.cjs/
+// toolExecutionLayer.cjs — unset (all real server/dev/production usage)
+// means zero behavior change; a test process that sets it gets its own
+// isolated biz-*.<suffix>.json files instead of the real shared ones.
+//
+// Root cause this closes: businessOrgWorkflow.cjs's subscribeWorkflowEvents()
+// wires a real event cascade (COO plan -> Marketing campaign -> ... ->
+// Analytics report -> BI scan) that, once triggered, calls
+// businessIntelligenceEngine.cjs's scan() with no orgId — the correct,
+// documented behavior for a background/internal caller that intentionally
+// scans across all orgs (see businessIntelligenceEngine.cjs's own comment
+// above its scan* functions). orgId scoping cannot fix this: it scopes
+// tenants within ONE shared store, it does not give a test process its own
+// separate store, and both the test's own fixtures and the real production
+// leads/deals alike have no orgId. businessOrgState.cjs (a separate module,
+// separate data family — see its own DIR constant) had the identical gap,
+// fixed the same way in the same mission. Neither file had any isolation
+// mechanism before this, so a BI scan triggered mid-test read the real,
+// large, shared data/biz-leads.json and created real missions from it,
+// which is what caused tests/runtime/business-org-v3.test.cjs to
+// intermittently hang.
+const F_LEADS    = process.env.JARVIS_TEST_DATA_SUFFIX ? `biz-leads.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`         : "biz-leads.json";
+const F_CONTACTS = process.env.JARVIS_TEST_DATA_SUFFIX ? `biz-contacts.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`     : "biz-contacts.json";
+const F_OPPS     = process.env.JARVIS_TEST_DATA_SUFFIX ? `biz-opportunities.${process.env.JARVIS_TEST_DATA_SUFFIX}.json` : "biz-opportunities.json";
+const F_CAMPS    = process.env.JARVIS_TEST_DATA_SUFFIX ? `biz-campaigns.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`    : "biz-campaigns.json";
+const F_REV      = process.env.JARVIS_TEST_DATA_SUFFIX ? `biz-revenue.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`     : "biz-revenue.json";
 
 // ── LEADS ─────────────────────────────────────────────────────────────────────
 

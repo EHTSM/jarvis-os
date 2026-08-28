@@ -208,9 +208,20 @@ test('code editor tablist implements roving tabindex', () => {
 });
 
 test('modals that only closed on backdrop click now bind Escape', () => {
+  // Mission 67: KnowledgeCenter.jsx removed from this list — the C10-009
+  // rewrite (see the file's own header comment) replaced the entire
+  // fabricated document-library/vector-search UI (which had a real modal
+  // needing Escape-to-close) with a real org-knowledge-graph UI built
+  // around an always-visible inline side panel (`.kg-impact-panel`), not
+  // an overlay/dialog. Confirmed: the file has no modal, overlay, dialog,
+  // or backdrop-click-to-close pattern anywhere in its current source —
+  // there is nothing left for useEscapeKey to bind to. A stale assertion
+  // from before the rewrite, not a real accessibility regression; the
+  // other 11 files in this list were individually re-verified and all
+  // genuinely still call useEscapeKey().
   const files = [
     'components/AgentRegistryCenter.jsx', 'components/BetaChecklist.jsx',
-    'components/CompanyFactoryCenter.jsx', 'components/KnowledgeCenter.jsx',
+    'components/CompanyFactoryCenter.jsx',
     'components/MemoryCenter.jsx', 'components/MissionControlV1.jsx',
     'components/WorkflowOSV2.jsx', 'components/WorkspaceSettingsK4.jsx',
     'components/WorkspaceSettingsL2.jsx', 'components/WorkspaceSettingsL3.jsx',

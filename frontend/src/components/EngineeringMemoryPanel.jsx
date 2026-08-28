@@ -6,9 +6,12 @@ import "./EngineeringMemoryPanel.css";
 
 // A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
 // body flowed through as if it were data and the caller's catch only fired on
-// a network error. Same defect class as A.11 F1. Now mirrors the semantics of
-// the canonical _client.js _fetch: preserve the backend's own message and
-// attach the status, so callers can surface the real reason.
+// a network error. Same defect class as A.11 F1. Fixed by delegating to the
+// canonical _client.js _fetch, which already throws on !res.ok and preserves
+// the backend's own message + status — so callers can surface the real
+// reason. Do not re-add a local `if (!r.ok)` check here: _fetch() never
+// returns a non-ok response, it throws before returning, so that check would
+// be unreachable dead code, not a real guard.
 //
 // OOPLIX V1 MASTER AUDIT (2026-08-16): this helper called a bare fetch()
 // against `/api${path}` — e.g. /api/memory/stats — but the real backend

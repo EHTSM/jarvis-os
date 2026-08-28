@@ -39,12 +39,34 @@ const ROOT = path.join(__dirname, "..");
 // same-process calls safe (Mission 41 §6) and read-only calls have nothing
 // to lose to a concurrent writer beyond a normal transient read, which none
 // of these tests assert an exact-count invariant against.
+//
+// Mission 68: the 7 runtime files below all call organizationService.cjs's
+// createOrg() against the real, shared data/organizations.json. That
+// module's own _write() comment (organizationService.cjs:93-106) already
+// documents this exact lost-update race as previously confirmed live during
+// Vault Security Hardening — "a freshly created org's owner got a 403 from
+// secretVault.cjs's org-check because a concurrent second createOrg() call
+// had overwritten the file before the first org was ever durably
+// persisted" — the identical failure signature behind ERA-1 failure #261
+// (vault-negative-security-matrix.test.cjs's "wrong org"/"wrong account"
+// tests). That mission fixed the corruption/ENOENT class (atomic tmp+rename)
+// but explicitly deferred the underlying two-concurrent-writers race as
+// "a larger architectural change out of scope" — serializing these callers
+// the same way MISSION_MUTATING already does for missions.json closes that
+// gap without touching organizationService.cjs itself.
 const MISSION_MUTATING = {
     runtime: [
         "tests/runtime/10-c10-cross-system-closure.test.cjs",
         "tests/runtime/40-mission-dedup-and-recovery.test.cjs",
         "tests/runtime/approval-queue-engine.test.cjs",
         "tests/runtime/mission-orchestrator-nodetypes.test.cjs",
+        "tests/runtime/10-org-param-precedence.test.cjs",
+        "tests/runtime/capability-buildout-cross-company-reuse.test.cjs",
+        "tests/runtime/credential-activation-isolation.test.cjs",
+        "tests/runtime/company-factory-org-scoping.test.cjs",
+        "tests/runtime/vault-hardening-mandatory-proofs.test.cjs",
+        "tests/runtime/vault-negative-security-matrix.test.cjs",
+        "tests/runtime/vault-security-hardening.test.cjs",
     ],
     security: [
         "tests/security/13-mission-memory-race-verification.cjs",

@@ -73,10 +73,26 @@ function _uid(prefix) {
 // called from all 14 read/write sites in this file, meaning every single
 // mission operation re-read and re-parsed the entire file even when
 // nothing had changed since the last call (measured live: ~35ms/call).
-// mtime is updated by every _saveMissions() call (via renameSync, which
-// always produces a fresh mtime) whether the write came from this process
-// or another one sharing the file, so a stale cache read is not possible —
-// any real write anywhere invalidates it.
+// mtime-keyed so a genuinely different process's write (a real mtime
+// change on disk) is still detected on the next read.
+//
+// Mission 67: this comment previously claimed renameSync "always produces
+// a fresh mtime", which is not what POSIX rename() actually does —
+// verified directly (Node fs.renameSync + fs.statSync): the destination
+// inherits the SOURCE tmp file's mtime, it is not freshly stamped at
+// rename time. On a filesystem/runner with coarser mtime resolution than
+// this repo's usual dev machines (live-reproduced as the root cause of
+// ERA-1's recurring "recoverStaleMissions must report at least the 1
+// mission this test created" failure — mtimeMs identical across this
+// SAME process's own createMission() -> updateMission() -> listMissions()
+// sequence), two back-to-back writes from this SAME process can land on
+// an identical mtime, making the second write's read return the FIRST
+// write's now-stale cached store. _saveMissions() now updates this cache
+// itself right after every successful write (see below), so this
+// process never needs mtime detection for its own writes — mtime
+// detection is only still relied on for a genuinely different process's
+// write, which was always the real cross-process use case this comment
+// described.
 let _missionsCache = null; // { mtimeMs, store }
 
 // B.20 chaos finding — orphaned tmp sweep.
@@ -203,6 +219,18 @@ function _saveMissions(store) {
         try { fs.unlinkSync(tmp); } catch { /* ignore */ }
         throw err;
     }
+    // Mission 67: refresh the read-through cache with exactly what this
+    // process just wrote, keyed on the real post-rename mtime — closes
+    // the same-process stale-read window described above. If statSync
+    // fails here (file removed by something else in the instant after
+    // our own rename — pathological, but must never crash a successful
+    // save), simply leave the cache uninitialized; the next _loadMissions()
+    // falls back to reading from disk exactly as it always did before
+    // this fix.
+    try {
+        const mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs;
+        _missionsCache = { mtimeMs, store: updated };
+    } catch { /* non-fatal — next read just re-reads from disk */ }
     return updated;
 }
 

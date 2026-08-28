@@ -185,7 +185,14 @@ test('no user-initiated mutation swallows its API error', () => {
 test('local API helpers check response status', () => {
   // Four files carried a private `API()` that returned r.json() with NO status
   // check, so a 4xx/5xx body flowed through as data and the caller's catch only
-  // fired on a network error — the same defect class as A.11 F1.
+  // fired on a network error — the same defect class as A.11 F1. The fix
+  // (OOPLIX V1 MASTER AUDIT, 2026-08-16) replaced the bare fetch() in each
+  // file with the canonical `_client.js` `_fetch`, which already throws on
+  // `!res.ok` and preserves the backend's `error`/`message` + `status` before
+  // ever returning to the caller — so re-adding a literal `if (!r.ok)` inside
+  // these wrappers would be unreachable dead code, not a real guard. What
+  // actually matters, and what stayed broken before the fix, is that each
+  // helper delegates to that canonical `_fetch` rather than a raw fetch().
   for (const rel of [
     'components/AutonomousPlatformPanel.jsx',
     'components/RepositoryMapPanel.jsx',
@@ -193,12 +200,16 @@ test('local API helpers check response status', () => {
     'components/SelfImprovementPanel.jsx',
   ]) {
     const src = read(rel);
+    assert.match(src, /import\s*\{\s*_fetch\s*\}\s*from\s*["']\.\.\/_client["']/,
+      `${rel}: must import the canonical _fetch helper from _client.js`);
     const helper = /const API = async \([\s\S]*?\n\};/.exec(src);
     assert.ok(helper, `${rel}: the local API helper must exist`);
-    assert.match(helper[0], /if \(!r\.ok\)/,
-      `${rel}: the local API helper must check response status`);
-    assert.match(helper[0], /err\.error \|\| err\.message/,
-      `${rel}: it must preserve the backend's own message`);
+    assert.match(helper[0], /_fetch\(/,
+      `${rel}: the local API helper must delegate to the canonical _fetch — ` +
+      `a raw fetch() here would silently let a 4xx/5xx body flow through as data`);
+    assert.doesNotMatch(helper[0], /\bfetch\(`?\$\{?\s*BASE_URL|\bawait\s+fetch\(/,
+      `${rel}: must not call a raw fetch() directly — that reintroduces the ` +
+      `no-status-check defect this test guards against`);
   }
 });
 

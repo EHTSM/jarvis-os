@@ -76,24 +76,50 @@ describe("support ownership + lifecycle (Phase B.15)", () => {
     });
 
     it("scopes by account through the existing filter (operator keeps full view)", () => {
-        const all = svc.getCSInbox({});
-        assert.ok(all.tickets.length >= 1, "need at least one ticket to scope");
-        // Pick a ticket that actually carries ownership.
-        const owned = all.tickets.find(t => t.accountId);
-        assert.ok(owned, "at least one ticket must carry an accountId once the fix is wired");
+        // Mission 67: this test always assumed at least one real,
+        // account-owning ticket already existed in data/co3-user-success.json
+        // — true against a populated local dev store, but data/ is
+        // gitignored, so a fresh CI checkout starts genuinely empty and this
+        // assertion ("need at least one ticket to scope") always failed
+        // there. Seeded here using the file's own already-established
+        // svc.createCSTicket()/cleanup convention (see "resolve → reopen →
+        // close" and "SLA targets" tests below in this same file), so the
+        // real ownership-scoping logic is genuinely exercised in every
+        // environment rather than depending on ambient prior state.
+        const seeded = svc.createCSTicket({
+            userEmail: "b15-scope-seed@test.local",
+            subject:   "B15 scope-test seed ticket",
+            body:      "x",
+            priority:  "low",
+            accountId: "b15-scope-seed-acct",
+        });
+        try {
+            const all = svc.getCSInbox({});
+            assert.ok(all.tickets.length >= 1, "need at least one ticket to scope");
+            // Pick a ticket that actually carries ownership.
+            const owned = all.tickets.find(t => t.accountId);
+            assert.ok(owned, "at least one ticket must carry an accountId once the fix is wired");
 
-        const mine = svc.getCSInbox({ accountId: owned.accountId });
-        assert.ok(mine.tickets.length >= 1, "owner must see their own ticket");
-        assert.ok(mine.tickets.every(t => t.accountId === owned.accountId),
-            "an account-scoped view must contain only that account's tickets");
+            const mine = svc.getCSInbox({ accountId: owned.accountId });
+            assert.ok(mine.tickets.length >= 1, "owner must see their own ticket");
+            assert.ok(mine.tickets.every(t => t.accountId === owned.accountId),
+                "an account-scoped view must contain only that account's tickets");
 
-        const other = svc.getCSInbox({ accountId: "b15-definitely-not-an-account" });
-        assert.equal(other.tickets.length, 0,
-            "a foreign account must see zero tickets — this is the cross-tenant leak");
+            const other = svc.getCSInbox({ accountId: "b15-definitely-not-an-account" });
+            assert.equal(other.tickets.length, 0,
+                "a foreign account must see zero tickets — this is the cross-tenant leak");
 
-        // Operator path passes no accountId and still sees everything.
-        assert.ok(svc.getCSInbox({}).tickets.length >= mine.tickets.length,
-            "the unscoped (operator) view must remain complete");
+            // Operator path passes no accountId and still sees everything.
+            assert.ok(svc.getCSInbox({}).tickets.length >= mine.tickets.length,
+                "the unscoped (operator) view must remain complete");
+        } finally {
+            // Keep the store clean — this is a live data file (matches this
+            // file's own established cleanup convention).
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[seeded.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
+        }
     });
 
     it("returns 403 (not 404/500) when acting on another account's ticket", () => {
@@ -112,8 +138,23 @@ describe("support ownership + lifecycle (Phase B.15)", () => {
     });
 
     // ── D2: enum validation + resolvedAt ─────────────────────────────────────
+    // Mission 67: all three of these tests read an existing ticket id
+    // directly out of data/co3-user-success.json — same missing-fixture gap
+    // as "scopes by account" above. Each rejected update (invalid
+    // status/priority) throws before writing anything, so one shared seed
+    // ticket, created once and cleaned up once after the last of the three,
+    // is safe and sufficient — matches this file's own established
+    // svc.createCSTicket()/cleanup convention.
+    const d2SeedTicket = svc.createCSTicket({
+        userEmail: "b15-d2-seed@test.local",
+        subject:   "B15 enum-validation seed ticket",
+        body:      "x",
+        priority:  "low",
+        accountId: "b15-d2-seed-acct",
+    });
+
     it("rejects a status outside the enum it already exports", () => {
-        const id = Object.keys(JSON.parse(read(path.join(ROOT, "data/co3-user-success.json"))).csInbox || {})[0];
+        const id = d2SeedTicket.id;
         assert.ok(id, "need an existing ticket");
         assert.throws(() => svc.updateTicket(id, { status: "DROP_TABLE" }),
             /Invalid status/, "an out-of-enum status must be refused, not stored");
@@ -122,18 +163,26 @@ describe("support ownership + lifecycle (Phase B.15)", () => {
     });
 
     it("rejects a priority outside the enum it already exports", () => {
-        const id = Object.keys(JSON.parse(read(path.join(ROOT, "data/co3-user-success.json"))).csInbox || {})[0];
+        const id = d2SeedTicket.id;
         assert.throws(() => svc.updateTicket(id, { priority: "bogus_pri" }),
             /Invalid priority/, "an out-of-enum priority must be refused, not stored");
     });
 
     it("validation errors carry HTTP 400, not 500", () => {
-        const id = Object.keys(JSON.parse(read(path.join(ROOT, "data/co3-user-success.json"))).csInbox || {})[0];
+        const id = d2SeedTicket.id;
         try {
             svc.updateTicket(id, { status: "nope" });
             assert.fail("should have thrown");
         } catch (e) {
             assert.equal(e.status, 400, "a bad request must be a 400");
+        } finally {
+            // Last of the three D2 tests to run — clean up the shared seed
+            // ticket here, matching this file's own established cleanup
+            // convention (keep the store clean, it is a live data file).
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[d2SeedTicket.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
         }
     });
 

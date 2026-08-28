@@ -4,17 +4,141 @@
  *
  * Covers: businessOrgState, businessOrgWorkflow, businessOrg module loads.
  * Uses temp directory for isolation.
+ *
+ * Mission 67: every describe block's before() calls freshModules(), which
+ * reassigns the module-level `st`/`wf`/`org` shared across ALL describe
+ * blocks in this file, and Node's test runner runs top-level sibling
+ * describes CONCURRENTLY by default. The "Revenue and Analytics" block
+ * used to seed bizorg_billing.mrr=500 as its own fixture — a stray write to
+ * that shared KPI store that the concurrently-running "Billing and Customer
+ * Success" block could observe mid-test. Traced and removed at its source
+ * (see that block below): the seed was already a dead no-op post the
+ * Business Org Financial Integrity Certification, which excluded
+ * bizorg_billing from any real MRR report.
+ *
+ * Mission 69: this file's header always claimed "uses temp directory for
+ * isolation" (the mkdtempSync()'d tmpDir below), but that was never actually
+ * true — businessOrgState.cjs's DIR was always hardcoded to the real
+ * data/bizorg/, never wired to tmpDir at all. freshModules()'s own "cleanup"
+ * was deleting state.json/kpis.json/etc. FROM tmpDir, a directory
+ * businessOrgState.cjs never touched — a no-op that looked like isolation.
+ * Confirmed live: data/bizorg/kpis.json's bizorg_billing entry had
+ * tasksCompleted:44 and a stale mrr:500 — real residue accumulated across
+ * many prior unisolated runs of this exact file (including a value written
+ * before Mission 67 removed a since-deleted test seed), which is what
+ * caused this file's billing MRR assertion to intermittently fail once the
+ * businessIntelligenceEngine hang (below) stopped masking it by preventing
+ * the file from ever finishing cleanly.
+ *
+ * Real fix: both businessOrgState.cjs (DIR) and businessDataService.cjs
+ * (F_LEADS/F_CONTACTS/F_OPPS/F_CAMPS/F_REV) now honour
+ * JARVIS_TEST_DATA_SUFFIX (same convention as agentInstanceRegistry.cjs/
+ * skillRegistry.cjs/repositoryEditingEngine.cjs/toolExecutionLayer.cjs) —
+ * set here, first, before any require() below, since it's read into
+ * module-load-time consts. tmpDir/os are no longer needed and removed.
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = `bizorgv3-${process.pid}-${Date.now()}`;
 
-const { describe, it, before } = require("node:test");
+const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
-
-const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "bizorg-v3-test-"));
 
 let st, wf, org;
+
+// Mission 67/68: "CEO objective triggers cascade" (below) calls
+// wf.subscribeWorkflowEvents(), real production code (businessOrgWorkflow.cjs)
+// that wires 19 event-bus listeners chained through 8 unref'd setTimeout
+// calls (COO plan -> Marketing campaign -> Growth lead -> CRM qualify ->
+// Sales advance -> Billing/CS/Revenue/Analytics/BI), by design for a
+// long-running server process where this cascade should keep running. It has
+// no built-in teardown — subscribeWorkflowEvents() is a module-level
+// singleton guard (_subscribed), so once subscribed in this test process it
+// stays subscribed for the process's lifetime, and every later describe
+// block's own st.createDeal()/lead/report activity keeps re-triggering it.
+//
+// Mission 68 traced this further: the "bizorg_wf_bi" listener (fired by
+// analyticsGenerateReport()'s "bizorg:report:generated" event, itself inside
+// the setTimeout chain) calls the real businessIntelligenceEngine.cjs's
+// scan(), which reads/writes through businessDataService.cjs — a SEPARATE
+// data layer from businessOrgState.cjs, with its own real shared
+// data/biz-*.json files and (at the time) no isolation mechanism at all.
+// That scan processed real, large, pre-existing shared lead/deal data
+// (confirmed live: a run showed "BravoCorp-OS52"/"Marisol Vega"-style leads
+// this file never created) and, via missionOrchestrator.cjs, created real
+// missions from it.
+//
+// Mission 69 closed the actual root cause: businessDataService.cjs now
+// honours JARVIS_TEST_DATA_SUFFIX (set at the top of this file, before any
+// require() of businessOrgState/Workflow/businessOrg) the same way
+// agentInstanceRegistry.cjs/skillRegistry.cjs/repositoryEditingEngine.cjs/
+// toolExecutionLayer.cjs already do — so a BI scan triggered by this test's
+// own cascade now reads/writes isolated biz-*.<suffix>.json files that start
+// empty, never the real shared ones. With zero real leads/deals to scan,
+// scanLeads()/scanDeals() find zero signals and _triggerMission() never
+// fires — the cascade's most expensive, hang-causing leg (a real
+// missionOrchestrator.createManual() write cycle against the real 32MB+
+// data/missions.json) simply cannot happen from this path anymore.
+// Unsubscribing every listener here remains a real, verified-safe
+// belt-and-suspenders cleanup — retained per Mission 69 rule 8 unless
+// evidence proves it's redundant, which was not attempted here (removing it
+// carries no benefit and this hook is proven harmless).
+function _sweepIsolatedDataDirs() {
+    // Isolated biz-*.<suffix>.json files (businessDataService.cjs) land in
+    // the real data/ dir (same convention as every other
+    // JARVIS_TEST_DATA_SUFFIX consumer) — remove them so no test residue
+    // accumulates there.
+    const dataDir = path.join(__dirname, "..", "..", "data");
+    for (const f of ["biz-leads", "biz-contacts", "biz-opportunities", "biz-campaigns", "biz-revenue"]) {
+        try { fs.unlinkSync(path.join(dataDir, `${f}.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`)); } catch { /* never created — fine */ }
+    }
+    // The isolated data/bizorg-<suffix>/ directory (businessOrgState.cjs) —
+    // remove the whole directory, not just the 4 files, so nothing lingers.
+    try {
+        const dir = path.join(__dirname, "..", "..", "data", `bizorg-${process.env.JARVIS_TEST_DATA_SUFFIX}`);
+        for (const f of ["state.json", "kpis.json", "memory.json", "reports.json"]) {
+            try { fs.unlinkSync(path.join(dir, f)); } catch { /* never created — fine */ }
+        }
+        fs.rmdirSync(dir);
+    } catch { /* non-fatal — best-effort cleanup; directory may not exist, or a still-settling cascade write races this and is caught by the delayed second sweep below */ }
+}
+
+after(async () => {
+    try {
+        const bus = require("../../agents/runtime/runtimeEventBus.cjs");
+        for (const id of [
+            "bizorg_wf_coo", "bizorg_wf_mkt", "bizorg_wf_growth", "bizorg_wf_crm",
+            "bizorg_wf_sales", "bizorg_wf_billing", "bizorg_wf_cs", "bizorg_wf_revops",
+            "bizorg_wf_analytics", "bizorg_wf_coord_task", "bizorg_wf_coord_unblock",
+            "bizorg_wf_prodmkt", "bizorg_wf_seo", "bizorg_wf_social", "bizorg_wf_finance",
+            "bizorg_wf_partnerships", "bizorg_wf_email", "bizorg_wf_whatsapp", "bizorg_wf_bi",
+        ]) {
+            bus.unsubscribe(id);
+        }
+    } catch { /* non-fatal — best-effort cleanup */ }
+
+    _sweepIsolatedDataDirs();
+
+    // The cascade's setTimeout chain (unref'd, so it never blocks process
+    // exit) can still have hops in flight at this point — unsubscribing above
+    // stops NEW events from scheduling NEW timers, but doesn't cancel timers
+    // already queued before this hook ran. Observed live: an already-queued
+    // hop wrote a fresh isolated bizorg-<suffix>/{state,kpis,memory,reports}.json
+    // moments after the sweep above ran, recreating the directory this hook
+    // just removed. The chain's longest observed single hop is 500ms
+    // (salesAdvanceDeal, nested inside 2 prior setTimeouts); 1.5s gives a
+    // comfortable margin for that plus one further hop (e.g. billing/CS/
+    // revenue/analytics at 100-200ms each) to settle, then this re-sweeps
+    // whatever that in-flight work left behind. This only delays this file's
+    // own after() — it does not touch any per-test timeout.
+    await new Promise((r) => setTimeout(r, 1500));
+    _sweepIsolatedDataDirs();
+});
+
+// Mission 69: the real, isolated directory businessOrgState.cjs actually
+// reads/writes now that it honours JARVIS_TEST_DATA_SUFFIX (matches that
+// module's own DIR construction exactly).
+const bizorgDir = path.join(__dirname, "..", "..", "data", `bizorg-${process.env.JARVIS_TEST_DATA_SUFFIX}`);
 
 function freshModules() {
   for (const key of Object.keys(require.cache)) {
@@ -22,7 +146,7 @@ function freshModules() {
       delete require.cache[key];
     }
   }
-  ["state.json","kpis.json","memory.json","reports.json"].forEach(f => { try { fs.unlinkSync(path.join(tmpDir, f)); } catch {} });
+  ["state.json","kpis.json","memory.json","reports.json"].forEach(f => { try { fs.unlinkSync(path.join(bizorgDir, f)); } catch {} });
   st  = require("../../backend/services/businessOrgState.cjs");
   wf  = require("../../backend/services/businessOrgWorkflow.cjs");
   org = require("../../backend/services/businessOrg.cjs");
@@ -413,12 +537,27 @@ describe("businessOrgWorkflow — Billing and Customer Success", () => {
     process._v3BillingDealId = deal.deal.id;
   });
 
-  it("billingProcessPayment updates billing KPI MRR", () => {
+  it("billingProcessPayment records the payment without double-counting MRR", () => {
+    // Mission 67 / carried from the Business Org Financial Integrity
+    // Certification: billingProcessPayment() used to ALSO increment
+    // bizorg_billing's own mrr KPI by amount/12, duplicating the same
+    // real-world revenue event advanceDeal() already records once, correctly,
+    // on the deal's own department KPI when it transitions to closed_won —
+    // confirmed live to double the reported global MRR (see
+    // businessOrgWorkflow.cjs:276-291). That duplicate accumulator was
+    // removed; this test previously still asserted the removed behavior.
+    // billing's real, non-duplicative surface is: the returned amount,
+    // tasksCompleted, and the payment-processed memory record/event —
+    // asserted here instead.
+    const before = st.getKpi("bizorg_billing").tasksCompleted || 0;
     const r = wf.billingProcessPayment(process._v3BillingDealId, { plan: "pro" });
     assert.equal(r.ok, true);
     assert.ok(r.amount >= 4800);
     const kpi = st.getKpi("bizorg_billing");
-    assert.ok(kpi.mrr >= 400);
+    assert.equal(kpi.tasksCompleted, before + 1,
+      "billing must record the payment as completed billing work");
+    assert.equal(kpi.mrr || 0, 0,
+      "bizorg_billing must NOT carry its own mrr — that would re-introduce the double-counted global MRR defect");
   });
 
   it("csOnboardCustomer creates onboarding task and returns healthScore", () => {
@@ -441,7 +580,18 @@ describe("businessOrgWorkflow — Revenue and Analytics", () => {
     freshModules();
     // Create a won deal with MRR
     const deal = st.createDeal({ title: "Revenue deal", company: "RevCo", value: 6000, stage: "closed_won" });
-    st.updateKpi("bizorg_billing", { mrr: 500 });
+    // Mission 67: the Business Org Financial Integrity Certification put
+    // bizorg_billing in MRR_REPORTING_DEPTS (businessOrgState.cjs:697) —
+    // its mrr KPI is permanently excluded from getDashboard()'s totalMrr
+    // (which is what revenueOpsUpdate() below actually reads), and its own
+    // duplicate accumulator was removed from billingProcessPayment() as a
+    // separate fix. Seeding mrr on it here was already a dead no-op for what
+    // this test verifies — the test only checks r.mrr is a number and
+    // r.arr === r.mrr * 12, both true regardless of this seed's value — and,
+    // being a write to the shared module-level KPI store, it was observable
+    // from sibling describe blocks running concurrently (the billing test's
+    // own KPI read saw this exact value bleed in). A dead seed causing live
+    // cross-test interference is worth deleting outright, not relocating.
   });
 
   it("revenueOpsUpdate returns MRR and ARR", () => {

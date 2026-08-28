@@ -75,11 +75,34 @@ describe("B.20 — orphaned tmp sweep (interrupted-write recovery)", () => {
 
   it("leaves the real missions store intact and parseable", () => {
     // The sweep must never be able to damage the store it protects.
+    //
+    // Mission 67: on a fresh checkout data/missions.json is gitignored and
+    // does not exist until something writes a real mission — _loadMissions()
+    // tolerates ENOENT in-memory but never persists that empty store to disk,
+    // so requiring this module alone does not create the file. This test has
+    // no dependency on any other file's ordering (it is not in
+    // MISSION_MUTATING and runs in the parallel batch), so it must guarantee
+    // its own precondition rather than assume some other test already
+    // created a mission first. Seeded via the module's own real
+    // createMission(), the same convention already used elsewhere in this
+    // repo's test suite for this exact gap.
     delete require.cache[require.resolve("../../backend/services/missionMemory.cjs")];
-    require("../../backend/services/missionMemory.cjs");
-    assert.equal(fs.existsSync(MISSIONS), true, "missions.json must still exist");
-    const parsed = JSON.parse(fs.readFileSync(MISSIONS, "utf8"));
-    assert.equal(Array.isArray(parsed.missions), true, "missions.json must still parse");
+    const mm = require("../../backend/services/missionMemory.cjs");
+    let seeded = null;
+    if (!fs.existsSync(MISSIONS)) {
+      seeded = mm.createMission({ objective: "B20 sweep-guard seed mission" });
+    }
+    try {
+      assert.equal(fs.existsSync(MISSIONS), true, "missions.json must still exist");
+      const parsed = JSON.parse(fs.readFileSync(MISSIONS, "utf8"));
+      assert.equal(Array.isArray(parsed.missions), true, "missions.json must still parse");
+    } finally {
+      if (seeded) {
+        const store = JSON.parse(fs.readFileSync(MISSIONS, "utf8"));
+        store.missions = store.missions.filter((m) => m.id !== seeded.id);
+        fs.writeFileSync(MISSIONS, JSON.stringify(store, null, 2));
+      }
+    }
   });
 });
 
