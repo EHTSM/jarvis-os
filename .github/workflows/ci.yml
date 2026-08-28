@@ -49,6 +49,13 @@ jobs:
       OPERATOR_PASSWORD_HASH: ${{ secrets.CI_OPERATOR_HASH }}
       BASE_URL: http://localhost:5050
       GROQ_API_KEY: ${{ secrets.CI_GROQ_API_KEY }}
+      # Mission 66: the autonomous task loop (agents/autonomousLoop.cjs)
+      # writes real, unattended data into the exact files the regression
+      # and security suites assert against for the server's whole
+      # lifetime — the root cause behind Tests 133/147/148/153/154 and
+      # several security org-creation races (Mission 65). Opt-in only;
+      # every other server boot (including real deployments) is unaffected.
+      DISABLE_AUTONOMOUS_LOOP: "1"
 
     steps:
       - uses: actions/checkout@v4
