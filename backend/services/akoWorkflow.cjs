@@ -241,10 +241,20 @@ function storeToMemory(itemId) {
   const item = _st().getItem(itemId);
   if (!item) return { ok: false, error: "Item not found" };
   // Store to platform memory persistence layer
+  // Signature/tenant-isolation audit (2026-08-28): save(node) takes ONE
+  // object argument (backend/services/memoryPersistenceLayer.cjs), not
+  // (id, node). The extra leading item.id argument meant `node` here was
+  // actually item.id (a string), so _defaults() read undefined off it for
+  // every field — every AKO memory write silently produced a garbage
+  // {key:"untitled", value:null} node while this try/catch's swallowed
+  // success made storeToMemory() report ok:true regardless. Reproduced
+  // live before this fix. key/value are now populated from the item's real
+  // title/content so a caller of list()/search()/recall() can actually find
+  // it, matching this store's own schema (key: human label, value: payload).
   try {
-    _mpl()?.save?.(item.id, {
-      type: item.type, title: item.title, content: item.content,
-      source: item.source, confidence: item.confidence, tags: item.tags,
+    _mpl()?.save?.({
+      key: item.title, value: { content: item.content, source: item.source },
+      type: item.type, tags: item.tags, confidence: item.confidence,
     });
   } catch {}
   // Store to engineering memory if engineering type

@@ -166,8 +166,20 @@ function createItem({
   if (s.items.length > 5000) s.items.splice(0, s.items.length - 5000);
 
   // Index into semantic memory search
+  // Signature/tenant-isolation audit (2026-08-28): saveTypedMemory(type,
+  // data, opts) takes 3 args (semanticMemorySearch.cjs), not the 5 passed
+  // here. item.id landed in the `type` slot, so every call passed an
+  // "aki_..." string as a memory type — reliably throwing "Unknown memory
+  // type", silently swallowed by this try/catch. Reproduced live before
+  // this fix: this indexing call has never once succeeded for any AKO
+  // knowledge item. AKO's own `type` vocabulary (engineering/observation/
+  // etc., VALID_TYPES above) doesn't map onto saveTypedMemory's 4 fixed
+  // taxonomy types (failure/success/decision/knowledge), so this always
+  // indexes as "knowledge" (the taxonomy's only single-required-field
+  // type — `insight`) and preserves AKO's own type as a tag instead of
+  // forcing an incompatible taxonomy mapping.
   try {
-    _sm()?.saveTypedMemory(item.id, type, title, { content, source, confidence, tags }, deptId);
+    _sm()?.saveTypedMemory("knowledge", { insight: content, sourceType: type }, { confidence, tags: [...tags, `ako:${type}`, `source:${source}`] });
   } catch {}
   // Index into knowledge graph
   try {

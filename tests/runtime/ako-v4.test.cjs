@@ -143,10 +143,12 @@ describe("akoState — Knowledge Items", () => {
 // ── State: Semantic Search ────────────────────────────────────────────────────
 
 describe("akoState — Semantic Search", () => {
+  let ts, eventBusContent;
   before(() => {
     freshModules();
-    const ts = Date.now();
-    st.createItem({ title: `Engineering: event bus pattern ${ts}`, content: "subscribe/emit for decoupled communication", type: "engineering", confidence: 90, tags: ["engineering","events"] });
+    ts = Date.now();
+    eventBusContent = `subscribe/emit for decoupled communication ${ts}`;
+    st.createItem({ title: `Engineering: event bus pattern ${ts}`, content: eventBusContent, type: "engineering", confidence: 90, tags: ["engineering","events"] });
     st.createItem({ title: `Engineering: lazy loading pattern ${ts}`, content: "require inside functions avoids circular deps", type: "engineering", confidence: 85, tags: ["engineering","lazy"] });
   });
 
@@ -154,6 +156,22 @@ describe("akoState — Semantic Search", () => {
     const results = st.searchItems("engineering pattern");
     // semanticMemorySearch may return { results:[], query, total } or [] or null depending on engine state
     assert.ok(results === null || Array.isArray(results) || (typeof results === "object" && results !== null));
+  });
+
+  // Signature/tenant-isolation audit (2026-08-28): createItem()'s indexing
+  // call into semanticMemorySearch.cjs's saveTypedMemory(type, data, opts)
+  // was passing 5 positional args against a 3-arg function — item.id landed
+  // in the `type` slot, so saveTypedMemory threw "Unknown memory type"
+  // (silently swallowed) on every single call, meaning no AKO knowledge
+  // item was EVER actually indexed into semantic search before this fix.
+  // This asserts the real end-to-end path: a freshly created item's own
+  // content must be findable via the same search a caller would actually
+  // use, not just that createItem() returned ok:true.
+  it("a freshly created item's real content is actually indexed and findable via semantic search", () => {
+    const mpl = require("../../backend/services/memoryPersistenceLayer.cjs");
+    const { nodes } = mpl.search(String(ts));
+    const found = nodes.find(n => n.value?.insight === eventBusContent);
+    assert.ok(found, `expected an indexed node whose insight matches the created item's content; found keys: ${nodes.map(n => n.key).join(", ") || "(none)"}`);
   });
 });
 
@@ -496,9 +514,11 @@ describe("akoWorkflow — Graph indexing", () => {
 // ── Workflow: Memory storage ──────────────────────────────────────────────────
 
 describe("akoWorkflow — Memory storage", () => {
+  let uniqueTitle;
   before(() => {
     freshModules();
-    const item = st.createItem({ title: `Mem storage test ${Date.now()}`, content: "stored content", type: "engineering", confidence: 85 });
+    uniqueTitle = `Mem storage test ${Date.now()}`;
+    const item = st.createItem({ title: uniqueTitle, content: "stored content", type: "engineering", confidence: 85 });
     st.validateItem(item.item.id, { validatedBy: "ako_qa" });
     process._v4MemItemId = item.item.id;
   });
@@ -511,6 +531,23 @@ describe("akoWorkflow — Memory storage", () => {
   it("storeToMemory creates AKO memory entry", () => {
     const mem = st.getMemory({ deptId: "ako_memory", type: "stored" });
     assert.ok(mem.length >= 1);
+  });
+
+  // Signature/tenant-isolation audit (2026-08-28): storeToMemory() called
+  // memoryPersistenceLayer.cjs's save(node) as save(id, node) — a 2-arg
+  // call against a 1-arg function — so the real item content was silently
+  // discarded into a {key:"untitled", value:null} node while this test's
+  // ok:true assertion above (and the separate, unrelated AKO-internal
+  // memory-log check) both still passed, masking the defect entirely.
+  // Reproduced live before the fix. This asserts against the REAL
+  // memoryPersistenceLayer.cjs store the production code writes into, not
+  // AKO's own internal memory log, so a regression here would be caught.
+  it("storeToMemory actually persists the item's real title/content into memoryPersistenceLayer (not a garbage node)", () => {
+    const mpl = require("../../backend/services/memoryPersistenceLayer.cjs");
+    const { nodes } = mpl.search(uniqueTitle);
+    const found = nodes.find(n => n.key === uniqueTitle);
+    assert.ok(found, `expected a memoryPersistenceLayer node with key "${uniqueTitle}", found: ${nodes.map(n => n.key).join(", ") || "(none)"}`);
+    assert.equal(found.value.content, "stored content", "node.value.content must be the item's real content, not null");
   });
 });
 

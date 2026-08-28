@@ -94,6 +94,33 @@ const MISSION_MUTATING = {
     ],
 };
 
+// CLAUDE.md §9 / backlog item #13 (2026-08-28 verification): fs.readdirSync
+// is non-recursive, so tests/runtime/stream/'s 2 files
+// (reconnectRecovery.test.cjs, streamStress.test.cjs) were silently excluded
+// from every `npm run test:runtime` invocation — not a stale claim, verified
+// against current HEAD, both files still exist and are still skipped.
+// Neither touches missionMemory.cjs/organizationService.cjs's mutating APIs
+// (grepped, zero hits), so they're safe to add to the normal parallel group
+// with no MISSION_MUTATING entry needed. walkTestFiles() recurses one level
+// deep (this repo's test dirs are at most one subdirectory deep — confirmed
+// via `find tests/runtime -mindepth 2 -type d`), matching the existing
+// "discover files dynamically, don't hardcode a count" design intent this
+// script's own header comment establishes for the top-level case.
+function walkTestFiles(dir, glob) {
+    const found = [];
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            for (const f of fs.readdirSync(full)) {
+                if (glob(f)) found.push(path.join(full, f));
+            }
+        } else if (glob(entry.name)) {
+            found.push(full);
+        }
+    }
+    return found;
+}
+
 const SUITES = {
     runtime: {
         dir: "tests/runtime",
@@ -120,10 +147,7 @@ function main() {
     }
 
     const mutating = new Set(MISSION_MUTATING[suiteName].map((p) => path.join(ROOT, p)));
-    const allFiles = fs.readdirSync(path.join(ROOT, suite.dir))
-        .filter(suite.glob)
-        .map((f) => path.join(ROOT, suite.dir, f))
-        .sort();
+    const allFiles = walkTestFiles(path.join(ROOT, suite.dir), suite.glob).sort();
 
     // Sanity check: every file this script intends to serialize must still
     // exist. If one was renamed/removed, fail loudly rather than silently
