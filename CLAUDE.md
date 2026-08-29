@@ -140,26 +140,50 @@ another doc disagree, trust direct inspection of the code over either.
 - There is no `lint` or `typecheck` npm script anywhere in this repo (root or
   frontend). Do not assume one exists or invent one without being asked.
 
-## 9. Real Test Corpus vs. Stale npm/CI Claims — IMPORTANT
+## 9. Real Test Corpus — Corrected 2026-08-29 (Mission 75)
 
-- `package.json`'s `test:runtime` script only runs **10 specifically named files**
-  in `tests/runtime/`. This was directly verified during audit (process
-  inspection while the script ran).
-- `tests/runtime/` actually contains **115 files**; `tests/` overall has **373
-  files across 13 categories** (`security/` 116, `runtime/` 115, `legacy/` 74,
-  and smaller `integration/`, `stress/`, `burnin/`, `workflows/`, `smoke/`,
-  `operator/`, `stability/`, `evaluation/`, `chaos/`, `profiling/`).
-- `README.md`'s badge and `.github/workflows/ci.yml` both still say/enforce
-  **"144/144"**, and CI's own gate literally does `grep -E "pass 144"` against
-  the narrow 10-file script's output — meaning CI is validating a small,
-  years-stale subset while presenting itself as a full regression gate.
-- **When asked to "run the regression suite" or "run all tests," always clarify
-  or default to the full corpus** (e.g. `node --test tests/runtime/*.test.cjs`,
-  `node --test tests/security/*.cjs`), not the stale `npm run test:runtime`
-  script, unless the user specifically asks for the CI-scoped subset.
-- Do not silently "fix" the 144 number or the CI grep without being asked —
-  surface the discrepancy and let the user decide whether to update the script,
-  the CI gate, or the badge.
+- **This section previously claimed `test:runtime` only ran a narrow 10-file
+  subset and that CI enforced a stale `grep -E "pass 144"` gate. That claim is
+  no longer true and has been corrected here, not silently — Mission 42
+  (2026-08-23) introduced `scripts/run-test-suite.cjs`, and Mission 63/71
+  (2026-08-28) extended it; `package.json`'s `test:runtime`/`test:security`
+  now both run `node scripts/run-test-suite.cjs <runtime|security>`, which
+  recursively discovers every real test file under `tests/runtime/` /
+  `tests/security/` (one subdirectory level deep) and runs known
+  shared-store-mutating files serialized (`--test-concurrency=1`) to avoid a
+  documented cross-process lost-update race, with everything else at normal
+  parallelism. There is no `grep -E "pass 144"` gate anywhere in
+  `.github/workflows/ci.yml`, and no "144" reference remains in `README.md` or
+  `SECURITY.md` — verified by direct search, not assumed.**
+- A separate, genuinely narrow script still exists and is intentionally narrow:
+  `test:runtime:fast` runs exactly 4 named files as a quick smoke check. This
+  is not a stale-vs-real-corpus problem — it is honestly named and not what
+  CI's `regression` job invokes (CI runs the full `test:runtime`).
+- **Current corpus size (verified 2026-08-29, do not assume this number stays
+  fixed — re-count with `find tests/<dir> -type f | wc -l` if it matters for a
+  specific task):** `tests/` totals **386 files** across the same 13
+  categories: `security/` 123, `runtime/` 116, `legacy/` 74, `integration/` 15,
+  `stress/` 14, `burnin/` 14, `workflows/` 10, `smoke/` 9, `operator/` 4,
+  `stability/` 2, `evaluation/` 2, `chaos/` 1, `profiling/` 1. These counts grow
+  over time as new test files are added — the corpus is not static.
+- CI's actual gate (`.github/workflows/ci.yml`'s `regression` job) is
+  outcome-based, not count-based: both `test:runtime` and `test:security` run
+  unconditionally (`continue-on-error: true` each), and a separate
+  "Enforce regression/security gate" step fails the job if either suite's real
+  `outcome` was not `success` — verified by reading the step logic directly,
+  not the surrounding comments.
+- **When asked to "run the regression suite" or "run all tests," `npm run
+  test:runtime` / `npm run test:security` (i.e. `scripts/run-test-suite.cjs`)
+  now genuinely are the full corpus for their respective directories** — no
+  need to reach for a raw `node --test tests/runtime/*.test.cjs` glob instead,
+  since that would skip the script's shared-store serialization and can
+  reintroduce the exact race it exists to prevent (reproduced live during
+  Mission 75: two known-mutating files failed reproducibly when run via a raw
+  parallel glob, then passed reliably when run through the script's serialized
+  bucket). `tests/legacy/`, `tests/integration/`, `tests/smoke/`, `tests/stress/`,
+  `tests/burnin/`, and the other smaller categories are **not** covered by
+  either script and have their own separate `npm run test:*` entries or must be
+  invoked directly — do not assume `test:runtime`/`test:security` cover them.
 
 ## 10. Route Registration Conventions
 

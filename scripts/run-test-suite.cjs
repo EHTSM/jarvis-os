@@ -91,6 +91,20 @@ const MISSION_MUTATING = {
         "tests/security/77-marketing-campaigns-id-mismatch-and-creative-error-surfacing.cjs",
         "tests/security/81-reports-wrong-leads-source-and-export-mismatch.cjs",
         "tests/security/83-crm-sales-ux-consistency-id-mismatch-response-shape-destructive-confirm.cjs",
+        // Mission 75 (ERA-1 certification recovery, 2026-08-29): these 2 files
+        // were added by the same commit that fixed the MSN-1/M-4 P0s
+        // (ce6862e0), after this list was last extended (Mission 71) — a pure
+        // sequencing gap, not a design decision. Both call mutating APIs
+        // directly against the real, shared JSON stores this list exists to
+        // protect: 125 calls missionMemory.createMission() (same store as the
+        // `runtime` list's missions.json writers above), 126 calls
+        // memoryPersistenceLayer.save() (a third shared store). Reproduced
+        // live (Mission 74): 125 crashed with "Cannot read properties of null
+        // (reading 'status')" when run concurrently alongside 9 other files,
+        // then passed 18/18 twice in true isolation — the identical
+        // lost-update signature this list's other entries already describe.
+        "tests/security/125-msn1-mission-runtime-cross-tenant-idor.cjs",
+        "tests/security/126-m4-memory-os-cross-tenant-read-idor.cjs",
     ],
 };
 
