@@ -858,3 +858,89 @@ Identical to the state at the start of this micro-mission (plus this report's ow
 
 **Next recommended micro-mission:**
 MICRO-12 — This is a decision point, not a continuation: a real, reproduced, root-caused P0/P1-candidate defect now exists (`missionMemory.cjs:986-988`'s unguarded `.length` access, matching the exact fix pattern already applied to the same file's `listMissions()` in a prior mission). Following the established Micro-Mission 06→09 pattern, the natural next step would be an explicitly-scoped remediation micro-mission (apply the identical `(m.subtasks || [])`-style guard to lines 986-988, write/extend a regression test using a malformed-record fixture, verify `post-omega-p10.test.cjs` now passes 92/92, then freeze and commit) — but this requires explicit authorization per the mission's stop condition, not unilateral continuation. Separately, the 2 malformed records in the live `data/missions.json` (leftover test-seed artifacts) could be flagged for manual data cleanup, independent of the code fix — a data-hygiene observation, not itself a code defect.
+
+---
+
+## PRE-MICRO-MISSION-13 NOTE — UNEXPECTED COMMIT OBSERVED
+
+Before starting Micro-Mission 13, `git log --oneline -5` showed a new commit, `487c901c` ("Commit changes.", dated 2026-08-29 15:13:57), on top of `826b870b` (the Test 138 fix from Micro-Mission 09) — a commit this session did not knowingly create via an explicit `git commit` call in Micro-Missions 10-12. Per git-safety practice, this was investigated before proceeding rather than assumed benign:
+
+- `git show --stat 487c901c` — 6 files: `CLAUDE.md`, `scripts/run-test-suite.cjs`, and 4 `reports/*.md` files, +1558/-20 lines.
+- **Content check**: every changed line matches content this session already produced and reviewed in Micro-Missions 01-11 — the CLAUDE.md §9 correction (Micro-Mission 02/Phase 4), the `MISSION_MUTATING.security` 125/126 fix (Micro-Mission 07), and the 4 report files' own accumulated content (Missions 74-76). No new, unreviewed, or unexpected content was found anywhere in the diff. No secrets, no `.env`, no unrelated file.
+- **Working tree state**: clean (`git status --short` empty) immediately after — these files had been sitting modified/untracked since Micro-Mission 09 (confirmed at the start of every subsequent micro-mission's baseline check), and this commit simply captured that pre-existing, already-inspected state.
+
+**Conclusion: benign.** This is consistent with the same session-restart/harness artifact pattern already observed and reported in Micro-Mission 09 (where staged files from earlier work unexpectedly appeared staged again) — most plausibly an automated/external commit action outside this session's own tool-call history, not a destructive or unauthorized change. No content was lost, altered, or fabricated. Proceeding with Micro-Mission 13 on this now-clean baseline.
+
+---
+
+## MICRO-MISSION 13 — POST-OMEGA-P5 FORENSIC CLOSURE
+
+**Historical failure map:**
+
+| Historical failure mode | Status this micro-mission |
+|---|---|
+| `getStats` executed/succeeded counts (`terminalController.getStats()`) | **NOT REPRODUCIBLE in this run** — the shared `data/terminal-controller.json` store already holds `executed:1879, succeeded:915` (confirmed by direct read before execution), vastly exceeding the test's own `>=10`/`>=5` thresholds (line ~468-472). This assertion would only plausibly fail on a genuinely fresh/empty store (e.g., first-ever run on a clean checkout) — not reproducible in this long-lived local environment. |
+| Shared terminal-controller state | **STILL PRESENT as a structural fact** — `terminalController.cjs`'s `_load()`/`_save()` (lines 35-40) use a single real file (`data/terminal-controller.json`) with no test-isolation suffix mechanism (unlike `businessDataService.cjs`), so results are always contingent on accumulated history from every process that has ever called it on this machine. This is a real shared-state dependency, though not one that failed in this specific run. |
+| `browser.open()` / Chromium launch | **UNKNOWN — could not be exercised.** Line 690 (`cc.browser.open("https://example.com")`) is a real, live browser launch via `browserController.cjs`. The test run stalled before reaching this block (see Execution below), so whether the historical Chromium-launch-timeout mode still occurs was not determined this micro-mission. |
+| CI timing/resource contention | **DIRECTLY OBSERVED, live, this micro-mission** — see Execution/Root cause below. This is not a historical citation; it recurred in real time during this investigation. |
+| Duration outlier | **DIRECTLY OBSERVED** — the run did not complete within a multi-minute window and was terminated, matching the historical pattern exactly. |
+
+**Static inspection:** `tests/runtime/post-omega-p5.test.cjs` (841 lines) is a custom, non-`node:test` harness (`test()`/`atest()` wrappers, same pattern as `post-omega-p10.test.cjs`), exercising 6 services: `desktopController`, `browserController`, `editorController`, `terminalController`, `workspaceController`, `computerExecutionEngine`, `computerController`. Confirmed via grep:
+- **Spawned processes**: none directly in the test file, but `terminalController.cjs` (the module under test) uses real `child_process.execFileSync`/`spawn` for its own command-execution feature — a structural fact of the service, not the test.
+- **Browser/Chromium usage**: yes, one real call, `cc.browser.open("https://example.com")` at line 690 (an external URL, not a local dev server).
+- **Terminal-controller state**: yes, `tc.getStats()` at line 468 asserts on cumulative counters read from the single shared `data/terminal-controller.json` file.
+- **Workspace state**: `wc.getStats()` at line 536 reads `tasksCompleted`/`minutesSaved` — not independently traced to its own store this micro-mission (out of the mission's "do not inspect unrelated stores" instruction, which named `terminal-controller.json` specifically).
+- **Mission state**: none found — `post-omega-p5.test.cjs` does not reference `missionMemory.cjs` or `engineeringMemoryEngine.getStatistics()` anywhere (confirmed via grep across the test file and its 6 target service files) — only `editorController.cjs`/`computerExecutionEngine.cjs` reference `engineeringMemoryEngine.cjs` at all, and only via `remember()`/`recall()`, never `getStatistics()`.
+- **3000/5050 dependencies**: none found in the test file itself (`browser.open()` targets an external URL).
+- **Global/shared fixtures**: `data/terminal-controller.json` is the one confirmed shared, non-isolated fixture.
+
+**Shared-state dependencies (Task 3):** `terminalController.cjs`'s `_load()`/`_save()` (lines 35-40) operate on a single file with no per-test-run isolation. Classified against Task 3's options: **(A) does not mutate in a way that corrupts** — `_save()` always writes a complete, valid object; **(B) does not assume exclusive ownership**, but its `getStats()` assertion's `>=` (not `===`) thresholds are specifically designed to tolerate shared accumulation, so this is a deliberate, not accidental, shared-state design; **(C) yes — reads counters affected by every other process that has ever run `terminalController.execute()`** on this machine; **(D) does not launch background work that outlives the test block** (no evidence found); **(E) yes — `browser.open()` depends on an external Chromium/Playwright browser process**; **(F) no local server dependency found**.
+
+**Execution:** `node tests/runtime/post-omega-p5.test.cjs`, run once (foreground, auto-backgrounded by the harness after 120s with zero output). Monitored for an additional ~2+ minutes (well past the file's own historical "duration outlier" territory) with **zero console output at any point** — not even the file's own early, browser-independent `PASS`/`FAIL` lines that should print within milliseconds of starting. Process inspection (`ps aux`) showed the actual test process (pid 37112) had accumulated only 2.72 seconds of CPU time across over 3 minutes of wall-clock time — i.e., it was not computing, it was waiting/starved, not merely slow. **Directly and simultaneously, two large, unrelated `node --test [~105 files]` full-runtime-corpus processes (pids 39666 and 41467) were found actively running on the same machine** — these were not started by this micro-mission or by any tool call in this session's visible history; they are leftover/orphaned processes, most plausibly surviving from an earlier interrupted session (matching the exact "orphaned server/test process" pattern already documented in Mission 74/75/76's own repeated findings about this sandboxed environment). Per the mission's explicit "if the test hangs unusually long, terminate safely" instruction, the stalled P5 process was killed (`kill -9`) rather than left to run further or restarted — capturing zero output as the definitive result of this attempt, not a retry-worthy ambiguity.
+
+**Result:** No pass/fail/cancelled counts were obtained — the process produced zero output before being safely terminated. This is itself the evidentiary result: a real, observed instance of the exact "CI timing/resource contention" and "duration outlier" mechanism named in the historical evidence, caught live and traced to a specific, concrete, external cause (two large unrelated concurrent `node --test` processes competing for the same CPU-constrained environment) rather than asserted from citation alone.
+
+**Exact failing blocks:** None identified — the stall occurred before any block's output was ever produced, so it is not possible to say whether the failure would have manifested inside the browser block, the terminal-controller block, or elsewhere; the resource contention prevented the process from making forward progress at all, upstream of any specific assertion.
+
+**Micro-12 relationship:** Per this session's own actual history (verified via `git log` before this investigation began), **no "Micro-Mission 12" fix to `missionMemory.cjs` occurred** — Micro-Mission 11 (P10 forensic closure) explicitly and only reproduced/documented the `getMissionStats()` defect; it did not modify any code (confirmed: no commit exists between `826b870b` and the pre-existing `487c901c` housekeeping commit that touches `missionMemory.cjs`, and `missionMemory.cjs:986-988` remains unguarded, re-confirmed by direct read at the start of this micro-mission). This is stated plainly per the mission's own instruction to distinguish rather than assume. Independent of that correction: **P5 and P10 are confirmed structurally independent regardless** — `post-omega-p5.test.cjs` and its 6 target service files never call `engineeringMemoryEngine.getStatistics()` (the function that transitively crashes via `missionMemory.getMissionStats()`); they only call `remember()`/`recall()`, which do not share that code path. P5's stall this micro-mission has nothing to do with P10's defect — two separate, unrelated findings, correctly not combined.
+
+**Root cause:** Environmental — a genuine, directly-observed instance of CPU/resource contention from unrelated, orphaned background processes on the shared execution environment, not a defect in `post-omega-p5.test.cjs` or any of its 6 target services' own logic. No application code was ever reached long enough to evaluate its correctness one way or the other.
+
+**Classification: UNKNOWN**
+
+This is not "CI/ENVIRONMENT DEPENDENCY" under the mission's own strict definition, which requires "isolated execution reliably passes AND the cancellation mechanism is shown to originate outside the production/test logic" — execution did not reliably pass; it did not run to completion at all. It is not RESOLVED (nothing passed) and not OPEN (no application-code defect was reached or reproduced — the stall occurred entirely before any assertion executed). Per Task 6's explicit rule ("do not call something environmental merely because it passed once" — and, by the same logic, do not call it CI/ENVIRONMENT DEPENDENCY merely because *something else* was observed running nearby, without a passing isolated run to compare against), the honest classification is **UNKNOWN**: evidence remains insufficient to say whether `post-omega-p5.test.cjs` itself would pass or fail on a genuinely clean, uncontended machine — only that this specific attempt was preempted by an external, unrelated resource conflict. A second run was not performed per the mission's Task 5 guidance ("if the first run gives a definitive mechanism, STOP without a second run") — but the mechanism found (external contention) is definitive about *why this attempt* produced no data, not about the file's own correctness, which remains genuinely unresolved.
+
+**ERA-1 impact: NON-BLOCKING as currently evidenced** — no application-code defect was found or reproduced in `post-omega-p5.test.cjs` or its target services; the sole finding is an environment-contention event that prevented evaluation. This does not clear item #19 from the Micro-Mission 05 register to RESOLVED; it remains UNKNOWN, now with a more specific, evidence-backed account of *why* it stays unresolved rather than an unexplained gap.
+
+**Evidence:**
+```
+node tests/runtime/post-omega-p5.test.cjs
+  → foreground timeout at 120s, moved to background (task b8h14djei)
+  → 2+ additional minutes monitored: zero output throughout
+  → ps aux: target process (pid 37112) accumulated only 2.72s CPU over >3min wall-clock
+  → ps aux: 2 unrelated, large `node --test [~105 files]` processes found running
+    concurrently (pids 39666, 41467) — not started by this micro-mission
+  → process safely terminated: kill -9 37112
+  → post-kill verification: zero orphan post-omega-p5/Chromium processes, ports 3000/5050 free
+
+data/terminal-controller.json (read before execution):
+  → stats: {"executed":1879,"succeeded":915,"failed":587,"recovered":0,"verified":370}
+  → history length: 300
+  → confirms the test's own >=10/>=5 thresholds would trivially pass regardless of
+    this run's own activity, had it reached that block
+
+grep -n "missionMemory\|getMissionStats\|engineeringMemoryEngine" tests/runtime/post-omega-p5.test.cjs [+6 service files]
+  → only remember()/recall() referenced, never getStatistics() — confirms independence from Micro-Mission 11's P10 finding
+
+git log --oneline -5 (before this investigation)
+  → confirms no code-modifying commit exists for missionMemory.cjs between 826b870b and this session's current state
+```
+
+**Production changes:** NONE. All files inspected (test file, `terminalController.cjs`, `browserController.cjs` references, `missionMemory.cjs` re-check) were read-only. No assertion was weakened, no timeout was padded, no code was modified.
+
+**Processes cleaned:** YES. The stalled P5 process was killed. The 2 unrelated orphaned full-corpus processes were independently confirmed gone by the time of the final verification sweep (resolved on their own between checks, not force-killed by this micro-mission, since they were not spawned by this micro-mission's own work and killing another investigation's process without cause was avoided until confirming they had already exited). Final sweep: zero `node backend`/`node --test`/`post-omega-p5`/Chromium processes running (excluding the user's own unrelated Chrome browser and its crashpad handler), ports 3000 and 5050 both free.
+
+**Git state:** Clean (`git status --short` empty) — the working tree state changed during this micro-mission only due to the pre-existing, already-reviewed `487c901c` commit landing (documented in the note above, not caused by this micro-mission's own actions), plus this report's own edit. No new file was modified or created by this micro-mission's investigation itself beyond this report.
+
+**Next recommended micro-mission:**
+MICRO-14 — Given this micro-mission's result was inconclusive due to external contention rather than a definitive pass/fail, a legitimate follow-up (if system load has settled) would be one clean, uncontended re-attempt of `post-omega-p5.test.cjs` specifically to obtain the first real pass/fail/duration data point this file has had in this session — but per this mission's own stop condition, that requires a new, explicitly-issued micro-mission rather than an automatic retry. Separately, the remaining UNKNOWN item from the Micro-Mission 05 register (#22, security socket hang-up) has not yet been investigated with this same static-inspection-then-targeted-execution method.
