@@ -105,6 +105,94 @@ function _sweepOrphanedTmp() {
 
 _sweepOrphanedTmp();
 
+// Mission 76 (2026-08-29) — cross-process read-modify-write lock.
+//
+// Live-reproduced (Micro-Mission 06, 3/3 runs): 10 real child processes each
+// calling createLead() once against the same file lost 5-7 of 10 records
+// every run, with valid JSON and no corruption throughout. Root cause: the
+// atomic tmp+rename write in _writeStore() only protects against a crash
+// mid-write (a reader never sees a partial file) — it does nothing to stop
+// two processes from both reading the same pre-write snapshot, both
+// appending their own record in memory, and the second renameSync() silently
+// discarding the first process's addition. This is the identical class of
+// gap organizationService.cjs's own _write() comment already documents and
+// explicitly deferred as "a larger architectural change out of scope" —
+// scoped here to businessDataService.cjs only, per this mission's explicit
+// instruction not to touch unrelated services.
+//
+// Fix: a simple, dependency-free, per-store-file exclusive lock using
+// fs.openSync(lockPath, "wx") — "wx" atomically fails with EEXIST if the
+// lock file already exists, which is the same cross-platform primitive
+// Node's own fs module guarantees, no new dependency needed. Every mutating
+// operation (_create/_update/_remove) now acquires this lock BEFORE
+// _readStore() and releases it AFTER _writeStore() completes (or on any
+// thrown error, via try/finally), so the entire read-modify-write-rename
+// transaction is now a single critical section across ALL processes
+// sharing the file, not just serialized within one process.
+//
+// Stale-lock recovery: a lock file older than LOCK_STALE_MS is treated as
+// abandoned (the holder crashed/was SIGKILLed before releasing it) and is
+// forcibly removed before retrying acquisition — this is the same
+// grace-window design already used by _sweepOrphanedTmp() above, applied to
+// locks instead of tmp files, so a crashed writer can never cause a
+// permanent deadlock for every future caller.
+//
+// This does not change the on-disk JSON format, the written data shape, or
+// any function's public signature/return value — every existing caller
+// (business.js, businessOrgWorkflow.cjs, etc.) is unaffected.
+const LOCK_STALE_MS   = 10_000; // a real write completes in low single-digit ms; 10s is a generous crash-only threshold
+const LOCK_RETRY_MS   = 5;
+const LOCK_TIMEOUT_MS = 5_000;  // fail loudly rather than hang forever if something is deeply wrong
+
+function _lockPathFor(file) {
+    return path.join(DATA_DIR, `${file}.lock`);
+}
+
+function _acquireLock(file) {
+    const lockPath = _lockPathFor(file);
+    const deadline = Date.now() + LOCK_TIMEOUT_MS;
+    for (;;) {
+        try {
+            const fd = fs.openSync(lockPath, "wx");
+            fs.closeSync(fd);
+            return lockPath;
+        } catch (err) {
+            if (err.code !== "EEXIST") throw err;
+            try {
+                const st = fs.statSync(lockPath);
+                if (Date.now() - st.mtimeMs > LOCK_STALE_MS) {
+                    // Abandoned lock (holder crashed before releasing) — remove and retry immediately.
+                    try { fs.unlinkSync(lockPath); } catch { /* raced with another releaser/sweeper — fine */ }
+                    continue;
+                }
+            } catch { /* lock vanished between openSync and statSync — another holder just released it, retry */ }
+            if (Date.now() > deadline) {
+                throw new Error(`businessDataService: timed out waiting for lock on ${file} after ${LOCK_TIMEOUT_MS}ms`);
+            }
+            // Busy-wait with a short synchronous sleep — this module's entire API is
+            // synchronous by design (matches every other store in this file), so a
+            // real async wait would require a much larger refactor than this fix
+            // is scoped for. LOCK_RETRY_MS is short enough that real contention
+            // (a write normally takes low single-digit ms) resolves in 1-2 iterations.
+            const until = Date.now() + LOCK_RETRY_MS;
+            while (Date.now() < until) { /* spin */ }
+        }
+    }
+}
+
+function _releaseLock(lockPath) {
+    try { fs.unlinkSync(lockPath); } catch { /* already gone — fine, matches _sweepOrphanedTmp()'s own tolerance */ }
+}
+
+function _withLock(file, fn) {
+    const lockPath = _acquireLock(file);
+    try {
+        return fn();
+    } finally {
+        _releaseLock(lockPath);
+    }
+}
+
 // ── Generic CRUD helpers ──────────────────────────────────────────────────────
 //
 // Org scoping is additive and opt-in, matching secretVault.cjs's approach:
@@ -136,32 +224,38 @@ function _get(file, id, orgId = null) {
 }
 
 function _create(file, data, orgId = null) {
-    const store = _readStore(file);
-    const record = { ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-    if (orgId) record.orgId = orgId;
-    store.items.push(record);
-    _writeStore(file, store);
-    return record;
+    return _withLock(file, () => {
+        const store = _readStore(file);
+        const record = { ...data, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+        if (orgId) record.orgId = orgId;
+        store.items.push(record);
+        _writeStore(file, store);
+        return record;
+    });
 }
 
 function _update(file, id, patch, orgId = null) {
-    const store = _readStore(file);
-    const idx   = store.items.findIndex(i => i.id === id);
-    if (idx === -1) throw new Error(`Not found: ${id}`);
-    if (orgId && store.items[idx].orgId !== orgId) throw Object.assign(new Error(`Not found: ${id}`), { status: 404 });
-    store.items[idx] = { ...store.items[idx], ...patch, updatedAt: new Date().toISOString() };
-    _writeStore(file, store);
-    return store.items[idx];
+    return _withLock(file, () => {
+        const store = _readStore(file);
+        const idx   = store.items.findIndex(i => i.id === id);
+        if (idx === -1) throw new Error(`Not found: ${id}`);
+        if (orgId && store.items[idx].orgId !== orgId) throw Object.assign(new Error(`Not found: ${id}`), { status: 404 });
+        store.items[idx] = { ...store.items[idx], ...patch, updatedAt: new Date().toISOString() };
+        _writeStore(file, store);
+        return store.items[idx];
+    });
 }
 
 function _remove(file, id, orgId = null) {
-    const store = _readStore(file);
-    const target = store.items.find(i => i.id === id);
-    if (!target) throw new Error(`Not found: ${id}`);
-    if (orgId && target.orgId !== orgId) throw Object.assign(new Error(`Not found: ${id}`), { status: 404 });
-    store.items = store.items.filter(i => i.id !== id);
-    _writeStore(file, store);
-    return { deleted: true, id };
+    return _withLock(file, () => {
+        const store = _readStore(file);
+        const target = store.items.find(i => i.id === id);
+        if (!target) throw new Error(`Not found: ${id}`);
+        if (orgId && target.orgId !== orgId) throw Object.assign(new Error(`Not found: ${id}`), { status: 404 });
+        store.items = store.items.filter(i => i.id !== id);
+        _writeStore(file, store);
+        return { deleted: true, id };
+    });
 }
 
 // ── Files ─────────────────────────────────────────────────────────────────────
