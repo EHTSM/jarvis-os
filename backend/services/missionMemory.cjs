@@ -965,14 +965,27 @@ function getMissionStats() {
           )
         : null;
 
+    // Mission 76 (2026-08-29) — same class of gap as the search-filter fix
+    // above (Mission 64): a record missing subtasks/deployments/learnings/
+    // failures (reachable the same way — a direct out-of-band write
+    // bypassing createMission()/_buildMission(), live-reproduced via
+    // post-omega-p10.test.cjs's getDashboard()/getStatistics() chain and
+    // 4 real malformed records currently in data/missions.json) threw
+    // "Cannot read properties of undefined (reading 'length')" on every
+    // one of the 5 unguarded accesses below. (m.field || []) matches the
+    // exact same graceful-degradation approach already proven for
+    // listMissions()'s search filter — a malformed record simply
+    // contributes 0 to these aggregates, it doesn't crash the whole
+    // statistics call for every other caller.
+
     // Failure rate (missions that hit at least one failure / total)
-    const missionsWithFailures = missions.filter(m => m.failures.length > 0).length;
+    const missionsWithFailures = missions.filter(m => (m.failures || []).length > 0).length;
     const failureRate = total > 0 ? Number((missionsWithFailures / total).toFixed(4)) : 0;
 
     // Most common failure phases
     const phaseCounts = {};
     for (const m of missions) {
-        for (const f of m.failures) {
+        for (const f of (m.failures || [])) {
             const ph = f.phase || "unknown";
             phaseCounts[ph] = (phaseCounts[ph] || 0) + 1;
         }
@@ -983,9 +996,9 @@ function getMissionStats() {
         .map(([phase, count]) => ({ phase, count }));
 
     // Aggregated counts
-    const totalSubtasks    = missions.reduce((s, m) => s + m.subtasks.length,    0);
-    const totalDeployments = missions.reduce((s, m) => s + m.deployments.length, 0);
-    const totalLearnings   = missions.reduce((s, m) => s + m.learnings.length,   0);
+    const totalSubtasks    = missions.reduce((s, m) => s + (m.subtasks    || []).length, 0);
+    const totalDeployments = missions.reduce((s, m) => s + (m.deployments || []).length, 0);
+    const totalLearnings   = missions.reduce((s, m) => s + (m.learnings   || []).length, 0);
 
     return {
         total,

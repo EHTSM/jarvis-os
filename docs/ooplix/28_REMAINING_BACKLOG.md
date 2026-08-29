@@ -86,6 +86,44 @@ being updated to reflect it; a real doc/code drift, not a re-opened defect.
 
 ## P2 — Important, not release-blocking
 
+**Status update (2026-08-29, Mission 76 Micro-Missions 11/15/16):** the
+`missionMemory.cjs` malformed-record statistics defect below is now
+**FIXED**. `getMissionStats()` accessed `m.subtasks.length`/
+`m.deployments.length`/`m.learnings.length`/`m.failures.length`/
+`m.failures` (for..of) with no guard against those fields being
+`undefined` — live-reproduced via `post-omega-p10.test.cjs` (74/92 pass,
+18 failures, all `"Cannot read properties of undefined (reading
+'length')"`), root-caused to real malformed records in the live
+`data/missions.json` (traced to `tests/runtime/p18-scientific-discovery.test.cjs`'s
+own out-of-band fixture writes — a separate, not-yet-fixed issue, see
+item below). Fixed by mirroring the exact `(m.field || [])` guard
+pattern already proven for this same file's `listMissions()` search
+filter. Regression: `tests/runtime/mission-memory-stats-malformed-record.test.cjs`,
+4/4 pass. Post-fix: `post-omega-p10.test.cjs` 92/92, 0 failures. The real
+`data/missions.json` and its existing malformed records were not
+modified — verified unchanged (file mtime identical before/after). No
+tenant-isolation or security dimension (the function is a platform-wide,
+unscoped read-only aggregate; no cross-org data exposure or mutation is
+possible). ERA-1 blocker: NO — this was P2 severity throughout and does
+not change the standing P0/P1 gate status.
+
+14a. `missionMemory.cjs`'s `getMissionStats()` malformed-record crash —
+     **FIXED** (see status update above). Fix verified but the change was
+     not yet committed as of Mission 76 Micro-Mission 19.
+14b. `tests/runtime/p18-scientific-discovery.test.cjs`'s fixture (lines
+     180-206) writes minimal, non-conformant mission objects directly
+     into the real, shared `data/missions.json`, bypassing
+     `createMission()`/`_buildMission()` entirely — the actual source of
+     the malformed records item 14a's fix now tolerates. A prior mission
+     already partially patched this same fixture once (adding
+     `createdAt` after an earlier, different crash); `subtasks`/
+     `deployments`/`learnings` were never added. Left unfixed — flagged
+     as a separate, explicitly not-yet-authorized decision (Mission 76
+     Micro-Mission 15/16). Not itself a certification blocker (14a's fix
+     means it can no longer crash anything), but an active data-hygiene
+     issue that will keep growing the malformed-record count on every
+     run of that test file.
+
 14. `browserPlatform.js` session CRUD routes have no rate limiter (IDOR is
     fixed; throttling is not).
 15. CLAUDE.md §9's test-corpus claim is stale (says 10 named files/"pass 144";
@@ -95,6 +133,35 @@ being updated to reflect it; a real doc/code drift, not a re-opened defect.
     audit-trail continuity gap, not a code defect.
 17. Electron's Mission 53/54 hardening work has no corresponding `reports/`
     file despite being real, substantial, and dated in code comments.
+17a. **Electron runtime launch — UNKNOWN, non-blocking** (Mission 76
+     Micro-Mission 04/18). Static verification of `electron/main.cjs`/
+     `electron/preload.cjs` is strong: 66/66 checks pass across 4
+     independent artifacts (`scripts/electron-smoke-test.cjs`,
+     `tests/runtime/electron-ipc-vault-boundary.test.cjs`,
+     `tests/security/32-electron-ipc-injection-hardening.cjs`,
+     `tests/security/33-electron-navigation-signing-scope.cjs`) —
+     confirming `contextIsolation`/`nodeIntegration`/`webSecurity`
+     hardening, CSP injection, real `spawn()`-based command execution,
+     filesystem allow-listing, and navigation-guard scoping are all
+     correctly implemented in the shipped source. Live runtime launch
+     was attempted 3 times in this sandbox and crashed at `main.cjs:54`
+     (`app.getPath(...)`, `app` undefined) every time, traced via
+     `codesign -dv` to this specific environment's ad-hoc-signed,
+     no-team-identifier Electron binary triggering a macOS
+     `task_name_for_pid` kernel denial — a local OS/code-signing
+     constraint, not application startup/preload/IPC logic (the
+     identical crash occurred on a trivial one-line `require('electron')`
+     probe, ruling out `main.cjs`'s own complexity). **No CI runtime
+     evidence exists either**: `.github/workflows/ci.yml` has zero
+     Electron references, and `.github/workflows/release.yml`'s
+     `desktop` job only packages the app (`electron-builder --publish`)
+     without ever launching the resulting executable. Electron's actual
+     runtime startup has therefore never been independently verified by
+     any mission or CI run to date, in either direction. **Do not read
+     this as Electron being certified** — the static hardening is real
+     and verified; the runtime-launch question remains genuinely open,
+     just not attributable to a code defect on the evidence gathered so
+     far.
 18. `KnowledgeCenter.jsx` presents a CRM-entity relationship graph under a name
     ("Knowledge Center") that implies a document/wiki product it does not
     provide — not fabricated data (that was already fixed), but a naming/product
