@@ -102,10 +102,17 @@ function _handleRegister(req, res) {
   // Mark invite code as used
   if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
 
-  // Send email verification
+  // Send email verification — deliberately not awaited: account creation
+  // must not fail or delay just because an email provider hiccups. Email
+  // Ecosystem mission: sendEmailVerification() is now async and internally
+  // records the real send outcome to the audit log (emailSent/emailError)
+  // regardless of whether this caller awaits it — a real send failure is
+  // no longer silently invisible, even though the HTTP response here
+  // still doesn't block on it. .catch() replaces the old synchronous
+  // try/catch, which could never have caught an async rejection anyway.
   if (beta) {
-    try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
-    catch { /* non-fatal */ }
+    beta.sendEmailVerification(result.account.id, result.account.email, name)
+      .catch(e => logger.warn(`[Accounts] sendEmailVerification failed for ${result.account.email}: ${e.message}`));
   }
 
   const provisioned = _provisionOrgAndWorkspace(result.account, orgName);
@@ -171,7 +178,16 @@ router.get("/accounts/me/export", requireAuth, rateLimiter(5, 15 * 60_000), asyn
 });
 
 // ── POST /accounts/resend-verification ────────────────────────────
-router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60_000), (req, res) => {
+// Email Ecosystem mission: unlike registration (above) and forgot-password
+// (auth.js, correctly anti-enumeration by design), this route has no
+// enumeration concern — the caller is already authenticated and requesting
+// their OWN resend. Its entire purpose is confirming an email was sent, so
+// unconditionally returning success:true regardless of the real outcome
+// was a genuine, user-facing false-success (the same class already fixed
+// once in workspaceService.cjs's invite path, test 61) — a real Resend/
+// SES/SMTP failure was previously reported to the user as "Verification
+// email sent." Now awaits the real result and reports honestly.
+router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60_000), async (req, res) => {
   const accountId = req.user.sub || req.user.id;
   const account   = accounts.getById(accountId);
   if (!account) return res.status(404).json({ error: "Account not found" });
@@ -180,7 +196,10 @@ router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60
   const beta = _beta();
   if (!beta) return res.status(503).json({ error: "Email service unavailable" });
   try {
-    beta.sendEmailVerification(account.id, account.email, account.name);
+    const result = await beta.sendEmailVerification(account.id, account.email, account.name);
+    if (!result.emailSent) {
+      return res.status(502).json({ error: "Could not send verification email — the email provider is unavailable. Please try again shortly." });
+    }
     res.json({ success: true, message: "Verification email sent." });
   } catch (e) {
     res.status(500).json({ error: e.message || "Could not send verification email" });

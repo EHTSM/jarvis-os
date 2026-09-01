@@ -27,6 +27,7 @@ const socialEngine     = require("../services/socialContentEngine.cjs");
 const jobQueue         = require("../services/creativeJobQueue.cjs");
 const benchmark        = require("../services/creativeBenchmark.cjs");
 const creditEngine     = require("../services/creditEngine.cjs");
+const socialPublishSupport = require("../services/socialPublishSupport.cjs");
 
 // Lazy-load aiService
 function _ai() {
@@ -681,6 +682,79 @@ router.get("/creative/social/history", (req, res) => {
 // single-tenant fallback socialPostingService.cjs already documents).
 function _socialPoster() { try { return require("../services/socialPostingService.cjs"); } catch { return null; } }
 
+// Mission 60 (Batch A / LinkedIn): same missing-adapter gap X had before the
+// route above was added — M59 found only an OAuth-discovery reachability
+// probe for LinkedIn, no publish path. linkedinPostingService.cjs is the
+// real UGC Posts API adapter; wired through the identical
+// attachOrg + _requireOrgMemberIfOrgContext gate as X below so the same
+// cross-tenant credential-hijack class (test 114) can't reopen here.
+function _linkedinPoster() { try { return require("../services/linkedinPostingService.cjs"); } catch { return null; } }
+
+// Mission 60 (Batch A / Facebook): no prior adapter existed at all (M59
+// finding). facebookPostingService.cjs is a from-scratch Page-publish
+// adapter, wired through the identical org-membership gate.
+function _facebookPoster() { try { return require("../services/facebookPostingService.cjs"); } catch { return null; } }
+
+// Mission 60 (Batch A / YouTube): no prior adapter existed. Unlike X/
+// LinkedIn/Facebook (text posts), YouTube's real publish surface is video
+// upload — the route below takes a filename already produced by the
+// existing Video Studio (agents/content/videoGeneratorAgent.cjs, served
+// from data/video/) rather than a caption/entryId, since that is what the
+// provider's actual API accepts.
+function _youtubePoster() { try { return require("../services/youtubePostingService.cjs"); } catch { return null; } }
+const _ytPath = require("path");
+const YT_VIDEO_DIR = _ytPath.join(__dirname, "../../data/video");
+
+// Mission 60 (Batch A / TikTok): no prior adapter existed. Same video-input
+// shape as YouTube above (real publish primitive is a video, not text),
+// reuses the same YT_VIDEO_DIR since both read from the one existing
+// Video Studio output directory.
+function _tiktokPoster() { try { return require("../services/tiktokPostingService.cjs"); } catch { return null; } }
+
+// Mission 60 (Batch A / Instagram): no prior adapter existed. Reuses the
+// SAME Facebook OAuth connection facebookPostingService.cjs uses (Meta's
+// real account model — Instagram Business publishing has no separate app).
+function _instagramPoster() { try { return require("../services/instagramPostingService.cjs"); } catch { return null; } }
+
+// Mission 60-B (Batch B / Threads): no prior adapter existed. Threads has
+// its own OAuth provider entry (distinct from Instagram/Facebook despite
+// being a Meta product — see oauthIntegrationLayer.cjs).
+function _threadsPoster() { try { return require("../services/threadsPostingService.cjs"); } catch { return null; } }
+
+// Mission 60-B (Batch B / Pinterest): no prior adapter existed. Pin
+// creation is a single-call API (unlike the two-step container flows
+// above), closer in shape to X/LinkedIn.
+function _pinterestPoster() { try { return require("../services/pinterestPostingService.cjs"); } catch { return null; } }
+
+// Mission 60-B (Batch B / Reddit, final Batch B platform): the existing
+// agents/internet/socialMediaAgent.cjs is explicitly read-only (public
+// endpoints only) — this is the missing "actually submit" adapter,
+// untouched from and not replacing that read-only agent.
+function _redditPoster() { try { return require("../services/redditPostingService.cjs"); } catch { return null; } }
+
+// Mission 60-C (Batch C / Discord): M59 found only OAuth-identity/
+// reachability probes (integrationConnectors.cjs) — no message-send path.
+// discordPostingService.cjs adds a real webhook-or-bot send capability,
+// reusing the existing "msg:discord" connectorId/env vars.
+function _discordPoster() { try { return require("../services/discordPostingService.cjs"); } catch { return null; } }
+
+// Mission 60-C (Batch C / Telegram): Telegram's sendMessage() is already
+// LIVE VERIFIED (M53/M59) and already does exactly what social publishing
+// needs — a real message to any chatId, which can be a public channel's
+// @handle the bot administers, not just an operator DM. telegramService.js
+// and backend/routes/telegram.js are NOT modified by this mission at all
+// (per the mission's explicit "do not rebuild" instruction) — this is
+// only the missing social-orchestration wiring: bringing the existing,
+// unmodified sendMessage() into Module 7's same idempotency/retry/
+// org-gate conventions as every other platform, nothing more.
+function _telegramSender() { try { return require("../services/telegramService"); } catch { return null; } }
+
+// Mission 60-C (Batch C / Google Business Profile, final social platform):
+// no prior adapter existed at all. Real Business Profile Local Posts API,
+// requiring account/location resolution before a post can target a
+// specific location (no "default location" concept).
+function _gbpPoster() { try { return require("../services/gbpPostingService.cjs"); } catch { return null; } }
+
 // Queue/Worker/Background Execution Audit (2026-08-22): attachOrg alone is
 // non-blocking by design (see comment above) — it resolves req.org from a
 // caller-supplied X-Org-Id header / query / body orgId with no membership
@@ -708,7 +782,7 @@ router.post("/creative/social/publish", attachOrg, _requireOrgMemberIfOrgContext
   try {
     const poster = _socialPoster();
     if (!poster) return res.status(503).json({ error: "socialPostingService unavailable" });
-    const { text, entryId } = req.body || {};
+    const { text, entryId, idempotencyKey } = req.body || {};
     let body = text;
     if (!body && entryId) {
       const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
@@ -717,7 +791,11 @@ router.post("/creative/social/publish", attachOrg, _requireOrgMemberIfOrgContext
     }
     if (!body) return res.status(400).json({ error: "text or entryId required" });
 
-    const result = await poster.post(body, req.org?.id || null);
+    // Mission 60-B: idempotencyKey now threaded through to
+    // socialPostingService.post() (same param added to every Batch A
+    // adapter) — closes M59's P2 gap (no duplicate-publish protection
+    // existed on this, the original X route).
+    const result = await poster.post(body, req.org?.id || null, idempotencyKey || entryId || null);
     if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
     res.json({ ok: true, postId: result.postId, url: result.url });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -730,6 +808,380 @@ router.delete("/creative/social/publish/:postId", attachOrg, _requireOrgMemberIf
     const result = await poster.deletePost(req.params.postId, req.org?.id || null);
     if (!result.success) return res.status(422).json({ ok: false, error: result.error });
     res.json({ ok: true, deleted: result.deleted });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60 — LinkedIn publish/delete, identical shape and security gating
+// to the X routes directly above (same _requireOrgMemberIfOrgContext gate,
+// same entryId-from-generation-history convenience, same real HTTP
+// error passthrough).
+router.post("/creative/social/publish/linkedin", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _linkedinPoster();
+    if (!poster) return res.status(503).json({ error: "linkedinPostingService unavailable" });
+    const { text, entryId, idempotencyKey } = req.body || {};
+    let body = text;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "text or entryId required" });
+
+    const result = await poster.post(body, req.org?.id || null, idempotencyKey || entryId || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postId: result.postId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/creative/social/publish/linkedin/:postId", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _linkedinPoster();
+    if (!poster) return res.status(503).json({ error: "linkedinPostingService unavailable" });
+    const result = await poster.deletePost(req.params.postId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, deleted: result.deleted });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60 — Facebook Page publish/delete, identical shape/gating.
+router.post("/creative/social/publish/facebook", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _facebookPoster();
+    if (!poster) return res.status(503).json({ error: "facebookPostingService unavailable" });
+    const { text, entryId, idempotencyKey } = req.body || {};
+    let body = text;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "text or entryId required" });
+
+    const result = await poster.post(body, req.org?.id || null, idempotencyKey || entryId || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postId: result.postId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/creative/social/publish/facebook/:postId", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _facebookPoster();
+    if (!poster) return res.status(503).json({ error: "facebookPostingService unavailable" });
+    const result = await poster.deletePost(req.params.postId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, deleted: result.deleted });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60 — YouTube video upload/delete. Takes a filename already
+// produced by the existing Video Studio (data/video/*.mp4), not a
+// caption/entryId — YouTube's actual publish primitive is a video, not
+// text. filename is resolved against YT_VIDEO_DIR only (basename-only,
+// no path traversal) — same safety boundary the existing
+// /creative/video/file/:filename static-serve route already applies.
+router.post("/creative/social/publish/youtube", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _youtubePoster();
+    if (!poster) return res.status(503).json({ error: "youtubePostingService unavailable" });
+    const { filename, title, description, privacyStatus, idempotencyKey } = req.body || {};
+    if (!filename) return res.status(400).json({ error: "filename required (a video already produced by /creative/video/*)" });
+
+    const safeName = _ytPath.basename(String(filename));
+    if (safeName !== filename) return res.status(400).json({ error: "invalid filename" });
+    const filePath = _ytPath.join(YT_VIDEO_DIR, safeName);
+
+    const result = await poster.uploadVideo(
+      { filePath, title, description, privacyStatus },
+      req.org?.id || null,
+      idempotencyKey || filename || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, videoId: result.videoId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/creative/social/publish/youtube/:videoId", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _youtubePoster();
+    if (!poster) return res.status(503).json({ error: "youtubePostingService unavailable" });
+    const result = await poster.deleteVideo(req.params.videoId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, deleted: result.deleted });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60 — TikTok video publish + status check. Same filename-from-
+// Video-Studio input shape as YouTube, same path-traversal safety.
+router.post("/creative/social/publish/tiktok", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _tiktokPoster();
+    if (!poster) return res.status(503).json({ error: "tiktokPostingService unavailable" });
+    const { filename, title, privacyLevel, idempotencyKey } = req.body || {};
+    if (!filename) return res.status(400).json({ error: "filename required (a video already produced by /creative/video/*)" });
+
+    const safeName = _ytPath.basename(String(filename));
+    if (safeName !== filename) return res.status(400).json({ error: "invalid filename" });
+    const filePath = _ytPath.join(YT_VIDEO_DIR, safeName);
+
+    const result = await poster.uploadVideo(
+      { filePath, title, privacyLevel },
+      req.org?.id || null,
+      idempotencyKey || filename || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, publishId: result.publishId });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/creative/social/publish/tiktok/:publishId/status", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _tiktokPoster();
+    if (!poster) return res.status(503).json({ error: "tiktokPostingService unavailable" });
+    const result = await poster.getPostStatus(req.params.publishId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, status: result.status, failReason: result.failReason });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60 — Instagram publish. mediaUrl must already be a publicly
+// fetchable https:// URL (Instagram's Graph API fetches media itself —
+// see instagramPostingService.cjs's docstring for why a local file/
+// auth-gated route can't be used directly). No delete route: the
+// Instagram Graph API does not support deleting published media, a real
+// provider constraint, not an omission.
+router.post("/creative/social/publish/instagram", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _instagramPoster();
+    if (!poster) return res.status(503).json({ error: "instagramPostingService unavailable" });
+    const { mediaUrl, mediaType, caption, entryId, idempotencyKey } = req.body || {};
+    let text = caption;
+    if (!text && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      text = entry?.result?.caption || "";
+    }
+
+    const result = await poster.post(
+      { mediaUrl, mediaType, caption: text || "" },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, mediaId: result.mediaId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-B — Threads publish. Unlike Instagram, text-only posts are
+// genuinely supported (no public mediaUrl required) — mediaType defaults
+// to "TEXT" when no mediaUrl is given.
+router.post("/creative/social/publish/threads", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _threadsPoster();
+    if (!poster) return res.status(503).json({ error: "threadsPostingService unavailable" });
+    const { text, mediaUrl, mediaType, entryId, idempotencyKey } = req.body || {};
+    let body = text;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "text or entryId required" });
+
+    const result = await poster.post(
+      { text: body, mediaUrl, mediaType },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postId: result.postId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-B — Pinterest boards list + pin creation/delete. boardId is
+// required per-call since Pinterest has no "default board" concept.
+router.get("/creative/social/publish/pinterest/boards", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _pinterestPoster();
+    if (!poster) return res.status(503).json({ error: "pinterestPostingService unavailable" });
+    const result = await poster.listBoards(req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, boards: result.boards });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/creative/social/publish/pinterest", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _pinterestPoster();
+    if (!poster) return res.status(503).json({ error: "pinterestPostingService unavailable" });
+    const { boardId, imageUrl, title, description, link, entryId, idempotencyKey } = req.body || {};
+    let desc = description;
+    if (!desc && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      desc = entry?.result?.caption || "";
+    }
+
+    const result = await poster.createPin(
+      { boardId, imageUrl, title, description: desc || "", link },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, pinId: result.pinId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/creative/social/publish/pinterest/:pinId", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _pinterestPoster();
+    if (!poster) return res.status(503).json({ error: "pinterestPostingService unavailable" });
+    const result = await poster.deletePin(req.params.pinId, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, deleted: result.deleted });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-B — Reddit submit (self or link post). No delete route:
+// Reddit's API does support deletion (POST /api/del), but was left out of
+// this pass — the mission's Batch B scope covers create/submit paths, and
+// this repo's own moderation/undo conventions (X/LinkedIn/Facebook/
+// YouTube/TikTok all got a delete route) can extend here in a follow-up
+// without new architecture, same as every other addition this mission.
+router.post("/creative/social/publish/reddit", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _redditPoster();
+    if (!poster) return res.status(503).json({ error: "redditPostingService unavailable" });
+    const { subreddit, title, text, url, entryId, idempotencyKey } = req.body || {};
+    let body = text;
+    if (!body && !url && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+    }
+
+    const result = await poster.createPost(
+      { subreddit, title, text: body, url },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postId: result.postId, url: result.url });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-C — Discord message post (webhook or bot REST, whichever is
+// configured). No delete route: Discord's message deletion is real and
+// supported by the API, but left out of this pass — same "create/submit
+// scope only, extend later without new architecture" reasoning already
+// applied to Reddit in Batch B.
+router.post("/creative/social/publish/discord", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _discordPoster();
+    if (!poster) return res.status(503).json({ error: "discordPostingService unavailable" });
+    const { content, channelId, entryId, idempotencyKey } = req.body || {};
+    let body = content;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "content or entryId required" });
+
+    const result = await poster.post(
+      { content: body, channelId },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, messageId: result.messageId });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-C — Telegram publish. Calls the EXISTING, unmodified
+// telegramService.sendMessage(chatId, text) — no changes to that service
+// or to backend/routes/telegram.js. This route only adds the same
+// idempotency/retry wrapping and org-membership gate every other Module 7
+// platform already has, and a chatId param (a public channel @handle the
+// bot administers, or a numeric chat id) so a generated caption can reach
+// a real channel through the same social-content flow as every other platform.
+router.post("/creative/social/publish/telegram", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const sender = _telegramSender();
+    if (!sender) return res.status(503).json({ error: "telegramService unavailable" });
+    const { chatId, text, entryId, idempotencyKey } = req.body || {};
+    if (!chatId) return res.status(400).json({ error: "chatId required (a channel @handle the bot administers, or a numeric chat id)" });
+    let body = text;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "text or entryId required" });
+    if (!sender.isConfigured()) return res.status(503).json({ error: "Telegram not configured — set TELEGRAM_TOKEN in .env" });
+
+    const dedupKey = (idempotencyKey || entryId) ? `telegram:${req.org?.id || "global"}:${idempotencyKey || entryId}` : null;
+    const cached = socialPublishSupport.checkIdempotency(dedupKey);
+    if (cached) {
+      if (!cached.sent) return res.status(422).json({ ok: false, error: cached.reason, status: cached.status });
+      return res.json({ ok: true, messageId: cached.messageId });
+    }
+
+    // telegramService.sendMessage() returns {sent, reason, status} — not
+    // withRetry()'s expected {success, status} shape. Adapted here at the
+    // call site only (never modifying telegramService.js itself) so a
+    // real send isn't misread as a failure and needlessly retried.
+    const result = await socialPublishSupport.withRetry(async () => {
+      const r = await sender.sendMessage(chatId, body);
+      return { success: r.sent, status: r.status, _raw: r };
+    });
+    const raw = result._raw || result;
+    if (dedupKey) socialPublishSupport.recordIdempotency(dedupKey, raw);
+
+    if (!raw.sent) return res.status(422).json({ ok: false, error: raw.reason, status: raw.status });
+    res.json({ ok: true, messageId: raw.messageId });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Mission 60-C — Google Business Profile: accounts/locations resolution
+// (a post targets one specific location, no default) + post creation.
+router.get("/creative/social/publish/gbp/accounts", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _gbpPoster();
+    if (!poster) return res.status(503).json({ error: "gbpPostingService unavailable" });
+    const result = await poster.listAccounts(req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, accounts: result.accounts });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/creative/social/publish/gbp/locations", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _gbpPoster();
+    if (!poster) return res.status(503).json({ error: "gbpPostingService unavailable" });
+    const result = await poster.listLocations(req.query.accountName, req.org?.id || null);
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error });
+    res.json({ ok: true, locations: result.locations });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/creative/social/publish/gbp", attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
+  try {
+    const poster = _gbpPoster();
+    if (!poster) return res.status(503).json({ error: "gbpPostingService unavailable" });
+    const { locationName, summary, actionUrl, entryId, idempotencyKey } = req.body || {};
+    let body = summary;
+    if (!body && entryId) {
+      const entry = socialEngine.getHistory({ accountId: _account(req) }).find(h => h.id === entryId);
+      body = entry?.result?.caption || null;
+      if (!body) return res.status(404).json({ error: `No generated caption found for entryId: ${entryId}` });
+    }
+    if (!body) return res.status(400).json({ error: "summary or entryId required" });
+
+    const result = await poster.createPost(
+      { locationName, summary: body, actionUrl },
+      req.org?.id || null,
+      idempotencyKey || entryId || null
+    );
+    if (!result.success) return res.status(422).json({ ok: false, error: result.error, status: result.status });
+    res.json({ ok: true, postName: result.postName });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 

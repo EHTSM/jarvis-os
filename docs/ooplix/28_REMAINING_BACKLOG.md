@@ -123,12 +123,48 @@ not change the standing P0/P1 gate status.
      means it can no longer crash anything), but an active data-hygiene
      issue that will keep growing the malformed-record count on every
      run of that test file.
+14c. `backend/services/approvalQueue.cjs` orphan/tmp-file hygiene gap
+     (Mission 76 Micro-Mission 05/07/21/23). `_save()`'s atomic-write
+     protection is present and correct — a per-call-unique tmp filename
+     (`${DATA_FILE}.${pid}.${randomHex}.tmp`) plus `writeFileSync()` +
+     `renameSync()`, matching the same crash-safety pattern already
+     proven for `agents/taskQueue.cjs` and
+     `backend/services/businessDataService.cjs`. What is missing: unlike
+     those same two sibling files (each of which independently gained a
+     `_sweepOrphanedTmp()` cleanup routine, verified present — 3 and 4
+     references respectively — swept once at module load to remove any
+     tmp file left behind by a process that was SIGKILLed between
+     `writeFileSync` and `renameSync`), `approvalQueue.cjs` has **zero**
+     `_sweepOrphanedTmp()` references — re-confirmed by direct grep this
+     mission. No correctness or data-loss defect exists (a genuinely
+     in-flight write can never be interrupted such that a partial file
+     is read — `renameSync` only ever swaps in a complete file); the gap
+     is unbounded disk growth across repeated crash cycles, the exact
+     same class of hygiene issue already fixed for the two sibling
+     stores. Security impact: none demonstrated. Tenant-isolation
+     impact: none demonstrated. ERA-1 blocker: NO. Recommended
+     remediation: add the equivalent `_sweepOrphanedTmp()` routine to
+     `approvalQueue.cjs`, mirroring the exact pattern already shipped in
+     `taskQueue.cjs`/`businessDataService.cjs` — not implemented as of
+     this entry. Status: OPEN — SAFE TO DEFER.
 
 14. `browserPlatform.js` session CRUD routes have no rate limiter (IDOR is
     fixed; throttling is not).
-15. CLAUDE.md §9's test-corpus claim is stale (says 10 named files/"pass 144";
-    actual is full-corpus/outcome-gate). CLAUDE.md §1's version-drift claim is
-    also stale (the actual historical drift was already fixed under Mission 38).
+15. **RESOLVED (2026-08-29, Mission 76 Micro-Mission 22).** Original finding:
+    CLAUDE.md §9's test-corpus claim was stale (said 10 named files/"pass 144";
+    actual was already full-corpus/outcome-gate by the time this item was
+    written). This was corrected in Mission 75 — CLAUDE.md §9 itself now
+    carries the heading "Real Test Corpus — Corrected 2026-08-29 (Mission 75)"
+    and its first bullet explicitly states the old claim "is no longer true
+    and has been corrected here, not silently," naming the real mechanism
+    (`scripts/run-test-suite.cjs`, introduced Mission 42, extended Mission
+    63/71). Re-verified directly against the current file this mission: the
+    correction is genuinely present, not merely claimed. This backlog entry
+    itself had never been updated to reflect that the underlying CLAUDE.md
+    issue was already fixed — a documentation-lag gap, not a reopened or
+    still-existing defect. ERA-1 blocker: NO. (CLAUDE.md §1's version-drift
+    claim, the entry's second half, was already separately noted as fixed
+    under Mission 38 and remains unchanged here.)
 16. Missions 51-71 have no `reports/` files or register entries — a real
     audit-trail continuity gap, not a code defect.
 17. Electron's Mission 53/54 hardening work has no corresponding `reports/`
@@ -181,6 +217,34 @@ not change the standing P0/P1 gate status.
     cited in prior mission memory/reports) — not reconciled.
 24. `accounts.js`'s `GET /accounts` implements its operator check inline
     instead of composing the shared `operatorOnly` middleware (style only).
+25. **`tests/runtime/p14-knowledge-network.test.cjs`'s `discover finds
+    high_value_lesson` — ENVIRONMENT DEPENDENCY, isolation fix verified,
+    full-file completion not proven (2026-08-30, Mission 76 Micro-Missions
+    32-38).** Root cause (M32): the assertion depends on `data/lessons.json`'s
+    live, shared, non-git-tracked, per-run-volatile lesson-type distribution —
+    not on any production defect (`knowledgeDiscoveryEngine.cjs` was never
+    shown to misbehave). A test-only `fs` mock fix (M34/M36) now isolates both
+    reads and writes to that file, with exception-safe `try/finally`
+    restoration; the real `data/lessons.json` was verified byte-for-byte and
+    mtime-for-mtime unchanged across a genuine execution (M37), and the target
+    assertion passed for real against the isolated fixture in that same run.
+    Separately, and not a consequence of this fix: the file's own later
+    "End-to-End" pipeline section reproducibly hits a local JavaScript heap
+    OOM while parsing large local `data/*.json` files (`missions.json`
+    ~39.8MB, `repo-index.json` ~47.5MB) on this specific development machine,
+    across 3 independent execution attempts (M33, M35, M37) — full-file
+    completion has never been proven, and this is not a CI-relevant finding
+    (GitHub Actions runners do not carry this machine's accumulated local
+    data at these sizes). One accidental local incident occurred during this
+    investigation (M33 overwrote the real local `data/lessons.json` with
+    synthetic test data before the write-isolation fix existed); the
+    pre-incident ~1.2MB dataset was searched for exhaustively (M34: no
+    git tracking, no matching backup archive, no VPS-sim mirror) and is
+    permanently unrecoverable — no reconstruction or fabrication was
+    performed, and this is a local-development-machine data loss, not a
+    production or CI data-integrity issue. ERA-1 blocker: NO. Status: OPEN
+    — environment-limited, not pursued further per Mission 76's own decision
+    to stop chasing a repeated, machine-local OOM rather than a code defect.
 
 ## P3 — Later / lower priority
 

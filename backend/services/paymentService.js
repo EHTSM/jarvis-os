@@ -1,11 +1,32 @@
 "use strict";
 /**
  * Payment Service — Razorpay payment link creation + webhook verification.
+ *
+ * Payments Ecosystem mission: refundPayment() added. Discovery confirmed
+ * refunds previously never reached Razorpay's real gateway at all — the
+ * only "refund" capability in this repo was an internal credit-note record
+ * (revenueOS.cjs), and parseWebhookEvent() below already parsed real
+ * refund.processed events but nothing ever created one. This is the
+ * missing "actually refund" half — same relationship
+ * createPaymentLink()/webhook already had before this mission's earlier
+ * social-platform work established the "find the missing real API call,
+ * wire it using the existing credential/org pattern" shape repeatedly.
+ *
+ * Idempotency: Razorpay's refund API accepts a client-supplied `receipt`
+ * field specifically for de-duplication (its own documented mechanism —
+ * a repeated refund() call with the same receipt against the same payment
+ * is recognized as the same logical refund by Razorpay's servers, not a
+ * client-side guess). This is combined with a local short-TTL dedup guard
+ * (reusing socialPublishSupport.cjs's exact Map+TTL pattern, itself modeled
+ * on whatsappService.js's webhook-replay dedup) as defense-in-depth against
+ * a double-click/retry hitting this function twice before Razorpay's own
+ * receipt-based dedup would even see the second request.
  */
 
 const Razorpay = require("razorpay");
 const crypto   = require("crypto");
 const logger   = require("../utils/logger");
+const { checkIdempotency, recordIdempotency, withRetry } = require("./socialPublishSupport.cjs");
 
 const _try   = fn => { try { return fn(); } catch { return null; } };
 const _vault = () => _try(() => require("./secretVault.cjs"));
@@ -129,6 +150,98 @@ async function createPaymentLink({ amount = 999, name = "Customer", phone = null
 }
 
 /**
+ * Refund a captured Razorpay payment via the real gateway API
+ * (POST /payments/{id}/refund). Amount is optional — omitting it triggers
+ * a full refund, matching Razorpay's own API default.
+ *
+ * @param {string} paymentId - Razorpay payment id (e.g. "pay_...")
+ * @param {object} [opts]
+ * @param {number} [opts.amount] - partial refund amount in the currency's
+ *   smallest unit (paise for INR); omit for a full refund
+ * @param {string|null} [opts.orgId] - org-scoped credential resolution,
+ *   same as createPaymentLink()
+ * @param {string|null} [opts.idempotencyKey] - caller-supplied key (e.g.
+ *   the internal order/refund-request id) — a repeated call with the same
+ *   key within the TTL window returns the original result instead of
+ *   issuing a second refund
+ * @returns {Promise<{success:boolean, refundId?:string, status?:string, error?:string}>}
+ */
+// In-flight reservation, closing the check-then-await-then-record race
+// checkIdempotency()/recordIdempotency() alone cannot close on their own:
+// two concurrent calls with the same idempotencyKey (e.g. a double-submit
+// of the same approved refund request) could both pass checkIdempotency()
+// before either finishes and calls recordIdempotency(). This mirrors the
+// exact reasoning already established in this codebase for
+// orgBudgets.reserveInFlight()/releaseInFlight() (aiOrchestrator.cjs) —
+// a synchronous Set add/delete around the async call is atomic in Node's
+// single-threaded event loop (no `await` occurs between the check and the
+// reservation), unlike the check-then-record pair around it.
+const _inFlightRefunds = new Set();
+
+async function refundPayment(paymentId, { amount = null, orgId = null, idempotencyKey = null } = {}) {
+    if (process.env.DISABLE_PAYMENTS === "true") {
+        return { success: false, error: "Payments disabled (DISABLE_PAYMENTS=true in .env)" };
+    }
+    if (!paymentId || typeof paymentId !== "string") {
+        return { success: false, error: "paymentId required" };
+    }
+    if (amount !== null && (typeof amount !== "number" || amount <= 0)) {
+        return { success: false, error: "amount, if provided, must be a positive number" };
+    }
+
+    // Local dedup guard, in addition to Razorpay's own receipt-based
+    // idempotency below — same TTL-map pattern used throughout this
+    // codebase (whatsappService.js's webhook replay guard,
+    // socialPublishSupport.cjs's publish dedup).
+    const dedupKey = idempotencyKey ? `razorpay-refund:${orgId || "global"}:${idempotencyKey}` : null;
+    const cached = checkIdempotency(dedupKey);
+    if (cached) return cached;
+
+    if (dedupKey) {
+        if (_inFlightRefunds.has(dedupKey)) {
+            return { success: false, error: "A refund for this request is already in progress — do not resubmit" };
+        }
+        _inFlightRefunds.add(dedupKey);
+    }
+
+    const rz = _getInstance(orgId);
+    if (!rz) {
+        if (dedupKey) _inFlightRefunds.delete(dedupKey);
+        return { success: false, error: "Payments not configured — set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in .env, or connect via /my-connectors/razorpay" };
+    }
+
+    const result = await withRetry(async () => {
+        try {
+            const params = {};
+            if (amount !== null) params.amount = amount;
+            // Razorpay's own documented idempotency mechanism — a repeated
+            // call with the same receipt against the same payment is
+            // recognized server-side as the same logical refund, not
+            // merely deduped on this process's own in-memory map.
+            if (idempotencyKey) params.receipt = String(idempotencyKey).slice(0, 40); // Razorpay's real receipt field length limit
+
+            const refund = await rz.payments.refund(paymentId, params);
+            logger.info(`[Payment] Refund created for ${paymentId}: ${refund.id} (status=${refund.status})`);
+            return { success: true, refundId: refund.id, status: refund.status };
+        } catch (err) {
+            // Same real SDK error-shape handling as createPaymentLink()'s
+            // catch block above — normalizeError() throws a plain object,
+            // not an Error instance.
+            const detail = err?.error?.description || err?.message || String(err);
+            const status = err?.statusCode;
+            logger.error(`[Payment] refundPayment failed for ${paymentId}: ${detail}`);
+            return { success: false, error: detail, status };
+        }
+    });
+
+    if (dedupKey) {
+        recordIdempotency(dedupKey, result);
+        _inFlightRefunds.delete(dedupKey);
+    }
+    return result;
+}
+
+/**
  * Verify Razorpay webhook HMAC signature.
  * Returns true if valid (or if no secret configured — passes through).
  */
@@ -172,4 +285,4 @@ function parseWebhookEvent(body) {
     }
 }
 
-module.exports = { createPaymentLink, verifyWebhookSignature, parseWebhookEvent, isEnabled };
+module.exports = { createPaymentLink, refundPayment, verifyWebhookSignature, parseWebhookEvent, isEnabled };

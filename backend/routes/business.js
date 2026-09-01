@@ -283,13 +283,23 @@ router.post("/business/mission", requireAuth, (req, res) => {
     } catch (e) { _err(res, e); }
 });
 
-router.post("/business/lead/mission", requireAuth, (req, res) => {
+// CRM/Sales Ecosystem mission — this route was missing both _requireOrg and
+// the orgId pass-through that its direct sibling, POST /business/deals
+// (below), already has for the identical bem.createBusinessMission() call
+// shape. Any authenticated user, regardless of org membership, could create
+// lead missions that landed with orgId: null — permanently unscoped,
+// invisible to the org-scoped /business/pipeline/:entityType view (already
+// fixed for this exact "B.21 tenant-scoping" class in businessEntityModel.cjs's
+// createBusinessMission()), and reachable with no tenant boundary at all.
+// Fixed by matching /business/deals exactly: add _requireOrg and thread
+// opts.orgId through.
+router.post("/business/lead/mission", requireAuth, _requireOrg, (req, res) => {
     try {
         const bem = _bem();
         if (!bem) return _err(res, new Error("bem unavailable"), 503);
         const { name, phone, email, source, priority } = req.body;
         if (!name && !phone && !email) return res.status(400).json({ success: false, error: "name, phone, or email required" });
-        const mission = bem.createBusinessMission("lead", { name, phone, email, source, status: "new" }, { priority });
+        const mission = bem.createBusinessMission("lead", { name, phone, email, source, status: "new" }, { priority, orgId: req.org.id });
         _ok(res, { mission });
     } catch (e) { _err(res, e); }
 });

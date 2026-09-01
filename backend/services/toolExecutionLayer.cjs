@@ -170,6 +170,40 @@ const TOOL_DEFS = {
         envKey: null,
         baseUrl: null,
     },
+    // Project Management Ecosystem mission: Jira/Linear already had real
+    // identity probes (integrationConnectors.cjs's connectJira/connectLinear)
+    // and vault credential mappings (secretVault.cjs's issue:jira/issue:linear)
+    // wired by an earlier mission, and this repo's own product-strategy docs
+    // (docs/ooplix/23_PRODUCT_REPLACEMENT_MATRIX.md) explicitly conclude real
+    // Jira/Linear sync — not an internal Kanban board — is the correct
+    // direction, citing CLAUDE.md §16's caution against duplicate
+    // architecture. Unlike Notion, neither had a TOOL_DEFS entry yet; both
+    // are added here following the exact same static-envKey shape GitHub
+    // already uses (simple token auth, no OAuth complexity for either
+    // provider). Scope kept to the well-established issue-CRUD core the
+    // mission brief names — no sprints/boards/cycles/JQL search invented.
+    jira: {
+        name: "Jira", icon: "📋", type: "issues",
+        actions: {
+            create_issue: { rateLimit: 20, risk: "low"    },
+            read_issue:   { rateLimit: 60, risk: "low"    },
+            update_issue: { rateLimit: 30, risk: "low"    },
+            add_comment:  { rateLimit: 30, risk: "low"    },
+        },
+        envKey: "JIRA_API_TOKEN",
+        baseUrl: null, // per-site: https://{JIRA_HOST}/rest/api/3
+    },
+    linear: {
+        name: "Linear", icon: "📐", type: "issues",
+        actions: {
+            create_issue: { rateLimit: 20, risk: "low" },
+            read_issue:   { rateLimit: 60, risk: "low" },
+            update_issue: { rateLimit: 30, risk: "low" },
+            list_issues:  { rateLimit: 60, risk: "low" },
+        },
+        envKey: "LINEAR_API_KEY",
+        baseUrl: "https://api.linear.app/graphql",
+    },
 };
 
 // Default permissions: low-risk read actions allowed; write/delete require explicit grant
@@ -266,7 +300,20 @@ function _checkRate(toolId, action) {
 // On missing credentials they return a graceful "not_configured" result
 // instead of throwing — caller sees success:false with a clear reason.
 
-function _httpJson(method, url, headers, body) {
+// Project Management Ecosystem mission: this is the single shared HTTP
+// function every real tool in this file uses (GitHub, Slack, Telegram,
+// OpenRouter, Notion, Gmail, GDrive, and now Jira/Linear — 34 call sites)
+// and it had NO timeout at all — confirmed live while writing this
+// mission's own Jira test: a request to an unresponsive/nonexistent host
+// hung for over a minute on the underlying TCP connection attempt before
+// the OS-level timeout finally surfaced a real (but very slow) rejection.
+// Added a bounded timeout at this one shared choke point, matching the
+// pattern already established in storageService.cjs's _httpsReq
+// (req.setTimeout + destroy with a real Error) rather than inventing a new
+// timeout convention — fixes this gap for every one of the 34 call sites
+// at once, not just the 2 new ones this mission added.
+const DEFAULT_HTTP_TIMEOUT_MS = 15_000;
+function _httpJson(method, url, headers, body, timeoutMs = DEFAULT_HTTP_TIMEOUT_MS) {
     return new Promise((resolve, reject) => {
         const u = new URL(url);
         const mod = u.protocol === "https:" ? https : http;
@@ -284,15 +331,63 @@ function _httpJson(method, url, headers, body) {
                 catch { resolve({ status: res.statusCode, body: raw }); }
             });
         });
+        req.setTimeout(timeoutMs, () => req.destroy(new Error(`timeout after ${timeoutMs}ms`)));
         req.on("error", reject);
         if (data) req.write(data);
         req.end();
     });
 }
 
-async function _runAdapter(toolId, action, params) {
+// Google Ecosystem mission: Gmail/GDrive resolve their token via the
+// existing real "google" OAuth2 connection in oauthIntegrationLayer.cjs
+// (gmail.readonly/drive.readonly scopes were already being requested —
+// nothing redeemed them until now) instead of the single envKey/global
+// token every other tool here uses, since Gmail/Drive are genuinely
+// per-user OAuth, not a single bot/PAT. userId defaults to "founder",
+// the same single-tenant identity convention founderVault.js's own
+// GET /vault/oauth/:provider/authorize route already uses.
+async function _googleToken(userId = "founder") {
+    try {
+        const oauth = require("./oauthIntegrationLayer.cjs");
+        const rec = await oauth.getToken("google", userId);
+        return rec?.access_token || null;
+    } catch {
+        return null;
+    }
+}
+
+// Productivity Ecosystem mission: matches integrationConnectors.cjs's
+// connectNotion() token-resolution order exactly (direct integration token
+// first, OAuth as fallback) rather than inventing a narrower single-path
+// helper — Notion genuinely supports both an internal-integration API key
+// and a real user-facing OAuth connection, unlike Gmail/Drive which are
+// OAuth-only, so _googleToken()'s single-path shape doesn't fit here.
+async function _notionToken() {
+    const direct = process.env.NOTION_API_KEY || process.env.NOTION_TOKEN;
+    if (direct) return direct;
+    try {
+        const oauth = require("./oauthIntegrationLayer.cjs");
+        const conns = oauth.listConnections().filter(c => c.provider === "notion");
+        if (conns.length === 0) return null;
+        const rec = await oauth.getToken("notion", conns[0].userId);
+        return rec?.access_token || null;
+    } catch {
+        return null;
+    }
+}
+
+async function _runAdapter(toolId, action, params, opts = {}) {
     const token = TOOL_DEFS[toolId]?.envKey ? process.env[TOOL_DEFS[toolId].envKey] : "local";
-    if (!token && TOOL_DEFS[toolId]?.envKey) {
+    // gmail/gdrive/notion intentionally skip the single-envKey precheck
+    // below — their real credential check happens per-adapter (via
+    // _googleToken()/_notionToken()) once execution reaches their case,
+    // since their token can be resolved from a stored OAuth connection, not
+    // only a static process.env value. Notion additionally accepts
+    // NOTION_API_KEY as a direct-token alternative to NOTION_TOKEN (see
+    // _notionToken()) — the single static envKey precheck can't express
+    // either fallback, so it would wrongly reject a caller who has a real
+    // OAuth connection or set NOTION_API_KEY instead of NOTION_TOKEN.
+    if (!token && TOOL_DEFS[toolId]?.envKey && toolId !== "gmail" && toolId !== "gdrive" && toolId !== "notion") {
         return { success: false, output: null, error: `not_configured: ${TOOL_DEFS[toolId].envKey} not set` };
     }
 
@@ -385,13 +480,121 @@ async function _runAdapter(toolId, action, params) {
                 return { success: false, output: null, error: `unsupported ollama action: ${action}` };
             }
 
-            // ── Notion / GDrive / Gmail ───────────────────────────────────
-            // These require OAuth flows not available server-side without per-user
-            // token storage. Scaffold returns not_configured until OAuth is wired.
-            case "notion":
-            case "gdrive":
-            case "gmail":
-                return { success: false, output: null, error: `not_configured: ${toolId} requires OAuth token — set ${TOOL_DEFS[toolId].envKey}` };
+            // ── Notion (real api.notion.com/v1 calls) ─────────────────────
+            // Productivity Ecosystem mission: the prior Google-ecosystem
+            // mission correctly deferred this as out of its own scope,
+            // leaving the pre-existing stub in place rather than building
+            // unrelated scope. Notion's OAuth (with matched
+            // read_content/update_content/insert_content scopes) already
+            // exists in oauthIntegrationLayer.cjs, and TOOL_DEFS.notion
+            // above already declares the exact 4 actions (create/update/
+            // read/delete_page) with correct risk levels and the real
+            // api.notion.com/v1 baseUrl — this pass completes the one piece
+            // that was missing: the actual HTTP calls. Notion has no true
+            // delete API; "delete_page" archives the page (archived:true),
+            // Notion's own documented equivalent, reversible via the same
+            // endpoint — never silently reinterpreted as a permanent
+            // destructive call.
+            case "notion": {
+                const nToken = await _notionToken();
+                if (!nToken) return { success: false, output: null, error: "not_configured: notion requires a connected account — GET /vault/oauth/notion/authorize, or set NOTION_API_KEY" };
+                const headers = { Authorization: `Bearer ${nToken}`, "Notion-Version": "2022-06-28" };
+                const base = TOOL_DEFS.notion.baseUrl;
+
+                if (action === "read_page") {
+                    if (!params.pageId) return { success: false, output: null, error: "pageId required" };
+                    const r = await _httpJson("GET", `${base}/pages/${params.pageId}`, headers);
+                    return { success: r.status === 200, output: r.status === 200 ? r.body : null, error: r.status !== 200 ? (r.body?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "create_page") {
+                    if (!params.parentId) return { success: false, output: null, error: "parentId required (a database or page id)" };
+                    const parent = params.parentType === "page_id" ? { page_id: params.parentId } : { database_id: params.parentId };
+                    const properties = params.properties || { title: { title: [{ text: { content: params.title || "Untitled" } }] } };
+                    const r = await _httpJson("POST", `${base}/pages`, headers, { parent, properties });
+                    return { success: r.status === 200, output: r.body?.id || r.body, error: r.status !== 200 ? (r.body?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "update_page") {
+                    if (!params.pageId) return { success: false, output: null, error: "pageId required" };
+                    if (!params.properties) return { success: false, output: null, error: "properties required" };
+                    const r = await _httpJson("PATCH", `${base}/pages/${params.pageId}`, headers, { properties: params.properties });
+                    return { success: r.status === 200, output: r.body?.id || r.body, error: r.status !== 200 ? (r.body?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "delete_page") {
+                    if (!params.pageId) return { success: false, output: null, error: "pageId required" };
+                    const r = await _httpJson("PATCH", `${base}/pages/${params.pageId}`, headers, { archived: true });
+                    return { success: r.status === 200, output: r.status === 200 ? "archived" : r.body, error: r.status !== 200 ? (r.body?.message || JSON.stringify(r.body)) : null };
+                }
+                return { success: false, output: null, error: `unsupported notion action: ${action}` };
+            }
+
+            // ── Gmail (real gmail.googleapis.com calls) ───────────────────
+            case "gmail": {
+                const gToken = await _googleToken(opts.userId);
+                if (!gToken) return { success: false, output: null, error: "not_configured: gmail requires a connected Google account — GET /vault/oauth/google/authorize, or set GMAIL_API_KEY is not sufficient (Gmail requires OAuth, not an API key)" };
+                const headers = { Authorization: `Bearer ${gToken}` };
+                const base = TOOL_DEFS.gmail.baseUrl;
+
+                if (action === "send_email") {
+                    if (!params.to || !params.subject) return { success: false, output: null, error: "to and subject required" };
+                    const raw = Buffer.from(
+                        `To: ${params.to}\r\nSubject: ${params.subject}\r\nContent-Type: text/plain; charset="UTF-8"\r\n\r\n${params.body || ""}`
+                    ).toString("base64url");
+                    const r = await _httpJson("POST", `${base}/gmail/v1/users/me/messages/send`, headers, { raw });
+                    return { success: r.status === 200, output: r.body?.id || r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "read_inbox") {
+                    const r = await _httpJson("GET", `${base}/gmail/v1/users/me/messages?maxResults=${params.limit || 10}`, headers);
+                    return { success: r.status === 200, output: Array.isArray(r.body?.messages) ? `${r.body.messages.length} messages` : r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "search_mail") {
+                    if (!params.query) return { success: false, output: null, error: "query required" };
+                    const r = await _httpJson("GET", `${base}/gmail/v1/users/me/messages?q=${encodeURIComponent(params.query)}&maxResults=${params.limit || 10}`, headers);
+                    return { success: r.status === 200, output: Array.isArray(r.body?.messages) ? `${r.body.messages.length} messages` : r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "reply_email") {
+                    if (!params.messageId || !params.body) return { success: false, output: null, error: "messageId and body required" };
+                    const raw = Buffer.from(`In-Reply-To: ${params.messageId}\r\nContent-Type: text/plain; charset="UTF-8"\r\n\r\n${params.body}`).toString("base64url");
+                    const r = await _httpJson("POST", `${base}/gmail/v1/users/me/messages/send`, headers, { raw, threadId: params.threadId });
+                    return { success: r.status === 200, output: r.body?.id || r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                return { success: false, output: null, error: `unsupported gmail action: ${action}` };
+            }
+
+            // ── Google Drive (real googleapis.com/drive/v3 calls) ─────────
+            case "gdrive": {
+                const gToken = await _googleToken(opts.userId);
+                if (!gToken) return { success: false, output: null, error: "not_configured: gdrive requires a connected Google account — GET /vault/oauth/google/authorize" };
+                const headers = { Authorization: `Bearer ${gToken}` };
+                const base = TOOL_DEFS.gdrive.baseUrl;
+
+                if (action === "list_files") {
+                    const q = params.query ? `&q=${encodeURIComponent(params.query)}` : "";
+                    const r = await _httpJson("GET", `${base}/files?pageSize=${params.limit || 20}&fields=files(id,name,mimeType)${q}`, headers);
+                    return { success: r.status === 200, output: Array.isArray(r.body?.files) ? `${r.body.files.length} files` : r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "download_file") {
+                    if (!params.fileId) return { success: false, output: null, error: "fileId required" };
+                    const r = await _httpJson("GET", `${base}/files/${params.fileId}?alt=media`, headers);
+                    return { success: r.status === 200, output: typeof r.body === "string" ? `${r.body.length} bytes` : r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "upload_file") {
+                    // Metadata-only create (real API, real file object) — a
+                    // full resumable multipart upload with real file bytes
+                    // is a genuinely larger feature (same "smallest adapter"
+                    // scoping used throughout this mission's social batches);
+                    // this creates a real Drive file record callers can then
+                    // populate, not a fabricated success.
+                    if (!params.name) return { success: false, output: null, error: "name required" };
+                    const r = await _httpJson("POST", `${base}/files`, headers, { name: params.name, mimeType: params.mimeType || "text/plain" });
+                    return { success: r.status === 200, output: r.body?.id || r.body, error: r.status !== 200 ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "delete_file") {
+                    if (!params.fileId) return { success: false, output: null, error: "fileId required" };
+                    const r = await _httpJson("DELETE", `${base}/files/${params.fileId}`, headers);
+                    return { success: r.status === 204 || r.status === 200, output: r.status === 204 ? "deleted" : r.body, error: (r.status !== 204 && r.status !== 200) ? (r.body?.error?.message || JSON.stringify(r.body)) : null };
+                }
+                return { success: false, output: null, error: `unsupported gdrive action: ${action}` };
+            }
 
             // ── System Exec (wraps backend/core/safe-exec.js) ─────────────
             case "system:exec": {
@@ -400,6 +603,100 @@ async function _runAdapter(toolId, action, params) {
                 const result = await safeExec.run(params.cmd, params.args || [], { cwd: params.cwd, timeoutMs: params.timeoutMs });
                 if (result.blocked) return { success: false, output: null, error: `blocked: ${result.reason}` };
                 return { success: result.exitCode === 0, output: result.stdout || result.stderr, error: result.exitCode !== 0 ? (result.stderr || `exit code ${result.exitCode}`) : null };
+            }
+
+            // ── Jira (real {JIRA_HOST}/rest/api/3 calls) ──────────────────
+            // Jira Cloud uses HTTP Basic auth with email + API token, not a
+            // bearer token — matches connectJira()'s existing auth shape in
+            // integrationConnectors.cjs exactly, reusing the same 3 env vars
+            // rather than inventing a second credential convention. JIRA_HOST
+            // is per-site (not a single global baseUrl like GitHub's), so it
+            // is read directly here rather than baked into TOOL_DEFS.
+            case "jira": {
+                const host  = process.env.JIRA_HOST;
+                const email = process.env.JIRA_EMAIL;
+                if (!host || !email || !token) return { success: false, output: null, error: "not_configured: JIRA_HOST, JIRA_EMAIL, and JIRA_API_TOKEN must all be set" };
+                const authHeader = { Authorization: `Basic ${Buffer.from(`${email}:${token}`).toString("base64")}` };
+                const base = `https://${host}/rest/api/3`;
+
+                if (action === "read_issue") {
+                    if (!params.issueKey) return { success: false, output: null, error: "issueKey required" };
+                    const r = await _httpJson("GET", `${base}/issue/${params.issueKey}`, authHeader);
+                    return { success: r.status === 200, output: r.status === 200 ? r.body : null, error: r.status !== 200 ? (r.body?.errorMessages?.[0] || JSON.stringify(r.body)) : null };
+                }
+                if (action === "create_issue") {
+                    if (!params.projectKey || !params.summary) return { success: false, output: null, error: "projectKey and summary required" };
+                    const fields = {
+                        project: { key: params.projectKey },
+                        summary: params.summary,
+                        issuetype: { name: params.issueType || "Task" },
+                        ...(params.description ? { description: { type: "doc", version: 1, content: [{ type: "paragraph", content: [{ type: "text", text: params.description }] }] } } : {}),
+                    };
+                    const r = await _httpJson("POST", `${base}/issue`, authHeader, { fields });
+                    return { success: r.status === 201, output: r.body?.key || r.body, error: r.status !== 201 ? (r.body?.errorMessages?.[0] || JSON.stringify(r.body)) : null };
+                }
+                if (action === "update_issue") {
+                    if (!params.issueKey) return { success: false, output: null, error: "issueKey required" };
+                    if (!params.fields) return { success: false, output: null, error: "fields required" };
+                    const r = await _httpJson("PUT", `${base}/issue/${params.issueKey}`, authHeader, { fields: params.fields });
+                    return { success: r.status === 204, output: r.status === 204 ? "updated" : r.body, error: r.status !== 204 ? (r.body?.errorMessages?.[0] || JSON.stringify(r.body)) : null };
+                }
+                if (action === "add_comment") {
+                    if (!params.issueKey || !params.body) return { success: false, output: null, error: "issueKey and body required" };
+                    const r = await _httpJson("POST", `${base}/issue/${params.issueKey}/comment`, authHeader, {
+                        body: { type: "doc", version: 1, content: [{ type: "paragraph", content: [{ type: "text", text: params.body }] }] },
+                    });
+                    return { success: r.status === 201, output: r.body?.id || r.body, error: r.status !== 201 ? (r.body?.errorMessages?.[0] || JSON.stringify(r.body)) : null };
+                }
+                return { success: false, output: null, error: `unsupported jira action: ${action}` };
+            }
+
+            // ── Linear (real api.linear.app/graphql calls) ────────────────
+            // Linear's API is GraphQL-only — matches connectLinear()'s
+            // existing probe shape (a single POST with a query/mutation
+            // string), same auth header convention (raw API key, not
+            // "Bearer "-prefixed, per Linear's own documented API contract).
+            case "linear": {
+                const headers = { Authorization: token, "Content-Type": "application/json" };
+                const base = TOOL_DEFS.linear.baseUrl;
+
+                if (action === "read_issue") {
+                    if (!params.issueId) return { success: false, output: null, error: "issueId required" };
+                    const r = await _httpJson("POST", base, headers, {
+                        query: `query($id: String!) { issue(id: $id) { id identifier title state { name } } }`,
+                        variables: { id: params.issueId },
+                    });
+                    const issue = r.body?.data?.issue;
+                    return { success: !!issue, output: issue || null, error: !issue ? (r.body?.errors?.[0]?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "create_issue") {
+                    if (!params.teamId || !params.title) return { success: false, output: null, error: "teamId and title required" };
+                    const r = await _httpJson("POST", base, headers, {
+                        query: `mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id identifier } } }`,
+                        variables: { input: { teamId: params.teamId, title: params.title, description: params.description || undefined } },
+                    });
+                    const result = r.body?.data?.issueCreate;
+                    return { success: !!result?.success, output: result?.issue || null, error: !result?.success ? (r.body?.errors?.[0]?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "update_issue") {
+                    if (!params.issueId) return { success: false, output: null, error: "issueId required" };
+                    if (!params.input) return { success: false, output: null, error: "input required" };
+                    const r = await _httpJson("POST", base, headers, {
+                        query: `mutation($id: String!, $input: IssueUpdateInput!) { issueUpdate(id: $id, input: $input) { success } }`,
+                        variables: { id: params.issueId, input: params.input },
+                    });
+                    const result = r.body?.data?.issueUpdate;
+                    return { success: !!result?.success, output: result || null, error: !result?.success ? (r.body?.errors?.[0]?.message || JSON.stringify(r.body)) : null };
+                }
+                if (action === "list_issues") {
+                    const r = await _httpJson("POST", base, headers, {
+                        query: `query($first: Int) { issues(first: $first) { nodes { id identifier title state { name } } } }`,
+                        variables: { first: params.limit || 20 },
+                    });
+                    const nodes = r.body?.data?.issues?.nodes;
+                    return { success: Array.isArray(nodes), output: Array.isArray(nodes) ? `${nodes.length} issues` : r.body, error: !Array.isArray(nodes) ? (r.body?.errors?.[0]?.message || JSON.stringify(r.body)) : null };
+                }
+                return { success: false, output: null, error: `unsupported linear action: ${action}` };
             }
 
             default:
@@ -461,7 +758,7 @@ async function execute(toolId, action, params = {}, opts = {}) {
 
     // Execute with retry
     const maxRetries = opts.maxRetries ?? (TOOL_DEFS[toolId].actions[action].risk === "high" ? 0 : 2);
-    const { result, attempts } = await _withRetry(() => _runAdapter(toolId, action, params), maxRetries);
+    const { result, attempts } = await _withRetry(() => _runAdapter(toolId, action, params, opts), maxRetries);
     const durationMs = Date.now() - start;
 
     // Record usage

@@ -219,7 +219,18 @@ function _handleRefresh(req, res) {
   }
 }
 
-function _handleForgotPassword(req, res) {
+// Email Ecosystem mission: sendPasswordReset() is now async (it was
+// previously called without await, inside a try/catch that could never
+// catch a real send failure — that function doesn't throw, it resolves
+// to {ok,error}). This route's response contract is deliberately
+// UNCHANGED — always {success:true} with the same generic message,
+// regardless of real email delivery outcome, since anti-enumeration
+// (never revealing whether an account exists) is a genuine, correct
+// security property here. What was missing was ever recording the real
+// outcome anywhere; betaReadiness.sendPasswordReset() now does that via
+// the audit log internally — this route just needs to actually await
+// the call so that logging happens before the request completes.
+async function _handleForgotPassword(req, res) {
   const { email } = req.body || {};
   if (!email || typeof email !== "string" || !email.includes("@")) {
     return res.status(400).json({ error: "Valid email required" });
@@ -227,7 +238,7 @@ function _handleForgotPassword(req, res) {
   // Delegate to betaReadiness which generates a real token and sends the email
   try {
     const beta = require("../services/betaReadiness.cjs");
-    const result = beta.sendPasswordReset(email.toLowerCase().trim());
+    const result = await beta.sendPasswordReset(email.toLowerCase().trim());
     auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
     return res.json({ success: true, message: result.message });
   } catch {

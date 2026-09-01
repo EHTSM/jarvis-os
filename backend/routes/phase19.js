@@ -39,13 +39,30 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const tel = require("../services/toolExecutionLayer.cjs");
 const mac = require("../services/multiAgentCoordinator.cjs");
 const shr = require("../services/selfHealingRuntime.cjs");
 const cle = require("../services/continuousLearningEngine.cjs");
 
-router.use("/p19", requireAuth);
+// Communication Ecosystem mission: this whole router previously had ONLY
+// requireAuth — zero tenant/org scoping and no operator restriction.
+// Live-confirmed real defect: POST /p19/tools/slack/execute lets ANY
+// authenticated customer on the entire platform send a real Slack message
+// via the founder's global SLACK_BOT_TOKEN (toolExecutionLayer.cjs's
+// TOOL_DEFS marks post_message as low-risk, allowed by default, and this
+// route never passed orgId, so the existing-but-unused org-scoped
+// resolvePermission()/setScopedPermission() overlay in toolExecutionLayer.cjs
+// never activated). Every sub-module mounted here (19A tool execution —
+// including system:exec and GitHub repo access; 19B agent coordination;
+// 19C self-healing; 19D continuous learning) is founder/operator-facing
+// internal automation tooling, not a customer-facing multi-tenant
+// feature — none of it has ever had a tenant/org concept, so operatorOnly
+// (the same gate already used for revenueOS.js's financial routes and
+// payment.js's gateway-refund routes, this same mission chain) is the
+// correct fix, not a per-org scoping retrofit that wouldn't fit tools
+// like system:exec anyway.
+router.use("/p19", requireAuth, operatorOnly);
 
 // ── 19A Tool Execution Layer ──────────────────────────────────────────────
 

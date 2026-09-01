@@ -25,10 +25,23 @@
  * Without real credentials (vault-stored or TWITTER_BEARER_TOKEN env var),
  * post() returns a real, honest "not configured" failure — never a
  * fabricated success.
+ *
+ * Mission 60-B: retry/backoff + idempotency added via
+ * socialPublishSupport.cjs — the same shared helper every Batch A adapter
+ * (linkedinPostingService.cjs, facebookPostingService.cjs, etc.) already
+ * uses, closing the P2 gap M59's audit flagged (no transient-retry or
+ * duplicate-publish protection existed on this, the original adapter).
+ * The existing post()/deletePost() call shape and every prior behavior
+ * (honest not-configured failure, 280-char limit, DISABLE_SOCIAL_POSTING
+ * kill-switch, org-scoped vault-then-env token resolution) is unchanged —
+ * only the network call itself is now wrapped in retry, and an optional
+ * new idempotencyKey parameter was added (default null, fully backward
+ * compatible with every existing caller).
  */
 
 const axios  = require("axios");
 const logger = require("../utils/logger");
+const { checkIdempotency, recordIdempotency, withRetry } = require("./socialPublishSupport.cjs");
 
 const _try   = fn => { try { return fn(); } catch { return null; } };
 const _vault = () => _try(() => require("./secretVault.cjs"));
@@ -52,9 +65,12 @@ function isEnabled(orgId = null) {
  * Publish a text post to X (Twitter).
  * @param {string} text - post body, max 280 chars (X's real limit)
  * @param {string|null} orgId - org-scoped credential lookup, see _token()
+ * @param {string|null} idempotencyKey - when supplied, a repeated call with
+ *   the same key within 24h returns the original result instead of posting
+ *   again — see socialPublishSupport.cjs.
  * @returns {Promise<{success:boolean, postId?:string, url?:string, error?:string}>}
  */
-async function post(text, orgId = null) {
+async function post(text, orgId = null, idempotencyKey = null) {
     if (process.env.DISABLE_SOCIAL_POSTING === "true") {
         return { success: false, error: "Social posting disabled (DISABLE_SOCIAL_POSTING=true)" };
     }
@@ -65,26 +81,35 @@ async function post(text, orgId = null) {
         return { success: false, error: `text exceeds X's 280 character limit (${text.length} chars)` };
     }
 
+    const dedupKey = idempotencyKey ? `x:${orgId || "global"}:${idempotencyKey}` : null;
+    const cached = checkIdempotency(dedupKey);
+    if (cached) return cached;
+
     const token = _token(orgId);
     if (!token) {
         return { success: false, error: "X (Twitter) not configured — set TWITTER_BEARER_TOKEN in .env, or connect via /my-connectors/twitter" };
     }
 
-    try {
-        const res = await axios.post(
-            `${X_API_BASE}/tweets`,
-            { text },
-            { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, timeout: 12000 }
-        );
-        const postId = res.data?.data?.id || null;
-        logger.info(`[SocialPosting] Posted to X${postId ? ` (${postId})` : ""}`);
-        return { success: true, postId, url: postId ? `https://x.com/i/web/status/${postId}` : null };
-    } catch (err) {
-        const detail = err.response?.data?.detail || err.response?.data?.title || err.message;
-        const status = err.response?.status;
-        logger.error(`[SocialPosting] X post failed (${status || "network"}): ${detail}`);
-        return { success: false, error: detail, status };
-    }
+    const result = await withRetry(async () => {
+        try {
+            const res = await axios.post(
+                `${X_API_BASE}/tweets`,
+                { text },
+                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, timeout: 12000 }
+            );
+            const postId = res.data?.data?.id || null;
+            logger.info(`[SocialPosting] Posted to X${postId ? ` (${postId})` : ""}`);
+            return { success: true, postId, url: postId ? `https://x.com/i/web/status/${postId}` : null };
+        } catch (err) {
+            const detail = err.response?.data?.detail || err.response?.data?.title || err.message;
+            const status = err.response?.status;
+            logger.error(`[SocialPosting] X post failed (${status || "network"}): ${detail}`);
+            return { success: false, error: detail, status };
+        }
+    });
+
+    if (dedupKey) recordIdempotency(dedupKey, result);
+    return result;
 }
 
 /**

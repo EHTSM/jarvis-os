@@ -15,6 +15,7 @@
 const fs   = require("fs");
 const path = require("path");
 const sharp = require("sharp");
+const { assertSafeNavigationTarget } = require("../../backend/utils/urlSafety.cjs");
 
 const IMAGE_DIR = path.join(__dirname, "../../data/processed-images");
 const FETCH_TIMEOUT_MS = 20_000;
@@ -25,6 +26,15 @@ async function _loadSourceBytes(imageUrl) {
         return Buffer.from(imageUrl.split(",")[1], "base64");
     }
     if (/^https?:\/\//.test(imageUrl)) {
+        // Creative Ecosystem mission: an authenticated caller's imageUrl was
+        // fetched server-side with no protection against SSRF — a request
+        // for http://169.254.169.254/... (cloud metadata) or an internal
+        // RFC1918 host would have been fetched and its bytes processed and
+        // returned. Reuses the same shared choke point already proven across
+        // the browser-automation family (agents/browser/actionEngine.cjs and
+        // 12 other call sites) rather than adding a second guard.
+        const safety = await assertSafeNavigationTarget(imageUrl);
+        if (!safety.safe) throw new Error(`Refusing to fetch source image: ${safety.reason}`);
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
         try {

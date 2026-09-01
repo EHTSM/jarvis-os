@@ -416,11 +416,37 @@ function createCSTicket(opts = {}) {
 function replyToTicket(id, opts = {}) {
   const s = _load();
   if (!s.csInbox?.[id]) throw new Error(`CS ticket not found: ${id}`);
+  // Support Ecosystem mission: this is a second, separate write path to the
+  // same ticket.status field updateTicket() already writes — but it never
+  // got the Phase B.15 enum-validation fix updateTicket() has. POST
+  // /co3/cs/:id/reply passes req.body straight through as opts, so
+  // {"body":"...", "status":"DROP_TABLE"} stored verbatim with a 200, the
+  // same reproduced consequence as the original bug: the ticket vanishes
+  // from getCSInbox()'s byStatus/slaBreach buckets since neither matches any
+  // real CS_TICKET_STATUS value. Validate against the same existing
+  // constants updateTicket() already uses — no new field, no new engine.
+  if (opts.status !== undefined && !CS_TICKET_STATUS.includes(opts.status)) {
+    const e = new Error(`Invalid status "${opts.status}". Choose: ${CS_TICKET_STATUS.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
   const ticket = s.csInbox[id];
   ticket.thread.push({ role: opts.role || "support", body: opts.body || "", ts: _ts() });
   ticket.status    = opts.status || ticket.status;
   ticket.updatedAt = _ts();
-  if (opts.status === "resolved" || opts.status === "closed") ticket.resolvedAt = _ts();
+  // Same resolvedAt-on-reopen consistency fix already applied to
+  // updateTicket() — whose own Phase B.15 comment assumed this function
+  // "already handles both" (set-on-resolve and clear-on-reopen), but this
+  // function only ever set resolvedAt on a terminal status and never
+  // cleared it on reopen, so that assumption was incorrect: a reply that
+  // reopens a ticket (moves it to a non-terminal status) left the earlier
+  // resolvedAt timestamp in place, understating avgResolutionHrs the same
+  // way the original bug did via the other write path.
+  if (opts.status === "resolved" || opts.status === "closed") {
+    ticket.resolvedAt = ticket.resolvedAt || _ts();
+  } else if (opts.status !== undefined) {
+    ticket.resolvedAt = null;
+  }
   _save(s);
   return ticket;
 }

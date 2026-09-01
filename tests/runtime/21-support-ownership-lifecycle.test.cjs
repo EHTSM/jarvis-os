@@ -202,7 +202,7 @@ describe("support ownership + lifecycle (Phase B.15)", () => {
         const fn  = src.slice(src.indexOf("function updateTicket"));
         const body = fn.slice(0, fn.indexOf("\nfunction "));
         assert.ok(/update\.status === "resolved" \|\| update\.status === "closed"/.test(body),
-            '"closed" must stamp resolvedAt too — replyToTicket already treats both as terminal');
+            '"closed" must stamp resolvedAt too — replyToTicket now correctly treats both as terminal (see below)');
         assert.ok(/s\.csInbox\[id\]\.resolvedAt = null;/.test(body),
             "reopening must clear resolvedAt or a reopened ticket keeps counting as resolved " +
             "in avgResolutionHrs");
@@ -250,6 +250,89 @@ describe("support ownership + lifecycle (Phase B.15)", () => {
         try {
             const hrs = (new Date(t.sla_target) - new Date(t.createdAt)) / 3600_000;
             assert.ok(Math.abs(hrs - 4) < 0.1, `urgent must target 4h, got ${hrs}h`);
+        } finally {
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[t.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
+        }
+    });
+
+    // ── Support Ecosystem mission (2026-08-31): replyToTicket() gap ──────────
+    // D2's own comment above assumed replyToTicket() "already handles both"
+    // (enum validation and resolvedAt-on-reopen) — that assumption was never
+    // actually true. POST /co3/cs/:id/reply passes req.body straight through
+    // to replyToTicket(id, opts), which wrote opts.status through with zero
+    // validation and never cleared resolvedAt on reopen — the exact same two
+    // defects D2 fixed for updateTicket(), reachable via a second, separate
+    // write path D2 never touched. Fixed to match updateTicket() exactly.
+    it("replyToTicket rejects a status outside the enum it already exports", () => {
+        const t = svc.createCSTicket({
+            userEmail: "b15-reply-enum@test.local", subject: "reply enum guard", body: "x",
+            priority: "low", accountId: "b15-reply-enum-acct",
+        });
+        try {
+            assert.throws(() => svc.replyToTicket(t.id, { body: "hi", status: "DROP_TABLE" }),
+                /Invalid status/, "an out-of-enum status in a reply must be refused, not stored");
+            assert.throws(() => svc.replyToTicket(t.id, { body: "hi", status: "pending" }),
+                /Invalid status/, '"pending" is not in CS_TICKET_STATUS and must be refused via reply too');
+        } finally {
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[t.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
+        }
+    });
+
+    it("replyToTicket validation errors carry HTTP 400, not 500", () => {
+        const t = svc.createCSTicket({
+            userEmail: "b15-reply-400@test.local", subject: "reply 400", body: "x",
+            priority: "low", accountId: "b15-reply-400-acct",
+        });
+        try {
+            try {
+                svc.replyToTicket(t.id, { body: "hi", status: "nope" });
+                assert.fail("should have thrown");
+            } catch (e) {
+                assert.equal(e.status, 400, "a bad request via reply must be a 400, matching updateTicket");
+            }
+        } finally {
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[t.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
+        }
+    });
+
+    it("a valid status change via reply still works (the fix only rejects invalid values)", () => {
+        const t = svc.createCSTicket({
+            userEmail: "b15-reply-valid@test.local", subject: "reply valid status", body: "x",
+            priority: "low", accountId: "b15-reply-valid-acct",
+        });
+        try {
+            const updated = svc.replyToTicket(t.id, { body: "we're on it", status: "in_progress" });
+            assert.equal(updated.status, "in_progress", "a real enum value must still be accepted");
+            assert.equal(updated.thread.length, 2, "the reply is still appended to the thread");
+        } finally {
+            const p = path.join(ROOT, "data/co3-user-success.json");
+            const s = JSON.parse(read(p));
+            delete s.csInbox[t.id];
+            fs.writeFileSync(p, JSON.stringify(s, null, 2));
+        }
+    });
+
+    it("replyToTicket resolve → reopen → close moves resolvedAt correctly, same as updateTicket", () => {
+        const t = svc.createCSTicket({
+            userEmail: "b15-reply-lifecycle@test.local", subject: "reply resolvedAt lifecycle", body: "x",
+            priority: "low", accountId: "b15-reply-lifecycle-acct",
+        });
+        try {
+            assert.equal(svc.replyToTicket(t.id, { body: "fixed", status: "resolved" }).resolvedAt !== null, true,
+                "resolving via reply must stamp resolvedAt");
+            assert.equal(svc.replyToTicket(t.id, { body: "reopening", status: "open" }).resolvedAt, null,
+                "reopening via reply must clear resolvedAt — this is the exact gap D2's own comment assumed didn't exist");
+            assert.equal(svc.replyToTicket(t.id, { body: "closing it", status: "closed" }).resolvedAt !== null, true,
+                "closing via reply must stamp resolvedAt");
         } finally {
             const p = path.join(ROOT, "data/co3-user-success.json");
             const s = JSON.parse(read(p));

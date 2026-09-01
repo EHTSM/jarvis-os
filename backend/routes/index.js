@@ -31,7 +31,8 @@ router.use(requireActiveAccount);      // billing gate — all routes below requ
 router.use(require("./jarvis"));       // POST /jarvis
 router.use(require("./whatsapp"));     // /whatsapp/*
 router.use(require("./telegram"));     // /telegram/send, /telegram/status
-router.use(require("./payment"));      // /payment/*, /webhook/razorpay, /razorpay-webhook
+router.use(require("./sms"));          // /sms/send, /sms/status (Twilio)
+router.use(require("./payment"));      // /payment/*, /webhook/razorpay, /razorpay-webhook, /webhook/stripe, /stripe-webhook
 router.use(require("./crm"));          // /crm, /crm-leads, /crm/lead/*
 router.use(require("./ai"));           // POST /ai/chat
 router.use(require("./simulation"));   // POST /simulate/*, /send-followup

@@ -950,28 +950,29 @@ function _buildHandlers() {
             return pe.createEditPlan({ userId: p.userId, episodeId: p.episodeId, episodeTitle: p.episodeTitle || task.input, targetPlatforms: p.targetPlatforms, operations: p.operations, durationSec: p.durationSec });
         },
 
-        mediaAudioClean: async (task) => {
-            const ac = require("./media/audioCleaner.cjs");
-            const p  = task.payload || {};
-            if (task.type === "media_noise_types")   return ac.getNoiseTypes();
-            if (task.type === "media_audio_targets") return ac.getAudioTargets();
-            return ac.analyseAudio({ userId: p.userId, fileId: p.fileId, fileName: p.fileName, noiseType: p.noiseType, targetUse: p.targetUse, measuredLufs: p.measuredLufs });
-        },
-
-        mediaSubtitle: async (task) => {
-            const sub = require("./media/subtitleGenerator.cjs");
-            const p   = task.payload || {};
-            if (task.type === "media_subtitle_formats") return sub.getFormats();
-            if (task.type === "media_subtitle_langs")   return sub.getLanguages();
-            return sub.createSubtitleJob({ userId: p.userId, videoId: p.videoId, videoTitle: p.videoTitle, language: p.language, format: p.format, speakerDiarisation: p.speakerDiarisation });
-        },
-
-        mediaDubbing: async (task) => {
-            const dub = require("./media/dubbingAgent.cjs");
-            const p   = task.payload || {};
-            if (task.type === "media_dub_langs") return dub.getSupportedLanguages();
-            return dub.createDubbingJob({ userId: p.userId, videoId: p.videoId, videoTitle: p.videoTitle, sourceLang: p.sourceLang, targetLang: p.targetLang, consent: p.consent, watermark: p.watermark, lipSync: p.lipSync });
-        },
+        // Video/Audio Ecosystem mission (2026-08-31): these three handlers
+        // required ./media/{audioCleaner,subtitleGenerator,dubbingAgent}.cjs,
+        // which do not exist in agents/media/ (that directory itself does not
+        // exist) — moved to _archive/20260520_010917/ and never updated here,
+        // so any real request reaching one of these (e.g. via the runtime
+        // dispatcher classifying "clean this audio"/"add subtitles"/"dub
+        // this video") threw an uncaught MODULE_NOT_FOUND that propagated as
+        // a raw internal error string instead of an honest failure. The
+        // archived originals were inspected before deciding this fix:
+        // they never executed real noise reduction/STT/dubbing — each just
+        // returned a static "here's the ffmpeg/Whisper command a human could
+        // run" recommendation with status:"pending" that was never advanced,
+        // since no real ffmpeg/STT backend exists anywhere in this repo (see
+        // this mission's own FFmpeg/STT discovery). Restoring them would
+        // trade one dishonest failure (a crash) for a subtler one (a job
+        // that looks queued but can never complete) — not a real fix.
+        // _capabilityUnavailable is the same established pattern already
+        // used elsewhere in this file (e.g. maps/gps/wallet, above) for
+        // exactly this situation: an honest, non-retriable "not implemented"
+        // response instead of a leaked Node internal error.
+        mediaAudioClean: _capabilityUnavailable("mediaAudioClean", "no real audio noise-reduction/mastering backend (ffmpeg or otherwise) exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        mediaSubtitle:   _capabilityUnavailable("mediaSubtitle", "no real speech-to-text or subtitle-burn-in backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        mediaDubbing:    _capabilityUnavailable("mediaDubbing", "no real dubbing/voice-translation/lip-sync backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
 
         mediaVideoEdit: async (task) => {
             const ve = require("./media/videoEditorPro.cjs");

@@ -5,8 +5,26 @@ const wa         = require("../services/whatsappService");
 const crm        = require("../services/crmService");
 const controller = require("../controllers/jarvisController");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter = require("../middleware/rateLimiter");
 const logger      = require("../utils/logger");
+
+// Communication Ecosystem mission: /whatsapp/send and /whatsapp/bulk's own
+// prior comments predicted exactly this gap — "attachOrg isn't mounted on
+// this route" — meaning whatsappService.js's org-scoped credential
+// resolution (already built, see that file's own "Connector Secret
+// Isolation" comment) was structurally unreachable, req.org was always
+// undefined, and every send silently used the founder's global credential
+// regardless of which org's connected WhatsApp account should have been
+// used. Same bug class, same fix, as /payment/link's identical gap (fixed
+// in the Payments Ecosystem mission): attachOrg (non-blocking — resolves
+// req.org from a caller-supplied X-Org-Id/body.orgId with NO membership
+// check on its own) MUST be paired with a membership gate before the
+// resolved org is used for anything beyond a read/auto-resolve fallback.
+function _requireOrgMemberIfOrgContext(req, res, next) {
+    if (!req.org) return next();
+    return requireOrgMember(req, res, next);
+}
 
 // ── WhatsApp HMAC verification ────────────────────────────────────
 // Meta signs every incoming webhook with HMAC-SHA256 using the app secret.
@@ -91,18 +109,22 @@ router.post(
     controller.handleWhatsAppWebhook
 );
 
-router.post("/whatsapp/send", requireAuth, async (req, res) => {
+const _waSendRL = rateLimiter(15, 60_000, "whatsapp-send");
+
+router.post("/whatsapp/send", requireAuth, attachOrg, _requireOrgMemberIfOrgContext, _waSendRL, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone || !message) return res.status(400).json({ error: "phone and message required" });
-    // Connector Secret Isolation: pass through org context when present
-    // (req.org?.id, undefined today since attachOrg isn't mounted on this
-    // route) so an org with its own connected WhatsApp account sends
-    // through its own credential instead of the founder's global one.
+    // Connector Secret Isolation: attachOrg + _requireOrgMemberIfOrgContext
+    // above now actually gate this — req.org?.id is real, so an org with
+    // its own connected WhatsApp account sends through its own credential
+    // instead of the founder's global one, and a caller from Org A can no
+    // longer trigger a send using Org B's credentials by supplying Org B's
+    // X-Org-Id/body.orgId.
     const result = await wa.sendMessage(phone, message, 2, req.org?.id || null);
     res.json(result);
 });
 
-router.post("/whatsapp/bulk", requireAuth, async (req, res) => {
+router.post("/whatsapp/bulk", requireAuth, attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
     const { message, statusFilter } = req.body;
     if (!message) return res.status(400).json({ error: "message required" });
     const orgId = req.org?.id || null;

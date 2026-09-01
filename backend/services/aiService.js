@@ -1040,7 +1040,17 @@ async function chatWithTools(messages, tools = [], opts = {}) {
         return { ...result, toolCalls: [] };
     }
 
-    const TOOL_CAPABLE = ["claude", "openai", "openrouter", "gemini"];
+    // AI Ecosystem mission: groq/deepseek/together/fireworks/nvidia added —
+    // all genuinely OpenAI-compatible chat-completions APIs that support
+    // real `tools`/`tool_choice` on their actual endpoints, using the SAME
+    // shared _openaiCompatWithTools() helper already used for openai/
+    // openrouter (it takes url/key/model as parameters — no new logic was
+    // needed, only wiring the existing constants already used elsewhere in
+    // this file for streaming). Cohere/Qwen/Grok/Ollama/LM Studio remain
+    // excluded — not verified against a real tools-capable request shape
+    // for those APIs in this codebase, so left as PROVIDER-LIMITATION
+    // rather than guessed at.
+    const TOOL_CAPABLE = ["claude", "openai", "openrouter", "gemini", "groq", "deepseek", "together", "fireworks", "nvidia"];
     const providers = opts.provider ? [opts.provider] : TOOL_CAPABLE.filter(p => _providerOrder().includes(p));
     const model = opts.model || null;
 
@@ -1054,6 +1064,21 @@ async function chatWithTools(messages, tools = [], opts = {}) {
                     break;
                 case "openrouter":
                     result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter, opts);
+                    break;
+                case "groq":
+                    result = await _openaiCompatWithTools(GROQ_URL, process.env.GROQ_API_KEY, messages, tools, model, _defaultModel("groq"), TIMEOUTS.groq, opts);
+                    break;
+                case "deepseek":
+                    result = await _openaiCompatWithTools(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, messages, tools, model, _deepseekModel(), TIMEOUTS.deepseek, opts);
+                    break;
+                case "together":
+                    result = await _openaiCompatWithTools(TOGETHER_URL, process.env.TOGETHER_API_KEY, messages, tools, model, _togetherModel(), TIMEOUTS.together, opts);
+                    break;
+                case "fireworks":
+                    result = await _openaiCompatWithTools(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, messages, tools, model, _fireworksModel(), TIMEOUTS.fireworks, opts);
+                    break;
+                case "nvidia":
+                    result = await _openaiCompatWithTools(NVIDIA_URL, process.env.NVIDIA_API_KEY, messages, tools, model, _nvidiaModel(), TIMEOUTS.nvidia, opts);
                     break;
                 case "claude":
                     result = await _claudeWithTools(messages, tools, model, opts);
@@ -1075,7 +1100,7 @@ async function chatWithTools(messages, tools = [], opts = {}) {
         }
     }
 
-    throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini.");
+    throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini/groq/deepseek/together/fireworks/nvidia.");
 }
 
 // ── Streaming (SSE passthrough) ──────────────────────────────────────────────
@@ -1086,7 +1111,7 @@ async function chatWithTools(messages, tools = [], opts = {}) {
 // response shape. STREAM_CAPABLE below reflects only providers verified here
 // to genuinely support it via a real streaming API (not aiRegistry's
 // per-capability flag, which is broader/aspirational metadata).
-const STREAM_CAPABLE = ["groq", "openrouter", "openai", "deepseek", "together", "fireworks", "nvidia", "grok", "qwen", "claude", "gemini", "ollama"];
+const STREAM_CAPABLE = ["groq", "openrouter", "openai", "deepseek", "together", "fireworks", "nvidia", "grok", "qwen", "claude", "gemini", "ollama", "lmstudio"];
 
 function isStreamCapable(provider) { return STREAM_CAPABLE.includes(provider); }
 
@@ -1262,6 +1287,20 @@ async function streamChat(messages, opts = {}, onChunk = () => {}) {
                 case "nvidia":     text = await _streamOpenAICompatible(NVIDIA_URL, process.env.NVIDIA_API_KEY, { model: model || _nvidiaModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.nvidia, onChunk); break;
                 case "grok":       text = await _streamOpenAICompatible(GROK_URL, process.env.GROK_API_KEY, { model: model || _grokModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.grok, onChunk); break;
                 case "qwen":       text = await _streamOpenAICompatible(_qwenUrl(), process.env.DASHSCOPE_API_KEY, { model: model || _qwenModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.qwen, onChunk); break;
+                // AI Ecosystem mission: LM Studio's local server explicitly
+                // emulates the OpenAI API (including SSE streaming with the
+                // same delta.content chunk shape) — that emulation is the
+                // entire premise of the product, unlike Cohere's genuinely
+                // different named-event wire format (left unimplemented,
+                // still PROVIDER-LIMITATION/unverified per the comment
+                // below). _streamOpenAICompatible() always sends an
+                // Authorization header; the non-streaming _lmstudio()
+                // adapter sends none at all (LM Studio doesn't require a
+                // key), so "lm-studio" here is a harmless placeholder
+                // value — the same convention widely used by OpenAI-SDK
+                // clients pointed at a local LM Studio server, which
+                // ignores unrecognized/placeholder auth by default.
+                case "lmstudio":   text = await _streamOpenAICompatible(_lmStudioUrl(), "lm-studio", { model: model || _lmStudioModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.lmstudio, onChunk); break;
                 case "claude":     text = await _streamClaude(allMessages, model, opts, onChunk); break;
                 case "gemini":     text = await _streamGemini(allMessages, model, opts, onChunk); break;
                 case "ollama":     text = await _streamOllama(allMessages, model, onChunk); break;
@@ -1345,12 +1384,12 @@ module.exports = {
     // fail-fast path), just weren't exposed for callers to probe ahead of time.
     isLocalServerReachable, ollamaUrl: _ollamaUrl, lmStudioUrl: _lmStudioUrl,
     // Streaming (SSE passthrough) — see STREAM_CAPABLE for exactly which
-    // providers this supports. Cohere and LM Studio are deliberately excluded:
-    // Cohere's streaming wire format differs from every other provider here
-    // (named event_type frames, not OpenAI-style delta chunks) and hasn't been
-    // implemented/verified; LM Studio's local server likely supports the same
-    // OpenAI-compatible stream shape as the cloud providers but hasn't been
-    // verified against a real running instance either — both would need a
+    // providers this supports. LM Studio was added (AI Ecosystem mission):
+    // its local server explicitly emulates the OpenAI API, the same real,
+    // already-implemented _streamOpenAICompatible() parser applies with no
+    // new logic. Cohere remains deliberately excluded — its streaming wire
+    // format genuinely differs from every other provider here (named
+    // event_type frames, not OpenAI-style delta chunks) and would need a
     // real verified implementation before being added, not a guess.
     streamChat, isStreamCapable,
     CALL_AI_OVERALL_BUDGET_MS,

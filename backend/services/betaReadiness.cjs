@@ -127,7 +127,25 @@ function generateEmailVerificationToken(accountId, email) {
   return token;
 }
 
-function sendEmailVerification(accountId, email, name) {
+// Email Ecosystem mission: this previously called emailSvc.sendEmail()
+// WITHOUT await, inside a synchronous try/catch — the exact
+// false-success class already found and fixed once in
+// workspaceService.cjs's sendInvitationEmail() (test 61), reproduced
+// here unfixed. Two compounding problems: (1) with no await, any
+// rejection becomes an unhandled promise rejection the surrounding
+// try/catch can never see; (2) sendEmail() doesn't even throw on
+// failure — it always resolves to {ok, error}, so the catch block was
+// structurally unable to ever fire for a real send failure regardless.
+// A real, live email-provider outage would have been completely
+// invisible — not logged, not audited, not surfaced anywhere. Now
+// async + properly awaited, with the REAL outcome recorded in the audit
+// log (emailSent:true/false + the real provider error when false) — the
+// function's own external contract (ok:true, token still valid for
+// manual use even if the email never arrives) is deliberately
+// unchanged, since a registration/verification flow correctly should
+// not fail just because an email provider hiccuped; what was missing
+// was ever recording that this happened, not the tolerant behavior itself.
+async function sendEmailVerification(accountId, email, name) {
   const token = generateEmailVerificationToken(accountId, email);
   const base  = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
   // Points at the SPA route (App.jsx reads ?token= and calls the verify-email
@@ -136,10 +154,11 @@ function sendEmailVerification(accountId, email, name) {
   // fallback ever runs (see server.js's routing-order comment).
   const link  = `${base}/verify-email?token=${token}`;
 
+  let emailSent = false, emailError = null;
   const emailSvc = _email();
   if (emailSvc) {
     try {
-      emailSvc.sendEmail({
+      const result = await emailSvc.sendEmail({
         to:      email,
         subject: "Verify your Ooplix email address",
         html: `<p>Hi ${name || "there"},</p>
@@ -148,13 +167,17 @@ function sendEmailVerification(accountId, email, name) {
 <p>If you did not create an Ooplix account, ignore this email.</p>`,
         text: `Verify your email: ${link}`,
       });
-    } catch { /* non-fatal — token still valid for manual use */ }
+      emailSent  = !!result?.ok;
+      emailError = result?.ok ? null : (result?.error || "Email send failed");
+    } catch (e) { emailError = e.message; } // non-fatal — token still valid for manual use
+  } else {
+    emailError = "emailService unavailable";
   }
 
   const al = _auditLog();
-  if (al) al.append({ type: "email_verify_sent", accountId, email, expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS).toISOString() });
+  if (al) al.append({ type: "email_verify_sent", accountId, email, emailSent, emailError, expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS).toISOString() });
 
-  return { ok: true, token, link };
+  return { ok: true, token, link, emailSent };
 }
 
 function verifyEmail(token) {
@@ -215,7 +238,15 @@ function isEmailVerified(email) {
 // ════════════════════════════════════════════════════════════════════════════
 const RESET_TTL_MS = 60 * 60_000; // 1 hour
 
-function sendPasswordReset(email) {
+// Email Ecosystem mission: same un-awaited-send false-invisibility bug
+// as sendEmailVerification above, fixed the same way. The route-facing
+// response message deliberately stays identical regardless of real
+// delivery outcome (anti-enumeration is a genuine, correct security
+// property here — an attacker probing for valid emails must see the
+// same response whether the account exists or the send succeeded); what
+// was missing was ever recording the real outcome anywhere, which the
+// audit log now does (emailSent:true/false + the real provider error).
+async function sendPasswordReset(email) {
   const acctSvc = _accounts();
   if (!acctSvc) return { ok: false, error: "accountService unavailable" };
 
@@ -234,16 +265,22 @@ function sendPasswordReset(email) {
   // sendEmailVerification above for why.
   const link = `${base}/reset-password?token=${token}`;
 
+  let emailSent = false, emailError = null;
   const emailSvc = _email();
   if (emailSvc) {
-    try { emailSvc.sendPasswordReset(email, link); }
-    catch { /* non-fatal */ }
+    try {
+      const result = await emailSvc.sendPasswordReset(email, link);
+      emailSent  = !!result?.ok;
+      emailError = result?.ok ? null : (result?.error || "Email send failed");
+    } catch (e) { emailError = e.message; } // non-fatal — anti-enumeration response is unaffected
+  } else {
+    emailError = "emailService unavailable";
   }
 
   const al = _auditLog();
-  if (al) al.append({ type: "password_reset_requested", accountId: account.id, email, expiresAt });
+  if (al) al.append({ type: "password_reset_requested", accountId: account.id, email, emailSent, emailError, expiresAt });
 
-  return { ok: true, message: "If an account exists, a reset link will be sent.", token /* for test environments */ };
+  return { ok: true, message: "If an account exists, a reset link will be sent.", token /* for test environments */, emailSent };
 }
 
 function resetPassword(token, newPassword) {

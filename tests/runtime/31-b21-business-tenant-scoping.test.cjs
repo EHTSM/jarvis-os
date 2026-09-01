@@ -100,4 +100,21 @@ describe("B.21 — business mission tenant scoping", () => {
     assert.equal(scoped, 4,
       `all 4 mission-layer list routes must scope by orgId, found ${scoped}`);
   });
+
+  it("POST /business/lead/mission is gated by _requireOrg and stamps orgId (CRM/Sales mission fix)", () => {
+    // The original B.21 sweep's own regexes above deliberately enumerate
+    // deal|marketing_task|customer|operation — "lead" was never included,
+    // meaning /business/lead/mission (a 5th createBusinessMission() call
+    // site, using entityType "lead") was missed by that sweep entirely: it
+    // had requireAuth but no _requireOrg, and never passed opts.orgId, so
+    // every lead mission it created landed with orgId: null — permanently
+    // unscoped, invisible to the org-scoped pipeline view, and reachable by
+    // any authenticated user regardless of org membership. Fixed to match
+    // /business/deals exactly (CRM/Sales Ecosystem mission).
+    const src = require("fs").readFileSync(ROUTES, "utf8");
+    assert.match(src, /router\.post\("\/business\/lead\/mission",\s*requireAuth,\s*_requireOrg,/,
+      "/business/lead/mission must be gated by requireAuth + _requireOrg, matching its /business/deals sibling");
+    assert.match(src, /createBusinessMission\("lead",\s*\{[^}]*\},\s*\{\s*priority,\s*orgId:\s*req\.org\.id\s*\}\)/,
+      "/business/lead/mission must stamp the caller's orgId into createBusinessMission's opts, matching /business/deals");
+  });
 });

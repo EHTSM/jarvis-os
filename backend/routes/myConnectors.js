@@ -93,6 +93,92 @@ const PROVIDERS = {
     label: "X (Twitter)", connectorId: "social:twitter", category: "social",
     fields: [{ key: "oauth_token", label: "Bearer Token", type: "password" }],
   },
+  // Mission 60 — LinkedIn publish via linkedinPostingService.cjs. Most
+  // orgs will authorize through GET /vault/oauth/linkedin/authorize (the
+  // real OAuth2 flow, w_member_social scope), which needs no vault field
+  // here at all. This field is the fallback path for an org that already
+  // has its own LinkedIn app-level access token and wants to skip the
+  // interactive OAuth flow — same "org brings its own token" shape as the
+  // twitter entry above, same oauth_token slot/lookup convention.
+  linkedin: {
+    label: "LinkedIn", connectorId: "social:linkedin", category: "social",
+    fields: [{ key: "oauth_token", label: "Access Token (w_member_social scope)", type: "password" }],
+  },
+  // Mission 60 — Facebook Page publish via facebookPostingService.cjs.
+  // Two fields because Facebook's model needs a specific Page's id AND
+  // that Page's own access token (not the user token) — webhook_secret
+  // reused for the Page ID, same "reuse an existing vault slot for a
+  // second field" convention as WhatsApp's phone_id above.
+  facebook: {
+    label: "Facebook Page", connectorId: "social:facebook", category: "social",
+    fields: [
+      { key: "oauth_token",    label: "Page Access Token", type: "password" },
+      { key: "webhook_secret", label: "Page ID",           type: "text" },
+    ],
+  },
+  // Mission 60 — YouTube video upload via youtubePostingService.cjs.
+  // A refresh token is what's actually needed here (access tokens expire
+  // in ~1h and uploads can run long); oauth_token slot reused since the
+  // vault-fallback path is meant for an org bringing an existing credential
+  // rather than running the interactive OAuth flow.
+  youtube: {
+    label: "YouTube", connectorId: "social:youtube", category: "social",
+    fields: [{ key: "oauth_token", label: "Refresh Token (youtube.upload scope)", type: "password" }],
+  },
+  // Mission 60 — TikTok video publish via tiktokPostingService.cjs.
+  tiktok: {
+    label: "TikTok", connectorId: "social:tiktok", category: "social",
+    fields: [{ key: "oauth_token", label: "Access Token (video.publish scope)", type: "password" }],
+  },
+  // Mission 60 — Instagram publish via instagramPostingService.cjs. Most
+  // orgs authorize through the Facebook connection above (Instagram
+  // Business publishing shares that OAuth flow — see
+  // instagramPostingService.cjs's docstring). This field is the fallback
+  // for an org that already has an Instagram Business account id + a Page
+  // access token with instagram_content_publish granted.
+  instagram: {
+    label: "Instagram Business", connectorId: "social:instagram", category: "social",
+    fields: [
+      { key: "oauth_token",    label: "Page Access Token",         type: "password" },
+      { key: "webhook_secret", label: "Instagram Business Account ID", type: "text" },
+    ],
+  },
+  // Mission 60-B — Threads publish via threadsPostingService.cjs.
+  threads: {
+    label: "Threads", connectorId: "social:threads", category: "social",
+    fields: [
+      { key: "oauth_token",    label: "Access Token (threads_content_publish scope)", type: "password" },
+      { key: "webhook_secret", label: "Threads User ID",                              type: "text" },
+    ],
+  },
+  // Mission 60-B — Pinterest pin creation via pinterestPostingService.cjs.
+  pinterest: {
+    label: "Pinterest", connectorId: "social:pinterest", category: "social",
+    fields: [{ key: "oauth_token", label: "Access Token (pins:write scope)", type: "password" }],
+  },
+  // Mission 60-B — Reddit submit via redditPostingService.cjs.
+  reddit: {
+    label: "Reddit", connectorId: "social:reddit", category: "social",
+    fields: [{ key: "oauth_token", label: "Access Token (submit scope)", type: "password" }],
+  },
+  // Mission 60-C — Discord message post via discordPostingService.cjs.
+  // Reuses the SAME connectorId ("msg:discord") and field keys
+  // integrationConnectors.cjs's connectDiscord() already checks — this is
+  // the founder's messaging-phase Discord connector, not a new "social"
+  // category entry, consistent with Discord being registered under "msg".
+  discord: {
+    label: "Discord", connectorId: "msg:discord", category: "messaging",
+    fields: [
+      { key: "api_key",        label: "Bot Token (optional)",     type: "password" },
+      { key: "webhook_secret", label: "Channel Webhook URL (optional)", type: "text" },
+    ],
+  },
+  // Mission 60-C — Google Business Profile post creation via
+  // gbpPostingService.cjs (final of 13 social platforms).
+  gbp: {
+    label: "Google Business Profile", connectorId: "social:gbp", category: "social",
+    fields: [{ key: "oauth_token", label: "Access Token (business.manage scope)", type: "password" }],
+  },
 };
 
 // attachOrg alone does NOT block cross-tenant access — it resolves req.org

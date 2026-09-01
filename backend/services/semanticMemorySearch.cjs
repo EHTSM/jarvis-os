@@ -331,6 +331,15 @@ function saveTypedMemory(type, data, opts = {}) {
     confidence: opts.confidence  ?? 75,
     agentIds:   opts.agentIds    || [],
     ...(opts.projectId ? { projectId: opts.projectId } : {}),
+    // BI/Search Ecosystem mission: memoryPersistenceLayer.cjs already has a
+    // real, tested orgId filter (the "M-4" fix), but this D2 semantic-memory
+    // layer never threaded it through on save OR search — every node saved
+    // here landed with orgId: null and every search read across the entire
+    // unscoped store. Stamping it here (additive, optional — legacy
+    // orgId-less nodes and non-org callers are unaffected) closes the write
+    // side; see semanticSearch()/crossProjectSearch()/getKnowledgeGraph()
+    // below for the matching read-side fix.
+    ...(opts.orgId ? { orgId: opts.orgId } : {}),
   };
 
   const result = mpl.save(node);
@@ -351,15 +360,23 @@ function saveTypedMemory(type, data, opts = {}) {
  *   minScore  — minimum cosine similarity (default 0.1)
  *   limit     — max results (default 20)
  *   projectId — restrict to this projectId tag
+ *   orgId     — restrict to this org's own nodes (server-resolved by the
+ *               caller, never client-supplied — see phase26.js). BI/Search
+ *               Ecosystem mission fix: previously absent entirely, so any
+ *               authenticated caller's search read across every org's
+ *               stored memory nodes regardless of projectId.
  * @returns {{ results[], query, total }}
  */
 function semanticSearch(query, opts = {}) {
-  const { type, minScore = 0.1, limit = 20, projectId } = opts;
+  const { type, minScore = 0.1, limit = 20, projectId, orgId } = opts;
   const mpl = _mpl();
 
-  // Fetch nodes — use tag filter if type given
+  // Fetch nodes — use tag filter if type given, and orgId filter if given
+  // (mpl.list()'s own already-existing, already-tested "M-4" orgId filter —
+  // reused as-is, not a second filtering mechanism).
   const fetchOpts = { limit: 5000 };
   if (type) fetchOpts.tag = type;
+  if (orgId) fetchOpts.orgId = orgId;
 
   let { nodes } = mpl.list(fetchOpts);
 
@@ -417,20 +434,27 @@ function searchDecisions(context, opts = {}) {
 // ────────────────────────────────────────────────────────────────────────────
 
 /**
- * Search across ALL projectIds and return results grouped by project.
+ * Search across ALL of the caller's own projectIds and return results
+ * grouped by project. "Cross-project" spans every project WITHIN a tenant —
+ * it must never span across tenants themselves.
  *
  * Nodes without a projectId tag are grouped under the key "__global__".
  *
  * @param {string} query
- * @param {object} opts  { type, minScore, limit }
+ * @param {object} opts  { type, minScore, limit, orgId }
+ *   orgId — restrict to this org's own nodes (server-resolved, never
+ *           client-supplied). BI/Search Ecosystem mission fix: previously
+ *           absent, so this function's own doc-comment claim of scanning
+ *           "everything" literally meant every tenant's memory at once.
  * @returns {{ byProject: { [projectId]: results[] }, total }}
  */
 function crossProjectSearch(query, opts = {}) {
-  const { type, minScore = 0.1, limit = 20 } = opts;
+  const { type, minScore = 0.1, limit = 20, orgId } = opts;
   const mpl = _mpl();
 
   const fetchOpts = { limit: 5000 };
   if (type) fetchOpts.tag = type;
+  if (orgId) fetchOpts.orgId = orgId;
   const { nodes } = mpl.list(fetchOpts);
 
   // Run one global TF-IDF pass across everything
@@ -476,14 +500,19 @@ function crossProjectSearch(query, opts = {}) {
  *   maxNodes       — corpus size cap (default 500)
  *   type           — optional type tag filter
  *   projectId      — optional project filter
+ *   orgId          — restrict to this org's own nodes (server-resolved,
+ *                    never client-supplied). BI/Search Ecosystem mission
+ *                    fix: previously absent, so the returned graph's nodes
+ *                    and similarity edges could span every tenant's memory.
  * @returns {{ nodes[], edges[], edgeCount }}
  */
 function getKnowledgeGraph(opts = {}) {
-  const { edgeThreshold = 0.3, maxNodes = 500, type, projectId } = opts;
+  const { edgeThreshold = 0.3, maxNodes = 500, type, projectId, orgId } = opts;
   const mpl = _mpl();
 
   const fetchOpts = { limit: maxNodes };
   if (type) fetchOpts.tag = type;
+  if (orgId) fetchOpts.orgId = orgId;
 
   let { nodes } = mpl.list(fetchOpts);
 
@@ -554,6 +583,14 @@ function getKnowledgeGraph(opts = {}) {
  *   confidenceBoost     — confidence delta applied (default 10)
  *   dryRun              — if true, return candidates without writing (default false)
  *   limit               — max nodes to evolve in one call (default 100)
+ *   orgId               — restrict to this org's own nodes (server-resolved,
+ *                         never client-supplied). BI/Search Ecosystem
+ *                         mission fix: previously absent — since dryRun
+ *                         defaults to false, this is a real WRITE path
+ *                         (mpl.update() below), so the pre-fix behavior let
+ *                         any authenticated caller mutate importance/
+ *                         confidence metadata on every org's memory nodes
+ *                         platform-wide, not just their own.
  * @returns {{ evolved[], count }}
  */
 function evolveKnowledge(opts = {}) {
@@ -564,10 +601,11 @@ function evolveKnowledge(opts = {}) {
     confidenceBoost     = 10,
     dryRun              = false,
     limit               = 100,
+    orgId,
   } = opts;
 
   const mpl = _mpl();
-  const { nodes } = mpl.list({ limit: 5000 });
+  const { nodes } = mpl.list({ limit: 5000, ...(orgId ? { orgId } : {}) });
 
   const evolved = [];
 
