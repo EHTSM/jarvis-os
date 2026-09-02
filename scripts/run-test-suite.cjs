@@ -58,6 +58,21 @@ const MISSION_MUTATING = {
     runtime: [
         "tests/runtime/10-c10-cross-system-closure.test.cjs",
         "tests/runtime/40-mission-dedup-and-recovery.test.cjs",
+        // JARVIS INCIDENT REPAIR (2026-09-03, P0-2/P0-3): both call
+        // missionMemory.cjs's mutating API (createMission/updateMission)
+        // directly against the real, shared data/missions.json — same race
+        // class as 40-mission-dedup-and-recovery.test.cjs above. Confirmed
+        // live: running 43-mission-storage-dedup.test.cjs standalone while a
+        // full test:runtime run was concurrently writing to missions.json
+        // produced a real, reproducible lost-update (a just-created org-
+        // scoped mission's write did not survive a concurrent process's
+        // write before this test's own very next read-modify-write saw it).
+        // 42-autonomous-boot-gate.test.cjs is NOT included here — it only
+        // calls the read-only getMissionStats(), matching this file's own
+        // stated policy above ("read-only mission consumers... are NOT
+        // included — only files that WRITE... need serialization").
+        "tests/runtime/41-blocker-resolution-recursion-guard.test.cjs",
+        "tests/runtime/43-mission-storage-dedup.test.cjs",
         "tests/runtime/approval-queue-engine.test.cjs",
         "tests/runtime/mission-orchestrator-nodetypes.test.cjs",
         "tests/runtime/10-org-param-precedence.test.cjs",

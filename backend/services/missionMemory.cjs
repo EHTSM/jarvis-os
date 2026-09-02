@@ -153,6 +153,30 @@ function _normalizeObjectiveForDedup(s) {
     return (s || "").trim().toLowerCase();
 }
 
+// Two different, real, pre-existing org-scoping conventions coexist in this
+// codebase and must BOTH be recognized here, or org isolation silently
+// breaks for whichever one is missed:
+//   - the top-level mission.orgId field this file's own header comment
+//     documents (used by phase27.js, codingAssistant.js, and listMissions's
+//     own {orgId} filter)
+//   - organizationService.cjs's createMissionForOrg(), which stamps org
+//     ownership as metadata.orgId instead (its own listOrgMissions() filters
+//     on m.metadata?.orgId, never m.orgId) — confirmed by direct inspection,
+//     not assumed; a mission created through that path always has
+//     mission.orgId === null.
+// Without this fallback, every organizationService-created mission would
+// fall into the same "__unscoped__" dedup bucket regardless of which real
+// org created it — i.e. two different orgs' identical-objective missions
+// would incorrectly dedup against each other, exactly the cross-org leak
+// this dedup layer must never introduce.
+function _effectiveOrgId(mission) {
+    return (typeof mission.orgId === "string" && mission.orgId)
+        ? mission.orgId
+        : (typeof mission.metadata?.orgId === "string" && mission.metadata.orgId)
+            ? mission.metadata.orgId
+            : null;
+}
+
 function _dedupKey(orgId, objective) {
     return `${orgId || "__unscoped__"}::${_normalizeObjectiveForDedup(objective)}`;
 }
@@ -165,7 +189,7 @@ function _getDedupIndex(store) {
     const map = new Map();
     for (const m of store.missions) {
         if (_TERMINAL_STATUSES_FOR_DEDUP.has(m.status)) continue;
-        map.set(_dedupKey(m.orgId, m.objective), m.id);
+        map.set(_dedupKey(_effectiveOrgId(m), m.objective), m.id);
     }
     _dedupIndex = { forStore: store, map };
     return map;
@@ -438,7 +462,10 @@ function createMission(data = {}) {
     }
 
     const store = _loadMissions();
-    const orgId = typeof data.orgId === "string" && data.orgId ? data.orgId : null;
+    // _effectiveOrgId() also recognizes data.metadata.orgId (organizationService
+    // .cjs's convention) so a caller through THAT path is scoped correctly too
+    // — not just the top-level data.orgId this file's own _buildMission() persists.
+    const orgId = _effectiveOrgId(data);
 
     // P0-2 dedup check — see _getDedupIndex() above for scope rules. A hit
     // means an equivalent NON-TERMINAL mission already exists for this exact
