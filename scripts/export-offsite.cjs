@@ -114,8 +114,17 @@ async function runExport() {
         return;
     }
 
+    // DR/Backup mission: safe-backup.cjs now also writes a sibling
+    // `<archive>.manifest.json` alongside each archive (same
+    // `jarvis_full_*` prefix). The old filter here (`!f.endsWith('.enc')`)
+    // matched the manifest too, and since it can share the same mtime as
+    // its archive (or sort before it), `files[0]` could resolve to the
+    // MANIFEST rather than the actual backup archive — encryptBackup()
+    // would then silently encrypt and export the wrong file. Restricting
+    // this to real `.tar.gz` archives is the fix; the manifest is
+    // transferred separately, alongside the encrypted archive, below.
     const files = fs.readdirSync(BACKUP_DIR)
-        .filter(f => f.startsWith('jarvis_full_') && !f.endsWith('.enc'))
+        .filter(f => f.startsWith('jarvis_full_') && f.endsWith('.tar.gz'))
         .sort((a, b) =>
             fs.statSync(path.join(BACKUP_DIR, b)).mtimeMs -
             fs.statSync(path.join(BACKUP_DIR, a)).mtimeMs
@@ -130,6 +139,19 @@ async function runExport() {
     const encryptedPath = encryptBackup(latest, password);
     if (!encryptedPath) return;
 
+    // DR/Backup mission: the manifest (file list + per-file + archive
+    // SHA-256) is what makes a downloaded offsite backup verifiable without
+    // trusting "the transfer said OK" alone — per this mission's own "a
+    // backup must not be considered valid merely because an upload
+    // returned success" rule, that verification capability must travel
+    // WITH the backup, not stay behind on the same disk a real disaster
+    // would also destroy. The manifest itself contains no secret (file
+    // names/sizes/hashes only) and is small — copied alongside unencrypted
+    // is fine; it describes the encrypted archive's plaintext contents by
+    // hash, not the contents themselves.
+    const manifestPath = latest.replace(/\.tar\.gz$/, '.manifest.json');
+    const hasManifest  = fs.existsSync(manifestPath);
+
     const dest = (process.env.BACKUP_OFFSITE_DIR || process.env.BACKUP_DEST || '').trim();
     if (!dest) {
         console.log('[+] BACKUP_OFFSITE_DIR (or BACKUP_DEST) not set — encrypted backup stored locally only.');
@@ -139,12 +161,17 @@ async function runExport() {
     }
 
     const ok = transferOffsite(encryptedPath, dest);
+    let manifestOk = true;
+    if (ok && hasManifest) {
+        manifestOk = transferOffsite(manifestPath, dest);
+        if (!manifestOk) console.error('[!] Manifest transfer failed — the encrypted archive is offsite, but its integrity manifest is not.');
+    }
     console.log('[+] Export complete.');
     // Caller decides what a failed transfer means for its own exit code —
     // this module must not set process.exitCode itself, since safe-backup.cjs
     // require()s runExport() as a step within its own run, and a failed
     // *offsite* copy must not be reported as a failed *local* backup.
-    return { transferred: true, ok, encryptedPath };
+    return { transferred: true, ok: ok && manifestOk, encryptedPath };
 }
 
 if (require.main === module) {

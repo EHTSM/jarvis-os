@@ -86,10 +86,33 @@ router.get("/exports/global/:filename", requireAuth, _serve);
 
 router.get("/exports/:orgScope/:filename", requireAuth, (req, res, next) => {
   if (!/^[A-Za-z0-9_-]+$/.test(req.params.orgScope)) return res.status(400).json({ error: "invalid_scope" });
-  // orgScope in the URL IS the org to resolve — the client doesn't need to
-  // separately pass X-Org-Id/orgId for a link that already names the org.
-  req.query.orgId = req.params.orgScope;
+  // Mission 78 pre-VPS audit: `req.query.orgId = req.params.orgScope` was a
+  // silent no-op on this project's pinned Express 5 (req.query is a getter
+  // with no writable backing store — reproduced live in this exact
+  // environment). attachOrg never saw the intended orgScope, so it fell
+  // through to auto-resolving the CALLER's own primary org instead — and
+  // this route's :orgId path param is actually named :orgScope, so
+  // attachOrg's own highest-priority `req.params?.orgId` source could never
+  // match it either. requireOrgMember then only confirmed membership in the
+  // caller's own (wrong) org, while _serve() below still trusted the raw
+  // URL orgScope directly for file resolution — a real cross-tenant export
+  // disclosure (GDPR exports, founder reports, blueprints), not a
+  // hypothetical one. Fixed the exact way workforce.js's own already-proven
+  // fix for this identical Express 5 pattern does: req.headers is a plain
+  // mutable object in both Express 4 and 5, so setting the header attachOrg
+  // already reads (its highest-priority source after :orgId) works
+  // correctly where req.query assignment does not.
+  req.headers["x-org-id"] = req.params.orgScope;
   next();
-}, attachOrg, requireOrgMember, _serve);
+}, attachOrg, requireOrgMember, (req, res) => {
+  // Second layer, matching this file's own header comment's original intent
+  // (which was never actually enforced): even with attachOrg now correctly
+  // resolving req.org from the URL's orgScope, explicitly confirm the
+  // resolved org's id equals the requested orgScope before serving — a
+  // defense-in-depth check against any future change to attachOrg's
+  // precedence order silently reopening this exact gap.
+  if (!req.org || req.org.id !== req.params.orgScope) return res.status(404).json({ error: "not_found" });
+  _serve(req, res);
+});
 
 module.exports = router;

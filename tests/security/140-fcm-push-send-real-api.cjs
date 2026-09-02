@@ -135,6 +135,58 @@ async function main() {
     assert(/title or body required/.test(result.error || ""), "error message is exact", result.error);
   }
 
+  // Notifications Ecosystem mission: unregisterToken(token) previously took
+  // no accountId at all — any authenticated caller could unregister ANY
+  // other account's device token by knowing/guessing the token string.
+  // POST /push/unregister is gated by requireAuth but had zero ownership
+  // check of its own. Fixed by requiring the caller's own accountId (the
+  // route now derives it from req.user, same as /push/register already
+  // does) and matching it against the stored token's accountId before
+  // deletion.
+  section("unregisterToken — a caller cannot remove another account's token");
+  {
+    delete require.cache[require.resolve("../../backend/services/pushNotificationEngine.cjs")];
+    const svc = require("../../backend/services/pushNotificationEngine.cjs");
+    svc.registerToken({ accountId: "owner-acct", token: "owner-token-1", platform: "android" });
+
+    const stolen = svc.unregisterToken("owner-token-1", "attacker-acct");
+    assert(stolen.removed === 0, "a different account's accountId cannot remove the token", JSON.stringify(stolen));
+    assert(svc.listTokens("owner-acct").some(t => t.token === "owner-token-1"), "the token still exists, untouched, after the attempted cross-account removal");
+
+    const real = svc.unregisterToken("owner-token-1", "owner-acct");
+    assert(real.removed === 1, "the real owner CAN remove their own token", JSON.stringify(real));
+    assert(!svc.listTokens("owner-acct").some(t => t.token === "owner-token-1"), "the token is actually gone after the real owner removes it");
+  }
+
+  section("unregisterToken — no accountId supplied (trusted internal caller, e.g. send()'s own stale-token pruning) is unaffected");
+  {
+    delete require.cache[require.resolve("../../backend/services/pushNotificationEngine.cjs")];
+    const svc = require("../../backend/services/pushNotificationEngine.cjs");
+    svc.registerToken({ accountId: "internal-caller-acct", token: "internal-prune-token", platform: "ios" });
+    const result = svc.unregisterToken("internal-prune-token"); // no accountId — matches send()'s own internal call shape
+    assert(result.removed === 1, "an omitted accountId still removes the token (internal-caller trust, unchanged from before this fix)", JSON.stringify(result));
+  }
+
+  section("unregisterToken — removing a token that does not exist stays a safe no-op (unchanged)");
+  {
+    delete require.cache[require.resolve("../../backend/services/pushNotificationEngine.cjs")];
+    const svc = require("../../backend/services/pushNotificationEngine.cjs");
+    const result = svc.unregisterToken("token-that-was-never-registered", "any-acct");
+    assert(result.ok === true && result.removed === 0, "an unknown token removes nothing and still reports ok:true, matching prior behavior", JSON.stringify(result));
+  }
+
+  section("Wiring — POST /push/unregister derives accountId server-side, never from the request body");
+  {
+    const src = require("fs").readFileSync(require.resolve("../../backend/routes/pushNotifications.js"), "utf8");
+    const unregisterSection = src.slice(src.indexOf('"/push/unregister"'), src.indexOf('"/push/readiness"'));
+    assert(/const accountId = req\.user\.sub \|\| req\.user\.id;/.test(unregisterSection),
+      "/push/unregister resolves accountId from req.user (the verified session), matching /push/register's own pattern");
+    assert(/_svc\(\)\.unregisterToken\(token, accountId\)/.test(unregisterSection),
+      "/push/unregister passes the server-resolved accountId into unregisterToken, not just the raw token");
+    assert(!/_svc\(\)\.unregisterToken\(token\)\)/.test(unregisterSection),
+      "the old unscoped call (token only, no ownership) is gone from the route");
+  }
+
   delete process.env.FIREBASE_PROJECT_ID;
   delete process.env.FIREBASE_SERVICE_ACCOUNT;
 

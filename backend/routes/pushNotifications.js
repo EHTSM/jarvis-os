@@ -21,7 +21,13 @@ router.post("/push/register", requireAuth, (req, res) => {
 router.post("/push/unregister", requireAuth, (req, res) => {
   const { token } = req.body || {};
   if (!token) return _err(res, new Error("token required"), 400);
-  _ok(res, _svc().unregisterToken(token));
+  // Notifications Ecosystem mission fix: accountId is server-resolved from
+  // the verified session (matching /push/register's own pattern just
+  // above), never taken from the request body — a caller may only
+  // unregister their own device tokens, never another account's by
+  // guessing/knowing the token string.
+  const accountId = req.user.sub || req.user.id;
+  _ok(res, _svc().unregisterToken(token, accountId));
 });
 
 router.get("/push/readiness", requireAuth, async (req, res) => {

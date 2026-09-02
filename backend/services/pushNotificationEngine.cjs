@@ -99,10 +99,34 @@ function registerToken({ accountId, token, platform = "android" } = {}) {
   return { ok: true };
 }
 
-function unregisterToken(token) {
+/**
+ * unregisterToken(token, accountId): Notifications Ecosystem mission fix.
+ * The route previously called this with only a raw token and no ownership
+ * check at all — any authenticated caller could unregister ANY other
+ * account's device token just by knowing/guessing the token string (a real
+ * cross-account griefing vector: silently kill someone else's push
+ * delivery with zero relationship to their account). accountId is now
+ * required and matched against the stored token's own accountId before
+ * deletion — a token that exists but belongs to a different account is
+ * left untouched and reported as not-removed, the same honest "no side
+ * effect occurred" signal an absent token already produced.
+ *
+ * The internal stale-token pruning call from send() (above) passes no
+ * accountId, since that path already resolved the token's ownership by
+ * construction (it is pruning one of `targets`, which listTokens() already
+ * scoped to the caller's own accountId) — an omitted accountId here means
+ * "trusted internal caller," never "skip the check for an external request."
+ * The route layer (pushNotifications.js) is the only external caller and
+ * always supplies req.user's own accountId, never a client-supplied value.
+ */
+function unregisterToken(token, accountId) {
   const store = _load();
   const before = store.tokens.length;
-  store.tokens = store.tokens.filter(t => t.token !== token);
+  store.tokens = store.tokens.filter(t => {
+    if (t.token !== token) return true; // keep — not the target token
+    if (accountId && t.accountId !== accountId) return true; // keep — caller doesn't own this token
+    return false; // remove
+  });
   _save(store);
   return { ok: true, removed: before - store.tokens.length };
 }

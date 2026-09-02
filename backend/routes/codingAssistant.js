@@ -912,7 +912,21 @@ router.get("/coding/patch-history/:histId/export", async (req, res) => {
         // convention of not confirming existence to a non-owner.
         if (!rec || !req.org?.id || rec.orgId !== req.org.id) return res.status(404).json({ ok: false, error: "patch not found" });
 
-        const ROOT = req.query.cwd || path.join(__dirname, "../../");
+        // Mission 78 pre-VPS audit: this route was added after the 2026-08-21
+        // Command Injection & Process Execution Deep Security Sweep (see this
+        // file's own header comment and the router-level middleware around
+        // line 250) and never received the same fix — it read req.query.cwd
+        // directly, bypassing the sanitized req.safeQueryCwd every other
+        // query-cwd route in this file already uses. Live impact: any
+        // authenticated org member who owns a patch record could set
+        // ?cwd=/etc (or any host directory readable by the server process)
+        // and have this route read arbitrary files into the exported ZIP via
+        // path.join(ROOT, rel) below, not just files from the real project
+        // root. Fixed to match this file's own established convention
+        // exactly: use the already-sanitized req.safeQueryCwd the shared
+        // middleware stashes for every route, rather than re-deriving it or
+        // reading the raw query value.
+        const ROOT = req.safeQueryCwd || path.join(__dirname, "../../");
         const archiver = require("archiver");
         const { PassThrough } = require("stream");
         const stream = new PassThrough();
@@ -929,7 +943,17 @@ router.get("/coding/patch-history/:histId/export", async (req, res) => {
 
         let included = 0;
         for (const rel of rec.appliedFiles || []) {
-            const abs = path.isAbsolute(rel) ? rel : path.join(ROOT, rel);
+            // Mission 78 pre-VPS audit: `rel` values originate from AI-
+            // generated patch content (patchSpecs.targetFile, set from the
+            // model's own response text elsewhere in this file), not a
+            // trusted internal identifier — treating an absolute `rel` as a
+            // literal filesystem path let a stored record read any
+            // host-readable file regardless of ROOT's own safety, and a
+            // relative `rel` containing ".." could still escape ROOT after
+            // path.join. Reject both shapes rather than trusting stored
+            // patch data as a path-safety boundary.
+            if (typeof rel !== "string" || path.isAbsolute(rel) || rel.split(/[\\/]/).includes("..")) continue;
+            const abs = path.join(ROOT, rel);
             if (fs.existsSync(abs) && fs.statSync(abs).isFile()) {
                 archive.append(fs.readFileSync(abs), { name: `files/${rel.replace(/^[/\\]+/, "")}` });
                 included++;

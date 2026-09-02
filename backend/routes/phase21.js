@@ -40,12 +40,30 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
 const oauth  = require("../services/oauthIntegrationLayer.cjs");
 const obs    = require("../services/observabilityEngine.cjs");
 const live   = require("../services/autonomousCompanyLiveMode.cjs");
 const ready  = require("../services/productionReadinessEngine.cjs");
+
+// Monitoring Ecosystem mission: every /p21/obs/* route below was gated by
+// requireAuth alone — observabilityEngine.cjs has no orgId concept
+// anywhere (confirmed by direct inspection), meaning this is genuinely
+// platform-wide founder/operator telemetry (metrics, alert rules,
+// structured logs, health snapshots), not per-org data. Any ordinary
+// signed-up user could read the whole platform's operational log stream
+// (GET /p21/obs/logs), including entries any other authenticated user had
+// written via POST /p21/obs/log, and could register/evaluate alert rules
+// platform-wide. Same defect class already found and fixed for
+// revenueOS.js's platform-wide financial data in an earlier mission
+// ("Previously gated by requireAuth alone, so any signed-up customer could
+// read the whole platform's revenue numbers") — fixed the identical way,
+// reusing the existing operatorOnly gate rather than inventing a new
+// authorization concept. Scoped to exactly the /p21/obs prefix so 21A
+// (OAuth) and 21C (Live Mode) below, which are unrelated to this
+// category's scope, are untouched.
+router.use("/p21/obs", requireAuth, operatorOnly);
 
 // ── 21A OAuth Integration Layer ────────────────────────────────────────────
 // Auth URL and callback are intentionally open (unauthenticated) because
@@ -106,57 +124,60 @@ router.delete("/oauth/:provider/revoke", requireAuth, async (req, res) => {
 });
 
 // ── 21B Observability Engine ──────────────────────────────────────────────
+// Gated by the router.use("/p21/obs", requireAuth, operatorOnly) above —
+// platform-wide founder/operator telemetry, not per-org data (see that
+// comment for the full defect/fix rationale).
 
-router.post("/p21/obs/metrics", requireAuth, (req, res) => {
+router.post("/p21/obs/metrics", (req, res) => {
     const { name, value, tags } = req.body || {};
     if (!name || value === undefined) return res.status(400).json({ error: "name and value required" });
     obs.recordMetric(name, value, tags || {});
     res.json({ success: true, recorded: { name, value } });
 });
 
-router.get("/p21/obs/metrics/:name", requireAuth, (req, res) => {
+router.get("/p21/obs/metrics/:name", (req, res) => {
     const { since, limit } = req.query;
     res.json({ success: true, metric: req.params.name, ...obs.getMetric(req.params.name, { since, limit: parseInt(limit)||200 }) });
 });
 
-router.get("/p21/obs/metrics", requireAuth, (req, res) => {
+router.get("/p21/obs/metrics", (req, res) => {
     res.json({ success: true, metrics: obs.listMetrics() });
 });
 
-router.post("/p21/obs/alerts", requireAuth, (req, res) => {
+router.post("/p21/obs/alerts", (req, res) => {
     try {
         res.json({ success: true, ...obs.registerAlert(req.body || {}) });
     } catch (e) { res.status(400).json({ error: e.message }); }
 });
 
-router.post("/p21/obs/alerts/evaluate", requireAuth, (req, res) => {
+router.post("/p21/obs/alerts/evaluate", (req, res) => {
     res.json({ success: true, ...obs.evaluateAlerts() });
 });
 
-router.get("/p21/obs/alerts", requireAuth, (req, res) => {
+router.get("/p21/obs/alerts", (req, res) => {
     res.json({ success: true, ...obs.getAlerts({ includeInactive: req.query.all === "1" }) });
 });
 
-router.post("/p21/obs/log", requireAuth, (req, res) => {
+router.post("/p21/obs/log", (req, res) => {
     const { level, msg, ...ctx } = req.body || {};
     if (!msg) return res.status(400).json({ error: "msg required" });
     obs.structuredLog(level || "info", msg, ctx);
     res.json({ success: true, logged: true });
 });
 
-router.get("/p21/obs/logs", requireAuth, (req, res) => {
+router.get("/p21/obs/logs", (req, res) => {
     const { limit, level, service, since } = req.query;
     res.json({ success: true, ...obs.queryLogs({ limit: parseInt(limit)||200, level, service, since }) });
 });
 
-router.get("/p21/obs/health", requireAuth, async (req, res) => {
+router.get("/p21/obs/health", async (req, res) => {
     try {
         const result = await obs.probeHealth();
         res.json({ success: true, ...result });
     } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/p21/obs/snapshot", requireAuth, async (req, res) => {
+router.get("/p21/obs/snapshot", async (req, res) => {
     try {
         const snap = await obs.getSnapshot();
         res.json({ success: true, snapshot: snap });

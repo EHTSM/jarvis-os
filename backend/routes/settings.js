@@ -99,6 +99,16 @@ router.post("/settings/whatsapp", requireAuth, async (req, res) => {
     return res.status(400).json({ error: "phoneId must be a numeric Meta Phone Number ID (10–20 digits)" });
   }
 
+  // Mission 80: this previously fell back to a hardcoded "ooplix_verify"
+  // constant when no verifyToken was supplied — a single guessable value
+  // shared by every install that hit this fallback, functionally identical
+  // to the .env.example placeholder this same mission removed. A missing
+  // verify token must fail the request, not silently choose a public secret.
+  const resolvedVerifyToken = (verifyToken || process.env.WA_VERIFY_TOKEN || "").trim();
+  if (!resolvedVerifyToken) {
+    return res.status(400).json({ error: "verifyToken is required — set a real random value (not a guessable word) for Meta webhook verification" });
+  }
+
   // Persist to data/settings.json
   const existing = _load();
   const updated  = {
@@ -106,7 +116,7 @@ router.post("/settings/whatsapp", requireAuth, async (req, res) => {
     whatsapp: {
       token:       token.trim(),
       phoneId:     String(phoneId).trim(),
-      verifyToken: (verifyToken || process.env.WA_VERIFY_TOKEN || "ooplix_verify").trim(),
+      verifyToken: resolvedVerifyToken,
       apiVersion:  (apiVersion  || process.env.WA_API_VERSION  || "v19.0").trim(),
     },
   };

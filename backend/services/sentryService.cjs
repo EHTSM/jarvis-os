@@ -18,12 +18,49 @@
  * CLI, not this HTTP-envelope client) — the doc line claiming a stub
  * existed was itself inaccurate and has been removed rather than left to
  * imply a capability this file doesn't have.
+ *
+ * Monitoring Ecosystem mission: captureException()/captureMessage()'s
+ * tags/extra/user context is now redacted (see _redact() below) before
+ * being sent — every current call site already only passes safe static
+ * values, but this closes the gap at the shared choke point so a future
+ * caller can't accidentally leak a secret/token/password/session value to
+ * a real third-party service.
  */
 
 const https  = require("https");
 const crypto = require("crypto");
 
 function _env(k) { return process.env[k] || ""; }
+
+// ── Redaction ─────────────────────────────────────────────────────────────────
+// Monitoring Ecosystem mission: captureException()/captureMessage() passed
+// context.tags/extra/user straight through to Sentry's real envelope with
+// zero scrubbing. Every current call site (backend/server.js's global error
+// handler + the two process-level handlers) only ever passes safe static
+// strings/req.originalUrl — genuinely safe today, by caller discipline, not
+// because this function enforces it. A future caller passing req.body,
+// req.headers, or a raw user/session object into context would leak
+// secrets/tokens/PII to a real third-party service with no guard at the one
+// shared choke point every capture call already goes through. Modeled after
+// toolExecutionLayer.cjs's _sanitizeParams() key-matching regex for
+// consistency, extended with recursion since Sentry context is often nested
+// (e.g. context.user, context.extra.request).
+const _SENSITIVE_KEY_RE = /token|secret|key|password|passwd|auth|credential|cookie|session|dsn|apikey/i;
+const _REDACTED = "[redacted]";
+
+function _redact(value, depth = 0) {
+  if (depth > 6) return "[max-depth]"; // guard against pathological/circular input, not a real use case
+  if (value === null || value === undefined) return value;
+  if (Array.isArray(value)) return value.map(v => _redact(v, depth + 1));
+  if (typeof value === "object") {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) {
+      out[k] = _SENSITIVE_KEY_RE.test(k) ? _REDACTED : _redact(v, depth + 1);
+    }
+    return out;
+  }
+  return value;
+}
 
 // ── DSN parsing ───────────────────────────────────────────────────────────────
 
@@ -109,9 +146,9 @@ async function captureException(err, context = {}) {
           stacktrace: { frames: _parseStack(err?.stack || "") },
         }],
       },
-      tags:   context.tags || {},
-      extra:  context.extra || {},
-      user:   context.user || {},
+      tags:   _redact(context.tags || {}),
+      extra:  _redact(context.extra || {}),
+      user:   _redact(context.user || {}),
     }
   );
   return _send(envelope);
@@ -133,8 +170,8 @@ async function captureMessage(message, level = "info", context = {}) {
       environment: _env("SENTRY_ENVIRONMENT") || _env("NODE_ENV") || "production",
       release:     _env("SENTRY_RELEASE") || "unknown",
       message:     { formatted: message },
-      tags:        context.tags || {},
-      extra:        context.extra || {},
+      tags:        _redact(context.tags || {}),
+      extra:       _redact(context.extra || {}),
     }
   );
   return _send(envelope);

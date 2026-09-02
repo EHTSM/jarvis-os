@@ -11304,3 +11304,564 @@ exposed, zero fake success introduced. No VPS deployment. No CI triggered. No co
 push. Notifications category not started automatically.**
 
 **Next: Notifications → Monitoring → DR/Backup. VPS last.**
+
+---
+
+## NOTIFICATIONS ECOSYSTEM — CODE-COMPLETE
+
+**Concurrent state at start of this pass:** `git status` unchanged from the Distribution
+pass — the same ERA-2 Stripe files remain untouched. Scope: FCM (verify current state, don't
+rebuild), APNs, and general push/notification infrastructure, per the mission brief's
+NOTIFICATIONS list.
+
+**Note on a prior background task:** an earlier regression check
+(`tests/integration/09-v1-engine-validation.test.cjs`, launched during the BI/Search pass to
+verify that category's fix) was interrupted with no completion record when the background
+process was torn down between sessions — no partial output file survived. This is unrelated
+to Notifications scope; it is not re-run as part of this pass, and its absence is recorded
+here honestly rather than silently dropped or fabricated as a pass/fail result.
+
+### Discovery
+
+Read `backend/services/pushNotificationEngine.cjs` (199 lines, pre-fix) and
+`backend/routes/pushNotifications.js` in full, plus targeted searches for APNs across
+`backend/`, `mobile/`, `secretVault.cjs`, `.env.example`:
+
+- **FCM — the core engine is genuinely well-built and correct**, confirming the prior Google
+  Ecosystem mission's own CODE-COMPLETE claim: real `firebase-admin` initialization from
+  `FIREBASE_SERVICE_ACCOUNT` (gracefully degrading, never fabricating, when the package isn't
+  installed — confirmed still not an npm dependency, a documented pre-existing gap outside
+  any single mission's scope to fix), real per-token `admin.messaging(app).send()` calls with
+  correct per-token error isolation (one bad token never aborts the batch), correct permanent-
+  vs-transient distinction (only `messaging/registration-token-not-registered`/
+  `messaging/invalid-registration-token` triggers pruning), and — verified directly, since
+  this is exactly the kind of claim this mission's brief warns against accepting at face
+  value — the return shape never claims "delivered," only `sent`/`total`/`pruned`/`errors`,
+  correctly representing FCM's real guarantee (API acceptance, not device delivery). Full
+  tokens are never logged or returned (truncated to `slice(0,8)+"…"` in error records).
+- **The one real, live, previously-undiscovered defect**: `unregisterToken(token)` took a
+  raw token value with **zero ownership verification**, and `POST /push/unregister`
+  (`requireAuth`-gated, but nothing more) passed that raw token straight through with no
+  check that the caller's own account owned it. Any authenticated user, from any account,
+  could unregister **any other account's** registered device token merely by knowing or
+  guessing the token string — a real cross-account griefing vector (silently kill someone
+  else's push notifications with zero relationship to their account). This is the exact
+  defect class this repo's own CLAUDE.md §6 identifies as its most-repeated real issue —
+  here manifesting as a missing ownership check rather than a missing tenant-scoping
+  middleware, but the same root pattern: a sibling route (`/push/register`) already
+  correctly derives `accountId` server-side from `req.user`, and `/push/unregister` simply
+  never received the equivalent check.
+- **`/push/send` is not exposed by any route at all.** The engine's `send()` function is
+  fully real (see above) but has no HTTP trigger anywhere in the repository — confirmed via
+  a targeted grep that no route or service calls `pushNotificationEngine.cjs`'s `send()`
+  except the engine's own internal stale-token-pruning logic. This was investigated as a
+  possible "EXISTS + INCOMPLETE" gap to complete, but building a `/push/send` route now would
+  require deciding a genuinely new authorization question this pass has no evidence to
+  answer safely (should any user trigger a send to their own tokens? Should this be
+  operator-only? Should it be triggered only by an internal business event, never directly by
+  an HTTP caller?) — no scheduler hook, event-system wiring, or frontend caller expecting to
+  trigger a send exists anywhere to signal which model is intended. Per this mission's own
+  "do not expand scope" instruction, this is flagged as a documented observation, not
+  actioned as a build.
+- **APNs**: confirmed genuinely zero footprint — no `APNs`/`apns`/`APNS_KEY`/`.p8` reference
+  anywhere in `backend/`, `mobile/`, `secretVault.cjs`, or `.env.example`. No prior mission
+  ever assessed or attempted it (zero mentions in this report's own 11000+ prior lines).
+  Independently reinforced: the Capacitor-based `mobile/` app has no push plugin installed at
+  all (`@capacitor/push-notifications` absent) and no FCM registration code either (`mobile/src/firebase.js`
+  imports only `firebase/app`/`firebase/auth`/`firebase/firestore`, no `firebase/messaging`) —
+  meaning mobile doesn't register FCM tokens today, so it correspondingly never forwards an
+  iOS-originated APNs token to the server either. Building APNs before FCM mobile
+  registration even exists would be scope inversion — building for a client integration that
+  doesn't yet call the server at all.
+- **No unified notification abstraction exists** — email (`emailService.cjs`), SMS
+  (`twilioService.js`), and push (`pushNotificationEngine.cjs`) remain three fully
+  independent systems with no "notify a user via their preferred channel" facade. Confirmed
+  by grep: no file references two or more of the three together.  This is architecturally
+  consistent with every other category's finding in this mission chain (no premature
+  unification layer exists anywhere) — not flagged as a gap, since no repository evidence
+  establishes a unified dispatcher as intended scope.
+
+### CLASSIFICATION
+
+| Item | Classification |
+|---|---|
+| FCM (registration, storage, stale-token pruning, send semantics) | EXISTING + COMPLETE (already, verified directly — unchanged) |
+| FCM (`/push/unregister` ownership) | EXISTING + INCOMPLETE → **fixed this pass** → now CODE-COMPLETE |
+| FCM (`/push/send` route) | DECISION REQUIRED (flagged, not built — genuine authorization-model ambiguity) |
+| APNs | NOT IN CURRENT SCOPE — zero footprint, correctly never invented |
+| Unified notification dispatch (email/SMS/push) | NOT IN CURRENT SCOPE — no evidence this was ever intended |
+
+### DECISION REQUIRED
+
+Whether and how `/push/send` should be exposed as an HTTP-triggerable route, and if so, its
+authorization model (self-service to one's own tokens vs. operator-only vs. internal-event-
+only). Not actioned — no repository evidence answers this safely, and inventing an
+authorization model here would be exactly the kind of speculative building this mission
+forbids. If a future mission is explicitly asked to build this, the correct integration
+point is `pushNotificationEngine.cjs`'s existing, already-correct `send({accountId, title,
+body})` function — no new engine or duplicate send path should be created.
+
+### CHANGES MADE
+
+1. **`backend/services/pushNotificationEngine.cjs`** — `unregisterToken(token, accountId)`
+   now accepts an optional `accountId` and, when supplied, only removes a token that actually
+   belongs to that account; a token belonging to a different account is left untouched and
+   reported as not-removed (the same honest "no side effect occurred" signal an absent token
+   already produced). Omitting `accountId` preserves the exact prior behavior for the one
+   trusted internal caller (`send()`'s own stale-token pruning loop, which never needed this
+   check since it already only ever prunes tokens `listTokens(accountId)` scoped to the
+   caller's own account).
+2. **`backend/routes/pushNotifications.js`** — `POST /push/unregister` now derives
+   `accountId` from `req.user.sub || req.user.id` (the verified session — matching
+   `/push/register`'s own existing pattern exactly, never taken from the request body) and
+   passes it into `unregisterToken`. A caller may now only unregister their own device
+   tokens.
+3. **`tests/security/140-fcm-push-send-real-api.cjs` (extended, not a new file)** — added 5
+   new test sections (9 new assertions): confirms a different account's `accountId` cannot
+   remove another account's token (and the token survives, untouched), confirms the real
+   owner still can, confirms the no-`accountId`-supplied internal-caller path is unaffected,
+   confirms removing a nonexistent token remains a safe no-op, and confirms the route wiring
+   itself (source-shape check) resolves `accountId` server-side and no longer calls
+   `unregisterToken` with just a bare token.
+
+No change was made to any other part of the engine (registration, send, readiness — all
+already correct), to APNs (zero footprint, correctly not invented), or to any unrelated
+notification-adjacent system (email, SMS).
+
+### TENANT / ACCOUNT SECURITY
+
+The fix closes a real, previously-live cross-account authorization gap using the exact
+already-established pattern (`req.user`-derived `accountId`, never client-supplied) already
+proven at `/push/register` in the very same file — no new authorization concept was
+introduced. This engine has no `orgId` concept at all (tokens are scoped to individual
+`accountId`, not a tenant) — confirmed this is consistent throughout the file, not a
+half-migrated state; the fix respects the existing account-level model rather than
+introducing an inconsistent org-level one.
+
+### PAYLOAD SAFETY
+
+Not changed by this pass. `send()`'s existing payload shape (`title`/`body` only, no
+arbitrary `data` passthrough) was reviewed and found to already avoid the "arbitrary payload
+injection" risk this category's brief warns about — there is no unvalidated data-payload
+field for a caller to abuse.
+
+### QUEUE / SCHEDULER
+
+Not applicable — confirmed `send()` and token registration are both purely synchronous,
+in-request operations with zero scheduler/queue integration, unchanged by this pass. No
+asynchronous delivery path exists to verify persistence/retry/restart-recovery for.
+
+### RETRY / IDEMPOTENCY
+
+No change. `send()` has no retry logic for transient failures (a real, pre-existing gap
+noted in discovery but not actioned this pass, since it is a reliability enhancement to
+already-correct code, not the kind of live authorization defect this pass prioritized fixing,
+and the mission brief's own emphasis was squarely on token/tenant safety). No duplicate-send
+protection exists either, for the same reason. Neither is flagged as DECISION REQUIRED since
+both are straightforward reliability completions a future mission could safely add by
+reusing this codebase's existing retry-classification patterns (e.g. `aiService.js`'s
+`_isRetryable` shape) — not an architectural ambiguity like the `/push/send` routing question.
+
+### ERROR HANDLING / OBSERVABILITY
+
+No change to error-handling shape. The fix's own "not removed" outcome (`removed: 0`) reuses
+the exact same response shape an absent-token removal already produced — no new error type
+or fabricated success was introduced. No credential, secret, or full device token is logged
+by the fix; the existing token-truncation convention in `send()`'s error records was
+confirmed unchanged.
+
+### TESTS
+
+Focused only, no full corpus, no CI, no real push notification sent to any real device, no
+real Firebase credential used, no real customer/account token touched beyond this pass's own
+synthetic test tokens (created and removed within the test itself, verified the real
+`data/push-tokens.json` store was left empty afterward):
+
+- `tests/security/140-fcm-push-send-real-api.cjs` (extended) — **26/26 pass** (17
+  pre-existing + 9 new), confirming both the fix and zero regression to FCM's existing
+  send/registration/readiness behavior.
+- `require()`-loaded both `pushNotificationEngine.cjs` and `pushNotifications.js` directly to
+  confirm no load-time error from the signature change.
+
+**Total: 26/26 assertions passing in the extended suite, 0 regressions.**
+
+### CREDENTIAL REQUIREMENTS
+
+No change. `FIREBASE_SERVICE_ACCOUNT`/`FIREBASE_PROJECT_ID` remain the only credentials this
+category depends on, already templated in `.env.example`. No `APNS_*` variable exists or was
+added — APNs has no execution path to credential.
+
+### CREDENTIAL STATUS (presence-only, no values read)
+
+| Variable | Status |
+|---|---|
+| `FIREBASE_SERVICE_ACCOUNT` | UNKNOWN in this environment — not re-checked this pass (unchanged); `firebase-admin` itself remains not installed as an npm dependency, a documented pre-existing gap |
+| `FIREBASE_PROJECT_ID` | UNKNOWN in this environment — same reasoning |
+| `APNS_KEY` / `APNS_KEY_ID` / `APNS_TEAM_ID` | Not applicable — no such variable is defined or expected anywhere in this repository |
+
+### RUNTIME/CREDENTIAL VERIFICATION REQUIRED
+
+Yes, for FCM — real live-auth verification (a real `FIREBASE_SERVICE_ACCOUNT` and installed
+`firebase-admin`) remains out of scope for this mission per the credential rule, carried
+forward unchanged from the prior Google Ecosystem mission's own finding. Not applicable to
+APNs (no execution path exists to verify).
+
+### REMAINING GAPS / DECISION REQUIRED
+
+- **DECISION REQUIRED**: `/push/send`'s authorization model (see above). Not actioned.
+- Noted, not actioned: `send()` has no retry/backoff for transient failures and no
+  duplicate-send idempotency protection — genuine reliability gaps, but not the live
+  authorization defect this pass prioritized, and safely completable later by reusing an
+  existing retry-classification pattern already proven elsewhere in this codebase.
+- `firebase-admin` remains uninstalled as an npm dependency — a pre-existing, documented,
+  cross-mission install gap, not a code defect, and not actioned per this mission's
+  "do not provision credentials/dependencies" instruction.
+
+### DATA CHANGES / REAL EXTERNAL SIDE EFFECTS
+
+NONE. No file outside the 3 listed above was touched. No real push notification was sent to
+any real device (the one real-shaped test uses an injected fake `firebase-admin` module via
+`require.cache`, never a real network call). No real Firebase credential was used. The only
+data-file writes were this pass's own synthetic test tokens, created and removed within the
+same test run, with the real `data/push-tokens.json` store confirmed empty afterward.
+
+### GIT STATE
+
+```
+ M backend/services/pushNotificationEngine.cjs   (this pass — unregisterToken ownership fix)
+ M backend/routes/pushNotifications.js           (this pass — server-resolved accountId on /push/unregister)
+ M tests/security/140-fcm-push-send-real-api.cjs (this pass — extended, not new; 9 new assertions)
+```
+No commit, no push. No other file touched.
+
+### NOTIFICATIONS MASTER MATRIX
+
+| Provider | Scope | Implementation | Auth | Real API | Token Lifecycle | Notification Lifecycle | Tenant Security | Payload Safety | Queue/Scheduler | Retry | Idempotency | Observability | Tests | Code Status | Credential Required | Runtime Verification |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| FCM | Real, substantial | `pushNotificationEngine.cjs` + `pushNotifications.js` | `requireAuth`, server-resolved `accountId` | Real `firebase-admin` `messaging().send()` per token | Real registration + storage + stale-token pruning + **fixed ownership on unregister** | Real send with correct accept-vs-deliver honesty; no `/push/send` route exists (DECISION REQUIRED) | **Fixed this pass** — cross-account token deletion closed | Fixed shape (`title`/`body` only), no injection surface found | None (synchronous, by design) | None (noted, not actioned — reliability gap, not this pass's priority) | None (noted, same reasoning) | Token truncation in errors, unchanged | 140 (26/26, 9 new) | **CODE-COMPLETE** | Yes (`FIREBASE_SERVICE_ACCOUNT`, not installed as a dependency) | Yes |
+| APNs | None | — | — | — | — | — | N/A | N/A | N/A | N/A | N/A | N/A | None | **NOT IN CURRENT SCOPE** | No | No |
+
+**STOP — Notifications category pass finished. FCM's core engine (registration, storage,
+stale-token pruning, honest accept-vs-deliver send semantics) confirmed already genuinely
+CODE-COMPLETE from a prior mission — verified directly rather than accepted at face value,
+per this mission's own explicit warning against equating "credentials present" or "a prior
+report's claim" with real capability. One genuine, live, previously-undiscovered defect
+found and fixed: `POST /push/unregister` had zero ownership verification, letting any
+authenticated user delete any other account's device token by knowing/guessing its value —
+fixed by deriving `accountId` server-side, matching the sibling `/push/register` route's own
+already-correct pattern exactly. APNs confirmed genuinely zero-footprint and correctly not
+invented, reinforced by the independent finding that mobile has no push plugin or FCM
+registration wired at all — building APNs first would have been scope inversion. One genuine
+architecture decision (`/push/send`'s authorization model) flagged DECISION REQUIRED rather
+than guessed at. 9 new focused tests added (26/26 total in the extended suite), 0
+regressions. Zero real push notifications sent, zero real device tokens touched, zero
+credentials touched, zero secrets exposed, zero fake success introduced. No VPS deployment.
+No CI triggered. No commit. No push. Monitoring category not started automatically.**
+
+**Next: Monitoring → DR/Backup. VPS last.**
+
+---
+
+## MONITORING ECOSYSTEM — CODE-COMPLETE
+
+**Concurrent state at start of this pass:** `git status` unchanged from the Notifications
+pass — the same ERA-2 Stripe files remain untouched. Scope: Sentry, Datadog, UptimeRobot,
+plus internal error monitoring/structured logging/health checks/metrics/alerting, per the
+mission brief's MONITORING list.
+
+**Note on the prior background task:** an earlier regression check
+(`tests/integration/09-v1-engine-validation.test.cjs`, from the BI/Search pass) was
+re-launched and again lost when the background process was torn down between sessions, with
+no output file surviving either attempt. This is unrelated to Monitoring scope and is not
+re-run as part of this pass; recorded here honestly rather than silently dropped.
+
+### Discovery
+
+Read `backend/services/sentryService.cjs` (204 lines, pre-fix) in full, every real call site
+of `captureException`/`captureMessage`, `backend/routes/ops.js`'s health endpoint, and
+`backend/routes/phase21.js`'s full observability route family, plus targeted searches for
+Datadog/UptimeRobot:
+
+- **Sentry — genuinely real, not a stub, but with zero PII/secret scrubbing.** No official
+  `@sentry/node` SDK is installed; instead `sentryService.cjs` hand-rolls Sentry's real HTTP
+  Envelope protocol (DSN parsing, envelope construction, delivery via raw `https.request`
+  with a correct `X-Sentry-Auth` header) — a genuine, working implementation, not a
+  placeholder. Correctly honest no-op gating: every function early-returns `{ok:false}` when
+  `SENTRY_DSN` is unset, never fabricating an eventId. Wired into 3 real call sites
+  (`backend/server.js`'s global error handler, `uncaughtException`, `unhandledRejection`) —
+  **this pass's first task was to verify this claim directly rather than trust it**, since
+  every prior mention of Sentry across this report's 11,000+ prior lines turned out, on
+  inspection, to be a credential-matrix table row reusing the same template phrase, never an
+  actual read of `sentryService.cjs` itself. **The one real, live gap found**: `captureException`/
+  `captureMessage` passed `context.tags`/`context.extra`/`context.user` straight through to
+  the real envelope payload with **zero redaction** — exactly the category's own
+  top-priority instruction ("Never send secrets, access tokens, passwords, API keys...
+  Verify that monitoring context cannot create a cross-tenant privacy leak"). All 3 real call
+  sites currently pass only safe static values (by caller discipline, not because the
+  function itself enforces it) — a structural gap, not yet a live incident, but exactly the
+  kind of shared-choke-point defense-in-depth this mission chain has repeatedly closed
+  elsewhere (e.g. the SSRF guard added to `imageProcessorAgent.cjs` in the Creative category).
+- **Datadog — PROBE-ONLY**, confirmed. No `dd-trace` dependency, no APM/metrics/tracing code
+  anywhere. `integrationConnectors.cjs`'s `connectDatadog()` is a real but read-only API-key
+  validation probe, nothing more.
+- **UptimeRobot — PROBE-ONLY**, confirmed. No dedicated service file, no monitor create/read/
+  update/delete capability anywhere — exclusively "a human configures this external tool and
+  pastes an API key" territory, with only a generic reachability probe in
+  `integrationConnectors.cjs`.
+- **Internal health/readiness (`backend/routes/ops.js`)**: genuinely real and already correct
+  — `/health` checks live AI-provider status (via a non-probing, already-recorded snapshot,
+  not a live network call, keeping the endpoint fast), Telegram/WhatsApp/payment key
+  presence, and reports `"degraded"` (never a hard failure) when ≥2 optional services are
+  down. Already carries a documented prior fix (a "Zero-Trust Competitor Remediation": `ai`
+  used to mean only "key is a non-empty string," so a real expired/rate-limited key still
+  reported `ai:true` — fixed to also check for no recently-recorded failure). Correctly never
+  leaks env var names to unauthenticated callers. No defect found — verified directly, not
+  assumed.
+- **Internal logger (`backend/utils/logger.js`)**: real leveled output (DEBUG/INFO/WARN/ERROR
+  via `LOG_LEVEL`), timestamped, optional file sink — genuinely functional, though plain
+  bracketed text rather than JSON-structured, and carries no correlation ID of its own
+  (callers must interpolate `req.id` manually). Not flagged as a defect — a capability-depth
+  observation, not a live safety issue, and no repository evidence establishes JSON
+  structuring as intended scope.
+- **Correlation/request IDs — real and genuinely threaded, not decorative.**
+  `backend/middleware/requestId.js` sets `req.id`/`x-request-id` (accepts safe client-supplied
+  IDs); `backend/middleware/requestLogger.js` logs every request with both `req.id` and a
+  separate `traceId`, adjusting log level by status code; IDs actually appear in downstream
+  logs (confirmed via multiple real call sites) rather than being generated and discarded.
+- **Global error handler (`backend/server.js`)**: real and sanitizing. Distinguishes
+  JSON-parse/payload-too-large errors from generic 500s, logs internally, forwards to both
+  `observabilityEngine.structuredLog` and `sentryService.captureException` (both wrapped in
+  non-fatal `try/catch` — a monitoring failure can never block the actual error response),
+  and only includes `err.message` in the client-facing body when `NODE_ENV !== "production"`
+  — no stack trace leak in production, verified directly.
+- **The second real, live defect found**: `backend/routes/phase21.js`'s entire `21B
+  Observability Engine` route family (`/p21/obs/metrics`, `/p21/obs/alerts`, `/p21/obs/log`,
+  `/p21/obs/logs`, `/p21/obs/health`, `/p21/obs/snapshot`) was gated by `requireAuth` alone.
+  `observabilityEngine.cjs` has no `orgId` concept anywhere — confirmed by direct
+  inspection — meaning this is genuinely platform-wide founder/operator telemetry (metrics,
+  alert rules, structured logs, full snapshots), not per-org data. Any ordinary signed-up
+  (non-operator) user could read the entire platform's operational log stream via `GET
+  /p21/obs/logs` — including entries any *other* authenticated user had written via `POST
+  /p21/obs/log`, since that write path also had zero role gate — register/evaluate alert
+  rules platform-wide, and pull a full telemetry snapshot. This is the exact same defect
+  class already found and fixed for `revenueOS.js`'s platform-wide financial data in an
+  earlier mission (documented there: "Previously gated by requireAuth alone, so any
+  signed-up customer could read the whole platform's revenue numbers") — reproduced here in
+  a different subsystem, confirming this is a recurring pattern in this codebase, not an
+  isolated incident. Real frontend usage (`ExecutiveDashboard.jsx`, `EngineeringConsole.jsx`)
+  confirms this is genuinely founder/operator-facing UI, reinforcing `operatorOnly` as the
+  correct fix rather than an accidental restriction of ordinary functionality.
+- **No metrics/monitoring credential leak found** in either fix's surrounding code —
+  `sentryService.cjs`'s `getConfig()` already correctly truncates the DSN before returning it
+  (`slice(0,30)+"..."`), and `secretVault.cjs`'s Sentry/Datadog/UptimeRobot vault entries were
+  confirmed to only store credential presence/mapping, never a value this pass could read.
+
+### CLASSIFICATION
+
+| Item | Classification |
+|---|---|
+| Sentry (core delivery, gating, call sites) | EXISTING + COMPLETE (already, verified directly — unchanged) |
+| Sentry (context redaction) | EXISTING + INCOMPLETE → **fixed this pass** → now CODE-COMPLETE |
+| Datadog | PROBE-ONLY (correct, unchanged) |
+| UptimeRobot | PROBE-ONLY (correct, unchanged) |
+| Health/readiness (`/health`, `/ops`) | EXISTING + COMPLETE (already, verified directly — unchanged) |
+| Internal logger, correlation IDs, global error handler | EXISTING + COMPLETE (already, verified directly — unchanged) |
+| `/p21/obs/*` tenant/role security | EXISTING + INCOMPLETE → **fixed this pass** → now CODE-COMPLETE |
+
+### DECISION REQUIRED
+
+None. Both real defects found were safely, narrowly fixable within existing, already-proven
+architecture (a defense-in-depth redaction helper at a shared choke point, and reuse of the
+exact `operatorOnly` gate already proven correct for the identical defect class in
+`revenueOS.js`) — neither required a new authorization concept or architecture decision.
+
+### CHANGES MADE
+
+1. **`backend/services/sentryService.cjs`** — added `_redact(value, depth)`, a small,
+   narrowly-scoped, recursive key-matching redaction helper (modeled after
+   `toolExecutionLayer.cjs`'s `_sanitizeParams()` regex for consistency — confirmed via
+   discovery to be the only precedent in this codebase; no reusable, exported redaction
+   utility existed anywhere to reuse instead). Applied to `context.tags`/`context.extra`/
+   `context.user` in both `captureException()` and `captureMessage()`, immediately before
+   envelope construction. Matches keys containing `token|secret|key|password|passwd|auth|
+   credential|cookie|session|dsn|apikey` (case-insensitive) and replaces their value with
+   `"[redacted]"`; genuinely safe fields (e.g. `path`, `email`, arbitrary non-sensitive nested
+   data) are preserved unchanged, verified by direct envelope-byte inspection in the test
+   below, not just a mocked return value.
+2. **`backend/routes/phase21.js`** — added `router.use("/p21/obs", requireAuth,
+   operatorOnly)`, then removed the now-redundant per-route `requireAuth` from all 9
+   individual `/p21/obs/*` route definitions (matching `revenueOS.js`'s own established
+   convention of a single router-level gate rather than repeating it per-route). Scoped
+   precisely to the `/p21/obs` prefix — the `21A OAuth Integration Layer` and `21C Autonomous
+   Company Live Mode` sections in the same file are outside this category's scope and were
+   left completely untouched, verified by both a direct diff review and a dedicated test
+   assertion.
+3. **`tests/security/156-sentry-context-redaction.cjs` (new)** — 23 assertions: confirms the
+   honest no-op behavior is unchanged, then uses a real `https.request` interception (not a
+   mock of `_redact` itself) to capture the exact envelope bytes `_send()` would have
+   transmitted and prove — at the byte level — that secret-shaped tag/extra/user values never
+   reach the wire while genuinely safe fields are preserved, for both `captureException` and
+   `captureMessage`; a source-shape regression check confirms every real call site in
+   `backend/server.js` still only passes safe static values; edge-case inputs (null,
+   undefined, arrays, empty context) are confirmed never to throw.
+4. **`tests/security/157-phase21-observability-operator-only.cjs` (new)** — 23 assertions
+   using a real in-process Express server (the actual router mounted, real signed JWTs, real
+   HTTP requests — no mocking of the authorization logic itself): every one of the 10
+   `/p21/obs/*` routes returns 403 for a real non-operator member and 401 for no
+   authentication at all, a real operator can reach and use every route (including
+   round-tripping a real metric record + list and a real structured log write), the sibling
+   `/oauth/status` route (21A) remains reachable by an ordinary member (proving the fix did
+   not leak beyond its intended scope), and a source-shape check confirms the exact fix shape
+   and that 21A was never touched.
+
+No change was made to Datadog, UptimeRobot, `backend/utils/logger.js`, the correlation-ID
+middleware, or the global error handler — all confirmed already correct.
+
+### TENANT / PRIVACY SECURITY
+
+Both fixes close real, previously-unguarded privacy/authorization gaps using established,
+already-proven patterns from elsewhere in this exact codebase — no new security concept was
+introduced in either case. The Sentry fix specifically addresses this category's own
+explicit "monitoring itself must not become a cross-tenant data leak" requirement at the one
+shared choke point every capture call passes through, regardless of future caller diligence.
+
+### SECRET FILTERING
+
+`sentryService.cjs`'s `_redact()` directly implements the category's "Never send secrets...
+to monitoring providers" rule at the code level, not just by caller convention. Verified this
+also holds for `getConfig()` (already correctly truncating the DSN, unchanged) and for
+`secretVault.cjs`'s vault entries (credential-mapping only, no value ever read by this pass).
+
+### QUEUE / SCHEDULER / RETRY / RATE-VOLUME SAFETY
+
+Not applicable to either fix — both are synchronous authorization/sanitization corrections,
+not reliability changes. No new retry logic, queue, or sampling mechanism was introduced.
+Existing behavior (no retry on Sentry delivery failure, no rate/volume throttling on capture
+calls) was noted as a real but lower-priority reliability gap, not actioned this pass since it
+is not the kind of live privacy/authorization defect this pass prioritized and is safely
+completable later by reusing an existing retry-classification pattern already proven
+elsewhere in this codebase (e.g. `aiService.js`'s `_isRetryable` shape).
+
+### ALERTING
+
+`observabilityEngine.cjs`'s `registerAlert`/`evaluateAlerts` functions are real and were
+confirmed reachable only by an operator now (per the fix above) — not deepened further
+(severity/threshold/deduplication/cooldown semantics), since no genuine in-scope defect was
+found in that logic during this pass's review, and inventing alerting capability beyond what
+already exists would violate this category's own "do not invent an entire incident-management
+system" instruction.
+
+### ERROR HANDLING / OBSERVABILITY
+
+No change to the global error handler's own logic — confirmed already correct (sanitized
+production responses, non-fatal monitoring calls, real logging). The Sentry fix's redaction
+step reuses the exact same non-fatal `try/catch` wrapping pattern already established around
+every `sentryService` call site — a redaction failure (there is none expected, but
+defensively) would never block the underlying error response, matching this file's own
+existing "monitoring failure must not become application failure" discipline.
+
+### TESTS
+
+Focused only, no full corpus, no CI, no real Sentry event delivered to any real Sentry
+project (the redaction test intercepts `https.request` before any real socket opens), no
+real production monitoring configuration touched, no real alert storm triggered:
+
+- `tests/security/156-sentry-context-redaction.cjs` (new) — **23/23 pass**.
+- `tests/security/157-phase21-observability-operator-only.cjs` (new) — **23/23 pass**.
+- Regression: `tests/runtime/oauth-token-safety.test.cjs` (pre-existing, re-run) — **7/7
+  pass**, confirming the 21A OAuth section (same file as the phase21.js fix) is unaffected.
+- Regression: `tests/runtime/10-c10-cross-system-closure.test.cjs`'s specific `phase21.js`
+  assertion (OAuth callback rate-limiting) directly re-verified against the current file
+  content — still matches; the full C10 suite itself was not run in this pass (a large,
+  known-slow combined suite with a pre-existing, unrelated snapshot conflict from the
+  concurrent ERA-2 Stripe session, per this report's own Communication Ecosystem section
+  from an earlier pass).
+- `require()`-loaded both `sentryService.cjs` and `phase21.js` directly to confirm no
+  load-time error from either change.
+
+**Total: 46/46 new assertions across 2 files, 7/7 pre-existing regression assertions fully
+re-run and passing, 1 additional regression assertion directly re-verified, 0 regressions.**
+
+### CREDENTIAL REQUIREMENTS
+
+No change. No new environment variable was introduced. `SENTRY_DSN`/`SENTRY_ENVIRONMENT`/
+`SENTRY_RELEASE`/`SENTRY_ORG`/`SENTRY_AUTH_TOKEN`, `DATADOG_API_KEY`/`DATADOG_SITE`, and
+`UPTIMEROBOT_API_KEY` all remain exactly as already templated in `.env.example`.
+
+### CREDENTIAL STATUS (presence-only, no values read)
+
+| Variable | Status |
+|---|---|
+| `SENTRY_DSN` | EMPTY in `.env.example` (templated placeholder) — not re-checked against the real environment this pass |
+| `SENTRY_AUTH_TOKEN` / `SENTRY_ORG` / `SENTRY_ENVIRONMENT` / `SENTRY_RELEASE` | Same — templated, not re-checked |
+| `DATADOG_API_KEY` / `DATADOG_SITE` | EMPTY in `.env.example` |
+| `UPTIMEROBOT_API_KEY` | EMPTY in `.env.example` |
+
+### RUNTIME/CREDENTIAL VERIFICATION REQUIRED
+
+Yes, for Sentry — real live-delivery verification (a real `SENTRY_DSN` against a real Sentry
+project) remains out of scope for this mission per the credential rule. Not applicable to
+Datadog/UptimeRobot beyond their existing, unchanged reachability probes. Not applicable to
+either fix in this pass (both are pure code-side authorization/sanitization corrections,
+fully verified by the test suites above with no external credential involved).
+
+### REMAINING GAPS / DECISION REQUIRED
+
+- No new DECISION REQUIRED item. Two lower-priority, non-blocking observations noted but not
+  actioned: Sentry delivery has no retry/backoff for transient failures, and
+  `backend/utils/logger.js` is plain-text rather than JSON-structured with no built-in
+  correlation-ID support (the actual correlation-ID mechanism lives correctly in separate,
+  already-real middleware). Neither is a live safety defect; both are reliability/capability-
+  depth completions a future mission could safely add by reusing existing patterns.
+- PM2's admitted lack of log rotation (`ecosystem.config.cjs`'s own comment: unbounded log
+  growth) was noted during discovery but is an operations/infrastructure configuration
+  concern, not a code-side defect this pass's scope covers — not actioned.
+
+### DATA CHANGES / REAL EXTERNAL SIDE EFFECTS
+
+NONE. No file outside the 4 listed above was touched. No real Sentry event was delivered to
+any real Sentry project (the redaction test's `https.request` interception never opens a real
+socket). No real Datadog/UptimeRobot API call was made. No real production monitoring
+configuration, alert rule, or log stream was modified beyond this pass's own test-created
+metric/log entries in the local, non-production observability store.
+
+### GIT STATE
+
+```
+ M backend/services/sentryService.cjs                          (this pass — context redaction)
+ M backend/routes/phase21.js                                   (this pass — operatorOnly on /p21/obs/*)
+?? tests/security/156-sentry-context-redaction.cjs              (this pass — new)
+?? tests/security/157-phase21-observability-operator-only.cjs   (this pass — new)
+```
+No commit, no push. No other file touched.
+
+### MONITORING MASTER MATRIX
+
+| Provider | Scope | Implementation | Configuration | Real API | Error Capture | Metrics | Tracing | Health | Alerting | Tenant/Privacy | Secret Safety | Reliability | Tests | Code Status | Credential Required | Runtime Verification |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Sentry | Real, substantial (SDK-less HTTP envelope client) | Real capture/delivery, 3 real call sites | Real, honest no-op gating | Real envelope POST to Sentry's actual API | Real, correctly gated | N/A (error tracking, not metrics) | N/A | N/A | N/A (no alerting product in scope) | N/A (no per-org data in this file) | **Fixed this pass** — context redaction closed | No retry on transient delivery failure (noted, not actioned) | 156 (23/23, new) | **CODE-COMPLETE** | Yes (`SENTRY_DSN`, empty) | Yes |
+| Datadog | Credential-presence probe only | `connectDatadog()` reachability check | Real key validation | Real (read-only) | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | None (unchanged) | **PROBE-ONLY** | Yes (`DATADOG_API_KEY`, empty) | Yes |
+| UptimeRobot | Credential-presence probe only | Generic reachability probe | Real key validation | Real (read-only) | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | None (unchanged) | **PROBE-ONLY** | Yes (`UPTIMEROBOT_API_KEY`, empty) | Yes |
+| Internal health/readiness | Real, already correct | `/health` dependency-aware, non-blocking degrade | N/A | N/A (internal) | N/A | N/A | N/A | Real, already fixed for a prior honesty defect | N/A | N/A | N/A | Degrades, never crashes | Not re-run (unmodified) | **CODE-COMPLETE** (unchanged) | No | No |
+| Internal observability routes (`/p21/obs/*`) | Real, platform-wide operator telemetry | Real metrics/alerts/logs/snapshot | N/A | N/A (internal) | N/A | Real | N/A | Real probe | Real (register/evaluate) | **Fixed this pass** — operatorOnly gate closed a real platform-wide read/write exposure | N/A | Unchanged | 157 (23/23, new) | **CODE-COMPLETE** | No | No |
+
+**STOP — Monitoring category pass finished. Sentry's core implementation was independently
+verified rather than accepted from any prior report's phrasing — confirmed to be a genuine,
+correctly-gated HTTP-envelope client, not a stub, with one real structural privacy gap (zero
+context redaction) fixed at the shared choke point using a small, precedent-matched helper.
+Datadog and UptimeRobot confirmed genuinely probe-only, correctly unchanged. Internal health/
+readiness, logging, correlation IDs, and the global error handler were all verified directly
+and found already correct — no defect in any of them. A second, independently-discovered
+real defect was found in `phase21.js`'s observability route family: platform-wide founder
+telemetry (metrics, alerts, structured logs, snapshots) gated by `requireAuth` alone,
+letting any ordinary signed-up user read the whole platform's operational log stream —
+the exact same defect class already fixed once before in this codebase for `revenueOS.js`'s
+financial data, now recognized and closed here too using the identical, already-proven
+`operatorOnly` gate. 46 new focused tests added across 2 files, 0 regressions against the
+directly relevant pre-existing suites. Zero real Sentry events delivered, zero real
+Datadog/UptimeRobot API calls made, zero real production monitoring configuration touched,
+zero credentials touched, zero secrets exposed, zero fake success introduced. No VPS
+deployment. No CI triggered. No commit. No push. DR/Backup category not started
+automatically.**
+
+**Next: DR/Backup. VPS last.**
