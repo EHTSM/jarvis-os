@@ -229,7 +229,12 @@ function _createMission(agentId, spec) {
     try {
         const s = _agents.get(agentId);
         const mission = _orch()?.createManual({ ...spec, goal: spec.objective });
-        if (mission && s) {
+        // P0-2: missionMemory's storage-level dedup can still return an
+        // existing mission here even when _missionExists() above missed it
+        // (e.g. a different orgId bucket, or a duplicate created between
+        // this check and the orchestrator call) — don't count that as a
+        // new creation or re-announce it as one.
+        if (mission && !mission.deduped && s) {
             s.missionsCreated++;
             _setState(agentId, {
                 currentMissionId: mission.missionId || mission.id,
@@ -260,11 +265,17 @@ function _scheduleRecovery(id) {
     const delay = RECOVERY_BASE_MS * Math.pow(2, s.recoveryCount);
     s.recoveryCount++;
     logger.warn(`[AgentSupervisor:${id}] Recovering in ${delay}ms (attempt ${s.recoveryCount})`);
-    setTimeout(() => {
+    const recoveryTimer = setTimeout(() => {
         s._recovering = false;
+        // _startAgent()'s own singleton guard (`if (s._intervalHandle) return`)
+        // means this clearInterval is defensive, not load-bearing — but
+        // clearing explicitly here keeps the invariant "at most one live
+        // interval per agent, always" true even under a future change to
+        // _startAgent(), rather than relying solely on that guard.
         if (s._intervalHandle) { clearInterval(s._intervalHandle); s._intervalHandle = null; }
         _startAgent(id);
     }, delay);
+    if (recoveryTimer.unref) recoveryTimer.unref();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1035,6 +1046,18 @@ function _startAgent(id) {
     }, staggerMs);
     if (t.unref) t.unref();
     s._intervalHandle = setInterval(() => _tick(id), s._intervalMs);
+    // JARVIS INCIDENT REPAIR (2026-09-03, P1-1): with ~210 agents live (10
+    // builtin + ~200 registered via registerAgent() by the org-department
+    // modules), this was 210 non-unref'd setInterval handles kept alive for
+    // the process's entire lifetime — a direct, measured contributor to the
+    // active-handle count DriftMonitor's own probe flags (driftMonitor.cjs's
+    // TIMER_DRIFT_WARN). unref() only tells Node this handle alone must not
+    // keep the process alive if nothing else is pending — it does not stop,
+    // pause, throttle, or change the firing behavior of this interval in any
+    // way (Node still fires it exactly every s._intervalMs while the process
+    // is up for any other reason, e.g. the open HTTP listener from
+    // server.js), so no autonomous agent behavior changes.
+    if (s._intervalHandle.unref) s._intervalHandle.unref();
     _setState(id, { status: "running", nextTickAt: new Date(Date.now() + s._intervalMs).toISOString() });
     try { _bus()?.emit("agent:supervisor:started", { agentId: id, role: s.role }); } catch {}
 }
@@ -1237,6 +1260,19 @@ function listAgents() {
     return [..._agents.values()].map(_publicState);
 }
 
+// JARVIS INCIDENT REPAIR (2026-09-03, P1-1): explicit accounting for how many
+// per-agent setInterval schedulers are actually live right now, distinct
+// from agentCount/runningCount above (an agent can be registered+"running"
+// in status terms while, e.g., mid-recovery with its interval cleared — see
+// _scheduleRecovery). Surfacing this directly lets an operator (or a future
+// DriftMonitor-style probe) see the real scheduler count without having to
+// infer it from status strings.
+function _activeSchedulerCount() {
+    let n = 0;
+    for (const s of _agents.values()) if (s._intervalHandle) n++;
+    return n;
+}
+
 function getSupervisorStatus() {
     const agents       = listAgents();
     const running      = agents.filter(a => a.status === "running").length;
@@ -1249,6 +1285,7 @@ function getSupervisorStatus() {
         supervisorUptime,
         agentCount:       agents.length,
         runningCount:     running,
+        activeSchedulerCount: _activeSchedulerCount(),
         registeredRoles:  [...new Set(agents.map(a => a.role))],
         agents,
         config: {

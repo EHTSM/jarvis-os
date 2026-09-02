@@ -449,6 +449,99 @@ let _autoLoopRef    = null;  // set after startup
 let _httpServer     = null;  // set after listen()
 let _shuttingDown   = false;
 
+// ── JARVIS INCIDENT REPAIR (2026-09-03, P0-1): autonomous workforce boot gate
+//
+// Root cause context: the mission-creation incident (95% CPU, hanging HTTP,
+// continuous mission fan-out) was made worse on every restart because the
+// autonomous workforce (I1-I4 + all 10 org-department registrations, ~210
+// agent tick schedulers total) started unconditionally inside the SAME
+// app.listen() callback that just bound the HTTP port, with no health or
+// backlog check of any kind — a huge existing "planned" mission backlog
+// (8,393 real missions, confirmed live) was immediately re-exposed to every
+// planner/reviewer/verifier/etc. tick the instant the process came back up.
+//
+// This gate does NOT touch app.listen() (already first, already unconditional
+// — HTTP responsiveness must never depend on this check) and does NOT touch
+// the lighter-weight deferred startup work above it (learning engine,
+// self-heal probe loop, schedulers) — none of those create missions or spin
+// per-agent timers, so none of them were implicated in the incident. It gates
+// exactly the block that was: Phase I4 (autonomousExecutionRuntime), I3
+// (missionOrchestrator), I2 (autonomousDecisionEngine), I1
+// (continuousRuntimeObserver), and the 10 org-department register() calls
+// (engineeringOrg through platformOrg) — the first of which is what actually
+// boots agentRuntimeSupervisor (engineeringOrg.cjs/businessOrg.cjs call
+// sup.start() themselves on first registration).
+//
+// Configuration (env vars — no source change needed to operate this):
+//   AUTONOMOUS_BOOT_MODE=auto      (default) — start normally UNLESS the
+//                                    backlog check below trips; on trip,
+//                                    start in degraded mode and log why.
+//   AUTONOMOUS_BOOT_MODE=always    — always start immediately (pre-incident
+//                                    behavior) — for a deliberate override.
+//   AUTONOMOUS_BOOT_MODE=degraded  — emergency kill switch: never start the
+//                                    autonomous workforce this boot, no
+//                                    matter what the backlog looks like.
+//                                    HTTP, existing data, and every other
+//                                    deferred service above are unaffected —
+//                                    this is a read/write-safe degraded mode,
+//                                    not a shutdown.
+//   AUTONOMOUS_BACKLOG_LIMIT=<n>   (default 2000) — in "auto" mode, if
+//                                    missionMemory's planned+active+running
+//                                    mission count is at/above this, boot in
+//                                    degraded mode instead of starting
+//                                    immediately. 2000 is well above normal
+//                                    operating backlog (single/low-hundreds
+//                                    in healthy operation, per this repo's
+//                                    own retention/backlog history) and well
+//                                    below the 8,393 that was actually
+//                                    observed during the incident — it exists
+//                                    to catch "the backlog is clearly runaway
+//                                    again", not to police ordinary variance.
+//
+// A degraded boot is NOT permanent and NOT silent: it logs exactly why, and
+// the same env vars govern the NEXT restart — there is no separate
+// "permanently disabled" state to get stuck in, and nothing here prevents an
+// operator from setting AUTONOMOUS_BOOT_MODE=always and restarting once the
+// backlog is understood/addressed.
+function _resolveAutonomousBootDecision() {
+    const mode  = (process.env.AUTONOMOUS_BOOT_MODE || "auto").toLowerCase();
+    const limit = Number.isFinite(Number(process.env.AUTONOMOUS_BACKLOG_LIMIT))
+        ? Number(process.env.AUTONOMOUS_BACKLOG_LIMIT)
+        : 2000;
+
+    if (mode === "degraded") {
+        return { start: false, reason: "AUTONOMOUS_BOOT_MODE=degraded (explicit)", backlog: null, limit };
+    }
+    if (mode === "always") {
+        return { start: true, reason: "AUTONOMOUS_BOOT_MODE=always (explicit)", backlog: null, limit };
+    }
+
+    // "auto" (default): inspect the real backlog before deciding. Read-only —
+    // getMissionStats() only reads data/missions.json, never writes.
+    try {
+        const mm    = require("./services/missionMemory.cjs");
+        const stats = mm.getMissionStats();
+        const byStatus  = stats.byStatus || {};
+        const nonTerminal = (byStatus.planned || 0) + (byStatus.active || 0) + (byStatus.running || 0);
+        if (nonTerminal >= limit) {
+            return {
+                start: false,
+                reason: `non-terminal mission backlog ${nonTerminal} >= AUTONOMOUS_BACKLOG_LIMIT ${limit}`,
+                backlog: nonTerminal,
+                limit,
+            };
+        }
+        return { start: true, reason: `backlog ${nonTerminal} < limit ${limit}`, backlog: nonTerminal, limit };
+    } catch (err) {
+        // Backlog unreadable (e.g. missions.json missing/corrupt on a fresh
+        // install) is not itself evidence of a runaway backlog — fail open
+        // to "start", matching every other deferred-service block in this
+        // file's own established pattern (a missing/broken dependency logs a
+        // warning and moves on, it does not block the rest of startup).
+        return { start: true, reason: `backlog check unavailable (${err.message}) — starting normally`, backlog: null, limit };
+    }
+}
+
 function _gracefulShutdown(signal) {
     if (_shuttingDown) return;
     _shuttingDown = true;
@@ -1156,6 +1249,38 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[OrgAutomationCenter] failed to start (non-fatal):", autoCenterErr.message);
     }
 
+    // ── Phase I5: Engineering Capability Layer ────────────────────────────
+    // Registers capability HANDLERS only (functions the orchestrator can
+    // call) — creates no missions, starts no timers, so this stays
+    // ungated even though the orchestrator that would use it is gated below.
+    try {
+        const engCap = require("./services/engineeringCapabilities.cjs");
+        const regResult = engCap.register();
+        logger.info(`[EngCapabilities] I5 registered ${regResult.registered} production capability handlers`);
+    } catch (capErr) {
+        logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
+    }
+
+    // ── Autonomous workforce boot gate (P0-1) — see _resolveAutonomousBootDecision()
+    // above for the full rationale and env var reference.
+    const _autoBoot = _resolveAutonomousBootDecision();
+    logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    logger.info(` Autonomous Workforce Boot Decision`);
+    logger.info(`  mode        : ${(process.env.AUTONOMOUS_BOOT_MODE || "auto")}`);
+    logger.info(`  backlog     : ${_autoBoot.backlog === null ? "n/a" : _autoBoot.backlog} (limit: ${_autoBoot.limit})`);
+    logger.info(`  decision    : ${_autoBoot.start ? "START" : "DEGRADED (not starting this boot)"}`);
+    logger.info(`  reason      : ${_autoBoot.reason}`);
+    logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+
+    if (!_autoBoot.start) {
+        logger.warn(
+            "[AutonomousWorkforce] NOT starting I1-I4 or the 10 org-department " +
+            "registries this boot — HTTP, existing missions, and every other " +
+            "service above are unaffected. To force a normal start, set " +
+            "AUTONOMOUS_BOOT_MODE=always (or raise AUTONOMOUS_BACKLOG_LIMIT) and restart."
+        );
+    } else {
+
     // ── Phase I4: Autonomous Execution Runtime ────────────────────────────
     try {
         const execRT = require("./services/autonomousExecutionRuntime.cjs");
@@ -1193,15 +1318,6 @@ _httpServer = app.listen(PORT, HOST, () => {
         });
     } catch (obsErr) {
         logger.warn("[ContinuousRuntimeObserver] failed to load (non-fatal):", obsErr.message);
-    }
-
-    // ── Phase I5: Engineering Capability Layer ────────────────────────────
-    try {
-        const engCap = require("./services/engineeringCapabilities.cjs");
-        const regResult = engCap.register();
-        logger.info(`[EngCapabilities] I5 registered ${regResult.registered} production capability handlers`);
-    } catch (capErr) {
-        logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
     }
 
     // ── Level 2: Engineering Organization (20 AI Engineer Personas) ───────
@@ -1293,6 +1409,8 @@ _httpServer = app.listen(PORT, HOST, () => {
     } catch (pltErr) {
         logger.warn('[PLT] failed to register (non-fatal):', pltErr.message);
     }
+
+    } // end _autoBoot.start gate
 
     // ── Startup diagnostics ───────────────────────────────────────
     try {

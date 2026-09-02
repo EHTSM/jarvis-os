@@ -47,8 +47,28 @@ function _save(d) {
 function selectStrategy(failure) {
   const { stepType, error = "", attemptCount = 0, domain, stepIndex, totalSteps } = failure;
 
+  // JARVIS INCIDENT REPAIR (2026-09-03, P1-3): ENOENT is a missing
+  // file/path — a deterministic condition, not a race or a slow backend.
+  // This function used to lump it in with timeout/ECONNRESET/spawn as
+  // "transient", which contradicts how the rest of this codebase already
+  // classifies it: engineeringCapabilities.cjs marks ENOENT explicitly
+  // `nonRetriable: true`, and rootCauseAnalysisEngine.cjs lists it among
+  // its canonical DETERMINISTIC error classes. Retrying an operation whose
+  // target path genuinely does not exist changes nothing about the
+  // filesystem — it is guaranteed to fail identically again, so
+  // RETRY_IMMEDIATE for ENOENT was 1-2 guaranteed-failing retries wasted
+  // per real occurrence before eventually escalating anyway. Routed to
+  // ESCALATE instead — the same deterministic-failure path this codebase's
+  // other two ENOENT classifiers already use — so a founder gets a real
+  // decision point instead of the system silently burning retry budget.
+  // Genuinely transient errors (timeout/ETIMEDOUT/ECONNRESET/spawn — a slow
+  // backend, a dropped connection, a subprocess launch race) are unaffected.
+  if (/ENOENT/i.test(error)) {
+    return "ESCALATE";
+  }
+
   // Transient errors → retry
-  if (/timeout|ETIMEDOUT|ECONNRESET|ENOENT|spawn/i.test(error) && attemptCount < 2) {
+  if (/timeout|ETIMEDOUT|ECONNRESET|spawn/i.test(error) && attemptCount < 2) {
     return "RETRY_IMMEDIATE";
   }
 

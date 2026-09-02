@@ -368,11 +368,38 @@ function _createRecord(opts) {
     // Create the authoritative mission in missionMemory
     const memPriority = ["low", "medium", "high", "critical"].includes(priority) ? priority : "medium";
     const memMission  = mem.createMission({
+        orgId: metadata?.orgId,
         metadata,
         objective: goal.trim(),
         priority:  memPriority,
         subtasks:  [],   // stages added below
     });
+
+    // JARVIS INCIDENT REPAIR (2026-09-03, P0-2): missionMemory.createMission()
+    // now returns an existing, equivalent NON-TERMINAL mission instead of
+    // creating a duplicate (deduped: true) — see missionMemory.cjs's own
+    // dedup-index comment for the exact scope rules. When that happens, this
+    // function must NOT add new subtasks/decisions to that existing mission
+    // (it may belong to a different orchestration run, or already be mid-
+    // execution) and must NOT overwrite its own orchestrator-tracking record
+    // for that missionId. If the existing mission already has a live
+    // orchestrator record, return that unchanged; otherwise (a mission
+    // created by a path that never went through this orchestrator) return a
+    // minimal, read-only projection built from the existing mission alone —
+    // either way, zero mutation of the pre-existing mission.
+    if (memMission.deduped) {
+        const existingRec = _live.get(memMission.id);
+        if (existingRec) return { ...existingRec, deduped: true };
+        return {
+            missionId:  memMission.id,
+            orchId:     null,
+            goal:       memMission.objective,
+            priority:   memMission.priority,
+            orchStatus: memMission.status,
+            stages:     [],
+            deduped:    true,
+        };
+    }
 
     // Real historical risk lookup — see _historicalRiskForGoal above.
     const historicalRisk = _historicalRiskForGoal(goal.trim());
@@ -674,9 +701,75 @@ async function _advance(missionId) {
     _updateProgress(rec);
 }
 
+// ── Monitor stage concurrency gate ──────────────────────────────────────────
+// JARVIS INCIDENT REPAIR (2026-09-03, P1-2): _monitorStage() is called once
+// per dispatched stage — from _advance() for a freshly-started stage, from
+// _sweepDeadlockedMissions()'s stalled-stage re-arm (every 120s), and from
+// _resumeOrphanedMissions() (once at startup, once per running stage found
+// across every live mission). None of these three call sites had any shared
+// limit: each spins its own independent `while` polling loop (3s interval,
+// 5min cap) for as long as it takes. With many concurrent missions each
+// having running stages — the exact state a restart after a large backlog
+// leaves behind — _resumeOrphanedMissions() alone could start one such loop
+// per running stage in a single synchronous pass, and the periodic sweep
+// could keep adding more on top for any stage that later stalls again.
+//
+// This gate bounds how many _monitorStage() polling loops are ACTIVE at
+// once, globally, across all three call sites — it does not change what
+// each loop does once running (same 3s poll, same 5-minute timeout, same
+// retry/failure/terminal-cleanup logic in _stageFailed/_stageComplete,
+// untouched below). A stage whose monitor can't start immediately because
+// the cap is full is queued (FIFO) and starts as soon as a slot frees up —
+// it is never dropped, so no stage's outcome ever goes unobserved; it is
+// simply not polled by MORE THAN MAX_ACTIVE_MONITORS loops at any one
+// instant. The already-existing 5-minute per-stage timeout means a queued
+// stage waits at most a bounded, bounded-multiple of that before its own
+// monitor starts even under sustained saturation — it does not wait forever.
+const MAX_ACTIVE_MONITORS = 50;
+let _activeMonitorCount = 0;
+const _monitorQueue = [];
+
+function _runNextQueuedMonitor() {
+    if (_activeMonitorCount >= MAX_ACTIVE_MONITORS) return;
+    const next = _monitorQueue.shift();
+    if (!next) return;
+    _activeMonitorCount++;
+    _monitorStagePoll(next.missionId, next.stg)
+        .catch(() => { /* handled inside _monitorStagePoll */ })
+        .finally(() => {
+            _activeMonitorCount--;
+            _runNextQueuedMonitor();
+        });
+}
+
+/**
+ * Gated entry point — same signature/behavior contract as before this
+ * change (fire-and-forget, resolves once the stage reaches an outcome or
+ * this particular call is queued behind others). Callers are unchanged.
+ */
+function _monitorStage(missionId, stg) {
+    return new Promise((resolve) => {
+        const task = { missionId, stg };
+        if (_activeMonitorCount < MAX_ACTIVE_MONITORS) {
+            _activeMonitorCount++;
+            _monitorStagePoll(missionId, stg)
+                .catch(() => { /* handled inside _monitorStagePoll */ })
+                .finally(() => {
+                    _activeMonitorCount--;
+                    resolve();
+                    _runNextQueuedMonitor();
+                });
+        } else {
+            _monitorQueue.push(task);
+            _obs("orchestrator.monitor.queued", _monitorQueue.length);
+            resolve(); // queuing itself never rejects — callers already treat this as fire-and-forget
+        }
+    });
+}
+
 // ── Monitor stage via autonomousLoop task completion ───────────────────────
 // Poll the loop queue for task status. Cap at 5 minutes.
-async function _monitorStage(missionId, stg) {
+async function _monitorStagePoll(missionId, stg) {
     if (!stg.loopTaskId) {
         // No loop task was ever queued — this only happens when _getLoop()
         // returned null at dispatch time (see the dispatch block above), i.e. the
@@ -1098,7 +1191,11 @@ function createFromDecision(decision) {
         requiresApproval:  decision.requiresApproval ?? false,
         rollbackPlan:      `Revert actions triggered by decision ${decision.decisionId}`,
     });
-    if (!rec.requiresApproval) _queue(rec.missionId);
+    // P0-2: a deduped hit is an EXISTING mission (already queued/executing, or
+    // not orchestrator-tracked at all) — never re-queue it here, that would
+    // re-drive an in-flight mission's stages or queue a mission this
+    // orchestrator never created a stage plan for.
+    if (!rec.deduped && !rec.requiresApproval) _queue(rec.missionId);
     return rec;
 }
 
@@ -1108,7 +1205,7 @@ function createFromDecision(decision) {
  */
 function createManual(opts = {}) {
     const rec = _createRecord(opts);
-    if (!rec.requiresApproval) _queue(rec.missionId);
+    if (!rec.deduped && !rec.requiresApproval) _queue(rec.missionId);
     return rec;
 }
 

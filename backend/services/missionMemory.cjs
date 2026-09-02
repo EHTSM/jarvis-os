@@ -95,6 +95,82 @@ function _uid(prefix) {
 // described.
 let _missionsCache = null; // { mtimeMs, store }
 
+// ── Create-time dedup index ─────────────────────────────────────────────────
+// JARVIS INCIDENT REPAIR (2026-09-03, P0-2): createMission() had no dedup of
+// its own — the two dedup layers that existed sat entirely above this file
+// (agentRuntimeSupervisor.cjs's _missionExists(), businessIntelligenceEngine
+// .cjs's _recentlyTriggered()) and neither covered the ~20 org-level
+// department modules (engineeringOrg/businessOrg/etc., each independently
+// calling missionOrchestrator.createManual() -> this file) or any other
+// direct caller. Confirmed live: 8,393 of 9,394 real missions sat permanently
+// "planned", with duplicate-objective clusters up to 3,550 copies of the same
+// text. This index is the final, storage-level safety boundary every caller
+// passes through, regardless of which layer above did or didn't dedup first.
+//
+// Scope rules (deliberately narrow — see file header on orgId being optional
+// platform-wide infrastructure for the large majority of the 74 existing
+// consumers):
+//   - Keyed on (orgId ?? "__unscoped__") + normalized objective — NEVER
+//     compares across two different real orgIds. Two different real orgs
+//     with the identical objective text always both get their own mission.
+//     Unscoped (orgId: null) missions dedup only against other unscoped
+//     missions, which is the correct behavior for shared platform/autonomous
+//     -engineering missions (the vast majority of traffic).
+//   - Only missions in a NON-TERMINAL status (planned/active/running) occupy
+//     an index slot. A terminal mission (completed/failed/cancelled/paused)
+//     is never matched against and never blocks a new, otherwise-identical
+//     mission from being created — historical missions are fully preserved,
+//     never touched, never reused.
+//   - Normalization is deliberately conservative: trim + lowercase only, NO
+//     digit-collapsing. agentRuntimeSupervisor.cjs's own _normalizeObjective()
+//     (digit runs -> "#") was tried here first and reverted after it broke a
+//     real, pre-existing test suite live: tests/runtime/mission-orchestrator-
+//     nodetypes.test.cjs creates missions with `goal: "test goal " +
+//     Date.now()` — every one of those objectives differs ONLY in its
+//     embedded digits, so digit-collapsing correctly flags "Verify 169
+//     missions" vs "Verify 220 missions" as the same recurring check (its
+//     one intended, narrow use in agentRuntimeSupervisor._missionExists())
+//     but WRONGLY flags every one of these genuinely-distinct test/CRM/RCA
+//     missions (a per-lead follow-up, a per-RCA fix, a timestamped test
+//     probe) as duplicates of each other. A storage-level safety boundary
+//     that every caller passes through must not assume every embedded digit
+//     is disposable — only exact, byte-identical (post-trim/case) objective
+//     text is treated as a duplicate here. This still catches the incident's
+//     actual worst offenders (3,550 byte-identical "[Auto] Follow up
+//     immediately..." copies, one recommendation repeated 246 times) without
+//     colliding on legitimately different text that merely shares a
+//     template. The narrower digit-collapsing heuristic remains exactly
+//     where it already was proven correct — agentRuntimeSupervisor.cjs's own
+//     _missionExists(), scoped to its own auto-generated recurring checks —
+//     untouched by this change.
+//   - The index is an in-memory Map, rebuilt only when the underlying store
+//     reference changes (same invalidation signal as _missionsCache's mtime
+//     key) — a create-time dedup check is therefore an O(1) Map lookup, not
+//     an O(N) re-scan of the whole mission list on every single create.
+const _TERMINAL_STATUSES_FOR_DEDUP = new Set(["completed", "failed", "cancelled", "paused"]);
+
+function _normalizeObjectiveForDedup(s) {
+    return (s || "").trim().toLowerCase();
+}
+
+function _dedupKey(orgId, objective) {
+    return `${orgId || "__unscoped__"}::${_normalizeObjectiveForDedup(objective)}`;
+}
+
+// { forStore: <store object identity>, map: Map<dedupKey, missionId> }
+let _dedupIndex = null;
+
+function _getDedupIndex(store) {
+    if (_dedupIndex && _dedupIndex.forStore === store) return _dedupIndex.map;
+    const map = new Map();
+    for (const m of store.missions) {
+        if (_TERMINAL_STATUSES_FOR_DEDUP.has(m.status)) continue;
+        map.set(_dedupKey(m.orgId, m.objective), m.id);
+    }
+    _dedupIndex = { forStore: store, map };
+    return map;
+}
+
 // B.20 chaos finding — orphaned tmp sweep.
 //
 // _saveMissions() writes `missions.json.<pid>.<rand>.tmp` then renames it, and
@@ -361,10 +437,32 @@ function createMission(data = {}) {
         throw new Error(`createMission: invalid priority "${data.priority}". Must be one of: ${[...VALID_PRIORITIES].join(", ")}`);
     }
 
-    const store   = _loadMissions();
+    const store = _loadMissions();
+    const orgId = typeof data.orgId === "string" && data.orgId ? data.orgId : null;
+
+    // P0-2 dedup check — see _getDedupIndex() above for scope rules. A hit
+    // means an equivalent NON-TERMINAL mission already exists for this exact
+    // org (or this exact "unscoped" bucket) — return it as-is instead of
+    // creating a duplicate. Nothing is mutated on this path: no write, no
+    // subtask/timeline change to the existing mission, same guarantee as any
+    // other read (getMission/listMissions).
+    const dedupIndex = _getDedupIndex(store);
+    const existingId = dedupIndex.get(_dedupKey(orgId, data.objective));
+    if (existingId) {
+        const existing = _findMission(store, existingId);
+        if (existing) {
+            logger.info(`[MissionMemory] createMission: deduped against existing ${existing.id} (org=${orgId || "unscoped"}): "${existing.objective}"`);
+            return { ...existing, deduped: true, dedupedAgainst: existing.id };
+        }
+    }
+
     const mission = _buildMission(data);
     store.missions.push(mission);
     _saveMissions(store);
+    // _saveMissions() always replaces _missionsCache.store with a new object
+    // (see its own `updated` literal below), so the next _loadMissions() call
+    // returns a different reference and _getDedupIndex() naturally rebuilds
+    // against post-write state — no separate index invalidation needed here.
 
     logger.info(`[MissionMemory] Created mission ${mission.id}: "${mission.objective}"`);
     return { ...mission };
