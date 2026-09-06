@@ -504,6 +504,9 @@ async function _mobileEngTick(s) {
 }
 
 // 8. Database Engineer — data file integrity, schema health, storage growth
+const _DB_TICK_FULL_SCAN_EVERY_N = 10; // full content validation every 10th tick (~40min at this persona's 240s interval)
+const _DB_TICK_SKIP_VALIDATION = new Set(["missions.json", "task-queue.json"]); // already validated on their own read/write paths
+
 async function _databaseEngTick(s) {
   _setObj(s, "Monitoring data integrity and storage health");
   let created = 0;
@@ -515,13 +518,23 @@ async function _databaseEngTick(s) {
     let totalSize = 0;
     let corruptedFiles = [];
     const jsonFiles = fs.readdirSync(dataDir).filter(f => f.endsWith(".json"));
+
+    // Cheap, every-tick: total size via stat only — no file content read.
     for (const f of jsonFiles) {
-      try {
-        const content = fs.readFileSync(path.join(dataDir, f), "utf8");
-        totalSize += content.length;
-        JSON.parse(content); // validation
-      } catch {
-        corruptedFiles.push(f);
+      try { totalSize += fs.statSync(path.join(dataDir, f)).size; } catch { /* file may have been removed mid-scan — skip */ }
+    }
+
+    // Expensive, periodic: full content read + parse validation.
+    s._dbTickCount = (s._dbTickCount || 0) + 1;
+    if (s._dbTickCount % _DB_TICK_FULL_SCAN_EVERY_N === 1) {
+      for (const f of jsonFiles) {
+        if (_DB_TICK_SKIP_VALIDATION.has(f)) continue;
+        try {
+          const content = fs.readFileSync(path.join(dataDir, f), "utf8");
+          JSON.parse(content); // validation
+        } catch {
+          corruptedFiles.push(f);
+        }
       }
     }
     if (corruptedFiles.length > 0) {
