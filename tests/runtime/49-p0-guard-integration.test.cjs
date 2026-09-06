@@ -92,12 +92,19 @@ describe("MISSION 83 — structural wiring: existing safeguards preserved, guard
     });
 
     it("4. agentRuntimeSupervisor.cjs: _createMission() calls _missionExists() BEFORE the guard, and the guard call is additional, not a replacement", () => {
+        // Mission 88: the guard call itself changed from the two-step
+        // admitAutonomousMission()+createManual() to the single atomic
+        // admitAndCreateAutonomousMission({..., createFn}) (closing a real,
+        // deterministically-reproduced TOCTOU race — see
+        // autonomousMissionGuard.cjs's own Mission 88 comment). The
+        // invariant this test checks (missionExists precedes the guard) is
+        // unchanged; only the guard function's name changed.
         const src = fs.readFileSync(SUP_PATH, "utf8");
         const fn = src.match(/function _createMission\(agentId, spec\) \{[\s\S]*?\n\}\n/)[0];
         const missionExistsIdx = fn.indexOf("_missionExists(spec.objective)");
-        const guardIdx = fn.indexOf("admitAutonomousMission(");
+        const guardIdx = fn.indexOf("admitAndCreateAutonomousMission(");
         assert.ok(missionExistsIdx > -1, "_missionExists() call must still be present inside _createMission()");
-        assert.ok(guardIdx > -1, "admitAutonomousMission() call must be present inside _createMission()");
+        assert.ok(guardIdx > -1, "admitAndCreateAutonomousMission() call must be present inside _createMission()");
         assert.ok(missionExistsIdx < guardIdx, "_missionExists() must run BEFORE the new admission guard, preserving existing precedence");
     });
 
@@ -123,10 +130,13 @@ describe("MISSION 83 — structural wiring: existing safeguards preserved, guard
     });
 
     it("8. engineeringOrg.cjs: _mission() calls _missionExists() BEFORE the guard, additively", () => {
+        // Mission 88: see test 4's own comment — the guard call is now
+        // admitAndCreateAutonomousMission(), the atomic replacement for the
+        // old two-step admitAutonomousMission()+createManual() sequence.
         const src = fs.readFileSync(ENG_PATH, "utf8");
         const fn = src.match(/function _mission\(agentId, spec, s\) \{[\s\S]*?\n\}\n/)[0];
         const missionExistsIdx = fn.indexOf("_missionExists(spec.objective)");
-        const guardIdx = fn.indexOf("admitAutonomousMission(");
+        const guardIdx = fn.indexOf("admitAndCreateAutonomousMission(");
         assert.ok(missionExistsIdx > -1);
         assert.ok(guardIdx > -1);
         assert.ok(missionExistsIdx < guardIdx, "_missionExists() must run BEFORE the new admission guard");

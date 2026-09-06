@@ -325,11 +325,103 @@ function admitAutonomousMission({ objective, autoCreatedBy, orgId = null } = {})
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// D. ATOMIC ADMISSION + CREATION (Mission 88 — TOCTOU close)
+// ─────────────────────────────────────────────────────────────────────────
+//
+// Mission 88 Phase 2 reproduced, with real forked-process concurrency and
+// deterministic 3/3 repeatability, two races in admitAutonomousMission()
+// as used by both producer call sites (agentRuntimeSupervisor.cjs's
+// _createMission(), engineeringOrg.cjs's _mission()):
+//
+//   1. Same-signal race: two concurrent calls for the same signalType but
+//      digit-varying objective text (e.g. "Unblock 389..." vs "Unblock
+//      390...") can BOTH pass checkCooldown()'s single-flight read before
+//      either one's missionMemory.createMission() call lands — because
+//      missionMemory's own P0-2 dedup index keys on EXACT objective text
+//      (no digit-collapsing), it does not collapse them as a backstop.
+//   2. Cap race: with activeCount already one below the 25 cap, multiple
+//      concurrent calls can all read the same pre-write count and all
+//      pass checkAdmission(), pushing the real count past 25.
+//
+// Both races share one root cause: checkAdmission()/checkCooldown() are
+// unlocked reads that run BEFORE the single Mission-85-locked
+// missionMemory.createMission() call — the lock protects createMission()'s
+// own body (including P0-2's dedup), but not the admission DECISION that
+// determines whether createMission() is even called. Two concurrent
+// callers can each independently decide "allowed" against the same
+// pre-write snapshot.
+//
+// Fix: admitAndCreateAutonomousMission() holds missionMemory's own
+// cross-process lock (exposed via missionMemory.withMissionsLock() —
+// Mission 85's existing, already-proven, already-tested primitive; NOT a
+// second independent locking system) across the ENTIRE
+// checkAdmission -> checkCooldown -> create sequence. This is the correct
+// atomic unit: the decision and the state it produces must never be
+// observable-then-actable by a second caller before the first caller's
+// resulting mission (or lack of one) is durably persisted.
+//
+// `createFn` is a caller-supplied, zero-argument callback that performs
+// the actual mission creation (each producer passes its own
+// missionOrchestrator.createManual({...}) call, unchanged in shape) — this
+// keeps createFn's non-mission-memory side effects (missionOrchestrator's
+// stage-planning, subtask/decision registration) entirely the caller's
+// business, while this function owns only the admission invariant. Nesting
+// createFn's own missionMemory writes (createMission/addSubtask/
+// recordDecision, all called internally by createManual()) inside this
+// already-held lock is safe: missionMemory.cjs's lock has same-process
+// re-entrancy (a depth counter, see its own _acquireMissionsLock()) built
+// in specifically for this composition — a second, nested
+// _acquireMissionsLock() call within the same process returns immediately
+// rather than deadlocking on a lock this process already holds.
+//
+// Manual/non-autonomous mission creation is completely unaffected: it
+// never calls this function (or any guard function) at all, exactly as
+// before this fix — see module header.
+//
+// Crash/failure safety: if createFn() throws, the lock's own `finally`
+// (inside withMissionsLock()) still releases it — no phantom reservation,
+// since this function holds no state of its own beyond the lock itself,
+// which missionMemory.cjs already guarantees is released on any error.
+// Fails OPEN exactly like admitAutonomousMission() and every other guard
+// function: an error acquiring the lock or evaluating admission never
+// blocks legitimate autonomous work.
+function admitAndCreateAutonomousMission({ objective, autoCreatedBy, orgId = null, createFn } = {}) {
+    const mm = _mm();
+    if (!mm || typeof mm.withMissionsLock !== "function" || typeof createFn !== "function") {
+        // Fail-open path mirrors admitAutonomousMission()'s own contract:
+        // if the atomic primitive isn't available, fall back to the
+        // pre-Mission-88 sequential behavior rather than blocking
+        // legitimate autonomous work outright.
+        const decision = admitAutonomousMission({ objective, autoCreatedBy, orgId });
+        const mission = decision.allowed && typeof createFn === "function" ? createFn(decision) : null;
+        return { ...decision, mission };
+    }
+
+    try {
+        return mm.withMissionsLock(() => {
+            const decision = admitAutonomousMission({ objective, autoCreatedBy, orgId });
+            if (!decision.allowed) {
+                return { ...decision, mission: null };
+            }
+            const mission = createFn(decision);
+            return { ...decision, mission };
+        });
+    } catch {
+        // Lock acquisition itself failed (e.g. timed out because another
+        // process genuinely holds it) — fail open rather than silently
+        // dropping a legitimate autonomous signal forever; the caller's
+        // own next tick will simply re-evaluate from scratch.
+        return { allowed: true, signalType: null, signalKey: null, reason: "guard_lock_error_fail_open", activeCount: null, limit: MAX_ACTIVE_AUTONOMOUS_MISSIONS, mission: null };
+    }
+}
+
 module.exports = {
     classifySignal,
     checkCooldown,
     checkAdmission,
     admitAutonomousMission,
+    admitAndCreateAutonomousMission,
     MAX_ACTIVE_AUTONOMOUS_MISSIONS,
     // exported for tests only — not part of the stable public contract
     _normalizeObjective,

@@ -1364,4 +1364,13 @@ module.exports = {
     addLearning,
     replayMission,
     getMissionStats,
+    // Mission 88: exposes the existing Mission-85 cross-process lock so a
+    // caller (autonomousMissionGuard.cjs) can hold it across its own
+    // read-decision-create sequence, not just around a single mutation
+    // function's body — see autonomousMissionGuard.cjs's own
+    // admitAndCreateAutonomousMission() for why that atomic unit is
+    // required. Same-process re-entrant (see _acquireMissionsLock()), so
+    // any missionMemory mutation function called from inside `fn` composes
+    // safely rather than deadlocking.
+    withMissionsLock: _withMissionsLock,
 };

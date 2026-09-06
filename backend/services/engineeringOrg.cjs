@@ -103,31 +103,40 @@ function _mission(agentId, spec, s) {
 
   const guard = _guard();
   const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
-  const decision = guard
-    ? guard.admitAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId })
-    : { allowed: true, signalType: null, signalKey: null };
 
-  if (!decision.allowed) {
+  // Mission 88: admission decision and mission creation now run as ONE
+  // atomic unit under missionMemory's own cross-process lock (via the
+  // guard's admitAndCreateAutonomousMission()) — closing the TOCTOU race
+  // where two concurrent calls could each observe "allowed" against the
+  // same pre-write snapshot before either created a mission. See
+  // autonomousMissionGuard.cjs's own comment for the full invariant.
+  const createFn = (decision) => _orch()?.createManual({
+    ...spec,
+    goal: spec.objective,
+    metadata: {
+      ...(spec.metadata || {}),
+      autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+      autonomous: true,
+      signalType: decision.signalType,
+      signalKey:  decision.signalKey,
+    },
+  });
+
+  const outcome = guard
+    ? guard.admitAndCreateAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId, createFn })
+    : { allowed: true, signalType: null, signalKey: null, mission: createFn({ signalType: null, signalKey: null }) };
+
+  if (!outcome.allowed) {
     if (s) {
-      s.lastDecision   = `Deferred (${decision.reason || "guard"}): ${spec.objective?.slice(0, 60)}`;
+      s.lastDecision   = `Deferred (${outcome.reason || "guard"}): ${spec.objective?.slice(0, 60)}`;
       s.lastDecisionAt = new Date().toISOString();
     }
-    try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: decision.reason, signalType: decision.signalType }); } catch {}
+    try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: outcome.reason, signalType: outcome.signalType }); } catch {}
     return null;
   }
 
   try {
-    const m = _orch()?.createManual({
-      ...spec,
-      goal: spec.objective,
-      metadata: {
-        ...(spec.metadata || {}),
-        autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
-        autonomous: true,
-        signalType: decision.signalType,
-        signalKey:  decision.signalKey,
-      },
-    });
+    const m = outcome.mission;
     if (m && s) {
       s.missionsCreated = (s.missionsCreated || 0) + 1;
       s.lastDecision    = `Created: ${spec.objective?.slice(0, 60)}`;

@@ -244,40 +244,50 @@ function _createMission(agentId, spec) {
 
     const guard = _guard();
     const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
-    const decision = guard
-        ? guard.admitAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId })
-        : { allowed: true, signalType: null, signalKey: null };
 
-    if (!decision.allowed) {
+    // Mission 88: admission decision and mission creation now run as ONE
+    // atomic unit under missionMemory's own cross-process lock (via the
+    // guard's admitAndCreateAutonomousMission()) — closing the TOCTOU race
+    // where two concurrent calls could each observe "allowed" against the
+    // same pre-write snapshot before either created a mission. See
+    // autonomousMissionGuard.cjs's own comment for the full invariant.
+    // createFn receives the winning decision so signalType/signalKey are
+    // still sourced from the SAME decision that admitted this call.
+    const createFn = (decision) => _orch()?.createManual({
+        ...spec,
+        goal: spec.objective,
+        metadata: {
+            ...(spec.metadata || {}),
+            autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+            autonomous: true,
+            signalType: decision.signalType,
+            signalKey:  decision.signalKey,
+        },
+    });
+
+    const outcome = guard
+        ? guard.admitAndCreateAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId, createFn })
+        : { allowed: true, signalType: null, signalKey: null, mission: createFn({ signalType: null, signalKey: null }) };
+
+    if (!outcome.allowed) {
         const s = _agents.get(agentId);
         if (s) {
             _setState(agentId, {
                 lastDecisionAt: new Date().toISOString(),
-                lastDecision:   `Deferred (${decision.reason || "guard"}): ${spec.objective?.slice(0, 60)}`,
+                lastDecision:   `Deferred (${outcome.reason || "guard"}): ${spec.objective?.slice(0, 60)}`,
             });
         }
-        try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: decision.reason, signalType: decision.signalType }); } catch {}
+        try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: outcome.reason, signalType: outcome.signalType }); } catch {}
         return null;
     }
 
     try {
         const s = _agents.get(agentId);
-        const mission = _orch()?.createManual({
-            ...spec,
-            goal: spec.objective,
-            metadata: {
-                ...(spec.metadata || {}),
-                autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
-                autonomous: true,
-                signalType: decision.signalType,
-                signalKey:  decision.signalKey,
-            },
-        });
+        const mission = outcome.mission;
         // P0-2: missionMemory's storage-level dedup can still return an
         // existing mission here even when _missionExists() above missed it
-        // (e.g. a different orgId bucket, or a duplicate created between
-        // this check and the orchestrator call) — don't count that as a
-        // new creation or re-announce it as one.
+        // (e.g. a different orgId bucket) — don't count that as a new
+        // creation or re-announce it as one.
         if (mission && !mission.deduped && s) {
             s.missionsCreated++;
             _setState(agentId, {
