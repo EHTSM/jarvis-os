@@ -238,6 +238,114 @@ function _sweepOrphanedTmp() {
 
 _sweepOrphanedTmp();
 
+// ── Cross-process write lock ─────────────────────────────────────────────────
+// Mission 85 (82C reconciliation): the per-call unique tmp filename above
+// (Final Production Integration mission, Blocker #6) made two writers'
+// tmp files physically incapable of colliding, which eliminated the
+// ENOENT/corruption crash class — but as that fix's own comment already
+// documented, it does NOT fix the underlying lost-update race: two
+// processes (the running server + a script/test/second worker) can each
+// call _loadMissions(), read the same on-disk snapshot, mutate their own
+// in-memory copy, and whichever calls _saveMissions() second silently
+// overwrites the first's mutation. Each write individually succeeds and is
+// individually valid JSON, so nothing crashes or logs an error — the loss
+// is invisible without comparing intent to the final file.
+//
+// Fix: a real cross-process advisory file lock, held for the COMPLETE
+// read-modify-write transaction (every public mutation function's entire
+// body, from its own _loadMissions() call through _saveMissions()) — not
+// just around the final write, since the race is between two reads, not
+// two writes. This is the same file-lock primitive already proven in this
+// codebase for the identical problem (businessDataService.cjs's
+// _withLock()/_acquireLock()), reused here rather than inventing a new
+// mechanism, plus same-process re-entrancy (a depth counter) so a future
+// internal call from one mutation function into another can never
+// self-deadlock on a lock this same process already holds — no current
+// call site does this, but it costs nothing to make it safe.
+//
+// Design constraints:
+//   - Cross-process safe: fs.openSync(lockPath, "wx") is an atomic
+//     create-if-not-exists at the OS/filesystem level (POSIX O_EXCL) — two
+//     processes racing to create the same lock file can never both "win".
+//   - Bounded stale-lock recovery: a lock file older than _LOCK_STALE_MS is
+//     presumed abandoned (holder crashed/was SIGKILLed before releasing)
+//     and is force-broken by the next acquirer — the same grace-window
+//     design _sweepOrphanedTmp() above already uses for tmp files, applied
+//     to locks, so a crashed writer can never cause a permanent deadlock.
+//   - Bounded acquisition wait: retries with a short backoff for at most
+//     _LOCK_ACQUIRE_TIMEOUT_MS, then throws rather than blocking forever —
+//     no unbounded wait.
+//   - Exception-safe: release always runs in a `finally`, so a thrown error
+//     inside the locked section can never leave the lock held.
+const LOCK_FILE = `${MISSIONS_FILE}.lock`;
+const _LOCK_STALE_MS          = 30_000; // older than this is presumed a crashed holder
+const _LOCK_ACQUIRE_TIMEOUT_MS = 10_000; // give up (throw) rather than wait forever
+const _LOCK_RETRY_MS          = 20;      // backoff between acquisition attempts
+
+let _lockDepth = 0; // same-process re-entrancy only — cross-process exclusion is the lock file itself
+
+function _acquireMissionsLock() {
+    if (_lockDepth > 0) { _lockDepth++; return; } // already held by this process — safe re-entry
+    const deadline = Date.now() + _LOCK_ACQUIRE_TIMEOUT_MS;
+    for (;;) {
+        try {
+            const fd = fs.openSync(LOCK_FILE, "wx"); // atomic create-if-not-exists
+            fs.writeSync(fd, String(process.pid));
+            fs.closeSync(fd);
+            _lockDepth = 1;
+            return;
+        } catch (err) {
+            if (err.code !== "EEXIST") throw err; // a real filesystem error, not contention — propagate
+            try {
+                const st = fs.statSync(LOCK_FILE);
+                if (Date.now() - st.mtimeMs > _LOCK_STALE_MS) {
+                    // Presumed-abandoned lock — force-break it. unlinkSync can race
+                    // with the real holder finishing normally at the exact same
+                    // moment; either outcome (we remove a genuinely stale lock, or
+                    // we raced a real release and unlinkSync throws) is safe — the
+                    // next loop iteration simply retries acquisition.
+                    try { fs.unlinkSync(LOCK_FILE); } catch { /* raced a real release, or already gone — fine */ }
+                    logger.warn(`[MissionMemory] Broke stale lock file (older than ${_LOCK_STALE_MS}ms) — presumed crashed holder`);
+                    continue;
+                }
+            } catch { /* stat raced the real holder's own release — just retry below */ }
+            if (Date.now() >= deadline) {
+                throw new Error(`[MissionMemory] Failed to acquire missions.json lock within ${_LOCK_ACQUIRE_TIMEOUT_MS}ms — another process is holding it`);
+            }
+            // Bounded synchronous backoff — this module's API is synchronous by
+            // design (matches businessDataService.cjs's own _acquireLock()), so a
+            // real async wait would require a larger refactor than this fix is
+            // scoped for. _LOCK_RETRY_MS is short enough that real contention
+            // (a write normally takes low single-digit ms) resolves in 1-2 iterations.
+            const spinUntil = Date.now() + _LOCK_RETRY_MS;
+            while (Date.now() < spinUntil) { /* bounded busy-wait */ }
+        }
+    }
+}
+
+function _releaseMissionsLock() {
+    if (_lockDepth > 1) { _lockDepth--; return; } // still held by an outer re-entrant call
+    _lockDepth = 0;
+    try { fs.unlinkSync(LOCK_FILE); } catch { /* already gone (e.g. broken as stale by another process) — fine */ }
+}
+
+/**
+ * Runs `fn` (a synchronous, zero-argument function) with the cross-process
+ * missions.json lock held for its entire duration. The correct unit of
+ * atomicity is the WHOLE read-modify-write transaction, not just the final
+ * write — every public mutation function below wraps its entire body in
+ * this rather than only _saveMissions() acquiring a lock around the write
+ * step alone.
+ */
+function _withMissionsLock(fn) {
+    _acquireMissionsLock();
+    try {
+        return fn();
+    } finally {
+        _releaseMissionsLock();
+    }
+}
+
 function _loadMissions() {
     let mtimeMs;
     try { mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs; }
@@ -461,38 +569,43 @@ function createMission(data = {}) {
         throw new Error(`createMission: invalid priority "${data.priority}". Must be one of: ${[...VALID_PRIORITIES].join(", ")}`);
     }
 
-    const store = _loadMissions();
-    // _effectiveOrgId() also recognizes data.metadata.orgId (organizationService
-    // .cjs's convention) so a caller through THAT path is scoped correctly too
-    // — not just the top-level data.orgId this file's own _buildMission() persists.
-    const orgId = _effectiveOrgId(data);
+    return _withMissionsLock(() => {
+        const store = _loadMissions();
+        // _effectiveOrgId() also recognizes data.metadata.orgId (organizationService
+        // .cjs's convention) so a caller through THAT path is scoped correctly too
+        // — not just the top-level data.orgId this file's own _buildMission() persists.
+        const orgId = _effectiveOrgId(data);
 
-    // P0-2 dedup check — see _getDedupIndex() above for scope rules. A hit
-    // means an equivalent NON-TERMINAL mission already exists for this exact
-    // org (or this exact "unscoped" bucket) — return it as-is instead of
-    // creating a duplicate. Nothing is mutated on this path: no write, no
-    // subtask/timeline change to the existing mission, same guarantee as any
-    // other read (getMission/listMissions).
-    const dedupIndex = _getDedupIndex(store);
-    const existingId = dedupIndex.get(_dedupKey(orgId, data.objective));
-    if (existingId) {
-        const existing = _findMission(store, existingId);
-        if (existing) {
-            logger.info(`[MissionMemory] createMission: deduped against existing ${existing.id} (org=${orgId || "unscoped"}): "${existing.objective}"`);
-            return { ...existing, deduped: true, dedupedAgainst: existing.id };
+        // P0-2 dedup check — see _getDedupIndex() above for scope rules. A hit
+        // means an equivalent NON-TERMINAL mission already exists for this exact
+        // org (or this exact "unscoped" bucket) — return it as-is instead of
+        // creating a duplicate. Nothing is mutated on this path: no write, no
+        // subtask/timeline change to the existing mission, same guarantee as any
+        // other read (getMission/listMissions). Running this check inside the
+        // lock (Mission 85) closes the race where two processes could both pass
+        // the dedup check against the same pre-write snapshot and both create
+        // what was supposed to be a single deduped mission.
+        const dedupIndex = _getDedupIndex(store);
+        const existingId = dedupIndex.get(_dedupKey(orgId, data.objective));
+        if (existingId) {
+            const existing = _findMission(store, existingId);
+            if (existing) {
+                logger.info(`[MissionMemory] createMission: deduped against existing ${existing.id} (org=${orgId || "unscoped"}): "${existing.objective}"`);
+                return { ...existing, deduped: true, dedupedAgainst: existing.id };
+            }
         }
-    }
 
-    const mission = _buildMission(data);
-    store.missions.push(mission);
-    _saveMissions(store);
-    // _saveMissions() always replaces _missionsCache.store with a new object
-    // (see its own `updated` literal below), so the next _loadMissions() call
-    // returns a different reference and _getDedupIndex() naturally rebuilds
-    // against post-write state — no separate index invalidation needed here.
+        const mission = _buildMission(data);
+        store.missions.push(mission);
+        _saveMissions(store);
+        // _saveMissions() always replaces _missionsCache.store with a new object
+        // (see its own `updated` literal below), so the next _loadMissions() call
+        // returns a different reference and _getDedupIndex() naturally rebuilds
+        // against post-write state — no separate index invalidation needed here.
 
-    logger.info(`[MissionMemory] Created mission ${mission.id}: "${mission.objective}"`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Created mission ${mission.id}: "${mission.objective}"`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -679,36 +792,38 @@ function updateMission(missionId, patch = {}) {
         "failures", "deployments", "approvals", "learnings", "timeline", "metrics",
     ]);
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now     = new Date().toISOString();
-    const changed = {};
+        const now     = new Date().toISOString();
+        const changed = {};
 
-    for (const [k, v] of Object.entries(patch)) {
-        if (IMMUTABLE.has(k)) continue;
-        if (mission[k] !== v) {
-            changed[k] = { from: mission[k], to: v };
-            mission[k] = v;
+        for (const [k, v] of Object.entries(patch)) {
+            if (IMMUTABLE.has(k)) continue;
+            if (mission[k] !== v) {
+                changed[k] = { from: mission[k], to: v };
+                mission[k] = v;
+            }
         }
-    }
 
-    // Auto-set completedAt when transitioning to terminal states
-    if (patch.status === "completed" || patch.status === "failed" || patch.status === "cancelled") {
-        if (!mission.completedAt) {
-            mission.completedAt = now;
-            changed.completedAt = { from: null, to: now };
+        // Auto-set completedAt when transitioning to terminal states
+        if (patch.status === "completed" || patch.status === "failed" || patch.status === "cancelled") {
+            if (!mission.completedAt) {
+                mission.completedAt = now;
+                changed.completedAt = { from: null, to: now };
+            }
         }
-    }
 
-    mission.updatedAt = now;
-    _appendTimeline(mission, "mission_updated", { changes: changed });
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        mission.updatedAt = now;
+        _appendTimeline(mission, "mission_updated", { changes: changed });
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Updated mission ${missionId}`, Object.keys(changed));
-    return { ...mission };
+        logger.info(`[MissionMemory] Updated mission ${missionId}`, Object.keys(changed));
+        return { ...mission };
+    });
 }
 
 /**
@@ -721,18 +836,20 @@ function addSubtask(missionId, subtask = {}) {
         throw new Error("addSubtask: subtask.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const st = _ingestSubtask(mission, subtask, true);
-    mission.metrics  = _recomputeMetrics(mission);
-    mission.updatedAt = new Date().toISOString();
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const st = _ingestSubtask(mission, subtask, true);
+        mission.metrics  = _recomputeMetrics(mission);
+        mission.updatedAt = new Date().toISOString();
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Subtask ${st.id} added to mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Subtask ${st.id} added to mission ${missionId}`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -764,31 +881,33 @@ function updateSubtask(missionId, subtaskId, patch = {}) {
     if (!subtaskId)  throw new Error("updateSubtask: subtaskId is required");
     if (!patch || typeof patch !== "object") throw new Error("updateSubtask: patch must be an object");
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const st = (mission.subtasks || []).find(s => s.id === subtaskId);
-    if (!st) throw new Error(`updateSubtask: subtask ${subtaskId} not found in mission ${missionId}`);
+        const st = (mission.subtasks || []).find(s => s.id === subtaskId);
+        if (!st) throw new Error(`updateSubtask: subtask ${subtaskId} not found in mission ${missionId}`);
 
-    const changed = {};
-    for (const [k, v] of Object.entries(patch)) {
-        if (k === "id") continue;
-        if (st[k] !== v) {
-            changed[k] = { from: st[k], to: v };
-            st[k] = v;
+        const changed = {};
+        for (const [k, v] of Object.entries(patch)) {
+            if (k === "id") continue;
+            if (st[k] !== v) {
+                changed[k] = { from: st[k], to: v };
+                st[k] = v;
+            }
         }
-    }
 
-    if (Object.keys(changed).length === 0) return { ...mission };
+        if (Object.keys(changed).length === 0) return { ...mission };
 
-    mission.metrics   = _recomputeMetrics(mission);
-    mission.updatedAt = new Date().toISOString();
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        mission.metrics   = _recomputeMetrics(mission);
+        mission.updatedAt = new Date().toISOString();
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Subtask ${subtaskId} updated on mission ${missionId}`, Object.keys(changed));
-    return { ...mission };
+        logger.info(`[MissionMemory] Subtask ${subtaskId} updated on mission ${missionId}`, Object.keys(changed));
+        return { ...mission };
+    });
 }
 
 /**
@@ -801,27 +920,29 @@ function recordDecision(missionId, decision = {}) {
         throw new Error("recordDecision: decision.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const dec = {
-        id:          _uid("dec"),
-        timestamp:   now,
-        type:        decision.type        || "operational",
-        description: (decision.description || "").trim(),
-        rationale:   decision.rationale   || null,
-        outcome:     decision.outcome     || null,
-    };
-    mission.decisions.push(dec);
-    _appendTimeline(mission, "decision_recorded", { decisionId: dec.id, type: dec.type, description: dec.description });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const now = new Date().toISOString();
+        const dec = {
+            id:          _uid("dec"),
+            timestamp:   now,
+            type:        decision.type        || "operational",
+            description: (decision.description || "").trim(),
+            rationale:   decision.rationale   || null,
+            outcome:     decision.outcome     || null,
+        };
+        mission.decisions.push(dec);
+        _appendTimeline(mission, "decision_recorded", { decisionId: dec.id, type: dec.type, description: dec.description });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Decision ${dec.id} recorded on mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Decision ${dec.id} recorded on mission ${missionId}`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -834,27 +955,29 @@ function recordArtifact(missionId, artifact = {}) {
         throw new Error("recordArtifact: artifact.name is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const art = {
-        id:          _uid("art"),
-        type:        artifact.type        || "file",
-        name:        (artifact.name || "").trim(),
-        path:        artifact.path        || null,
-        createdAt:   now,
-        description: artifact.description || null,
-    };
-    mission.artifacts.push(art);
-    _appendTimeline(mission, "artifact_recorded", { artifactId: art.id, type: art.type, name: art.name });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const now = new Date().toISOString();
+        const art = {
+            id:          _uid("art"),
+            type:        artifact.type        || "file",
+            name:        (artifact.name || "").trim(),
+            path:        artifact.path        || null,
+            createdAt:   now,
+            description: artifact.description || null,
+        };
+        mission.artifacts.push(art);
+        _appendTimeline(mission, "artifact_recorded", { artifactId: art.id, type: art.type, name: art.name });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Artifact ${art.id} recorded on mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Artifact ${art.id} recorded on mission ${missionId}`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -867,33 +990,35 @@ function recordFailure(missionId, failure = {}) {
         throw new Error("recordFailure: failure.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const fail = {
-        id:          _uid("fail"),
-        timestamp:   now,
-        phase:       (failure.phase        || "unknown").trim(),
-        description: (failure.description  || "").trim(),
-        rootCause:   failure.rootCause     || null,
-        resolved:    failure.resolved      ?? false,
-    };
-    mission.failures.push(fail);
-    mission.metrics  = _recomputeMetrics(mission);
-    _appendTimeline(mission, "failure_recorded", {
-        failureId:   fail.id,
-        phase:       fail.phase,
-        description: fail.description,
-        resolved:    fail.resolved,
+        const now = new Date().toISOString();
+        const fail = {
+            id:          _uid("fail"),
+            timestamp:   now,
+            phase:       (failure.phase        || "unknown").trim(),
+            description: (failure.description  || "").trim(),
+            rootCause:   failure.rootCause     || null,
+            resolved:    failure.resolved      ?? false,
+        };
+        mission.failures.push(fail);
+        mission.metrics  = _recomputeMetrics(mission);
+        _appendTimeline(mission, "failure_recorded", {
+            failureId:   fail.id,
+            phase:       fail.phase,
+            description: fail.description,
+            resolved:    fail.resolved,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.warn(`[MissionMemory] Failure ${fail.id} recorded on mission ${missionId} — phase: ${fail.phase}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.warn(`[MissionMemory] Failure ${fail.id} recorded on mission ${missionId} — phase: ${fail.phase}`);
-    return { ...mission };
 }
 
 /**
@@ -909,33 +1034,35 @@ function recordDeployment(missionId, deployment = {}) {
         throw new Error("recordDeployment: deployment.status is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const dep = {
-        id:                _uid("dep"),
-        timestamp:         now,
-        environment:       (deployment.environment        || "").trim(),
-        status:            (deployment.status             || "").trim(),
-        version:           deployment.version             || null,
-        rollbackAvailable: deployment.rollbackAvailable   ?? false,
-    };
-    mission.deployments.push(dep);
-    mission.metrics  = _recomputeMetrics(mission);
-    _appendTimeline(mission, "deployment_recorded", {
-        deploymentId: dep.id,
-        environment:  dep.environment,
-        status:       dep.status,
-        version:      dep.version,
+        const now = new Date().toISOString();
+        const dep = {
+            id:                _uid("dep"),
+            timestamp:         now,
+            environment:       (deployment.environment        || "").trim(),
+            status:            (deployment.status             || "").trim(),
+            version:           deployment.version             || null,
+            rollbackAvailable: deployment.rollbackAvailable   ?? false,
+        };
+        mission.deployments.push(dep);
+        mission.metrics  = _recomputeMetrics(mission);
+        _appendTimeline(mission, "deployment_recorded", {
+            deploymentId: dep.id,
+            environment:  dep.environment,
+            status:       dep.status,
+            version:      dep.version,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Deployment ${dep.id} recorded on mission ${missionId} — env: ${dep.environment}, status: ${dep.status}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Deployment ${dep.id} recorded on mission ${missionId} — env: ${dep.environment}, status: ${dep.status}`);
-    return { ...mission };
 }
 
 /**
@@ -951,33 +1078,35 @@ function recordApproval(missionId, approval = {}) {
         throw new Error("recordApproval: approval.status is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const apr = {
-        id:          _uid("apr"),
-        timestamp:   now,
-        requestedBy: approval.requestedBy || null,
-        approvedBy:  approval.approvedBy  || null,
-        type:        (approval.type   || "").trim(),
-        status:      (approval.status || "").trim(),
-    };
-    mission.approvals.push(apr);
-    _appendTimeline(mission, "approval_recorded", {
-        approvalId:  apr.id,
-        type:        apr.type,
-        status:      apr.status,
-        requestedBy: apr.requestedBy,
-        approvedBy:  apr.approvedBy,
+        const now = new Date().toISOString();
+        const apr = {
+            id:          _uid("apr"),
+            timestamp:   now,
+            requestedBy: approval.requestedBy || null,
+            approvedBy:  approval.approvedBy  || null,
+            type:        (approval.type   || "").trim(),
+            status:      (approval.status || "").trim(),
+        };
+        mission.approvals.push(apr);
+        _appendTimeline(mission, "approval_recorded", {
+            approvalId:  apr.id,
+            type:        apr.type,
+            status:      apr.status,
+            requestedBy: apr.requestedBy,
+            approvedBy:  apr.approvedBy,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Approval ${apr.id} recorded on mission ${missionId} — type: ${apr.type}, status: ${apr.status}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Approval ${apr.id} recorded on mission ${missionId} — type: ${apr.type}, status: ${apr.status}`);
-    return { ...mission };
 }
 
 /**
@@ -990,34 +1119,36 @@ function addLearning(missionId, learning = {}) {
         throw new Error("addLearning: learning.insight is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const confidence = Number.isFinite(learning.confidence)
-        ? Math.min(100, Math.max(0, learning.confidence))
-        : 80;
+        const now = new Date().toISOString();
+        const confidence = Number.isFinite(learning.confidence)
+            ? Math.min(100, Math.max(0, learning.confidence))
+            : 80;
 
-    const lrn = {
-        id:         _uid("lrn"),
-        timestamp:  now,
-        insight:    (learning.insight || "").trim(),
-        source:     learning.source   || null,
-        confidence,
-    };
-    mission.learnings.push(lrn);
-    _appendTimeline(mission, "learning_added", {
-        learningId: lrn.id,
-        insight:    lrn.insight,
-        confidence: lrn.confidence,
+        const lrn = {
+            id:         _uid("lrn"),
+            timestamp:  now,
+            insight:    (learning.insight || "").trim(),
+            source:     learning.source   || null,
+            confidence,
+        };
+        mission.learnings.push(lrn);
+        _appendTimeline(mission, "learning_added", {
+            learningId: lrn.id,
+            insight:    lrn.insight,
+            confidence: lrn.confidence,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Learning ${lrn.id} added to mission ${missionId}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Learning ${lrn.id} added to mission ${missionId}`);
-    return { ...mission };
 }
 
 /**
