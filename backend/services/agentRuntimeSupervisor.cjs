@@ -64,6 +64,7 @@ function _bds()    { try { return require("./businessDataService.cjs");         
 function _bie()    { try { return require("./businessIntelligenceEngine.cjs");               } catch { return null; } }
 function _ce()     { try { return require("./engineeringConfidenceEngine.cjs");              } catch { return null; } }
 function _collab() { try { return require("./missionCollaborationEngine.cjs");               } catch { return null; } }
+function _guard()  { try { return require("./autonomousMissionGuard.cjs");                   } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
@@ -223,12 +224,55 @@ function _missionExists(objectivePrefix) {
     } catch { return false; }
 }
 
+// JARVIS INCIDENT REPAIR (Mission 83 — P0 autonomous feedback-loop fix):
+// _missionExists() above (this file's own digit-normalized dedup, from the
+// earlier A.5.2 runtime-stability fix) only ever compares non-terminal
+// missions with no cooldown window and no org scoping — a signal whose
+// mission had already gone terminal could be immediately re-created on the
+// very next tick, and two different orgs' identical-looking autonomous
+// objectives were never distinguished. autonomousMissionGuard.cjs (shared
+// with engineeringOrg.cjs — see that file's own header for the full
+// root-cause writeup) now runs AFTER _missionExists() has already had its
+// chance to reject an exact-shape duplicate, adding a cooldown window for
+// terminal missions and a bounded admission cap on total in-flight
+// autonomous missions. _missionExists()/_normalizeObjective() above are
+// left completely unchanged as an additional, narrower safety net (P0-2
+// -style defense in depth) — not replaced, not weakened.
 function _createMission(agentId, spec) {
     if (!spec.objective?.trim()) return null;
     if (_missionExists(spec.objective)) return null;
+
+    const guard = _guard();
+    const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
+    const decision = guard
+        ? guard.admitAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId })
+        : { allowed: true, signalType: null, signalKey: null };
+
+    if (!decision.allowed) {
+        const s = _agents.get(agentId);
+        if (s) {
+            _setState(agentId, {
+                lastDecisionAt: new Date().toISOString(),
+                lastDecision:   `Deferred (${decision.reason || "guard"}): ${spec.objective?.slice(0, 60)}`,
+            });
+        }
+        try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: decision.reason, signalType: decision.signalType }); } catch {}
+        return null;
+    }
+
     try {
         const s = _agents.get(agentId);
-        const mission = _orch()?.createManual({ ...spec, goal: spec.objective });
+        const mission = _orch()?.createManual({
+            ...spec,
+            goal: spec.objective,
+            metadata: {
+                ...(spec.metadata || {}),
+                autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+                autonomous: true,
+                signalType: decision.signalType,
+                signalKey:  decision.signalKey,
+            },
+        });
         // P0-2: missionMemory's storage-level dedup can still return an
         // existing mission here even when _missionExists() above missed it
         // (e.g. a different orgId bucket, or a duplicate created between

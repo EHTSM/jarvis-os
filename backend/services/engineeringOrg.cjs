@@ -60,6 +60,7 @@ function _mem()    { try { return require("./engineeringMemoryEngine.cjs");     
 // V2 workflow
 function _wf()     { try { return require("./engineeringOrgWorkflow.cjs");       } catch { return null; } }
 function _st()     { try { return require("./engineeringOrgState.cjs");          } catch { return null; } }
+function _guard()  { try { return require("./autonomousMissionGuard.cjs");       } catch { return null; } }
 
 // ── Shared helpers (mirrors patterns in agentRuntimeSupervisor) ───────────────
 
@@ -83,11 +84,50 @@ function _missionExists(objectivePrefix) {
   } catch { return false; }
 }
 
+// JARVIS INCIDENT REPAIR (Mission 83 — P0 autonomous feedback-loop fix):
+// _missionExists() above (this file's own digit-normalized dedup, from the
+// earlier A.5.2 runtime-stability fix) only ever compares non-terminal
+// missions with no cooldown window and no org scoping — a signal whose
+// mission had already gone terminal could be immediately re-created on the
+// very next tick. autonomousMissionGuard.cjs (shared with
+// agentRuntimeSupervisor.cjs — see that file's own header for the full
+// root-cause writeup) now runs AFTER _missionExists() has already had its
+// chance to reject an exact-shape duplicate, adding a cooldown window for
+// terminal missions and a bounded admission cap on total in-flight
+// autonomous missions. _missionExists()/_normalizeObjective() above are
+// left completely unchanged as an additional, narrower safety net — not
+// replaced, not weakened.
 function _mission(agentId, spec, s) {
   if (!spec.objective?.trim()) return null;
   if (_missionExists(spec.objective)) return null;
+
+  const guard = _guard();
+  const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
+  const decision = guard
+    ? guard.admitAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId })
+    : { allowed: true, signalType: null, signalKey: null };
+
+  if (!decision.allowed) {
+    if (s) {
+      s.lastDecision   = `Deferred (${decision.reason || "guard"}): ${spec.objective?.slice(0, 60)}`;
+      s.lastDecisionAt = new Date().toISOString();
+    }
+    try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: decision.reason, signalType: decision.signalType }); } catch {}
+    return null;
+  }
+
   try {
-    const m = _orch()?.createManual({ ...spec, goal: spec.objective });
+    const m = _orch()?.createManual({
+      ...spec,
+      goal: spec.objective,
+      metadata: {
+        ...(spec.metadata || {}),
+        autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+        autonomous: true,
+        signalType: decision.signalType,
+        signalKey:  decision.signalKey,
+      },
+    });
     if (m && s) {
       s.missionsCreated = (s.missionsCreated || 0) + 1;
       s.lastDecision    = `Created: ${spec.objective?.slice(0, 60)}`;
