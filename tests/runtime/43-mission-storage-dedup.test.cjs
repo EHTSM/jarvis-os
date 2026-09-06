@@ -27,17 +27,25 @@
  * "unscoped" bucket and dedup across real, different orgs — the exact
  * cross-tenant leak this mechanism must never introduce.
  *
- * These tests use real missionMemory.cjs calls against the actual
- * persistence layer and clean up every mission they create by cancelling it
- * — same convention as tests/runtime/40-mission-dedup-and-recovery.test.cjs.
+ * These tests use real missionMemory.cjs calls — the only way to prove
+ * this fix works end-to-end against the actual persistence layer — but,
+ * as of MISSION 82 (Test 40/43 Data Isolation), against an isolated
+ * throwaway COPY of missionMemory.cjs (mkdtempSync + module-copy, the
+ * same proven technique used by the packaged Mission 82C/P0/P1 regression
+ * suites), never the real data/missions.json. Cleanup (marking created
+ * missions "cancelled" — missionMemory.cjs has no delete API) remains
+ * unchanged and now operates on the isolated copy's own throwaway store,
+ * so nothing accumulates in the real dataset across repeated runs.
  */
-const { describe, it } = require("node:test");
+const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 
-const memory = require("../../backend/services/missionMemory.cjs");
+const { buildIsolatedMissionMemory } = require("./_isolatedMissionMemory.helper.cjs");
 
 const RUN = `m43-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 const _createdIds = [];
+
+let iso, memory;
 
 function _cleanup() {
     for (const id of _createdIds) {
@@ -47,6 +55,14 @@ function _cleanup() {
 }
 
 describe("JARVIS incident repair P0-2 — missionMemory.createMission() storage-level dedup", () => {
+    before(() => {
+        iso = buildIsolatedMissionMemory();
+        memory = iso.memory;
+    });
+
+    after(() => {
+        iso.cleanup();
+    });
 
     it("1. an exact-duplicate objective (same org/unscoped, non-terminal) is deduped, not duplicated", () => {
         const objective = `${RUN} — exact duplicate probe`;

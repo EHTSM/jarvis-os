@@ -41,19 +41,30 @@
  * Part D explicitly forbids. Not implemented — documented here as the
  * blocker, not silently worked around.
  */
-const { describe, it } = require("node:test");
+const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 const fs     = require("node:fs");
 const path   = require("node:path");
 
+const { buildIsolatedMissionMemory } = require("./_isolatedMissionMemory.helper.cjs");
+
+// These three paths deliberately continue to point at the REAL source
+// files — they are read as plain text (fs.readFileSync) for structural
+// assertions and eval()-based live-function extraction (see tests 4/5
+// below), never require()'d as executable modules, so pinning them to the
+// real, shipped source is correct and required: this is what proves the
+// fix is genuinely present in the actual code that ships, not a copy.
+// Only the executable `memory` instance below (which performs real
+// createMission()/updateMission() writes) is redirected to an isolated
+// copy — MISSION 82 (Test 40/43 Data Isolation).
 const SUP_SRC_PATH = path.join(__dirname, "../../backend/services/agentRuntimeSupervisor.cjs");
 const MEM_SRC_PATH = path.join(__dirname, "../../backend/services/missionMemory.cjs");
 const RT_SRC_PATH  = path.join(__dirname, "../../agents/runtime/missionRuntime.cjs");
 
-const memory = require("../../backend/services/missionMemory.cjs");
-
 const RUN = `m40-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 const _createdIds = [];
+
+let iso, memory;
 
 function _cleanup() {
     for (const id of _createdIds) {
@@ -63,6 +74,14 @@ function _cleanup() {
 }
 
 describe("Mission 40 — mission dedup + planned-recovery blocker (agentRuntimeSupervisor.cjs / missionMemory.cjs)", () => {
+    before(() => {
+        iso = buildIsolatedMissionMemory();
+        memory = iso.memory;
+    });
+
+    after(() => {
+        iso.cleanup();
+    });
 
     it("1. _missionExists() source now checks the real 'planned' status, not the nonexistent 'pending'", () => {
         const src = fs.readFileSync(SUP_SRC_PATH, "utf8");
