@@ -339,13 +339,23 @@ let _logPrevErrCount = 0;
 // observer at all — only agentExecutionEngine's own task failures (via
 // execLog) were visible. Combining both keeps the existing execLog signal
 // and adds real HTTP-layer error visibility with zero new architecture.
+//
+// Mission 87: this previously did an unconditional fs.readFileSync() of
+// the ENTIRE file, then .split("\n") over all of it, only to keep the last
+// 500 lines — an unbounded-with-file-size cost paid on every 60s firing.
+// structured.ndjson has no rotation/cap and grows without bound (real,
+// live file already 1.6MB+/11,000+ lines at time of writing) — the same
+// growth-risk shape as the pre-Mission-84 missions.json full-read tick.
+// readTailLines() reads only a bounded byte range from the end of the
+// file via fs.readSync, independent of total file size, and guarantees a
+// truncated leading fragment (if the tail read starts mid-line) is never
+// treated as a real record — see backend/utils/tailRead.cjs.
 function _readStructuredErrors(windowMs) {
     try {
-        const text  = fs.readFileSync(LOG_FILE, "utf8");
-        const lines = text.split("\n").filter(Boolean);
+        const { lines } = require("../utils/tailRead.cjs").readTailLines(LOG_FILE, 500);
         const now   = Date.now();
         let count = 0;
-        for (const line of lines.slice(-500)) {
+        for (const line of lines) {
             try {
                 const e = JSON.parse(line);
                 if (e.level === "ERROR" && e.ts && (now - new Date(e.ts).getTime()) < windowMs) count++;

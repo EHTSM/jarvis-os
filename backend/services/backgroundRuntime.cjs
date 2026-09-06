@@ -346,15 +346,20 @@ async function _pm2Observer() {
  * Reads data/logs/structured.ndjson (last 200 lines).
  * Counts error-level entries in last 5 minutes and generates recommendations
  * if the rate exceeds thresholds.
+ *
+ * Mission 87: this previously did an unconditional fs.readFileSync() of the
+ * ENTIRE file, then .split("\n") over all of it, only to keep the last 200
+ * lines — an unbounded-with-file-size cost paid on every 60s firing.
+ * readTailLines() reads only a bounded byte range from the end of the file,
+ * independent of total file size — see backend/utils/tailRead.cjs.
  */
 async function _logObserver() {
     if (!fs.existsSync(LOG_FILE)) return { logFileExists: false };
 
-    let raw = "";
-    try { raw = fs.readFileSync(LOG_FILE, "utf8"); } catch { return { logFileExists: true, readable: false }; }
+    let last200;
+    try { last200 = require("../utils/tailRead.cjs").readTailLines(LOG_FILE, 200).lines; }
+    catch { return { logFileExists: true, readable: false }; }
 
-    const lines   = raw.split("\n").filter(Boolean);
-    const last200 = lines.slice(-200);
     const cutoff  = Date.now() - 5 * 60 * 1000;   // 5 min ago
 
     let errorCount = 0;
