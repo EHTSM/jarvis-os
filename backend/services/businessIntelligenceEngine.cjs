@@ -342,18 +342,33 @@ function _emitRecommendation(signal, ruleId, entityType) {
 // process restart losing nothing here since missionMemory is disk-backed.
 const _MISSION_DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000;
 
+// JARVIS INCIDENT REPAIR (2026-09-03, P0 dedup-window-truncation fix):
+// this used listMissions({since, limit: 500}) — correct only while the true
+// number of missions inside the 24h window stayed under 500. listMissions()
+// sorts newest-first then applies .slice(0, limit), so once real volume in
+// the window exceeded 500, the truncation silently dropped older-but-still-
+// in-window rows before this function's own .some() predicate ever saw
+// them. Live-reproduced against this incident's real data: at the Aug 27
+// peak, ~3001 missions existed in one trailing-24h window (6x the old
+// limit), producing up to 71 duplicate follow-up missions for a single lead
+// (1784810737006_a2aa1f — only 1 of 71 ever reached "completed"). Switched
+// to missionMemory.hasMissionMatching(), a purpose-built existence check
+// with no row-count cap — see that function's own header comment for the
+// full design rationale. Raising the old `limit` constant instead would
+// only raise the volume needed to reproduce the same defect again.
 function _recentlyTriggered(entityType, entityId, signalType) {
     try {
         const mm = _mem();
         if (!mm) return false;
         const since = new Date(Date.now() - _MISSION_DEDUP_WINDOW_MS).toISOString();
-        const { missions } = mm.listMissions({ since, limit: 500 });
-        return missions.some(m =>
-            m.metadata?.autoTriggered &&
-            m.metadata?.entityType === entityType &&
-            m.metadata?.entityId === entityId &&
-            m.metadata?.signalType === signalType
-        );
+        return mm.hasMissionMatching({
+            since,
+            predicate: m =>
+                m.metadata?.autoTriggered &&
+                m.metadata?.entityType === entityType &&
+                m.metadata?.entityId === entityId &&
+                m.metadata?.signalType === signalType,
+        });
     } catch { return false; }
 }
 

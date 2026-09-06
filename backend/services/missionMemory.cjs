@@ -580,6 +580,84 @@ function listMissions(opts = {}) {
 }
 
 /**
+ * hasMissionMatching(opts)
+ *
+ * JARVIS INCIDENT REPAIR (2026-09-03, P0 dedup-window-truncation fix):
+ * businessIntelligenceEngine.cjs's _recentlyTriggered() used
+ * listMissions({since, limit: 500}) as a 24h duplicate-existence check. That
+ * is correct only while the true number of missions inside the `since`
+ * window stays under `limit` — listMissions() sorts newest-first and THEN
+ * applies .slice(0, limit) (see above), so once the window's real row count
+ * exceeds `limit`, the truncation silently drops older-but-still-in-window
+ * rows before the caller's own .some() predicate ever sees them. Live-
+ * reproduced: at the real Aug 27 incident's peak, ~3001 missions existed in
+ * one trailing-24h window against a limit of 500 — 6x over — producing up
+ * to 71 duplicate missions for a single lead (only 1 of 71 ever completed).
+ * Root cause is structural (a bounded existence check built on top of a
+ * capped listing primitive), not a wrong constant — raising `limit` further
+ * would only raise the volume needed to reproduce the same defect again,
+ * per this incident's own remediation instructions.
+ *
+ * This function is a SEPARATE, purpose-built existence check — it does NOT
+ * change listMissions()'s own behavior, signature, or default in any way
+ * (confirmed: listMissions() below is completely unmodified by this fix).
+ * It reuses the exact same `since`/`orgId` filter semantics listMissions()
+ * already has (same _effectiveOrgId()-free direct `m.orgId === orgId`
+ * comparison listMissions() itself uses, same `since` ISO-parse + comparison
+ * against `createdAt`), but:
+ *   - takes NO `limit` — there is no row count this check is allowed to
+ *     silently stop scanning at; correctness requires seeing every mission
+ *     inside the time window, not a capped page of it.
+ *   - takes a caller-supplied `predicate(mission) => boolean` instead of
+ *     returning a list, and short-circuits (stops scanning) the moment the
+ *     predicate first returns true — so the common case (a match exists and
+ *     is found quickly) does no more work than a single Array.prototype.some()
+ *     over the since-filtered set, same complexity class as the array the
+ *     old capped call already produced for a typical (<500-row) window; it
+ *     never behaves worse than the code it replaces for realistic loads, and
+ *     is now also CORRECT for the >500-row loads that broke it.
+ *   - never materializes a second full copy of every matched mission object
+ *     (no `.map(m => ({...m}))` — this function returns only a boolean, the
+ *     caller doesn't need mission objects, so no unnecessary allocation is
+ *     introduced for a call site that never asked for one).
+ *
+ * @param {object} opts
+ * @param {string} opts.since - ISO-8601 lower bound on createdAt (required — this
+ *   function exists specifically for bounded-window checks; an unbounded
+ *   scan of the entire mission store belongs to a real listMissions() call,
+ *   not here)
+ * @param {string} [opts.orgId] - same optional exact-match org filter as
+ *   listMissions(); omitted = unscoped search across all missions (matches
+ *   listMissions()'s own existing omitted-orgId behavior)
+ * @param {(mission: object) => boolean} opts.predicate - required; return
+ *   true for a match. Called with the raw stored mission object (NOT a
+ *   shallow copy) — read-only use only, exactly as safe as listMissions()'s
+ *   own per-row access before its `.map(m => ({...m}))` copy step, since
+ *   this function itself never returns those objects to the caller.
+ * @returns {boolean} true iff at least one mission satisfies since + orgId
+ *   (if supplied) + predicate
+ */
+function hasMissionMatching(opts = {}) {
+    const { since, orgId, predicate } = opts;
+    if (!since) throw new Error("hasMissionMatching: `since` is required");
+    if (typeof predicate !== "function") throw new Error("hasMissionMatching: `predicate` function is required");
+
+    const sinceMs = new Date(since).getTime();
+    if (isNaN(sinceMs)) throw new Error(`hasMissionMatching: invalid \`since\` value "${since}"`);
+
+    const store = _loadMissions();
+    for (const m of store.missions) {
+        // Same org-isolation guarantee as listMissions()'s own opts.orgId
+        // filter: an exact match only, never a fallback to unscoped
+        // missions, never another org's — see this file's header comment.
+        if (orgId && m.orgId !== orgId) continue;
+        if (new Date(m.createdAt).getTime() < sinceMs) continue;
+        if (predicate(m)) return true;
+    }
+    return false;
+}
+
+/**
  * updateMission(missionId, patch)
  * Allowed patch keys: status, priority, objective, completedAt (plus arbitrary metadata).
  * Immutable keys (id, createdAt, subtasks, decisions, artifacts, failures,
@@ -1143,6 +1221,7 @@ module.exports = {
     createMission,
     getMission,
     listMissions,
+    hasMissionMatching,
     updateMission,
     addSubtask,
     updateSubtask,
