@@ -20,29 +20,60 @@
  * existed) remain excluded exactly as before.
  *
  * These tests use real missionMemory.cjs calls (the only way to prove this
- * against the actual persistence layer) and clean up every mission they
- * create by cancelling it — same convention as tests/runtime/40-mission-
- * dedup-and-recovery.test.cjs.
+ * against the actual persistence layer). Mission 90 Phase 2: previously
+ * required the real, shared missionMemory.cjs/graphReasoningEngine.cjs
+ * directly, cleaning up by cancelling each created mission (missionMemory
+ * .cjs has no delete API) — which never actually removes the record, so it
+ * accumulated permanently in the real store. Migrated to an isolated
+ * temp-directory copy of BOTH files (graphReasoningEngine.cjs's own
+ * require("./missionMemory.cjs") resolves the isolated copy when both live
+ * at matching relative paths, the same two-file pattern already proven in
+ * tests/runtime/49-p0-guard-integration.test.cjs's own
+ * _buildIsolatedGuardAndMemory()) — findBlockedMissions() only touches
+ * missionMemory.cjs internally (confirmed by direct source inspection), so
+ * no other lazy-loaded service needs copying. Test intent and every
+ * assertion are unchanged; only the storage target moved.
  */
 const { describe, it } = require("node:test");
 const assert = require("node:assert/strict");
 const fs     = require("node:fs");
+const os     = require("node:os");
 const path   = require("node:path");
 
-const GRE_SRC_PATH = path.join(__dirname, "../../backend/services/graphReasoningEngine.cjs");
+const REAL_REPO_ROOT = path.join(__dirname, "..", "..");
+const GRE_SRC_PATH = path.join(REAL_REPO_ROOT, "backend/services/graphReasoningEngine.cjs");
 
-const memory = require("../../backend/services/missionMemory.cjs");
-const gre    = require("../../backend/services/graphReasoningEngine.cjs");
+/**
+ * Builds an isolated pair (missionMemory.cjs copy + graphReasoningEngine.cjs
+ * copy, same temp directory so graphReasoningEngine's own internal
+ * require("./missionMemory.cjs") resolves the isolated copy, not the real
+ * repo's singleton).
+ */
+function _buildIsolatedPair() {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "m41-iso-"));
+    fs.mkdirSync(path.join(root, "backend", "services"), { recursive: true });
+    fs.mkdirSync(path.join(root, "backend", "utils"), { recursive: true });
+    fs.mkdirSync(path.join(root, "data"), { recursive: true });
+    fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), path.join(root, "backend", "services", "missionMemory.cjs"));
+    fs.copyFileSync(GRE_SRC_PATH, path.join(root, "backend", "services", "graphReasoningEngine.cjs"));
+    fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "utils", "logger.js"), path.join(root, "backend", "utils", "logger.js"));
+    const missionMemoryPath = path.join(root, "backend", "services", "missionMemory.cjs");
+    const grePath = path.join(root, "backend", "services", "graphReasoningEngine.cjs");
+    return {
+        root,
+        memory: require(missionMemoryPath),
+        gre: require(grePath),
+        missionMemoryPath,
+        grePath,
+        cleanup() {
+            delete require.cache[require.resolve(missionMemoryPath)];
+            delete require.cache[require.resolve(grePath)];
+            try { fs.rmSync(root, { recursive: true, force: true }); } catch { /* best effort */ }
+        },
+    };
+}
 
 const RUN = `m41-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
-const _createdIds = [];
-
-function _cleanup() {
-    for (const id of _createdIds) {
-        try { memory.updateMission(id, { status: "cancelled", metadata: { m41TestCleanup: true } }); }
-        catch { /* best effort */ }
-    }
-}
 
 describe("JARVIS incident repair P0-3 — structural blocker-resolution recursion guard", () => {
 
@@ -52,60 +83,66 @@ describe("JARVIS incident repair P0-3 — structural blocker-resolution recursio
     });
 
     it("2. findBlockedMissions() excludes a mission by structural metadata.kind, not title text alone", () => {
-        const objective = `${RUN} — plain objective, no special title, tagged blocker_resolution`;
-        const created = memory.createMission({
-            objective,
-            priority: "high",
-            subtasks: [{ description: "some subtask", status: "pending" }],
-            metadata: { kind: "blocker_resolution", blockerDepth: 1 },
-        });
-        _createdIds.push(created.id);
-        // Make it look "stuck": active status, all subtasks pending.
-        memory.updateMission(created.id, { status: "active" });
+        const iso = _buildIsolatedPair();
+        try {
+            const objective = `${RUN} — plain objective, no special title, tagged blocker_resolution`;
+            const created = iso.memory.createMission({
+                objective,
+                priority: "high",
+                subtasks: [{ description: "some subtask", status: "pending" }],
+                metadata: { kind: "blocker_resolution", blockerDepth: 1 },
+            });
+            // Make it look "stuck": active status, all subtasks pending.
+            iso.memory.updateMission(created.id, { status: "active" });
 
-        const { blockedMissions } = gre.findBlockedMissions({ limit: 1000 });
-        const found = blockedMissions.find(bm => bm.missionId === created.id);
-        assert.equal(found, undefined,
-            "a mission tagged metadata.kind === 'blocker_resolution' must never be reported as blocked, regardless of its objective text");
-
-        _cleanup();
+            const { blockedMissions } = iso.gre.findBlockedMissions({ limit: 1000 });
+            const found = blockedMissions.find(bm => bm.missionId === created.id);
+            assert.equal(found, undefined,
+                "a mission tagged metadata.kind === 'blocker_resolution' must never be reported as blocked, regardless of its objective text");
+        } finally {
+            iso.cleanup();
+        }
     });
 
     it("3. findBlockedMissions() still excludes the legacy title-prefix shape (no metadata.kind) — historical missions unaffected", () => {
-        const objective = `Resolve blockers for mission: ${RUN} — legacy shape, no metadata.kind`;
-        const created = memory.createMission({
-            objective,
-            priority: "high",
-            subtasks: [{ description: "some subtask", status: "pending" }],
-            metadata: { domain: "ops" }, // no kind field — mirrors the 56 real historical records
-        });
-        _createdIds.push(created.id);
-        memory.updateMission(created.id, { status: "active" });
+        const iso = _buildIsolatedPair();
+        try {
+            const objective = `Resolve blockers for mission: ${RUN} — legacy shape, no metadata.kind`;
+            const created = iso.memory.createMission({
+                objective,
+                priority: "high",
+                subtasks: [{ description: "some subtask", status: "pending" }],
+                metadata: { domain: "ops" }, // no kind field — mirrors the 56 real historical records
+            });
+            iso.memory.updateMission(created.id, { status: "active" });
 
-        const { blockedMissions } = gre.findBlockedMissions({ limit: 1000 });
-        const found = blockedMissions.find(bm => bm.missionId === created.id);
-        assert.equal(found, undefined,
-            "a mission whose objective starts with the legacy 'Resolve blockers for mission:' prefix must remain excluded even with no metadata.kind");
-
-        _cleanup();
+            const { blockedMissions } = iso.gre.findBlockedMissions({ limit: 1000 });
+            const found = blockedMissions.find(bm => bm.missionId === created.id);
+            assert.equal(found, undefined,
+                "a mission whose objective starts with the legacy 'Resolve blockers for mission:' prefix must remain excluded even with no metadata.kind");
+        } finally {
+            iso.cleanup();
+        }
     });
 
     it("4. an ordinary stuck mission (not a blocker-resolution mission) IS still correctly reported as blocked — no regression to the working case", () => {
-        const objective = `${RUN} — ordinary stuck mission, must still be detected`;
-        const created = memory.createMission({
-            objective,
-            priority: "high",
-            subtasks: [{ description: "some subtask", status: "pending" }],
-        });
-        _createdIds.push(created.id);
-        memory.updateMission(created.id, { status: "active" });
+        const iso = _buildIsolatedPair();
+        try {
+            const objective = `${RUN} — ordinary stuck mission, must still be detected`;
+            const created = iso.memory.createMission({
+                objective,
+                priority: "high",
+                subtasks: [{ description: "some subtask", status: "pending" }],
+            });
+            iso.memory.updateMission(created.id, { status: "active" });
 
-        const { blockedMissions } = gre.findBlockedMissions({ limit: 1000 });
-        const found = blockedMissions.find(bm => bm.missionId === created.id);
-        assert.ok(found, "an ordinary mission with all subtasks stuck pending must still be reported as blocked");
-        assert.equal(found.blockerDepth, 0, "an ordinary mission's blockerDepth defaults to 0");
-
-        _cleanup();
+            const { blockedMissions } = iso.gre.findBlockedMissions({ limit: 1000 });
+            const found = blockedMissions.find(bm => bm.missionId === created.id);
+            assert.ok(found, "an ordinary mission with all subtasks stuck pending must still be reported as blocked");
+            assert.equal(found.blockerDepth, 0, "an ordinary mission's blockerDepth defaults to 0");
+        } finally {
+            iso.cleanup();
+        }
     });
 
     it("5. generateRecommendations()'s Source 2 tags a blocker-resolution candidate with structural metadata", () => {
@@ -123,26 +160,28 @@ describe("JARVIS incident repair P0-3 — structural blocker-resolution recursio
         // silently drift from the shipped implementation) proves the same
         // thing without depending on this mission winning a ranking contest
         // it was never the point of this test to exercise.
-        const objective = `${RUN} — source mission for a real unblock candidate`;
-        const created = memory.createMission({
-            objective,
-            priority: "high",
-            subtasks: [{ description: "some subtask", status: "pending" }],
-        });
-        _createdIds.push(created.id);
-        memory.updateMission(created.id, { status: "active" });
+        const iso = _buildIsolatedPair();
+        try {
+            const objective = `${RUN} — source mission for a real unblock candidate`;
+            const created = iso.memory.createMission({
+                objective,
+                priority: "high",
+                subtasks: [{ description: "some subtask", status: "pending" }],
+            });
+            iso.memory.updateMission(created.id, { status: "active" });
 
-        const { blockedMissions } = gre.findBlockedMissions({ limit: 1000 });
-        const bm = blockedMissions.find(m => m.missionId === created.id);
-        assert.ok(bm, "the mission created above must be found by findBlockedMissions() at a large limit");
-        assert.equal(bm.blockerDepth, 0, "a fresh ordinary mission's blockerDepth is 0");
+            const { blockedMissions } = iso.gre.findBlockedMissions({ limit: 1000 });
+            const bm = blockedMissions.find(m => m.missionId === created.id);
+            assert.ok(bm, "the mission created above must be found by findBlockedMissions() at a large limit");
+            assert.equal(bm.blockerDepth, 0, "a fresh ordinary mission's blockerDepth is 0");
 
-        const src = fs.readFileSync(GRE_SRC_PATH, "utf8");
-        const genSrc = src.match(/function generateRecommendations\([\s\S]*?\n\}/)[0];
-        assert.match(genSrc, /kind:\s*"blocker_resolution"/, "generateRecommendations() source must tag Source 2 candidates with metadata.kind: 'blocker_resolution'");
-        assert.match(genSrc, /blockerDepth:\s*sourceDepth \+ 1/, "generateRecommendations() source must compute the candidate's blockerDepth as sourceDepth + 1");
-
-        _cleanup();
+            const src = fs.readFileSync(GRE_SRC_PATH, "utf8");
+            const genSrc = src.match(/function generateRecommendations\([\s\S]*?\n\}/)[0];
+            assert.match(genSrc, /kind:\s*"blocker_resolution"/, "generateRecommendations() source must tag Source 2 candidates with metadata.kind: 'blocker_resolution'");
+            assert.match(genSrc, /blockerDepth:\s*sourceDepth \+ 1/, "generateRecommendations() source must compute the candidate's blockerDepth as sourceDepth + 1");
+        } finally {
+            iso.cleanup();
+        }
     });
 
     it("6. generateRecommendations() refuses to generate a candidate once MAX_BLOCKER_DEPTH is reached", () => {
@@ -168,23 +207,25 @@ describe("JARVIS incident repair P0-3 — structural blocker-resolution recursio
         assert.match(src, /if \(sourceDepth >= MAX_BLOCKER_DEPTH\) continue;/,
             "generateRecommendations()'s Source 2 must skip candidate generation once sourceDepth >= MAX_BLOCKER_DEPTH");
 
-        const objective = `${RUN} — already at max blocker depth`;
-        const created = memory.createMission({
-            objective,
-            priority: "high",
-            subtasks: [{ description: "some subtask", status: "pending" }],
-            metadata: { blockerDepth: maxDepth }, // no kind — so findBlockedMissions() still sees it as blocked
-        });
-        _createdIds.push(created.id);
-        memory.updateMission(created.id, { status: "active" });
+        const iso = _buildIsolatedPair();
+        try {
+            const objective = `${RUN} — already at max blocker depth`;
+            const created = iso.memory.createMission({
+                objective,
+                priority: "high",
+                subtasks: [{ description: "some subtask", status: "pending" }],
+                metadata: { blockerDepth: maxDepth }, // no kind — so findBlockedMissions() still sees it as blocked
+            });
+            iso.memory.updateMission(created.id, { status: "active" });
 
-        const { blockedMissions } = gre.findBlockedMissions({ limit: 1000 });
-        const bm = blockedMissions.find(b => b.missionId === created.id);
-        assert.ok(bm, "the mission created above must be found by findBlockedMissions() at a large limit");
-        assert.equal(bm.blockerDepth, maxDepth, "findBlockedMissions() must surface this mission's real, already-at-max blockerDepth");
-        assert.ok(bm.blockerDepth >= maxDepth, "this mission's depth must be at/above MAX_BLOCKER_DEPTH — the exact condition the guard checks");
-
-        _cleanup();
+            const { blockedMissions } = iso.gre.findBlockedMissions({ limit: 1000 });
+            const bm = blockedMissions.find(b => b.missionId === created.id);
+            assert.ok(bm, "the mission created above must be found by findBlockedMissions() at a large limit");
+            assert.equal(bm.blockerDepth, maxDepth, "findBlockedMissions() must surface this mission's real, already-at-max blockerDepth");
+            assert.ok(bm.blockerDepth >= maxDepth, "this mission's depth must be at/above MAX_BLOCKER_DEPTH — the exact condition the guard checks");
+        } finally {
+            iso.cleanup();
+        }
     });
 
 });

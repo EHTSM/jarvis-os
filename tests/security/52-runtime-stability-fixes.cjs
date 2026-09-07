@@ -68,9 +68,25 @@
  *
  * This test exercises each fix directly against the real modules, using
  * temporary throwaway missions/tasks created and cleaned up within the
- * test itself — no live server required, but missionMemory.cjs's real
- * file-backed store is used (same as production) since the whole point of
- * these fixes is real persistence behavior.
+ * test itself.
+ *
+ * Mission 90 Phase 2: this test previously used missionMemory.cjs's real
+ * file-backed store directly — the exact residue-accumulation problem
+ * documented and reproduced this session (40+ permanent "A5.2-TEST subtask
+ * persistence" records from prior runs colliding with this test's own
+ * P0-2 dedup index on rerun). Migrated to an isolated missionMemory.cjs
+ * copy via a require-cache override at the real absolute path:
+ * agentRuntimeSupervisor.cjs and graphReasoningEngine.cjs both require
+ * missionMemory.cjs via a relative path resolving to that same absolute
+ * path, so every one of their own internal missionMemory calls
+ * transparently hits the isolated copy once the override is installed —
+ * the same technique already used in tests/security/18-mission-runtime-
+ * lifecycle.cjs's and 125-msn1-mission-runtime-cross-tenant-idor.cjs's own
+ * migrations. The "Fix: graphReasoningEngine.cjs..." section below already
+ * did its own require.cache invalidation for missionMemory.cjs (to force a
+ * fresh module instance before re-requiring graphReasoningEngine.cjs) —
+ * that invalidation is now followed by immediately RE-installing this same
+ * override, so the isolation survives that section's own cache reset.
  *
  * Usage: node tests/security/52-runtime-stability-fixes.cjs
  */
@@ -78,6 +94,9 @@
 process.chdir(require("path").join(__dirname, "../.."));
 
 const assert = require("assert");
+const fs2 = require("fs");
+const os2 = require("os");
+const path2 = require("path");
 
 let pass = 0, fail = 0;
 const failures = [];
@@ -85,7 +104,31 @@ function ok(msg)         { pass++; console.log(`  ✓  ${msg}`); }
 function ko(msg, reason) { fail++; failures.push({ msg, reason }); console.log(`  ✗  ${msg} — ${reason}`); }
 function section(title)  { console.log(`\n[${title}]`); }
 
-const mm = require("../../backend/services/missionMemory.cjs");
+const REAL_REPO_ROOT2 = path2.join(__dirname, "..", "..");
+const isoRoot52 = fs2.mkdtempSync(path2.join(os2.tmpdir(), "m52-iso-"));
+fs2.mkdirSync(path2.join(isoRoot52, "backend", "services"), { recursive: true });
+fs2.mkdirSync(path2.join(isoRoot52, "backend", "utils"), { recursive: true });
+fs2.mkdirSync(path2.join(isoRoot52, "data"), { recursive: true });
+fs2.copyFileSync(path2.join(REAL_REPO_ROOT2, "backend", "services", "missionMemory.cjs"), path2.join(isoRoot52, "backend", "services", "missionMemory.cjs"));
+fs2.copyFileSync(path2.join(REAL_REPO_ROOT2, "backend", "utils", "logger.js"), path2.join(isoRoot52, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath52 = path2.join(isoRoot52, "backend", "services", "missionMemory.cjs");
+const realMissionMemoryAbsPath52 = require.resolve("../../backend/services/missionMemory.cjs");
+
+// require()'d exactly once — this SAME isolated instance is what every
+// override (re-)installation below points the real absolute path at, so
+// all mutation functions anywhere in this process keep sharing one
+// consistent, isolated in-memory cache/dedup-index state.
+const mm = require(isolatedMissionMemoryPath52);
+
+function _installIsolatedMissionMemoryOverride() {
+  require.cache[realMissionMemoryAbsPath52] = {
+    id: realMissionMemoryAbsPath52,
+    filename: realMissionMemoryAbsPath52,
+    loaded: true,
+    exports: mm,
+  };
+}
+_installIsolatedMissionMemoryOverride();
 
 const _createdMissionIds = [];
 function trackedCreate(data) {
@@ -213,7 +256,14 @@ async function main() {
   section("Fix: graphReasoningEngine.cjs excludes self-referential 'Resolve blockers' missions from findBlockedMissions()");
   {
     delete require.cache[require.resolve("../../backend/services/graphReasoningEngine.cjs")];
+    // The line below clears the cache entry at the REAL missionMemory.cjs
+    // absolute path (to force graphReasoningEngine.cjs to re-resolve it
+    // fresh below) — which would also wipe out this file's own isolation
+    // override installed above, so it is immediately re-installed pointing
+    // at the SAME isolated `mm` instance before graphReasoningEngine.cjs is
+    // re-required.
     delete require.cache[require.resolve("../../backend/services/missionMemory.cjs")];
+    _installIsolatedMissionMemoryOverride();
     const gre = require("../../backend/services/graphReasoningEngine.cjs");
 
     // Create a mission that LOOKS blocked (active, subtasks all pending) but
@@ -256,6 +306,10 @@ async function main() {
   ok(`marked ${_createdMissionIds.length} test mission(s) cancelled (no delete API — matches this store's existing terminal-state convention)`);
 
   console.log(`\n${pass} passed, ${fail} failed`);
+
+  delete require.cache[realMissionMemoryAbsPath52];
+  try { fs2.rmSync(isoRoot52, { recursive: true, force: true }); } catch { /* best effort */ }
+
   if (fail > 0) {
     console.log("\nFailures:");
     for (const f of failures) console.log(`  - ${f.msg}: ${f.reason}`);

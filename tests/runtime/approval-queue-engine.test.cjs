@@ -8,8 +8,40 @@
  * approvalQueue (single source of truth, unchanged) rather than
  * fabricating its own approval logic.
  */
-const { describe, it } = require("node:test");
+const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+
+// Mission 90 Phase 2: this test previously reached the real
+// missionMemory.cjs transitively via missionOrchestrator.cjs's own lazy
+// _getMem(), so every mission it created via the orchestrator wrote a real
+// record into the actual data/missions.json. Migrated via a require-cache
+// override at the real absolute path — installed BEFORE
+// missionOrchestrator.cjs/autonomousExecutionRuntime.cjs/
+// engineeringCapabilities.cjs (all of which lazily reach missionMemory.cjs)
+// are ever required, so every one of their internal missionMemory calls
+// transparently hits the isolated copy instead. approvalQueue.cjs (a
+// separate store) is intentionally left real — out of this mission's
+// data/missions.json-specific scope.
+const REAL_REPO_ROOT = path.join(__dirname, "..", "..");
+const isoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "maqe-iso-"));
+fs.mkdirSync(path.join(isoRoot, "backend", "services"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "backend", "utils"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "data"), { recursive: true });
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), path.join(isoRoot, "backend", "services", "missionMemory.cjs"));
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "utils", "logger.js"), path.join(isoRoot, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath = path.join(isoRoot, "backend", "services", "missionMemory.cjs");
+const isolatedMemory = require(isolatedMissionMemoryPath);
+const realMissionMemoryAbsPath = require.resolve("../../backend/services/missionMemory.cjs");
+require.cache[realMissionMemoryAbsPath] = {
+    id: realMissionMemoryAbsPath,
+    filename: realMissionMemoryAbsPath,
+    loaded: true,
+    exports: isolatedMemory,
+};
+
 const approvalQueue = require("../../backend/services/approvalQueue.cjs");
 
 // Boot I4 + I5 the same way backend/server.js does before I3, so
@@ -136,5 +168,10 @@ describe("missionOrchestrator Approval node -> approvalQueue wiring (Phase 10)",
         await waitFor(() => orchestrator.getMission(mission.missionId).stages[0].status === "awaiting_approval");
         const stage = orchestrator.getMission(mission.missionId).stages[0];
         assert.ok(stage.approvalRequestId, "even without an explicit approvalPolicy, a real request is still enqueued (falls back to a generated workflowId)");
+    });
+
+    after(() => {
+        delete require.cache[realMissionMemoryAbsPath];
+        try { fs.rmSync(isoRoot, { recursive: true, force: true }); } catch { /* best effort */ }
     });
 });

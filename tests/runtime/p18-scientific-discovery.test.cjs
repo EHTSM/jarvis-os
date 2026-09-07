@@ -18,6 +18,78 @@ function atest(name, fn) {
   atests.push({ name, fn });
 }
 
+// Mission 90 Phase 2: this file's own "generate({sources:['engineering']})"
+// test (below) previously wrote 2 fixture missions directly, permanently,
+// into the REAL data/missions.json via raw fs.writeFileSync — bypassing
+// missionMemory.cjs's API entirely (Phase 1's most severe finding: an
+// unconditional, permanent, raw-fs real-data mutation). The seeding itself
+// exists to make selfImprovementEngine.cjs's discoverPatterns() genuinely
+// find >=2 missions sharing a failure phase (its pattern-1 rule), which
+// hypothesisEngine.cjs's _fromEngineering() then turns into a real
+// hypothesis — proving the real discoverPatterns() -> generate() pipeline
+// actually works end-to-end, not fabricated data.
+//
+// discoverPatterns() does NOT go through missionMemory.cjs at all — it
+// does its own raw fs.readFileSync(path.join(DATA_DIR, "missions.json"))
+// where DATA_DIR = path.join(__dirname, "../../data") is a hardcoded,
+// non-injectable module constant inside selfImprovementEngine.cjs. The
+// require-cache-override technique used elsewhere in this mission only
+// intercepts require() calls, not this raw-path construction, so it can't
+// redirect this specific read on its own.
+//
+// Fix (Mission-82 pattern, same shape as this mission's other migrations):
+// copy selfImprovementEngine.cjs itself into an isolated mkdtempSync temp
+// directory (alongside missionMemory.cjs, since selfImprovementEngine.cjs
+// also lazily reaches it via _mm() for unrelated pattern types) so the
+// COPY's own __dirname-relative DATA_DIR naturally resolves to the
+// isolated data/ dir instead of the real one — then install a require-
+// cache override for selfImprovementEngine.cjs at its real absolute path,
+// which hypothesisEngine.cjs's lazy _sie() loader will transparently pick
+// up. The seed-mission write and discoverPatterns()'s own read now both
+// target the isolated data/missions.json, preserving the test's intended
+// behavior (real discoverPatterns() -> generate() pipeline, real data
+// shape, real >=2-failure-phase threshold) with zero real-data mutation.
+// This is a test-isolation fix only — selfImprovementEngine.cjs's own
+// production hardcoded DATA_DIR is left completely unchanged; that raw-fs
+// pattern (no injectable path) is a separate architectural characteristic,
+// not something Mission 90 Phase 2 is authorized to alter in production
+// code.
+const _p18Fs   = require("node:fs");
+const _p18Os   = require("node:os");
+const _p18Path = require("node:path");
+const _P18_REAL_REPO_ROOT = _p18Path.join(__dirname, "..", "..");
+const _p18IsoRoot = _p18Fs.mkdtempSync(_p18Path.join(_p18Os.tmpdir(), "p18-iso-"));
+_p18Fs.mkdirSync(_p18Path.join(_p18IsoRoot, "backend", "services"), { recursive: true });
+_p18Fs.mkdirSync(_p18Path.join(_p18IsoRoot, "backend", "utils"), { recursive: true });
+_p18Fs.mkdirSync(_p18Path.join(_p18IsoRoot, "data"), { recursive: true });
+_p18Fs.copyFileSync(_p18Path.join(_P18_REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), _p18Path.join(_p18IsoRoot, "backend", "services", "missionMemory.cjs"));
+_p18Fs.copyFileSync(_p18Path.join(_P18_REAL_REPO_ROOT, "backend", "services", "selfImprovementEngine.cjs"), _p18Path.join(_p18IsoRoot, "backend", "services", "selfImprovementEngine.cjs"));
+_p18Fs.copyFileSync(_p18Path.join(_P18_REAL_REPO_ROOT, "backend", "utils", "logger.js"), _p18Path.join(_p18IsoRoot, "backend", "utils", "logger.js"));
+const _p18IsolatedMissionMemoryPath       = _p18Path.join(_p18IsoRoot, "backend", "services", "missionMemory.cjs");
+const _p18IsolatedSelfImprovementPath     = _p18Path.join(_p18IsoRoot, "backend", "services", "selfImprovementEngine.cjs");
+const _p18IsolatedMemory           = require(_p18IsolatedMissionMemoryPath);
+const _p18IsolatedSelfImprovement  = require(_p18IsolatedSelfImprovementPath);
+const _p18RealMissionMemoryAbsPath      = require.resolve("../../backend/services/missionMemory.cjs");
+const _p18RealSelfImprovementAbsPath    = require.resolve("../../backend/services/selfImprovementEngine.cjs");
+require.cache[_p18RealMissionMemoryAbsPath] = {
+  id: _p18RealMissionMemoryAbsPath,
+  filename: _p18RealMissionMemoryAbsPath,
+  loaded: true,
+  exports: _p18IsolatedMemory,
+};
+require.cache[_p18RealSelfImprovementAbsPath] = {
+  id: _p18RealSelfImprovementAbsPath,
+  filename: _p18RealSelfImprovementAbsPath,
+  loaded: true,
+  exports: _p18IsolatedSelfImprovement,
+};
+const P18_ISOLATED_MISSIONS_PATH = _p18Path.join(_p18IsoRoot, "data", "missions.json");
+function _p18Cleanup() {
+  delete require.cache[_p18RealMissionMemoryAbsPath];
+  delete require.cache[_p18RealSelfImprovementAbsPath];
+  try { _p18Fs.rmSync(_p18IsoRoot, { recursive: true, force: true }); } catch { /* best effort */ }
+}
+
 const dpe = require("../../backend/services/discoveryPlannerEngine.cjs");
 const hyp = require("../../backend/services/hypothesisEngine.cjs");
 const eoe = require("../../backend/services/experimentOrchestratorEngine.cjs");
@@ -160,26 +232,29 @@ test("generate() hypotheses have valid confidence (0-100)", () => {
 
 test("generate({sources:['engineering']}) generates engineering hypotheses", () => {
   // Mission 60A-E: hypothesisEngine.cjs's _fromEngineering() derives
-  // hypotheses from selfImprovementEngine.discoverPatterns(), which itself
-  // scans the real data/missions.json for missions sharing a failure phase
-  // (>= 2 occurrences) — genuinely real, live platform data, not
-  // fabricated (see selfImprovementEngine.cjs:208-228). A CI/local
-  // environment where fewer than 2 real missions happen to share a
-  // failure phase by the time this test runs (test-execution-order and
-  // data-accumulation dependent — data/ is gitignored, so a fresh
-  // checkout starts empty) legitimately yields 0 patterns → 0
-  // hypotheses, which is the correct, honest behavior (not a bug) but
-  // makes this specific assertion depend on ambient state it cannot
-  // control. Seed 2 minimal, uniquely-tagged mission records sharing a
-  // failure phase directly (append-only read-modify-write, matching the
-  // repo's own established pattern of directly seeding data/missions.json
-  // — see 10-c10-cross-system-closure.test.cjs's own mission cleanup code)
-  // so the real discoverPatterns() → generate() pipeline is genuinely
-  // exercised in every environment, not just ones with enough incidental
-  // prior failures.
+  // hypotheses from selfImprovementEngine.discoverPatterns(), which scans
+  // missions.json for missions sharing a failure phase (>= 2 occurrences).
+  // A run where fewer than 2 missions happen to share a failure phase by
+  // the time this test runs legitimately yields 0 patterns -> 0
+  // hypotheses, which is correct, honest behavior (not a bug) but makes
+  // this specific assertion depend on ambient state it cannot control.
+  // Seed 2 minimal, uniquely-tagged mission records sharing a failure
+  // phase directly so the real discoverPatterns() -> generate() pipeline
+  // is genuinely exercised in every environment, not just ones with
+  // enough incidental prior failures.
+  //
+  // Mission 90 Phase 2: this seed previously wrote directly, permanently,
+  // to the REAL data/missions.json — now targets the isolated fixture
+  // (P18_ISOLATED_MISSIONS_PATH) that both the isolated missionMemory.cjs
+  // copy and the isolated selfImprovementEngine.cjs copy's DATA_DIR
+  // naturally resolve to (see the isolation setup near the top of this
+  // file). createMission() first, through the real API, to bring the
+  // isolated store into existence with the correct canonical shape before
+  // this raw read/inject/write — the isolated data/ dir starts empty, so
+  // there is no pre-existing file to read otherwise.
   const fs2 = require("node:fs");
-  const path2 = require("node:path");
-  const missionsPath = path2.join(__dirname, "../../data/missions.json");
+  const missionsPath = P18_ISOLATED_MISSIONS_PATH;
+  _p18IsolatedMemory.createMission({ objective: "p18 isolation bootstrap — safe to ignore", priority: "low" });
   const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
   const phase = `t60a_seed_phase_${Date.now()}`;
   for (let i = 0; i < 2; i++) {
@@ -772,6 +847,7 @@ async function main() {
   }
   console.log(`\n${"─".repeat(50)}`);
   console.log(`POST-Ω P18: ${passed} passed, ${failed} failed`);
+  _p18Cleanup();
   process.exit(failed > 0 ? 1 : 0);
 }
 

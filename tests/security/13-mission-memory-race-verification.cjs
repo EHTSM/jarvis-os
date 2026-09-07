@@ -50,14 +50,49 @@
  * other JARVIS backend process holding data/missions.json for a
  * deterministic result.
  *
+ * Mission 90 Phase 2: this test previously required the real
+ * missionMemory.cjs directly (via backend/routes/mission.js's own internal
+ * require), so its "concurrent" requests wrote real records into the
+ * actual data/missions.json. Migrated to an isolated missionMemory.cjs
+ * copy (Mission-82 pattern) via a require-cache override at the real
+ * absolute path — backend/routes/mission.js requires missionMemory.cjs
+ * via a relative path resolving to that same absolute path, so every one
+ * of its own internal missionMemory calls transparently hits the isolated
+ * copy (the same technique used in this file's sibling migrations, 18 and
+ * 125). This test's own concurrency is entirely in-process (Promise.all
+ * over fetch() calls to a locally-mounted Express server, no forking, no
+ * separate OS processes) so the single-process isolated-copy pattern is
+ * directly sufficient — no cross-process fixture needed.
+ *
  * Usage: node tests/security/13-mission-memory-race-verification.cjs
  */
 
 process.chdir(require("path").join(__dirname, "../.."));
 require("dotenv").config({ path: require("path").join(__dirname, "../../.env") });
 
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+
+const REAL_REPO_ROOT = path.join(__dirname, "..", "..");
+const isoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "m13-iso-"));
+fs.mkdirSync(path.join(isoRoot, "backend", "services"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "backend", "utils"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "data"), { recursive: true });
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), path.join(isoRoot, "backend", "services", "missionMemory.cjs"));
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "utils", "logger.js"), path.join(isoRoot, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath = path.join(isoRoot, "backend", "services", "missionMemory.cjs");
+const memory = require(isolatedMissionMemoryPath);
+
+const realMissionMemoryAbsPath = require.resolve("../../backend/services/missionMemory.cjs");
+require.cache[realMissionMemoryAbsPath] = {
+  id: realMissionMemoryAbsPath,
+  filename: realMissionMemoryAbsPath,
+  loaded: true,
+  exports: memory,
+};
+
 const express = require("express");
-const memory = require("../../backend/services/missionMemory.cjs");
 const missionRouter = require("../../backend/routes/mission.js");
 
 let pass = 0, fail = 0;
@@ -156,6 +191,9 @@ async function main() {
     );
     console.log("\n  Report: data/mission-memory-race-verification-report.json\n");
   } catch { /* non-critical */ }
+
+  delete require.cache[realMissionMemoryAbsPath];
+  try { fs.rmSync(isoRoot, { recursive: true, force: true }); } catch { /* best effort */ }
 
   process.exit(fail > 0 ? 1 : 0);
 }

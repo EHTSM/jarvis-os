@@ -34,6 +34,20 @@
  * creation time on all 3 previously-gapped creation routes, and (4)
  * phase27.js's F2 block enforces the same ownership rule.
  *
+ * Mission 90 Phase 2: this test previously required the real
+ * missionMemory.cjs directly, so every createMission()/getMission() call
+ * here wrote real records into the actual data/missions.json. Migrated to
+ * an isolated missionMemory.cjs copy (Mission-82 pattern) via a require-
+ * cache override at the real absolute path — backend/routes/mission.js
+ * and backend/routes/phase27.js both require missionMemory.cjs via a
+ * relative path resolving to that same absolute path, so pre-populating
+ * require.cache there before either router is required makes every one of
+ * their own internal missionMemory calls transparently hit the isolated
+ * copy (the same technique used in tests/security/18-mission-runtime-
+ * lifecycle.cjs's own migration). organizationService.cjs (a separate
+ * store, data/organizations.json) is intentionally left real — it is out
+ * of this mission's data/missions.json-specific scope.
+ *
  * Usage: node tests/security/125-msn1-mission-runtime-cross-tenant-idor.cjs
  */
 
@@ -41,11 +55,32 @@ process.chdir(require("path").join(__dirname, "../.."));
 require("dotenv").config({ path: require("path").join(__dirname, "../../.env") });
 if (!process.env.JWT_SECRET) process.env.JWT_SECRET = "test-msn1-mission-idor-secret";
 
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+
+const REAL_REPO_ROOT = path.join(__dirname, "..", "..");
+const isoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "m125-iso-"));
+fs.mkdirSync(path.join(isoRoot, "backend", "services"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "backend", "utils"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "data"), { recursive: true });
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), path.join(isoRoot, "backend", "services", "missionMemory.cjs"));
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "utils", "logger.js"), path.join(isoRoot, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath = path.join(isoRoot, "backend", "services", "missionMemory.cjs");
+const memory = require(isolatedMissionMemoryPath);
+
+const realMissionMemoryAbsPath = require.resolve("../../backend/services/missionMemory.cjs");
+require.cache[realMissionMemoryAbsPath] = {
+  id: realMissionMemoryAbsPath,
+  filename: realMissionMemoryAbsPath,
+  loaded: true,
+  exports: memory,
+};
+
 const express = require("express");
 const { requireAuth, signJWT, COOKIE_NAME } = require("../../backend/middleware/authMiddleware");
 const { attachOrg } = require("../../backend/middleware/orgMiddleware.cjs");
 const orgSvc = require("../../backend/services/organizationService.cjs");
-const memory = require("../../backend/services/missionMemory.cjs");
 const missionRouter = require("../../backend/routes/mission.js");
 const phase27Router = require("../../backend/routes/phase27.js");
 
@@ -219,6 +254,10 @@ async function main() {
     console.log("\n  Failures:");
     failures.forEach(f => console.log(`    ✗ ${f.msg}: ${f.reason}`));
   }
+
+  delete require.cache[realMissionMemoryAbsPath];
+  try { fs.rmSync(isoRoot, { recursive: true, force: true }); } catch { /* best effort */ }
+
   process.exit(fail > 0 ? 1 : 0);
 }
 

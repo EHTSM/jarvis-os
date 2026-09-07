@@ -284,15 +284,65 @@ const _LOCK_RETRY_MS          = 20;      // backoff between acquisition attempts
 
 let _lockDepth = 0; // same-process re-entrancy only — cross-process exclusion is the lock file itself
 
+// Mission 89 P1 fix — lock release ownership race.
+//
+// _releaseMissionsLock() previously called fs.unlinkSync(LOCK_FILE)
+// unconditionally, with no check that the calling process still actually
+// owns the lock it is about to delete. Reproduced live (Mission 89 Phase 2,
+// test C1): Process A acquires the lock, is genuinely still alive but
+// stuck past _LOCK_STALE_MS (not crashed); Process B correctly force-
+// breaks A's now-stale-looking lock and acquires its own, legitimate
+// replacement lock; A eventually reaches its own release path and
+// unconditionally deletes whatever lock file exists at that path — which
+// by then is B's, not A's. B's ownership is silently destroyed with no
+// error on either side.
+//
+// Fix: each acquisition writes a unique per-acquisition TOKEN into the
+// lock file (process.pid + a random nonce — the pid alone is not enough,
+// since a stale-break-then-reacquire by a DIFFERENT process could
+// coincidentally still be a different pid, but the point is to identify
+// THIS SPECIFIC ACQUISITION, not merely "some process", so that even the
+// same process re-acquiring after losing and regaining the lock is
+// correctly treated as a new, distinct ownership epoch). This token is
+// kept in module state (_lockToken) alongside the existing _lockDepth
+// counter — _lockDepth alone is insufficient (it is pure in-process state
+// with no way to detect that the on-disk lock has been replaced by
+// another process entirely), so release now reads the on-disk lock's
+// current content and only unlinks it if that content still matches the
+// exact token this process itself wrote at acquisition time. If the
+// content differs (or the file is already gone), this process no longer
+// owns the lock — release is a safe no-op rather than an unconditional
+// delete, since deleting a lock this process does not recognize would
+// once again destroy the actual current owner's lock, exactly the class
+// of bug this fix closes.
+//
+// This narrows, rather than perfectly eliminates, the theoretical window
+// between the read-back verification and the unlink call itself (Node's
+// fs API has no atomic "delete-if-content-matches" primitive, and adding
+// OS-level advisory file locking here would be the "redesign the entire
+// locking system" this fix is explicitly scoped to avoid) — but converts
+// an ALWAYS-WRONG unconditional delete into a delete that only proceeds
+// when this process's own token is still the one on disk, at the moment
+// of release. A third process replacing the lock in the handful of
+// microseconds between this read and the unlink is a categorically
+// smaller and different risk than the previously-unconditional bug this
+// closes, and matches the same proportionate, narrowly-scoped verify-
+// before-mutate pattern already used elsewhere in this exact function
+// (_acquireMissionsLock()'s own stale-check-then-unlink for force-breaking
+// an abandoned lock has the identical, already-accepted race shape).
+let _lockToken = null;
+
 function _acquireMissionsLock() {
     if (_lockDepth > 0) { _lockDepth++; return; } // already held by this process — safe re-entry
     const deadline = Date.now() + _LOCK_ACQUIRE_TIMEOUT_MS;
     for (;;) {
         try {
+            const token = `${process.pid}.${crypto.randomBytes(8).toString("hex")}`;
             const fd = fs.openSync(LOCK_FILE, "wx"); // atomic create-if-not-exists
-            fs.writeSync(fd, String(process.pid));
+            fs.writeSync(fd, token);
             fs.closeSync(fd);
             _lockDepth = 1;
+            _lockToken = token;
             return;
         } catch (err) {
             if (err.code !== "EEXIST") throw err; // a real filesystem error, not contention — propagate
@@ -325,8 +375,32 @@ function _acquireMissionsLock() {
 
 function _releaseMissionsLock() {
     if (_lockDepth > 1) { _lockDepth--; return; } // still held by an outer re-entrant call
+    const token = _lockToken;
     _lockDepth = 0;
-    try { fs.unlinkSync(LOCK_FILE); } catch { /* already gone (e.g. broken as stale by another process) — fine */ }
+    _lockToken = null;
+    if (!token) return; // this process never actually held a token (defensive — should not occur)
+    try {
+        const onDisk = fs.readFileSync(LOCK_FILE, "utf8");
+        if (onDisk !== token) {
+            // The lock on disk is no longer ours — another process force-broke
+            // it as stale and acquired its own replacement lock. Deleting it
+            // now would destroy that process's legitimate ownership, exactly
+            // the bug this fix closes. Safe no-op: our own logical hold on
+            // the lock already ended (we lost it to the stale-break), so
+            // there is nothing further for us to release.
+            logger.warn(`[MissionMemory] Skipped lock release — on-disk lock token no longer matches this process's own (lock was reassigned, likely via stale-break by another process)`);
+            return;
+        }
+        fs.unlinkSync(LOCK_FILE);
+    } catch (err) {
+        if (err.code === "ENOENT") return; // already gone — fine, nothing to release
+        // Any other read/unlink error: fail safe by NOT deleting — an
+        // unconditional delete on an error path is exactly the risk this
+        // fix removes. Logged, not thrown, matching this function's
+        // existing non-throwing contract (release must never itself
+        // become a new failure mode for the caller's own mutation).
+        logger.warn(`[MissionMemory] Lock release check failed (${err.message}) — leaving lock file untouched rather than risking an unsafe delete`);
+    }
 }
 
 /**
@@ -346,6 +420,61 @@ function _withMissionsLock(fn) {
     }
 }
 
+// Mission 89 P0 fix — corruption-then-mutation permanent data loss.
+//
+// The previous behavior: any parse failure (invalid JSON, truncated JSON,
+// or a valid-JSON-but-wrong-shape file) was treated identically to "file
+// doesn't exist yet" — _loadMissions() silently returned a fresh empty
+// store, logged one warn-level line, and returned control to the caller
+// exactly as if there were simply no prior history. The caller (any of
+// this file's 10 mutation functions) would then proceed normally,
+// eventually calling _saveMissions(store) with that empty-plus-one-new-
+// mission store — permanently overwriting the corrupted file (which still
+// contained 100% of the real, recoverable mission history as raw bytes on
+// disk) with a store containing only the single new mutation. Reproduced
+// live (Mission 89 Phase 2, tests A1/A2): 5 seeded historical missions,
+// corrupted via either invalid JSON or truncation, were unrecoverably
+// destroyed by the very next createMission() call.
+//
+// Fix: a genuine parse/shape failure on an EXISTING file (never on a
+// missing file — ENOENT remains the legitimate "no history yet" case,
+// unchanged) is no longer treated as "empty store". Instead:
+//   1. The corrupted file's raw bytes are copied (never moved — the
+//      original stays exactly where an operator or recovery tool would
+//      look for it) to a timestamped, uniquely-named quarantine path
+//      alongside it, so the pre-corruption content is never lost even if
+//      corruption itself is unrecoverable from the live file.
+//   2. A typed error (code: "MISSION_STORE_CORRUPTED") is thrown instead
+//      of returning an empty store — this propagates through every
+//      caller's normal control flow exactly like any other thrown error
+//      already does in this file (e.g. createMission()'s own input-
+//      validation throws), releasing _withMissionsLock()'s lock via its
+//      existing `finally` and surfacing a clear, actionable failure to
+//      the caller rather than silently proceeding as if nothing were
+//      wrong. No mutation function can reach its own _saveMissions(store)
+//      call after this throw, so no subsequent write can ever overwrite
+//      the corrupted source before it has been preserved.
+// Existing valid-store behavior (the overwhelming common case) and the
+// existing missing-file behavior are both completely unchanged.
+const _CORRUPTION_QUARANTINE_RE = /^missions\.json\.corrupted\.\d+\.[0-9a-f]+\.bak$/;
+
+function _quarantineCorruptedFile(reason) {
+    try {
+        const dir = path.dirname(MISSIONS_FILE);
+        const quarantinePath = path.join(dir, `missions.json.corrupted.${Date.now()}.${crypto.randomBytes(6).toString("hex")}.bak`);
+        fs.copyFileSync(MISSIONS_FILE, quarantinePath);
+        logger.error(`[MissionMemory] CORRUPTION DETECTED: ${reason} — original file preserved for recovery at ${quarantinePath}`);
+        return quarantinePath;
+    } catch (copyErr) {
+        // Even if quarantine copy itself fails (e.g. disk full, permissions),
+        // this must never crash the corruption-reporting path — the original
+        // file is still untouched on disk either way, since nothing here
+        // ever writes to MISSIONS_FILE itself.
+        logger.error(`[MissionMemory] CORRUPTION DETECTED: ${reason} — quarantine copy FAILED (${copyErr.message}); original file remains at ${MISSIONS_FILE}, untouched`);
+        return null;
+    }
+}
+
 function _loadMissions() {
     let mtimeMs;
     try { mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs; }
@@ -355,20 +484,43 @@ function _loadMissions() {
         return _missionsCache.store;
     }
 
+    let raw;
     try {
-        const raw = fs.readFileSync(MISSIONS_FILE, "utf8");
-        const parsed = JSON.parse(raw);
-        const store = (!parsed || !Array.isArray(parsed.missions))
-            ? { missions: [], lastUpdated: new Date().toISOString() }
-            : parsed;
-        if (mtimeMs !== null) _missionsCache = { mtimeMs, store };
-        return store;
+        raw = fs.readFileSync(MISSIONS_FILE, "utf8");
     } catch (err) {
-        if (err.code !== "ENOENT") {
-            logger.warn(`[MissionMemory] Load failed: ${err.message} — starting empty`);
+        if (err.code === "ENOENT") {
+            return { missions: [], lastUpdated: new Date().toISOString() };
         }
-        return { missions: [], lastUpdated: new Date().toISOString() };
+        // A real filesystem error reading an EXISTING file (permissions,
+        // I/O error, etc.) — not corruption in the parse sense, but still
+        // must never silently masquerade as "no history": fail loudly
+        // rather than risk the same overwrite-on-next-write class of bug.
+        logger.error(`[MissionMemory] Load failed (filesystem error, not corruption): ${err.message}`);
+        throw Object.assign(new Error(`[MissionMemory] Failed to read mission store: ${err.message}`), { code: "MISSION_STORE_READ_ERROR", cause: err });
     }
+
+    let parsed;
+    try {
+        parsed = JSON.parse(raw);
+    } catch (err) {
+        const quarantinePath = _quarantineCorruptedFile(`invalid JSON (${err.message})`);
+        throw Object.assign(
+            new Error(`[MissionMemory] missions.json contains invalid JSON and cannot be safely loaded. Original file preserved${quarantinePath ? ` at ${quarantinePath}` : " (quarantine copy failed — see logs)"}. Refusing to proceed to avoid silently discarding mission history.`),
+            { code: "MISSION_STORE_CORRUPTED", quarantinePath }
+        );
+    }
+
+    if (!parsed || !Array.isArray(parsed.missions)) {
+        const quarantinePath = _quarantineCorruptedFile("valid JSON but wrong shape (missing or non-array `missions` field)");
+        throw Object.assign(
+            new Error(`[MissionMemory] missions.json is valid JSON but has an unexpected shape and cannot be safely loaded. Original file preserved${quarantinePath ? ` at ${quarantinePath}` : " (quarantine copy failed — see logs)"}. Refusing to proceed to avoid silently discarding mission history.`),
+            { code: "MISSION_STORE_CORRUPTED", quarantinePath }
+        );
+    }
+
+    const store = parsed;
+    if (mtimeMs !== null) _missionsCache = { mtimeMs, store };
+    return store;
 }
 
 // Final Production Integration mission, Blocker #6 fix — the shared
@@ -787,8 +939,21 @@ function updateMission(missionId, patch = {}) {
         throw new Error(`updateMission: invalid priority "${patch.priority}"`);
     }
 
+    // Mission 89 P1 fix — orgId ownership reassignment.
+    //
+    // "orgId" protects the top-level mission.orgId field (the primary
+    // org-scoping convention this file's own header documents — used by
+    // phase27.js, codingAssistant.js, and listMissions()'s own {orgId}
+    // filter). Reproduced live (Mission 89 Phase 2, test B1):
+    // updateMission(id, {orgId: "org-B"}) previously succeeded silently
+    // and durably reassigned a mission's org ownership — genuinely
+    // externally reachable, not just internal, since
+    // backend/routes/phase27.js's PATCH handler passes req.body directly
+    // as this function's patch with no field allowlist. Once created, a
+    // mission's org ownership must never change via this general-purpose
+    // update path — the same posture already applied to id/createdAt/etc.
     const IMMUTABLE = new Set([
-        "id", "createdAt", "subtasks", "decisions", "artifacts",
+        "id", "createdAt", "orgId", "subtasks", "decisions", "artifacts",
         "failures", "deployments", "approvals", "learnings", "timeline", "metrics",
     ]);
 
@@ -802,9 +967,26 @@ function updateMission(missionId, patch = {}) {
 
         for (const [k, v] of Object.entries(patch)) {
             if (IMMUTABLE.has(k)) continue;
-            if (mission[k] !== v) {
-                changed[k] = { from: mission[k], to: v };
-                mission[k] = v;
+            let effectiveValue = v;
+            // The second, org-scoping convention this file's header also
+            // documents (organizationService.cjs's own createMissionForOrg())
+            // stamps ownership as metadata.orgId instead of the top-level
+            // field. Since "metadata" itself must remain a legitimately
+            // patchable field (existing callers — e.g. agentRuntimeSupervisor
+            // .cjs's tester tick, engineeringOrg.cjs's QA tick — replace the
+            // whole metadata object to add fields like `verified`/
+            // `qaVerified`), immutability here is enforced narrowly: if the
+            // incoming metadata patch would change orgId from what the
+            // mission already has, the existing value wins — every other
+            // field in the patched metadata object is still applied exactly
+            // as the caller intended. Reproduced live (Mission 89 Phase 2,
+            // test B2) prior to this fix.
+            if (k === "metadata" && v && typeof v === "object" && mission.metadata && typeof mission.metadata.orgId !== "undefined") {
+                effectiveValue = { ...v, orgId: mission.metadata.orgId };
+            }
+            if (mission[k] !== effectiveValue) {
+                changed[k] = { from: mission[k], to: effectiveValue };
+                mission[k] = effectiveValue;
             }
         }
 

@@ -29,6 +29,40 @@
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
 const os     = require("os");
+const fs2    = require("fs");
+const path2  = require("path");
+
+// Mission 90 Phase 2: the "V1-11 Mission Creation" describe block below
+// (createManual/getMission/listMissions/pause/resume/cancel/getStatistics)
+// previously reached the real missionMemory.cjs transitively via
+// missionOrchestrator.cjs's own lazy _getMem(), writing real records into
+// the actual data/missions.json. This file was also previously uncataloged
+// by scripts/run-test-suite.cjs's own MISSION_MUTATING serialization list
+// (tests/integration/ is not covered by npm run test:runtime/test:security
+// at all). Migrated via a require-cache override at the real absolute
+// path, installed BEFORE any of the services below (several of which
+// lazily reach missionMemory.cjs, directly or via missionOrchestrator.cjs)
+// are required — every one of their internal missionMemory calls
+// transparently hits the isolated copy instead. None of this suite's other
+// 14 validation dimensions touch missionMemory.cjs (confirmed by direct
+// grep), so only this one describe block's behavior is affected by the
+// isolation; every other dimension's real-service validation is unchanged.
+const REAL_REPO_ROOT2 = path2.join(__dirname, "..", "..");
+const isoRoot09 = fs2.mkdtempSync(path2.join(os.tmpdir(), "t09-iso-"));
+fs2.mkdirSync(path2.join(isoRoot09, "backend", "services"), { recursive: true });
+fs2.mkdirSync(path2.join(isoRoot09, "backend", "utils"), { recursive: true });
+fs2.mkdirSync(path2.join(isoRoot09, "data"), { recursive: true });
+fs2.copyFileSync(path2.join(REAL_REPO_ROOT2, "backend", "services", "missionMemory.cjs"), path2.join(isoRoot09, "backend", "services", "missionMemory.cjs"));
+fs2.copyFileSync(path2.join(REAL_REPO_ROOT2, "backend", "utils", "logger.js"), path2.join(isoRoot09, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath09 = path2.join(isoRoot09, "backend", "services", "missionMemory.cjs");
+const isolatedMemory09 = require(isolatedMissionMemoryPath09);
+const realMissionMemoryAbsPath09 = require.resolve("../../backend/services/missionMemory.cjs");
+require.cache[realMissionMemoryAbsPath09] = {
+    id: realMissionMemoryAbsPath09,
+    filename: realMissionMemoryAbsPath09,
+    loaded: true,
+    exports: isolatedMemory09,
+};
 
 // ── Services under validation ─────────────────────────────────────────────
 const execRT   = require("../../backend/services/autonomousExecutionRuntime.cjs");
@@ -912,6 +946,9 @@ describe("V1-E2E: Full engineering mission scenario", () => {
 // ═══════════════════════════════════════════════════════════════════════════
 
 after(() => {
+    delete require.cache[realMissionMemoryAbsPath09];
+    try { fs2.rmSync(isoRoot09, { recursive: true, force: true }); } catch { /* best effort */ }
+
     // CPU / memory delta
     const cpuEnd  = process.cpuUsage(RESULTS.sysStart.cpu);
     const memEnd  = process.memoryUsage();

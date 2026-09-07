@@ -24,22 +24,23 @@
  * recoverStaleMissions(), wired into backend/server.js's startup sequence
  * alongside the existing tq.recoverStale() call.
  *
- * Mission 38 (2026-08-23) — KNOWN ENVIRONMENT PRECONDITION, not a code
- * defect: this test calls missionMemory.cjs's synchronous createMission/
- * getMission/updateMission directly, in-process — which is provably race-
- * free on its own (verified: no `await` between any read and write in
- * these functions or their callers; see docs/audits/
- * PRODUCTION-BLOCKER-ELIMINATION.md's Module 6). If a SEPARATE OS process
- * (e.g. the real backend/server.js dev server on :5050) is ALSO running
- * and writing to the same data/missions.json concurrently, its own
- * _saveMissions() write can genuinely lose an update made by this test's
- * process between that other process's read and write — a real, pre-
- * existing cross-process lost-update race missionMemory.cjs's own header
- * comment already documents as out of scope for its .tmp-path atomicity
- * fix. Run this test with no other JARVIS backend process holding
- * data/missions.json for a deterministic result; an intermittent "Mission
- * not found" here while another server is live is this race, not a
- * regression.
+ * Mission 90 Phase 2: this test previously required the real
+ * missionMemory.cjs/missionRuntime.cjs/mission.js directly, so every
+ * createMission()/startMission()/etc. call here wrote real records into
+ * the actual data/missions.json — the exact cross-process lost-update race
+ * this file's own prior header comment documented as a known environment
+ * precondition. Migrated to an isolated missionMemory.cjs copy (Mission-82
+ * pattern): missionRuntime.cjs and backend/routes/mission.js both require
+ * missionMemory.cjs via a relative path that resolves to the same absolute
+ * path everywhere in this process, so pre-populating require.cache at that
+ * exact absolute path with the isolated instance's exports (BEFORE
+ * missionRuntime.cjs/mission.js are ever required) makes every one of
+ * their own internal missionMemory calls transparently hit the isolated
+ * copy — without needing to also copy missionRuntime.cjs's much larger
+ * transitive dependency tree (runtimeOrchestrator.cjs alone pulls in 7+
+ * further modules, none of which touch data/missions.json at all). This
+ * is the same class of technique as Mission 83's own guard integration,
+ * applied to module resolution instead of to a specific function.
  *
  * Usage: node tests/security/18-mission-runtime-lifecycle.cjs
  */
@@ -47,8 +48,34 @@
 process.chdir(require("path").join(__dirname, "../.."));
 require("dotenv").config({ path: require("path").join(__dirname, "../../.env") });
 
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+
+const REAL_REPO_ROOT = path.join(__dirname, "..", "..");
+const isoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "m18-iso-"));
+fs.mkdirSync(path.join(isoRoot, "backend", "services"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "backend", "utils"), { recursive: true });
+fs.mkdirSync(path.join(isoRoot, "data"), { recursive: true });
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "services", "missionMemory.cjs"), path.join(isoRoot, "backend", "services", "missionMemory.cjs"));
+fs.copyFileSync(path.join(REAL_REPO_ROOT, "backend", "utils", "logger.js"), path.join(isoRoot, "backend", "utils", "logger.js"));
+const isolatedMissionMemoryPath = path.join(isoRoot, "backend", "services", "missionMemory.cjs");
+const memory = require(isolatedMissionMemoryPath);
+
+// Pre-populate the require cache at the REAL absolute path, before
+// missionRuntime.cjs/mission.js (which both require it via a relative
+// path resolving to this exact absolute path) are ever required — every
+// subsequent require() of the real path anywhere in this process now
+// transparently returns the isolated instance instead.
+const realMissionMemoryAbsPath = require.resolve("../../backend/services/missionMemory.cjs");
+require.cache[realMissionMemoryAbsPath] = {
+  id: realMissionMemoryAbsPath,
+  filename: realMissionMemoryAbsPath,
+  loaded: true,
+  exports: memory,
+};
+
 const express = require("express");
-const memory = require("../../backend/services/missionMemory.cjs");
 const runtime = require("../../agents/runtime/missionRuntime.cjs");
 const missionRouter = require("../../backend/routes/mission.js");
 
@@ -149,6 +176,9 @@ async function main() {
     );
     console.log("\n  Report: data/mission-runtime-lifecycle-test-report.json\n");
   } catch { /* non-critical */ }
+
+  delete require.cache[realMissionMemoryAbsPath];
+  try { fs.rmSync(isoRoot, { recursive: true, force: true }); } catch { /* best effort */ }
 
   process.exit(fail > 0 ? 1 : 0);
 }

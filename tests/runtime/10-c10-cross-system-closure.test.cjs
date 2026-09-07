@@ -63,6 +63,53 @@ require("dotenv").config({ path: path.join(__dirname, "..", "..", ".env") });
 const ROOT = path.join(__dirname, "../..");
 const read = p => fs.readFileSync(path.join(ROOT, p), "utf8");
 
+// Mission 90 Phase 2: 5 tests in this large file previously required the
+// real missionMemory.cjs directly via require(path.join(ROOT, ...)) and
+// manipulated the real data/missions.json with raw fs reads/writes to
+// inject test fixtures/malformed records — writing real, permanent
+// records into the actual production store (partially self-cleaned via
+// direct filter+rewrite, but still a real, not isolated, mutation target
+// for the whole test's duration). Migrated via the require-cache-override
+// technique already used in this mission's sibling migrations (18, 125,
+// 13, mission-orchestrator-nodetypes, approval-queue-engine): an isolated
+// missionMemory.cjs copy is installed at the REAL absolute path in
+// require.cache before agents/runtime/missionRuntime.cjs (which also
+// requires missionMemory.cjs via a relative path resolving to that same
+// absolute path) is required, so every one of missionRuntime.cjs's own
+// internal missionMemory calls transparently hits the isolated copy too.
+// Each of the 5 affected tests also gets its own ISOLATED_MISSIONS_PATH to
+// replace its former path.join(ROOT, "data/missions.json") raw-fs
+// references, so the "inject a malformed record directly" tests keep
+// operating on the exact same file missionMemory.cjs itself is using
+// (now the isolated one), not the real repository path.
+let _c10MissionMemoryIso = null;
+function _buildIsolatedMissionMemoryForC10() {
+  if (_c10MissionMemoryIso) return _c10MissionMemoryIso;
+  const os2 = require("node:os");
+  const isoRoot = fs.mkdtempSync(path.join(os2.tmpdir(), "t10c10-mm-iso-"));
+  fs.mkdirSync(path.join(isoRoot, "backend", "services"), { recursive: true });
+  fs.mkdirSync(path.join(isoRoot, "backend", "utils"), { recursive: true });
+  fs.mkdirSync(path.join(isoRoot, "data"), { recursive: true });
+  fs.copyFileSync(path.join(ROOT, "backend", "services", "missionMemory.cjs"), path.join(isoRoot, "backend", "services", "missionMemory.cjs"));
+  fs.copyFileSync(path.join(ROOT, "backend", "utils", "logger.js"), path.join(isoRoot, "backend", "utils", "logger.js"));
+  const isolatedMissionMemoryPath = path.join(isoRoot, "backend", "services", "missionMemory.cjs");
+  const isolatedMemory = require(isolatedMissionMemoryPath);
+  const realMissionMemoryAbsPath = require.resolve(path.join(ROOT, "backend/services/missionMemory.cjs"));
+  require.cache[realMissionMemoryAbsPath] = {
+    id: realMissionMemoryAbsPath,
+    filename: realMissionMemoryAbsPath,
+    loaded: true,
+    exports: isolatedMemory,
+  };
+  _c10MissionMemoryIso = {
+    root: isoRoot,
+    memory: isolatedMemory,
+    missionsPath: path.join(isoRoot, "data", "missions.json"),
+    realMissionMemoryAbsPath,
+  };
+  return _c10MissionMemoryIso;
+}
+
 describe("110-c10-cross-system-closure — /dev/* auth + org-scoping gates", { concurrency: false }, () => {
   it("ops.js gates /dev/* with requireAuth + attachOrg + requireOrgMember before any /dev route handler is registered", () => {
     const src = read("backend/routes/ops.js");
@@ -1185,7 +1232,7 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
   });
 
   it("live: a real mission stuck at status 'active' is recovered to 'planned' by recoverStaleMissions(), with a real decision recorded", () => {
-    const memory = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const { memory } = _buildIsolatedMissionMemoryForC10();
     const missionRuntime = require(path.join(ROOT, "agents/runtime/missionRuntime.cjs"));
     const mission = memory.createMission({ objective: "133 test — orphaned active mission", priority: "low" });
     memory.updateMission(mission.id, { status: "active" });
@@ -1207,9 +1254,10 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
   });
 
   it("live: listMissions() does not crash the whole scan when a malformed record (missing createdAt) exists in the store — Mission 63, real regression: a test fixture elsewhere in this corpus once bypassed createMission()/_buildMission() and pushed a raw record straight into data/missions.json, and the resulting missing createdAt threw TypeError inside listMissions()'s own newest-first sort (b.createdAt.localeCompare — undefined has no localeCompare), crashing recoverStaleMissions() for every OTHER caller too, not just whoever wrote the bad record", () => {
-    const memory = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const iso = _buildIsolatedMissionMemoryForC10();
+    const memory = iso.memory;
     const fs2 = require("node:fs");
-    const missionsPath = path.join(ROOT, "data/missions.json");
+    const missionsPath = iso.missionsPath;
 
     // A genuine, real mission via the proper API first, so its own write
     // (and this test's later direct read of the store) reflect the same
@@ -1246,9 +1294,10 @@ describe("133-master-audit-stale-active-mission-recovery — recoverStaleMission
   });
 
   it("live: listMissions() search does not crash when a malformed record (missing subtasks) forces evaluation into the subtask-search branch — Mission 65: the sibling regression test above never actually exercised this branch, because its own malformed record's objective already matched the search term, short-circuiting the || chain before m.subtasks.some() was ever reached. Live-reproduced in ERA-1 CI (run 33125960088) as 'Cannot read properties of undefined (reading .some.)' at missionMemory.cjs:396 — a genuinely different malformed record already present in the real, shared CI store (neither this test's objective/id nor its own) forced the subtask-search branch to execute", () => {
-    const memory = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const iso = _buildIsolatedMissionMemoryForC10();
+    const memory = iso.memory;
     const fs2 = require("node:fs");
-    const missionsPath = path.join(ROOT, "data/missions.json");
+    const missionsPath = iso.missionsPath;
 
     const marker = `t65_subtask_${Date.now()}`;
     // Deliberately does NOT include `marker` in its own objective/id — the
@@ -3179,7 +3228,8 @@ describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleM
   });
 
   it("live: a real mission with a subtask stuck at 'running' (simulating a crash mid-dispatch, the exact live pattern found: 292 real orphaned subtasks up to 337h old) is recovered to 'pending' by recoverStaleMissions(), and a dependent subtask becomes dispatchable again", async () => {
-    const memory  = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const iso = _buildIsolatedMissionMemoryForC10();
+    const memory  = iso.memory;
     const runtime = require(path.join(ROOT, "agents/runtime/missionRuntime.cjs"));
 
     const marker = `t153_test_${Date.now()}`;
@@ -3201,10 +3251,10 @@ describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleM
     const after = memory.getMission(mission.id);
     assert.equal(after.subtasks.find(s => s.id === a.id).status, "pending", "the stuck subtask must be reset to pending, not left at running forever");
 
-    // Clean up the test mission from the real store — direct, targeted
+    // Clean up the test mission from the isolated store — direct, targeted
     // single-record removal, not a destructive operation on the file.
     const fs2 = require("node:fs");
-    const missionsPath = path.join(ROOT, "data/missions.json");
+    const missionsPath = iso.missionsPath;
     const store = JSON.parse(fs2.readFileSync(missionsPath, "utf8"));
     store.missions = store.missions.filter(m => m.id !== mission.id);
     fs2.writeFileSync(missionsPath, JSON.stringify(store, null, 2));
@@ -3212,10 +3262,11 @@ describe("153-master-audit-core-runtime-engines — missionRuntime.recoverStaleM
   });
 
   it("live: recoverStaleMissions() does not abort its whole sweep when one mission in its scanned snapshot vanishes before the per-subtask update runs (Mission 60A — genuine TOCTOU race against real concurrent mission activity, live-reproduced 2026-08-27 as 'Mission not found: msn_dc7055e8c5c349cc8d3f3a00aa2fe60f' propagating uncaught out of the whole scan)", async () => {
-    const memory  = require(path.join(ROOT, "backend/services/missionMemory.cjs"));
+    const iso = _buildIsolatedMissionMemoryForC10();
+    const memory  = iso.memory;
     const runtime = require(path.join(ROOT, "agents/runtime/missionRuntime.cjs"));
     const fs2 = require("node:fs");
-    const missionsPath = path.join(ROOT, "data/missions.json");
+    const missionsPath = iso.missionsPath;
 
     // Mission A: will be deleted out from under the scan, simulating the
     // real race (concurrent autonomous activity completing/removing a
