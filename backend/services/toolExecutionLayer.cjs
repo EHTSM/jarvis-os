@@ -750,6 +750,27 @@ async function execute(toolId, action, params = {}, opts = {}) {
         return { callId, success: false, error: `permission_denied: ${toolId}.${action} is not allowed`, durationMs: 0 };
     }
 
+    // Phase 2 (Agent Identity, Mission 121-124): opts.agentId was already
+    // threaded through this function for audit/logging (usageRec.agentId,
+    // execLog) but never checked against the agent's own allowlist — any
+    // agentId could invoke any tool the platform-wide/org grant above
+    // allowed. agentRegistry.AgentRecord.allowedTools defaults to null
+    // (unrestricted) for every agent that doesn't set it, so this is a
+    // no-op for all current production agents (see bootstrapRuntime.cjs)
+    // and only takes effect once an agent is explicitly given a
+    // restricted allowlist. Lazy require avoids a hard dependency from
+    // backend/services on agents/runtime at module-load time.
+    if (opts.agentId) {
+        let registryAgent = null;
+        try { registryAgent = require("../../agents/runtime/agentRegistry.cjs").get(opts.agentId); } catch { /* registry not loaded in this process */ }
+        if (registryAgent && !registryAgent.canUseTool(toolId)) {
+            const rec = { callId, toolId, action, success: false, error: "agent_not_allowed", startedAt, durationMs: 0, params: _sanitizeParams(params), agentId: opts.agentId };
+            _usage.push(rec); _saveUsage();
+            auditLog.append({ type: "tool_denied_agent_identity", callId, toolId, action, agentId: opts.agentId });
+            return { callId, success: false, error: `agent_not_allowed: agent "${opts.agentId}" is not permitted to use ${toolId}`, durationMs: 0 };
+        }
+    }
+
     // Rate limit check
     const rate = _checkRate(toolId, action);
     if (!rate.allowed) {

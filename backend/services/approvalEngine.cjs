@@ -200,35 +200,52 @@ async function _resumeExecution(req) {
   // Step 7: Verify outcome
   const healthResult = _val()?.validateHealth?.(workflowId) || { allPass: true, checks: [] };
 
+  // Mission 137-140 (Agent Evaluation): this file computed healthResult right
+  // here but never actually consulted it — every downstream branch below
+  // (evidence outcome, Production Bible write, learning, session status,
+  // stats.verified, minutesSaved, the returned `outcome`) keyed off
+  // execResult.outcome alone, i.e. "the tool call returned without error."
+  // A workflow whose steps all reported success but whose real health check
+  // (pm2/http/file-existence probes — see executionValidator.cjs) failed was
+  // recorded and reported as a verified success. `verifiedOutcome` is the
+  // single corrected signal every branch below now uses instead: it demotes
+  // execResult.outcome to "failed" whenever the health check ran and did not
+  // pass, and otherwise behaves exactly as before (healthResult.allPass
+  // defaults true when validateHealth is unavailable, so this is a no-op in
+  // that case — same posture as the pre-existing fallback object above).
+  const verifiedOutcome = (execResult?.outcome === "success" && healthResult.allPass === false)
+    ? "failed"
+    : execResult?.outcome;
+
   // Step 8: Record evidence
   const evResult = _ev()?.collect?.({
     workflowId,
     executionId:        execResult?.run?.id || executionId,
     domain:             w.domain,
-    outcome:            execResult?.outcome || "success",
+    outcome:            verifiedOutcome || "success",
     stepsExecuted:      execResult?.run?.steps || [],
     validationResults:  healthResult,
-    minutesSaved:       execResult?.outcome === "success" ? w.estimatedMinutes : 0,
+    minutesSaved:       verifiedOutcome === "success" ? w.estimatedMinutes : 0,
     servicesInvoked:    execResult?.run?.servicesInvoked || ["approvalEngine"],
     executionDurationMs: execResult?.durationMs || 0,
     notes:              `Resumed after approval (reqId=${reqId})`,
   });
 
   // Mark outcome verified in queue
-  _aq()?.markOutcomeVerified?.(reqId, { outcome: execResult?.outcome, evidenceId: evResult?.evidenceId });
+  _aq()?.markOutcomeVerified?.(reqId, { outcome: verifiedOutcome, evidenceId: evResult?.evidenceId });
 
   _aev()?.record?.({
     reqId,
     workflowId,
     approvalType: req.approvalType,
     event:       "verified",
-    outcome:     execResult?.outcome,
-    minutesSaved: execResult?.outcome === "success" ? w.estimatedMinutes : 0,
+    outcome:     verifiedOutcome,
+    minutesSaved: verifiedOutcome === "success" ? w.estimatedMinutes : 0,
     executionId: execResult?.run?.id || executionId,
   });
 
   // Step 9: Update Production Bible
-  if (execResult?.outcome === "success") {
+  if (verifiedOutcome === "success") {
     _pbe()?.executeWorkflow?.(`pbw_fwr_${workflowId}`, { triggeredBy: "approvalEngine.verified" });
     _fwr()?.markAutomated?.(workflowId, {
       automatedBy: "approvalEngine",
@@ -240,28 +257,28 @@ async function _resumeExecution(req) {
   // Step 10: Learn
   _le()?.createLesson?.({
     type:       "approval_resume",
-    title:      `Approval→Execute: ${w.workflow} → ${execResult?.outcome}`,
+    title:      `Approval→Execute: ${w.workflow} → ${verifiedOutcome}`,
     source:     "approvalEngine",
     confidence: 0.9,
-    tags:       ["approval_resume", w.domain, req.approvalType, execResult?.outcome || "unknown"],
-    data:       { reqId, workflowId, outcome: execResult?.outcome, minutesSaved: w.estimatedMinutes, responseMs: req.responseMs },
+    tags:       ["approval_resume", w.domain, req.approvalType, verifiedOutcome || "unknown"],
+    data:       { reqId, workflowId, outcome: verifiedOutcome, minutesSaved: w.estimatedMinutes, responseMs: req.responseMs },
   });
 
   const d2 = _load();
-  if (d2.sessions[reqId]) d2.sessions[reqId].status = execResult?.outcome === "success" ? "completed" : "failed";
-  if (execResult?.outcome === "success") { d2.stats.verified++; d2.stats.minutesSaved += w.estimatedMinutes; }
+  if (d2.sessions[reqId]) d2.sessions[reqId].status = verifiedOutcome === "success" ? "completed" : "failed";
+  if (verifiedOutcome === "success") { d2.stats.verified++; d2.stats.minutesSaved += w.estimatedMinutes; }
   _save(d2);
 
-  _bus()?.emit("approval:completed", { reqId, workflowId, outcome: execResult?.outcome, minutesSaved: w.estimatedMinutes });
+  _bus()?.emit("approval:completed", { reqId, workflowId, outcome: verifiedOutcome, minutesSaved: w.estimatedMinutes });
 
   return {
-    ok:          execResult?.ok !== false,
+    ok:          execResult?.ok !== false && verifiedOutcome !== "failed",
     reqId,
     workflowId,
-    outcome:     execResult?.outcome,
+    outcome:     verifiedOutcome,
     run:         execResult?.run,
     evidenceId:  evResult?.evidenceId,
-    minutesSaved: execResult?.outcome === "success" ? w.estimatedMinutes : 0,
+    minutesSaved: verifiedOutcome === "success" ? w.estimatedMinutes : 0,
     healthCheck: healthResult,
   };
 }

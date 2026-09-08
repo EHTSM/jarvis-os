@@ -620,8 +620,36 @@ function _appendTimeline(mission, event, details = {}) {
     mission.timeline.push({
         timestamp: new Date().toISOString(),
         event,
-        details,
+        details: _scrubSecrets(details),
     });
+}
+
+// ── Credential redaction (Phase 2, Mission 133-136: Agent Memory) ────────────
+// "Credential values must NEVER be stored in agent memory." missionMemory.cjs
+// had no guard of this kind on any of its 8 write entrypoints (createMission,
+// addSubtask, recordDecision/Artifact/Failure/Deployment/Approval, addLearning)
+// despite every one of them accepting caller-supplied free text/objects
+// (metadata, output, rationale, rootCause, description, insight, ...) that a
+// careless caller could stuff a token/secret/password into. Reuses the exact
+// key-matching pattern already established at two other write chokepoints in
+// this codebase — toolExecutionLayer.cjs's _sanitizeParams() and
+// sentryService.cjs's _redact() — rather than inventing a new scheme; this is
+// a policy gap being closed, not new architecture.
+const _SENSITIVE_KEY_RE = /token|secret|key|password|passwd|auth|credential|cookie|session|dsn|apikey/i;
+const _REDACTED = "[redacted]";
+
+function _scrubSecrets(value, depth = 0) {
+    if (depth > 6) return "[max-depth]"; // guard against pathological/circular input
+    if (value === null || value === undefined) return value;
+    if (Array.isArray(value)) return value.map(v => _scrubSecrets(v, depth + 1));
+    if (typeof value === "object") {
+        const out = {};
+        for (const [k, v] of Object.entries(value)) {
+            out[k] = _SENSITIVE_KEY_RE.test(k) ? _REDACTED : _scrubSecrets(v, depth + 1);
+        }
+        return out;
+    }
+    return value;
 }
 
 // ── Mission factory ──────────────────────────────────────────────────────────
@@ -637,7 +665,7 @@ function _buildMission(data) {
         objective:   (data.objective || "").trim(),
         status:      "planned",
         priority:    data.priority || "medium",
-        metadata:    (data.metadata && typeof data.metadata === "object") ? data.metadata : {},
+        metadata:    (data.metadata && typeof data.metadata === "object") ? _scrubSecrets(data.metadata) : {},
         createdAt:   now,
         updatedAt:   now,
         completedAt: null,
@@ -676,7 +704,7 @@ function _ingestSubtask(mission, subtask, emitTimeline = true) {
         assignedAgent: subtask.assignedAgent || null,
         startedAt:    subtask.startedAt || null,
         completedAt:  subtask.completedAt || null,
-        output:       subtask.output || null,
+        output:       subtask.output != null ? _scrubSecrets(subtask.output) : null,
     };
     mission.subtasks.push(st);
     if (emitTimeline) {
@@ -967,7 +995,15 @@ function updateMission(missionId, patch = {}) {
 
         for (const [k, v] of Object.entries(patch)) {
             if (IMMUTABLE.has(k)) continue;
-            let effectiveValue = v;
+            // Mission 133-136 (Agent Memory): this loop is reachable directly
+            // from backend/routes/phase27.js's PATCH handler with req.body as
+            // `patch` and no field allowlist (see the orgId-immutability
+            // comment above) — the single most exposed write surface in this
+            // file. metadata is an arbitrary caller-supplied object; scrub it
+            // the same way every other free-text write path in this file now
+            // is, so a client can't durably persist a credential value into
+            // mission history via a PATCH body.
+            let effectiveValue = (k === "metadata" && v && typeof v === "object") ? _scrubSecrets(v) : v;
             // The second, org-scoping convention this file's header also
             // documents (organizationService.cjs's own createMissionForOrg())
             // stamps ownership as metadata.orgId instead of the top-level
@@ -980,9 +1016,11 @@ function updateMission(missionId, patch = {}) {
             // mission already has, the existing value wins — every other
             // field in the patched metadata object is still applied exactly
             // as the caller intended. Reproduced live (Mission 89 Phase 2,
-            // test B2) prior to this fix.
+            // test B2) prior to this fix. Derives from effectiveValue (already
+            // scrubbed above), not the raw v, so this orgId-preservation step
+            // can never resurrect an unscrubbed credential value.
             if (k === "metadata" && v && typeof v === "object" && mission.metadata && typeof mission.metadata.orgId !== "undefined") {
-                effectiveValue = { ...v, orgId: mission.metadata.orgId };
+                effectiveValue = { ...effectiveValue, orgId: mission.metadata.orgId };
             }
             if (mission[k] !== effectiveValue) {
                 changed[k] = { from: mission[k], to: effectiveValue };
@@ -1113,8 +1151,8 @@ function recordDecision(missionId, decision = {}) {
             timestamp:   now,
             type:        decision.type        || "operational",
             description: (decision.description || "").trim(),
-            rationale:   decision.rationale   || null,
-            outcome:     decision.outcome     || null,
+            rationale:   decision.rationale != null ? _scrubSecrets(decision.rationale) : null,
+            outcome:     decision.outcome   != null ? _scrubSecrets(decision.outcome)   : null,
         };
         mission.decisions.push(dec);
         _appendTimeline(mission, "decision_recorded", { decisionId: dec.id, type: dec.type, description: dec.description });
@@ -1149,7 +1187,7 @@ function recordArtifact(missionId, artifact = {}) {
             name:        (artifact.name || "").trim(),
             path:        artifact.path        || null,
             createdAt:   now,
-            description: artifact.description || null,
+            description: artifact.description != null ? _scrubSecrets(artifact.description) : null,
         };
         mission.artifacts.push(art);
         _appendTimeline(mission, "artifact_recorded", { artifactId: art.id, type: art.type, name: art.name });
@@ -1183,7 +1221,7 @@ function recordFailure(missionId, failure = {}) {
             timestamp:   now,
             phase:       (failure.phase        || "unknown").trim(),
             description: (failure.description  || "").trim(),
-            rootCause:   failure.rootCause     || null,
+            rootCause:   failure.rootCause != null ? _scrubSecrets(failure.rootCause) : null,
             resolved:    failure.resolved      ?? false,
         };
         mission.failures.push(fail);
@@ -1315,7 +1353,7 @@ function addLearning(missionId, learning = {}) {
             id:         _uid("lrn"),
             timestamp:  now,
             insight:    (learning.insight || "").trim(),
-            source:     learning.source   || null,
+            source:     learning.source != null ? _scrubSecrets(learning.source) : null,
             confidence,
         };
         mission.learnings.push(lrn);
@@ -1555,4 +1593,7 @@ module.exports = {
     // any missionMemory mutation function called from inside `fn` composes
     // safely rather than deadlocking.
     withMissionsLock: _withMissionsLock,
+    // Mission 133-136 (Agent Memory) — exported for direct regression coverage
+    // of the redaction guard itself, independent of any one write function.
+    _scrubSecretsForTest: _scrubSecrets,
 };
