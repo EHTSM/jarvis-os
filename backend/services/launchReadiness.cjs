@@ -58,8 +58,8 @@ const CHECKS = [
     severity: "warning",
     check:    () => {
       // Check for email-related env vars or services
-      const hasEnv = !!process.env.SMTP_HOST || !!process.env.SENDGRID_KEY || !!process.env.RESEND_KEY;
-      return { pass: hasEnv, detail: hasEnv ? "Email service configured" : "No SMTP_HOST/SENDGRID_KEY/RESEND_KEY env var found", fix: "Set SMTP_HOST or SENDGRID_KEY in .env" };
+      const hasEnv = !!process.env.SMTP_HOST || !!process.env.SENDGRID_API_KEY || !!process.env.RESEND_API_KEY;
+      return { pass: hasEnv, detail: hasEnv ? "Email service configured" : "No SMTP_HOST/SENDGRID_API_KEY/RESEND_API_KEY env var found", fix: "Set SMTP_HOST or SENDGRID_API_KEY in .env" };
     },
   },
   {
