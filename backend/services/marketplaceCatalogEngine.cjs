@@ -435,6 +435,56 @@ function recordDownload(assetId) {
   return { ok: true, downloads: a.downloads };
 }
 
+// Phase 4 Missions 168-170 (Versioning): marketplaceAutomationEngine.cjs's
+// automate("version_bump", ...) computed a real, correct newVersion but had
+// no function anywhere to write it back onto the catalog's own asset record
+// — getAsset(id).version stayed at its original value forever regardless of
+// how many version_bump automations "succeeded" (live-reproduced: bump from
+// 1.0.0 with bumpType "minor" returned automation.newVersion "1.1.0" while
+// getAsset().version remained "1.0.0"). The same gap applied to
+// deprecate/retire, whose AUTOMATION_ACTIONS entries imply a real status
+// transition but never called back into this file to set one. Fixed
+// additively, same shape as recordDownload() above: the new version is
+// appended to a versionHistory array (old versions stay inspectable —
+// immutability of the history, not just the current pointer) rather than
+// overwritten in place, and status transitions are validated against the
+// same catalog-lifecycle vocabulary discover()/publishAsset() already use.
+const _STATUS_VALUES = ["published", "deprecated", "retired"];
+
+function setAssetVersion(assetId, newVersion, { bumpType = null, reason = null } = {}) {
+  if (!newVersion || !/^\d+\.\d+\.\d+$/.test(newVersion)) {
+    return { ok: false, error: `newVersion must be semver, got: ${newVersion}` };
+  }
+  const d = _load();
+  const a = d.assets.find(x => x.id === assetId);
+  if (!a) return { ok: false, error: "asset not found" };
+  if (!Array.isArray(a.versionHistory)) {
+    a.versionHistory = [{ version: a.version, at: a.createdAt || _ts() }];
+  }
+  const previousVersion = a.version;
+  a.versionHistory.push({ version: newVersion, at: _ts(), bumpType, reason, previousVersion });
+  a.version = newVersion;
+  a.updatedAt = _ts();
+  _save(d);
+  return { ok: true, assetId, previousVersion, version: a.version, versionHistory: a.versionHistory };
+}
+
+function setAssetStatus(assetId, status, { reason = null } = {}) {
+  if (!_STATUS_VALUES.includes(status)) {
+    return { ok: false, error: `status must be one of ${_STATUS_VALUES.join("|")}, got: ${status}` };
+  }
+  const d = _load();
+  const a = d.assets.find(x => x.id === assetId);
+  if (!a) return { ok: false, error: "asset not found" };
+  const previousStatus = a.status;
+  a.status = status;
+  a.updatedAt = _ts();
+  if (!Array.isArray(a.statusHistory)) a.statusHistory = [];
+  a.statusHistory.push({ status, at: a.updatedAt, previousStatus, reason });
+  _save(d);
+  return { ok: true, assetId, previousStatus, status: a.status };
+}
+
 function getStats() {
   const d = _load();
   return { ...d.stats, ASSET_TYPES, lastDiscovery: d.lastDiscovery, updatedAt: d.updatedAt };
@@ -442,5 +492,5 @@ function getStats() {
 
 module.exports = {
   ASSET_TYPES, discover, listAssets, getAsset, searchAssets,
-  publishAsset, recordDownload, getStats,
+  publishAsset, recordDownload, setAssetVersion, setAssetStatus, getStats,
 };

@@ -60,7 +60,18 @@ const crypto = require("crypto");
 const logger = require("../utils/logger");
 
 // ── File path ────────────────────────────────────────────────────────────────
-const MISSIONS_FILE = path.join(__dirname, "../../data/missions.json");
+// ERA-1 Manual Blocker Closure (Mission 80 follow-on): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by agentInstanceRegistry.cjs/skillRegistry.cjs/
+// businessDataService.cjs/toolExecutionLayer.cjs. Additive only — when unset,
+// resolution is byte-identical to before this change (real data/missions.json).
+// When set, redirects to an isolated per-process file so platform-scale test
+// suites (civ-v9/eco-v8/ent-v7/auto-v10/eos-v6, reached indirectly via
+// executiveState.cjs's createExecMission() -> missionOrchestrator.createManual()
+// -> this file's createMission()) stop writing real msn_* records into
+// production data/missions.json, per Mission 97/98's documented root cause.
+const MISSIONS_FILE = path.join(__dirname, "../../data", process.env.JARVIS_TEST_DATA_SUFFIX
+    ? `missions.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`
+    : "missions.json");
 
 // ── ID generation ────────────────────────────────────────────────────────────
 function _uid(prefix) {

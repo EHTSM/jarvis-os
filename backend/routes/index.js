@@ -84,6 +84,7 @@ router.use(_deprecate("/p25/obs", "/analytics/*"));
 router.use(require("./phase25"));      // /p25/deploy, /p25/secrets, /p25/obs, /p25/search
 router.use(require("./phase26"));      // /p26/graph, /p26/memory, /p26/reason, /p26/observer, /p26/plugins, /p26/capabilities, /p26/manifest, /p26/templates
 router.use(require("./phase27"));      // /p27/executive, /p27/missions, /p27/planning, /p27/ai, /p27/improvement
+router.use(require("./capabilityCoverage")); // Phase 1 (Missions 101-120): /p1/capabilities, /p1/capabilities/discover, /p1/capabilities/route/:id, /p1/domains — read-only HTTP surface over skillRegistry.cjs
 router.use("/mission", requireAuth);   // gate all /mission/* routes
 router.use("/missions", requireAuth);  // gate all /missions/* routes
 router.use(require("./mission"));      // /mission/runtime/*, /mission/timeline/*, /mission/graph/*, /mission/replay/*, /mission/state/*

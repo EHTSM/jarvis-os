@@ -16,7 +16,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/autonomous");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/autonomous/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/auto-v10.test.cjs stops
+// writing real records into production data/autonomous/ (Mission 97/98 defect class).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `autonomous.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/autonomous");
 const FILES = {
   decisions:    path.join(DATA_DIR, "decisions.json"),    // Autonomous Decision Ledger
   experiments:  path.join(DATA_DIR, "experiments.json"),  // Autonomous Experiment Ledger

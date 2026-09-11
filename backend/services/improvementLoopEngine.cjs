@@ -1,14 +1,64 @@
 "use strict";
 /**
- * ImprovementLoopEngine — apply recommendations, measure outcomes,
- * keep or revert changes, record learning from every trial.
+ * ImprovementLoopEngine — propose recommended changes, gate them behind a
+ * real human/policy approval, apply only once approved, measure outcomes,
+ * keep or revert, record learning from every trial.
  *
- * Workflow:
- *   1. apply(recId, change)   — apply a recommended change, snapshot current state
- *   2. measure(trialId)       — collect outcome metrics after a trial window
- *   3. keep(trialId)          — commit the change permanently
- *   4. revert(trialId)        — restore pre-change snapshot
- *   5. record(trialId, notes) — add manual learning note to the trial
+ * Workflow (JARVIS Phase 5 / Mission 192-195 safety fix — see below):
+ *   1. apply(recId, change)         — PROPOSE ONLY. Enqueues a real approval
+ *                                      request via approvalQueue.cjs. Does
+ *                                      NOT mutate anything yet.
+ *   2. activateApprovedTrial(id)    — the ONLY function that ever calls
+ *                                      _applyChange(). Refuses unless the
+ *                                      approvalQueue request for this trial
+ *                                      has status "approved" or
+ *                                      "auto_approved" (auto-approval is
+ *                                      itself a real, pre-existing,
+ *                                      confidence/policy-gated decision made
+ *                                      by approvalPolicy.cjs — not this
+ *                                      file). A "pending"/"rejected"/
+ *                                      "expired" request is refused.
+ *   3. measure(trialId)             — collect outcome metrics after a trial
+ *                                      window (only for an activated trial)
+ *   4. keep(trialId)                — commit the change permanently
+ *   5. revert(trialId)              — restore pre-change snapshot (rollback)
+ *   6. record(trialId, notes)       — add manual learning note to the trial
+ *
+ * ── SAFETY FIX (Phase 5 audit, 2026-09) ─────────────────────────────────────
+ * Before this fix, apply(recId, change) mutated real production state
+ * IMMEDIATELY on call, with ZERO approval/policy/test/verification gate —
+ * "keep"/"revert" only ever ran AFTER the mutation had already taken effect,
+ * making them a post-hoc undo, not a pre-mutation gate. This was reachable
+ * directly over HTTP: POST /p20/improve/apply is gated only by requireAuth
+ * (backend/routes/phase20.js) — no operatorOnly, no approval check — so any
+ * authenticated account could call agentFactoryAutomation.assignTools()/
+ * setPermissions() on an arbitrary real agent, or overwrite a live entry in
+ * data/system-params.json, with no human/policy decision ever required. Two
+ * autonomous callers (backend/services/aeoState.cjs's applyEvolution() via
+ * the 240s aeo_coordinator tick, and evolutionEvolutionEngine.cjs's EXECUTE
+ * step) ALSO call apply() with a single-object argument, which — because
+ * apply(recId, change) takes two positional args — leaves `change`
+ * undefined and throws immediately, silently swallowed by their own
+ * try/catch. That bug happened to prevent the autonomous tick from reaching
+ * this path today, but is not a safety control: fixing that argument-shape
+ * bug in isolation, without this gate, would have let a fully unattended
+ * 240-second tick loop mutate real agent permissions/config with a
+ * fabricated approvedBy ("aeo_coordinator", a hardcoded string, not a real
+ * approval decision). This is exactly the "pattern/experience becomes a
+ * live production mutation without a human/policy approval gate" scenario
+ * this codebase's Phase 5 mission treats as a hard stop.
+ *
+ * Fix: apply() now only PROPOSES (enqueues via the existing, already-
+ * battle-tested approvalQueue.cjs — the same primitive Phase 3/4 already
+ * established as the correct composition point for this exact shape of
+ * problem — no second approval mechanism invented). No mutation happens
+ * until activateApprovedTrial() is called AND the queued request is
+ * genuinely resolved "approved"/"auto_approved". The two AEO autonomous
+ * call sites were left exactly as they already were (broken/no-op) — not
+ * "fixed" to reach this path, since doing so was never this mission's job
+ * and would only be safe once a caller-side decision synthesizes a real
+ * approval, which does not exist today (see Phase 5 report §"Evolution
+ * Safety").
  *
  * Change targets:
  *   agent_config    — modify an agent's tools/permissions/model
@@ -19,7 +69,8 @@
  * Persists all trials to data/improvement-trials.json.
  *
  * Public API:
- *   apply(recId, change)          → { trialId, status: "active" }
+ *   apply(recId, change)          → { trialId, status: "awaiting_approval", reqId }
+ *   activateApprovedTrial(trialId)→ { trialId, status: "active" }  (throws if not approved)
  *   measure(trialId)              → { trialId, metrics, verdict }
  *   keep(trialId)                 → TrialRecord
  *   revert(trialId)               → TrialRecord
@@ -36,6 +87,9 @@ const auditLog = require("../utils/auditLog.cjs");
 
 const TRIAL_FILE  = path.join(__dirname, "../../data/improvement-trials.json");
 const SNAP_DIR    = path.join(__dirname, "../../data/improvement-snapshots");
+
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _aq  = () => _try(() => require("./approvalQueue.cjs"));
 
 function _rj(f, fb) { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch { return fb; } }
 function _wj(f, d) {
@@ -195,20 +249,42 @@ function _verdict(trial, metrics) {
 }
 
 // ── Public API ────────────────────────────────────────────────────────────
+
+/**
+ * PROPOSE a change. Never mutates anything itself — enqueues a real
+ * approval request via approvalQueue.cjs and returns a trial in
+ * "awaiting_approval" status. The change only takes effect if/when
+ * activateApprovedTrial(trialId) is later called AND the queued request
+ * has genuinely resolved to "approved" or "auto_approved" (auto-approval
+ * itself is a pre-existing, confidence/policy-gated decision made by
+ * approvalPolicy.cjs at enqueue time — not a bypass introduced here).
+ */
 async function apply(recId, change) {
     if (!change?.target || !change?.targetId) throw new Error("change.target and change.targetId required");
     const trialId = _tid();
     const baselineMetrics = _collectMetrics({ change });
 
-    const { applied, snapshot, error } = await _applyChange(change);
-    if (!applied) throw new Error(`Failed to apply change: ${error}`);
+    const aq = _aq();
+    if (!aq) throw new Error("approvalQueue unavailable — cannot propose change (no unapproved self-modification permitted)");
 
-    _snapshotWrite(trialId, snapshot);
+    const { ok, reqId, autoApproved, error: aqError } = aq.enqueue({
+        workflowId:      `wf_improvement_${change.target}`,
+        action:          `improvement_loop:${change.target}:${change.targetId}`,
+        reason:          `Proposed self-improvement change: ${change.target}/${change.targetId}`,
+        approvalType:    "GENERIC",
+        expectedOutcome: "Applies a bounded, reversible runtime/agent-config change; measured and kept only if it improves outcomes.",
+        rollbackPlan:    "revert(trialId) restores the pre-change snapshot exactly.",
+        context:         { trialId, recId: recId || null, change },
+        triggeredBy:     "improvementLoopEngine",
+    });
+    if (!ok) throw new Error(`Failed to enqueue approval for proposed change: ${aqError || "unknown error"}`);
 
     const trial = {
         trialId, recId: recId || null, change,
-        status:          "active",
-        appliedAt:       new Date().toISOString(),
+        status:          "awaiting_approval",
+        reqId,
+        proposedAt:      new Date().toISOString(),
+        appliedAt:       null,
         measuredAt:      null,
         completedAt:     null,
         baselineMetrics,
@@ -219,9 +295,47 @@ async function apply(recId, change) {
     };
     _trials.push(trial);
     _save();
-    auditLog.append({ type: "improvement_apply", trialId, change });
-    logger.info(`[ImprovLoop] Trial ${trialId} started: ${change.target}/${change.targetId}`);
-    return { trialId, status: "active", change };
+    auditLog.append({ type: "improvement_propose", trialId, reqId, autoApproved: !!autoApproved, change });
+    logger.info(`[ImprovLoop] Trial ${trialId} PROPOSED (${autoApproved ? "auto-approved" : "awaiting approval"}): ${change.target}/${change.targetId}, reqId=${reqId}`);
+    return { trialId, status: "awaiting_approval", reqId, autoApproved: !!autoApproved, change };
+}
+
+/**
+ * The ONLY function in this file that ever calls _applyChange() — i.e. the
+ * only path that can make a proposed change take real effect. Refuses to
+ * proceed unless the trial's approvalQueue request has genuinely resolved
+ * to "approved" or "auto_approved". A "pending"/"rejected"/"expired"
+ * request throws, and nothing is mutated.
+ */
+async function activateApprovedTrial(trialId) {
+    const trial = _trials.find(t => t.trialId === trialId);
+    if (!trial) throw new Error(`Trial ${trialId} not found`);
+    if (trial.status !== "awaiting_approval") throw new Error(`Trial is ${trial.status}, not awaiting_approval`);
+
+    const aq = _aq();
+    if (!aq) throw new Error("approvalQueue unavailable — cannot verify approval");
+    const req = aq.getRequest ? aq.getRequest(trial.reqId) : null;
+    if (!req) throw new Error(`Approval request ${trial.reqId} not found`);
+    if (req.status !== "approved" && req.status !== "auto_approved") {
+        throw new Error(`Change not approved — approval request status is "${req.status}"`);
+    }
+
+    const { applied, snapshot, error } = await _applyChange(trial.change);
+    if (!applied) {
+        trial.status = "activation_failed";
+        trial.notes.push({ ts: new Date().toISOString(), text: `Activation failed: ${error}` });
+        _save();
+        throw new Error(`Failed to apply approved change: ${error}`);
+    }
+
+    _snapshotWrite(trialId, snapshot);
+    trial.status    = "active";
+    trial.appliedAt = new Date().toISOString();
+    trial.approvedBy = req.approvedBy || null;
+    _save();
+    auditLog.append({ type: "improvement_activate", trialId, reqId: trial.reqId, approvedBy: trial.approvedBy, change: trial.change });
+    logger.info(`[ImprovLoop] Trial ${trialId} ACTIVATED (approved by ${trial.approvedBy}): ${trial.change.target}/${trial.change.targetId}`);
+    return { trialId, status: "active", change: trial.change };
 }
 
 function measure(trialId) {
@@ -243,6 +357,11 @@ function measure(trialId) {
 async function keep(trialId) {
     const trial = _trials.find(t => t.trialId === trialId);
     if (!trial) throw new Error(`Trial ${trialId} not found`);
+    // A trial that was never activated (still awaiting approval, or whose
+    // activation failed) has no real applied change to "keep" — refusing
+    // here prevents a fabricated-success record (CLAUDE.md §18) where a
+    // proposal that was never approved/applied could be marked "kept".
+    if (trial.status !== "active") throw new Error(`Trial is ${trial.status}, not active — nothing to keep`);
     // Delete snapshot — change is permanent
     _snapshotDelete(trialId);
     trial.status      = "kept";
@@ -259,9 +378,32 @@ async function keep(trialId) {
     return { ...trial };
 }
 
+/**
+ * Cancel a trial that was never activated (still awaiting_approval, or
+ * whose approval was rejected/expired upstream in approvalQueue). No
+ * _applyChange() was ever run for such a trial, so there is nothing to
+ * revert — this just closes the trial record honestly as "cancelled"
+ * rather than routing it through revert()'s "snapshot not found" path,
+ * which would otherwise misleadingly read as a failed rollback attempt.
+ */
+function rejectProposal(trialId, reason = "proposal not approved") {
+    const trial = _trials.find(t => t.trialId === trialId);
+    if (!trial) throw new Error(`Trial ${trialId} not found`);
+    if (trial.status !== "awaiting_approval") throw new Error(`Trial is ${trial.status}, not awaiting_approval`);
+    trial.status      = "cancelled";
+    trial.kept        = false;
+    trial.completedAt = new Date().toISOString();
+    trial.notes.push({ ts: new Date().toISOString(), text: `Proposal cancelled: ${reason}` });
+    _save();
+    auditLog.append({ type: "improvement_reject_proposal", trialId, reason });
+    logger.info(`[ImprovLoop] Trial ${trialId} CANCELLED (never activated): ${reason}`);
+    return { ...trial };
+}
+
 async function revert(trialId) {
     const trial = _trials.find(t => t.trialId === trialId);
     if (!trial) throw new Error(`Trial ${trialId} not found`);
+    if (trial.status === "awaiting_approval") return rejectProposal(trialId, "reverted before activation");
     const { reverted, reason } = await _revertChange(trial);
     trial.status      = reverted ? "reverted" : "revert_failed";
     trial.kept        = false;
@@ -295,16 +437,21 @@ function listTrials({ status, target, limit = 50, offset = 0 } = {}) {
     if (status) rows = rows.filter(t => t.status === status);
     if (target) rows = rows.filter(t => t.change?.target === target);
     const stats = {
-        total:    _trials.length,
-        active:   _trials.filter(t => t.status === "active").length,
-        kept:     _trials.filter(t => t.status === "kept").length,
-        reverted: _trials.filter(t => t.status === "reverted").length,
-        improved: _trials.filter(t => t.verdict === "improved").length,
-        degraded: _trials.filter(t => t.verdict === "degraded").length,
+        total:            _trials.length,
+        awaitingApproval: _trials.filter(t => t.status === "awaiting_approval").length,
+        cancelled:        _trials.filter(t => t.status === "cancelled").length,
+        active:           _trials.filter(t => t.status === "active").length,
+        kept:             _trials.filter(t => t.status === "kept").length,
+        reverted:         _trials.filter(t => t.status === "reverted").length,
+        improved:         _trials.filter(t => t.verdict === "improved").length,
+        degraded:         _trials.filter(t => t.verdict === "degraded").length,
     };
     return { trials: rows.slice(offset, offset + limit), total: rows.length, stats };
 }
 
 function getStats() { return listTrials({}).stats; }
 
-module.exports = { apply, measure, keep, revert, record, getTrial, listTrials, getStats };
+module.exports = {
+    apply, activateApprovedTrial, rejectProposal,
+    measure, keep, revert, record, getTrial, listTrials, getStats,
+};

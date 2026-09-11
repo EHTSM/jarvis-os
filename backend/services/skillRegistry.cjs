@@ -125,6 +125,32 @@ const SEED_SKILLS = [
     { id: "git_diff",       name: "Git Diff",              category: "engineering", riskLevel: "low",    executionHandler: "git_diff",       source: "engineeringCapabilities" },
     { id: "git_commit",     name: "Git Commit (approval-aware)", category: "engineering", riskLevel: "high", executionHandler: "git_commit", source: "engineeringCapabilities" },
 
+    // ── Phase 1 Capability Coverage (Mission 101-104) — 14 previously
+    // unregistered engineeringCapabilities.cjs handlers. These are real,
+    // already-live handlers (verified directly against
+    // engineeringCapabilities.cjs's own getCapabilityMatrix() output,
+    // 25 real capabilities total vs. only 12 previously seeded here) —
+    // this closes a genuine PARTIAL gap (real handler exists, no
+    // discoverable skill entry), not new execution logic. riskLevel
+    // mirrors each handler's own real blast radius, matching the
+    // convention already set by rollback/git_commit above (destructive
+    // or infra-affecting = high; irreversible-but-externally-reviewed
+    // or scan/draft-only = medium).
+    { id: "open_pr",              name: "Open GitHub Pull Request", category: "engineering", riskLevel: "medium", executionHandler: "open_pr",              source: "engineeringCapabilities" },
+    { id: "browser_automate",     name: "Browser Automation (HITL-gated)", category: "engineering", riskLevel: "medium", executionHandler: "browser_automate", source: "engineeringCapabilities" },
+    { id: "security_scan",        name: "Static Security Scan",    category: "qa",          riskLevel: "low",    executionHandler: "security_scan",        source: "engineeringCapabilities" },
+    { id: "bundle_analyze",       name: "Frontend Bundle Size Analysis", category: "qa",     riskLevel: "low",    executionHandler: "bundle_analyze",       source: "engineeringCapabilities" },
+    { id: "bundle_optimize",      name: "Bundle Optimization Recommendations", category: "qa", riskLevel: "low", executionHandler: "bundle_optimize",      source: "engineeringCapabilities" },
+    { id: "self_document",        name: "Auto-Generate Source Documentation", category: "engineering", riskLevel: "low", executionHandler: "self_document", source: "engineeringCapabilities" },
+    { id: "frontend_heal",        name: "Frontend Self-Healing (confidence-gated)", category: "engineering", riskLevel: "medium", executionHandler: "frontend_heal", source: "engineeringCapabilities" },
+    { id: "docker_status",        name: "Docker Daemon Status",    category: "devops_cloud", riskLevel: "low",   executionHandler: "docker_status",        source: "engineeringCapabilities" },
+    { id: "docker_health",        name: "Docker Container Health Check", category: "devops_cloud", riskLevel: "low", executionHandler: "docker_health",   source: "engineeringCapabilities" },
+    { id: "docker_compose_up",    name: "Docker Compose Up (with rollback snapshot)", category: "devops_cloud", riskLevel: "high", executionHandler: "docker_compose_up", source: "engineeringCapabilities" },
+    { id: "docker_compose_down",  name: "Docker Compose Down",     category: "devops_cloud", riskLevel: "high",  executionHandler: "docker_compose_down",  source: "engineeringCapabilities" },
+    { id: "dependency_scan",      name: "NPM Dependency Vulnerability Scan", category: "qa",  riskLevel: "low",   executionHandler: "dependency_scan",      source: "engineeringCapabilities" },
+    { id: "legal_document_generate", name: "AI-Drafted Legal Document (NDA/DPA/MSA/SOW)", category: "legal_compliance", riskLevel: "medium", executionHandler: "legal_document_generate", source: "engineeringCapabilities" },
+    { id: "daily_task_create",    name: "Personal Task Creation",  category: "operations",   riskLevel: "low",   executionHandler: "daily_task_create",    source: "engineeringCapabilities" },
+
     // ── 100-Company Missing Capability Build-Out — 17 new skills, all
     // reusing the existing generic "ai" agent handler (bootstrapRuntime.cjs
     // registers it once with capabilities:["ai","intelligence"]; its
@@ -309,6 +335,46 @@ function isComposableNow(skillId) {
     return { composable: true, reason: null };
 }
 
+/**
+ * Phase 1 Capability Coverage (Mission 101-104) — backfills SEED_SKILLS
+ * entries that don't yet exist in an already-initialized store. _seed()
+ * above only runs on a genuinely empty store, so a production store
+ * created before new seed entries were added (e.g. data/skills.json,
+ * last regenerated 2026-07-24, predates this mission's 14 new
+ * engineeringCapabilities entries) never picks them up automatically —
+ * this is the safe, explicit, additive-only migration path: it never
+ * touches an existing skill record, only registers ones genuinely
+ * missing by id, going through the same registerSkill() validation
+ * (capabilityContract.cjs's Skill kind) as any other registration.
+ */
+function syncFromSeed() {
+    const store = _read();
+    const existingIds = new Set(store.skills.map(s => s.id));
+    const added = [];
+    const skipped = [];
+    for (const s of SEED_SKILLS) {
+        if (existingIds.has(s.id)) { skipped.push(s.id); continue; }
+        registerSkill({
+            id: s.id,
+            name: s.name,
+            category: s.category,
+            description: `${s.name} — real, verified capability (source: ${s.source})`,
+            inputSchema: { type: "object" },
+            outputSchema: { type: "object" },
+            requiredPermissions: [],
+            requiredTools: [],
+            optionalConnectors: [],
+            riskLevel: s.riskLevel,
+            executionHandler: s.executionHandler,
+            source: s.source,
+            version: s.version || "1.0.0",
+            healthStatus: "active",
+        });
+        added.push(s.id);
+    }
+    return { added, addedCount: added.length, skippedCount: skipped.length, totalSeed: SEED_SKILLS.length };
+}
+
 module.exports = {
     listSkills,
     getSkill,
@@ -317,4 +383,5 @@ module.exports = {
     verifyNoOrphans,
     activateSkill,
     isComposableNow,
+    syncFromSeed,
 };

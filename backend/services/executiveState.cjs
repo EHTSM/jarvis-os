@@ -12,7 +12,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/eos");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/eos/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/eos-v6.test.cjs stops
+// writing real records into production data/eos/ (Mission 97/98 defect class).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `eos.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/eos");
 const FILES = {
   state:    path.join(DATA_DIR, "state.json"),
   kpis:     path.join(DATA_DIR, "kpis.json"),

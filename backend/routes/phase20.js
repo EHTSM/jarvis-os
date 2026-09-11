@@ -24,10 +24,11 @@
  *      GET    /p20/memory/report                  last intelligence report
  *
  * 20C  ImprovementLoopEngine
- *      POST   /p20/improve/apply                  apply a change trial
- *      POST   /p20/improve/:trialId/measure       measure outcome
- *      POST   /p20/improve/:trialId/keep          keep change permanently
- *      POST   /p20/improve/:trialId/revert        revert change
+ *      POST   /p20/improve/apply                  PROPOSE a change trial (enqueues approval only — does not mutate)
+ *      POST   /p20/improve/:trialId/activate      apply an APPROVED trial (only path that mutates; refuses if not approved)
+ *      POST   /p20/improve/:trialId/measure       measure outcome (active trials only)
+ *      POST   /p20/improve/:trialId/keep          keep change permanently (active trials only)
+ *      POST   /p20/improve/:trialId/revert        revert change / cancel a not-yet-approved proposal
  *      POST   /p20/improve/:trialId/record        add learning note
  *      GET    /p20/improve/:trialId               get trial
  *      GET    /p20/improve                        list trials
@@ -194,7 +195,23 @@ router.post("/p20/improve/apply", async (req, res) => {
     const { recId, change } = req.body || {};
     if (!change) return res.status(400).json({ error: "change object required" });
     try {
+        // Phase 5 safety fix: this now only PROPOSES the change (enqueues a
+        // real approvalQueue.cjs request) — it does not mutate anything.
+        // See improvementLoopEngine.cjs's own header comment for the full
+        // defect this closes (was: immediate, ungated production mutation
+        // reachable by any requireAuth'd caller).
         const result = await ile.apply(recId, change);
+        res.json({ success: true, ...result });
+    } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+// The ONLY route that can make a proposed change take real effect — refuses
+// unless the trial's approvalQueue request has genuinely resolved to
+// approved/auto_approved (enforced inside activateApprovedTrial() itself,
+// not just here, so there is no code path that skips this check).
+router.post("/p20/improve/:trialId/activate", async (req, res) => {
+    try {
+        const result = await ile.activateApprovedTrial(req.params.trialId);
         res.json({ success: true, ...result });
     } catch (e) { res.status(400).json({ error: e.message }); }
 });

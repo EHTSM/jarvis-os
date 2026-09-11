@@ -1074,6 +1074,125 @@ function _fail(missionId, reason) {
     _obs("orchestrator.mission.failed", 1, { priority: rec?.priority });
     try { _getRT()?.failMission(missionId, reason); } catch { /* non-fatal */ }
     logger.warn(`[Orchestrator] Mission ${missionId} failed: ${reason}`);
+
+    // Fire-and-forget, bounded compensation attempt — see _attemptCompensation
+    // below. Never awaited here: the mission is already, synchronously,
+    // reported as "failed" above (exactly as before this addition) — this
+    // only ever ADDS a later "rolledback" transition if something was
+    // genuinely reverted. No new retry loop, no new scheduler; this runs
+    // exactly once per failed mission.
+    _attemptCompensation(missionId, rec, reason).catch(err => {
+        logger.warn(`[Orchestrator] compensation attempt error for ${missionId}: ${err.message}`);
+    });
+}
+
+// ── Compensation (Phase 3, Missions 157-160) ────────────────────────────────
+// REAL, LIVE, EVIDENCED GAP CLOSED: rec.rollbackPlan has existed on every
+// mission record since this file's original I3 implementation, and
+// "rolledback" has always been a declared, valid ORCH_STATES/TERMINAL_STATES
+// member — but nothing anywhere in this file (or, per a full-repo grep, any
+// other file) ever executed rollbackPlan or transitioned a mission INTO
+// "rolledback". A mission that failed stayed "failed" forever, with
+// rollbackPlan sitting as an inert descriptive string no code ever read.
+//
+// backend/services/executionRecovery.cjs already implements real, honest
+// compensation (RETRY_IMMEDIATE / RETRY_WITH_DELAY / SKIP_AND_CONTINUE /
+// PARTIAL_ROLLBACK / FULL_ROLLBACK / ESCALATE) for the sibling
+// autonomousExecutionEngine.cjs 11-step pipeline (autonomousExecutionEngine.
+// cjs explicitly documents this wiring at steps 6-7) — but missionOrchestrator
+// missions never called it. Per CLAUDE.md §16 ("do not create a fifth"),
+// this reuses that exact existing module rather than inventing a second
+// rollback engine; it does not touch executionRecovery.cjs itself.
+//
+// Scope, deliberately narrow and safe:
+//   - Only runs for missions that touched real, git-backed state (the same
+//     CODE_TOUCHING_CAPABILITIES check the verification gate already uses)
+//     — executionRecovery.cjs itself only has a genuine undo mechanism for
+//     git-backed domains and honestly reports `reverted:false` for anything
+//     else, so restricting the attempt to that case avoids manufacturing a
+//     no-op "compensation" record for the common (non-code) mission.
+//   - Selects a strategy via executionRecovery.selectStrategy() using the
+//     mission's real stage-completion shape (attemptCount from the highest
+//     stage retry count actually used, stepIndex/totalSteps from real
+//     progress) — never a fabricated/fixed strategy.
+//   - Only PARTIAL_ROLLBACK/FULL_ROLLBACK strategies invoke real rollback
+//     (via executionRecovery.recover()'s existing _executeRealRollback,
+//     itself already gated to git-backed domains only); RETRY_*/SKIP/
+//     ESCALATE strategies are recorded but do not mutate mission state here
+//     — retry is already the orchestrator's own per-stage responsibility,
+//     and ESCALATE already has its own real humanInTheLoop path inside
+//     executionRecovery.recover() (unchanged, reused as-is).
+//   - The mission is moved to "rolledback" ONLY when executionRecovery
+//     reports at least one stage genuinely reverted (`anyReverted`/outcome
+//     starting with "rolled_back"). A rollback attempt that could not
+//     actually revert anything (no git-backed step, recovery engine
+//     unavailable, etc.) leaves the mission in "failed" — never fabricates
+//     a "rolledback" label for work that was not actually undone.
+function _getExecRecovery() { return _try2(() => require("./executionRecovery.cjs")); }
+function _try2(fn) { try { return fn(); } catch { return null; } }
+
+async function _attemptCompensation(missionId, rec, reason) {
+    if (!rec || !_missionTouchedCode(rec)) return; // no git-backed state — nothing this mechanism can honestly revert
+    const recovery = _getExecRecovery();
+    if (!recovery) return;
+
+    const completedSteps = (rec.stages || [])
+        .filter(s => s.status === "completed")
+        .map(s => ({ name: s.description, completed: true, rollback: `Undo: ${s.description}`, output: s.output || {} }));
+    if (completedSteps.length === 0) return; // nothing completed yet — nothing to compensate for
+
+    const allSteps = (rec.stages || []).map(s => ({
+        name: s.description, completed: s.status === "completed",
+        rollback: `Undo: ${s.description}`, output: s.output || {},
+    }));
+    const maxRetries = Math.max(0, ...rec.stages.map(s => s.retries || 0));
+
+    let result;
+    try {
+        result = await recovery.recover({
+            executionId: rec.orchId || missionId,
+            workflowId:  `missionOrchestrator:${missionId}`,
+            plan:        { goal: rec.goal },
+            steps:       allSteps,
+            failedStep:  { name: "mission", type: "execution", order: completedSteps.length },
+            error:       reason,
+            attemptCount: maxRetries,
+        });
+    } catch (err) {
+        logger.warn(`[Orchestrator] executionRecovery.recover() threw for ${missionId}: ${err.message}`);
+        return;
+    }
+
+    const outcome = result?.record?.outcome || "";
+    const genuinelyReverted = outcome === "rolled_back_partial" || outcome === "rolled_back_full";
+    rec.compensation = {
+        strategy:  result?.strategy || null,
+        outcome:   outcome || null,
+        recoveryId: result?.record?.id || null,
+        attemptedAt: new Date().toISOString(),
+    };
+
+    // The mission may have already aged out of _live (5-minute terminal
+    // eviction grace — see _sweepTerminalMissions) by the time this
+    // fire-and-forget attempt resolves. _transition() requires a live
+    // record; skip the state transition rather than throwing into an
+    // unhandled rejection, but the compensation attempt itself (and
+    // whether anything was genuinely reverted) is still real and still
+    // logged either way.
+    if (!_live.has(missionId)) {
+        logger.info(`[Orchestrator] Mission ${missionId} compensation resolved (${outcome || "no strategy applied"}) after the mission was already evicted from live tracking — outcome recorded in logs only`);
+        return;
+    }
+
+    _saveOrch();
+
+    if (genuinelyReverted) {
+        _transition(missionId, "rolledback", { compensation: rec.compensation });
+        _obs("orchestrator.mission.rolledback", 1, { priority: rec.priority });
+        logger.info(`[Orchestrator] Mission ${missionId} moved failed -> rolledback (${outcome})`);
+    } else {
+        logger.info(`[Orchestrator] Mission ${missionId} compensation attempted (${outcome || "no strategy applied"}) — remains failed (nothing genuinely reverted)`);
+    }
 }
 
 // ── Observability helper ───────────────────────────────────────────────────

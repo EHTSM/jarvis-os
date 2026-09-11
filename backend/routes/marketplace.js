@@ -111,7 +111,24 @@ router.get("/marketplace/plugin/:id", requireWorkspaceMember, (req, res) => {
 });
 
 // ── Reviews ───────────────────────────────────────────────────────
-router.post("/marketplace/plugin/:id/review", (req, res) => {
+// Phase 4 Mission 171-173 (Trust/Rating): this POST route was the one
+// review-family route missing requireWorkspaceMember — every GET sibling in
+// this file (catalog/featured/search/recommendations/plugin-detail) was
+// fixed for the read-side IDOR (Mission 44, see the header comment above),
+// but the POST route still passed the caller's raw _wsId(req) into
+// svc.addReview(), which forwards it straight to
+// securityLayer.addAuditEntry(workspaceId, ...). That function creates the
+// target workspace's audit-log record if it doesn't already exist and
+// unconditionally appends to it — so an authenticated account with no
+// membership in workspace X could still cause an audit-log entry to be
+// written into X's own audit trail (spoofed workspace attribution), because
+// nothing on this route verified the caller actually belongs to the
+// workspace being cited. The review itself is stored globally per pluginId
+// (not workspace-scoped data), so this is not a data-disclosure IDOR like
+// the GET routes' fix — it's a cross-tenant audit-integrity gap on the
+// exact same _wsId(req) pattern. Fixed with the same requireWorkspaceMember
+// gate as every sibling read route in this file.
+router.post("/marketplace/plugin/:id/review", requireWorkspaceMember, (req, res) => {
   try {
     const { rating, body, author } = req.body;
     const review = svc.addReview(req.params.id, { rating, body, author }, req.user.sub, _wsId(req));

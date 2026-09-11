@@ -1299,6 +1299,24 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[MissionOrchestrator] failed to start (non-fatal):", orchErr.message);
     }
 
+    // ── Phase 3 (Workflow Autonomy, Missions 153-156): Orchestrator <->
+    // Approval bridge. Real, live gap: approving/rejecting an orchestrator
+    // Approval-node stage via the real POST /approval/approve|reject/:reqId
+    // route never actually unblocked the stage (approvalEngine's own resume
+    // path only knows founderWorkRegistry workflows) — the stage stayed
+    // stuck in awaiting_approval forever, and an expired approval had the
+    // same silent-hang effect. One event-bus subscription, same pattern as
+    // orgAutomationCenter.startAiWiring()/automationService.startEventLoop()
+    // just above — no new scheduler, no new store. See
+    // orchestratorApprovalBridge.cjs's header for the full trace.
+    try {
+        const orchBridge = require("./services/orchestratorApprovalBridge.cjs");
+        const bridgeResult = orchBridge.start();
+        logger.info(`[OrchestratorApprovalBridge] ${bridgeResult.started ? "started" : "not started (" + bridgeResult.reason + ")"}`);
+    } catch (bridgeErr) {
+        logger.warn("[OrchestratorApprovalBridge] failed to start (non-fatal):", bridgeErr.message);
+    }
+
     // ── Phase I2: Autonomous Decision Engine ──────────────────────────────
     try {
         const decEngine = require("./services/autonomousDecisionEngine.cjs");
