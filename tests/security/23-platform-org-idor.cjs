@@ -34,6 +34,16 @@ process.chdir(require("path").join(__dirname, "../.."));
 require("dotenv").config({ path: require("path").join(__dirname, "../../.env") });
 if (!process.env.JWT_SECRET) process.env.JWT_SECRET = "test-platform-org-idor-secret";
 
+// Gap Closure (Mission 102 follow-on): this file starts a real Express
+// server and creates real platform-org records via platformOrg.js ->
+// platformState.cjs, which (unlike this file, until now) already honors
+// JARVIS_TEST_DATA_SUFFIX. Setting it here, before platformOrg.js is first
+// required below, redirects platformState.cjs's DATA_DIR to an isolated
+// per-run directory instead of the real data/platform/registry.json —
+// stopping this file's confirmed, still-growing contribution to that
+// file's test-pollution (Mission 102: 43-44 attributable records found).
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
+
 const express = require("express");
 const { signJWT, COOKIE_NAME } = require("../../backend/middleware/authMiddleware");
 const platformOrgRouter = require("../../backend/routes/platformOrg.js");

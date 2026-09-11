@@ -2,7 +2,13 @@
 /**
  * LEVEL 10 — Autonomous Civilization test suite
  * Target: 115+ tests covering all 10 control surfaces + loop + org
+ *
+ * ERA-1 Manual Blocker Closure (Task 6): isolates this suite's indirect
+ * missionOrchestrator/missionMemory writes (via executiveState.cjs) from the
+ * real production data/missions.json — see civ-v9.test.cjs's header comment
+ * for the full traced call chain (Mission 97/98's documented root cause).
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
 
 const TS = Date.now();
 const assert = (cond, msg) => { if (!cond) throw new Error(`FAIL: ${msg}`); };

@@ -3,7 +3,15 @@
  * EOS Level 6 — Executive Operating System Test Suite
  * 70 tests: state, workflow, agents
  * Run: node tests/runtime/eos-v6.test.cjs
+ *
+ * ERA-1 Manual Blocker Closure (Task 6): this suite directly requires
+ * executiveState.cjs/executiveWorkflow.cjs, whose createExecMission() calls
+ * missionOrchestrator.createManual() -> missionMemory.createMission(),
+ * writing real msn_* records into production data/missions.json (confirmed
+ * by Mission 97 as a previously-unnamed 6th mutator, "ExMiss ${TS}" titles).
+ * Must be set before any backend service (below) is first required.
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
 
 const assert = require("assert");
 const path   = require("path");

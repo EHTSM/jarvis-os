@@ -3,7 +3,14 @@
  * Enterprise Level 7 — Test Suite
  * 82 tests: state, workflow, org
  * Run: node tests/runtime/ent-v7.test.cjs
+ *
+ * ERA-1 Manual Blocker Closure (Task 6): isolates this suite's indirect
+ * missionOrchestrator/missionMemory writes (via executiveState.cjs) from the
+ * real production data/missions.json — see civ-v9.test.cjs's header comment
+ * for the full traced call chain (Mission 97/98's documented root cause).
+ * Must be set before any backend service (below) is first required.
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
 
 const assert = require("assert");
 const path   = require("path");

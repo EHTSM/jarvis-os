@@ -2,7 +2,16 @@
 /**
  * LEVEL 9 — Civilization Platform test suite
  * Target: 95+ tests covering state, workflow, org, integration
+ *
+ * ERA-1 Manual Blocker Closure (Task 6): this suite reaches
+ * executiveState.cjs's createExecMission() (via civilizationWorkflow.cjs's
+ * _eosSt().createGoal-adjacent chain) -> missionOrchestrator.createManual()
+ * -> missionMemory.createMission(), which previously wrote real msn_* records
+ * into production data/missions.json (Mission 97/98's documented root cause).
+ * Setting JARVIS_TEST_DATA_SUFFIX before any backend service is required
+ * redirects missionMemory.cjs's MISSIONS_FILE to an isolated per-run file.
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
 
 const TS = Date.now();
 const assert = (cond, msg) => { if (!cond) throw new Error(`FAIL: ${msg}`); };
