@@ -255,7 +255,7 @@ async function _groq(messages, model, opts = {}) {
     return _withRetry(async () => {
         const res = await axios.post(
             GROQ_URL,
-            { model: model || "llama-3.3-70b-versatile", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
+            { model: model || "openai/gpt-oss-120b", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.groq }
         );
         return res.data.choices[0].message.content;
@@ -880,7 +880,7 @@ async function chat(messages, opts = {}) {
 /** Helper: return the default model string for a provider (for metadata only). */
 function _defaultModel(provider) {
     switch (provider) {
-        case "groq":       return process.env.GROQ_MODEL       || "llama-3.3-70b-versatile";
+        case "groq":       return process.env.GROQ_MODEL       || "openai/gpt-oss-120b";
         case "openrouter": return process.env.OPENROUTER_MODEL || "anthropic/claude-haiku-4-5";
         case "openai":     return process.env.OPENAI_MODEL     || "gpt-4o-mini";
         case "ollama":     return _ollamaModel();
@@ -1278,7 +1278,7 @@ async function streamChat(messages, opts = {}, onChunk = () => {}) {
         try {
             let text;
             switch (p) {
-                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "llama-3.3-70b-versatile", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.groq, onChunk); break;
+                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "openai/gpt-oss-120b", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.groq, onChunk); break;
                 case "openrouter": text = await _streamOpenAICompatible(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, { model: model || "anthropic/claude-haiku-4-5", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openrouter, onChunk); break;
                 case "openai":     text = await _streamOpenAICompatible(OPENAI_URL, process.env.OPENAI_API_KEY, { model: model || "gpt-4o-mini", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openai, onChunk); break;
                 case "deepseek":   text = await _streamOpenAICompatible(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, { model: model || _deepseekModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.deepseek, onChunk); break;

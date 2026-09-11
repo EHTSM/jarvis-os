@@ -25,7 +25,7 @@ const STATE_FILE = path.join(__dirname, "../../data/router-state.json");
 const PROVIDERS = {
   groq: {
     id: "groq", name: "Groq",
-    models: { default: "llama-3.3-70b-versatile", fast: "llama-3.1-8b-instant" },
+    models: { default: "openai/gpt-oss-120b", fast: "openai/gpt-oss-20b" },
     cost_per_1k: 0.0001,   // near-free
     base_quality: 0.72,
     base_latency_ms: 400,

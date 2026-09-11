@@ -31,9 +31,9 @@ const BUILTIN = {
     id: "groq", name: "Groq", type: "cloud",
     website: "https://groq.com",
     capabilities: {
-      chat:      { models: ["llama-3.3-70b-versatile","llama-3.1-8b-instant","mixtral-8x7b-32768"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.72, latencyClass: "fast" },
-      code:      { models: ["llama-3.3-70b-versatile"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.70, latencyClass: "fast" },
-      reasoning: { models: ["llama-3.3-70b-versatile"], costPer1k: 0.0002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.68, latencyClass: "fast" },
+      chat:      { models: ["openai/gpt-oss-120b","openai/gpt-oss-20b","groq/compound"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.72, latencyClass: "fast" },
+      code:      { models: ["openai/gpt-oss-120b"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.70, latencyClass: "fast" },
+      reasoning: { models: ["openai/gpt-oss-120b"], costPer1k: 0.0002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.68, latencyClass: "fast" },
     },
   },
   openrouter: {
