@@ -4670,3 +4670,41 @@ No files modified other than this register entry and the new report. No packages
 production/VPS touched, no `.env`/credentials touched, no git commit/push/merge performed.
 
 **No OS-track record altered.**
+
+---
+
+## ERA-1 Final Completion Campaign (2026-09-11)
+
+Founder-directed completion campaign — one controlled pass across all 24 launch-readiness
+categories, executing all safe fixes immediately rather than opening a new forensic mission per
+finding. Full detail: `reports/ERA-1-FINAL-COMPLETION-REPORT.md`.
+
+**Result: ERA-1 — GO-LIVE READY.** One real P0 launch blocker found and fixed live: Groq (the
+primary AI provider) was calling a fully retired model (`llama-3.3-70b-versatile` — confirmed gone
+from Groq's own live `/v1/models` response), causing every real `/jarvis` AI-mode request to fail
+with `"AI backend unavailable"`. Fixed at all 3 real call sites (`aiService.js`, `aiRegistry.cjs`,
+`smartRouter.cjs`) by switching to `openai/gpt-oss-120b`, Groq's current equivalent general-purpose
+model. Re-verified live, end-to-end: a real `/jarvis` chat request now returns a real, correct
+model response (`"2 + 2 equals 4."`) through the actual `callAI`/`aiOrchestrator` path.
+
+Also proved the full real E2E workflow live (USER → JARVIS CHAT → intent routing → execution
+pipeline → tool invocation → result → usage-ledger audit trail with correct accountId+orgId →
+response), using a genuinely self-registered test account against a local instance of the real
+codebase — not mocked. Independently re-verified production (`api.ooplix.com`) healthy at both
+start and end of session (~5h apart): the prior same-day report's 502-outage P0 is confirmed
+resolved. Live security-injection suite (`05-injection-security.cjs`) run against a live backend:
+103/103 pass. Reviewed and confirmed sound without needing changes: payment webhook HMAC
+verification, tenant/org resolution precedence, MFA-before-session-issuance ordering, credential
+vault encryption, and the new Phase 1-6 capability-wiring files' middleware consistency.
+
+**Founder actions required** (none currently manifesting as a live production failure): VPS SSH
+access unavailable from this session (genuine auth rejection, not network); a local backup/export
+archive found truncated, needs the VPS's own archives checked once access is restored; RPO/RTO
+remain unmeasured (unchanged from prior sessions); the `security/reality-completion` branch's
+accumulated work (this session's AI fix included) remains uncommitted pending a founder
+commit/merge decision; two stale test assertions found checking an older/less-secure code shape
+the app has already correctly outgrown (safe to update the tests, not the app).
+
+No destructive actions taken. No `.env`/credentials touched or printed. No git commit/push/merge
+performed (not requested). No production data modified — all live testing used a genuinely
+self-registered throwaway test account against a local instance of the real codebase.
