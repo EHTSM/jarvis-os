@@ -4,7 +4,7 @@
  * All routes under /co3/* with requireAuth.
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/co3UserSuccess.cjs");
 
 router.use("/co3", requireAuth);
@@ -56,18 +56,29 @@ router.get("/co3/executive", (req, res) => {
 });
 
 // ── M1: Invitations ────────────────────────────────────────────────────────────
-router.get("/co3/invites", (req, res) => {
+// Business-activation pass: these 3 routes had no operatorOnly gate — any
+// authenticated customer (not just the founder/operator) could list every
+// outstanding invite code, or mint/bulk-mint new ones, completely bypassing
+// the closed-beta invite gate and the 50-user cap enforced in
+// betaReadiness.cjs. Reproduced live: POST /co3/invites/create succeeded
+// with only a normal account's session cookie. Fixed with the exact
+// operatorOnly pattern closedBeta.js already uses for its own admin-only
+// routes in this same "closed beta" domain. /validate and /:code/use stay
+// open to any authenticated user — a real customer must be able to
+// validate/redeem their own invite code during signup without operator
+// rights.
+router.get("/co3/invites", operatorOnly, (req, res) => {
   try { _ok(res, svc.getInviteDashboard()); } catch (e) { _err(res, e); }
 });
 
-router.post("/co3/invites/create", (req, res) => {
+router.post("/co3/invites/create", operatorOnly, (req, res) => {
   try {
     const invite = svc.createInviteCode(req.body);
     _ok(res, { invite });
   } catch (e) { _err(res, e); }
 });
 
-router.post("/co3/invites/bulk", (req, res) => {
+router.post("/co3/invites/bulk", operatorOnly, (req, res) => {
   try {
     const { count = 10, ...opts } = req.body;
     const codes = svc.bulkCreateInviteCodes(Number(count), opts);
