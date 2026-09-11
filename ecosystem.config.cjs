@@ -133,13 +133,18 @@ module.exports = {
             ignore_watch:    ["node_modules", "logs", "data", "_archive"],
         },
         {
-            // Daily backup job — runs safe-backup.cjs every day at 02:00 server time.
+            // Twice-daily backup job — runs safe-backup.cjs at 02:00 and 14:00 server
+            // time (POST-ERA-1 finalization: RPO target is 12h; the prior once-daily
+            // "0 2 * * *" schedule structurally allowed up to ~24h of unrecovered data
+            // in the worst case — a change at 02:01 wasn't captured until the next
+            // day's 02:00 run. 02:00/14:00 gives an exact 12h maximum interval between
+            // runs, satisfying the 12h RPO target with no gap.
             // Creates a tar.gz snapshot in backups/ and prunes to 7 most recent.
             // Set BACKUP_OFFSITE_DIR in .env to rsync the archive to a remote path.
             name:        "ooplix-backup",
             script:      "scripts/safe-backup.cjs",
             cwd:         __dirname,
-            cron_restart: "0 2 * * *",
+            cron_restart: "0 2,14 * * *",
             autorestart:  false,
             watch:        false,
             env: {
